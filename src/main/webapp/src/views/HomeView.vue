@@ -24,15 +24,16 @@ watch(etabs, (newValue) => {
 
 watch(select, (newValue) => {
   if (typeof newValue !== "undefined" && newValue !== null) {
+    const searchValue = newValue.toLocaleLowerCase();
     items.value = etabs.value?.filter((etablissement) => {
       let filters =
-        etablissement.nom.toLowerCase().indexOf(newValue.toLowerCase()) > -1 ||
-        etablissement.uai.toLowerCase().indexOf(newValue.toLowerCase()) > -1;
+        etablissement.nom.toLowerCase().indexOf(searchValue) > -1 ||
+        etablissement.uai.toLowerCase().indexOf(searchValue) > -1 ||
+        etablissement.siren.toString().indexOf(searchValue) > -1;
       if (etablissement.ville) {
         filters =
           filters ||
-          etablissement.ville.toLowerCase().indexOf(newValue.toLowerCase()) >
-            -1;
+          etablissement.ville.toLowerCase().indexOf(searchValue) > -1;
       }
 
       return filters;
