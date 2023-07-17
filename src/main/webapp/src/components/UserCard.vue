@@ -32,7 +32,7 @@ watch(
 
 <template>
   <v-card :variant="variant" @click="initCurrentPersonne(user.id)">
-    <v-card-text class="pa-3">
+    <v-card-text class="d-flex align-center pa-3">
       <v-icon
         :icon="
           user.source.startsWith('SarapisUi_') ? 'far fa-user' : 'fas fa-user'
