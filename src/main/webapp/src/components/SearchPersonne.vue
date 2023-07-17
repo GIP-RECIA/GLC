@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { searchPersonne } from "@/services/personneService";
-import { usePersonneStore } from "@/stores/personneStore";
+import type { SearchPersonne } from "@/types/personneType";
 import debounce from "lodash.debounce";
-import { storeToRefs } from "pinia";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-const personneStore = usePersonneStore();
-const { searchList } = storeToRefs(personneStore);
+const props = defineProps<{
+  searchList: Array<SearchPersonne> | undefined;
+}>();
 
 defineEmits<(event: "update:select", payload: number | undefined) => void>();
 
@@ -39,8 +39,8 @@ watch(searchOutOfStructure, () => {
 
 const findInStructure = (searchValue: string): void => {
   searchValue = searchValue.toLocaleLowerCase();
-  if (searchList.value) {
-    items.value = searchList.value
+  if (props.searchList) {
+    items.value = props.searchList
       .filter(
         (personne) =>
           personne.displayName.toLowerCase().indexOf(searchValue) > -1 ||

@@ -3,6 +3,7 @@ import SearchPersonne from "@/components/SearchPersonne.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
 import { setPersonneAdditionalTeachings } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";
+import { usePersonneStore } from "@/stores/personneStore";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -11,6 +12,9 @@ const { t } = useI18n();
 
 const configurationStore = useConfigurationStore();
 const { isAdditionalTeachings } = storeToRefs(configurationStore);
+
+const personneStore = usePersonneStore();
+const { teachingSearchList } = storeToRefs(personneStore);
 
 const selectedUser = ref<number | undefined>();
 const selected = ref<Array<string>>([]);
@@ -31,7 +35,10 @@ const save = () => {
 
 <template>
   <base-modal v-model="isAdditionalTeachings" :title="t('add')">
-    <search-personne @update:select="setSelectedUser" />
+    <search-personne
+      :search-list="teachingSearchList"
+      @update:select="setSelectedUser"
+    />
     <div>
       <b>{{ t("additionalTeaching", 2) }}</b>
     </div>

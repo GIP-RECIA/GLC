@@ -1,6 +1,7 @@
 import { getPersonne } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { useStructureStore } from "@/stores/structureStore";
+import { CategoriePersonne } from "@/types/enums/CategoriePersonne";
 import { Etat } from "@/types/enums/Etat";
 import type {
   Personne,
@@ -74,30 +75,61 @@ export const usePersonneStore = defineStore("personne", () => {
   });
 
   /**
-   * Retourne la liste des personnes de la structure courante avec un display name
+   * Retourne la liste des personnes passés avec un display name
+   */
+  const toSearchList = (
+    list: Array<SimplePersonne> | undefined
+  ): Array<SearchPersonne> | undefined => {
+    return list
+      ? list.map((personne) => {
+          return {
+            ...personne,
+            displayName: personne.patronyme
+              ? `${personne.patronyme} ${personne.givenName}`
+              : personne.givenName,
+          };
+        })
+      : undefined;
+  };
+
+  /**
+   * Retourne la liste des personnes de la structure courante pour la recherche
    */
   const searchList = computed<Array<SearchPersonne> | undefined>(() => {
     const { currentEtab } = structureStore;
 
-    return currentEtab?.personnes.map((personne) => {
-      return {
-        ...personne,
-        displayName: personne.patronyme
-          ? `${personne.patronyme} ${personne.givenName}`
-          : personne.givenName,
-      };
-    });
+    return toSearchList(currentEtab?.personnes);
   });
 
   /**
    * Retourne la liste des personnels administratifs de la structure courante
+   * pour la recherche
    */
-  const administrative = computed<Array<SimplePersonne> | undefined>(() => {
-    const { administrativeStaff } = configurationStore;
+  const administrativeSearchList = computed<Array<SearchPersonne> | undefined>(
+    () => {
+      const { currentEtab } = structureStore;
+      const { administrativeStaff } = configurationStore;
 
-    return personnes.value?.filter((personne) =>
-      administrativeStaff?.includes(personne.categorie)
+      const staff = currentEtab?.personnes.filter((personne) =>
+        administrativeStaff?.includes(personne.categorie)
+      );
+
+      return toSearchList(staff);
+    }
+  );
+
+  /**
+   * Retourne la liste des personnels enseignants de la structure courante pour
+   * la recherche
+   */
+  const teachingSearchList = computed<Array<SearchPersonne> | undefined>(() => {
+    const { currentEtab } = structureStore;
+
+    const staff = currentEtab?.personnes.filter(
+      (personne) => (personne.categorie = CategoriePersonne.Enseignant)
     );
+
+    return toSearchList(staff);
   });
 
   return {
@@ -108,6 +140,7 @@ export const usePersonneStore = defineStore("personne", () => {
     personnes,
     deletedPersonnes,
     searchList,
-    administrative,
+    administrativeSearchList,
+    teachingSearchList,
   };
 });
