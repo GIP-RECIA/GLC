@@ -81,20 +81,29 @@ const showPage = (page: number) => {
         :md="6"
         :lg="4"
         :xl="3"
+        class="pa-2"
       >
-        <v-btn
-          block
+        <v-card
+          :to="{
+            name: 'structure',
+            params: { structureId: etablissement.id },
+          }"
+          class="h-100"
           flat
-          :to="{ name: 'structure', params: { structureId: etablissement.id } }"
         >
-          <span v-if="etablissement.type">
-            {{ etablissement.nom }} ({{ etablissement.type }}
-            {{ etablissement.uai }})
-          </span>
-          <span v-else>
-            {{ etablissement.nom }}
-          </span>
-        </v-btn>
+          <v-card-text class="card-info">
+            <div class="title">
+              {{ etablissement.nom }}
+            </div>
+            <div class="subtitle">
+              {{
+                etablissement.type
+                  ? `${etablissement.type} ${etablissement.uai}`
+                  : etablissement.uai
+              }}
+            </div>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
     <v-pagination
@@ -107,3 +116,21 @@ const showPage = (page: number) => {
     />
   </v-container>
 </template>
+
+<style scoped lang="scss">
+.card-info {
+  display: block;
+  flex: none;
+  letter-spacing: 0.0178571429em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: nowrap;
+
+  .subtitle {
+    font-size: 0.775rem;
+    font-weight: 400;
+    opacity: var(--v-medium-emphasis-opacity);
+  }
+}
+</style>
