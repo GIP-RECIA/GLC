@@ -3,7 +3,7 @@ import ChipsFilter from "@/components/filter/ChipsFilter.vue";
 import { usePersonneStore } from "@/stores/personneStore";
 import { CategoriePersonne } from "@/types/enums/CategoriePersonne";
 import { Etat } from "@/types/enums/Etat";
-import type { SimplePersonne } from "@/types/personneType";
+import type { SearchPersonne } from "@/types/personneType";
 import isEmpty from "lodash.isempty";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
@@ -11,15 +11,15 @@ import { useI18n } from "vue-i18n";
 
 const emit =
   defineEmits<
-    (event: "update:result", payload: Array<SimplePersonne>) => void
+    (event: "update:result", payload: Array<SearchPersonne>) => void
   >();
 
 const { t } = useI18n();
 
 const personneStore = usePersonneStore();
-const { personnes } = storeToRefs(personneStore);
+const { searchList } = storeToRefs(personneStore);
 
-const nbResults = ref<number>(personnes.value ? personnes.value.length : 0);
+const nbResults = ref<number>(searchList.value ? searchList.value.length : 0);
 
 let searchFilter: string | undefined;
 let categoryFilter: Array<string>;
@@ -41,18 +41,16 @@ const setStatusFilter = (newValue: Array<string>) => {
 };
 
 const filter = () => {
-  let result: Array<SimplePersonne> = !isEmpty(personnes.value)
-    ? personnes.value!
+  const searchValue = searchFilter ? searchFilter.toLowerCase() : undefined;
+  let result: Array<SearchPersonne> = !isEmpty(searchList.value)
+    ? searchList.value!
     : [];
 
-  if (searchFilter != undefined && searchFilter !== "") {
+  if (searchValue != undefined && searchValue !== "") {
     result = result.filter((personne) => {
-      let displayName = personne.patronyme
-        ? `${personne.patronyme} ${personne.givenName}`
-        : personne.givenName;
-
       return (
-        displayName.toLowerCase().indexOf(searchFilter!.toLowerCase()) > -1
+        personne.displayName.toLowerCase().indexOf(searchValue) > -1 ||
+        personne.uid.toLowerCase().indexOf(searchValue) > -1
       );
     });
   }

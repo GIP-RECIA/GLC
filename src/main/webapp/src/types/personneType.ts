@@ -40,4 +40,7 @@ export type SimplePersonne = {
   source: string;
   givenName: string;
   patronyme: string;
+  uid: string;
 };
+
+export type SearchPersonne = SimplePersonne & { displayName: string };

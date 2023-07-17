@@ -2,7 +2,11 @@ import { getPersonne } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { useStructureStore } from "@/stores/structureStore";
 import { Etat } from "@/types/enums/Etat";
-import type { Personne, SimplePersonne } from "@/types/personneType";
+import type {
+  Personne,
+  SearchPersonne,
+  SimplePersonne,
+} from "@/types/personneType";
 import isEmpty from "lodash.isempty";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
@@ -70,22 +74,20 @@ export const usePersonneStore = defineStore("personne", () => {
   });
 
   /**
-   * Retourne la liste des personnes de la structure courante formaté
+   * Retourne la liste des personnes de la structure courante avec un display name
    */
-  const searchList = computed<Array<{ id: number; name: string }> | undefined>(
-    () => {
-      const { currentEtab } = structureStore;
+  const searchList = computed<Array<SearchPersonne> | undefined>(() => {
+    const { currentEtab } = structureStore;
 
-      return currentEtab?.personnes.map((personne) => {
-        return {
-          id: personne.id,
-          name: personne.patronyme
-            ? `${personne.patronyme} ${personne.givenName}`
-            : personne.givenName,
-        };
-      });
-    }
-  );
+    return currentEtab?.personnes.map((personne) => {
+      return {
+        ...personne,
+        displayName: personne.patronyme
+          ? `${personne.patronyme} ${personne.givenName}`
+          : personne.givenName,
+      };
+    });
+  });
 
   /**
    * Retourne la liste des personnels administratifs de la structure courante

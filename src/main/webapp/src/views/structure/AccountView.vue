@@ -2,22 +2,22 @@
 import UserCard from "@/components/UserCard.vue";
 import AccountFilter from "@/components/filter/AccountFilter.vue";
 import { usePersonneStore } from "@/stores/personneStore";
-import type { SimplePersonne } from "@/types/personneType";
+import type { SearchPersonne } from "@/types/personneType";
 import { storeToRefs } from "pinia";
 import { watch, ref } from "vue";
 
 const personneStore = usePersonneStore();
-const { personnes } = storeToRefs(personneStore);
+const { searchList } = storeToRefs(personneStore);
 
-const items = ref<Array<SimplePersonne> | undefined>();
-const pageItems = ref<Array<SimplePersonne> | undefined>();
+const items = ref<Array<SearchPersonne> | undefined>();
+const pageItems = ref<Array<SearchPersonne> | undefined>();
 const pagination = ref({
   page: 1,
   pages: 1,
 });
 const itemsPerPage: number = 20;
 
-watch(personnes, (newValue) => {
+watch(searchList, (newValue) => {
   if (typeof newValue !== "undefined" && newValue !== null)
     items.value = newValue;
 });
@@ -42,14 +42,14 @@ const showPage = (page: number) => {
   }
 };
 
-items.value = personnes.value;
+items.value = searchList.value;
 </script>
 
 <template>
   <v-container fluid>
     <account-filter
       class="mb-8"
-      @update:result="(result: Array<SimplePersonne>) => items = result"
+      @update:result="(result: Array<SearchPersonne>) => items = result"
     />
     <v-row>
       <v-col

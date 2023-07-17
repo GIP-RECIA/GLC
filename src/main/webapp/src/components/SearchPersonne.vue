@@ -37,18 +37,28 @@ watch(searchOutOfStructure, () => {
   select.value = undefined;
 });
 
-const findInStructure = (name: string): void => {
+const findInStructure = (searchValue: string): void => {
+  searchValue = searchValue.toLocaleLowerCase();
   if (searchList.value) {
-    items.value = searchList.value.filter(
-      (item) => item.name.toLowerCase().indexOf(name.toLowerCase()) > -1
-    );
+    items.value = searchList.value
+      .filter(
+        (personne) =>
+          personne.displayName.toLowerCase().indexOf(searchValue) > -1 ||
+          personne.uid.toLowerCase().indexOf(searchValue) > -1
+      )
+      .map((personne) => {
+        return {
+          id: personne.id,
+          name: `${personne.displayName} (${personne.uid})`,
+        };
+      });
   }
   loading.value = false;
 };
 
-const findOutOfStructure = debounce(async (name: string) => {
+const findOutOfStructure = debounce(async (searchValue: string) => {
   try {
-    items.value = (await searchPersonne(name)).data;
+    items.value = (await searchPersonne(searchValue)).data;
   } catch (e) {
     console.error(e);
   }
