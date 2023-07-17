@@ -58,7 +58,7 @@ items.value = deletedPersonnes.value;
       })`"
       flat
     >
-      <v-card-text>
+      <v-card-text v-if="pageItems && pageItems.length > 0">
         <v-row>
           <v-col
             v-for="(personne, index) in pageItems"
@@ -81,6 +81,7 @@ items.value = deletedPersonnes.value;
           @update:model-value="showPage"
         />
       </v-card-text>
+      <v-card-text v-else></v-card-text>
     </v-card>
   </v-container>
 </template>
