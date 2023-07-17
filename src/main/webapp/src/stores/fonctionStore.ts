@@ -53,6 +53,10 @@ export const useFonctionStore = defineStore("fonctions", () => {
     return isEmpty(customMapping) ? undefined : customMapping;
   });
 
+  const isCustomMapping = computed<boolean>(
+    () => customMapping.value != undefined
+  );
+
   /**
    * Retourne les filières administratives avec disciline et personnes
    * de la structure courante
@@ -84,6 +88,7 @@ export const useFonctionStore = defineStore("fonctions", () => {
     isInit,
     filieres,
     customMapping,
+    isCustomMapping,
     administrative,
     teaching,
   };

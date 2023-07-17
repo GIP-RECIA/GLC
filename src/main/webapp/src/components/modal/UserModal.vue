@@ -18,7 +18,7 @@ const configurationStore = useConfigurationStore();
 const { currentTab } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
-const { customMapping } = storeToRefs(fonctionStore);
+const { customMapping, isCustomMapping } = storeToRefs(fonctionStore);
 
 const personneStore = usePersonneStore();
 const { currentPersonne, isCurrentPersonne, additionalFonctionsForCheckboxes } =
@@ -252,11 +252,7 @@ const cancel = () => {
           "
         >
           <v-btn
-            v-if="
-              !isAddMode &&
-              typeof customMapping !== 'undefined' &&
-              customMapping !== null
-            "
+            v-if="!isAddMode && isCustomMapping"
             color="primary"
             prepend-icon="fas fa-plus"
             @click="isAddMode = true"

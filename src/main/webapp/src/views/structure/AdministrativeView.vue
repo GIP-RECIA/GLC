@@ -12,7 +12,7 @@ const configurationStore = useConfigurationStore();
 const { isAdditionalFonction } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
-const { administrative } = storeToRefs(fonctionStore);
+const { administrative, isCustomMapping } = storeToRefs(fonctionStore);
 
 const showAll = ref<boolean>(false);
 </script>
@@ -38,6 +38,7 @@ const showAll = ref<boolean>(false);
 
     <div class="fab ma-4">
       <v-btn
+        v-if="isCustomMapping"
         variant="tonal"
         icon="fas fa-user-plus"
         @click="isAdditionalFonction = true"
