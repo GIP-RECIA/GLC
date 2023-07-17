@@ -38,7 +38,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController()
-@RequestMapping(value = "/personne")
+@RequestMapping(value = "/api/personne")
 public class PersonneController {
 
   @Autowired

@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController()
-@RequestMapping(value = "/fonction")
+@RequestMapping(value = "/api/fonction")
 public class FonctionController {
 
   @Autowired

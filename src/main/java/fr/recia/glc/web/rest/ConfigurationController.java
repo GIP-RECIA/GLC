@@ -31,7 +31,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController()
-@RequestMapping(value = "/config")
+@RequestMapping(value = "/api/config")
 public class ConfigurationController {
 
   @Value("${security-configuration.cas.url.login}")

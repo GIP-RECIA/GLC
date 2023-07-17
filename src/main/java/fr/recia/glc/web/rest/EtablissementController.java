@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController()
-@RequestMapping(value = "/structure/etablissement")
+@RequestMapping(value = "/api/structure/etablissement")
 public class EtablissementController {
 
   @Autowired

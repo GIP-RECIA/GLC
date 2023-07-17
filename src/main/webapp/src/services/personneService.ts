@@ -1,14 +1,15 @@
 import { instance as axios } from "@/utils/axiosUtils";
 
-const getPersonne = async (id: number) => await axios.get(`/personne/${id}`);
+const getPersonne = async (id: number) =>
+  await axios.get(`/api/personne/${id}`);
 
 const searchPersonne = async (name: string) =>
-  await axios.get(`/personne?name=${name}`);
+  await axios.get(`/api/personne?name=${name}`);
 
 const setPersonneAdditionalFonctions = async (
   id: number,
   additionalFonctions: Array<string>
-) => await axios.post(`/personne/${id}/fonction`, { additionalFonctions });
+) => await axios.post(`/api/personne/${id}/fonction`, { additionalFonctions });
 
 const setPersonneAdditionalTeachings = async (
   id: number,

@@ -27,6 +27,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.support.ErrorPageFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.cas.ServiceProperties;
@@ -214,8 +215,15 @@ public class SecurityConfiguration {
 
     http
       .authorizeHttpRequests(authz -> authz
-        .requestMatchers("/health-check").permitAll()
-        .requestMatchers("/api/**").authenticated()
+        .requestMatchers(HttpMethod.OPTIONS).permitAll()
+        .requestMatchers(
+          "/health-check",
+          "/api/**"
+        ).permitAll()
+        .requestMatchers(new AntPathRequestMatcher("/app/**/*.{js,html}")).permitAll()
+        .requestMatchers(
+          "/app/**"
+        ).authenticated()
         .anyRequest().denyAll()
       );
 
