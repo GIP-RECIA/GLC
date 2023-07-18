@@ -5,6 +5,7 @@ import { onBeforeMount, ref } from "vue";
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
   selected?: Array<string>;
+  disabled?: Array<string>;
 }>();
 
 const emit =
@@ -36,6 +37,7 @@ const updateSelected = () => {
           v-model="checked"
           :label="discipline.disciplinePoste"
           :value="`${filiere.id}-${discipline.id}`"
+          :disabled="disabled?.includes(`${filiere.id}-${discipline.id}`)"
           color="primary"
           :hide-details="true"
           @update:model-value="updateSelected"

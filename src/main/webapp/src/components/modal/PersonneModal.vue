@@ -200,6 +200,16 @@ const cancel = () => {
       <checkbox-layout
         v-if="currentTab == Tabs.AdministrativeStaff"
         :filieres="customMapping?.filieres ? customMapping.filieres : []"
+        :selected="
+          currentPersonne?.additionalFonctions.map(
+            (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
+          )
+        "
+        :disabled="
+          currentPersonne?.fonctions.map(
+            (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
+          )
+        "
         @update:selected="setSelected"
       />
     </div>
