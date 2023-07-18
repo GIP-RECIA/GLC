@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SearchPersonne from "@/components/SearchPersonne.vue";
+import CheckboxLayout from "@/components/layout/CheckboxLayout.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
 import { setPersonneAdditionalFonctions } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";
@@ -25,6 +26,10 @@ const selected = ref<Array<string>>([]);
 
 const isSelected = computed<boolean>(() => selected.value.length > 0);
 
+const setSelected = (value: Array<string>) => {
+  selected.value = value;
+};
+
 const isSelectedUser = computed<boolean>(() => selectedUser.value != undefined);
 
 const setSelectedUser = (id: number | undefined) => {
@@ -46,26 +51,10 @@ const save = () => {
     <div>
       <b>{{ t("additionalFunction", 2) }}</b>
     </div>
-    <div v-for="(filiere, index) in customMapping?.filieres" :key="index">
-      <div>
-        <b>{{ filiere.libelleFiliere }}</b>
-      </div>
-      <div class="d-flex flex-row flex-wrap">
-        <div
-          v-for="(discipline, index) in filiere.disciplines"
-          :key="index"
-          class="flex-item"
-        >
-          <v-checkbox
-            v-model="selected"
-            :label="discipline.disciplinePoste"
-            :value="`${filiere.id}-${discipline.id}`"
-            color="primary"
-            :hide-details="true"
-          />
-        </div>
-      </div>
-    </div>
+    <checkbox-layout
+      :filieres="customMapping?.filieres ? customMapping.filieres : []"
+      @update:selected="setSelected"
+    />
     <template #footer>
       <v-btn
         color="success"
@@ -78,15 +67,3 @@ const save = () => {
     </template>
   </base-modal>
 </template>
-
-<style scoped lang="scss">
-.flex-item {
-  width: 100%;
-}
-
-@media (min-width: 700px) {
-  .flex-item {
-    width: 50%;
-  }
-}
-</style>

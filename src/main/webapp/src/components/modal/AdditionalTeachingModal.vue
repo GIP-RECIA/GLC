@@ -54,15 +54,3 @@ const save = () => {
     </template>
   </base-modal>
 </template>
-
-<style scoped lang="scss">
-.flex-item {
-  width: 100%;
-}
-
-@media (min-width: 700px) {
-  .flex-item {
-    width: 50%;
-  }
-}
-</style>

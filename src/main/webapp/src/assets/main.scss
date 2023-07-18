@@ -46,3 +46,13 @@ body,
 .mt--3 {
   margin-top: -12px;
 }
+
+.modal-flex-item {
+  width: 100%;
+}
+
+@media (min-width: 700px) {
+  .modal-flex-item {
+    width: 50%;
+  }
+}

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ReadonlyData from "@/components/ReadonlyData.vue";
+import CheckboxLayout from "@/components/layout/CheckboxLayout.vue";
 import FonctionsLayout from "@/components/layout/FonctionsLayout.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
 import { setPersonneAdditionalFonctions } from "@/services/personneService";
@@ -30,6 +31,10 @@ const isAddMode = ref<boolean>(false);
 const selected = ref<Array<string>>([]);
 
 const isSelected = computed<boolean>(() => selected.value.length > 0);
+
+const setSelected = (value: Array<string>) => {
+  selected.value = value;
+};
 
 watch(isCurrentPersonne, (newValue) => {
   if (!newValue) {
@@ -75,102 +80,102 @@ const cancel = () => {
         <readonly-data
           label="uid"
           :value="currentPersonne.uid"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="uuid"
           :value="currentPersonne.uuid"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="idEduConnect"
           :value="currentPersonne.idEduConnect"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           :label="t('civility')"
           :value="currentPersonne.civilite"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           :label="t('lastName')"
           :value="currentPersonne.patronyme"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           :label="t('firstName')"
           :value="currentPersonne.givenName"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           :label="t('birthDate')"
           :value="moment(currentPersonne.dateNaissance).format('L')"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           :label="t('email') + ' ac'"
           :value="currentPersonne.email"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           :label="t('email') + ' perso'"
           :value="currentPersonne.emailPersonnel"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           :label="t('schoolYear')"
           :value="moment(currentPersonne.anneeScolaire).format('Y')"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           :label="t('login')"
           :value="currentPersonne.login"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           :label="t('status')"
           :value="currentPersonne.etat"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="categorie"
           :value="currentPersonne.categorie"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="cn"
           :value="currentPersonne.cn"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="displayName"
           :value="currentPersonne.displayName"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="numBureau"
           :value="currentPersonne.numBureau"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="sn"
           :value="currentPersonne.sn"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="titre"
           :value="currentPersonne.titre"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="listeRouge"
           :value="currentPersonne.listeRouge.toString()"
-          class="flex-item"
+          class="modal-flex-item"
         />
         <readonly-data
           label="forceEtat"
           :value="currentPersonne.forceEtat"
-          class="flex-item"
+          class="modal-flex-item"
         />
       </div>
       <div class="mb-3">
@@ -185,34 +190,15 @@ const cancel = () => {
         />
       </div>
     </div>
-    <div
-      v-if="
-        (currentTab == Tabs.AdministrativeStaff ||
-          currentTab == Tabs.TeachingStaff) &&
-        isAddMode
-      "
-    >
-      <div v-for="(filiere, index) in customMapping?.filieres" :key="index">
-        <div>
-          <b>{{ filiere.libelleFiliere }}</b>
-        </div>
-        <div class="d-flex flex-row flex-wrap">
-          <div
-            v-for="(discipline, index) in filiere.disciplines"
-            :key="index"
-            class="flex-item"
-          >
-            <v-checkbox
-              v-model="selected"
-              :label="discipline.disciplinePoste"
-              :value="`${filiere.id}-${discipline.id}`"
-              color="primary"
-              :hide-details="true"
-            />
-          </div>
-        </div>
-      </div>
+
+    <div v-if="isAddMode">
+      <checkbox-layout
+        v-if="currentTab == Tabs.AdministrativeStaff"
+        :filieres="customMapping?.filieres ? customMapping.filieres : []"
+        @update:selected="setSelected"
+      />
     </div>
+
     <template #footer>
       <div class="d-flex justify-space-between w-100">
         <div>
@@ -237,6 +223,7 @@ const cancel = () => {
             </v-btn>
           </div>
         </div>
+
         <div
           v-if="
             currentTab == Tabs.AdministrativeStaff ||
@@ -273,15 +260,3 @@ const cancel = () => {
     </template>
   </base-modal>
 </template>
-
-<style scoped lang="scss">
-.flex-item {
-  width: 100%;
-}
-
-@media (min-width: 700px) {
-  .flex-item {
-    width: 50%;
-  }
-}
-</style>
