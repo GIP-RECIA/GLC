@@ -49,7 +49,7 @@ const filterFilieres = (): void => {
         :md="6"
       >
         <v-card :subtitle="filiere.libelleFiliere" variant="tonal">
-          <v-card-text class="pb-2">
+          <v-card-text class="pb-2 mt--3">
             <div class="v-chip-group v-chip-group--column v-theme--light">
               <v-chip
                 v-for="(discipline, index) in filiere.disciplines"
