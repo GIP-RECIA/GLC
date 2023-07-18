@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FiliereDisciplines from "@/components/layout/FiliereDisciplines.vue";
+import FilieresLayout from "@/components/layout/FilieresLayout.vue";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
 import { storeToRefs } from "pinia";
@@ -29,12 +29,7 @@ const showAll = ref<boolean>(false);
         {{ t(showAll ? "hideEmpty" : "showAll") }}
       </v-btn>
     </div>
-    <filiere-disciplines
-      v-for="(filiere, index) in teaching"
-      :key="index"
-      :filiere="filiere"
-      :show-all="showAll"
-    />
+    <filieres-layout :filieres="teaching" :show-all="showAll" />
 
     <div class="fab ma-4">
       <v-btn
