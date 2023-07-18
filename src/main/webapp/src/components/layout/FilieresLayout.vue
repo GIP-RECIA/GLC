@@ -17,9 +17,7 @@ onBeforeMount(() => {
 watch(
   () => props.showAll,
   (newValue, oldValue) => {
-    if (newValue != oldValue) {
-      filterFiliere();
-    }
+    if (newValue != oldValue) filterFiliere();
   }
 );
 
@@ -28,14 +26,14 @@ const filterFiliere = (): void => {
 
   if (!unref(props.showAll)) {
     filterFiliere = filterFiliere
-      ?.filter((filiere) => filiere.disciplines.length > 0)
-      .map((filiere) => {
+      ?.map((filiere) => {
         const disciplines = filiere.disciplines.filter(
           (discipline) => discipline.personnes.length > 0
         );
 
         return { ...filiere, disciplines };
-      });
+      })
+      .filter((filiere) => filiere.disciplines.length > 0);
   }
 
   filteredFilieres.value = filterFiliere ? filterFiliere : [];
@@ -43,8 +41,8 @@ const filterFiliere = (): void => {
 </script>
 
 <template>
-  <div v-if="filieres && filieres.length > 0" class="pb-4">
-    <div v-for="(filiere, index) in filteredFilieres" :key="index">
+  <div v-if="filieres && filieres.length > 0">
+    <div v-for="(filiere, index) in filteredFilieres" :key="index" class="pb-4">
       <div class="pb-2">
         {{ filiere.libelleFiliere }}
       </div>
@@ -58,12 +56,7 @@ const filterFiliere = (): void => {
           :xxl="3"
           class="pa-2"
         >
-          <v-card
-            v-if="!showAll ? discipline.personnes.length > 0 : true"
-            :subtitle="discipline.disciplinePoste"
-            flat
-            min-height="100%"
-          >
+          <v-card :subtitle="discipline.disciplinePoste" flat min-height="100%">
             <v-card-text>
               <v-row>
                 <v-col
