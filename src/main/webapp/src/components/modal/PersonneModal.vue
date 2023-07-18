@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ReadonlyData from "@/components/ReadonlyData.vue";
+import FonctionsLayout from "@/components/layout/FonctionsLayout.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
 import { setPersonneAdditionalFonctions } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";
@@ -174,23 +175,14 @@ const cancel = () => {
       </div>
       <div class="mb-3">
         <b>{{ t("function", 2) }}</b>
-        <br />
-        <div
-          v-for="(fonction, index) in currentPersonne.fonctions"
-          :key="index"
-        >
-          {{ fonction }}
-        </div>
+        <fonctions-layout :fonctions="currentPersonne.fonctions" class="mt-2" />
       </div>
       <div>
         <b>{{ t("additionalFunction", 2) }}</b>
-        <br />
-        <div
-          v-for="(fonction, index) in currentPersonne.additionalFonctions"
-          :key="index"
-        >
-          {{ fonction }}
-        </div>
+        <fonctions-layout
+          :fonctions="currentPersonne.additionalFonctions"
+          class="mt-2"
+        />
       </div>
     </div>
     <div

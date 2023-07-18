@@ -1,3 +1,5 @@
+import type { PersonneFonction } from "@/types/fonctionType";
+
 export type Personne = {
   id: number;
   etat: string;
@@ -21,16 +23,8 @@ export type Personne = {
   forceEtat: string;
   idEduConnect: string;
   login: string;
-  fonctions: Array<{
-    disciplinePoste: number;
-    filiere: number;
-    source: string;
-  }>;
-  additionalFonctions: Array<{
-    disciplinePoste: number;
-    filiere: number;
-    source: string;
-  }>;
+  fonctions: Array<PersonneFonction>;
+  additionalFonctions: Array<PersonneFonction>;
 };
 
 export type SimplePersonne = {
