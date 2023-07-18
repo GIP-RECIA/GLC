@@ -177,6 +177,11 @@ const cancel = () => {
           :value="currentPersonne.forceEtat"
           class="modal-flex-item"
         />
+        <readonly-data
+          label="source"
+          :value="currentPersonne.source"
+          class="modal-flex-item"
+        />
       </div>
       <div class="mb-3">
         <b>{{ t("function", 2) }}</b>
