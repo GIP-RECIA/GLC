@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UserCard from "@/components/UserCard.vue";
+import PersonneCard from "@/components/PersonneCard.vue";
 import AccountFilter from "@/components/filter/AccountFilter.vue";
 import { usePersonneStore } from "@/stores/personneStore";
 import type { SearchPersonne } from "@/types/personneType";
@@ -53,7 +53,7 @@ items.value = searchList.value;
     />
     <v-row>
       <v-col
-        v-for="(user, index) in pageItems"
+        v-for="(personne, index) in pageItems"
         :key="index"
         :cols="12"
         :md="6"
@@ -61,7 +61,7 @@ items.value = searchList.value;
         :xxl="3"
         class="pa-2"
       >
-        <user-card variant="flat" :user="user" />
+        <personne-card variant="flat" :personne="personne" />
       </v-col>
     </v-row>
     <v-pagination

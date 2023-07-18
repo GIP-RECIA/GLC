@@ -12,16 +12,16 @@ const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
 
 const props = defineProps<{
-  user: SimplePersonne;
+  personne: SimplePersonne;
   variant?: NonNullable<
     "flat" | "text" | "elevated" | "tonal" | "outlined" | "plain"
   >;
 }>();
 
-const displayEtat = ref<enumValues>(getEtat(props.user.etat));
+const displayEtat = ref<enumValues>(getEtat(props.personne.etat));
 
 watch(
-  () => props.user.etat,
+  () => props.personne.etat,
   (newValue, oldValue) => {
     if (newValue != oldValue) {
       displayEtat.value = getEtat(newValue);
@@ -31,18 +31,22 @@ watch(
 </script>
 
 <template>
-  <v-card :variant="variant" @click="initCurrentPersonne(user.id)">
+  <v-card :variant="variant" @click="initCurrentPersonne(personne.id)">
     <v-card-text class="d-flex align-center pa-3">
       <v-icon
         :icon="
-          user.source.startsWith('SarapisUi_') ? 'far fa-user' : 'fas fa-user'
+          personne.source.startsWith('SarapisUi_')
+            ? 'far fa-user'
+            : 'fas fa-user'
         "
         :color="displayEtat.color"
         :title="t(displayEtat.i18n)"
         :alt="t(displayEtat.i18n)"
         class="mr-2"
       />{{
-        user.patronyme ? `${user.patronyme} ${user.givenName}` : user.givenName
+        personne.patronyme
+          ? `${personne.patronyme} ${personne.givenName}`
+          : personne.givenName
       }}
     </v-card-text>
   </v-card>

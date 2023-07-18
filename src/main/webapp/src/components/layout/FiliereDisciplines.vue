@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UserCard from "@/components/UserCard.vue";
+import PersonneCard from "@/components/PersonneCard.vue";
 import type { Discipline } from "@/types/disciplineType";
 import type { Filiere } from "@/types/filiereType";
 import { watch, onBeforeMount, unref, ref } from "vue";
@@ -69,11 +69,11 @@ const filteredDisciplines = (): void => {
             <v-row>
               <v-col
                 :cols="6"
-                v-for="(user, index) in discipline.personnes"
+                v-for="(personne, index) in discipline.personnes"
                 :key="index"
                 class="pa-2"
               >
-                <user-card variant="tonal" :user="user" />
+                <personne-card variant="tonal" :personne="personne" />
               </v-col>
             </v-row>
           </v-card-text>

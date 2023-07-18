@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UserCard from "@/components/UserCard.vue";
+import PersonneCard from "@/components/PersonneCard.vue";
 import { usePersonneStore } from "@/stores/personneStore";
 import type { SimplePersonne } from "@/types/personneType";
 import { storeToRefs } from "pinia";
@@ -69,7 +69,7 @@ items.value = deletedPersonnes.value;
             :xxl="3"
             class="pa-2"
           >
-            <user-card variant="tonal" :user="personne" />
+            <personne-card variant="tonal" :personne="personne" />
           </v-col>
         </v-row>
         <v-pagination
