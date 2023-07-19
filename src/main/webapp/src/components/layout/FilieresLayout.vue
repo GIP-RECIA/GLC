@@ -15,6 +15,13 @@ onBeforeMount(() => {
 });
 
 watch(
+  () => props.filieres,
+  (oldValue, newValue) => {
+    if (newValue != oldValue) filterFiliere();
+  }
+);
+
+watch(
   () => props.showAll,
   (newValue, oldValue) => {
     if (newValue != oldValue) filterFiliere();
