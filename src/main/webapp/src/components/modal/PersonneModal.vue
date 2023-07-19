@@ -3,7 +3,7 @@ import ReadonlyData from "@/components/ReadonlyData.vue";
 import CheckboxLayout from "@/components/layout/CheckboxLayout.vue";
 import FonctionsLayout from "@/components/layout/FonctionsLayout.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
-import { setPersonneAdditionalFonctions } from "@/services/personneService";
+import { setPersonneAdditional } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
@@ -55,7 +55,7 @@ const reinitialize = () => {};
 const save = () => {
   isAddMode.value = false;
   if (currentPersonne.value) {
-    setPersonneAdditionalFonctions(currentPersonne.value.id, selected.value);
+    setPersonneAdditional(currentPersonne.value.id, selected.value);
   }
 };
 

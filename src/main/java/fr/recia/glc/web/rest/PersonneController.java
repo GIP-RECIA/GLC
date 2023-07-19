@@ -70,7 +70,7 @@ public class PersonneController {
       ? personne.getSource()
       : "SarapisUI_" + personne.getSource();
 
-    List<FonctionDto> fonctions = ((List<String>) body.get("additionalFonctions")).stream()
+    List<FonctionDto> fonctions = ((List<String>) body.get("additional")).stream()
       .map(fonction -> {
         String[] split = fonction.split("-");
 
