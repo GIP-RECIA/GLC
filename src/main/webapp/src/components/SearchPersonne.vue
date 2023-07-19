@@ -76,6 +76,8 @@ const findOutOfStructure = debounce(async (searchValue: string) => {
     <v-switch
       v-model="searchOutOfStructure"
       :label="t('searchOutOfStructure')"
+      density="compact"
+      class="mb-2"
       hide-details
       inset
     />
