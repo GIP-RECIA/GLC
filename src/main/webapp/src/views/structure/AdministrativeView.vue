@@ -9,7 +9,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const configurationStore = useConfigurationStore();
-const { isAdditionalFonction } = storeToRefs(configurationStore);
+const { isAdditional } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { administrative, isCustomMapping } = storeToRefs(fonctionStore);
@@ -36,7 +36,7 @@ const showAll = ref<boolean>(false);
         v-if="isCustomMapping"
         variant="tonal"
         icon="fas fa-user-plus"
-        @click="isAdditionalFonction = true"
+        @click="isAdditional = true"
       />
     </div>
   </v-container>

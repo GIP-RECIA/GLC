@@ -57,13 +57,9 @@ export const useConfigurationStore = defineStore("configuration", () => {
     currentTab.value = value;
   };
 
-  /* -- Gestion de la modale des fonctionalités complémentaires -- */
+  /* -- Gestion de la modale des complémentaires -- */
 
-  const isAdditionalFonction = ref<boolean>(false);
-
-  /* -- Gestion de la modale des enseignements complémentaires -- */
-
-  const isAdditionalTeachings = ref<boolean>(false);
+  const isAdditional = ref<boolean>(false);
 
   /* -- Gestion de l'authentification -- */
 
@@ -81,8 +77,7 @@ export const useConfigurationStore = defineStore("configuration", () => {
     currentTab,
     setCurrentStructure,
     setCurrentTab,
-    isAdditionalFonction,
-    isAdditionalTeachings,
+    isAdditional,
     isAuthenticated,
   };
 });

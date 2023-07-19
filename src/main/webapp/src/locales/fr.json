@@ -54,5 +54,7 @@
   "structureStaff": "Personnel de la structure",
   "category": "Catégorie",
   "hideEmpty": "Masquer les séctions vides",
-  "showAll": "Tout afficher"
+  "showAll": "Tout afficher",
+  "addAdditionalFonction": "Ajouter une/des fonctions complémentaires",
+  "addAdditionalTeaching": "Ajouter un/des enseignements complémentaires"
 }
