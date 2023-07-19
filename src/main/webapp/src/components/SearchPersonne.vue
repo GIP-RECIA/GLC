@@ -13,7 +13,8 @@ const props = defineProps<{
   searchList: Array<SearchPersonne> | undefined;
 }>();
 
-defineEmits<(event: "update:select", payload: number | undefined) => void>();
+const emit =
+  defineEmits<(event: "update:select", payload: number | undefined) => void>();
 
 const select = ref<SearchPersonne | undefined>();
 const loading = ref<boolean>(false);
@@ -21,7 +22,10 @@ const items = ref<Array<SearchPersonne>>([]);
 const searchOutOfStructure = ref<boolean>(false);
 
 watch(searchOutOfStructure, () => {
-  select.value = undefined;
+  if (select.value != undefined) {
+    select.value = undefined;
+    emit("update:select", undefined);
+  }
 });
 
 const filterItems = (newSearch: string | undefined) => {
