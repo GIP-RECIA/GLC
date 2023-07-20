@@ -96,16 +96,16 @@ public class FonctionController {
           .collect(Collectors.toSet());
         List<DisciplineDto> disciplinesInFiliere = disciplines.stream()
           .filter(discipline -> disciplineIds.contains(discipline.getId()))
-          .toList();
+          .collect(Collectors.toList());
         typeFonctionFiliere.setDisciplines(disciplinesInFiliere);
 
         return typeFonctionFiliere;
-      }).toList();
+      }).collect(Collectors.toList());
 
     // Retrait des filières sans disciplines
     return typesFonctionFiliere.stream()
       .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
-      .toList();
+      .collect(Collectors.toList());
   }
 
   private Map<String, Object> getCustomMapping(String source) {
@@ -134,7 +134,7 @@ public class FonctionController {
     // Recherche des filières
     List<String> typeFonctionFiliereCodes = mappingEntry.getFilieres().stream()
       .map(AdditionalFonctionMappingFiliere::getCode)
-      .toList();
+      .collect(Collectors.toList());
     List<TypeFonctionFiliereDto> typesFonctionFiliere =
       typeFonctionFiliereRepository.findByCodeAndSourceSarapis(typeFonctionFiliereCodes, source);
 
@@ -153,7 +153,7 @@ public class FonctionController {
 
           return typeFonctionFiliere;
         })
-        .toList();
+        .collect(Collectors.toList());
       data.put(FILIERE, typesFonctionFiliere);
     }
 

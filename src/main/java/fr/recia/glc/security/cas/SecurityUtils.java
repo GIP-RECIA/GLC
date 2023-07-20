@@ -41,10 +41,10 @@ public final class SecurityUtils {
     Authentication authentication = securityContext.getAuthentication();
 
     if (authentication != null) {
-      if (authentication.getPrincipal() instanceof UserDetails user) {
-        return user.getUsername();
-      } else if (authentication.getPrincipal() instanceof String user) {
-        return user;
+      if (authentication.getPrincipal() instanceof UserDetails) {
+        return ((UserDetails) authentication.getPrincipal()).getUsername();
+      } else if (authentication.getPrincipal() instanceof String) {
+        return (String) authentication.getPrincipal();
       }
     }
 
@@ -59,8 +59,8 @@ public final class SecurityUtils {
     Authentication authentication = securityContext.getAuthentication();
 
     if (authentication != null) {
-      if (authentication.getPrincipal() instanceof CustomUserDetails currentUserDetails) {
-        return currentUserDetails;
+      if (authentication.getPrincipal() instanceof CustomUserDetails) {
+        return (CustomUserDetails) authentication.getPrincipal();
       }
     }
 

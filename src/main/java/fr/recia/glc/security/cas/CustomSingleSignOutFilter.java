@@ -15,18 +15,18 @@
  */
 package fr.recia.glc.security.cas;
 
-import org.apereo.cas.client.configuration.ConfigurationKey;
-import org.apereo.cas.client.configuration.ConfigurationKeys;
-import org.apereo.cas.client.session.SessionMappingStorage;
-import org.apereo.cas.client.util.AbstractConfigurationFilter;
+import org.jasig.cas.client.configuration.ConfigurationKey;
+import org.jasig.cas.client.configuration.ConfigurationKeys;
+import org.jasig.cas.client.session.SessionMappingStorage;
+import org.jasig.cas.client.util.AbstractConfigurationFilter;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 

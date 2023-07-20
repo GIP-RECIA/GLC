@@ -76,7 +76,7 @@ public class EtablissementController {
 
           return etablissement;
         })
-        .toList();
+        .collect(Collectors.toList());
 
     return new ResponseEntity<>(etablissements, HttpStatus.OK);
   }
@@ -109,7 +109,7 @@ public class EtablissementController {
         // Filtre les fonctions de la filière
         List<FonctionDto> fonctionsInFiliere = fonctions.stream()
           .filter(fonction -> Objects.equals(fonction.getFiliere(), typeFonctionFiliere.getId()))
-          .toList();
+          .collect(Collectors.toList());
         // Liste les ID de disciplines de la filière
         Set<Long> disciplineIds = fonctionsInFiliere.stream()
           .map(FonctionDto::getDisciplinePoste)
@@ -117,7 +117,7 @@ public class EtablissementController {
         // Liste les disciplines de la filière
         List<DisciplineDto> disciplinesInFiliere = disciplines.stream()
           .filter(discipline -> disciplineIds.contains(discipline.getId()))
-          .toList();
+          .collect(Collectors.toList());
         // Ajout des personnes aux disciplines
         disciplinesInFiliere = disciplinesInFiliere.stream()
           .map(discipline -> {
@@ -129,19 +129,19 @@ public class EtablissementController {
             // Liste les personnes de la discipline
             List<SimplePersonneDto> personnesInDiscipline = personnes.stream()
               .filter(personne -> personneIds.contains(personne.getId()))
-              .toList();
+              .collect(Collectors.toList());
             discipline.setPersonnes(personnesInDiscipline);
 
             return discipline;
           })
-          .toList();
+          .collect(Collectors.toList());
         typeFonctionFiliere.setDisciplines(disciplinesInFiliere);
 
         return typeFonctionFiliere;
       })
       // Retrait des filières sans disciplines
       .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
-      .toList();
+      .collect(Collectors.toList());
   }
 
 }

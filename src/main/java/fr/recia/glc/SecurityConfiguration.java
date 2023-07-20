@@ -21,7 +21,7 @@ import fr.recia.glc.security.cas.AjaxLogoutSuccessHandler;
 import fr.recia.glc.security.cas.CustomSingleSignOutFilter;
 import fr.recia.glc.web.filter.CsrfCookieGeneratorFilter;
 import lombok.extern.slf4j.Slf4j;
-import org.apereo.cas.client.validation.Cas20ServiceTicketValidator;
+import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.support.ErrorPageFilter;
@@ -37,7 +37,6 @@ import org.springframework.security.cas.web.CasAuthenticationEntryPoint;
 import org.springframework.security.cas.web.CasAuthenticationFilter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -45,15 +44,12 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import jakarta.servlet.Filter;
 import javax.inject.Inject;
+import javax.servlet.Filter;
 import java.util.Collections;
 import java.util.List;
 
@@ -215,13 +211,13 @@ public class SecurityConfiguration {
 
     http
       .authorizeHttpRequests(authz -> authz
-        .requestMatchers(HttpMethod.OPTIONS).permitAll()
-        .requestMatchers(
+        .antMatchers(HttpMethod.OPTIONS).permitAll()
+        .antMatchers(
           "/health-check",
           "/api/**"
         ).permitAll()
-        .requestMatchers(new AntPathRequestMatcher("/app/**/*.{js,html}")).permitAll()
-        .requestMatchers(
+        .antMatchers("/app/**/*.{js,html}").permitAll()
+        .antMatchers(
           "/app/**"
         ).authenticated()
         .anyRequest().denyAll()
