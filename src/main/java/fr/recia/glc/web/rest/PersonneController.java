@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController()
@@ -57,8 +58,8 @@ public class PersonneController {
   public ResponseEntity<PersonneDto> getPersonne(@PathVariable Long id) {
     PersonneDto personne = aPersonneRepository.findByPersonneId(id);
     List<FonctionDto> fonctions = fonctionRepository.findByPersonneIdAndStructure(id, personne.getStructure());
-    personne.setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith("SarapisUi_")).toList());
-    personne.setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith("SarapisUi_")).toList());
+    personne.setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith("SarapisUi_")).collect(Collectors.toList()));
+    personne.setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith("SarapisUi_")).collect(Collectors.toList()));
 
     return new ResponseEntity<>(personne, HttpStatus.OK);
   }
@@ -80,7 +81,7 @@ public class PersonneController {
           source
         );
       })
-      .toList();
+      .collect(Collectors.toList());
 
     return new ResponseEntity<>(fonctions, HttpStatus.OK);
   }

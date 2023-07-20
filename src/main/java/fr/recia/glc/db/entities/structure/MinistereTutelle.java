@@ -19,7 +19,7 @@ import fr.recia.glc.db.entities.common.AbstractSimpleEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.Entity;
+import javax.persistence.Entity;
 
 @Entity
 @Getter

@@ -53,6 +53,27 @@ public class EtablissementDto {
   private List<SimplePersonneDto> personnes;
 
   public EtablissementDto(Long id, String uai, Etat etat, EtatAlim etatAlim, String source, Date anneeScolaire,
+                          String adresse, String codePostal, String ville, String boitePostale, String pays,
+                          CategorieStructure categorie, String mail, String nom, String nomCourt, String siren,
+                          String siteWeb, String modeleLogin, String logo) {
+    this.id = id;
+    this.uai = uai;
+    this.etat = etat;
+    this.etatAlim = etatAlim;
+    this.source = source;
+    this.anneeScolaire = anneeScolaire;
+    this.adresse = new AdresseDto(adresse, codePostal, ville, boitePostale, pays);
+    this.categorie = categorie;
+    this.mail = mail;
+    this.nom = nom;
+    this.nomCourt = nomCourt;
+    this.siren = siren;
+    this.siteWeb = siteWeb;
+    this.modeleLogin = modeleLogin;
+    this.logo = logo;
+  }
+
+  public EtablissementDto(Long id, String uai, Etat etat, EtatAlim etatAlim, String source, Date anneeScolaire,
                           AdresseDto adresse, CategorieStructure categorie, String mail, String nom,
                           String nomCourt, String siren, String siteWeb, String modeleLogin, String logo) {
     this.id = id;

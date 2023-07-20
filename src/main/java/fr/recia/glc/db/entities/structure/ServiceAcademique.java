@@ -21,8 +21,8 @@ import fr.recia.glc.db.utils.IntConst;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 @Entity
 @Getter

@@ -19,7 +19,7 @@ import fr.recia.glc.db.enums.CategorieGroupe;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.Entity;
+import javax.persistence.Entity;
 import java.util.Set;
 
 @Entity
