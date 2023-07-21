@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PersonneChip from "@/components/PersonneChip.vue";
-import PersonneListItem from "@/components/PersonneListItem.vue";
+import PersonneChip from "@/components/search/PersonneChip.vue";
+import PersonneListItem from "@/components/search/PersonneListItem.vue";
 import { searchPersonne } from "@/services/personneService";
 import type { SearchPersonne } from "@/types/personneType";
 import debounce from "lodash.debounce";
@@ -46,15 +46,23 @@ const findInStructure = (searchValue: string): void => {
   searchValue = searchValue.toLocaleLowerCase();
   if (props.searchList) {
     items.value = props.searchList
-      .filter(
-        (personne) =>
-          personne.displayName.toLowerCase().indexOf(searchValue) > -1 ||
-          personne.uid.toLowerCase().indexOf(searchValue) > -1
-      )
+      .filter((personne) => {
+        let filter =
+          personne.displayName.toLowerCase().indexOf(searchValue) > -1;
+
+        if (personne.uid) {
+          filter =
+            filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;
+        }
+
+        return filter;
+      })
       .map((personne) => {
         return {
           ...personne,
-          searchValue: `${personne.displayName} (${personne.uid})`,
+          searchValue: personne.uid
+            ? `${personne.displayName} (${personne.uid})`
+            : personne.displayName,
         };
       });
   }

@@ -16,8 +16,8 @@ export type Personne = {
   patronyme?: string;
   sn: string;
   titre: string;
-  uid: string;
-  uuid: string;
+  uid?: string;
+  uuid?: string;
   emailPersonnel: string;
   listeRouge: boolean;
   forceEtat: string;
@@ -34,7 +34,7 @@ export type SimplePersonne = {
   source: string;
   givenName: string;
   patronyme: string;
-  uid: string;
+  uid?: string;
 };
 
 export type SearchPersonne = SimplePersonne & { displayName: string };

@@ -48,10 +48,13 @@ const filter = () => {
 
   if (searchValue != undefined && searchValue !== "") {
     result = result.filter((personne) => {
-      return (
-        personne.displayName.toLowerCase().indexOf(searchValue) > -1 ||
-        personne.uid.toLowerCase().indexOf(searchValue) > -1
-      );
+      let filter = personne.displayName.toLowerCase().indexOf(searchValue) > -1;
+
+      if (personne.uid) {
+        filter = filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;
+      }
+
+      return filter;
     });
   }
 
