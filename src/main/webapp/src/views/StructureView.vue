@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AdditionalModal from "@/components/modal/AdditionalModal.vue";
-import PersonneModal from "@/components/modal/PersonneModal.vue";
+import AdditionalModal from "@/components/modals/AdditionalModal.vue";
+import PersonneModal from "@/components/modals/PersonneModal.vue";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { useStructureStore } from "@/stores/structureStore";
 import { Tabs } from "@/types/enums/Tabs";

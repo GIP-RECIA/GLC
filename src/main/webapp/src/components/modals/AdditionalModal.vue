@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CheckboxLayout from "@/components/layout/CheckboxLayout.vue";
-import BaseModal from "@/components/modal/BaseModal.vue";
+import CheckboxLayout from "@/components/layouts/CheckboxLayout.vue";
+import BaseModal from "@/components/modals/BaseModal.vue";
 import PersonneSearch from "@/components/search/PersonneSearch.vue";
 import { getPersonne, setPersonneAdditional } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";

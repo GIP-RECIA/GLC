@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import ReadonlyData from "@/components/ReadonlyData.vue";
-import CheckboxLayout from "@/components/layout/CheckboxLayout.vue";
-import FonctionsLayout from "@/components/layout/FonctionsLayout.vue";
-import BaseModal from "@/components/modal/BaseModal.vue";
+import CheckboxLayout from "@/components/layouts/CheckboxLayout.vue";
+import FonctionsLayout from "@/components/layouts/FonctionsLayout.vue";
+import BaseModal from "@/components/modals/BaseModal.vue";
 import { setPersonneAdditional } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
@@ -78,11 +78,13 @@ const cancel = () => {
     <div v-if="currentPersonne && !isAddMode">
       <div class="d-flex flex-row flex-wrap">
         <readonly-data
+          v-if="currentPersonne.uid"
           label="uid"
           :value="currentPersonne.uid"
           class="modal-flex-item"
         />
         <readonly-data
+          v-if="currentPersonne.uuid"
           label="uuid"
           :value="currentPersonne.uuid"
           class="modal-flex-item"

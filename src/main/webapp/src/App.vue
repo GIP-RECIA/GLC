@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFonctionStore } from "./stores/fonctionStore";
-import LoginModal from "@/components/modal/LoginModal.vue";
+import LoginModal from "@/components/modals/LoginModal.vue";
 import CustomTabBar from "@/components/tab/CustomTabBar.vue";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { storeToRefs } from "pinia";

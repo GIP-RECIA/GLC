@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FilieresLayout from "@/components/layout/FilieresLayout.vue";
+import FilieresLayout from "@/components/layouts/FilieresLayout.vue";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
 import { storeToRefs } from "pinia";
