@@ -18,6 +18,7 @@ package fr.recia.glc;
 import fr.recia.glc.security.cas.AjaxAuthenticationFailureHandler;
 import fr.recia.glc.security.cas.AjaxAuthenticationSuccessHandler;
 import fr.recia.glc.security.cas.AjaxLogoutSuccessHandler;
+import fr.recia.glc.security.cas.AuthoritiesConstants;
 import fr.recia.glc.security.cas.CustomSessionFixationProtectionStrategy;
 import fr.recia.glc.security.cas.CustomSingleSignOutFilter;
 import fr.recia.glc.security.cas.RememberCasAuthenticationEntryPoint;
@@ -241,11 +242,9 @@ public class SecurityConfiguration {
     http
       .authorizeHttpRequests(authz -> authz
         .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-        .antMatchers(
-          "/health-check",
-          "/api/**"
-        ).permitAll()
         .antMatchers("/app/**/*.{js,html}").permitAll()
+        .antMatchers("/health-check", "/api/config").permitAll()
+        .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.USER)
         .antMatchers(
           "/app/**",
           PROTECTED_PATH + "**"
