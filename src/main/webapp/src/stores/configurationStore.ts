@@ -1,6 +1,7 @@
 import { getConfiguration } from "@/services/configurationService";
 import type { Configuration } from "@/types/configurationType";
 import { Tabs } from "@/types/enums/Tabs";
+import type { Identity } from "@/types/identityType";
 import isEmpty from "lodash.isempty";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
@@ -64,8 +65,13 @@ export const useConfigurationStore = defineStore("configuration", () => {
 
   /* -- Gestion de l'authentification -- */
 
-  const identity = ref<Object | undefined>();
+  const identity = ref<Identity | undefined>();
   const isAuthenticated = computed<boolean>(() => !isEmpty(identity.value));
+  const isAdmin = computed<boolean>(() => {
+    const hasRoleAdmin = identity.value?.roles.includes("ROLE_ADMIN");
+
+    return hasRoleAdmin != undefined && hasRoleAdmin;
+  });
 
   return {
     init,
@@ -82,5 +88,6 @@ export const useConfigurationStore = defineStore("configuration", () => {
     isAdditional,
     identity,
     isAuthenticated,
+    isAdmin,
   };
 });

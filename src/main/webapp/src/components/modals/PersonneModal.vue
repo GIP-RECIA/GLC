@@ -17,7 +17,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const configurationStore = useConfigurationStore();
-const { currentTab } = storeToRefs(configurationStore);
+const { currentTab, isAdmin } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { customMapping, isCustomMapping } = storeToRefs(fonctionStore);
@@ -78,13 +78,13 @@ const cancel = () => {
     <div v-if="currentPersonne && !isAddMode">
       <div class="d-flex flex-row flex-wrap">
         <readonly-data
-          v-if="currentPersonne.uid"
+          v-if="isAdmin"
           label="uid"
           :value="currentPersonne.uid"
           class="modal-flex-item"
         />
         <readonly-data
-          v-if="currentPersonne.uuid"
+          v-if="isAdmin"
           label="uuid"
           :value="currentPersonne.uuid"
           class="modal-flex-item"
