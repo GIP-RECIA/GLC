@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { signIn } from "@/services/authenticationService";
+import AuthenticationService from "@/cas-publisher/AuthenticationService.js";
+import { useCasPublisherStore } from "@/cas-publisher/CasPublisherStore.js";
+import PrincipalService from "@/cas-publisher/PrincipalService.js";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { storeToRefs } from "pinia";
-import { computed } from "vue";
+import { onMounted, computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
 const configurationStore = useConfigurationStore();
 const { casUrlLogin, isAuthenticated } = storeToRefs(configurationStore);
@@ -12,18 +15,107 @@ const { t } = useI18n();
 
 const modelValue = computed<boolean>(() => !isAuthenticated.value);
 
+const store = useCasPublisherStore();
+const { loginModalOpened, returnRoute, nextRoute } = storeToRefs(store);
+
+const { VITE_API_URL } = import.meta.env;
+
+// Objet en charge de la redirection vers le serveur CAS
+let relogState = {};
+
+// Méthode en charge du processus de connexion
+// Une fois connecté, l'utilisateur est redirigé
 const login = async () => {
+  const auth = new AuthenticationService(store);
+  auth
+    .login()
+    .then(() => {
+      // this.authenticationError = false;
+      console.log("BACK TO HOME OR OTHER ROUTE");
+    })
+    .catch(() => {
+      console.error("error");
+      // this.authenticationError = true;
+      relog();
+    });
+};
+
+// Méthode effectuant une redirection sur le serveur CAS,
+// un listener est mis en place afin de détecter la réponse
+// du serveur CAS
+const relog = (closeLoginModal = true) => {
+  windowOpenCleanup(relogState, closeLoginModal);
+  relogState.listener = onmessage;
+  window.addEventListener("message", onmessage);
+
+  relogState.window = window.open(`${VITE_API_URL}app/login?postMessage`);
+
+  // console.log(casUrlLogin.value);
+  // if (casUrlLogin.value != undefined) window.open(casUrlLogin.value);
+};
+
+// Méthode de nettoyage de la page de login
+const windowOpenCleanup = (state, closeLoginModal) => {
   try {
-    const response = await signIn();
-    console.log(response);
+    if (state.listener) {
+      window.removeEventListener("message", state.listener);
+    }
+    if (state.window) {
+      state.window.close();
+    }
+    if (closeLoginModal && loginModalOpened.value) {
+      loginModalOpened.value = false;
+    }
   } catch (e) {
-    relog();
+    // eslint-disable-next-line
+    console.error(e);
   }
 };
 
-const relog = () => {
-  if (casUrlLogin.value != undefined) window.open(casUrlLogin.value);
+// Méthode utilisé lors de la réception de la réponse
+// du serveur CAS puis redirige l'utilisateur
+const onmessage = (e) => {
+  if (typeof e.data !== "string") {
+    return;
+  }
+  const m = e.data.match(/^loggedUser=(.*)$/);
+  if (!m) {
+    return;
+  }
+
+  windowOpenCleanup(relogState, true);
+  const principal = new PrincipalService(store);
+  principal.identify(true).then(() => {
+    console.log("BACK TO HOME OR OTHER ROUTE");
+  });
 };
+
+const router = useRouter();
+
+router.beforeEach((to, from, next) => {
+  const auth = new AuthenticationService(store);
+  auth
+    .login()
+    .then(() => {
+      next();
+    })
+    .catch(() => {
+      loginModalOpened.value = true;
+      returnRoute.value = nextRoute.value;
+      console.log("ROUTER LOGIN");
+    });
+});
+
+onMounted(() => {
+  if (loginModalOpened) {
+    const auth = new AuthenticationService(store);
+    auth.logout().finally(() => {
+      console.log("LOGOUT: true");
+    });
+  } else {
+    console.log("LOGOUT: true");
+  }
+});
 </script>
 
 <template>
