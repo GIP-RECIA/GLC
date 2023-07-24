@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc;
+package fr.recia.glc.configuration;
 
 import fr.recia.glc.security.cas.AjaxAuthenticationFailureHandler;
 import fr.recia.glc.security.cas.AjaxAuthenticationSuccessHandler;
@@ -48,9 +48,6 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -69,6 +66,9 @@ public class SecurityConfiguration {
 
   private static final String APP_URI_LOGIN = "/app/login";
 
+  @Value("${security-configuration.cors.allowed-origins}")
+  private List<String> corsAllowedOrigins;
+
   @Value("${security-configuration.cas.service}")
   private String casService;
   @Value("${security-configuration.cas.id-key-provider}")
@@ -79,19 +79,6 @@ public class SecurityConfiguration {
   private String casUrlLogout;
   @Value("${security-configuration.cas.url.prefix}")
   private String casUrlPrefix;
-
-  @Value("${security-configuration.cors.enable}")
-  private boolean corsEnable;
-  @Value("${security-configuration.cors.allow-credentials}")
-  private Boolean corsAllowCredentials;
-  @Value("${security-configuration.cors.allowed-origins}")
-  private List<String> corsAllowedOrigins;
-  @Value("${security-configuration.cors.exposed-headers}")
-  private List<String> corsExposedHeaders;
-  @Value("${security-configuration.cors.allowed-headers}")
-  private List<String> corsAllowedHeaders;
-  @Value("${security-configuration.cors.allowed-methods}")
-  private List<String> corsAllowedMethods;
 
   @Inject
   private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler;
@@ -206,26 +193,6 @@ public class SecurityConfiguration {
   }
 
   // Spring
-
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-    if (log.isWarnEnabled()) log.warn("CORS: {}", corsEnable);
-    if (corsEnable) {
-      CorsConfiguration configuration = new CorsConfiguration();
-
-      configuration.setAllowCredentials(corsAllowCredentials);
-      configuration.setAllowedOrigins(corsAllowedOrigins);
-      configuration.setExposedHeaders(corsExposedHeaders);
-      configuration.setAllowedHeaders(corsAllowedHeaders);
-      configuration.setAllowedMethods(corsAllowedMethods);
-
-      source.registerCorsConfiguration("/**", configuration);
-    }
-
-    return source;
-  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
