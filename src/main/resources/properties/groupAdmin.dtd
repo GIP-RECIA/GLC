@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!ELEMENT groupAdminList (groupList*, rules* , groupAdmin+)>
+  <!ELEMENT groupList (description?, (group* , paramAllGroups*)) >
+  <!ELEMENT rules ( (description?, scope?, groupUser+)?)>
+  <!ELEMENT description (#PCDATA)>
+  <!ELEMENT scope EMPTY>
+  <!ELEMENT groupUser (description?, param*, ((groupList+ | group+), paramAllGroups* )*) >
+  <!ELEMENT param EMPTY>
+  <!ELEMENT group (param*)>
+  <!ELEMENT paramAllGroups EMPTY>
+  <!ELEMENT groupAdmin (description?, param*, rules) >
+  <!ATTLIST groupList  nom CDATA #IMPLIED>
+  <!ATTLIST rules  nom CDATA #IMPLIED>
+  <!ATTLIST scope pattern CDATA #REQUIRED>
+  <!ATTLIST groupUser
+    pattern CDATA #REQUIRED
+    action CDATA #IMPLIED >
+  <!ATTLIST groupAdmin pattern CDATA #REQUIRED >
+  <!ATTLIST param nom CDATA #REQUIRED
+    valeur CDATA #REQUIRED >
+  <!ATTLIST group pattern CDATA #REQUIRED>
+  <!ATTLIST paramAllGroups nom CDATA #REQUIRED
+    valeur CDATA #REQUIRED >

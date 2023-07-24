@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2023 GIP-RECIA, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE groupAdminList SYSTEM "groupeAdmin.dtd">
+<groupAdminList>
+
+  <groupList nom="adminCentralGroupList">
+    <group pattern="%branche%:.+:Maitres_apprentissage">
+      <param nom="SuperGlobalWriter" valeur="%0%"/>
+    </group>
+    <group pattern="%branche%:.+:Responsables_entreprise">
+      <param nom="SuperGlobalWriter" valeur="%0%"/>
+    </group>
+    <group pattern="%branche%:.+"/>
+  </groupList>
+
+  <rules nom="lycee">
+    <description>Les règles applicables aux lycées</description>
+    <scope pattern="%uai%"/>
+    <groupUser pattern="%branche%:admin:local:admin_%etab_uai%" action="2">
+      <description>
+        Les administrateurs éditent tout le monde,
+        ont les onglets export, localUser et adminUser
+      </description>
+
+      <param nom="Export" valeur="%uai%"/>
+      <param nom="LocalWriter" valeur="%uai%"/>
+      <param nom="GlobalWriter" valeur="%uai%"/>
+      <param nom="AdminWriter" valeur="%uai%"/>
+
+      <group pattern="%pathEtab%:Eleves"/>
+      <group pattern="%pathEtab%:Parents"/>
+      <group pattern="%pathEtab%:Groupes_Parents:[^:]+"/>
+      <group pattern="%pathEtab%:Agents_Coll_Ter"/>
+      <group pattern="%pathEtab%:Coll_Ter:[^:]+"/>
+
+      <group pattern="%pathEtab%:Profs"/>
+      <group pattern="%pathEtab%:Tous_%etab%"/>
+      <group pattern="%pathEtab%:[^:]+:Eleves_([^:])+"/>
+      <group pattern="%pathEtab%:[^:]+:Profs_([^:])+"/>
+      <group pattern="%pathEtab%:[^:]+:Tous_([^:])+"/>
+      <group pattern="%pathEtab%:[^:]+:Parents_([^:])+"/>
+      <group pattern="%pathEtab%:Administratifs:[^:]+"/>
+      <group pattern="%pathEtab%:Maitres_apprentissage">
+        <param nom="SuperGlobalWriter" valeur="%0%"/>
+      </group>
+      <group pattern="%pathEtab%:Responsables_entreprise">
+        <param nom="SuperGlobalWriter" valeur="%0%"/>
+      </group>
+      <group pattern="%pathEtab%:Groupes_Maitres_apprentissage:[^:]+"/>
+
+      <paramAllGroups valeur="(isMemberOf=%0%)" nom="memberLdapFilter"/>
+    </groupUser>
+
+    <groupUser pattern="%pathEtab%:groupes_locaux:sarapis" action="2">
+      <description>
+        Les membres de %pathEtab%:groupes_locaux:sarapis éditent tout le monde
+      </description>
+
+      <param nom="GlobalWriter" valeur="%uai%"/>
+
+      <group pattern="%pathEtab%:Eleves"/>
+      <group pattern="%pathEtab%:Parents"/>
+      <group pattern="%pathEtab%:Groupes_Parents:[^:]+"/>
+      <group pattern="%pathEtab%:Profs"/>
+      <group pattern="%pathEtab%:Tous_%etab%"/>
+      <group pattern="%pathEtab%:[^:]+:Eleves_([^:])+"/>
+      <group pattern="%pathEtab%:[^:]+:Profs_([^:])+"/>
+      <group pattern="%pathEtab%:[^:]+:Tous_([^:])+"/>
+      <group pattern="%pathEtab%:[^:]+:Parents_([^:])+"/>
+      <group pattern="%pathEtab%:Administratifs:[^:]+"/>
+      <group pattern="%pathEtab%:Maitres_apprentissage"/>
+      <group pattern="%pathEtab%:Groupes_Maitres_apprentissage:[^:]+"/>
+    </groupUser>
+
+    <groupUser pattern="(%branche%:Etablissements:%etab_uai%:[^:]+):Profs_([^:]+)">
+      <description>
+        Les profs éditent leurs classes
+      </description>
+
+      <param nom="GlobalWriter" valeur="%uai%"/>
+      <param nom="pathNiveauProf" valeur="%1%"/>
+      <param nom="profClasse" valeur="%2%"/>
+
+      <group pattern="%pathNiveauProf%:Eleves_%profClasse%"/>
+    </groupUser>
+
+    <groupUser pattern="%pathEtab%:Administratifs:.*">
+      <description>
+        Les personnels administratifs éditent les profs,
+        administratifs, parents et élèves
+      </description>
+
+      <param nom="GlobalWriter" valeur="%uai%"/>
+
+      <group pattern="%pathEtab%:Parents(:.*)?"/>
+      <group pattern="%pathEtab%:Groupes_Parents:[^:]+"/>
+      <group pattern="%pathEtab%:Profs(:.*)?"/>
+      <group pattern="%pathEtab%:Administratifs:.*"/>
+      <group pattern="%pathEtab%:[^:]+:Eleves_([^:])+"/>
+      <group pattern="%pathEtab%:Eleves"/>
+      <group pattern="%pathEtab%:Maitres_apprentissage"/>
+      <group pattern="%pathEtab%:Groupes_Maitres_apprentissage:[^:]+"/>
+    </groupUser>
+  </rules>
+
+  <rules nom="collectivite">
+    <description>
+      Les règles applicables aux collectivités
+      attention sur la branche Application peut être à ne mettre qu'en lecture !
+    </description>
+
+    <scope pattern="%etab%"/>
+
+    <groupUser pattern="coll:admin:local:admin_%etab%">
+      <param nom="GlobalWriter" valeur="%etab%"/>
+      <param nom="LocalWriter" valeur="%etab%"/>
+      <param nom="AdminWriter" valeur="%etab%"/>
+      <group pattern="%pathEtab%:.*"/>
+      <group pattern="coll:Applications:[^:]+:%etab%"/>
+    </groupUser>
+    <groupUser pattern="coll:admin:sarapis:local:sarapis_%etab%">
+      <param nom="GlobalWriter" valeur="%etab%"/>
+      <param nom="LocalWriter" valeur="%etab%"/>
+      <param nom="AdminWriter" valeur="%etab%"/>
+      <group pattern="%pathEtab%:.*"/>
+      <group pattern="coll:Applications:[^:]+:%etab%"/>
+    </groupUser>
+  </rules>
+
+  <groupAdmin pattern="cfa:admin:sarapis:local:sarapis_((BTP CFA[^_]+)_(\d{5,7}\w?))">
+    <description>
+      Les profs et administratifs des BTP CFA ... sont tous rattachés au BTP CFA Centre
+      alors que les comptes sont administrés par les sous-entités (BTP CFA 45 par exemple).
+      Cette règle permet à l'admin du BTP CFA 45 de gérer les profs de son group Profs même
+      s'ils ont une structure de rattachement dans un autre établissement.
+      C'est plutôt dangereux comme règle à ne pas généraliser.
+    </description>
+
+    <param nom="etab_uai" valeur="%1%"/>
+    <param nom="uai" valeur="%3%"/>
+
+    <rules>
+      <scope pattern="%uai%"/>
+      <groupUser pattern="cfa:admin:local:admin_%etab_uai%">
+        <param nom="pathEtab" valeur="cfa:Etablissements:%etab_uai%"/>
+        <group pattern="%pathEtab%:Profs">
+          <param nom="SuperGlobalWriter" valeur="%0%"/>
+        </group>
+        <group pattern="%pathEtab%:Administratifs:Tous_Administratifs">
+          <param nom="SuperGlobalWriter" valeur="%0%"/>
+        </group>
+      </groupUser>
+    </rules>
+  </groupAdmin>
+
+  <!-- groupAdmin concernant les établissements avec uai -->
+  <!-- Annuaire élèves règles pour autoriser les profs à lire les info de leurs classes + et les administratifs à tout lire -->
+  <groupAdmin pattern="([^:]+):Etablissements:(([^_]+)_(\d{5,7}\w?)):((Profs)|(Administratifs:Tous_Administratifs))">
+    <param nom="branche" valeur="%1%"/>
+    <param nom="etab_uai" valeur="%2%"/>
+    <param nom="etab" valeur="%3%"/>
+    <param nom="uai" valeur="%4%"/>
+    <param nom="pathEtab" valeur="%1%:Etablissements:%2%"/>
+    <param nom="filtreLdap" valeur="(ESCOUAI=%4%)"/>
+
+    <rules>
+      <scope pattern="%uai%"/>
+
+      <groupUser pattern="(%branche%:Etablissements:%etab_uai%:[^:]+):Profs_([^:]+)">
+        <description>
+          Les profs lisent leurs classes
+        </description>
+
+        <param nom="GlobalReader" valeur="%uai%"/>
+        <param nom="pathNiveauProf" valeur="%1%"/>
+        <param nom="profClasse" valeur="%2%"/>
+
+        <group pattern="%pathNiveauProf%:Eleves_%profClasse%"/>
+      </groupUser>
+      <groupUser pattern="(%branche%:Etablissements:%etab_uai%):Enseignements:DOCUMENTATION">
+        <description>
+          Les documentalists voient toutes les classes
+        </description>
+
+        <param nom="GlobalReader" valeur="%uai%"/>
+        <param nom="pathNiveauEtab" valeur="%1%"/>
+
+        <group pattern="%pathNiveauEtab%:[^:]+:Eleves_[^:]+"/>
+      </groupUser>
+      <groupUser pattern="(%branche%:Etablissements:%etab_uai%):Administratifs:Tous_Administratifs">
+        <description>
+          Les administratifs voient toutes les classes
+        </description>
+
+        <param nom="GlobalReader" valeur="%uai%"/>
+        <param nom="pathNiveauEtab" valeur="%1%"/>
+
+        <group pattern="%pathNiveauEtab%:[^:]+:Eleves_[^:]+"/>
+      </groupUser>
+    </rules>
+
+  </groupAdmin>
+
+  <!--  Pour les non-administrateurs locaux declare dans ..:admin:sarapis:local:sarapis... -->
+  <groupAdmin pattern="([^:]+):admin:sarapis:local:sarapis_(([^_]+)_(\d{5,7}\w?))">
+    <param nom="branche" valeur="%1%"/>
+    <param nom="etab_uai" valeur="%2%"/>
+    <param nom="etab" valeur="%3%"/>
+    <param nom="uai" valeur="%4%"/>
+    <param nom="pathEtab" valeur="%1%:Etablissements:%2%"/>
+    <param nom="filtreLdap" valeur="(ESCOUAI=%4%)"/>
+
+    <rules nom="lycee"/>
+  </groupAdmin>
+
+  <!--  Pour les administrateurs locaux non declarer dans ..:admin:sarapis:local:sarapis... -->
+  <groupAdmin pattern="([^:]+):admin:local:admin_(([^_]+)_(\d{5,7}\w?))">
+    <param nom="branche" valeur="%1%"/>
+    <param nom="etab_uai" valeur="%2%"/>
+    <param nom="etab" valeur="%3%"/>
+    <param nom="uai" valeur="%4%"/>
+    <param nom="pathEtab" valeur="%1%:Etablissements:%2%"/>
+    <param nom="filtreLdap" valeur="(ESCOUAI=%4%)"/>
+
+    <rules nom="lycee"/>
+  </groupAdmin>
+
+  <!--  Pour ceux qui ne font que des exports -->
+  <groupAdmin pattern="([^:]+):admin:sarapis:exports:(([^_:]+)_([^:]+))">
+    <param nom="branche" valeur="%1%"/>
+    <param nom="etab_uai" valeur="%2%"/>
+    <param nom="etab" valeur="%3%"/>
+    <param nom="uai" valeur="%4%"/>
+
+    <rules>
+      <scope pattern="%uai%"/>
+      <groupUser pattern="%branche%:admin:sarapis:exports:%etab_uai%">
+        <param nom="Export" valeur="%uai%"/>
+        <group pattern="BidonSinonCaNeMarchePasIlFautAuMoinsUnGroupe"/>
+      </groupUser>
+    </rules>
+  </groupAdmin>
+
+  <!-- groupAdmin concernant les ef2s -->
+  <groupAdmin pattern="ef2s:admin:(sarapis:local:sarapis|local:admin)_(([^_]+)_(\d{5,7}\w?))">
+    <param nom="branche" valeur="ef2s"/>
+    <param nom="etab_uai" valeur="%2%"/>
+    <param nom="etab" valeur="%3%"/>
+    <param nom="uai" valeur="%4%"/>
+    <param nom="pathEtab" valeur="ef2s:Etablissements:%2%"/>
+    <param nom="filtreLdap" valeur="(ESCOUAI=%4%)"/>
+
+    <rules>
+      <scope pattern="%uai%"/>
+
+      <groupUser pattern="ef2s:admin:(sarapis:local:sarapis|local:admin)_(([^_]+)_(\d{5,7}\w?))" action="2">
+        <param nom="GlobalWriter" valeur="%uai%"/>
+
+        <group pattern="%pathEtab%:Apprenants"/>
+        <group pattern="%pathEtab%:Formateurs"/>
+        <group pattern="%pathEtab%:Tous_%etab%"/>
+        <group pattern="%pathEtab%:[^:]+:Apprenants_([^:])+"/>
+        <group pattern="%pathEtab%:[^:]+:Formateurs_([^:])+"/>
+        <group pattern="%pathEtab%:[^:]+:Responsable de formation"/>
+      </groupUser>
+    </rules>
+  </groupAdmin>
+
+  <!-- GroupAdmin pour les collectivités qui n'ont pas d'uai -->
+  <groupAdmin pattern="coll:Collectivites:GIP-RECIA:groupes_locaux:Telegestion">
+    <description>
+      Règles qui permet à la télégestion de visualiser tous les établissements de leur périmetre sans pouvoir
+      modifier.
+      Le périmètre est restraint aux branches esco, agri , cfa, acad et ef2S.
+    </description>
+
+    <rules>
+      <scope pattern=".+"/>
+
+      <groupUser pattern="coll:Collectivites:GIP-RECIA:groupes_locaux:Telegestion">
+        <param nom="LocalReader" valeur="(coll|acad|esco|agri|cfa|ef2s|clg18):.+"/>
+        <param nom="GlobalReader" valeur="(coll|acad|esco|agri|cfa|ef2s|clg18):.+"/>
+        <param nom="AdminReader" valeur="(coll|acad|esco|agri|cfa|ef2s|clg18):.+"/>
+        <group pattern="(coll|acad|esco|agri|cfa|ef2s|clg18):.+"/>
+      </groupUser>
+    </rules>
+  </groupAdmin>
+
+  <groupAdmin pattern="coll.Collectivites.DRAAF Centre.Tous_DRAAF Centre">
+    <description>
+      Règles qui permet à la DRAAF du centre de visualiser tous les établissements de la branche agri sans pouvoir
+      modifier.
+    </description>
+    <rules>
+      <scope pattern=".+"/>
+      <groupUser pattern="coll.Collectivites.DRAAF Centre.Tous_DRAAF Centre">
+        <param nom="LocalReader" valeur="(agri):.+"/>
+        <param nom="GlobalReader" valeur="(agri):.+"/>
+        <param nom="AdminReader" valeur="(agri):.+"/>
+        <group pattern="(agri):.+"/>
+      </groupUser>
+    </rules>
+  </groupAdmin>
+
+  <!-- Deux groupAdmin pour l'administration locale des collectivités -->
+  <groupAdmin pattern="coll:admin:sarapis:local:sarapis_([^:]+)">
+    <description>
+      droit pour les collectivité via ...admin/sarapis:loacl:sarapis...
+    </description>
+
+    <param nom="branche" valeur="coll"/>
+    <param nom="etab" valeur="%1%"/>
+    <param nom="pathEtab" valeur="coll:Collectivites:%1%"/>
+    <rules nom="collectivite"/>
+  </groupAdmin>
+
+  <groupAdmin pattern="coll:admin:local:admin_([^:]+)">
+    <description>
+      droit pour les collectivité via ...admin:local:admin..
+    </description>
+
+    <param nom="branche" valeur="coll"/>
+    <param nom="etab" valeur="%1%"/>
+    <param nom="pathEtab" valeur="coll:Collectivites:%1%"/>
+    <rules nom="collectivite"/>
+  </groupAdmin>
+
+  <!-- Règle pour les administrateurs centraux -->
+  <groupAdmin pattern="([^:]+):admin:sarapis:central">
+    <param nom="branche" valeur="%1%"/>
+
+    <rules>
+      <scope pattern=".+"/>
+      <groupUser pattern="%branche%:admin:sarapis:central">
+        <param nom="Export" valeur="%branche%:.+"/>
+        <param nom="LocalWriter" valeur="%branche%:.+"/>
+        <param nom="GlobalWriter" valeur="%branche%:.+"/>
+        <param nom="AdminWriter" valeur="%branche%:.+"/>
+
+        <groupList nom="adminCentralGroupList"/>
+      </groupUser>
+    </rules>
+  </groupAdmin>
+
+  <groupAdmin pattern="([^:]+):admin:central">
+    <param nom="branche" valeur="%1%"/>
+    <rules>
+      <scope pattern=".*"/>
+
+      <groupUser pattern="%branche%:admin:central">
+        <param nom="Export" valeur="%branche%:.+"/>
+        <param nom="LocalWriter" valeur="%branche%:.+"/>
+        <param nom="GlobalWriter" valeur="%branche%:.+"/>
+        <param nom="AdminWriter" valeur="%branche%:.+"/>
+
+        <groupList nom="adminCentralGroupList"/>
+      </groupUser>
+    </rules>
+  </groupAdmin>
+
+</groupAdminList>
