@@ -16,6 +16,8 @@
 package fr.recia.glc.security.cas;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fr.recia.glc.security.admingroup.Droit2GroupNameMap;
+import fr.recia.glc.security.admingroup.Droit2StructureMap;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +38,9 @@ public class CustomUserDetails implements UserDetails {
   private List<String> roles;
   @Setter
   private String sessionId;
+
+  private final Droit2StructureMap droit2StructureMap = new Droit2StructureMap();
+  private final Droit2GroupNameMap droit2GroupNameMap = new Droit2GroupNameMap();
 
   public CustomUserDetails() {
     super();
@@ -83,6 +88,11 @@ public class CustomUserDetails implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+
+  public boolean isAuthorizedStructure() {
+    return false;
   }
 
   @Override
