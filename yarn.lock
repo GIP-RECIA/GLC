@@ -618,6 +618,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@one-ini/wasm@npm:0.1.1":
+  version: 0.1.1
+  resolution: "@one-ini/wasm@npm:0.1.1"
+  checksum: 11de17108eae57c797e552e36b259398aede999b4a689d78be6459652edc37f3428472410590a9d328011a8751b771063a5648dd5c4205631c55d1d58e313156
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -1188,22 +1195,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/test-utils@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "@vue/test-utils@npm:2.4.0"
+"@vue/test-utils@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "@vue/test-utils@npm:2.4.1"
   dependencies:
-    js-beautify: 1.14.6
-    vue-component-type-helpers: 1.6.5
+    js-beautify: 1.14.9
+    vue-component-type-helpers: 1.8.4
   peerDependencies:
-    "@vue/compiler-dom": ^3.0.1
     "@vue/server-renderer": ^3.0.1
     vue: ^3.0.1
   peerDependenciesMeta:
-    "@vue/compiler-dom":
-      optional: true
     "@vue/server-renderer":
       optional: true
-  checksum: 28b9628cf82b031ad2f948560e508852177eeaf22677dc346792454a32138158e9e219be85e3a01ca4a1c6063d86dfe04a53045ccc0202e0724c328661eeff24
+  checksum: 901b6a51708e5e5ea5f938ba4919c8b2420acb54ab1a692ff10d1b738bb2b8fb8e56f9f9d7a693ba7a62270b63fff17cd469ca41d1fdfe21f1cb9dac9d545f5b
   languageName: node
   linkType: hard
 
@@ -1825,13 +1829,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^2.19.0":
-  version: 2.20.3
-  resolution: "commander@npm:2.20.3"
-  checksum: ab8c07884e42c3a8dbc5dd9592c606176c7eb5c1ca5ff274bcf907039b2c41de3626f684ea75ccf4d361ba004bbaff1f577d5384c155f3871e456bdf27becf9e
-  languageName: node
-  linkType: hard
-
 "commondir@npm:^1.0.1":
   version: 1.0.1
   resolution: "commondir@npm:1.0.1"
@@ -2069,17 +2066,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"editorconfig@npm:^0.15.3":
-  version: 0.15.3
-  resolution: "editorconfig@npm:0.15.3"
+"editorconfig@npm:^1.0.3":
+  version: 1.0.4
+  resolution: "editorconfig@npm:1.0.4"
   dependencies:
-    commander: ^2.19.0
-    lru-cache: ^4.1.5
-    semver: ^5.6.0
-    sigmund: ^1.0.1
+    "@one-ini/wasm": 0.1.1
+    commander: ^10.0.0
+    minimatch: 9.0.1
+    semver: ^7.5.3
   bin:
     editorconfig: bin/editorconfig
-  checksum: a94afeda19f12a4bcc4a573f0858df13dd3a2d1a3268cc0f17a6326ebe7ddd6cb0c026f8e4e73c17d34f3892bf6f8b561512d9841e70063f61da71b4c57dc5f0
+  checksum: 09904f19381b3ddf132cea0762971aba887236f387be3540909e96b8eb9337e1793834e10f06890cd8e8e7bb1ba80cb13e7d50a863f227806c9ca74def4165fb
   languageName: node
   linkType: hard
 
@@ -2894,7 +2891,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^8.0.3":
+"glob@npm:^8.1.0":
   version: 8.1.0
   resolution: "glob@npm:8.1.0"
   dependencies:
@@ -3508,19 +3505,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-beautify@npm:1.14.6":
-  version: 1.14.6
-  resolution: "js-beautify@npm:1.14.6"
+"js-beautify@npm:1.14.9":
+  version: 1.14.9
+  resolution: "js-beautify@npm:1.14.9"
   dependencies:
     config-chain: ^1.1.13
-    editorconfig: ^0.15.3
-    glob: ^8.0.3
+    editorconfig: ^1.0.3
+    glob: ^8.1.0
     nopt: ^6.0.0
   bin:
     css-beautify: js/bin/css-beautify.js
     html-beautify: js/bin/html-beautify.js
     js-beautify: js/bin/js-beautify.js
-  checksum: 2e61c1183c73d7464ec7d5354763ee9e17ecb4b5c7a3744e9a9dc2e9c406fc6e0c37399130d1ee48313ff502e03e8a949dce96acdaee309dc44317249565934d
+  checksum: aea5af03d0e8d5bcdfc9f98d6c6ebdc17076c762123ae79557d271a921438e2c0c422bc56a955119d770bb0f01cb411003534d8ae8dc138eb7af4821f21f8352
   languageName: node
   linkType: hard
 
@@ -3794,16 +3791,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^4.1.5":
-  version: 4.1.5
-  resolution: "lru-cache@npm:4.1.5"
-  dependencies:
-    pseudomap: ^1.0.2
-    yallist: ^2.1.2
-  checksum: 4bb4b58a36cd7dc4dcec74cbe6a8f766a38b7426f1ff59d4cf7d82a2aa9b9565cd1cb98f6ff60ce5cd174524868d7bc9b7b1c294371851356066ca9ac4cf135a
-  languageName: node
-  linkType: hard
-
 "lru-cache@npm:^6.0.0":
   version: 6.0.0
   resolution: "lru-cache@npm:6.0.0"
@@ -3926,6 +3913,15 @@ __metadata:
   version: 4.0.0
   resolution: "mimic-fn@npm:4.0.0"
   checksum: 995dcece15ee29aa16e188de6633d43a3db4611bcf93620e7e62109ec41c79c0f34277165b8ce5e361205049766e371851264c21ac64ca35499acb5421c2ba56
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:9.0.1":
+  version: 9.0.1
+  resolution: "minimatch@npm:9.0.1"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: 97f5f5284bb57dc65b9415dec7f17a0f6531a33572193991c60ff18450dcfad5c2dad24ffeaf60b5261dccd63aae58cc3306e2209d57e7f88c51295a532d8ec3
   languageName: node
   linkType: hard
 
@@ -4672,13 +4668,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pseudomap@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "pseudomap@npm:1.0.2"
-  checksum: 856c0aae0ff2ad60881168334448e898ad7a0e45fe7386d114b150084254c01e200c957cf378378025df4e052c7890c5bd933939b0e0d2ecfcc1dc2f0b2991f5
-  languageName: node
-  linkType: hard
-
 "psl@npm:^1.1.33":
   version: 1.9.0
   resolution: "psl@npm:1.9.0"
@@ -4950,7 +4939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:2 || 3 || 4 || 5, semver@npm:^5.5.0, semver@npm:^5.6.0":
+"semver@npm:2 || 3 || 4 || 5, semver@npm:^5.5.0":
   version: 5.7.2
   resolution: "semver@npm:5.7.2"
   bin:
@@ -4968,7 +4957,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.5, semver@npm:^7.3.6, semver@npm:^7.3.7, semver@npm:^7.3.8":
+"semver@npm:^7.3.5, semver@npm:^7.3.6, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.3":
   version: 7.5.4
   resolution: "semver@npm:7.5.4"
   dependencies:
@@ -5040,13 +5029,6 @@ __metadata:
   version: 2.0.0
   resolution: "siginfo@npm:2.0.0"
   checksum: 8aa5a98640ca09fe00d74416eca97551b3e42991614a3d1b824b115fc1401543650914f651ab1311518177e4d297e80b953f4cd4cd7ea1eabe824e8f2091de01
-  languageName: node
-  linkType: hard
-
-"sigmund@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "sigmund@npm:1.0.1"
-  checksum: 793f81f8083ad75ff3903ffd93cf35be8d797e872822cf880aea27ce6db522b508d93ea52ae292bccf357ce34dd5c7faa544cc51c2216e70bbf5fcf09b62707c
   languageName: node
   linkType: hard
 
@@ -5203,7 +5185,7 @@ __metadata:
     "@vitejs/plugin-vue": ^4.2.3
     "@vue/eslint-config-prettier": ^7.1.0
     "@vue/eslint-config-typescript": ^11.0.3
-    "@vue/test-utils": ^2.4.0
+    "@vue/test-utils": ^2.4.1
     "@vue/tsconfig": ^0.4.0
     axios: ^1.4.0
     dotenv-checker: ^1.1.5
@@ -5880,10 +5862,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-component-type-helpers@npm:1.6.5":
-  version: 1.6.5
-  resolution: "vue-component-type-helpers@npm:1.6.5"
-  checksum: a7926ade20c31c6b8196b69124e676ec57cd2ec3cfb81eb5ea49efe115f7d679dcf43e2ff8a982b2fc5e16436098b42043301a30898e44d5ad073255bd821d46
+"vue-component-type-helpers@npm:1.8.4":
+  version: 1.8.4
+  resolution: "vue-component-type-helpers@npm:1.8.4"
+  checksum: ae6ada53945395984716ce276829557c750dc2e7dd3b143512ecd799052aa0e9df2c6247b1bc008f314bc76824c1e36d965f44d6a83601502635bf96403ea207
   languageName: node
   linkType: hard
 
@@ -6205,13 +6187,6 @@ __metadata:
   version: 2.2.0
   resolution: "xmlchars@npm:2.2.0"
   checksum: 8c70ac94070ccca03f47a81fcce3b271bd1f37a591bf5424e787ae313fcb9c212f5f6786e1fa82076a2c632c0141552babcd85698c437506dfa6ae2d58723062
-  languageName: node
-  linkType: hard
-
-"yallist@npm:^2.1.2":
-  version: 2.1.2
-  resolution: "yallist@npm:2.1.2"
-  checksum: 9ba99409209f485b6fcb970330908a6d41fa1c933f75e08250316cce19383179a6b70a7e0721b89672ebb6199cc377bf3e432f55100da6a7d6e11902b0a642cb
   languageName: node
   linkType: hard
 
