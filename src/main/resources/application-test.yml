@@ -13,6 +13,12 @@ spring:
     username: root
     password: root
 
+  ldap:
+    url:
+    base:
+    username:
+    password:
+
 security-configuration:
   cas:
     id-key-provider:
