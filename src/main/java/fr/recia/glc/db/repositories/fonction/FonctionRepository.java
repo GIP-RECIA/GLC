@@ -19,9 +19,11 @@ import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.repositories.AbstractRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface FonctionRepository<T extends Fonction> extends AbstractRepository<T, Long> {
 
   @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.disciplinePoste.id, f.filiere.id, f.source, " +

@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.groupe;
 
 import fr.recia.glc.db.entities.groupe.Classe;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ClasseRepository<T extends Classe> extends AbstractRepository<T, Long> {
 }

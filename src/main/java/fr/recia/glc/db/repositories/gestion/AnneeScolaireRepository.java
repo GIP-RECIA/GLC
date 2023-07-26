@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.gestion;
 
 import fr.recia.glc.db.entities.gestion.AnneeScolaire;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface AnneeScolaireRepository<T extends AnneeScolaire> extends AbstractRepository<T, Long> {
 }

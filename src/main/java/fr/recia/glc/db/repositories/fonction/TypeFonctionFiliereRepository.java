@@ -19,9 +19,11 @@ import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.repositories.AbstractRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TypeFonctionFiliereRepository<T extends TypeFonctionFiliere> extends AbstractRepository<T, Long> {
 
   @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +

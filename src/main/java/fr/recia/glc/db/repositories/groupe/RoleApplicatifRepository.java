@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.groupe;
 
 import fr.recia.glc.db.entities.groupe.RoleApplicatif;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface RoleApplicatifRepository<T extends RoleApplicatif> extends AbstractRepository<T, Long> {
 }

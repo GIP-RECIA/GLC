@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.repositories.fonction;
+package fr.recia.glc.configuration;
 
-import fr.recia.glc.db.entities.fonction.FonctionMEF;
-import fr.recia.glc.db.repositories.AbstractRepository;
-import org.springframework.stereotype.Repository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@Repository
-public interface FonctionMEFRepository<T extends FonctionMEF> extends AbstractRepository<T, Long> {
+@Configuration
+@EnableJpaRepositories(basePackages = "fr.recia.glc.db.repositories")
+@Slf4j
+public class JpaConfiguration {
 }

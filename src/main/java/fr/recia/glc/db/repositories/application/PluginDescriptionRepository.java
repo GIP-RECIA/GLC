@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.application;
 
 import fr.recia.glc.db.entities.application.PluginDescription;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface PluginDescriptionRepository<T extends PluginDescription> extends AbstractRepository<T, Long> {
 }

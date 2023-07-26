@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.personne;
 
 import fr.recia.glc.db.entities.personne.ResponsableEntreprise;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ResponsableEntrepriseRepository<T extends ResponsableEntreprise> extends AbstractRepository<T, Long> {
 }

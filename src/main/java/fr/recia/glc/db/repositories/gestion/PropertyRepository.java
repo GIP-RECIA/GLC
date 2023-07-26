@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.gestion;
 
 import fr.recia.glc.db.entities.gestion.Property;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface PropertyRepository<T extends Property> extends AbstractRepository<T, Long> {
 }

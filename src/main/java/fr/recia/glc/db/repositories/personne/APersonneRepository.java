@@ -20,9 +20,11 @@ import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.repositories.AbstractRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface APersonneRepository<T extends APersonne> extends AbstractRepository<T, Long> {
 
   @Query("SELECT new fr.recia.glc.db.dto.personne.PersonneDto(ap.id, ap.etat, ap.anneeScolaire, ap.categorie," +

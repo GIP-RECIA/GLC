@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.personne;
 
 import fr.recia.glc.db.entities.personne.Enseignant;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface EnseignantRepository<T extends Enseignant> extends AbstractRepository<T, Long> {
 }

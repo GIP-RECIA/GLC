@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.personne;
 
 import fr.recia.glc.db.entities.personne.Login;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface LoginRepository<T extends Login> extends AbstractRepository<T, Long> {
 }

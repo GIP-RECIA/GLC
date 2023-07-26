@@ -18,6 +18,8 @@ package fr.recia.glc.db.repositories.relation;
 import fr.recia.glc.db.entities.relation.MAStageRelation;
 import fr.recia.glc.db.entities.relation.MappingAPersonneAPersonneId;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MAStageRelationRepository<T extends MAStageRelation> extends AbstractRepository<T, MappingAPersonneAPersonneId> {
 }

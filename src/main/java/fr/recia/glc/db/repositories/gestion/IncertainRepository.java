@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.gestion;
 
 import fr.recia.glc.db.entities.gestion.Incertain;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface IncertainRepository<T extends Incertain> extends AbstractRepository<T, Long> {
 }

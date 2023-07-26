@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.gestion;
 
 import fr.recia.glc.db.entities.gestion.DroitsCategorie;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface DroitsCategorieRepository<T extends DroitsCategorie> extends AbstractRepository<T, Long> {
 }

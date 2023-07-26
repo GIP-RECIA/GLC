@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.education;
 
 import fr.recia.glc.db.entities.education.Enseignement;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface EnseignementRepository<T extends Enseignement> extends AbstractRepository<T, Long> {
 }

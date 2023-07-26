@@ -20,9 +20,11 @@ import fr.recia.glc.db.dto.structure.SimpleEtablissementDto;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.AbstractRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface EtablissementRepository<T extends Etablissement> extends AbstractRepository<T, Long> {
 
   @Query("SELECT new fr.recia.glc.db.dto.structure.SimpleEtablissementDto(e.id, e.uai, e.categorie, e.nom, e.nomCourt, " +

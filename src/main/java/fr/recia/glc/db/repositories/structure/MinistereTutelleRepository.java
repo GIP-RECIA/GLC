@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.structure;
 
 import fr.recia.glc.db.entities.structure.MinistereTutelle;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MinistereTutelleRepository<T extends MinistereTutelle> extends AbstractRepository<T, Long> {
 }

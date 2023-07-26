@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.common;
 
 import fr.recia.glc.db.entities.common.Telephone;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TelephoneRepository<T extends Telephone> extends AbstractRepository<T, Long> {
 }

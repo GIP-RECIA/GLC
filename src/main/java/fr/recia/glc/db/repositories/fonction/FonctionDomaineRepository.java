@@ -17,6 +17,8 @@ package fr.recia.glc.db.repositories.fonction;
 
 import fr.recia.glc.db.entities.fonction.FonctionDomaine;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface FonctionDomaineRepository<T extends FonctionDomaine> extends AbstractRepository<T, Long> {
 }

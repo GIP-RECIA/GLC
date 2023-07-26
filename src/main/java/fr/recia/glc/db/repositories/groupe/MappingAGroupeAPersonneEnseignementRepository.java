@@ -18,6 +18,8 @@ package fr.recia.glc.db.repositories.groupe;
 import fr.recia.glc.db.entities.groupe.MappingAGroupeAPersonneEnseignement;
 import fr.recia.glc.db.entities.groupe.MappingAGroupeAPersonneEnseignementId;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MappingAGroupeAPersonneEnseignementRepository<T extends MappingAGroupeAPersonneEnseignement> extends AbstractRepository<T, MappingAGroupeAPersonneEnseignementId> {
 }
