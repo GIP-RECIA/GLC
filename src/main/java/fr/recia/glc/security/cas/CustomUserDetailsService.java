@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -41,6 +40,9 @@ public class CustomUserDetailsService implements AuthenticationUserDetailsServic
 
   @Inject
   private APersonneRepository<APersonne> aPersonneRepository;
+
+  @Inject
+  private transient IAuthorityService grantedAuthorityService;
 
   public CustomUserDetailsService() {
     super();
@@ -64,8 +66,7 @@ public class CustomUserDetailsService implements AuthenticationUserDetailsServic
       true,
       true
     );
-    Collection<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add((GrantedAuthority) () -> AuthoritiesConstants.USER);
+    Collection<? extends GrantedAuthority> authorities = grantedAuthorityService.getUserAuthorities(user);
 
     return new CustomUserDetails(user, authorities);
   }

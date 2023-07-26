@@ -16,22 +16,22 @@
 package fr.recia.glc.security.cas;
 
 import com.google.common.collect.Lists;
-import lombok.Getter;
+import fr.recia.glc.db.dto.UserDto;
+import fr.recia.glc.ldap.beans.IAuthoritiesDefinition;
+import fr.recia.glc.ldap.dto.IEvaluation;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class AuthorityServiceImpl implements IAuthorityService {
-
-  @Inject
-  @Getter
-  private transient UserDTOFactory userDTOFactory;
 
   @Inject
   private RoleHierarchy roleHierarchy;
@@ -44,7 +44,7 @@ public class AuthorityServiceImpl implements IAuthorityService {
   }
 
   @Override
-  public Collection<? extends GrantedAuthority> getUserAuthorities(UserDTO user) {
+  public Collection<? extends GrantedAuthority> getUserAuthorities(UserDto user) {
     if (user == null || !user.isFoundOnExternalSource()) {
       return AuthorityUtils.NO_AUTHORITIES;
     }
