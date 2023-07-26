@@ -15,5 +15,5 @@
  */
 package fr.recia.glc.security.admingroup;
 
-public class Droit2StructureMap extends Droit2SetMap<> {
+public class Droit2StructureMap extends Droit2SetMap<String> {
 }

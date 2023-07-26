@@ -41,4 +41,10 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     "WHERE ap.id IN :ids")
   List<SimplePersonneDto> findByPersonneIds(List<Long> ids);
 
+  @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie," +
+    "ap.cleJointure.source, ap.givenName, ap.patronyme, ap.uid) " +
+    "FROM APersonne ap " +
+    "WHERE ap.uid = :uid")
+  SimplePersonneDto findByPersonneUid(String uid);
+
 }

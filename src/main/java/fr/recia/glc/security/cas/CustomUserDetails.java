@@ -16,6 +16,7 @@
 package fr.recia.glc.security.cas;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fr.recia.glc.db.dto.UserDto;
 import fr.recia.glc.security.admingroup.Droit2GroupNameMap;
 import fr.recia.glc.security.admingroup.Droit2StructureMap;
 import lombok.Getter;
@@ -32,13 +33,12 @@ public class CustomUserDetails implements UserDetails {
 
   private static final long serialVersionUID = -4777124807325532850L;
 
-  private String user;
+  private UserDto user;
   @JsonIgnore
   private Collection<? extends GrantedAuthority> authorities;
   private List<String> roles;
   @Setter
   private String sessionId;
-
   private final Droit2StructureMap droit2StructureMap = new Droit2StructureMap();
   private final Droit2GroupNameMap droit2GroupNameMap = new Droit2GroupNameMap();
 
@@ -50,7 +50,7 @@ public class CustomUserDetails implements UserDetails {
    * @param user
    * @param authorities
    */
-  public CustomUserDetails(String user, Collection<? extends GrantedAuthority> authorities) {
+  public CustomUserDetails(UserDto user, Collection<? extends GrantedAuthority> authorities) {
     super();
     this.user = user;
     this.authorities = authorities;
@@ -62,22 +62,22 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public String getPassword() {
-    return null;
+    return user.getUid();
   }
 
   @Override
   public String getUsername() {
-    return user;
+    return user.getUid();
   }
 
   @Override
   public boolean isAccountNonExpired() {
-    return true;
+    return user.isFoundOnExternalSource();
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return true;
+    return user.isEnabled();
   }
 
   @Override
@@ -89,7 +89,6 @@ public class CustomUserDetails implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 
   public boolean isAuthorizedStructure() {
     return false;

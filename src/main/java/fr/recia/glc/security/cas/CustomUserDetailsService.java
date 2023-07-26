@@ -15,17 +15,22 @@
  */
 package fr.recia.glc.security.cas;
 
+import fr.recia.glc.db.dto.UserDto;
+import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.entities.personne.APersonne;
+import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.cas.authentication.CasAssertionAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Authenticate a user from the database.
@@ -34,42 +39,35 @@ import java.util.Set;
 @Slf4j
 public class CustomUserDetailsService implements AuthenticationUserDetailsService<CasAssertionAuthenticationToken> {
 
-  private Set<String> admins;
+  @Autowired
+  private APersonneRepository<APersonne> aPersonneRepository;
 
   public CustomUserDetailsService() {
     super();
   }
 
-  /**
-   * @param admins
-   */
-  public CustomUserDetailsService(Set<String> admins) {
-    super();
-    this.admins = admins;
+  @Override
+  @Transactional
+  public CustomUserDetails loadUserDetails(CasAssertionAuthenticationToken token) throws UsernameNotFoundException {
+    String uid = token.getPrincipal().toString();
+    log.debug("Authenticating '{}'", uid);
+
+    return loadUserByUid(uid);
   }
 
-  @Override
-  public CustomUserDetails loadUserDetails(CasAssertionAuthenticationToken token) throws UsernameNotFoundException {
-    String login = token.getPrincipal().toString();
-    String lowercaseLogin = login.toLowerCase();
+  @Transactional
+  public CustomUserDetails loadUserByUid(String uid) throws UsernameNotFoundException {
+    SimplePersonneDto internal = aPersonneRepository.findByPersonneUid(uid);
+    UserDto user = new UserDto(
+      internal.getUid(),
+      internal.getEtat().equals(Etat.Valide),
+      true,
+      true
+    );
+    Collection<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add((GrantedAuthority) () -> AuthoritiesConstants.USER);
 
-    log.debug("Authenticating '{}'", login);
-    List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-    if (admins != null && admins.contains(lowercaseLogin)) {
-      grantedAuthorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN));
-    } else {
-      grantedAuthorities.add(new GrantedAuthority() {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public String getAuthority() {
-          return AuthoritiesConstants.USER;
-        }
-      });
-    }
-
-    return new CustomUserDetails(lowercaseLogin, grantedAuthorities);
+    return new CustomUserDetails(user, authorities);
   }
 
 }
