@@ -21,11 +21,13 @@ import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.dto.structure.EtablissementDto;
 import fr.recia.glc.db.dto.structure.SimpleEtablissementDto;
+import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.education.Discipline;
 import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.Etablissement;
+import fr.recia.glc.db.repositories.APersonneAStructureRepository;
 import fr.recia.glc.db.repositories.education.DisciplineRepository;
 import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
@@ -62,6 +64,9 @@ public class EtablissementController {
   @Autowired
   private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
 
+  @Autowired
+  private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
+
   @GetMapping()
   public ResponseEntity<List<SimpleEtablissementDto>> getEtablissements() {
     List<SimpleEtablissementDto> etablissements =
@@ -89,17 +94,20 @@ public class EtablissementController {
       etablissement.setType(split[0]);
       etablissement.setNom(split[1]);
     }
-    etablissement.setFilieres(getFilieresWithDisciplinesAndUsers(id, etablissement.getSource()));
-    etablissement.setPersonnes(aPersonneRepository.findByStructureId(id));
+    List<Long> personnesIds = aPersonneAStructureRepository.findPersonneBySttructureId(id);
+    List<SimplePersonneDto> etabPersonnes = aPersonneRepository.findByPersonneIds(personnesIds);
+    etablissement.setPersonnes(etabPersonnes);
+    etablissement.setFilieres(getFilieresWithDisciplinesAndUsers(id, etablissement.getSource(), etabPersonnes));
 
     return new ResponseEntity<>(etablissement, HttpStatus.OK);
   }
 
-  private List<TypeFonctionFiliereDto> getFilieresWithDisciplinesAndUsers(Long structureId, String source) {
+  private List<TypeFonctionFiliereDto> getFilieresWithDisciplinesAndUsers(
+    Long structureId, String source, List<SimplePersonneDto> personnes
+  ) {
     List<FonctionDto> fonctions = fonctionRepository.findByStructureIdAndSource(structureId, source);
     List<TypeFonctionFiliereDto> typesFonctionFiliere = typeFonctionFiliereRepository.findBySourceSarapis(source);
     List<DisciplineDto> disciplines = disciplineRepository.findBySourceSarapis(source);
-    List<SimplePersonneDto> personnes = aPersonneRepository.findByStructureId(structureId);
 
     if (fonctions.isEmpty()) return Collections.emptyList();
 
