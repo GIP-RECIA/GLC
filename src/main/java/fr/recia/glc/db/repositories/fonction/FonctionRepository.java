@@ -24,6 +24,12 @@ import java.util.List;
 
 public interface FonctionRepository<T extends Fonction> extends AbstractRepository<T, Long> {
 
+  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.disciplinePoste.id, f.filiere.id, f.source, " +
+    "f.structure.id) " +
+    "FROM Fonction f " +
+    "WHERE f.personne.id = :id")
+  List<FonctionDto> findByPersonne(Long id);
+
   @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.disciplinePoste.id, f.filiere.id, f.source) " +
     "FROM Fonction f " +
     "WHERE f.personne.id = :id " +

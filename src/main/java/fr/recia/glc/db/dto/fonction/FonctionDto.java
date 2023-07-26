@@ -19,19 +19,36 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class FonctionDto {
 
   private Long personne;
   private Long disciplinePoste;
   private Long filiere;
   private String source;
+  private Long structure;
 
   public FonctionDto(Long disciplinePoste, Long filiere, String source) {
+    this.disciplinePoste = disciplinePoste;
+    this.filiere = filiere;
+    this.source = source;
+  }
+
+  public FonctionDto(Long disciplinePoste, Long filiere, String source, Long structure) {
+    this.disciplinePoste = disciplinePoste;
+    this.filiere = filiere;
+    this.source = source;
+    this.structure = structure;
+  }
+
+  public FonctionDto(Long personne, Long disciplinePoste, Long filiere, String source) {
+    this.personne = personne;
     this.disciplinePoste = disciplinePoste;
     this.filiere = filiere;
     this.source = source;

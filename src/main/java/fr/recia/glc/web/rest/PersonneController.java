@@ -57,7 +57,7 @@ public class PersonneController {
   @GetMapping(value = "/{id}")
   public ResponseEntity<PersonneDto> getPersonne(@PathVariable Long id) {
     PersonneDto personne = aPersonneRepository.findByPersonneId(id);
-    List<FonctionDto> fonctions = fonctionRepository.findByPersonneIdAndStructure(id, personne.getStructure());
+    List<FonctionDto> fonctions = fonctionRepository.findByPersonne(id);
     personne.setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith("SarapisUi_")).collect(Collectors.toList()));
     personne.setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith("SarapisUi_")).collect(Collectors.toList()));
 
