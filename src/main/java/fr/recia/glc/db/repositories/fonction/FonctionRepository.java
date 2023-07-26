@@ -56,4 +56,12 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
     "AND (f.source = :source OR f.source = CONCAT('SarapisUi_', :source))")
   List<FonctionDto> findByStructureIdAndSource(Long structureId, String source);
 
+  @Query("SELECT f.id " +
+    "FROM Fonction f " +
+    "WHERE f.disciplinePoste.id = :disciplineId " +
+    "AND f.filiere.id = :filiereId " +
+    "AND f.personne.id = :personneId " +
+    "AND f.structure.id = :structureId")
+  Long findId(Long disciplineId, Long filiereId, Long personneId, Long structureId);
+
 }

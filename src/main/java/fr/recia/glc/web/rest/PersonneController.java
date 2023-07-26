@@ -17,10 +17,17 @@ package fr.recia.glc.web.rest;
 
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.personne.PersonneDto;
+import fr.recia.glc.db.entities.education.Discipline;
+import fr.recia.glc.db.entities.fonction.AFonction;
 import fr.recia.glc.db.entities.fonction.Fonction;
+import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.entities.personne.APersonne;
+import fr.recia.glc.db.entities.structure.AStructure;
+import fr.recia.glc.db.repositories.education.DisciplineRepository;
 import fr.recia.glc.db.repositories.fonction.FonctionRepository;
+import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
+import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +40,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,6 +55,12 @@ public class PersonneController {
   private APersonneRepository<APersonne> aPersonneRepository;
   @Autowired
   private FonctionRepository<Fonction> fonctionRepository;
+  @Autowired
+  private DisciplineRepository<Discipline> disciplineRepository;
+  @Autowired
+  private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
+  @Autowired
+  private AStructureRepository<AStructure> aStructureRepository;
 
   @GetMapping
   public ResponseEntity<String> searchPersonne(
@@ -65,13 +80,17 @@ public class PersonneController {
   }
 
   @PostMapping(value = "/{id}/fonction")
-  public ResponseEntity<List<FonctionDto>> setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+  public ResponseEntity setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody Map<String, Object> body) {
     PersonneDto personne = aPersonneRepository.findByPersonneId(id);
     String source = personne.getSource().startsWith("SarapisUI_")
       ? personne.getSource()
       : "SarapisUI_" + personne.getSource();
+    List<FonctionDto> additionalFonctions = fonctionRepository.findByPersonne(id).stream()
+      .filter(fonction -> fonction.getSource().startsWith("SarapisUi_"))
+      .collect(Collectors.toList());
 
-    List<FonctionDto> fonctions = ((List<String>) body.get("additional")).stream()
+    Long structureId = Long.parseLong((String) body.get("structureId"));
+    List<FonctionDto> requiredAdditional = ((List<String>) body.get("additional")).stream()
       .map(fonction -> {
         String[] split = fonction.split("-");
 
@@ -83,7 +102,44 @@ public class PersonneController {
       })
       .collect(Collectors.toList());
 
-    return new ResponseEntity<>(fonctions, HttpStatus.OK);
+    List<FonctionDto> newAdditional = requiredAdditional.stream()
+      .filter(fonction -> !additionalFonctions.contains(fonction))
+      .collect(Collectors.toList());
+
+    List<FonctionDto> deletedAdditional = additionalFonctions.stream()
+      .filter(fonction -> !requiredAdditional.contains(fonction))
+      .collect(Collectors.toList());
+
+    log.debug("{} fonctions to add : {}", newAdditional.size(), newAdditional);
+    log.debug("{} fonctions to delete : {}", deletedAdditional.size(), deletedAdditional);
+
+//    List<Fonction> saveAdditional = newAdditional.stream()
+//      .map(fonction -> {
+//        Discipline discipline = disciplineRepository.findById(fonction.getDisciplinePoste()).orElse(null);
+//        TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
+//        APersonne apersonne = aPersonneRepository.findById(personne.getId()).orElse(null);
+//        AStructure structure = aStructureRepository.findById(structureId).orElse(null);
+//
+//        if (discipline != null && filiere != null && apersonne != null && structure != null)
+//          return new Fonction(discipline, filiere, structure, apersonne, source);
+//        else log.error(
+//          "Unable to create fonction with parameters: Discipline={}, TypeFonctionFiliere={}, APersonne={}, AStructure={}",
+//          discipline, filiere, apersonne, structure
+//        );
+//
+//        return new Fonction();
+//      })
+//      .collect(Collectors.toList());
+//
+//    List<Long> deleteAdditionalIds = deletedAdditional.stream()
+//      .map(fonction -> fonctionRepository.findId(fonction.getDisciplinePoste(), fonction.getFiliere(), fonction.getPersonne(), fonction.getStructure()))
+//      .collect(Collectors.toList());
+//
+//    fonctionRepository.saveAll(saveAdditional);
+//    fonctionRepository.deleteAllById(deleteAdditionalIds);
+//    fonctionRepository.flush();
+
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
 }
