@@ -19,10 +19,13 @@ onBeforeMount(() => {
 });
 
 const filterFilieres = (): void => {
-  const filiereIds = props.fonctions.map((fonction) => fonction.filiere);
-  const disciplineIds = props.fonctions.map(
-    (fonction) => fonction.disciplinePoste
-  );
+  const filiereIds = [
+    ...new Set(props.fonctions.map((fonction) => fonction.filiere)),
+  ];
+  const disciplineIds = [
+    ...new Set(props.fonctions.map((fonction) => fonction.disciplinePoste)),
+  ];
+
   let filterFilieres = unref(filieres);
 
   filterFilieres = filterFilieres
