@@ -3,6 +3,7 @@ import { useConfigurationStore } from "@/stores/configurationStore";
 import { useStructureStore } from "@/stores/structureStore";
 import { CategoriePersonne } from "@/types/enums/CategoriePersonne";
 import { Etat } from "@/types/enums/Etat";
+import type { PersonneFonction } from "@/types/fonctionType";
 import type {
   Personne,
   SearchPersonne,
@@ -41,17 +42,20 @@ export const usePersonneStore = defineStore("personne", () => {
     },
   });
 
-  /**
-   * Retourne la liste des fonctions complémentaires de la personne
-   * courante formaté
-   */
-  const additionalFonctionsForCheckboxes = computed<Array<string>>(() => {
-    const items = currentPersonne.value?.additionalFonctions.map(
-      (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
+  const structureFonctions = (
+    structureId: number
+  ): Array<PersonneFonction> | undefined => {
+    return currentPersonne.value?.fonctions.filter(
+      (fonction) => fonction.structure == structureId
     );
-
-    return typeof items === "undefined" ? [] : items;
-  });
+  };
+  const structureAdditionalFonctions = (
+    structureId: number
+  ): Array<PersonneFonction> | undefined => {
+    return currentPersonne.value?.additionalFonctions.filter(
+      (fonction) => fonction.structure == structureId
+    );
+  };
 
   /* -- Pour la structure courante -- */
 
@@ -136,7 +140,8 @@ export const usePersonneStore = defineStore("personne", () => {
     currentPersonne,
     initCurrentPersonne,
     isCurrentPersonne,
-    additionalFonctionsForCheckboxes,
+    structureFonctions,
+    structureAdditionalFonctions,
     personnes,
     deletedPersonnes,
     searchList,

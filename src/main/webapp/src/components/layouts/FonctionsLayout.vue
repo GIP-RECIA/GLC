@@ -4,9 +4,13 @@ import type { Filiere } from "@/types/filiereType";
 import type { PersonneFonction } from "@/types/fonctionType";
 import { storeToRefs } from "pinia";
 import { unref, ref, onBeforeMount } from "vue";
+import { useRoute } from "vue-router";
 
 const fonctionStore = useFonctionStore();
 const { filieres } = storeToRefs(fonctionStore);
+
+const route = useRoute();
+const { structureId } = route.params;
 
 const props = defineProps<{
   fonctions: Array<PersonneFonction>;
@@ -19,11 +23,14 @@ onBeforeMount(() => {
 });
 
 const filterFilieres = (): void => {
+  const etabFonctions = props.fonctions.filter(
+    (fonction) => fonction.structure == Number(structureId)
+  );
   const filiereIds = [
-    ...new Set(props.fonctions.map((fonction) => fonction.filiere)),
+    ...new Set(etabFonctions.map((fonction) => fonction.filiere)),
   ];
   const disciplineIds = [
-    ...new Set(props.fonctions.map((fonction) => fonction.disciplinePoste)),
+    ...new Set(etabFonctions.map((fonction) => fonction.disciplinePoste)),
   ];
 
   let filterFilieres = unref(filieres);

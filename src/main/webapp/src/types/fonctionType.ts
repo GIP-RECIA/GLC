@@ -17,4 +17,5 @@ export type PersonneFonction = {
   disciplinePoste: number;
   filiere: number;
   source: string;
+  structure: number;
 };

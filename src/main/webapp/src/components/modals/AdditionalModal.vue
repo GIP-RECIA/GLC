@@ -7,10 +7,12 @@ import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
 import { Tabs } from "@/types/enums/Tabs";
+import type { PersonneFonction } from "@/types/fonctionType";
 import type { Personne } from "@/types/personneType";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
 
 const { t } = useI18n();
 
@@ -24,7 +26,25 @@ const personneStore = usePersonneStore();
 const { administrativeSearchList, teachingSearchList } =
   storeToRefs(personneStore);
 
+const route = useRoute();
+const { structureId } = route.params;
+
 const currentPersonne = ref<Personne | undefined>();
+
+const structureFonctions = (
+  structureId: number
+): Array<PersonneFonction> | undefined => {
+  return currentPersonne.value?.fonctions.filter(
+    (fonction) => fonction.structure == structureId
+  );
+};
+const structureAdditionalFonctions = (
+  structureId: number
+): Array<PersonneFonction> | undefined => {
+  return currentPersonne.value?.additionalFonctions.filter(
+    (fonction) => fonction.structure == structureId
+  );
+};
 
 const selectedUser = ref<number | undefined>();
 const selected = ref<Array<string>>([]);
@@ -82,12 +102,12 @@ const currentTabValue = () => {
       <checkbox-layout
         :filieres="currentTabValue().filieres"
         :selected="
-          currentPersonne?.additionalFonctions.map(
+          structureAdditionalFonctions(Number(structureId))?.map(
             (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
           )
         "
         :disabled="
-          currentPersonne?.fonctions.map(
+          structureFonctions(Number(structureId))?.map(
             (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
           )
         "

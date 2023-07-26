@@ -13,6 +13,7 @@ import moment from "moment";
 import { storeToRefs } from "pinia";
 import { watch, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
 
 const { t } = useI18n();
 
@@ -23,8 +24,11 @@ const fonctionStore = useFonctionStore();
 const { customMapping, isCustomMapping } = storeToRefs(fonctionStore);
 
 const personneStore = usePersonneStore();
-const { currentPersonne, isCurrentPersonne, additionalFonctionsForCheckboxes } =
-  storeToRefs(personneStore);
+const { structureFonctions, structureAdditionalFonctions } = personneStore;
+const { currentPersonne, isCurrentPersonne } = storeToRefs(personneStore);
+
+const route = useRoute();
+const { structureId } = route.params;
 
 const isLocked = ref<boolean>(false);
 const isAddMode = ref<boolean>(false);
@@ -41,7 +45,10 @@ watch(isCurrentPersonne, (newValue) => {
     isAddMode.value = false;
     selected.value = [];
   } else {
-    selected.value = additionalFonctionsForCheckboxes.value;
+    const items = structureAdditionalFonctions(Number(structureId))?.map(
+      (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
+    );
+    selected.value = items ? items : [];
     isLocked.value = currentPersonne.value!.etat == Etat.Bloque;
   }
 });
@@ -187,12 +194,15 @@ const cancel = () => {
       </div>
       <div class="mb-3">
         <b>{{ t("function", 2) }}</b>
-        <fonctions-layout :fonctions="currentPersonne.fonctions" class="mt-2" />
+        <fonctions-layout
+          :fonctions="structureFonctions(Number(structureId))!"
+          class="mt-2"
+        />
       </div>
       <div>
         <b>{{ t("additionalFunction", 2) }}</b>
         <fonctions-layout
-          :fonctions="currentPersonne.additionalFonctions"
+          :fonctions="structureAdditionalFonctions(Number(structureId))!"
           class="mt-2"
         />
       </div>
@@ -203,12 +213,12 @@ const cancel = () => {
         v-if="currentTab == Tabs.AdministrativeStaff"
         :filieres="customMapping?.filieres ? customMapping.filieres : []"
         :selected="
-          currentPersonne?.additionalFonctions.map(
+          structureAdditionalFonctions(Number(structureId))?.map(
             (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
           )
         "
         :disabled="
-          currentPersonne?.fonctions.map(
+          structureFonctions(Number(structureId))?.map(
             (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
           )
         "
