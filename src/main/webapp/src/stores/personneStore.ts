@@ -21,6 +21,8 @@ export const usePersonneStore = defineStore("personne", () => {
 
   const currentPersonne = ref<Personne | undefined>();
 
+  const isCurrentPersonne = ref<boolean>(false);
+
   /**
    * Initialise `currentPersonne`
    *
@@ -30,22 +32,11 @@ export const usePersonneStore = defineStore("personne", () => {
     try {
       const response = await getPersonne(id);
       currentPersonne.value = response.data;
+      isCurrentPersonne.value = true;
     } catch (e) {
       console.error(e.message);
     }
   };
-
-  /**
-   * Retourne s'il y a une personne de défini ou l'efface
-   */
-  const isCurrentPersonne = computed<boolean>({
-    get() {
-      return currentPersonne.value ? true : false;
-    },
-    set() {
-      currentPersonne.value = undefined;
-    },
-  });
 
   const structureFonctions = (
     structureId: number
