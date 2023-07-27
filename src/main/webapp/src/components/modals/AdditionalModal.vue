@@ -9,6 +9,7 @@ import { usePersonneStore } from "@/stores/personneStore";
 import { Tabs } from "@/types/enums/Tabs";
 import type { PersonneFonction } from "@/types/fonctionType";
 import type { Personne } from "@/types/personneType";
+import debounce from "lodash.debounce";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -64,11 +65,6 @@ const setSelectedUser = async (id: number | undefined) => {
   }
 };
 
-const save = () => {
-  isAdditional.value = false;
-  setPersonneAdditional(selectedUser.value!, selected.value);
-};
-
 const currentTabValue = () => {
   switch (currentTab.value) {
     case Tabs.AdministrativeStaff:
@@ -87,10 +83,38 @@ const currentTabValue = () => {
       return { title: "", searchList: undefined, filieres: undefined };
   }
 };
+
+const save = async () => {
+  try {
+    await setPersonneAdditional(
+      Number(structureId),
+      selectedUser.value!,
+      selected.value
+    );
+    closeAndResetModal(true);
+  } catch (e) {
+    console.error(e.message);
+    closeAndResetModal(false);
+  }
+};
+
+const closeAndResetModal = (success?: boolean) => {
+  if (isAdditional.value) isAdditional.value = false;
+  const reset = debounce(() => {
+    currentPersonne.value = undefined;
+    selectedUser.value = undefined;
+    selected.value = [];
+  }, 500);
+  reset();
+};
 </script>
 
 <template>
-  <base-modal v-model="isAdditional" :title="currentTabValue().title">
+  <base-modal
+    v-model="isAdditional"
+    :title="currentTabValue().title"
+    @update:model-value="(value: boolean) => { if (!value) closeAndResetModal();}"
+  >
     <personne-search
       :search-list="currentTabValue().searchList"
       @update:select="setSelectedUser"

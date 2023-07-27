@@ -6,7 +6,11 @@ const getPersonne = async (id: number) =>
 const searchPersonne = async (name: string) =>
   await axios.get(`/api/personne?name=${name}`);
 
-const setPersonneAdditional = async (id: number, additional: Array<string>) =>
-  await axios.post(`/api/personne/${id}/fonction`, { additional });
+const setPersonneAdditional = async (
+  id: number,
+  structureId: number,
+  additional: Array<string>
+) =>
+  await axios.post(`/api/personne/${id}/fonction`, { structureId, additional });
 
 export { getPersonne, searchPersonne, setPersonneAdditional };
