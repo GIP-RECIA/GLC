@@ -9,6 +9,7 @@ import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
 import { Etat } from "@/types/enums/Etat";
 import { Tabs } from "@/types/enums/Tabs";
+import debounce from "lodash.debounce";
 import moment from "moment";
 import { storeToRefs } from "pinia";
 import { watch, ref, computed } from "vue";
@@ -42,7 +43,10 @@ const setSelected = (value: Array<string>) => {
 
 watch(isCurrentPersonne, (newValue) => {
   if (!newValue) {
-    isAddMode.value = false;
+    const reset = debounce(() => {
+      isAddMode.value = false;
+    }, 500);
+    reset();
     selected.value = [];
   } else {
     const items = structureAdditionalFonctions(Number(structureId))?.map(
@@ -59,18 +63,25 @@ const lockManager = () => {
 
 const reinitialize = () => {};
 
-const save = () => {
-  isAddMode.value = false;
-  if (currentPersonne.value) {
-    setPersonneAdditional(
+const save = async () => {
+  try {
+    await setPersonneAdditional(
       Number(structureId),
-      currentPersonne.value.id,
+      currentPersonne.value!.id,
       selected.value
     );
+    resetAddMode(true);
+  } catch (e) {
+    console.error(e.message);
+    resetAddMode(false);
   }
 };
 
 const cancel = () => {
+  isAddMode.value = false;
+};
+
+const resetAddMode = (success?: boolean) => {
   isAddMode.value = false;
 };
 </script>
