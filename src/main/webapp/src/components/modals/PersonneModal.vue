@@ -62,7 +62,11 @@ const reinitialize = () => {};
 const save = () => {
   isAddMode.value = false;
   if (currentPersonne.value) {
-    setPersonneAdditional(currentPersonne.value.id, selected.value);
+    setPersonneAdditional(
+      Number(structureId),
+      currentPersonne.value.id,
+      selected.value
+    );
   }
 };
 
