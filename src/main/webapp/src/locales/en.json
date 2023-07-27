@@ -56,5 +56,11 @@
   "hideEmpty": "Hide empty",
   "showAll": "Show all",
   "addAdditionalFonction": "Add one or more additional functions",
-  "addAdditionalTeaching": "Add one or more additional teachings"
+  "addAdditionalTeaching": "Add one or more additional teachings",
+  "toast": {
+    "additional": {
+      "success": "Function added successfully | Functions added successfully",
+      "error": "Unable to add function | Unable to add functions"
+    }
+  }
 }

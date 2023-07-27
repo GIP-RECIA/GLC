@@ -15,8 +15,10 @@ import { storeToRefs } from "pinia";
 import { watch, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+import { useToast } from "vue-toastification";
 
 const { t } = useI18n();
+const toast = useToast();
 
 const configurationStore = useConfigurationStore();
 const { currentTab, isAdmin } = storeToRefs(configurationStore);
@@ -82,6 +84,12 @@ const cancel = () => {
 };
 
 const resetAddMode = (success?: boolean) => {
+  if (success) {
+    toast.success(t("toast.additional.success", selected.value.length));
+  } else if (!success) {
+    toast.error(t("toast.additional.error", selected.value.length));
+  }
+
   isAddMode.value = false;
 };
 </script>

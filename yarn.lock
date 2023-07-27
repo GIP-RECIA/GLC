@@ -5209,6 +5209,7 @@ __metadata:
     vue: ^3.3.4
     vue-i18n: 9.2.2
     vue-router: ^4.2.4
+    vue-toastification: v2.0.0-rc.5
     vue-tsc: ^1.8.8
     vuetify: ^3.3.10
   languageName: unknown
@@ -5934,6 +5935,15 @@ __metadata:
     de-indent: ^1.0.2
     he: ^1.2.0
   checksum: eba9d2eed6b7110c963bc356b47bdd11d4023d25148abb7e5f7826db2fefe7ad8a575787ee0d8fa47701d44a6f54bde475279b1319f44e1049271eb2419f93a7
+  languageName: node
+  linkType: hard
+
+"vue-toastification@npm:v2.0.0-rc.5":
+  version: 2.0.0-rc.5
+  resolution: "vue-toastification@npm:2.0.0-rc.5"
+  peerDependencies:
+    vue: ^3.0.2
+  checksum: 358ac0eb8f40b1bbadc84c5a686d80c9fd7d6c37a3cec0c3a422f1157f4aa8a882e585404fe4efb7ac4ae52d627c65a30750b31425d7df1d6643f0c80ffcd668
   languageName: node
   linkType: hard
 

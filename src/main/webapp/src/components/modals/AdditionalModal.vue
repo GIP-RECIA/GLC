@@ -14,8 +14,10 @@ import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+import { useToast } from "vue-toastification";
 
 const { t } = useI18n();
+const toast = useToast();
 
 const configurationStore = useConfigurationStore();
 const { currentTab, isAdditional } = storeToRefs(configurationStore);
@@ -99,6 +101,12 @@ const save = async () => {
 };
 
 const closeAndResetModal = (success?: boolean) => {
+  if (success) {
+    toast.success(t("toast.additional.success"));
+  } else if (!success) {
+    toast.error(t("toast.additional.error"));
+  }
+
   if (isAdditional.value) isAdditional.value = false;
   const reset = debounce(() => {
     currentPersonne.value = undefined;
