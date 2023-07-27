@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRefs } from "vue";
+import { computed } from "vue";
 
 const props = defineProps<{
   modelValue: boolean;
@@ -8,7 +8,12 @@ const props = defineProps<{
 
 defineEmits<(event: "update:modelValue", payload: boolean) => void>();
 
-const { modelValue } = toRefs(props);
+const modelValue = computed<boolean>({
+  get() {
+    return props.modelValue;
+  },
+  set() {},
+});
 </script>
 
 <template>

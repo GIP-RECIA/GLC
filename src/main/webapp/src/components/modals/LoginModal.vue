@@ -11,7 +11,12 @@ const { identity, isAuthenticated } = storeToRefs(configurationStore);
 
 const { t } = useI18n();
 
-const modelValue = computed<boolean>(() => !isAuthenticated.value);
+const modelValue = computed<boolean>({
+  get() {
+    return !isAuthenticated.value;
+  },
+  set() {},
+});
 
 const { VITE_API_URL } = import.meta.env;
 
