@@ -94,7 +94,7 @@ public class EtablissementController {
       etablissement.setType(split[0]);
       etablissement.setNom(split[1]);
     }
-    List<Long> personnesIds = aPersonneAStructureRepository.findPersonneBySttructureId(id);
+    List<Long> personnesIds = aPersonneAStructureRepository.findPersonneByStructureId(id);
     List<SimplePersonneDto> etabPersonnes = aPersonneRepository.findByPersonneIds(personnesIds);
     etablissement.setPersonnes(etabPersonnes);
     etablissement.setFilieres(getFilieresWithDisciplinesAndUsers(id, etablissement.getSource(), etabPersonnes));

@@ -27,6 +27,11 @@ public interface APersonneAStructureRepository<T extends APersonneAStructure> ex
   @Query("SELECT DISTINCT apas.aPersonneId " +
     "FROM APersonneAStructure apas " +
     "WHERE apas.aStructureId = :id")
-  List<Long> findPersonneBySttructureId(Long id);
+  List<Long> findPersonneByStructureId(Long id);
+
+  @Query("SELECT COUNT(*) " +
+    "FROM APersonneAStructure apas " +
+    "WHERE apas.aPersonneId = :personneId AND apas.aStructureId = :structureId")
+  Long isInStructure(Long personneId, Long structureId);
 
 }
