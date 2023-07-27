@@ -70,8 +70,24 @@ const findInStructure = (searchValue: string): void => {
 };
 
 const findOutOfStructure = debounce(async (searchValue: string) => {
+  searchValue = searchValue.toLocaleLowerCase();
   try {
-    items.value = (await searchPersonne(searchValue)).data;
+    const response = await searchPersonne(searchValue);
+    const list = response.data.map((personne) => {
+      const displayName = personne.patronyme
+        ? `${personne.patronyme} ${personne.givenName}`
+        : personne.givenName;
+
+      return {
+        ...personne,
+        displayName,
+        searchValue: personne.uid
+          ? `${displayName} (${personne.uid})`
+          : displayName,
+      };
+    });
+
+    items.value = list;
   } catch (e) {
     console.error(e);
   }

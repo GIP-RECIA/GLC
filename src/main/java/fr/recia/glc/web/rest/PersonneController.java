@@ -17,6 +17,7 @@ package fr.recia.glc.web.rest;
 
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.personne.PersonneDto;
+import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.education.Discipline;
 import fr.recia.glc.db.entities.fonction.AFonction;
 import fr.recia.glc.db.entities.fonction.Fonction;
@@ -63,10 +64,10 @@ public class PersonneController {
   private AStructureRepository<AStructure> aStructureRepository;
 
   @GetMapping
-  public ResponseEntity<String> searchPersonne(
-    @RequestParam(value = "name") String name
-  ) {
-    return new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
+    List<SimplePersonneDto> personnes = aPersonneRepository.findByNameLike(name);
+
+    return new ResponseEntity<>(personnes, HttpStatus.OK);
   }
 
   @GetMapping(value = "/{id}")
