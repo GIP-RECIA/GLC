@@ -21,7 +21,12 @@ export const useStructureStore = defineStore("structure", () => {
    * Initialise `etabs`
    */
   const init = async (): Promise<void> => {
-    etabs.value = (await getEtablissements()).data;
+    try {
+      const response = await getEtablissements();
+      etabs.value = response.data;
+    } catch (e) {
+      console.error(e.message);
+    }
   };
 
   /**

@@ -13,7 +13,12 @@ export const useConfigurationStore = defineStore("configuration", () => {
    * Initialise `configuration`
    */
   const init = async (): Promise<void> => {
-    configuration.value = (await getConfiguration()).data;
+    try {
+      const response = await getConfiguration();
+      configuration.value = response.data;
+    } catch (e) {
+      console.error(e.message);
+    }
   };
 
   const casUrlLogin = computed<string | undefined>(

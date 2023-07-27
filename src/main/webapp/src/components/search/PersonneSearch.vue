@@ -89,7 +89,7 @@ const findOutOfStructure = debounce(async (searchValue: string) => {
 
     items.value = list;
   } catch (e) {
-    console.error(e);
+    console.error(e.message);
   }
   loading.value = false;
 }, 500);

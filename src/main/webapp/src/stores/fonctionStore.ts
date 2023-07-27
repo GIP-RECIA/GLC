@@ -18,7 +18,14 @@ export const useFonctionStore = defineStore("fonctions", () => {
    * par source
    */
   const init = async (): Promise<void> => {
-    if (!isInit.value) fonctions.value = (await getFonctions()).data;
+    if (!isInit.value) {
+      try {
+        const response = await getFonctions();
+        fonctions.value = response.data;
+      } catch (e) {
+        console.error(e.message);
+      }
+    }
   };
 
   const isInit = computed<boolean>(() =>

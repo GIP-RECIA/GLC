@@ -27,7 +27,12 @@ export const usePersonneStore = defineStore("personne", () => {
    * @param id Identifiant de la personne
    */
   const initCurrentPersonne = async (id: number): Promise<void> => {
-    currentPersonne.value = (await getPersonne(id)).data;
+    try {
+      const response = await getPersonne(id);
+      currentPersonne.value = response.data;
+    } catch (e) {
+      console.error(e.message);
+    }
   };
 
   /**
@@ -49,6 +54,7 @@ export const usePersonneStore = defineStore("personne", () => {
       (fonction) => fonction.structure == structureId
     );
   };
+
   const structureAdditionalFonctions = (
     structureId: number
   ): Array<PersonneFonction> | undefined => {
