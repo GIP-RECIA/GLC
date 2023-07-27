@@ -102,9 +102,9 @@ const save = async () => {
 
 const closeAndResetModal = (success?: boolean) => {
   if (success) {
-    toast.success(t("toast.additional.success"));
+    toast.success(t("toast.additional.success", selected.value.length));
   } else if (!success) {
-    toast.error(t("toast.additional.error"));
+    toast.error(t("toast.additional.error", selected.value.length));
   }
 
   if (isAdditional.value) isAdditional.value = false;
