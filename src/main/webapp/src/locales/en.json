@@ -62,5 +62,8 @@
       "success": "Function added successfully | Functions added successfully",
       "error": "Unable to add function | Unable to add functions"
     }
-  }
+  },
+  "attach": "Attach",
+  "detach": "Detach",
+  "edit": "Edit"
 }

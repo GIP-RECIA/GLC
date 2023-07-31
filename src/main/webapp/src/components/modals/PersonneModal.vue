@@ -20,7 +20,7 @@ const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
-const { currentTab, isAdmin, currentStructureId } =
+const { currentTab, isAdmin, currentStructureId, isAddMode } =
   storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
@@ -31,16 +31,24 @@ const {
   currentPersonne,
   isCurrentPersonne,
   structureFonctions,
+  hasStructureFonctions,
   structureAdditionalFonctions,
+  hasStructureAdditionalFonctions,
 } = storeToRefs(personneStore);
 
 const isLocked = ref<boolean>(false);
-const isAddMode = ref<boolean>(false);
 const selected = ref<Array<string> | undefined>([]);
 
-const canSave = computed<boolean>(
-  () => selected.value?.length != structureAdditionalFonctions.value?.length
-);
+const canSave = computed(() => {
+  if (selected.value?.length == structureAdditionalFonctions.value?.length) {
+    return !selected.value?.every((entry) =>
+      structureAdditionalFonctions.value
+        ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
+        .includes(entry)
+    );
+  }
+  return true;
+});
 
 const setSelected = (value: Array<string>) => {
   selected.value = value;
@@ -279,10 +287,12 @@ const resetAddMode = (success?: boolean) => {
           <v-btn
             v-if="!isAddMode && isCustomMapping"
             color="primary"
-            prepend-icon="fas fa-plus"
+            :prepend-icon="
+              hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'
+            "
             @click="isAddMode = true"
           >
-            {{ t("add") }}
+            {{ t(hasStructureAdditionalFonctions ? "edit" : "add") }}
           </v-btn>
           <div v-if="isAddMode">
             <v-btn
@@ -293,12 +303,26 @@ const resetAddMode = (success?: boolean) => {
               {{ t("cancel") }}
             </v-btn>
             <v-btn
-              color="success"
-              prepend-icon="fas fa-floppy-disk"
+              :color="
+                !hasStructureFonctions && selected?.length == 0
+                  ? 'error'
+                  : 'success'
+              "
+              :prepend-icon="
+                !hasStructureFonctions && selected?.length == 0
+                  ? 'fas fa-link-slash'
+                  : 'fas fa-floppy-disk'
+              "
               :disabled="!canSave"
               @click="save"
             >
-              {{ t("save") }}
+              {{
+                t(
+                  !hasStructureFonctions && selected?.length == 0
+                    ? "detach"
+                    : "save"
+                )
+              }}
             </v-btn>
           </div>
         </div>

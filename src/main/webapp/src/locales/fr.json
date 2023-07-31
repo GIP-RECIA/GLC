@@ -62,5 +62,8 @@
       "success": "Fonction ajouté avec succès | Fonctions ajoutées avec succès",
       "error": "Impossible d'ajouter la fonction | Impossible d'ajouter les fonctions"
     }
-  }
+  },
+  "attach": "Rattacher",
+  "detach": "Détacher",
+  "edit": "Editer"
 }

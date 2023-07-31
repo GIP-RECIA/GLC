@@ -51,6 +51,12 @@ export const usePersonneStore = defineStore("personne", () => {
     }
   );
 
+  const hasStructureFonctions = computed(() => {
+    return structureFonctions.value
+      ? structureFonctions.value.length > 0
+      : false;
+  });
+
   const structureAdditionalFonctions = computed(
     (): Array<PersonneFonction> | undefined => {
       const { currentStructureId } = configurationStore;
@@ -60,6 +66,12 @@ export const usePersonneStore = defineStore("personne", () => {
       );
     }
   );
+
+  const hasStructureAdditionalFonctions = computed(() => {
+    return structureAdditionalFonctions.value
+      ? structureAdditionalFonctions.value.length > 0
+      : false;
+  });
 
   /* -- Pour la structure courante -- */
 
@@ -145,7 +157,9 @@ export const usePersonneStore = defineStore("personne", () => {
     initCurrentPersonne,
     isCurrentPersonne,
     structureFonctions,
+    hasStructureFonctions,
     structureAdditionalFonctions,
+    hasStructureAdditionalFonctions,
     personnes,
     deletedPersonnes,
     searchList,

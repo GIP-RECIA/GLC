@@ -73,6 +73,7 @@ export const useConfigurationStore = defineStore("configuration", () => {
   /* -- Gestion de la modale des complémentaires -- */
 
   const isAdditional = ref<boolean>(false);
+  const isAddMode = ref<boolean>(false);
 
   /* -- Gestion de l'authentification -- */
 
@@ -99,6 +100,7 @@ export const useConfigurationStore = defineStore("configuration", () => {
     currentStructureId,
     setCurrentStructureId,
     isAdditional,
+    isAddMode,
     identity,
     isAuthenticated,
     isAdmin,

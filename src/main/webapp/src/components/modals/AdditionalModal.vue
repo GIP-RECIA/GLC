@@ -17,7 +17,7 @@ const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
-const { currentTab, isAdditional, currentStructureId } =
+const { currentTab, isAdditional, currentStructureId, isAddMode } =
   storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
@@ -29,7 +29,9 @@ const {
   currentPersonne,
   isCurrentPersonne,
   structureFonctions,
+  hasStructureFonctions,
   structureAdditionalFonctions,
+  hasStructureAdditionalFonctions,
   administrativeSearchList,
   teachingSearchList,
 } = storeToRefs(personneStore);
@@ -41,6 +43,7 @@ const setSelectedUser = (id: number | undefined) => {
   selectedUser.value = id;
   currentPersonne.value = undefined;
   if (id && selectedUser.value) {
+    // isAddMode.value = true;
     initCurrentPersonne(id, false);
   }
 };
@@ -55,9 +58,16 @@ watch(currentPersonne, (newValue) => {
 
 const selected = ref<Array<string> | undefined>([]);
 
-const canSave = computed<boolean>(() =>
-  selected.value ? selected.value.length > 0 : false
-);
+const canSave = computed(() => {
+  if (selected.value?.length == structureAdditionalFonctions.value?.length) {
+    return !selected.value?.every((entry) =>
+      structureAdditionalFonctions.value
+        ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
+        .includes(entry)
+    );
+  }
+  return true;
+});
 
 const setSelected = (value: Array<string>) => {
   selected.value = value;
@@ -137,12 +147,39 @@ const closeAndResetModal = (success?: boolean) => {
     </div>
     <template #footer>
       <v-btn
-        color="success"
-        prepend-icon="fas fa-floppy-disk"
+        v-if="selectedUser"
+        :color="
+          !hasStructureFonctions && !hasStructureAdditionalFonctions
+            ? selected?.length == 0
+              ? 'error'
+              : 'success'
+            : selected?.length == 0
+            ? 'error'
+            : 'success'
+        "
+        :prepend-icon="
+          !hasStructureFonctions && !hasStructureAdditionalFonctions
+            ? selected?.length == 0
+              ? 'fas fa-link-slash'
+              : 'fas fa-link'
+            : selected?.length == 0
+            ? 'fas fa-link-slash'
+            : 'fas fa-floppy-disk'
+        "
         :disabled="!isSelectedUser || !canSave"
         @click="save"
       >
-        {{ t("save") }}
+        {{
+          t(
+            !hasStructureFonctions && !hasStructureAdditionalFonctions
+              ? selected?.length == 0
+                ? "detach"
+                : "attach"
+              : selected?.length == 0
+              ? "detach"
+              : "save"
+          )
+        }}
       </v-btn>
     </template>
   </base-modal>
