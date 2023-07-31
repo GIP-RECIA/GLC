@@ -41,21 +41,38 @@ export const useStructureStore = defineStore("structure", () => {
       setCurrentStructureId,
     } = configurationStore;
 
-    currentEtab.value = (await getEtablissement(id)).data;
+    try {
+      const response = await getEtablissement(id);
+      currentEtab.value = response.data;
 
-    // Mise à jour de l'onglet
-    const index = structures.findIndex((structures) => structures.id == id);
-    if (index == -1) {
-      setCurrentTab(Tabs.Dashboard);
-      structures.push({
-        id: id,
-        name: currentEtab?.value?.type
-          ? `${currentEtab.value.type} ${currentEtab.value.nom}`
-          : currentEtab?.value?.nom || "",
-      });
-      setCurrentStructure(structures.length - 1);
-    } else setCurrentStructure(index);
-    setCurrentStructureId(id);
+      // Mise à jour de l'onglet
+      const index = structures.findIndex((structures) => structures.id == id);
+      if (index == -1) {
+        setCurrentTab(Tabs.Dashboard);
+        structures.push({
+          id: id,
+          name: currentEtab?.value?.type
+            ? `${currentEtab.value.type} ${currentEtab.value.nom}`
+            : currentEtab?.value?.nom || "",
+        });
+        setCurrentStructure(structures.length - 1);
+      } else setCurrentStructure(index);
+      setCurrentStructureId(id);
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+
+  const refreshCurrentStructure = async (): Promise<void> => {
+    const structureId = currentEtab.value?.id;
+    if (structureId) {
+      try {
+        const response = await getEtablissement(structureId);
+        currentEtab.value = response.data;
+      } catch (e) {
+        console.error(e.message);
+      }
+    }
   };
 
   return {
@@ -63,5 +80,6 @@ export const useStructureStore = defineStore("structure", () => {
     currentEtab,
     init,
     initCurrentEtab,
+    refreshCurrentStructure,
   };
 });

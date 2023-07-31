@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import { useFonctionStore } from "@/stores/fonctionStore";
 import type { Filiere } from "@/types/filiereType";
 import type { PersonneFonction } from "@/types/fonctionType";
-import { storeToRefs } from "pinia";
-import { unref, ref, onBeforeMount } from "vue";
+import { watch, unref, ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-
-const fonctionStore = useFonctionStore();
-const { filieres } = storeToRefs(fonctionStore);
 
 const route = useRoute();
 const { structureId } = route.params;
 
 const props = defineProps<{
+  filieres: Array<Filiere> | undefined;
   fonctions: Array<PersonneFonction>;
 }>();
 
@@ -21,6 +17,15 @@ const filteredFilieres = ref<Array<Filiere>>([]);
 onBeforeMount(() => {
   if (props.fonctions.length > 0) filterFilieres();
 });
+
+watch(
+  () => props.fonctions,
+  (newValue, oldValue) => {
+    if (newValue != oldValue) {
+      filterFilieres();
+    }
+  }
+);
 
 const filterFilieres = (): void => {
   const etabFonctions = props.fonctions.filter(
@@ -33,7 +38,7 @@ const filterFilieres = (): void => {
     ...new Set(etabFonctions.map((fonction) => fonction.disciplinePoste)),
   ];
 
-  let filterFilieres = unref(filieres);
+  let filterFilieres = unref(props.filieres);
 
   filterFilieres = filterFilieres
     ?.filter((filiere) => filiereIds.includes(filiere.id))
@@ -57,8 +62,13 @@ const filterFilieres = (): void => {
         :key="index"
         :cols="12"
         :md="6"
+        class="pa-2"
       >
-        <v-card :subtitle="filiere.libelleFiliere" variant="tonal">
+        <v-card
+          :subtitle="filiere.libelleFiliere"
+          variant="tonal"
+          min-height="100%"
+        >
           <v-card-text class="pb-2 mt--3">
             <div class="v-chip-group v-chip-group--column v-theme--light">
               <v-chip

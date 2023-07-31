@@ -41,6 +41,19 @@ export const usePersonneStore = defineStore("personne", () => {
     }
   };
 
+  const refreshCurrentPersonne = async (): Promise<void> => {
+    const personneId = currentPersonne.value?.id;
+    if (personneId) {
+      structureStore.refreshCurrentStructure();
+      try {
+        const response = await getPersonne(personneId);
+        currentPersonne.value = response.data;
+      } catch (e) {
+        console.error(e.message);
+      }
+    }
+  };
+
   const structureFonctions = computed(
     (): Array<PersonneFonction> | undefined => {
       const { currentStructureId } = configurationStore;
@@ -155,6 +168,7 @@ export const usePersonneStore = defineStore("personne", () => {
   return {
     currentPersonne,
     initCurrentPersonne,
+    refreshCurrentPersonne,
     isCurrentPersonne,
     structureFonctions,
     hasStructureFonctions,

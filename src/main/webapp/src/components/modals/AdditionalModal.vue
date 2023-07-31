@@ -24,7 +24,7 @@ const fonctionStore = useFonctionStore();
 const { customMapping } = storeToRefs(fonctionStore);
 
 const personneStore = usePersonneStore();
-const { initCurrentPersonne } = personneStore;
+const { initCurrentPersonne, refreshCurrentPersonne } = personneStore;
 const {
   currentPersonne,
   isCurrentPersonne,
@@ -108,6 +108,7 @@ const save = async () => {
 
 const closeAndResetModal = (success?: boolean) => {
   if (success) {
+    refreshCurrentPersonne();
     toast.success(t("toast.additional.success", selected.value!.length));
   } else if (!success && success != undefined) {
     toast.error(t("toast.additional.error", selected.value!.length));

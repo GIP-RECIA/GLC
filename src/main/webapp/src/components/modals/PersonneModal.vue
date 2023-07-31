@@ -24,9 +24,10 @@ const { currentTab, isAdmin, currentStructureId, isAddMode } =
   storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
-const { customMapping, isCustomMapping } = storeToRefs(fonctionStore);
+const { filieres, customMapping, isCustomMapping } = storeToRefs(fonctionStore);
 
 const personneStore = usePersonneStore();
+const { refreshCurrentPersonne } = personneStore;
 const {
   currentPersonne,
   isCurrentPersonne,
@@ -96,6 +97,7 @@ const cancel = () => {
 
 const resetAddMode = (success?: boolean) => {
   if (success) {
+    refreshCurrentPersonne();
     toast.success(t("toast.additional.success", selected.value!.length));
   } else if (!success && success != undefined) {
     toast.error(t("toast.additional.error", selected.value!.length));
@@ -228,11 +230,16 @@ const resetAddMode = (success?: boolean) => {
       </div>
       <div class="mb-3">
         <b>{{ t("function", 2) }}</b>
-        <fonctions-layout :fonctions="structureFonctions!" class="mt-2" />
+        <fonctions-layout
+          :filieres="filieres"
+          :fonctions="structureFonctions!"
+          class="mt-2"
+        />
       </div>
       <div>
         <b>{{ t("additionalFunction", 2) }}</b>
         <fonctions-layout
+          :filieres="customMapping?.filieres"
           :fonctions="structureAdditionalFonctions!"
           class="mt-2"
         />
@@ -242,7 +249,7 @@ const resetAddMode = (success?: boolean) => {
     <div v-if="isAddMode">
       <checkbox-layout
         v-if="currentTab == Tabs.AdministrativeStaff"
-        :filieres="customMapping?.filieres ? customMapping.filieres : []"
+        :filieres="customMapping?.filieres"
         :selected="selected"
         :disabled="
           structureFonctions?.map(
