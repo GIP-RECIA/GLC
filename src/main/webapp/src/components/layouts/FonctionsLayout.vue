@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { useConfigurationStore } from "@/stores/configurationStore";
 import type { Filiere } from "@/types/filiereType";
 import type { PersonneFonction } from "@/types/fonctionType";
+import { storeToRefs } from "pinia";
 import { watch, unref, ref, onBeforeMount } from "vue";
-import { useRoute } from "vue-router";
 
-const route = useRoute();
-const { structureId } = route.params;
+const configurationStore = useConfigurationStore();
+const { currentStructureId } = storeToRefs(configurationStore);
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
@@ -29,7 +30,7 @@ watch(
 
 const filterFilieres = (): void => {
   const etabFonctions = props.fonctions.filter(
-    (fonction) => fonction.structure == Number(structureId)
+    (fonction) => fonction.structure == currentStructureId.value
   );
   const filiereIds = [
     ...new Set(etabFonctions.map((fonction) => fonction.filiere)),
