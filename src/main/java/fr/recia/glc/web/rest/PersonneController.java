@@ -15,17 +15,17 @@
  */
 package fr.recia.glc.web.rest;
 
+import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
-import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.education.Discipline;
-import fr.recia.glc.db.entities.fonction.AFonction;
 import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
+import fr.recia.glc.db.repositories.APersonneAStructureRepository2;
 import fr.recia.glc.db.repositories.education.DisciplineRepository;
 import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
@@ -43,10 +43,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -66,6 +65,8 @@ public class PersonneController {
   private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
   @Autowired
   private AStructureRepository<AStructure> aStructureRepository;
+  @Autowired
+  private APersonneAStructureRepository2 aPersonneAStructureRepository2;
 
   @GetMapping
   public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
@@ -78,20 +79,21 @@ public class PersonneController {
   public ResponseEntity<PersonneDto> getPersonne(@PathVariable Long id) {
     PersonneDto personne = aPersonneRepository.findByPersonneId(id);
     List<FonctionDto> fonctions = fonctionRepository.findByPersonne(id);
-    personne.setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith("SarapisUi_")).collect(Collectors.toList()));
-    personne.setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith("SarapisUi_")).collect(Collectors.toList()));
+    personne.setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+    personne.setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
 
     return new ResponseEntity<>(personne, HttpStatus.OK);
   }
 
   @PostMapping(value = "/{id}/fonction")
   public ResponseEntity setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody Map<String, Object> body) throws Exception {
-    PersonneDto personne = aPersonneRepository.findByPersonneId(id);
-    String source = personne.getSource().startsWith("SarapisUI_")
+    SimplePersonneDto personne = aPersonneRepository.findByPersonneIdSimple(id);
+    if (personne == null) throw new IllegalArgumentException("User not found");
+    String source = personne.getSource().startsWith(Constants.SARAPISUI_)
       ? personne.getSource()
-      : "SarapisUI_" + personne.getSource();
+      : Constants.SARAPISUI_ + personne.getSource();
     List<FonctionDto> additionalFonctions = fonctionRepository.findByPersonne(id).stream()
-      .filter(fonction -> fonction.getSource().startsWith("SarapisUi_"))
+      .filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_))
       .collect(Collectors.toList());
 
     Long structureId = (long) (int) body.get("structureId");
@@ -121,15 +123,19 @@ public class PersonneController {
     APersonne apersonne = aPersonneRepository.findById(id).orElse(null);
     AStructure structure = aStructureRepository.findById(structureId).orElse(null);
 
-    if (apersonne == null || structure == null) {
-      throw new Exception("Unable to create APersonneAStructure");
-    }
-
     boolean isInStructure = aPersonneAStructureRepository.isInStructure(id, structureId) > 0;
 
     if (!isInStructure) {
       log.debug("User is not in structure !");
-//      aPersonneAStructureRepository.saveAndFlush(new APersonneAStructure(apersonne.getId(), structure.getId()));
+      aPersonneAStructureRepository2.insertInStructure(id, structureId);
+    }
+
+    int officialFonctionsInStructure = fonctionRepository.findByPersonne(id).stream()
+      .filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_) && Objects.equals(fonction.getStructure(), structureId))
+      .collect(Collectors.toList()).size();
+    if (newAdditional.isEmpty() && !deletedAdditional.isEmpty() && officialFonctionsInStructure == 0) {
+      log.debug("Detach user from structure !");
+      aPersonneAStructureRepository2.deleteFromStructure(id, structureId);
     }
 
     List<Fonction> saveAdditional = newAdditional.stream()
@@ -137,26 +143,18 @@ public class PersonneController {
         log.debug("DisciplineId={}, filiereId={}", fonction.getDisciplinePoste(), fonction.getFiliere());
         Discipline discipline = disciplineRepository.findById(fonction.getDisciplinePoste()).orElse(null);
         TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
-        if (discipline != null && filiere != null) {
-          Fonction fonction1 = new Fonction(discipline, filiere, structure, apersonne, source);
 
-          return fonction1;
-        }
-        else log.error(
-          "Unable to create Fonction with parameters: Discipline={}, TypeFonctionFiliere={}", discipline, filiere
-        );
-
-        return new Fonction();
+        return new Fonction(discipline, filiere, structure, apersonne, source);
       })
       .collect(Collectors.toList());
 
     List<Long> deleteAdditionalIds = deletedAdditional.stream()
-      .map(fonction -> fonctionRepository.findId(fonction.getDisciplinePoste(), fonction.getFiliere(), fonction.getPersonne(), fonction.getStructure()))
+      .map(fonction -> fonctionRepository.findId(fonction.getDisciplinePoste(), fonction.getFiliere(), id, fonction.getStructure()))
       .collect(Collectors.toList());
 
-//    fonctionRepository.saveAll(saveAdditional);
-//    fonctionRepository.deleteAllById(deleteAdditionalIds);
-//    fonctionRepository.flush();
+    if (!saveAdditional.isEmpty()) fonctionRepository.saveAll(saveAdditional);
+    if (!deleteAdditionalIds.isEmpty()) fonctionRepository.deleteAllById(deleteAdditionalIds);
+    if (!saveAdditional.isEmpty() || !deletedAdditional.isEmpty()) fonctionRepository.flush();
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
