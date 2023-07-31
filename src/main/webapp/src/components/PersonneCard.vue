@@ -31,7 +31,7 @@ watch(
 </script>
 
 <template>
-  <v-card :variant="variant" @click="initCurrentPersonne(personne.id)">
+  <v-card :variant="variant" @click="initCurrentPersonne(personne.id, true)">
     <v-card-text class="d-flex align-center pa-3">
       <v-icon
         :icon="

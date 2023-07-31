@@ -34,8 +34,12 @@ export const useStructureStore = defineStore("structure", () => {
    * @param id Identifiant de la structure
    */
   const initCurrentEtab = async (id: number): Promise<void> => {
-    const { structures, setCurrentStructure, setCurrentTab } =
-      configurationStore;
+    const {
+      structures,
+      setCurrentStructure,
+      setCurrentTab,
+      setCurrentStructureId,
+    } = configurationStore;
 
     currentEtab.value = (await getEtablissement(id)).data;
 
@@ -51,6 +55,7 @@ export const useStructureStore = defineStore("structure", () => {
       });
       setCurrentStructure(structures.length - 1);
     } else setCurrentStructure(index);
+    setCurrentStructureId(id);
   };
 
   return {

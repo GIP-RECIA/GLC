@@ -28,31 +28,38 @@ export const usePersonneStore = defineStore("personne", () => {
    *
    * @param id Identifiant de la personne
    */
-  const initCurrentPersonne = async (id: number): Promise<void> => {
+  const initCurrentPersonne = async (
+    id: number,
+    showModal: boolean
+  ): Promise<void> => {
     try {
       const response = await getPersonne(id);
       currentPersonne.value = response.data;
-      isCurrentPersonne.value = true;
+      isCurrentPersonne.value = showModal;
     } catch (e) {
       console.error(e.message);
     }
   };
 
-  const structureFonctions = (
-    structureId: number
-  ): Array<PersonneFonction> | undefined => {
-    return currentPersonne.value?.fonctions.filter(
-      (fonction) => fonction.structure == structureId
-    );
-  };
+  const structureFonctions = computed(
+    (): Array<PersonneFonction> | undefined => {
+      const { currentStructureId } = configurationStore;
 
-  const structureAdditionalFonctions = (
-    structureId: number
-  ): Array<PersonneFonction> | undefined => {
-    return currentPersonne.value?.additionalFonctions.filter(
-      (fonction) => fonction.structure == structureId
-    );
-  };
+      return currentPersonne.value?.fonctions.filter(
+        (fonction) => fonction.structure == currentStructureId
+      );
+    }
+  );
+
+  const structureAdditionalFonctions = computed(
+    (): Array<PersonneFonction> | undefined => {
+      const { currentStructureId } = configurationStore;
+
+      return currentPersonne.value?.additionalFonctions.filter(
+        (fonction) => fonction.structure == currentStructureId
+      );
+    }
+  );
 
   /* -- Pour la structure courante -- */
 

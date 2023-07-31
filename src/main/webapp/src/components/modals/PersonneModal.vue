@@ -14,30 +14,33 @@ import moment from "moment";
 import { storeToRefs } from "pinia";
 import { watch, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRoute } from "vue-router";
 import { useToast } from "vue-toastification";
 
 const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
-const { currentTab, isAdmin } = storeToRefs(configurationStore);
+const { currentTab, isAdmin, currentStructureId } =
+  storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { customMapping, isCustomMapping } = storeToRefs(fonctionStore);
 
 const personneStore = usePersonneStore();
-const { structureFonctions, structureAdditionalFonctions } = personneStore;
-const { currentPersonne, isCurrentPersonne } = storeToRefs(personneStore);
-
-const route = useRoute();
-const { structureId } = route.params;
+const {
+  currentPersonne,
+  isCurrentPersonne,
+  structureFonctions,
+  structureAdditionalFonctions,
+} = storeToRefs(personneStore);
 
 const isLocked = ref<boolean>(false);
 const isAddMode = ref<boolean>(false);
-const selected = ref<Array<string>>([]);
+const selected = ref<Array<string> | undefined>([]);
 
-const isSelected = computed<boolean>(() => selected.value.length > 0);
+const canSave = computed<boolean>(
+  () => selected.value?.length != structureAdditionalFonctions.value?.length
+);
 
 const setSelected = (value: Array<string>) => {
   selected.value = value;
@@ -46,15 +49,15 @@ const setSelected = (value: Array<string>) => {
 watch(isCurrentPersonne, (newValue) => {
   if (!newValue) {
     const reset = debounce(() => {
+      currentPersonne.value = undefined;
       isAddMode.value = false;
     }, 500);
     reset();
     selected.value = [];
   } else {
-    const items = structureAdditionalFonctions(Number(structureId))?.map(
+    selected.value = structureAdditionalFonctions.value?.map(
       (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
     );
-    selected.value = items ? items : [];
     isLocked.value = currentPersonne.value!.etat == Etat.Bloque;
   }
 });
@@ -68,9 +71,9 @@ const reinitialize = () => {};
 const save = async () => {
   try {
     await setPersonneAdditional(
-      Number(structureId),
       currentPersonne.value!.id,
-      selected.value
+      currentStructureId.value!,
+      selected.value!
     );
     resetAddMode(true);
   } catch (e) {
@@ -85,9 +88,9 @@ const cancel = () => {
 
 const resetAddMode = (success?: boolean) => {
   if (success) {
-    toast.success(t("toast.additional.success", selected.value.length));
-  } else if (!success) {
-    toast.error(t("toast.additional.error", selected.value.length));
+    toast.success(t("toast.additional.success", selected.value!.length));
+  } else if (!success && success != undefined) {
+    toast.error(t("toast.additional.error", selected.value!.length));
   }
 
   isAddMode.value = false;
@@ -217,15 +220,12 @@ const resetAddMode = (success?: boolean) => {
       </div>
       <div class="mb-3">
         <b>{{ t("function", 2) }}</b>
-        <fonctions-layout
-          :fonctions="structureFonctions(Number(structureId))!"
-          class="mt-2"
-        />
+        <fonctions-layout :fonctions="structureFonctions!" class="mt-2" />
       </div>
       <div>
         <b>{{ t("additionalFunction", 2) }}</b>
         <fonctions-layout
-          :fonctions="structureAdditionalFonctions(Number(structureId))!"
+          :fonctions="structureAdditionalFonctions!"
           class="mt-2"
         />
       </div>
@@ -235,13 +235,9 @@ const resetAddMode = (success?: boolean) => {
       <checkbox-layout
         v-if="currentTab == Tabs.AdministrativeStaff"
         :filieres="customMapping?.filieres ? customMapping.filieres : []"
-        :selected="
-          structureAdditionalFonctions(Number(structureId))?.map(
-            (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
-          )
-        "
+        :selected="selected"
         :disabled="
-          structureFonctions(Number(structureId))?.map(
+          structureFonctions?.map(
             (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
           )
         "
@@ -299,7 +295,7 @@ const resetAddMode = (success?: boolean) => {
             <v-btn
               color="success"
               prepend-icon="fas fa-floppy-disk"
-              :disabled="!isSelected"
+              :disabled="!canSave"
               @click="save"
             >
               {{ t("save") }}

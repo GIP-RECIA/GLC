@@ -64,6 +64,12 @@ export const useConfigurationStore = defineStore("configuration", () => {
     currentTab.value = value;
   };
 
+  const currentStructureId = ref<number | undefined>();
+
+  const setCurrentStructureId = (id: number): void => {
+    currentStructureId.value = id;
+  };
+
   /* -- Gestion de la modale des complémentaires -- */
 
   const isAdditional = ref<boolean>(false);
@@ -90,6 +96,8 @@ export const useConfigurationStore = defineStore("configuration", () => {
     currentTab,
     setCurrentStructure,
     setCurrentTab,
+    currentStructureId,
+    setCurrentStructureId,
     isAdditional,
     identity,
     isAuthenticated,

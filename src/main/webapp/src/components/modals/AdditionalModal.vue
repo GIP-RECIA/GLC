@@ -2,69 +2,65 @@
 import CheckboxLayout from "@/components/layouts/CheckboxLayout.vue";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import PersonneSearch from "@/components/search/PersonneSearch.vue";
-import { getPersonne, setPersonneAdditional } from "@/services/personneService";
+import { setPersonneAdditional } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
 import { Tabs } from "@/types/enums/Tabs";
-import type { PersonneFonction } from "@/types/fonctionType";
-import type { Personne } from "@/types/personneType";
 import debounce from "lodash.debounce";
 import { storeToRefs } from "pinia";
-import { computed, ref } from "vue";
+import { watch, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRoute } from "vue-router";
 import { useToast } from "vue-toastification";
 
 const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
-const { currentTab, isAdditional } = storeToRefs(configurationStore);
+const { currentTab, isAdditional, currentStructureId } =
+  storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { customMapping } = storeToRefs(fonctionStore);
 
 const personneStore = usePersonneStore();
-const { administrativeSearchList, teachingSearchList } =
-  storeToRefs(personneStore);
-
-const route = useRoute();
-const { structureId } = route.params;
-
-const currentPersonne = ref<Personne | undefined>();
-
-const structureFonctions = (
-  structureId: number
-): Array<PersonneFonction> | undefined => {
-  return currentPersonne.value?.fonctions.filter(
-    (fonction) => fonction.structure == structureId
-  );
-};
-const structureAdditionalFonctions = (
-  structureId: number
-): Array<PersonneFonction> | undefined => {
-  return currentPersonne.value?.additionalFonctions.filter(
-    (fonction) => fonction.structure == structureId
-  );
-};
+const { initCurrentPersonne } = personneStore;
+const {
+  currentPersonne,
+  isCurrentPersonne,
+  structureFonctions,
+  structureAdditionalFonctions,
+  administrativeSearchList,
+  teachingSearchList,
+} = storeToRefs(personneStore);
 
 const selectedUser = ref<number | undefined>();
-const selected = ref<Array<string>>([]);
+const isSelectedUser = computed<boolean>(() => selectedUser.value != undefined);
 
-const isSelected = computed<boolean>(() => selected.value.length > 0);
+const setSelectedUser = (id: number | undefined) => {
+  selectedUser.value = id;
+  currentPersonne.value = undefined;
+  if (id && selectedUser.value) {
+    initCurrentPersonne(id, false);
+  }
+};
+
+watch(currentPersonne, (newValue) => {
+  if (newValue) {
+    selected.value = structureAdditionalFonctions.value?.map(
+      (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
+    );
+  }
+});
+
+const selected = ref<Array<string> | undefined>([]);
+
+const canSave = computed<boolean>(() =>
+  selected.value ? selected.value.length > 0 : false
+);
 
 const setSelected = (value: Array<string>) => {
   selected.value = value;
-};
-
-const isSelectedUser = computed<boolean>(() => selectedUser.value != undefined);
-
-const setSelectedUser = async (id: number | undefined) => {
-  selectedUser.value = id;
-  if (selectedUser.value) {
-    currentPersonne.value = (await getPersonne(id!)).data;
-  }
 };
 
 const currentTabValue = () => {
@@ -89,9 +85,9 @@ const currentTabValue = () => {
 const save = async () => {
   try {
     await setPersonneAdditional(
-      Number(structureId),
-      selectedUser.value!,
-      selected.value
+      currentPersonne.value!.id,
+      currentStructureId.value!,
+      selected.value!
     );
     closeAndResetModal(true);
   } catch (e) {
@@ -102,9 +98,9 @@ const save = async () => {
 
 const closeAndResetModal = (success?: boolean) => {
   if (success) {
-    toast.success(t("toast.additional.success", selected.value.length));
-  } else if (!success) {
-    toast.error(t("toast.additional.error", selected.value.length));
+    toast.success(t("toast.additional.success", selected.value!.length));
+  } else if (!success && success != undefined) {
+    toast.error(t("toast.additional.error", selected.value!.length));
   }
 
   if (isAdditional.value) isAdditional.value = false;
@@ -127,19 +123,12 @@ const closeAndResetModal = (success?: boolean) => {
       :search-list="currentTabValue().searchList"
       @update:select="setSelectedUser"
     />
-    <div
-      v-if="selectedUser != undefined && currentPersonne != undefined"
-      class="mt-4"
-    >
+    <div v-if="currentPersonne">
       <checkbox-layout
         :filieres="currentTabValue().filieres"
-        :selected="
-          structureAdditionalFonctions(Number(structureId))?.map(
-            (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
-          )
-        "
+        :selected="selected"
         :disabled="
-          structureFonctions(Number(structureId))?.map(
+          structureFonctions?.map(
             (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
           )
         "
@@ -150,7 +139,7 @@ const closeAndResetModal = (success?: boolean) => {
       <v-btn
         color="success"
         prepend-icon="fas fa-floppy-disk"
-        :disabled="!isSelectedUser || !isSelected"
+        :disabled="!isSelectedUser || !canSave"
         @click="save"
       >
         {{ t("save") }}
