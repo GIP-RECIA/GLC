@@ -71,6 +71,7 @@ public class PersonneController {
   @GetMapping
   public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
     List<SimplePersonneDto> personnes = aPersonneRepository.findByNameLike(name);
+    if (personnes == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     return new ResponseEntity<>(personnes, HttpStatus.OK);
   }
@@ -78,9 +79,12 @@ public class PersonneController {
   @GetMapping(value = "/{id}")
   public ResponseEntity<PersonneDto> getPersonne(@PathVariable Long id) {
     PersonneDto personne = aPersonneRepository.findByPersonneId(id);
+    if (personne == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     List<FonctionDto> fonctions = fonctionRepository.findByPersonne(id);
-    personne.setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
-    personne.setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+    if (!fonctions.isEmpty()) {
+      personne.setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+      personne.setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+    }
 
     return new ResponseEntity<>(personne, HttpStatus.OK);
   }
@@ -88,7 +92,7 @@ public class PersonneController {
   @PostMapping(value = "/{id}/fonction")
   public ResponseEntity setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody Map<String, Object> body) throws Exception {
     SimplePersonneDto personne = aPersonneRepository.findByPersonneIdSimple(id);
-    if (personne == null) throw new IllegalArgumentException("User not found");
+    if (personne == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     String source = personne.getSource().startsWith(Constants.SARAPISUI_)
       ? personne.getSource()
       : Constants.SARAPISUI_ + personne.getSource();

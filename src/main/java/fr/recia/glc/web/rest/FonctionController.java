@@ -67,6 +67,7 @@ public class FonctionController {
     ArrayList<Object> data = new ArrayList<>();
 
     List<String> sources = disciplineRepository.findAllNonSarapisSources();
+    if (sources.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     sources.forEach(source -> {
       Map<String, Object> object = new HashMap<>();
       object.put("source", source);

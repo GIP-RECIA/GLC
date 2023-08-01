@@ -82,6 +82,7 @@ public class EtablissementController {
           return etablissement;
         })
         .collect(Collectors.toList());
+    if (etablissements.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     return new ResponseEntity<>(etablissements, HttpStatus.OK);
   }
@@ -89,6 +90,7 @@ public class EtablissementController {
   @GetMapping(value = "/{id}")
   public ResponseEntity<EtablissementDto> getEtablissement(@PathVariable Long id) {
     EtablissementDto etablissement = etablissementRepository.findByEtablissementId(id);
+    if (etablissement == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     String[] split = etablissement.getNom().split("\\$");
     if (split.length > 1) {
       etablissement.setType(split[0]);
