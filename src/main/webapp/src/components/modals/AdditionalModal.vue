@@ -7,6 +7,7 @@ import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
 import { Tabs } from "@/types/enums/Tabs";
+import type { SearchPersonne } from "@/types/personneType";
 import debounce from "lodash.debounce";
 import { storeToRefs } from "pinia";
 import { watch, computed, ref } from "vue";
@@ -58,6 +59,10 @@ watch(currentPersonne, (newValue) => {
 
 const selected = ref<Array<string> | undefined>([]);
 
+const setSelected = (value: Array<string>) => {
+  selected.value = value;
+};
+
 const canSave = computed(() => {
   if (selected.value?.length == structureAdditionalFonctions.value?.length) {
     return !selected.value?.every((entry) =>
@@ -69,28 +74,17 @@ const canSave = computed(() => {
   return true;
 });
 
-const setSelected = (value: Array<string>) => {
-  selected.value = value;
-};
-
-const currentTabValue = () => {
-  switch (currentTab.value) {
-    case Tabs.AdministrativeStaff:
-      return {
-        title: t("addAdditionalFonction"),
-        searchList: administrativeSearchList.value,
-        filieres: customMapping.value?.filieres,
-      };
-    case Tabs.TeachingStaff:
-      return {
-        title: t("addAdditionalTeaching"),
-        searchList: teachingSearchList.value,
-        filieres: [],
-      };
-    default:
-      return { title: "", searchList: undefined, filieres: undefined };
+const saveButton = computed<{ title: string; icon: string; color: string }>(
+  () => {
+    if (!hasStructureFonctions.value) {
+      if (!hasStructureAdditionalFonctions.value)
+        return { title: "attach", icon: "fas fa-link", color: "success" };
+      if (selected.value?.length == 0)
+        return { title: "detach", icon: "fas fa-link-slash", color: "error" };
+    }
+    return { title: "save", icon: "fas fa-floppy-disk", color: "success" };
   }
-};
+);
 
 const save = async () => {
   try {
@@ -122,21 +116,44 @@ const closeAndResetModal = (success?: boolean) => {
   }, 500);
   reset();
 };
+
+const currentTabValue = computed<{
+  title: string;
+  searchList: Array<SearchPersonne> | undefined;
+  filieres: Array<any> | undefined;
+}>(() => {
+  switch (currentTab.value) {
+    case Tabs.AdministrativeStaff:
+      return {
+        title: t("addAdditionalFonction"),
+        searchList: administrativeSearchList.value,
+        filieres: customMapping.value?.filieres,
+      };
+    case Tabs.TeachingStaff:
+      return {
+        title: t("addAdditionalTeaching"),
+        searchList: teachingSearchList.value,
+        filieres: [],
+      };
+    default:
+      return { title: "", searchList: undefined, filieres: undefined };
+  }
+});
 </script>
 
 <template>
   <base-modal
     v-model="isAdditional"
-    :title="currentTabValue().title"
+    :title="currentTabValue.title"
     @update:model-value="(value: boolean) => { if (!value) closeAndResetModal();}"
   >
     <personne-search
-      :search-list="currentTabValue().searchList"
+      :search-list="currentTabValue.searchList"
       @update:select="setSelectedUser"
     />
     <div v-if="currentPersonne">
       <checkbox-layout
-        :filieres="currentTabValue().filieres"
+        :filieres="currentTabValue.filieres"
         :selected="selected"
         :disabled="
           structureFonctions?.map(
@@ -149,38 +166,12 @@ const closeAndResetModal = (success?: boolean) => {
     <template #footer>
       <v-btn
         v-if="selectedUser"
-        :color="
-          !hasStructureFonctions && !hasStructureAdditionalFonctions
-            ? selected?.length == 0
-              ? 'error'
-              : 'success'
-            : selected?.length == 0
-            ? 'error'
-            : 'success'
-        "
-        :prepend-icon="
-          !hasStructureFonctions && !hasStructureAdditionalFonctions
-            ? selected?.length == 0
-              ? 'fas fa-link-slash'
-              : 'fas fa-link'
-            : selected?.length == 0
-            ? 'fas fa-link-slash'
-            : 'fas fa-floppy-disk'
-        "
-        :disabled="!isSelectedUser || !canSave"
+        :color="saveButton.color"
+        :prepend-icon="saveButton.icon"
+        :disabled="!canSave"
         @click="save"
       >
-        {{
-          t(
-            !hasStructureFonctions && !hasStructureAdditionalFonctions
-              ? selected?.length == 0
-                ? "detach"
-                : "attach"
-              : selected?.length == 0
-              ? "detach"
-              : "save"
-          )
-        }}
+        {{ t(saveButton.title) }}
       </v-btn>
     </template>
   </base-modal>
