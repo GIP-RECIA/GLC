@@ -108,11 +108,12 @@ const lockManager = () => {
 };
 
 const resetAddMode = (success?: boolean) => {
+  const { title } = saveButton.value;
   if (success) {
     refreshCurrentPersonne();
-    toast.success(t("toast.additional.success", selected.value!.length));
+    toast.success(t(`toast.additional.success.${title}`));
   } else if (!success && success != undefined) {
-    toast.error(t("toast.additional.error", selected.value!.length));
+    toast.error(t(`toast.additional.error.${title}`));
   }
 
   isAddMode.value = false;

@@ -59,8 +59,16 @@
   "addAdditionalTeaching": "Add one or more additional teachings",
   "toast": {
     "additional": {
-      "success": "Function added successfully | Functions added successfully",
-      "error": "Unable to add function | Unable to add functions"
+      "success": {
+        "save": "Changes applied",
+        "attach": "Attach done successfully",
+        "detach": "Detach done successfully"
+      },
+      "error": {
+        "save": "Unable to apply changes",
+        "attach": "Unable to attach people",
+        "detach": "Unable to detach people"
+      }
     }
   },
   "attach": "Attach",

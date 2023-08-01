@@ -18,7 +18,7 @@ const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
-const { currentTab, isAdditional, currentStructureId, isAddMode } =
+const { currentTab, currentStructureId, isAdditional, isAddMode } =
   storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
@@ -97,11 +97,12 @@ const save = async () => {
 };
 
 const closeAndResetModal = (success?: boolean) => {
+  const { title } = saveButton.value;
   if (success) {
     refreshCurrentPersonne();
-    toast.success(t("toast.additional.success", selected.value!.length));
+    toast.success(t(`toast.additional.success.${title}`));
   } else if (!success && success != undefined) {
-    toast.error(t("toast.additional.error", selected.value!.length));
+    toast.error(t(`toast.additional.error.${title}`));
   }
 
   if (isAdditional.value) isAdditional.value = false;

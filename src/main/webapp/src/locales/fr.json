@@ -59,8 +59,16 @@
   "addAdditionalTeaching": "Ajouter un/des enseignements complémentaires",
   "toast": {
     "additional": {
-      "success": "Fonction ajouté avec succès | Fonctions ajoutées avec succès",
-      "error": "Impossible d'ajouter la fonction | Impossible d'ajouter les fonctions"
+      "success": {
+        "save": "Modifications appliqués avec succès",
+        "attach": "Rattachement effectué avec succès",
+        "detach": "Détachement effectué avec succès"
+      },
+      "error": {
+        "save": "Impossible d'appliquer les modifications",
+        "attach": "Impossible de rattacher la personne",
+        "detach": "Impossible de détacher la personne"
+      }
     }
   },
   "attach": "Rattacher",
