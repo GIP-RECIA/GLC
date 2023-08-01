@@ -2,22 +2,13 @@
 import type { enumValues } from "@/types/enumValuesType";
 import { getEtat } from "@/types/enums/Etat";
 import type { SimplePersonne } from "@/types/personneType";
-import { ref, watch } from "vue";
+import { computed } from "vue";
 
 const props = defineProps<{
   personne: SimplePersonne;
 }>();
 
-const displayEtat = ref<enumValues>(getEtat(props.personne.etat));
-
-watch(
-  () => props.personne.etat,
-  (newValue, oldValue) => {
-    if (newValue != oldValue) {
-      displayEtat.value = getEtat(newValue);
-    }
-  }
-);
+const etat = computed<enumValues>(() => getEtat(props.personne.etat));
 </script>
 
 <template>
@@ -32,7 +23,7 @@ watch(
             ? 'far fa-user'
             : 'fas fa-user'
         "
-        :color="displayEtat.color"
+        :color="etat.color"
       />
     </template>
   </v-list-item>

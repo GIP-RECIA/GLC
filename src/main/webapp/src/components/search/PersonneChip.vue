@@ -2,7 +2,7 @@
 import type { enumValues } from "@/types/enumValuesType";
 import { getEtat } from "@/types/enums/Etat";
 import type { SimplePersonne } from "@/types/personneType";
-import { ref, watch } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -11,16 +11,7 @@ const props = defineProps<{
   personne: SimplePersonne;
 }>();
 
-const displayEtat = ref<enumValues>(getEtat(props.personne.etat));
-
-watch(
-  () => props.personne.etat,
-  (newValue, oldValue) => {
-    if (newValue != oldValue) {
-      displayEtat.value = getEtat(newValue);
-    }
-  }
-);
+const etat = computed<enumValues>(() => getEtat(props.personne.etat));
 </script>
 
 <template>
@@ -32,8 +23,8 @@ watch(
             ? 'far fa-user'
             : 'fas fa-user'
         "
-        :color="displayEtat.color"
-        :alt="t(displayEtat.i18n)"
+        :color="etat.color"
+        :alt="t(etat.i18n)"
         class="mr-2"
       />
     </template>
