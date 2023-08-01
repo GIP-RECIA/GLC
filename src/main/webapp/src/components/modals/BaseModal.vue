@@ -30,10 +30,10 @@ const modelValue = computed<boolean>({
           />
         </template>
       </v-toolbar>
-      <v-card-text>
+      <v-card-text class="py-0">
         <slot />
       </v-card-text>
-      <v-card-actions class="d-flex justify-end">
+      <v-card-actions v-if="$slots.footer" class="d-flex justify-end">
         <slot name="footer" />
       </v-card-actions>
     </v-card>

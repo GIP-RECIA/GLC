@@ -245,7 +245,7 @@ const resetAddMode = (success?: boolean) => {
         <fonctions-layout
           :filieres="filieres"
           :fonctions="structureFonctions!"
-          class="mt-2"
+          class="mt-2 mb-3"
         />
       </div>
       <div>
@@ -253,7 +253,7 @@ const resetAddMode = (success?: boolean) => {
         <fonctions-layout
           :filieres="customMapping?.filieres"
           :fonctions="structureAdditionalFonctions!"
-          class="mt-2"
+          class="mt-2 mb-3"
         />
       </div>
     </div>

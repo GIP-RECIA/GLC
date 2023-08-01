@@ -145,6 +145,7 @@ const currentTabValue = computed<{
     <personne-search
       :search-list="currentTabValue.searchList"
       @update:select="setSelectedUser"
+      :class="currentPersonne ? 'mb-4' : 'mb-6'"
     />
     <div v-if="currentPersonne">
       <checkbox-layout
