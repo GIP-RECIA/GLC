@@ -10,13 +10,13 @@ const { currentStructureId } = storeToRefs(configurationStore);
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
-  fonctions: Array<PersonneFonction>;
+  fonctions: Array<PersonneFonction> | undefined;
 }>();
 
 const filteredFilieres = ref<Array<Filiere>>([]);
 
 onBeforeMount(() => {
-  if (props.fonctions.length > 0) filterFilieres();
+  if (props.fonctions && props.fonctions.length > 0) filterFilieres();
 });
 
 watch(
@@ -29,9 +29,11 @@ watch(
 );
 
 const filterFilieres = (): void => {
-  const etabFonctions = props.fonctions.filter(
-    (fonction) => fonction.structure == currentStructureId.value
-  );
+  const etabFonctions = props.fonctions
+    ? props.fonctions.filter(
+        (fonction) => fonction.structure == currentStructureId.value
+      )
+    : [];
   const filiereIds = [
     ...new Set(etabFonctions.map((fonction) => fonction.filiere)),
   ];
@@ -56,7 +58,7 @@ const filterFilieres = (): void => {
 </script>
 
 <template>
-  <div v-if="fonctions.length > 0">
+  <div v-if="fonctions && fonctions.length > 0">
     <v-row>
       <v-col
         v-for="(filiere, index) in filteredFilieres"

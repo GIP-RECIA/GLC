@@ -54,7 +54,7 @@ export const usePersonneStore = defineStore("personne", () => {
     (): Array<PersonneFonction> | undefined => {
       const { currentStructureId } = configurationStore;
 
-      return currentPersonne.value?.fonctions.filter(
+      return currentPersonne.value?.fonctions?.filter(
         (fonction) => fonction.structure == currentStructureId
       );
     }
@@ -70,7 +70,7 @@ export const usePersonneStore = defineStore("personne", () => {
     (): Array<PersonneFonction> | undefined => {
       const { currentStructureId } = configurationStore;
 
-      return currentPersonne.value?.additionalFonctions.filter(
+      return currentPersonne.value?.additionalFonctions?.filter(
         (fonction) => fonction.structure == currentStructureId
       );
     }

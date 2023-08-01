@@ -239,7 +239,7 @@ const resetAddMode = (success?: boolean) => {
         <b>{{ t("function", 2) }}</b>
         <fonctions-layout
           :filieres="filieres"
-          :fonctions="structureFonctions!"
+          :fonctions="structureFonctions"
           class="mt-2 mb-3"
         />
       </div>
@@ -247,7 +247,7 @@ const resetAddMode = (success?: boolean) => {
         <b>{{ t("additionalFunction", 2) }}</b>
         <fonctions-layout
           :filieres="customMapping?.filieres"
-          :fonctions="structureAdditionalFonctions!"
+          :fonctions="structureAdditionalFonctions"
           class="mt-2 mb-3"
         />
       </div>

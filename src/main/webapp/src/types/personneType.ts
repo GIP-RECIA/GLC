@@ -23,8 +23,8 @@ export type Personne = {
   forceEtat: string;
   idEduConnect: string;
   login: string;
-  fonctions: Array<PersonneFonction>;
-  additionalFonctions: Array<PersonneFonction>;
+  fonctions?: Array<PersonneFonction>;
+  additionalFonctions?: Array<PersonneFonction>;
 };
 
 export type SimplePersonne = {
