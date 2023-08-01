@@ -7,7 +7,7 @@ import { storeToRefs } from "pinia";
 import { watch, ref } from "vue";
 
 const personneStore = usePersonneStore();
-const { searchList } = storeToRefs(personneStore);
+const { personnes } = storeToRefs(personneStore);
 
 const items = ref<Array<SimplePersonne> | undefined>();
 const pageItems = ref<Array<SimplePersonne> | undefined>();
@@ -17,7 +17,7 @@ const pagination = ref({
 });
 const itemsPerPage: number = 20;
 
-watch(searchList, (newValue) => {
+watch(personnes, (newValue) => {
   if (typeof newValue !== "undefined" && newValue !== null)
     items.value = newValue;
 });
@@ -42,13 +42,14 @@ const showPage = (page: number) => {
   }
 };
 
-items.value = searchList.value;
+items.value = personnes.value;
 </script>
 
 <template>
   <v-container fluid>
     <account-filter
       class="mb-8"
+      :search-list="personnes"
       @update:result="(result: Array<SimplePersonne>) => items = result"
     />
     <v-row>

@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import ChipsFilter from "@/components/filter/ChipsFilter.vue";
-import { usePersonneStore } from "@/stores/personneStore";
 import { CategoriePersonne } from "@/types/enums/CategoriePersonne";
 import { Etat } from "@/types/enums/Etat";
 import type { SimplePersonne } from "@/types/personneType";
 import isEmpty from "lodash.isempty";
-import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
+const props = defineProps<{
+  searchList: Array<SimplePersonne> | undefined;
+}>();
 
 const emit =
   defineEmits<
     (event: "update:result", payload: Array<SimplePersonne>) => void
   >();
 
-const { t } = useI18n();
-
-const personneStore = usePersonneStore();
-const { searchList } = storeToRefs(personneStore);
-
-const nbResults = ref<number>(searchList.value ? searchList.value.length : 0);
+const nbResults = ref<number>(props.searchList ? props.searchList.length : 0);
 
 let searchFilter: string | undefined;
 let categoryFilter: Array<string>;
@@ -42,8 +41,8 @@ const setStatusFilter = (newValue: Array<string>) => {
 
 const filter = () => {
   const searchValue = searchFilter ? searchFilter.toLowerCase() : undefined;
-  let result: Array<SimplePersonne> = !isEmpty(searchList.value)
-    ? searchList.value!
+  let result: Array<SimplePersonne> = !isEmpty(props.searchList)
+    ? props.searchList!
     : [];
 
   if (searchValue != undefined && searchValue !== "") {

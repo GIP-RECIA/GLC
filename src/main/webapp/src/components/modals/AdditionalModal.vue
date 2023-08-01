@@ -33,8 +33,8 @@ const {
   hasStructureFonctions,
   structureAdditionalFonctions,
   hasStructureAdditionalFonctions,
-  administrativeSearchList,
-  teachingSearchList,
+  administrativeList,
+  teachingList,
 } = storeToRefs(personneStore);
 
 const setSelectedUser = (id: number | undefined) => {
@@ -122,13 +122,13 @@ const currentTabValue = computed<{
     case Tabs.AdministrativeStaff:
       return {
         title: t("addAdditionalFonction"),
-        searchList: administrativeSearchList.value,
+        searchList: administrativeList.value,
         filieres: customMapping.value?.filieres,
       };
     case Tabs.TeachingStaff:
       return {
         title: t("addAdditionalTeaching"),
-        searchList: teachingSearchList.value,
+        searchList: teachingList.value,
         filieres: [],
       };
     default:

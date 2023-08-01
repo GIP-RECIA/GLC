@@ -104,34 +104,23 @@ export const usePersonneStore = defineStore("personne", () => {
   });
 
   /**
-   * Retourne la liste des personnes de la structure courante pour la recherche
-   */
-  const searchList = computed<Array<SimplePersonne> | undefined>(() => {
-    const { currentEtab } = structureStore;
-
-    return currentEtab?.personnes;
-  });
-
-  /**
    * Retourne la liste des personnels administratifs de la structure courante
    * pour la recherche
    */
-  const administrativeSearchList = computed<Array<SimplePersonne> | undefined>(
-    () => {
-      const { currentEtab } = structureStore;
-      const { administrativeStaff } = configurationStore;
+  const administrativeList = computed<Array<SimplePersonne> | undefined>(() => {
+    const { currentEtab } = structureStore;
+    const { administrativeStaff } = configurationStore;
 
-      return currentEtab?.personnes.filter((personne) =>
-        administrativeStaff?.includes(personne.categorie)
-      );
-    }
-  );
+    return currentEtab?.personnes.filter((personne) =>
+      administrativeStaff?.includes(personne.categorie)
+    );
+  });
 
   /**
    * Retourne la liste des personnels enseignants de la structure courante pour
    * la recherche
    */
-  const teachingSearchList = computed<Array<SimplePersonne> | undefined>(() => {
+  const teachingList = computed<Array<SimplePersonne> | undefined>(() => {
     const { currentEtab } = structureStore;
 
     return currentEtab?.personnes.filter(
@@ -150,8 +139,7 @@ export const usePersonneStore = defineStore("personne", () => {
     hasStructureAdditionalFonctions,
     personnes,
     deletedPersonnes,
-    searchList,
-    administrativeSearchList,
-    teachingSearchList,
+    administrativeList,
+    teachingList,
   };
 });
