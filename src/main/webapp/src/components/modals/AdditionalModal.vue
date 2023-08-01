@@ -37,13 +37,9 @@ const {
   teachingSearchList,
 } = storeToRefs(personneStore);
 
-const selectedUser = ref<number | undefined>();
-const isSelectedUser = computed<boolean>(() => selectedUser.value != undefined);
-
 const setSelectedUser = (id: number | undefined) => {
-  selectedUser.value = id;
   currentPersonne.value = undefined;
-  if (id && selectedUser.value) {
+  if (id) {
     // isAddMode.value = true;
     initCurrentPersonne(id, false);
   }
@@ -111,7 +107,6 @@ const closeAndResetModal = (success?: boolean) => {
   if (isAdditional.value) isAdditional.value = false;
   const reset = debounce(() => {
     currentPersonne.value = undefined;
-    selectedUser.value = undefined;
     selected.value = [];
   }, 500);
   reset();
@@ -163,9 +158,8 @@ const currentTabValue = computed<{
         @update:selected="setSelected"
       />
     </div>
-    <template #footer>
+    <template #footer v-if="currentPersonne">
       <v-btn
-        v-if="selectedUser"
         :color="saveButton.color"
         :prepend-icon="saveButton.icon"
         :disabled="!canSave"
