@@ -34,7 +34,7 @@ const showAll = ref<boolean>(false);
     <div class="fab ma-4">
       <v-btn
         variant="tonal"
-        icon="fas fa-user-plus"
+        icon="fas fa-user-pen"
         @click="isAdditional = true"
       />
     </div>

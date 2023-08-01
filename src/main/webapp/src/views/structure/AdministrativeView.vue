@@ -35,7 +35,7 @@ const showAll = ref<boolean>(false);
       <v-btn
         v-if="isCustomMapping"
         variant="tonal"
-        icon="fas fa-user-plus"
+        icon="fas fa-user-pen"
         @click="isAdditional = true"
       />
     </div>

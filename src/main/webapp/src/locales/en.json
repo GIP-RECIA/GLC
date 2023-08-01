@@ -55,8 +55,8 @@
   "category": "Category",
   "hideEmpty": "Hide empty",
   "showAll": "Show all",
-  "addAdditionalFonction": "Add one or more additional functions",
-  "addAdditionalTeaching": "Add one or more additional teachings",
+  "addAdditionalFonction": "Manage additional functions",
+  "addAdditionalTeaching": "Manage additional teachings",
   "toast": {
     "additional": {
       "success": {

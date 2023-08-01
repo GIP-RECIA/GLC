@@ -55,8 +55,8 @@
   "category": "Catégorie",
   "hideEmpty": "Masquer les séctions vides",
   "showAll": "Tout afficher",
-  "addAdditionalFonction": "Ajouter une/des fonctions complémentaires",
-  "addAdditionalTeaching": "Ajouter un/des enseignements complémentaires",
+  "addAdditionalFonction": "Gestion des fonctions complémentaires",
+  "addAdditionalTeaching": "Gestion des enseignements complémentaires",
   "toast": {
     "additional": {
       "success": {
