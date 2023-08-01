@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { enumValues } from "@/types/enumValuesType";
 import { getEtat } from "@/types/enums/Etat";
-import type { SearchPersonne } from "@/types/personneType";
+import type { SimplePersonne } from "@/types/personneType";
 import { ref, watch } from "vue";
 
 const props = defineProps<{
-  personne: SearchPersonne;
+  personne: SimplePersonne;
 }>();
 
 const displayEtat = ref<enumValues>(getEtat(props.personne.etat));
@@ -23,7 +23,7 @@ watch(
 <template>
   <v-list-item :subtitle="personne.uid">
     <template #title>
-      {{ personne.displayName }}
+      {{ personne.cn }}
     </template>
     <template #prepend>
       <v-icon

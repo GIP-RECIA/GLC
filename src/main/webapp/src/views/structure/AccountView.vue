@@ -2,15 +2,15 @@
 import PersonneCard from "@/components/PersonneCard.vue";
 import AccountFilter from "@/components/filter/AccountFilter.vue";
 import { usePersonneStore } from "@/stores/personneStore";
-import type { SearchPersonne } from "@/types/personneType";
+import type { SimplePersonne } from "@/types/personneType";
 import { storeToRefs } from "pinia";
 import { watch, ref } from "vue";
 
 const personneStore = usePersonneStore();
 const { searchList } = storeToRefs(personneStore);
 
-const items = ref<Array<SearchPersonne> | undefined>();
-const pageItems = ref<Array<SearchPersonne> | undefined>();
+const items = ref<Array<SimplePersonne> | undefined>();
+const pageItems = ref<Array<SimplePersonne> | undefined>();
 const pagination = ref({
   page: 1,
   pages: 1,
@@ -49,7 +49,7 @@ items.value = searchList.value;
   <v-container fluid>
     <account-filter
       class="mb-8"
-      @update:result="(result: Array<SearchPersonne>) => items = result"
+      @update:result="(result: Array<SimplePersonne>) => items = result"
     />
     <v-row>
       <v-col

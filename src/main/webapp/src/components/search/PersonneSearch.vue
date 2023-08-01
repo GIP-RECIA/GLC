@@ -2,7 +2,7 @@
 import PersonneChip from "@/components/search/PersonneChip.vue";
 import PersonneListItem from "@/components/search/PersonneListItem.vue";
 import { searchPersonne } from "@/services/personneService";
-import type { SearchPersonne } from "@/types/personneType";
+import type { SimplePersonne } from "@/types/personneType";
 import debounce from "lodash.debounce";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -10,15 +10,15 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const props = defineProps<{
-  searchList: Array<SearchPersonne> | undefined;
+  searchList: Array<SimplePersonne> | undefined;
 }>();
 
 const emit =
   defineEmits<(event: "update:select", payload: number | undefined) => void>();
 
-const select = ref<SearchPersonne | undefined>();
+const select = ref<SimplePersonne | undefined>();
 const loading = ref<boolean>(false);
-const items = ref<Array<SearchPersonne>>([]);
+const items = ref<Array<SimplePersonne>>([]);
 const searchOutOfStructure = ref<boolean>(false);
 
 watch(searchOutOfStructure, () => {
@@ -47,8 +47,7 @@ const findInStructure = (searchValue: string): void => {
   if (props.searchList) {
     items.value = props.searchList
       .filter((personne) => {
-        let filter =
-          personne.displayName.toLowerCase().indexOf(searchValue) > -1;
+        let filter = personne.cn.toLowerCase().indexOf(searchValue) > -1;
 
         if (personne.uid) {
           filter =
@@ -61,8 +60,8 @@ const findInStructure = (searchValue: string): void => {
         return {
           ...personne,
           searchValue: personne.uid
-            ? `${personne.displayName} (${personne.uid})`
-            : personne.displayName,
+            ? `${personne.cn} (${personne.uid})`
+            : personne.cn,
         };
       });
   }
@@ -73,21 +72,14 @@ const findOutOfStructure = debounce(async (searchValue: string) => {
   searchValue = searchValue.toLocaleLowerCase();
   try {
     const response = await searchPersonne(searchValue);
-    const list = response.data.map((personne) => {
-      const displayName = personne.patronyme
-        ? `${personne.patronyme} ${personne.givenName}`
-        : personne.givenName;
-
+    items.value = response.data.map((personne: SimplePersonne) => {
       return {
         ...personne,
-        displayName,
         searchValue: personne.uid
-          ? `${displayName} (${personne.uid})`
-          : displayName,
+          ? `${personne.cn} (${personne.uid})`
+          : personne.cn,
       };
     });
-
-    items.value = list;
   } catch (e) {
     console.error(e.message);
   }

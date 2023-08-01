@@ -7,7 +7,7 @@ import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
 import { Tabs } from "@/types/enums/Tabs";
-import type { SearchPersonne } from "@/types/personneType";
+import type { SimplePersonne } from "@/types/personneType";
 import debounce from "lodash.debounce";
 import { storeToRefs } from "pinia";
 import { watch, computed, ref } from "vue";
@@ -115,7 +115,7 @@ const closeAndResetModal = (success?: boolean) => {
 
 const currentTabValue = computed<{
   title: string;
-  searchList: Array<SearchPersonne> | undefined;
+  searchList: Array<SimplePersonne> | undefined;
   filieres: Array<any> | undefined;
 }>(() => {
   switch (currentTab.value) {

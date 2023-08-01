@@ -43,11 +43,7 @@ watch(
         :title="t(displayEtat.i18n)"
         :alt="t(displayEtat.i18n)"
         class="mr-2"
-      />{{
-        personne.patronyme
-          ? `${personne.patronyme} ${personne.givenName}`
-          : personne.givenName
-      }}
+      />{{ personne.cn }}
     </v-card-text>
   </v-card>
 </template>

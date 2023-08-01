@@ -3,7 +3,7 @@ import ChipsFilter from "@/components/filter/ChipsFilter.vue";
 import { usePersonneStore } from "@/stores/personneStore";
 import { CategoriePersonne } from "@/types/enums/CategoriePersonne";
 import { Etat } from "@/types/enums/Etat";
-import type { SearchPersonne } from "@/types/personneType";
+import type { SimplePersonne } from "@/types/personneType";
 import isEmpty from "lodash.isempty";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
@@ -11,7 +11,7 @@ import { useI18n } from "vue-i18n";
 
 const emit =
   defineEmits<
-    (event: "update:result", payload: Array<SearchPersonne>) => void
+    (event: "update:result", payload: Array<SimplePersonne>) => void
   >();
 
 const { t } = useI18n();
@@ -42,13 +42,13 @@ const setStatusFilter = (newValue: Array<string>) => {
 
 const filter = () => {
   const searchValue = searchFilter ? searchFilter.toLowerCase() : undefined;
-  let result: Array<SearchPersonne> = !isEmpty(searchList.value)
+  let result: Array<SimplePersonne> = !isEmpty(searchList.value)
     ? searchList.value!
     : [];
 
   if (searchValue != undefined && searchValue !== "") {
     result = result.filter((personne) => {
-      let filter = personne.displayName.toLowerCase().indexOf(searchValue) > -1;
+      let filter = personne.cn.toLowerCase().indexOf(searchValue) > -1;
 
       if (personne.uid) {
         filter = filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;

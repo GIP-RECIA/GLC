@@ -4,11 +4,7 @@ import { useStructureStore } from "@/stores/structureStore";
 import { CategoriePersonne } from "@/types/enums/CategoriePersonne";
 import { Etat } from "@/types/enums/Etat";
 import type { PersonneFonction } from "@/types/fonctionType";
-import type {
-  Personne,
-  SearchPersonne,
-  SimplePersonne,
-} from "@/types/personneType";
+import type { Personne, SimplePersonne } from "@/types/personneType";
 import isEmpty from "lodash.isempty";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
@@ -108,46 +104,26 @@ export const usePersonneStore = defineStore("personne", () => {
   });
 
   /**
-   * Retourne la liste des personnes passés avec un display name
-   */
-  const toSearchList = (
-    list: Array<SimplePersonne> | undefined
-  ): Array<SearchPersonne> | undefined => {
-    return list
-      ? list.map((personne) => {
-          return {
-            ...personne,
-            displayName: personne.patronyme
-              ? `${personne.patronyme} ${personne.givenName}`
-              : personne.givenName,
-          };
-        })
-      : undefined;
-  };
-
-  /**
    * Retourne la liste des personnes de la structure courante pour la recherche
    */
-  const searchList = computed<Array<SearchPersonne> | undefined>(() => {
+  const searchList = computed<Array<SimplePersonne> | undefined>(() => {
     const { currentEtab } = structureStore;
 
-    return toSearchList(currentEtab?.personnes);
+    return currentEtab?.personnes;
   });
 
   /**
    * Retourne la liste des personnels administratifs de la structure courante
    * pour la recherche
    */
-  const administrativeSearchList = computed<Array<SearchPersonne> | undefined>(
+  const administrativeSearchList = computed<Array<SimplePersonne> | undefined>(
     () => {
       const { currentEtab } = structureStore;
       const { administrativeStaff } = configurationStore;
 
-      const staff = currentEtab?.personnes.filter((personne) =>
+      return currentEtab?.personnes.filter((personne) =>
         administrativeStaff?.includes(personne.categorie)
       );
-
-      return toSearchList(staff);
     }
   );
 
@@ -155,14 +131,12 @@ export const usePersonneStore = defineStore("personne", () => {
    * Retourne la liste des personnels enseignants de la structure courante pour
    * la recherche
    */
-  const teachingSearchList = computed<Array<SearchPersonne> | undefined>(() => {
+  const teachingSearchList = computed<Array<SimplePersonne> | undefined>(() => {
     const { currentEtab } = structureStore;
 
-    const staff = currentEtab?.personnes.filter(
+    return currentEtab?.personnes.filter(
       (personne) => (personne.categorie = CategoriePersonne.Enseignant)
     );
-
-    return toSearchList(staff);
   });
 
   return {

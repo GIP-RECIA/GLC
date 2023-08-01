@@ -123,13 +123,7 @@ const resetAddMode = (success?: boolean) => {
 <template>
   <base-modal
     v-model="isCurrentPersonne"
-    :title="
-      currentPersonne
-        ? currentPersonne.patronyme
-          ? `${currentPersonne.patronyme} ${currentPersonne.givenName}`
-          : currentPersonne.givenName
-        : ''
-    "
+    :title="currentPersonne ? currentPersonne.cn : ''"
   >
     <div v-if="currentPersonne && !isAddMode">
       <div class="d-flex flex-row flex-wrap">

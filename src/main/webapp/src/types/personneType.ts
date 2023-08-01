@@ -2,22 +2,22 @@ import type { PersonneFonction } from "@/types/fonctionType";
 
 export type Personne = {
   id: number;
+  uid?: string;
+  uuid?: string;
   etat: string;
   anneeScolaire: Date;
   categorie: string;
   civilite: string;
   source: string;
   cn: string;
+  sn: string;
   dateNaissance: Date;
   displayName: string;
   email: string;
   givenName: string;
   numBureau: string;
   patronyme?: string;
-  sn: string;
   titre: string;
-  uid?: string;
-  uuid?: string;
   emailPersonnel: string;
   listeRouge: boolean;
   forceEtat: string;
@@ -29,12 +29,12 @@ export type Personne = {
 
 export type SimplePersonne = {
   id: number;
+  uid?: string;
   etat: string;
   categorie: string;
   source: string;
+  cn: string;
+  sn: string;
   givenName: string;
   patronyme: string;
-  uid?: string;
 };
-
-export type SearchPersonne = SimplePersonne & { displayName: string };
