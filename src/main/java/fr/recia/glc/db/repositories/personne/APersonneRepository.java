@@ -36,25 +36,25 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
   PersonneDto findByPersonneId(Long id);
 
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-    "ap.cleJointure.source, ap.cn, ap.sn, ap.givenName, ap.patronyme, ap.uid) " +
+    "ap.cleJointure.source, ap.cn, ap.sn, ap.uid) " +
     "FROM APersonne ap " +
     "WHERE ap.id IN :ids")
   List<SimplePersonneDto> findByPersonneIds(List<Long> ids);
 
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie," +
-    "ap.cleJointure.source, ap.cn, ap.sn, ap.givenName, ap.patronyme, ap.uid) " +
+    "ap.cleJointure.source, ap.cn, ap.sn, ap.uid) " +
     "FROM APersonne ap " +
     "WHERE ap.id = :id")
   SimplePersonneDto findByPersonneIdSimple(Long id);
 
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie," +
-    "ap.cleJointure.source, ap.cn, ap.sn, ap.givenName, ap.patronyme, ap.uid) " +
+    "ap.cleJointure.source, ap.cn, ap.sn, ap.uid) " +
     "FROM APersonne ap " +
     "WHERE ap.uid = :uid")
   SimplePersonneDto findByPersonneUid(String uid);
 
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-    "ap.cleJointure.source, ap.cn, ap.sn, ap.givenName, ap.patronyme, ap.uid) " +
+    "ap.cleJointure.source, ap.cn, ap.sn, ap.uid) " +
     "FROM APersonne ap " +
     "WHERE (ap.cn LIKE concat(:name, '%') OR ap.cn LIKE concat('%', :name) OR ap.uid LIKE concat(:name, '%')) " +
     "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +

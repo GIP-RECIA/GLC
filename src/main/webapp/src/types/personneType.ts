@@ -35,6 +35,4 @@ export type SimplePersonne = {
   source: string;
   cn: string;
   sn: string;
-  givenName: string;
-  patronyme: string;
 };

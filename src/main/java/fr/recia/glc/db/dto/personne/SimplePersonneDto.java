@@ -34,8 +34,6 @@ public class SimplePersonneDto {
   private String source;
   private String cn;
   private String sn;
-  private String givenName;
-  private String patronyme;
   private String uid;
 
 }
