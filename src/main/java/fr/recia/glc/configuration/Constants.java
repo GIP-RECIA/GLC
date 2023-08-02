@@ -18,5 +18,6 @@ package fr.recia.glc.configuration;
 public class Constants {
 
   public static final String SARAPISUI_ = "SarapisUi_";
+  public static final String SANS_OBJET =  "SANS OBJET";
 
 }

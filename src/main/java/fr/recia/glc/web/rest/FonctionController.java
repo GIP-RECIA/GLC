@@ -47,6 +47,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static fr.recia.glc.configuration.Constants.SANS_OBJET;
+
 @Slf4j
 @RestController()
 @RequestMapping(value = "/api/fonction")
@@ -96,7 +98,7 @@ public class FonctionController {
           .map(FonctionDto::getDisciplinePoste)
           .collect(Collectors.toSet());
         List<DisciplineDto> disciplinesInFiliere = disciplines.stream()
-          .filter(discipline -> disciplineIds.contains(discipline.getId()))
+          .filter(discipline -> disciplineIds.contains(discipline.getId()) && !Objects.equals(discipline.getDisciplinePoste(), SANS_OBJET))
           .collect(Collectors.toList());
         typeFonctionFiliere.setDisciplines(disciplinesInFiliere);
 
@@ -105,7 +107,7 @@ public class FonctionController {
 
     // Retrait des filières sans disciplines
     return typesFonctionFiliere.stream()
-      .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
+      .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty() && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
       .collect(Collectors.toList());
   }
 

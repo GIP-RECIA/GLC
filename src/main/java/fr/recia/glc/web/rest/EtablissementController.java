@@ -48,6 +48,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static fr.recia.glc.configuration.Constants.SANS_OBJET;
+
 @Slf4j
 @RestController()
 @RequestMapping(value = "/api/structure/etablissement")
@@ -126,7 +128,7 @@ public class EtablissementController {
           .collect(Collectors.toSet());
         // Liste les disciplines de la filière
         List<DisciplineDto> disciplinesInFiliere = disciplines.stream()
-          .filter(discipline -> disciplineIds.contains(discipline.getId()))
+          .filter(discipline -> disciplineIds.contains(discipline.getId()) && !Objects.equals(discipline.getDisciplinePoste(), SANS_OBJET))
           .collect(Collectors.toList());
         // Ajout des personnes aux disciplines
         disciplinesInFiliere = disciplinesInFiliere.stream()
@@ -150,7 +152,7 @@ public class EtablissementController {
         return typeFonctionFiliere;
       })
       // Retrait des filières sans disciplines
-      .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
+      .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty() && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
       .collect(Collectors.toList());
   }
 
