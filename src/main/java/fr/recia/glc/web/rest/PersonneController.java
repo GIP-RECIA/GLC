@@ -71,7 +71,7 @@ public class PersonneController {
   @GetMapping
   public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
     List<SimplePersonneDto> personnes = aPersonneRepository.findByNameLike(name);
-    if (personnes == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    if (personnes.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     return new ResponseEntity<>(personnes, HttpStatus.OK);
   }

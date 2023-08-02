@@ -4,7 +4,6 @@ import PersonneListItem from "@/components/search/PersonneListItem.vue";
 import { searchPersonne } from "@/services/personneService";
 import type { SimplePersonne } from "@/types/personneType";
 import { errorHandler } from "@/utils/axiosUtils";
-import debounce from "lodash.debounce";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -17,12 +16,13 @@ const props = defineProps<{
 const emit =
   defineEmits<(event: "update:select", payload: number | undefined) => void>();
 
+const isLoading = ref<boolean>(false);
+const isHideNoData = ref<boolean>(true);
+const isSearchingOut = ref<boolean>(false);
 const select = ref<SimplePersonne | undefined>();
-const loading = ref<boolean>(false);
 const items = ref<Array<SimplePersonne>>([]);
-const searchOutOfStructure = ref<boolean>(false);
 
-watch(searchOutOfStructure, () => {
+watch(isSearchingOut, () => {
   if (select.value != undefined) {
     select.value = undefined;
     emit("update:select", undefined);
@@ -31,49 +31,60 @@ watch(searchOutOfStructure, () => {
 
 const filterItems = (newSearch: string | undefined) => {
   if (typeof newSearch !== "undefined" && newSearch !== null) {
-    if (newSearch.length > 3) {
-      loading.value = true;
-      searchOutOfStructure.value
+    if (newSearch.length > 3 && !newSearch.includes("(")) {
+      newSearch = newSearch.toLowerCase();
+      isLoading.value = true;
+      isHideNoData.value = false;
+      isSearchingOut.value
         ? findOutOfStructure(newSearch)
         : findInStructure(newSearch);
     } else {
       items.value = [];
-      loading.value = false;
+      isLoading.value = false;
+      isHideNoData.value = true;
     }
   } else items.value = [];
 };
 
 const findInStructure = (searchValue: string): void => {
-  searchValue = searchValue.toLocaleLowerCase();
-  if (props.searchList) {
-    items.value = props.searchList
-      .filter((personne) => {
-        let filter = personne.cn.toLowerCase().indexOf(searchValue) > -1;
-
-        if (personne.uid) {
-          filter =
-            filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;
-        }
-
-        return filter;
-      })
-      .map((personne) => {
-        return {
-          ...personne,
-          searchValue: personne.uid
-            ? `${personne.cn} (${personne.uid})`
-            : personne.cn,
-        };
-      });
-  }
-  loading.value = false;
+  if (props.searchList) filterFromSource(props.searchList, searchValue);
+  isLoading.value = false;
 };
 
-const findOutOfStructure = debounce(async (searchValue: string) => {
-  searchValue = searchValue.toLocaleLowerCase();
-  try {
-    const response = await searchPersonne(searchValue);
-    items.value = response.data.map((personne: SimplePersonne) => {
+let out: { request?: string; response: Array<SimplePersonne> } = {
+  request: undefined,
+  response: [],
+};
+
+const findOutOfStructure = async (searchValue: string) => {
+  if (out.request && searchValue.startsWith(out.request))
+    filterFromSource(out.response, searchValue);
+  else {
+    out.request = searchValue;
+    try {
+      const response = await searchPersonne(searchValue);
+      filterFromSource(response.data, searchValue);
+      out.response = items.value;
+    } catch (e) {
+      errorHandler(e);
+    }
+  }
+  isLoading.value = false;
+};
+
+const filterFromSource = (
+  source: Array<SimplePersonne>,
+  searchValue: string
+): void => {
+  items.value = source
+    .filter((personne) => {
+      let filter = personne.cn.toLowerCase().indexOf(searchValue) > -1;
+      if (personne.uid)
+        filter = filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;
+
+      return filter;
+    })
+    .map((personne) => {
       return {
         ...personne,
         searchValue: personne.uid
@@ -81,17 +92,13 @@ const findOutOfStructure = debounce(async (searchValue: string) => {
           : personne.cn,
       };
     });
-  } catch (e) {
-    errorHandler(e);
-  }
-  loading.value = false;
-}, 500);
+};
 </script>
 
 <template>
   <div>
     <v-switch
-      v-model="searchOutOfStructure"
+      v-model="isSearchingOut"
       :label="t('searchOutOfStructure')"
       density="compact"
       class="mb-2"
@@ -101,10 +108,11 @@ const findOutOfStructure = debounce(async (searchValue: string) => {
     <v-autocomplete
       v-model="select"
       :label="t('people', 1)"
-      :loading="loading"
+      :loading="isLoading"
       :items="items"
       item-title="searchValue"
-      hide-no-data
+      :hide-no-data="isHideNoData || isLoading"
+      :no-data-text="t('noResults')"
       hide-details
       return-object
       clearable

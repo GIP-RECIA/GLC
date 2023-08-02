@@ -60,6 +60,7 @@
   "attach": "Attach",
   "detach": "Detach",
   "edit": "Edit",
+  "noResults": "No results",
   "toast": {
     "additional": {
       "success": {

@@ -56,7 +56,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
     "ap.cleJointure.source, ap.cn, ap.sn, ap.uid) " +
     "FROM APersonne ap " +
-    "WHERE (ap.cn LIKE concat(:name, '%') OR ap.cn LIKE concat('%', :name) OR ap.uid LIKE concat(:name, '%')) " +
+    "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.uid LIKE concat(:name, '%')) " +
     "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
     "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
     "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
