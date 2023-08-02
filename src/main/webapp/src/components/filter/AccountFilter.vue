@@ -95,6 +95,8 @@ const statusTags = [
   { id: Etat.Bloque, i18n: "locked" },
   { id: Etat.Delete, i18n: "deleted" },
 ];
+
+filter();
 </script>
 
 <template>
