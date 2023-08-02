@@ -36,7 +36,6 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class StructureKey implements ICompositeKey<String, CategorieStructure>, Serializable {
 
   /**

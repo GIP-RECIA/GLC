@@ -16,6 +16,7 @@
 package fr.recia.glc.ldap.repository;
 
 import fr.recia.glc.ldap.ExternalGroupHelper;
+import fr.recia.glc.ldap.IExternalGroup;
 import fr.recia.glc.ldap.IExternalGroupDisplayNameFormatter;
 import fr.recia.glc.ldap.IStructure;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,10 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.filter.AndFilter;
 import org.springframework.ldap.filter.Filter;
 import org.springframework.ldap.filter.HardcodedFilter;
+import org.springframework.ldap.filter.WhitespaceWildcardsFilter;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.query.LdapQueryBuilder;
 
@@ -128,19 +131,19 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
 //    }
 //    return Lists.newArrayList();
 //  }
-//
-//  @Override
-//  // @Cacheable(value = "ExternalGroups")
-//  public List<IExternalGroup> getGroupsWithFilter(@NotNull String stringFilter, String token, final boolean withMembers) {
-//    AndFilter filter = new AndFilter()
-//      .and(new HardcodedFilter(stringFilter));
-//    if (token != null && !token.isEmpty()) {
-//      filter.and(new WhitespaceWildcardsFilter(externalGroupHelper.getGroupSearchAttribute(), token));
-//    }
-//    log.debug("getGroupsWithFilter LDAP filter {}, token {}, withMembers {}", stringFilter, token, withMembers);
-//    return searchWithFilter(filter, withMembers);
-//  }
-//
+
+  @Override
+  // @Cacheable(value = "ExternalGroups")
+  public List<IExternalGroup> getGroupsWithFilter(@NotNull String stringFilter, String token, final boolean withMembers) {
+    AndFilter filter = new AndFilter()
+      .and(new HardcodedFilter(stringFilter));
+    if (token != null && !token.isEmpty()) {
+      filter.and(new WhitespaceWildcardsFilter(externalGroupHelper.getGroupSearchAttribute(), token));
+    }
+    log.debug("getGroupsWithFilter LDAP filter {}, token {}, withMembers {}", stringFilter, token, withMembers);
+    return searchWithFilter(filter, withMembers);
+  }
+
 //  @Override
 //  public List<IExternalUser> getDirectUserMembers(@NotNull final String id) {
 //    if (!externalGroupHelper.isGroupResolveUserMember()) return Lists.newArrayList();

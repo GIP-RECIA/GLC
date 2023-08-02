@@ -40,7 +40,7 @@ public interface IExternalGroupDao {
 //
 //  List<IExternalGroup> getDirectGroupMembers(@NotNull final String id, final boolean withMembers);
 //
-//  List<IExternalGroup> getGroupsWithFilter(@NotNull final String stringFilter, final String token, final boolean withMembers);
+  List<IExternalGroup> getGroupsWithFilter(@NotNull final String stringFilter, final String token, final boolean withMembers);
 //
 //  List<IExternalUser> getDirectUserMembers(@NotNull final String id);
 //

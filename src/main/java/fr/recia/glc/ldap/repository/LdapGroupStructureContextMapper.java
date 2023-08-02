@@ -15,12 +15,8 @@
  */
 package fr.recia.glc.ldap.repository;
 
-import com.google.common.collect.Lists;
 import fr.recia.glc.db.enums.CategorieStructure;
-import fr.recia.glc.ldap.ExternalGroup;
 import fr.recia.glc.ldap.ExternalGroupHelper;
-import fr.recia.glc.ldap.IExternalGroup;
-import fr.recia.glc.ldap.IExternalGroupDisplayNameFormatter;
 import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.ldap.StructureFromGroup;
 import fr.recia.glc.ldap.StructureKey;
@@ -31,9 +27,7 @@ import org.springframework.util.Assert;
 
 import javax.naming.NamingException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,25 +55,37 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
 
     Set<String> types = Arrays.stream(context.getStringAttributes("ObjectClass")).collect(Collectors.toSet());
     CategorieStructure cat = null;
-      if (types.contains("ENTCollLoc")) cat = CategorieStructure.Collectivite_locale;
-      //TODO "ENTEtablissement", "ENTServAc", "ENTEntreprise"
+    if (types.contains("ENTCollLoc")) {
+      cat = CategorieStructure.Collectivite_locale;
+    } else if (types.contains("ENTEtablissement")) {
+      cat = CategorieStructure.Etablissement;
+    } else if (types.contains("ENTServAc")) {
+      cat = CategorieStructure.Service_academique;
+    } else if (types.contains("ENTEntreprise")) {
+      cat = CategorieStructure.Entreprise;
+    }
 
     if (cat == null) throw new IllegalArgumentException(String.format("Types inconnus from {}", types));
 
     final String id = context.getStringAttribute(externalGroupHelper.getGroupIdAttribute());
 
-    group.setStructureKey(new StructureKey(id,cat));
+    group.setStructureKey(new StructureKey(id, cat));
 
-    //TODO
     //extract infos from pattern
-    // récupération du groupe 1 pour la branche, le groupe 4 pour le displayName, le groupe 6 pour l'UAI, le groupe 3 pour avoir le nom du groupe de l'établissement
+    // récupération du groupe 1 pour la branche, le groupe 3 à split pour le displayName et l'UAI, le groupe 3 pour avoir le nom du groupe de l'établissement
     // Attention tester Branche == coll car groupe 6 vide dans ce cas, et renseigné obligatoirement sinon
-    externalGroupHelper.getStructureFromGroupPattern();
+    String pattern = externalGroupHelper.getStructureFromGroupPattern();
+    String[] splited = context.getStringAttribute("cn").split(":");
 
-    group.setDisplayName();
-    group.setUAI();
-    group.setGroupBranch();
-    group.setGroupNameEtab();
+    group.setGroupBranch(splited[0]);
+    group.setGroupNameEtab(splited[2]);
+    String[] displayNameUai = splited[2].split("_");
+    if (displayNameUai.length > 1) {
+      group.setDisplayName(displayNameUai[0]);
+      group.setUAI(displayNameUai[1]);
+    } else {
+      group.setDisplayName(splited[2]);
+    }
 
     return group;
   }
