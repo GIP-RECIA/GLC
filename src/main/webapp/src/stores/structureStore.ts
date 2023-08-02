@@ -8,6 +8,7 @@ import type {
   Etablissement,
   SimpleEtablissement,
 } from "@/types/etablissementType";
+import { errorHandler } from "@/utils/axiosUtils";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
@@ -25,7 +26,7 @@ export const useStructureStore = defineStore("structure", () => {
       const response = await getEtablissements();
       etabs.value = response.data;
     } catch (e) {
-      console.error(e.message);
+      errorHandler(e, "initStructureStore");
     }
   };
 
@@ -59,7 +60,7 @@ export const useStructureStore = defineStore("structure", () => {
       } else setCurrentStructure(index);
       setCurrentStructureId(id);
     } catch (e) {
-      console.error(e.message);
+      errorHandler(e, "initCurrentEtab");
     }
   };
 
@@ -70,7 +71,7 @@ export const useStructureStore = defineStore("structure", () => {
         const response = await getEtablissement(structureId);
         currentEtab.value = response.data;
       } catch (e) {
-        console.error(e.message);
+        errorHandler(e, "refreshCurrentStructure");
       }
     }
   };

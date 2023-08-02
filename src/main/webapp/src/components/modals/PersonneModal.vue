@@ -9,6 +9,7 @@ import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
 import { Etat } from "@/types/enums/Etat";
 import { Tabs } from "@/types/enums/Tabs";
+import { errorHandler } from "@/utils/axiosUtils";
 import debounce from "lodash.debounce";
 import moment from "moment";
 import { storeToRefs } from "pinia";
@@ -90,7 +91,7 @@ const save = async () => {
     );
     resetAddMode(true);
   } catch (e) {
-    console.error(e.message);
+    errorHandler(e);
     resetAddMode(false);
   }
 };

@@ -3,6 +3,7 @@ import { useStructureStore } from "./structureStore";
 import { getFonctions } from "@/services/fonctionService";
 import type { Filiere } from "@/types/filiereType";
 import type { CustomMapping, SourceFonction } from "@/types/fonctionType";
+import { errorHandler } from "@/utils/axiosUtils";
 import isEmpty from "lodash.isempty";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
@@ -23,7 +24,7 @@ export const useFonctionStore = defineStore("fonctions", () => {
         const response = await getFonctions();
         fonctions.value = response.data;
       } catch (e) {
-        console.error(e.message);
+        errorHandler(e, "initFonctionStore");
       }
     }
   };

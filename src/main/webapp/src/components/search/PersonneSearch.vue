@@ -3,6 +3,7 @@ import PersonneChip from "@/components/search/PersonneChip.vue";
 import PersonneListItem from "@/components/search/PersonneListItem.vue";
 import { searchPersonne } from "@/services/personneService";
 import type { SimplePersonne } from "@/types/personneType";
+import { errorHandler } from "@/utils/axiosUtils";
 import debounce from "lodash.debounce";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -81,7 +82,7 @@ const findOutOfStructure = debounce(async (searchValue: string) => {
       };
     });
   } catch (e) {
-    console.error(e.message);
+    errorHandler(e);
   }
   loading.value = false;
 }, 500);

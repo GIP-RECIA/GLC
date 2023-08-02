@@ -8,6 +8,7 @@ import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
 import { Tabs } from "@/types/enums/Tabs";
 import type { SimplePersonne } from "@/types/personneType";
+import { errorHandler } from "@/utils/axiosUtils";
 import debounce from "lodash.debounce";
 import { storeToRefs } from "pinia";
 import { watch, computed, ref } from "vue";
@@ -91,7 +92,7 @@ const save = async () => {
     );
     closeAndResetModal(true);
   } catch (e) {
-    console.error(e.message);
+    errorHandler(e);
     closeAndResetModal(false);
   }
 };

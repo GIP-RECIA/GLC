@@ -57,6 +57,9 @@
   "showAll": "Tout afficher",
   "addAdditionalFonction": "Gestion des fonctions complémentaires",
   "addAdditionalTeaching": "Gestion des enseignements complémentaires",
+  "attach": "Rattacher",
+  "detach": "Détacher",
+  "edit": "Editer",
   "toast": {
     "additional": {
       "success": {
@@ -69,9 +72,21 @@
         "attach": "Impossible de rattacher la personne",
         "detach": "Impossible de détacher la personne"
       }
+    },
+    "initConfigurationStore": "Impossible de charger la configuration",
+    "initFonctionStore": "Impossible de charges les fonctions",
+    "initCurrentPersonne": "Impossible de charger la personne",
+    "refreshCurrentPersonne": "Impossible de raffraichir la personne",
+    "initStructureStore": "Imposible de charger les structures",
+    "initCurrentEtab": "Impossible de charger la structure",
+    "refreshCurrentStructure": "Impossible de raffraichir la structure",
+    "error": {
+      "401": "Vous n'êtes pas autorisé à consulter la ressource",
+      "404": "La ressource demandé n'as pas pu être trouvée",
+      "500": "Un erreur interne au serveur est survenue",
+      "unmanaged": "Une erreur non géré est survenue",
+      "stock": "Une erreur est survenue",
+      "unknown": "Une erreur inconnue est survenue"
     }
-  },
-  "attach": "Rattacher",
-  "detach": "Détacher",
-  "edit": "Editer"
+  }
 }

@@ -5,6 +5,7 @@ import { CategoriePersonne } from "@/types/enums/CategoriePersonne";
 import { Etat } from "@/types/enums/Etat";
 import type { PersonneFonction } from "@/types/fonctionType";
 import type { Personne, SimplePersonne } from "@/types/personneType";
+import { errorHandler } from "@/utils/axiosUtils";
 import isEmpty from "lodash.isempty";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
@@ -33,7 +34,7 @@ export const usePersonneStore = defineStore("personne", () => {
       currentPersonne.value = response.data;
       isCurrentPersonne.value = showModal;
     } catch (e) {
-      console.error(e.message);
+      errorHandler(e, "initCurrentPersonne");
     }
   };
 
@@ -45,7 +46,7 @@ export const usePersonneStore = defineStore("personne", () => {
         const response = await getPersonne(personneId);
         currentPersonne.value = response.data;
       } catch (e) {
-        console.error(e.message);
+        errorHandler(e, "refreshCurrentPersonne");
       }
     }
   };

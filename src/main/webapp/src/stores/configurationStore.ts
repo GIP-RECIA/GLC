@@ -2,6 +2,7 @@ import { getConfiguration } from "@/services/configurationService";
 import type { Configuration } from "@/types/configurationType";
 import { Tabs } from "@/types/enums/Tabs";
 import type { Identity } from "@/types/identityType";
+import { errorHandler } from "@/utils/axiosUtils";
 import isEmpty from "lodash.isempty";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
@@ -17,7 +18,7 @@ export const useConfigurationStore = defineStore("configuration", () => {
       const response = await getConfiguration();
       configuration.value = response.data;
     } catch (e) {
-      console.error(e.message);
+      errorHandler(e, "initConfigurationStore");
     }
   };
 
