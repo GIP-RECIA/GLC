@@ -3,6 +3,9 @@ import { useStructureStore } from "@/stores/structureStore";
 import type { SimpleEtablissement } from "@/types/etablissementType";
 import { storeToRefs } from "pinia";
 import { watch, ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const structureStore = useStructureStore();
 structureStore.init();
@@ -66,13 +69,18 @@ const showPage = (page: number) => {
   <v-container>
     <v-text-field
       v-model="select"
+      :placeholder="t('search.structure.placeholder')"
       variant="solo"
       rounded
       clearable
       flat
       hide-details
       class="mb-8"
-    />
+    >
+      <template #prepend-inner>
+        <v-icon icon="fas fa-search" size="x-small" class="mx-1" />
+      </template>
+    </v-text-field>
     <v-row>
       <v-col
         v-for="(etablissement, index) in pageItems"

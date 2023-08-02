@@ -61,6 +61,14 @@
   "detach": "Detach",
   "edit": "Edit",
   "noResults": "No results",
+  "search": {
+    "structure": {
+      "placeholder": "Search structure"
+    },
+    "personne": {
+      "placeholder": "Search personne"
+    }
+  },
   "toast": {
     "additional": {
       "success": {

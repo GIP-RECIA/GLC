@@ -101,13 +101,18 @@ const statusTags = [
   <v-card flat>
     <v-card-text>
       <v-text-field
+        :placeholder="t('search.personne.placeholder')"
         variant="solo-filled"
         rounded
         clearable
         flat
         hide-details
         @update:model-value="setSearchFilter"
-      />
+      >
+        <template #prepend-inner>
+          <v-icon icon="fas fa-search" size="x-small" class="mx-1" />
+        </template>
+      </v-text-field>
     </v-card-text>
     <v-card-text>
       <h2 class="text-h6 mb-2">{{ t("category") }}</h2>
