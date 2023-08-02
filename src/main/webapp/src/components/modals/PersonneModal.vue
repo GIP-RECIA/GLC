@@ -47,21 +47,23 @@ watch(isCurrentPersonne, (newValue) => {
     reset();
     selected.value = [];
   } else {
-    selected.value = structureAdditionalFonctions.value?.map(
-      (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
-    );
+    selected.value = structureAdditionalFonctions.value
+      ? structureAdditionalFonctions.value.map(
+          (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
+        )
+      : [];
     isLocked.value = currentPersonne.value!.etat == Etat.Bloque;
   }
 });
-const selected = ref<Array<string> | undefined>([]);
+const selected = ref<Array<string>>([]);
 
 const setSelected = (value: Array<string>) => {
   selected.value = value;
 };
 
-const canSave = computed(() => {
+const canSave = computed<boolean>(() => {
   if (selected.value?.length == structureAdditionalFonctions.value?.length) {
-    return !selected.value?.every((entry) =>
+    return !selected.value.every((entry) =>
       structureAdditionalFonctions.value
         ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
         .includes(entry)
@@ -75,7 +77,7 @@ const saveButton = computed<{ title: string; icon: string; color: string }>(
     if (!hasStructureFonctions.value) {
       if (!hasStructureAdditionalFonctions.value)
         return { title: "attach", icon: "fas fa-link", color: "success" };
-      if (selected.value?.length == 0)
+      if (selected.value.length == 0)
         return { title: "detach", icon: "fas fa-link-slash", color: "error" };
     }
     return { title: "save", icon: "fas fa-floppy-disk", color: "success" };
@@ -87,7 +89,7 @@ const save = async () => {
     await setPersonneAdditional(
       currentPersonne.value!.id,
       currentStructureId.value!,
-      selected.value!
+      selected.value
     );
     resetAddMode(true);
   } catch (e) {
