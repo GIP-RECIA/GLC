@@ -19,8 +19,12 @@ const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
-const { currentTab, currentStructureId, isAdditional, isAddMode } =
-  storeToRefs(configurationStore);
+const {
+  currentTab,
+  currentStructureId,
+  isAdditional,
+  // isAddMode
+} =storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { customMapping } = storeToRefs(fonctionStore);
@@ -29,7 +33,6 @@ const personneStore = usePersonneStore();
 const { initCurrentPersonne, refreshCurrentPersonne } = personneStore;
 const {
   currentPersonne,
-  isCurrentPersonne,
   structureFonctions,
   hasStructureFonctions,
   structureAdditionalFonctions,

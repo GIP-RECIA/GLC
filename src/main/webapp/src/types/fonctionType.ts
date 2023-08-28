@@ -1,6 +1,5 @@
 import type { Discipline } from "@/types/disciplineType";
 import type { Filiere } from "@/types/filiereType";
-import { type } from "os";
 
 export type SourceFonction = {
   source: string;
