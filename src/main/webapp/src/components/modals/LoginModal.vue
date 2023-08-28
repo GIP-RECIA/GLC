@@ -28,6 +28,7 @@ let relogState = {};
 const login = async () => {
   try {
     const response = await jsonp("/app/login", "JSON_CALLBACK", 1000);
+    // @ts-ignore
     identity.value = response;
   } catch (e) {
     identity.value = undefined;
@@ -40,13 +41,16 @@ const login = async () => {
 // du serveur CAS
 const relog = () => {
   windowOpenCleanup(relogState);
+  // @ts-ignore
   relogState.listener = onmessage;
   window.addEventListener("message", onmessage);
 
+  // @ts-ignore
   relogState.window = window.open(`${VITE_API_URL}app/login?postMessage`);
 };
 
 // Méthode de nettoyage de la page de login
+// @ts-ignore
 const windowOpenCleanup = (state) => {
   try {
     if (state.listener) {
@@ -63,6 +67,7 @@ const windowOpenCleanup = (state) => {
 
 // Méthode utilisé lors de la réception de la réponse
 // du serveur CAS puis redirige l'utilisateur
+// @ts-ignore
 const onmessage = (e) => {
   if (typeof e.data !== "string") {
     return;

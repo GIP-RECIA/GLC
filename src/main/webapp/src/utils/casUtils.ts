@@ -26,6 +26,7 @@ const jsonp = (
         removeErrorListener();
         removeScript();
         reject(
+          // @ts-ignore
           new Error({
             statusText: "Request Timeout",
             status: 408,
@@ -34,6 +35,7 @@ const jsonp = (
       }, timeout);
     }
 
+    // @ts-ignore
     const onError = (err) => {
       // eslint-disable-next-line
       console.error("Error JSONP", err);
@@ -42,6 +44,7 @@ const jsonp = (
       }
       removeErrorListener();
       reject(
+        // @ts-ignore
         new Error({
           status: 400,
           statusText: "Bad Request",
@@ -49,6 +52,7 @@ const jsonp = (
       );
     };
 
+    // @ts-ignore
     window[callbackName] = (json) => {
       if (timeoutTimer) {
         clearTimeout(timeoutTimer);
@@ -66,6 +70,7 @@ const jsonp = (
     };
     const removeScript = () => {
       document.body.removeChild(script);
+      // @ts-ignore
       delete window[callbackName];
     };
 
