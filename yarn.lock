@@ -469,9 +469,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/unplugin-vue-i18n@npm:^0.12.2":
-  version: 0.12.2
-  resolution: "@intlify/unplugin-vue-i18n@npm:0.12.2"
+"@intlify/unplugin-vue-i18n@npm:^0.12.3":
+  version: 0.12.3
+  resolution: "@intlify/unplugin-vue-i18n@npm:0.12.3"
   dependencies:
     "@intlify/bundle-utils": ^7.0.2
     "@intlify/shared": 9.3.0-beta.24
@@ -496,7 +496,7 @@ __metadata:
       optional: true
     vue-i18n-bridge:
       optional: true
-  checksum: 99d271f2ba6dce48f6f64d3b74d2dcd392b4d016f0815b13639f5ca2a22aa317b028cec546c6a1ab9326e3befd04c088dea0be13de8a5a7621a3eef0c8e15298
+  checksum: 620e95f5f594b08831e755cd1088a461d22ade1310cb9af3486146475a5297a733f5d319496d2e619c02d15da2459d743b7aee5aa652935a68e17dd5f24398ba
   languageName: node
   linkType: hard
 
@@ -5214,7 +5214,7 @@ __metadata:
   resolution: "src-main-webapp@workspace:."
   dependencies:
     "@fortawesome/fontawesome-free": ^6.4.0
-    "@intlify/unplugin-vue-i18n": ^0.12.2
+    "@intlify/unplugin-vue-i18n": ^0.12.3
     "@playwright/test": ^1.37.1
     "@rushstack/eslint-patch": ^1.3.3
     "@trivago/prettier-plugin-sort-imports": ^4.2.0
