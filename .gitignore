@@ -36,7 +36,8 @@ build/
 !.vscode/extensions.json
 
 ### Yarn ###
-.yarn/
+.yarn/install-state.gz
+.yarn/cache/
 !.yarn/releases/
 
 node_modules
