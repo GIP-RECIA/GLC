@@ -19,7 +19,7 @@ const modelValue = computed<boolean>({
 <template>
   <v-dialog v-model="modelValue" scrollable :max-width="1024">
     <v-card>
-      <v-toolbar color="rgba(0, 0, 0, 0)">
+      <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ title }}</v-toolbar-title>
         <template v-slot:append>
           <v-btn

@@ -103,7 +103,7 @@ onMounted(() => {
 <template>
   <v-dialog v-model="modelValue" :max-width="300">
     <v-card>
-      <v-toolbar color="rgba(0, 0, 0, 0)">
+      <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ t("casSignIn") }}</v-toolbar-title>
       </v-toolbar>
       <v-card-text> </v-card-text>
