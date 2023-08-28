@@ -39,7 +39,7 @@
     "@vue/eslint-config-typescript": "^11.0.3",
     "@vue/test-utils": "^2.4.1",
     "@vue/tsconfig": "^0.4.0",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "dotenv-checker": "^1.1.5",
     "eslint": "^8.48.0",
     "eslint-plugin-vue": "^9.17.0",
