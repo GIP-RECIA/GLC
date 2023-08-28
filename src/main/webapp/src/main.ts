@@ -1,5 +1,3 @@
-import "regenerator-runtime/runtime.js";
-
 import "vuetify/styles";
 import "@/assets/main.scss";
 
