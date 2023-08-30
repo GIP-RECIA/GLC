@@ -52,9 +52,6 @@ public class ConfigurationController {
   public ResponseEntity<Object> getConfiguration() {
     Map<String, Object> data = new HashMap<>();
 
-    data.put("casUrlLogin", casUrlLogin);
-    data.put("casUrlLogout", casUrlLogout);
-
     List<CategoriePersonne> administrativeStaff = new ArrayList<>();
     administrativeStaff.add(CategoriePersonne.Enseignant);
     administrativeStaff.add(CategoriePersonne.Non_enseignant_collectivite_locale);
