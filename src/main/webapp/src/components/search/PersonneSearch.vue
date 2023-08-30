@@ -32,7 +32,11 @@ watch(isSearchingOut, () => {
 const filterItems = (newSearch: string | undefined) => {
   if (typeof newSearch !== "undefined" && newSearch !== null) {
     if (newSearch.length > 3 && !newSearch.includes("(")) {
-      newSearch = newSearch.toLowerCase();
+      newSearch = newSearch
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "");
+
       isLoading.value = true;
       isHideNoData.value = false;
       isSearchingOut.value
@@ -108,11 +112,12 @@ const filterFromSource = (
     <v-autocomplete
       v-model="select"
       :label="t('people', 1)"
-      :loading="isLoading"
       :items="items"
-      item-title="searchValue"
+      :custom-filter="() => true"
       :hide-no-data="isHideNoData || isLoading"
       :no-data-text="t('noResults')"
+      :item-title="['cn']"
+      autofocus
       hide-details
       return-object
       clearable
@@ -127,6 +132,9 @@ const filterFromSource = (
       </template>
       <template #item="{ props, item }">
         <personne-list-item v-bind="props" :personne="item?.raw" />
+      </template>
+      <template #prepend-inner>
+        <v-icon v-if="isLoading" icon="fas fa-circle-notch fa-spin" />
       </template>
     </v-autocomplete>
   </div>

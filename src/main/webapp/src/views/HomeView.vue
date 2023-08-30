@@ -23,7 +23,10 @@ watch(etabs, (newValue) => {
 
 watch(select, (newValue) => {
   if (typeof newValue !== "undefined" && newValue !== null) {
-    const searchValue = newValue.toLocaleLowerCase();
+    const searchValue = newValue
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "");
     items.value = etabs.value?.filter((etablissement) => {
       let filters =
         etablissement.nom.toLowerCase().indexOf(searchValue) > -1 ||
