@@ -46,7 +46,7 @@ const relog = () => {
   window.addEventListener("message", onmessage);
 
   // @ts-ignore
-  relogState.window = window.open(`${VITE_API_URL}app/login?postMessage`);
+  relogState.window = window.open(`${VITE_API_URL}/app/login?postMessage`);
 };
 
 // Méthode de nettoyage de la page de login
