@@ -113,7 +113,7 @@ onMounted(() => {
           prepend-icon="fas fa-right-to-bracket"
           @click="login"
         >
-          {{ t("signIn") }}
+          {{ t("button.signIn") }}
         </v-btn>
       </v-card-actions>
     </v-card>

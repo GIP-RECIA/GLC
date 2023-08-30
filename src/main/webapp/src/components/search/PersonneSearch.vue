@@ -115,7 +115,7 @@ const filterFromSource = (
       :items="items"
       :custom-filter="() => true"
       :hide-no-data="isHideNoData || isLoading"
-      :no-data-text="t('noResults')"
+      :no-data-text="t('search.noResults')"
       :item-title="['cn']"
       autofocus
       hide-details

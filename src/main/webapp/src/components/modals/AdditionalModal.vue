@@ -24,7 +24,7 @@ const {
   currentStructureId,
   isAdditional,
   // isAddMode
-} =storeToRefs(configurationStore);
+} = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { customMapping } = storeToRefs(fonctionStore);
@@ -67,24 +67,33 @@ const setSelected = (value: Array<string>) => {
 
 const canSave = computed<boolean>(() => {
   if (selected.value.length == structureAdditionalFonctions.value?.length) {
-    return !selected.value.every((entry) =>
-      structureAdditionalFonctions.value
-        ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-        .includes(entry)
+    return !selected.value.every(
+      (entry) =>
+        structureAdditionalFonctions.value
+          ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
+          .includes(entry)
     );
   }
   return true;
 });
 
-const saveButton = computed<{ title: string; icon: string; color: string }>(
+const saveButton = computed<{ i18n: string; icon: string; color: string }>(
   () => {
     if (!hasStructureFonctions.value) {
       if (!hasStructureAdditionalFonctions.value)
-        return { title: "attach", icon: "fas fa-link", color: "success" };
+        return { i18n: "button.attach", icon: "fas fa-link", color: "success" };
       if (selected.value.length == 0)
-        return { title: "detach", icon: "fas fa-link-slash", color: "error" };
+        return {
+          i18n: "button.detach",
+          icon: "fas fa-link-slash",
+          color: "error",
+        };
     }
-    return { title: "save", icon: "fas fa-floppy-disk", color: "success" };
+    return {
+      i18n: "button.save",
+      icon: "fas fa-floppy-disk",
+      color: "success",
+    };
   }
 );
 
@@ -103,7 +112,8 @@ const save = async () => {
 };
 
 const closeAndResetModal = (success?: boolean) => {
-  const { title } = saveButton.value;
+  const { i18n } = saveButton.value;
+  const title = i18n.replace("button.", "");
   if (success) {
     refreshCurrentPersonne();
     toast.success(t(`toast.additional.success.${title}`));
@@ -147,7 +157,11 @@ const currentTabValue = computed<{
   <base-modal
     v-model="isAdditional"
     :title="currentTabValue.title"
-    @update:model-value="(value: boolean) => { if (!value) closeAndResetModal();}"
+    @update:model-value="
+      (value: boolean) => {
+        if (!value) closeAndResetModal();
+      }
+    "
   >
     <personne-search
       :search-list="currentTabValue.searchList"
@@ -173,7 +187,7 @@ const currentTabValue = computed<{
         :disabled="!canSave"
         @click="save"
       >
-        {{ t(saveButton.title) }}
+        {{ t(saveButton.i18n) }}
       </v-btn>
     </template>
   </base-modal>

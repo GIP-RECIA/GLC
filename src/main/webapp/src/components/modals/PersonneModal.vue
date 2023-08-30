@@ -8,6 +8,7 @@ import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
 import type { enumValues } from "@/types/enumValuesType";
+import { getCategoriePersonne } from "@/types/enums/CategoriePersonne";
 import { Etat, getEtat } from "@/types/enums/Etat";
 import { Tabs } from "@/types/enums/Tabs";
 import { errorHandler } from "@/utils/axiosUtils";
@@ -97,15 +98,23 @@ const canSave = computed<boolean>(() => {
   return true;
 });
 
-const saveButton = computed<{ title: string; icon: string; color: string }>(
+const saveButton = computed<{ i18n: string; icon: string; color: string }>(
   () => {
     if (!hasStructureFonctions.value) {
       if (!hasStructureAdditionalFonctions.value)
-        return { title: "attach", icon: "fas fa-link", color: "success" };
+        return { i18n: "button.attach", icon: "fas fa-link", color: "success" };
       if (selected.value.length == 0)
-        return { title: "detach", icon: "fas fa-link-slash", color: "error" };
+        return {
+          i18n: "button.detach",
+          icon: "fas fa-link-slash",
+          color: "error",
+        };
     }
-    return { title: "save", icon: "fas fa-floppy-disk", color: "success" };
+    return {
+      i18n: "button.save",
+      icon: "fas fa-floppy-disk",
+      color: "success",
+    };
   }
 );
 
@@ -136,14 +145,14 @@ const lockManager = () => {
 };
 
 const resetAddMode = (success?: boolean) => {
-  const { title } = saveButton.value;
+  const { i18n } = saveButton.value;
+  const title = i18n.replace("button.", "");
   if (success) {
     refreshCurrentPersonne();
     toast.success(t(`toast.additional.success.${title}`));
   } else if (!success && success != undefined) {
     toast.error(t(`toast.additional.error.${title}`));
   }
-
   isAddMode.value = false;
 };
 </script>
@@ -162,37 +171,37 @@ const resetAddMode = (success?: boolean) => {
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('civility')"
+          :label="t('person.information.civility')"
           :value="currentPersonne.civilite"
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('lastName')"
+          :label="t('person.information.lastName')"
           :value="currentPersonne.patronyme"
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('firstName')"
+          :label="t('person.information.firstName')"
           :value="currentPersonne.givenName"
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('birthDate')"
+          :label="t('person.information.birthDate')"
           :value="moment(currentPersonne.dateNaissance).format('L')"
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('email')"
+          :label="t('person.information.email')"
           :value="currentPersonne.email"
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('schoolYear')"
+          :label="t('person.information.schoolYear')"
           :value="schoolYear"
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('login')"
+          :label="t('person.information.login')"
           :value="
             isExternalLogin(currentPersonne.categorie, currentPersonne.source)
               ? t('externalLogin')
@@ -201,33 +210,41 @@ const resetAddMode = (success?: boolean) => {
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('status')"
+          :label="t('person.information.status')"
           :value="t(etat.i18n)"
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('profile')"
-          :value="currentPersonne.categorie"
+          :label="t('person.information.profile')"
+          :value="t(getCategoriePersonne(currentPersonne.categorie).i18n)"
           class="modal-flex-item"
         />
         <readonly-data
           label="Source"
-          :value="currentPersonne.source"
+          :value="t('source.' + currentPersonne.source)"
           class="modal-flex-item"
         />
       </div>
       <div class="mb-3">
-        <b>{{ t("function", 2) }}</b>
+        <b>{{ t("person.information.function", 2) }}</b>
         <fonctions-layout
           :filieres="filieres"
           :fonctions="structureFonctions"
           class="mt-2 mb-3"
         />
       </div>
-      <div>
-        <b>{{ t("additionalFunction", 2) }}</b>
+      <div v-if="currentTab == Tabs.AdministrativeStaff">
+        <b>{{ t("person.information.additionalFunction", 2) }}</b>
         <fonctions-layout
           :filieres="customMapping?.filieres"
+          :fonctions="structureAdditionalFonctions"
+          class="mt-2 mb-3"
+        />
+      </div>
+      <div v-if="currentTab == Tabs.TeachingStaff">
+        <b>{{ t("person.information.additionalTeaching", 2) }}</b>
+        <fonctions-layout
+          :filieres="undefined"
           :fonctions="structureAdditionalFonctions"
           class="mt-2 mb-3"
         />
@@ -261,14 +278,14 @@ const resetAddMode = (success?: boolean) => {
               :prepend-icon="isLocked ? 'fas fa-lock-open' : 'fas fa-lock'"
               @click="lockManager"
             >
-              {{ isLocked ? t("unlock") : t("lock") }}
+              {{ isLocked ? t("button.unlock") : t("button.lock") }}
             </v-btn>
             <v-btn
               color="secondary"
               prepend-icon="fas fa-rotate-right"
               @click="reinitialize"
             >
-              {{ t("reinitialize") }}
+              {{ t("button.reinitialize") }}
             </v-btn>
           </div>
         </div>
@@ -287,7 +304,9 @@ const resetAddMode = (success?: boolean) => {
             "
             @click="isAddMode = true"
           >
-            {{ t(hasStructureAdditionalFonctions ? "edit" : "add") }}
+            {{
+              t(hasStructureAdditionalFonctions ? "button.edit" : "button.add")
+            }}
           </v-btn>
           <div v-if="isAddMode">
             <v-btn
@@ -295,7 +314,7 @@ const resetAddMode = (success?: boolean) => {
               prepend-icon="fas fa-xmark"
               @click="cancel"
             >
-              {{ t("cancel") }}
+              {{ t("button.cancel") }}
             </v-btn>
             <v-btn
               :color="saveButton.color"
@@ -303,7 +322,7 @@ const resetAddMode = (success?: boolean) => {
               :disabled="!canSave"
               @click="save"
             >
-              {{ t(saveButton.title) }}
+              {{ t(saveButton.i18n) }}
             </v-btn>
           </div>
         </div>
