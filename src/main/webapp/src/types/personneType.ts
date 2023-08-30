@@ -3,7 +3,6 @@ import type { PersonneFonction } from "@/types/fonctionType";
 export type Personne = {
   id: number;
   uid?: string;
-  uuid?: string;
   etat: string;
   anneeScolaire: Date;
   categorie: string;
@@ -12,16 +11,9 @@ export type Personne = {
   cn: string;
   sn: string;
   dateNaissance: Date;
-  displayName: string;
   email: string;
   givenName: string;
-  numBureau: string;
   patronyme?: string;
-  titre: string;
-  emailPersonnel: string;
-  listeRouge: boolean;
-  forceEtat: string;
-  idEduConnect: string;
   login: string;
   fonctions?: Array<PersonneFonction>;
   additionalFonctions?: Array<PersonneFonction>;

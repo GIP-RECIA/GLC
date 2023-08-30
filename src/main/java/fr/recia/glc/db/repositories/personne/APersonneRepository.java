@@ -28,9 +28,8 @@ import java.util.List;
 public interface APersonneRepository<T extends APersonne> extends AbstractRepository<T, Long> {
 
   @Query("SELECT new fr.recia.glc.db.dto.personne.PersonneDto(ap.id, ap.etat, ap.anneeScolaire, ap.categorie," +
-    "ap.civilite, ap.cleJointure.source, ap.cn, ap.dateNaissance, ap.displayName, ap.email, ap.givenName, ap.numBureau, ap.patronyme, " +
-    "ap.sn, ap.titre, ap.uid, ap.uuid, ap.emailPersonnel, ap.listeRouge, ap.forceEtat, ap.idEduConnect, " +
-    "ap.login.nom, ap.structRattachement.id) " +
+    "ap.civilite, ap.cleJointure.source, ap.cn, ap.dateNaissance, ap.email, ap.givenName, ap.patronyme, " +
+    "ap.sn, ap.uid, ap.login.nom, ap.structRattachement.id) " +
     "FROM APersonne ap " +
     "WHERE ap.id = :id")
   PersonneDto findByPersonneId(Long id);

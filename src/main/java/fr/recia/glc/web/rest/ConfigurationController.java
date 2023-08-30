@@ -42,6 +42,11 @@ public class ConfigurationController {
   private List<String> administrativeCodes;
   @Value("${app.config.filiere.teaching}")
   private List<String> teachingCodes;
+  @Value("${app.config.sources.external.all}")
+  private List<String> externalSourcesAll;
+
+  @Value("${app.config.sources.external.4login}")
+  private List<String> externalSources4Login;
 
   @GetMapping()
   public ResponseEntity<Object> getConfiguration() {
@@ -59,6 +64,15 @@ public class ConfigurationController {
 
     data.put("administrativeCodes", administrativeCodes);
     data.put("teachingCodes", teachingCodes);
+
+    data.put("externalSourcesAll", externalSourcesAll);
+    data.put("externalSources4Login", externalSources4Login);
+
+    List<CategoriePersonne> externalSources4LoginCategory = new ArrayList<>();
+    externalSources4LoginCategory.add(CategoriePersonne.Enseignant);
+    externalSources4LoginCategory.add(CategoriePersonne.Non_enseignant_service_academique);
+    externalSources4LoginCategory.add(CategoriePersonne.Non_enseignant_etablissement);
+    data.put("externalSources4LoginCategory", externalSources4LoginCategory);
 
     return new ResponseEntity<>(data, HttpStatus.OK);
   }

@@ -51,6 +51,17 @@ export const useConfigurationStore = defineStore("configuration", () => {
     () => configuration.value?.teachingCodes
   );
 
+  const isExternalLogin = (categorie: string, source: string): boolean => {
+    if (configuration.value) {
+      return (
+        configuration.value.externalSourcesAll.includes(source) ||
+        (configuration.value.externalSources4Login.includes(source) &&
+          configuration.value.externalSources4LoginCategory.includes(categorie))
+      );
+    }
+    return false;
+  };
+
   /* --- Gestion des onglets de structure --- */
 
   const structures = ref<Array<{ id: number; name: string }>>([]);
@@ -93,6 +104,7 @@ export const useConfigurationStore = defineStore("configuration", () => {
     administrativeStaff,
     administrativeCodes,
     teachingCodes,
+    isExternalLogin,
     structures,
     currentStructure,
     currentTab,

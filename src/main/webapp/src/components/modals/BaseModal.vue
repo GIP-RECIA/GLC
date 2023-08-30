@@ -4,6 +4,7 @@ import { computed } from "vue";
 const props = defineProps<{
   modelValue: boolean;
   title: string;
+  showXmark?: boolean;
 }>();
 
 defineEmits<(event: "update:modelValue", payload: boolean) => void>();
@@ -23,6 +24,7 @@ const modelValue = computed<boolean>({
         <v-toolbar-title class="text-h6">{{ title }}</v-toolbar-title>
         <template v-slot:append>
           <v-btn
+            v-if="!showXmark == true"
             icon="fas fa-xmark"
             color="default"
             variant="plain"

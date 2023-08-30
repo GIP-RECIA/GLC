@@ -42,20 +42,20 @@ public class PersonneDto {
   private String source;
   private String cn;
   private Date dateNaissance;
-  private String displayName;
+//  private String displayName;
   private String email;
   private String givenName;
-  private String numBureau;
+//  private String numBureau;
   private String patronyme;
 //  private Sexe sexe;
   private String sn;
-  private String titre;
+//  private String titre;
   private String uid;
-  private String uuid;
-  private String emailPersonnel;
-  private boolean listeRouge;
-  private ForceEtat forceEtat;
-  private String idEduConnect;
+//  private String uuid;
+//  private String emailPersonnel;
+//  private boolean listeRouge;
+//  private ForceEtat forceEtat;
+//  private String idEduConnect;
   private String login;
 //  private String alias;
 //  private Set<String> prenoms;
@@ -65,10 +65,8 @@ public class PersonneDto {
 
 
   public PersonneDto(Long id, Etat etat, Date anneeScolaire, CategoriePersonne categorie, Civilite civilite,
-                     String source, String cn, Date dateNaissance, String displayName, String email, String givenName,
-                     String numBureau, String patronyme, String sn, String titre, String uid, String uuid,
-                     String emailPersonnel, boolean listeRouge, ForceEtat forceEtat, String idEduConnect, String login,
-                     Long structure
+                     String source, String cn, Date dateNaissance, String email, String givenName, String patronyme,
+                     String sn, String uid, String login, Long structure
   ) {
     this.id = id;
     this.etat = etat;
@@ -78,19 +76,11 @@ public class PersonneDto {
     this.source = source;
     this.cn = cn;
     this.dateNaissance = dateNaissance;
-    this.displayName = displayName;
     this.email = email;
     this.givenName = givenName;
-    this.numBureau = numBureau;
     this.patronyme = patronyme;
     this.sn = sn;
-    this.titre = titre;
     this.uid = uid;
-    this.uuid = uuid;
-    this.emailPersonnel = emailPersonnel;
-    this.listeRouge = listeRouge;
-    this.forceEtat = forceEtat;
-    this.idEduConnect = idEduConnect;
     this.login = login;
     this.structure = structure;
   }

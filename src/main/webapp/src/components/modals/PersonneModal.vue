@@ -7,7 +7,8 @@ import { setPersonneAdditional } from "@/services/personneService";
 import { useConfigurationStore } from "@/stores/configurationStore";
 import { useFonctionStore } from "@/stores/fonctionStore";
 import { usePersonneStore } from "@/stores/personneStore";
-import { Etat } from "@/types/enums/Etat";
+import type { enumValues } from "@/types/enumValuesType";
+import { Etat, getEtat } from "@/types/enums/Etat";
 import { Tabs } from "@/types/enums/Tabs";
 import { errorHandler } from "@/utils/axiosUtils";
 import debounce from "lodash.debounce";
@@ -21,7 +22,8 @@ const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
-const { currentTab, isAdmin, currentStructureId, isAddMode } =
+const { isExternalLogin } = configurationStore;
+const { currentTab, currentStructureId, isAddMode, isAdmin } =
   storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
@@ -55,6 +57,28 @@ watch(isCurrentPersonne, (newValue) => {
     isLocked.value = currentPersonne.value!.etat == Etat.Bloque;
   }
 });
+
+const etat = computed<enumValues>(() => {
+  if (currentPersonne.value) return getEtat(currentPersonne.value.etat);
+  return {
+    i18n: "",
+    color: "",
+  };
+});
+
+const schoolYear = computed<string>(() => {
+  if (currentPersonne.value) {
+    const currentPersonneSchoolYear = moment(
+      currentPersonne.value.anneeScolaire
+    ).format("Y");
+
+    return `${currentPersonneSchoolYear}/${
+      parseInt(currentPersonneSchoolYear) + 1
+    }`;
+  }
+  return "";
+});
+
 const selected = ref<Array<string>>([]);
 
 const setSelected = (value: Array<string>) => {
@@ -63,10 +87,11 @@ const setSelected = (value: Array<string>) => {
 
 const canSave = computed<boolean>(() => {
   if (selected.value?.length == structureAdditionalFonctions.value?.length) {
-    return !selected.value.every((entry) =>
-      structureAdditionalFonctions.value
-        ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-        .includes(entry)
+    return !selected.value.every(
+      (entry) =>
+        structureAdditionalFonctions.value
+          ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
+          .includes(entry)
     );
   }
   return true;
@@ -127,24 +152,13 @@ const resetAddMode = (success?: boolean) => {
   <base-modal
     v-model="isCurrentPersonne"
     :title="currentPersonne ? currentPersonne.cn : ''"
+    :show-xmark="isAddMode"
   >
     <div v-if="currentPersonne && !isAddMode">
       <div class="d-flex flex-row flex-wrap">
         <readonly-data
-          v-if="isAdmin"
           label="uid"
           :value="currentPersonne.uid"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          v-if="isAdmin"
-          label="uuid"
-          :value="currentPersonne.uuid"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          label="idEduConnect"
-          :value="currentPersonne.idEduConnect"
           class="modal-flex-item"
         />
         <readonly-data
@@ -168,72 +182,36 @@ const resetAddMode = (success?: boolean) => {
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('email') + ' ac'"
+          :label="t('email')"
           :value="currentPersonne.email"
           class="modal-flex-item"
         />
         <readonly-data
-          :label="t('email') + ' perso'"
-          :value="currentPersonne.emailPersonnel"
-          class="modal-flex-item"
-        />
-        <readonly-data
           :label="t('schoolYear')"
-          :value="moment(currentPersonne.anneeScolaire).format('Y')"
+          :value="schoolYear"
           class="modal-flex-item"
         />
         <readonly-data
           :label="t('login')"
-          :value="currentPersonne.login"
+          :value="
+            isExternalLogin(currentPersonne.categorie, currentPersonne.source)
+              ? t('externalLogin')
+              : currentPersonne.login
+          "
           class="modal-flex-item"
         />
         <readonly-data
           :label="t('status')"
-          :value="currentPersonne.etat"
+          :value="t(etat.i18n)"
           class="modal-flex-item"
         />
         <readonly-data
-          label="categorie"
+          :label="t('profile')"
           :value="currentPersonne.categorie"
           class="modal-flex-item"
         />
         <readonly-data
-          label="cn"
-          :value="currentPersonne.cn"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          label="displayName"
-          :value="currentPersonne.displayName"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          label="numBureau"
-          :value="currentPersonne.numBureau"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          label="sn"
-          :value="currentPersonne.sn"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          label="titre"
-          :value="currentPersonne.titre"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          label="listeRouge"
-          :value="currentPersonne.listeRouge.toString()"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          label="forceEtat"
-          :value="currentPersonne.forceEtat"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          label="source"
+          label="Source"
           :value="currentPersonne.source"
           class="modal-flex-item"
         />
