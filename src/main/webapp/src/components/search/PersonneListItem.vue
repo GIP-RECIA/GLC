@@ -9,10 +9,18 @@ const props = defineProps<{
 }>();
 
 const etat = computed<enumValues>(() => getEtat(props.personne.etat));
+const subtitle = computed<string>(() => {
+  let str = '';
+  if (props.personne.email) str = props.personne.email;
+  if (str != '') str += ' - ';
+  if (props.personne.uid) str += props.personne.uid;
+
+  return str;
+});
 </script>
 
 <template>
-  <v-list-item :subtitle="personne.uid">
+  <v-list-item :subtitle="subtitle">
     <template #title>
       {{ personne.cn }}
     </template>

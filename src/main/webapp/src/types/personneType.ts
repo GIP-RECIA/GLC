@@ -11,7 +11,7 @@ export type Personne = {
   cn: string;
   sn: string;
   dateNaissance: Date;
-  email: string;
+  email?: string;
   givenName: string;
   patronyme?: string;
   login: string;
@@ -27,4 +27,5 @@ export type SimplePersonne = {
   source: string;
   cn: string;
   sn: string;
+  email?: string;
 };

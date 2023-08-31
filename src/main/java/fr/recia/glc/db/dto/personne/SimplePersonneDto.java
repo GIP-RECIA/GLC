@@ -33,6 +33,7 @@ public class SimplePersonneDto {
   private CategoriePersonne categorie;
   private String source;
   private String cn;
+  private String email;
   private String sn;
   private String uid;
 

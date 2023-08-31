@@ -73,19 +73,13 @@ const findOutOfStructure = async (searchValue: string) => {
 };
 
 const filterFromSource = (source: Array<SimplePersonne>, searchValue: string): void => {
-  items.value = source
-    .filter((personne) => {
-      let filter = personne.cn.toLowerCase().indexOf(searchValue) > -1;
-      if (personne.uid) filter = filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;
+  items.value = source.filter((personne) => {
+    let filter = personne.cn.toLowerCase().indexOf(searchValue) > -1;
+    if (personne.email) filter = filter || personne.email.toLowerCase().indexOf(searchValue) > -1;
+    if (personne.uid) filter = filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;
 
-      return filter;
-    })
-    .map((personne) => {
-      return {
-        ...personne,
-        searchValue: personne.uid ? `${personne.cn} (${personne.uid})` : personne.cn,
-      };
-    });
+    return filter;
+  });
 };
 </script>
 
