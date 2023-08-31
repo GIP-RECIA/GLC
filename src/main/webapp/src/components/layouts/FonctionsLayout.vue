@@ -58,7 +58,7 @@ const filterFilieres = (): void => {
 </script>
 
 <template>
-  <div v-if="fonctions && fonctions.length > 0">
+  <div v-if="fonctions && fonctions.length > 0 && filteredFilieres.length > 0">
     <v-row>
       <v-col
         v-for="(filiere, index) in filteredFilieres"
