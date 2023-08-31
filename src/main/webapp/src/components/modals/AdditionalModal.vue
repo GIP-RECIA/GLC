@@ -125,7 +125,7 @@ const closeAndResetModal = (success?: boolean) => {
   const reset = debounce(() => {
     currentPersonne.value = undefined;
     selected.value = [];
-  }, 500);
+  }, 200);
   reset();
 };
 

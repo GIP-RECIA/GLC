@@ -46,7 +46,7 @@ watch(isCurrentPersonne, (newValue) => {
     const reset = debounce(() => {
       currentPersonne.value = undefined;
       isAddMode.value = false;
-    }, 500);
+    }, 200);
     reset();
     selected.value = [];
   } else {
