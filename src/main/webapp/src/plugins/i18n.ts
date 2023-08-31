@@ -9,6 +9,8 @@ export default createI18n({
   fallbackLocale: "en",
   messages: {
     en,
+    "en-US": en,
     fr,
+    "fr-FR": fr,
   },
 });
