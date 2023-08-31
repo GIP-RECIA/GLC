@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import CustomPagination from "@/components/CustomPagination.vue";
-import { useStructureStore } from "@/stores/structureStore";
-import type { SimpleEtablissement } from "@/types/etablissementType";
-import { storeToRefs } from "pinia";
-import { watch, ref } from "vue";
-import { useI18n } from "vue-i18n";
+import CustomPagination from '@/components/CustomPagination.vue';
+import { useStructureStore } from '@/stores/structureStore';
+import type { SimpleEtablissement } from '@/types/etablissementType';
+import { storeToRefs } from 'pinia';
+import { watch, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
@@ -17,25 +17,22 @@ const items = ref<Array<SimpleEtablissement> | undefined>();
 const pageItems = ref<Array<SimpleEtablissement> | undefined>();
 
 watch(etabs, (newValue) => {
-  if (typeof newValue !== "undefined" && newValue !== null)
-    items.value = newValue;
+  if (typeof newValue !== 'undefined' && newValue !== null) items.value = newValue;
 });
 
 watch(select, (newValue) => {
-  if (typeof newValue !== "undefined" && newValue !== null) {
+  if (typeof newValue !== 'undefined' && newValue !== null) {
     const searchValue = newValue
       .toLowerCase()
-      .normalize("NFD")
-      .replace(/\p{Diacritic}/gu, "");
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '');
     items.value = etabs.value?.filter((etablissement) => {
       let filters =
         etablissement.nom.toLowerCase().indexOf(searchValue) > -1 ||
         etablissement.uai.toLowerCase().indexOf(searchValue) > -1 ||
         etablissement.siren.toString().indexOf(searchValue) > -1;
       if (etablissement.ville) {
-        filters =
-          filters ||
-          etablissement.ville.toLowerCase().indexOf(searchValue) > -1;
+        filters = filters || etablissement.ville.toLowerCase().indexOf(searchValue) > -1;
       }
 
       return filters;
@@ -61,15 +58,7 @@ watch(select, (newValue) => {
       </template>
     </v-text-field>
     <v-row>
-      <v-col
-        v-for="(etablissement, index) in pageItems"
-        :key="index"
-        :cols="12"
-        :md="6"
-        :lg="4"
-        :xl="3"
-        class="pa-2"
-      >
+      <v-col v-for="(etablissement, index) in pageItems" :key="index" :cols="12" :md="6" :lg="4" :xl="3" class="pa-2">
         <v-card
           :to="{
             name: 'structure',
@@ -83,11 +72,7 @@ watch(select, (newValue) => {
               {{ etablissement.nom }}
             </div>
             <div class="subtitle">
-              {{
-                etablissement.type
-                  ? `${etablissement.type} ${etablissement.uai}`
-                  : etablissement.uai
-              }}
+              {{ etablissement.type ? `${etablissement.type} ${etablissement.uai}` : etablissement.uai }}
             </div>
           </v-card-text>
         </v-card>

@@ -1,18 +1,12 @@
-import {
-  getEtablissements,
-  getEtablissement,
-} from "@/services/structureService";
-import { useConfigurationStore } from "@/stores/configurationStore";
-import { Tabs } from "@/types/enums/Tabs";
-import type {
-  Etablissement,
-  SimpleEtablissement,
-} from "@/types/etablissementType";
-import { errorHandler } from "@/utils/axiosUtils";
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { getEtablissements, getEtablissement } from '@/services/structureService';
+import { useConfigurationStore } from '@/stores/configurationStore';
+import { Tabs } from '@/types/enums/Tabs';
+import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType';
+import { errorHandler } from '@/utils/axiosUtils';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useStructureStore = defineStore("structure", () => {
+export const useStructureStore = defineStore('structure', () => {
   const configurationStore = useConfigurationStore();
 
   const etabs = ref<Array<SimpleEtablissement> | undefined>();
@@ -26,7 +20,7 @@ export const useStructureStore = defineStore("structure", () => {
       const response = await getEtablissements();
       etabs.value = response.data;
     } catch (e) {
-      errorHandler(e, "initStructureStore");
+      errorHandler(e, 'initStructureStore');
     }
   };
 
@@ -35,12 +29,7 @@ export const useStructureStore = defineStore("structure", () => {
    * @param id Identifiant de la structure
    */
   const initCurrentEtab = async (id: number): Promise<void> => {
-    const {
-      structures,
-      setCurrentStructure,
-      setCurrentTab,
-      setCurrentStructureId,
-    } = configurationStore;
+    const { structures, setCurrentStructure, setCurrentTab, setCurrentStructureId } = configurationStore;
 
     try {
       const response = await getEtablissement(id);
@@ -54,13 +43,13 @@ export const useStructureStore = defineStore("structure", () => {
           id: id,
           name: currentEtab?.value?.type
             ? `${currentEtab.value.type} ${currentEtab.value.nom}`
-            : currentEtab?.value?.nom || "",
+            : currentEtab?.value?.nom || '',
         });
         setCurrentStructure(structures.length - 1);
       } else setCurrentStructure(index);
       setCurrentStructureId(id);
     } catch (e) {
-      errorHandler(e, "initCurrentEtab");
+      errorHandler(e, 'initCurrentEtab');
     }
   };
 
@@ -71,7 +60,7 @@ export const useStructureStore = defineStore("structure", () => {
         const response = await getEtablissement(structureId);
         currentEtab.value = response.data;
       } catch (e) {
-        errorHandler(e, "refreshCurrentStructure");
+        errorHandler(e, 'refreshCurrentStructure');
       }
     }
   };

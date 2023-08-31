@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useConfigurationStore } from "@/stores/configurationStore";
-import { jsonp } from "@/utils/casUtils";
-import { storeToRefs } from "pinia";
-import { onMounted, computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useConfigurationStore } from '@/stores/configurationStore';
+import { jsonp } from '@/utils/casUtils';
+import { storeToRefs } from 'pinia';
+import { onMounted, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 const configurationStore = useConfigurationStore();
 const { identity, isAuthenticated } = storeToRefs(configurationStore);
@@ -27,7 +27,7 @@ let relogState = {};
 // Une fois connecté, l'utilisateur est redirigé
 const login = async () => {
   try {
-    const response = await jsonp("/app/login", "JSON_CALLBACK", 1000);
+    const response = await jsonp('/app/login', 'JSON_CALLBACK', 1000);
     // @ts-ignore
     identity.value = response;
   } catch (e) {
@@ -43,7 +43,7 @@ const relog = () => {
   windowOpenCleanup(relogState);
   // @ts-ignore
   relogState.listener = onmessage;
-  window.addEventListener("message", onmessage);
+  window.addEventListener('message', onmessage);
 
   // @ts-ignore
   relogState.window = window.open(`${VITE_API_URL}/app/login?postMessage`);
@@ -54,7 +54,7 @@ const relog = () => {
 const windowOpenCleanup = (state) => {
   try {
     if (state.listener) {
-      window.removeEventListener("message", state.listener);
+      window.removeEventListener('message', state.listener);
     }
     if (state.window) {
       state.window.close();
@@ -69,7 +69,7 @@ const windowOpenCleanup = (state) => {
 // du serveur CAS puis redirige l'utilisateur
 // @ts-ignore
 const onmessage = (e) => {
-  if (typeof e.data !== "string") {
+  if (typeof e.data !== 'string') {
     return;
   }
 
@@ -89,7 +89,7 @@ router.beforeEach(async (to, from, next) => {
     await login();
     next();
   } catch (e) {
-    console.error("Login required");
+    console.error('Login required');
   }
 });
 
@@ -104,16 +104,12 @@ onMounted(() => {
   <v-dialog v-model="modelValue" :max-width="300">
     <v-card>
       <v-toolbar color="rgba(255, 255, 255, 0)">
-        <v-toolbar-title class="text-h6">{{ t("casSignIn") }}</v-toolbar-title>
+        <v-toolbar-title class="text-h6">{{ t('casSignIn') }}</v-toolbar-title>
       </v-toolbar>
       <v-card-text> </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn
-          color="primary"
-          prepend-icon="fas fa-right-to-bracket"
-          @click="login"
-        >
-          {{ t("button.signIn") }}
+        <v-btn color="primary" prepend-icon="fas fa-right-to-bracket" @click="login">
+          {{ t('button.signIn') }}
         </v-btn>
       </v-card-actions>
     </v-card>

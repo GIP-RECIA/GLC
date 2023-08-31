@@ -1,4 +1,4 @@
-import type { PersonneFonction } from "@/types/fonctionType";
+import type { PersonneFonction } from '@/types/fonctionType';
 
 export type Personne = {
   id: number;

@@ -1,16 +1,16 @@
-import { getPersonne } from "@/services/personneService";
-import { useConfigurationStore } from "@/stores/configurationStore";
-import { useStructureStore } from "@/stores/structureStore";
-import { CategoriePersonne } from "@/types/enums/CategoriePersonne";
-import { Etat } from "@/types/enums/Etat";
-import type { PersonneFonction } from "@/types/fonctionType";
-import type { Personne, SimplePersonne } from "@/types/personneType";
-import { errorHandler } from "@/utils/axiosUtils";
-import isEmpty from "lodash.isempty";
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { getPersonne } from '@/services/personneService';
+import { useConfigurationStore } from '@/stores/configurationStore';
+import { useStructureStore } from '@/stores/structureStore';
+import { CategoriePersonne } from '@/types/enums/CategoriePersonne';
+import { Etat } from '@/types/enums/Etat';
+import type { PersonneFonction } from '@/types/fonctionType';
+import type { Personne, SimplePersonne } from '@/types/personneType';
+import { errorHandler } from '@/utils/axiosUtils';
+import isEmpty from 'lodash.isempty';
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
 
-export const usePersonneStore = defineStore("personne", () => {
+export const usePersonneStore = defineStore('personne', () => {
   const configurationStore = useConfigurationStore();
   const structureStore = useStructureStore();
 
@@ -25,16 +25,13 @@ export const usePersonneStore = defineStore("personne", () => {
    *
    * @param id Identifiant de la personne
    */
-  const initCurrentPersonne = async (
-    id: number,
-    showModal: boolean
-  ): Promise<void> => {
+  const initCurrentPersonne = async (id: number, showModal: boolean): Promise<void> => {
     try {
       const response = await getPersonne(id);
       currentPersonne.value = response.data;
       isCurrentPersonne.value = showModal;
     } catch (e) {
-      errorHandler(e, "initCurrentPersonne");
+      errorHandler(e, 'initCurrentPersonne');
     }
   };
 
@@ -46,41 +43,29 @@ export const usePersonneStore = defineStore("personne", () => {
         const response = await getPersonne(personneId);
         currentPersonne.value = response.data;
       } catch (e) {
-        errorHandler(e, "refreshCurrentPersonne");
+        errorHandler(e, 'refreshCurrentPersonne');
       }
     }
   };
 
-  const structureFonctions = computed(
-    (): Array<PersonneFonction> | undefined => {
-      const { currentStructureId } = configurationStore;
+  const structureFonctions = computed((): Array<PersonneFonction> | undefined => {
+    const { currentStructureId } = configurationStore;
 
-      return currentPersonne.value?.fonctions?.filter(
-        (fonction) => fonction.structure == currentStructureId
-      );
-    }
-  );
-
-  const hasStructureFonctions = computed(() => {
-    return structureFonctions.value
-      ? structureFonctions.value.length > 0
-      : false;
+    return currentPersonne.value?.fonctions?.filter((fonction) => fonction.structure == currentStructureId);
   });
 
-  const structureAdditionalFonctions = computed(
-    (): Array<PersonneFonction> | undefined => {
-      const { currentStructureId } = configurationStore;
+  const hasStructureFonctions = computed(() => {
+    return structureFonctions.value ? structureFonctions.value.length > 0 : false;
+  });
 
-      return currentPersonne.value?.additionalFonctions?.filter(
-        (fonction) => fonction.structure == currentStructureId
-      );
-    }
-  );
+  const structureAdditionalFonctions = computed((): Array<PersonneFonction> | undefined => {
+    const { currentStructureId } = configurationStore;
+
+    return currentPersonne.value?.additionalFonctions?.filter((fonction) => fonction.structure == currentStructureId);
+  });
 
   const hasStructureAdditionalFonctions = computed(() => {
-    return structureAdditionalFonctions.value
-      ? structureAdditionalFonctions.value.length > 0
-      : false;
+    return structureAdditionalFonctions.value ? structureAdditionalFonctions.value.length > 0 : false;
   });
 
   /* -- Pour la structure courante -- */
@@ -97,9 +82,7 @@ export const usePersonneStore = defineStore("personne", () => {
   const deletedPersonnes = computed<Array<SimplePersonne>>(() => {
     const { currentEtab } = structureStore;
 
-    const result = currentEtab?.personnes?.filter(
-      (personne) => personne.etat == Etat.Delete
-    );
+    const result = currentEtab?.personnes?.filter((personne) => personne.etat == Etat.Delete);
 
     return isEmpty(result) ? [] : result!;
   });
@@ -112,9 +95,7 @@ export const usePersonneStore = defineStore("personne", () => {
     const { currentEtab } = structureStore;
     const { administrativeStaff } = configurationStore;
 
-    return currentEtab?.personnes.filter((personne) =>
-      administrativeStaff?.includes(personne.categorie)
-    );
+    return currentEtab?.personnes.filter((personne) => administrativeStaff?.includes(personne.categorie));
   });
 
   /**
@@ -124,9 +105,7 @@ export const usePersonneStore = defineStore("personne", () => {
   const teachingList = computed<Array<SimplePersonne> | undefined>(() => {
     const { currentEtab } = structureStore;
 
-    return currentEtab?.personnes.filter(
-      (personne) => (personne.categorie = CategoriePersonne.Enseignant)
-    );
+    return currentEtab?.personnes.filter((personne) => (personne.categorie = CategoriePersonne.Enseignant));
   });
 
   return {

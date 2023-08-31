@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import PersonneChip from "@/components/search/PersonneChip.vue";
-import PersonneListItem from "@/components/search/PersonneListItem.vue";
-import { searchPersonne } from "@/services/personneService";
-import type { SimplePersonne } from "@/types/personneType";
-import { errorHandler } from "@/utils/axiosUtils";
-import { ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
+import PersonneChip from '@/components/search/PersonneChip.vue';
+import PersonneListItem from '@/components/search/PersonneListItem.vue';
+import { searchPersonne } from '@/services/personneService';
+import type { SimplePersonne } from '@/types/personneType';
+import { errorHandler } from '@/utils/axiosUtils';
+import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
@@ -13,8 +13,7 @@ const props = defineProps<{
   searchList: Array<SimplePersonne> | undefined;
 }>();
 
-const emit =
-  defineEmits<(event: "update:select", payload: number | undefined) => void>();
+const emit = defineEmits<(event: 'update:select', payload: number | undefined) => void>();
 
 const isLoading = ref<boolean>(false);
 const isHideNoData = ref<boolean>(true);
@@ -25,23 +24,21 @@ const items = ref<Array<SimplePersonne>>([]);
 watch(isSearchingOut, () => {
   if (select.value != undefined) {
     select.value = undefined;
-    emit("update:select", undefined);
+    emit('update:select', undefined);
   }
 });
 
 const filterItems = (newSearch: string | undefined) => {
-  if (typeof newSearch !== "undefined" && newSearch !== null) {
-    if (newSearch.length > 3 && !newSearch.includes("(")) {
+  if (typeof newSearch !== 'undefined' && newSearch !== null) {
+    if (newSearch.length > 3 && !newSearch.includes('(')) {
       newSearch = newSearch
         .toLowerCase()
-        .normalize("NFD")
-        .replace(/\p{Diacritic}/gu, "");
+        .normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '');
 
       isLoading.value = true;
       isHideNoData.value = false;
-      isSearchingOut.value
-        ? findOutOfStructure(newSearch)
-        : findInStructure(newSearch);
+      isSearchingOut.value ? findOutOfStructure(newSearch) : findInStructure(newSearch);
     } else {
       items.value = [];
       isLoading.value = false;
@@ -61,8 +58,7 @@ let out: { request?: string; response: Array<SimplePersonne> } = {
 };
 
 const findOutOfStructure = async (searchValue: string) => {
-  if (out.request && searchValue.startsWith(out.request))
-    filterFromSource(out.response, searchValue);
+  if (out.request && searchValue.startsWith(out.request)) filterFromSource(out.response, searchValue);
   else {
     out.request = searchValue;
     try {
@@ -76,24 +72,18 @@ const findOutOfStructure = async (searchValue: string) => {
   isLoading.value = false;
 };
 
-const filterFromSource = (
-  source: Array<SimplePersonne>,
-  searchValue: string
-): void => {
+const filterFromSource = (source: Array<SimplePersonne>, searchValue: string): void => {
   items.value = source
     .filter((personne) => {
       let filter = personne.cn.toLowerCase().indexOf(searchValue) > -1;
-      if (personne.uid)
-        filter = filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;
+      if (personne.uid) filter = filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;
 
       return filter;
     })
     .map((personne) => {
       return {
         ...personne,
-        searchValue: personne.uid
-          ? `${personne.cn} (${personne.uid})`
-          : personne.cn,
+        searchValue: personne.uid ? `${personne.cn} (${personne.uid})` : personne.cn,
       };
     });
 };

@@ -1,23 +1,17 @@
 <script setup lang="ts">
-import { useFonctionStore } from "./stores/fonctionStore";
-import LoginModal from "@/components/modals/LoginModal.vue";
-import CustomTabBar from "@/components/tab/CustomTabBar.vue";
-import { useConfigurationStore } from "@/stores/configurationStore";
-import { storeToRefs } from "pinia";
-import { watch, onBeforeMount } from "vue";
+import { useFonctionStore } from './stores/fonctionStore';
+import LoginModal from '@/components/modals/LoginModal.vue';
+import CustomTabBar from '@/components/tab/CustomTabBar.vue';
+import { useConfigurationStore } from '@/stores/configurationStore';
+import { storeToRefs } from 'pinia';
+import { watch, onBeforeMount } from 'vue';
 
 onBeforeMount(() => {
-  let extendedUportalHeaderScript = document.createElement("script");
-  extendedUportalHeaderScript.setAttribute(
-    "src",
-    "/commun/extended-uportal-header.min.js"
-  );
+  let extendedUportalHeaderScript = document.createElement('script');
+  extendedUportalHeaderScript.setAttribute('src', '/commun/extended-uportal-header.min.js');
   document.head.appendChild(extendedUportalHeaderScript);
-  let extendedUportalFooterScript = document.createElement("script");
-  extendedUportalFooterScript.setAttribute(
-    "src",
-    "/commun/extended-uportal-footer.min.js"
-  );
+  let extendedUportalFooterScript = document.createElement('script');
+  extendedUportalFooterScript.setAttribute('src', '/commun/extended-uportal-footer.min.js');
   document.head.appendChild(extendedUportalFooterScript);
 });
 
@@ -60,9 +54,7 @@ watch(isAuthenticated, (newValue) => {
       return-home-target="_self"
       icon-type="nine-square"
     />
-    <v-toolbar density="compact" class="px-3">
-      GLC<custom-tab-bar class="ml-2" />
-    </v-toolbar>
+    <v-toolbar density="compact" class="px-3">GLC<custom-tab-bar class="ml-2" /></v-toolbar>
   </header>
   <main>
     <router-view v-if="isAuthenticated" />

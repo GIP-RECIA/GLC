@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from 'vue';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -7,7 +7,7 @@ const props = defineProps<{
   showXmark?: boolean;
 }>();
 
-defineEmits<(event: "update:modelValue", payload: boolean) => void>();
+defineEmits<(event: 'update:modelValue', payload: boolean) => void>();
 
 const modelValue = computed<boolean>({
   get() {

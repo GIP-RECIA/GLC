@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Filiere } from "@/types/filiereType";
-import { onBeforeMount, ref } from "vue";
+import type { Filiere } from '@/types/filiereType';
+import { onBeforeMount, ref } from 'vue';
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
@@ -8,8 +8,7 @@ const props = defineProps<{
   disabled?: Array<string>;
 }>();
 
-const emit =
-  defineEmits<(event: "update:selected", payload: Array<string>) => void>();
+const emit = defineEmits<(event: 'update:selected', payload: Array<string>) => void>();
 
 const checked = ref<Array<string>>([]);
 
@@ -18,7 +17,7 @@ onBeforeMount(() => {
 });
 
 const updateSelected = () => {
-  emit("update:selected", checked.value);
+  emit('update:selected', checked.value);
 };
 </script>
 
@@ -28,11 +27,7 @@ const updateSelected = () => {
       <b>{{ filiere.libelleFiliere }}</b>
     </div>
     <div class="d-flex flex-row flex-wrap">
-      <div
-        v-for="(discipline, index) in filiere.disciplines"
-        :key="index"
-        class="modal-flex-item"
-      >
+      <div v-for="(discipline, index) in filiere.disciplines" :key="index" class="modal-flex-item">
         <v-checkbox
           v-model="checked"
           :label="discipline.disciplinePoste"

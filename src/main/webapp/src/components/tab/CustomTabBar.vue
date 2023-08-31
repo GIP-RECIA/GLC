@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import CustomTabItem from "@/components/tab/CustomTabItem.vue";
-import { useConfigurationStore } from "@/stores/configurationStore";
-import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
+import CustomTabItem from '@/components/tab/CustomTabItem.vue';
+import { useConfigurationStore } from '@/stores/configurationStore';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 
 const configurationStore = useConfigurationStore();
 const { structures, currentStructure } = storeToRefs(configurationStore);
@@ -17,16 +17,13 @@ const close = (i: number) => {
   currentStructure.value = newCurrentStructure >= 0 ? newCurrentStructure : 0;
 
   // Changement de page
-  const structureId = structures.value.find(
-    (structure, index) => index == currentStructure.value
-  )?.id;
-  if (structureId)
-    router.push({ name: "structure", params: { structureId: structureId } });
+  const structureId = structures.value.find((structure, index) => index == currentStructure.value)?.id;
+  if (structureId) router.push({ name: 'structure', params: { structureId: structureId } });
   else newTab();
 };
 
 const newTab = () => {
-  router.push({ name: "home" });
+  router.push({ name: 'home' });
   currentStructure.value = undefined;
 };
 </script>

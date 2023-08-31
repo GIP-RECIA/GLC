@@ -1,31 +1,30 @@
 <script setup lang="ts">
-import ReadonlyData from "@/components/ReadonlyData.vue";
-import CheckboxLayout from "@/components/layouts/CheckboxLayout.vue";
-import FonctionsLayout from "@/components/layouts/FonctionsLayout.vue";
-import BaseModal from "@/components/modals/BaseModal.vue";
-import { setPersonneAdditional } from "@/services/personneService";
-import { useConfigurationStore } from "@/stores/configurationStore";
-import { useFonctionStore } from "@/stores/fonctionStore";
-import { usePersonneStore } from "@/stores/personneStore";
-import type { enumValues } from "@/types/enumValuesType";
-import { getCategoriePersonne } from "@/types/enums/CategoriePersonne";
-import { Etat, getEtat } from "@/types/enums/Etat";
-import { Tabs } from "@/types/enums/Tabs";
-import { errorHandler } from "@/utils/axiosUtils";
-import debounce from "lodash.debounce";
-import moment from "moment";
-import { storeToRefs } from "pinia";
-import { watch, ref, computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { useToast } from "vue-toastification";
+import ReadonlyData from '@/components/ReadonlyData.vue';
+import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
+import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue';
+import BaseModal from '@/components/modals/BaseModal.vue';
+import { setPersonneAdditional } from '@/services/personneService';
+import { useConfigurationStore } from '@/stores/configurationStore';
+import { useFonctionStore } from '@/stores/fonctionStore';
+import { usePersonneStore } from '@/stores/personneStore';
+import type { enumValues } from '@/types/enumValuesType';
+import { getCategoriePersonne } from '@/types/enums/CategoriePersonne';
+import { Etat, getEtat } from '@/types/enums/Etat';
+import { Tabs } from '@/types/enums/Tabs';
+import { errorHandler } from '@/utils/axiosUtils';
+import debounce from 'lodash.debounce';
+import moment from 'moment';
+import { storeToRefs } from 'pinia';
+import { watch, ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
 const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
 const { isExternalLogin } = configurationStore;
-const { currentTab, currentStructureId, isAddMode, isAdmin } =
-  storeToRefs(configurationStore);
+const { currentTab, currentStructureId, isAddMode, isAdmin } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { filieres, customMapping, isCustomMapping } = storeToRefs(fonctionStore);
@@ -51,9 +50,7 @@ watch(isCurrentPersonne, (newValue) => {
     selected.value = [];
   } else {
     selected.value = structureAdditionalFonctions.value
-      ? structureAdditionalFonctions.value.map(
-          (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
-        )
+      ? structureAdditionalFonctions.value.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
       : [];
     isLocked.value = currentPersonne.value!.etat == Etat.Bloque;
   }
@@ -62,22 +59,18 @@ watch(isCurrentPersonne, (newValue) => {
 const etat = computed<enumValues>(() => {
   if (currentPersonne.value) return getEtat(currentPersonne.value.etat);
   return {
-    i18n: "",
-    color: "",
+    i18n: '',
+    color: '',
   };
 });
 
 const schoolYear = computed<string>(() => {
   if (currentPersonne.value) {
-    const currentPersonneSchoolYear = moment(
-      currentPersonne.value.anneeScolaire
-    ).format("Y");
+    const currentPersonneSchoolYear = moment(currentPersonne.value.anneeScolaire).format('Y');
 
-    return `${currentPersonneSchoolYear}/${
-      parseInt(currentPersonneSchoolYear) + 1
-    }`;
+    return `${currentPersonneSchoolYear}/${parseInt(currentPersonneSchoolYear) + 1}`;
   }
-  return "";
+  return '';
 });
 
 const selected = ref<Array<string>>([]);
@@ -92,39 +85,32 @@ const canSave = computed<boolean>(() => {
       (entry) =>
         structureAdditionalFonctions.value
           ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-          .includes(entry)
+          .includes(entry),
     );
   }
   return true;
 });
 
-const saveButton = computed<{ i18n: string; icon: string; color: string }>(
-  () => {
-    if (!hasStructureFonctions.value) {
-      if (!hasStructureAdditionalFonctions.value)
-        return { i18n: "button.attach", icon: "fas fa-link", color: "success" };
-      if (selected.value.length == 0)
-        return {
-          i18n: "button.detach",
-          icon: "fas fa-link-slash",
-          color: "error",
-        };
-    }
-    return {
-      i18n: "button.save",
-      icon: "fas fa-floppy-disk",
-      color: "success",
-    };
+const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
+  if (!hasStructureFonctions.value) {
+    if (!hasStructureAdditionalFonctions.value) return { i18n: 'button.attach', icon: 'fas fa-link', color: 'success' };
+    if (selected.value.length == 0)
+      return {
+        i18n: 'button.detach',
+        icon: 'fas fa-link-slash',
+        color: 'error',
+      };
   }
-);
+  return {
+    i18n: 'button.save',
+    icon: 'fas fa-floppy-disk',
+    color: 'success',
+  };
+});
 
 const save = async () => {
   try {
-    await setPersonneAdditional(
-      currentPersonne.value!.id,
-      currentStructureId.value!,
-      selected.value
-    );
+    await setPersonneAdditional(currentPersonne.value!.id, currentStructureId.value!, selected.value);
     resetAddMode(true);
   } catch (e) {
     errorHandler(e);
@@ -146,7 +132,7 @@ const lockManager = () => {
 
 const resetAddMode = (success?: boolean) => {
   const { i18n } = saveButton.value;
-  const title = i18n.replace("button.", "");
+  const title = i18n.replace('button.', '');
   if (success) {
     refreshCurrentPersonne();
     toast.success(t(`toast.additional.success.${title}`));
@@ -158,18 +144,10 @@ const resetAddMode = (success?: boolean) => {
 </script>
 
 <template>
-  <base-modal
-    v-model="isCurrentPersonne"
-    :title="currentPersonne ? currentPersonne.cn : ''"
-    :show-xmark="isAddMode"
-  >
+  <base-modal v-model="isCurrentPersonne" :title="currentPersonne ? currentPersonne.cn : ''" :show-xmark="isAddMode">
     <div v-if="currentPersonne && !isAddMode">
       <div class="d-flex flex-row flex-wrap">
-        <readonly-data
-          label="uid"
-          :value="currentPersonne.uid"
-          class="modal-flex-item"
-        />
+        <readonly-data label="uid" :value="currentPersonne.uid" class="modal-flex-item" />
         <readonly-data
           :label="t('person.information.civility')"
           :value="currentPersonne.civilite"
@@ -190,16 +168,8 @@ const resetAddMode = (success?: boolean) => {
           :value="moment(currentPersonne.dateNaissance).format('L')"
           class="modal-flex-item"
         />
-        <readonly-data
-          :label="t('person.information.email')"
-          :value="currentPersonne.email"
-          class="modal-flex-item"
-        />
-        <readonly-data
-          :label="t('person.information.schoolYear')"
-          :value="schoolYear"
-          class="modal-flex-item"
-        />
+        <readonly-data :label="t('person.information.email')" :value="currentPersonne.email" class="modal-flex-item" />
+        <readonly-data :label="t('person.information.schoolYear')" :value="schoolYear" class="modal-flex-item" />
         <readonly-data
           :label="t('person.information.login')"
           :value="
@@ -209,32 +179,20 @@ const resetAddMode = (success?: boolean) => {
           "
           class="modal-flex-item"
         />
-        <readonly-data
-          :label="t('person.information.status')"
-          :value="t(etat.i18n)"
-          class="modal-flex-item"
-        />
+        <readonly-data :label="t('person.information.status')" :value="t(etat.i18n)" class="modal-flex-item" />
         <readonly-data
           :label="t('person.information.profile')"
           :value="t(getCategoriePersonne(currentPersonne.categorie).i18n)"
           class="modal-flex-item"
         />
-        <readonly-data
-          label="Source"
-          :value="t('source.' + currentPersonne.source)"
-          class="modal-flex-item"
-        />
+        <readonly-data label="Source" :value="t('source.' + currentPersonne.source)" class="modal-flex-item" />
       </div>
       <div class="mb-3">
-        <b>{{ t("person.information.function", 2) }}</b>
-        <fonctions-layout
-          :filieres="filieres"
-          :fonctions="structureFonctions"
-          class="mt-2 mb-3"
-        />
+        <b>{{ t('person.information.function', 2) }}</b>
+        <fonctions-layout :filieres="filieres" :fonctions="structureFonctions" class="mt-2 mb-3" />
       </div>
       <div v-if="currentTab == Tabs.AdministrativeStaff">
-        <b>{{ t("person.information.additionalFunction", 2) }}</b>
+        <b>{{ t('person.information.additionalFunction', 2) }}</b>
         <fonctions-layout
           :filieres="customMapping?.filieres"
           :fonctions="structureAdditionalFonctions"
@@ -242,12 +200,8 @@ const resetAddMode = (success?: boolean) => {
         />
       </div>
       <div v-if="currentTab == Tabs.TeachingStaff">
-        <b>{{ t("person.information.additionalTeaching", 2) }}</b>
-        <fonctions-layout
-          :filieres="undefined"
-          :fonctions="structureAdditionalFonctions"
-          class="mt-2 mb-3"
-        />
+        <b>{{ t('person.information.additionalTeaching', 2) }}</b>
+        <fonctions-layout :filieres="undefined" :fonctions="structureAdditionalFonctions" class="mt-2 mb-3" />
       </div>
     </div>
 
@@ -256,11 +210,7 @@ const resetAddMode = (success?: boolean) => {
         v-if="currentTab == Tabs.AdministrativeStaff"
         :filieres="customMapping?.filieres"
         :selected="selected"
-        :disabled="
-          structureFonctions?.map(
-            (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
-          )
-        "
+        :disabled="structureFonctions?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)"
         @update:selected="setSelected"
       />
     </div>
@@ -270,58 +220,33 @@ const resetAddMode = (success?: boolean) => {
         <div>
           <div v-if="!isAddMode">
             <v-btn
-              v-if="
-                currentPersonne?.etat == Etat.Bloque ||
-                currentPersonne?.etat == Etat.Valide
-              "
+              v-if="currentPersonne?.etat == Etat.Bloque || currentPersonne?.etat == Etat.Valide"
               color="secondary"
               :prepend-icon="isLocked ? 'fas fa-lock-open' : 'fas fa-lock'"
               @click="lockManager"
             >
-              {{ isLocked ? t("button.unlock") : t("button.lock") }}
+              {{ isLocked ? t('button.unlock') : t('button.lock') }}
             </v-btn>
-            <v-btn
-              color="secondary"
-              prepend-icon="fas fa-rotate-right"
-              @click="reinitialize"
-            >
-              {{ t("button.reinitialize") }}
+            <v-btn color="secondary" prepend-icon="fas fa-rotate-right" @click="reinitialize">
+              {{ t('button.reinitialize') }}
             </v-btn>
           </div>
         </div>
 
-        <div
-          v-if="
-            currentTab == Tabs.AdministrativeStaff ||
-            currentTab == Tabs.TeachingStaff
-          "
-        >
+        <div v-if="currentTab == Tabs.AdministrativeStaff || currentTab == Tabs.TeachingStaff">
           <v-btn
             v-if="!isAddMode && isCustomMapping"
             color="primary"
-            :prepend-icon="
-              hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'
-            "
+            :prepend-icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'"
             @click="isAddMode = true"
           >
-            {{
-              t(hasStructureAdditionalFonctions ? "button.edit" : "button.add")
-            }}
+            {{ t(hasStructureAdditionalFonctions ? 'button.edit' : 'button.add') }}
           </v-btn>
           <div v-if="isAddMode">
-            <v-btn
-              color="secondary"
-              prepend-icon="fas fa-xmark"
-              @click="cancel"
-            >
-              {{ t("button.cancel") }}
+            <v-btn color="secondary" prepend-icon="fas fa-xmark" @click="cancel">
+              {{ t('button.cancel') }}
             </v-btn>
-            <v-btn
-              :color="saveButton.color"
-              :prepend-icon="saveButton.icon"
-              :disabled="!canSave"
-              @click="save"
-            >
+            <v-btn :color="saveButton.color" :prepend-icon="saveButton.icon" :disabled="!canSave" @click="save">
               {{ t(saveButton.i18n) }}
             </v-btn>
           </div>

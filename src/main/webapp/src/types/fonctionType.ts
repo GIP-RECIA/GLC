@@ -1,5 +1,5 @@
-import type { Discipline } from "@/types/disciplineType";
-import type { Filiere } from "@/types/filiereType";
+import type { Discipline } from '@/types/disciplineType';
+import type { Filiere } from '@/types/filiereType';
 
 export type SourceFonction = {
   source: string;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import ChipsFilter from "@/components/filter/ChipsFilter.vue";
-import { CategoriePersonne } from "@/types/enums/CategoriePersonne";
-import { Etat } from "@/types/enums/Etat";
-import type { SimplePersonne } from "@/types/personneType";
-import isEmpty from "lodash.isempty";
-import { ref } from "vue";
-import { useI18n } from "vue-i18n";
+import ChipsFilter from '@/components/filter/ChipsFilter.vue';
+import { CategoriePersonne } from '@/types/enums/CategoriePersonne';
+import { Etat } from '@/types/enums/Etat';
+import type { SimplePersonne } from '@/types/personneType';
+import isEmpty from 'lodash.isempty';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
@@ -13,10 +13,7 @@ const props = defineProps<{
   searchList: Array<SimplePersonne> | undefined;
 }>();
 
-const emit =
-  defineEmits<
-    (event: "update:result", payload: Array<SimplePersonne>) => void
-  >();
+const emit = defineEmits<(event: 'update:result', payload: Array<SimplePersonne>) => void>();
 
 const nbResults = ref<number>(props.searchList ? props.searchList.length : 0);
 
@@ -41,11 +38,9 @@ const setStatusFilter = (newValue: Array<string>) => {
 
 const filter = () => {
   const searchValue = searchFilter ? searchFilter.toLowerCase() : undefined;
-  let result: Array<SimplePersonne> = !isEmpty(props.searchList)
-    ? props.searchList!
-    : [];
+  let result: Array<SimplePersonne> = !isEmpty(props.searchList) ? props.searchList! : [];
 
-  if (searchValue != undefined && searchValue !== "") {
+  if (searchValue != undefined && searchValue !== '') {
     result = result.filter((personne) => {
       let filter = personne.cn.toLowerCase().indexOf(searchValue) > -1;
 
@@ -58,9 +53,7 @@ const filter = () => {
   }
 
   if (!isEmpty(categoryFilter)) {
-    result = result?.filter((personne) =>
-      categoryFilter.includes(personne.categorie)
-    );
+    result = result?.filter((personne) => categoryFilter.includes(personne.categorie));
   }
 
   if (!isEmpty(statusFilter)) {
@@ -68,32 +61,32 @@ const filter = () => {
   }
 
   nbResults.value = result.length;
-  emit("update:result", result);
+  emit('update:result', result);
 };
 
 const categoryTags = [
   // { "id": CategoriePersonne., i18n: "admin" },
-  { id: CategoriePersonne.Enseignant, i18n: "person.category.teacher" },
-  { id: CategoriePersonne.Eleve, i18n: "person.category.student" },
+  { id: CategoriePersonne.Enseignant, i18n: 'person.category.teacher' },
+  { id: CategoriePersonne.Eleve, i18n: 'person.category.student' },
   {
     id: CategoriePersonne.Personne_relation_eleve,
-    i18n: "person.category.personRelationshipStudent",
+    i18n: 'person.category.personRelationshipStudent',
   },
   {
     id: CategoriePersonne.Non_enseignant_collectivite_locale,
-    i18n: "person.category.nonTeacherLocalCommunity",
+    i18n: 'person.category.nonTeacherLocalCommunity',
   },
   {
     id: CategoriePersonne.Non_enseignant_etablissement,
-    i18n: "person.category.nonTeacherSchool",
+    i18n: 'person.category.nonTeacherSchool',
   },
 ];
 
 const statusTags = [
-  { id: Etat.Invalide, i18n: "person.status.invalid" },
-  { id: Etat.Valide, i18n: "person.status.valid" },
-  { id: Etat.Bloque, i18n: "person.status.locked" },
-  { id: Etat.Delete, i18n: "person.status.deleted" },
+  { id: Etat.Invalide, i18n: 'person.status.invalid' },
+  { id: Etat.Valide, i18n: 'person.status.valid' },
+  { id: Etat.Bloque, i18n: 'person.status.locked' },
+  { id: Etat.Delete, i18n: 'person.status.deleted' },
 ];
 
 filter();
@@ -117,13 +110,13 @@ filter();
       </v-text-field>
     </v-card-text>
     <v-card-text>
-      <h2 class="text-h6 mb-2">{{ t("person.information.profile") }}</h2>
+      <h2 class="text-h6 mb-2">{{ t('person.information.profile') }}</h2>
       <chips-filter :tags="categoryTags" @update:selected="setCategoryFilter" />
     </v-card-text>
     <v-card-text>
-      <h2 class="text-h6 mb-2">{{ t("person.information.status") }}</h2>
+      <h2 class="text-h6 mb-2">{{ t('person.information.status') }}</h2>
       <chips-filter :tags="statusTags" @update:selected="setStatusFilter" />
     </v-card-text>
-    <v-card-text> {{ nbResults }} {{ t("result", nbResults) }} </v-card-text>
+    <v-card-text>{{ nbResults }} {{ t('result', nbResults) }}</v-card-text>
   </v-card>
 </template>

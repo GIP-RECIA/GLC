@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import CustomPagination from "@/components/CustomPagination.vue";
-import PersonneCard from "@/components/PersonneCard.vue";
-import AccountFilter from "@/components/filter/AccountFilter.vue";
-import { usePersonneStore } from "@/stores/personneStore";
-import type { SimplePersonne } from "@/types/personneType";
-import { storeToRefs } from "pinia";
-import { watch, ref } from "vue";
+import CustomPagination from '@/components/CustomPagination.vue';
+import PersonneCard from '@/components/PersonneCard.vue';
+import AccountFilter from '@/components/filter/AccountFilter.vue';
+import { usePersonneStore } from '@/stores/personneStore';
+import type { SimplePersonne } from '@/types/personneType';
+import { storeToRefs } from 'pinia';
+import { watch, ref } from 'vue';
 
 const personneStore = usePersonneStore();
 const { personnes } = storeToRefs(personneStore);
@@ -14,8 +14,7 @@ const items = ref<Array<SimplePersonne> | undefined>();
 const pageItems = ref<Array<SimplePersonne> | undefined>();
 
 watch(personnes, (newValue) => {
-  if (typeof newValue !== "undefined" && newValue !== null)
-    items.value = newValue;
+  if (typeof newValue !== 'undefined' && newValue !== null) items.value = newValue;
 });
 </script>
 
@@ -24,18 +23,10 @@ watch(personnes, (newValue) => {
     <account-filter
       class="mb-8"
       :search-list="personnes"
-      @update:result="(result: Array<SimplePersonne>) => items = result"
+      @update:result="(result: Array<SimplePersonne>) => (items = result)"
     />
     <v-row>
-      <v-col
-        v-for="(personne, index) in pageItems"
-        :key="index"
-        :cols="12"
-        :md="6"
-        :lg="4"
-        :xxl="3"
-        class="pa-2"
-      >
+      <v-col v-for="(personne, index) in pageItems" :key="index" :cols="12" :md="6" :lg="4" :xxl="3" class="pa-2">
         <personne-card variant="flat" :personne="personne" />
       </v-col>
     </v-row>

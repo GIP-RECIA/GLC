@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useStructureStore } from "@/stores/structureStore";
-import { storeToRefs } from "pinia";
+import { useStructureStore } from '@/stores/structureStore';
+import { storeToRefs } from 'pinia';
 
 const structureStore = useStructureStore();
 const { currentEtab } = storeToRefs(structureStore);

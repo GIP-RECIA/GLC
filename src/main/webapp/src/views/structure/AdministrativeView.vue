@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import FilieresLayout from "@/components/layouts/FilieresLayout.vue";
-import { useConfigurationStore } from "@/stores/configurationStore";
-import { useFonctionStore } from "@/stores/fonctionStore";
-import { storeToRefs } from "pinia";
-import { ref } from "vue";
-import { useI18n } from "vue-i18n";
+import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
+import { useConfigurationStore } from '@/stores/configurationStore';
+import { useFonctionStore } from '@/stores/fonctionStore';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
@@ -26,18 +26,13 @@ const showAll = ref<boolean>(false);
         :alt="t(showAll ? 'button.hideEmpty' : 'button.showAll')"
         @click="showAll = !showAll"
       >
-        {{ t(showAll ? "button.hideEmpty" : "button.showAll") }}
+        {{ t(showAll ? 'button.hideEmpty' : 'button.showAll') }}
       </v-btn>
     </div>
     <filieres-layout :filieres="administrative" :show-all="showAll" />
 
     <div class="fab ma-4">
-      <v-btn
-        v-if="isCustomMapping"
-        variant="tonal"
-        icon="fas fa-user-pen"
-        @click="isAdditional = true"
-      />
+      <v-btn v-if="isCustomMapping" variant="tonal" icon="fas fa-user-pen" @click="isAdditional = true" />
     </div>
   </v-container>
 </template>

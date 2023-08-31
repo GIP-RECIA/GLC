@@ -1,13 +1,13 @@
-import { getConfiguration } from "@/services/configurationService";
-import type { Configuration } from "@/types/configurationType";
-import { Tabs } from "@/types/enums/Tabs";
-import type { Identity } from "@/types/identityType";
-import { errorHandler } from "@/utils/axiosUtils";
-import isEmpty from "lodash.isempty";
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { getConfiguration } from '@/services/configurationService';
+import type { Configuration } from '@/types/configurationType';
+import { Tabs } from '@/types/enums/Tabs';
+import type { Identity } from '@/types/identityType';
+import { errorHandler } from '@/utils/axiosUtils';
+import isEmpty from 'lodash.isempty';
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
 
-export const useConfigurationStore = defineStore("configuration", () => {
+export const useConfigurationStore = defineStore('configuration', () => {
   const configuration = ref<Configuration | undefined>();
 
   /**
@@ -18,30 +18,24 @@ export const useConfigurationStore = defineStore("configuration", () => {
       const response = await getConfiguration();
       configuration.value = response.data;
     } catch (e) {
-      errorHandler(e, "initConfigurationStore");
+      errorHandler(e, 'initConfigurationStore');
     }
   };
 
   /**
    * Retourne la liste des types de personnel administratif
    */
-  const administrativeStaff = computed<Array<string> | undefined>(
-    () => configuration.value?.administrativeStaff
-  );
+  const administrativeStaff = computed<Array<string> | undefined>(() => configuration.value?.administrativeStaff);
 
   /**
    * Retourne la liste des codes de filière d'administration
    */
-  const administrativeCodes = computed<Array<string> | undefined>(
-    () => configuration.value?.administrativeCodes
-  );
+  const administrativeCodes = computed<Array<string> | undefined>(() => configuration.value?.administrativeCodes);
 
   /**
    * Retourne la liste des codes de filière d'enseigments
    */
-  const teachingCodes = computed<Array<string> | undefined>(
-    () => configuration.value?.teachingCodes
-  );
+  const teachingCodes = computed<Array<string> | undefined>(() => configuration.value?.teachingCodes);
 
   const isExternalLogin = (categorie: string, source: string): boolean => {
     if (configuration.value) {
@@ -84,7 +78,7 @@ export const useConfigurationStore = defineStore("configuration", () => {
   const identity = ref<Identity | undefined>();
   const isAuthenticated = computed<boolean>(() => !isEmpty(identity.value));
   const isAdmin = computed<boolean>(() => {
-    const hasRoleAdmin = identity.value?.roles.includes("ROLE_ADMIN");
+    const hasRoleAdmin = identity.value?.roles.includes('ROLE_ADMIN');
 
     return hasRoleAdmin != undefined && hasRoleAdmin;
   });

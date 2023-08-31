@@ -9,6 +9,6 @@ defineProps<{
   <div class="mb-3">
     <b>{{ label }}</b>
     <br />
-    {{ value ? value : "-" }}
+    {{ value ? value : '-' }}
   </div>
 </template>

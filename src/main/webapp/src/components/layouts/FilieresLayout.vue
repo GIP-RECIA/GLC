@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import PersonneCard from "@/components/PersonneCard.vue";
-import type { Filiere } from "@/types/filiereType";
-import { watch, onBeforeMount, unref, ref } from "vue";
+import PersonneCard from '@/components/PersonneCard.vue';
+import type { Filiere } from '@/types/filiereType';
+import { watch, onBeforeMount, unref, ref } from 'vue';
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
@@ -18,14 +18,14 @@ watch(
   () => props.filieres,
   (oldValue, newValue) => {
     if (newValue != oldValue) filterFiliere();
-  }
+  },
 );
 
 watch(
   () => props.showAll,
   (newValue, oldValue) => {
     if (newValue != oldValue) filterFiliere();
-  }
+  },
 );
 
 const filterFiliere = (): void => {
@@ -34,9 +34,7 @@ const filterFiliere = (): void => {
   if (!unref(props.showAll)) {
     filterFiliere = filterFiliere
       ?.map((filiere) => {
-        const disciplines = filiere.disciplines.filter(
-          (discipline) => discipline.personnes.length > 0
-        );
+        const disciplines = filiere.disciplines.filter((discipline) => discipline.personnes.length > 0);
 
         return { ...filiere, disciplines };
       })
@@ -66,12 +64,7 @@ const filterFiliere = (): void => {
           <v-card :subtitle="discipline.disciplinePoste" flat min-height="100%">
             <v-card-text>
               <v-row>
-                <v-col
-                  :cols="6"
-                  v-for="(personne, index) in discipline.personnes"
-                  :key="index"
-                  class="pa-2"
-                >
+                <v-col :cols="6" v-for="(personne, index) in discipline.personnes" :key="index" class="pa-2">
                   <personne-card variant="tonal" :personne="personne" />
                 </v-col>
               </v-row>

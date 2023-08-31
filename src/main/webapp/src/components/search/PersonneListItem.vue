@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { enumValues } from "@/types/enumValuesType";
-import { getEtat } from "@/types/enums/Etat";
-import type { SimplePersonne } from "@/types/personneType";
-import { computed } from "vue";
+import type { enumValues } from '@/types/enumValuesType';
+import { getEtat } from '@/types/enums/Etat';
+import type { SimplePersonne } from '@/types/personneType';
+import { computed } from 'vue';
 
 const props = defineProps<{
   personne: SimplePersonne;
@@ -17,14 +17,7 @@ const etat = computed<enumValues>(() => getEtat(props.personne.etat));
       {{ personne.cn }}
     </template>
     <template #prepend>
-      <v-icon
-        :icon="
-          personne.source.startsWith('SarapisUi_')
-            ? 'far fa-user'
-            : 'fas fa-user'
-        "
-        :color="etat.color"
-      />
+      <v-icon :icon="personne.source.startsWith('SarapisUi_') ? 'far fa-user' : 'fas fa-user'" :color="etat.color" />
     </template>
   </v-list-item>
 </template>

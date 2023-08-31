@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import CheckboxLayout from "@/components/layouts/CheckboxLayout.vue";
-import BaseModal from "@/components/modals/BaseModal.vue";
-import PersonneSearch from "@/components/search/PersonneSearch.vue";
-import { setPersonneAdditional } from "@/services/personneService";
-import { useConfigurationStore } from "@/stores/configurationStore";
-import { useFonctionStore } from "@/stores/fonctionStore";
-import { usePersonneStore } from "@/stores/personneStore";
-import { Tabs } from "@/types/enums/Tabs";
-import type { SimplePersonne } from "@/types/personneType";
-import { errorHandler } from "@/utils/axiosUtils";
-import debounce from "lodash.debounce";
-import { storeToRefs } from "pinia";
-import { watch, computed, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { useToast } from "vue-toastification";
+import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
+import BaseModal from '@/components/modals/BaseModal.vue';
+import PersonneSearch from '@/components/search/PersonneSearch.vue';
+import { setPersonneAdditional } from '@/services/personneService';
+import { useConfigurationStore } from '@/stores/configurationStore';
+import { useFonctionStore } from '@/stores/fonctionStore';
+import { usePersonneStore } from '@/stores/personneStore';
+import { Tabs } from '@/types/enums/Tabs';
+import type { SimplePersonne } from '@/types/personneType';
+import { errorHandler } from '@/utils/axiosUtils';
+import debounce from 'lodash.debounce';
+import { storeToRefs } from 'pinia';
+import { watch, computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
 const { t } = useI18n();
 const toast = useToast();
@@ -52,9 +52,7 @@ const setSelectedUser = (id: number | undefined) => {
 watch(currentPersonne, (newValue) => {
   if (newValue) {
     selected.value = structureAdditionalFonctions.value
-      ? structureAdditionalFonctions.value?.map(
-          (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
-        )
+      ? structureAdditionalFonctions.value?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
       : [];
   }
 });
@@ -71,39 +69,32 @@ const canSave = computed<boolean>(() => {
       (entry) =>
         structureAdditionalFonctions.value
           ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-          .includes(entry)
+          .includes(entry),
     );
   }
   return true;
 });
 
-const saveButton = computed<{ i18n: string; icon: string; color: string }>(
-  () => {
-    if (!hasStructureFonctions.value) {
-      if (!hasStructureAdditionalFonctions.value)
-        return { i18n: "button.attach", icon: "fas fa-link", color: "success" };
-      if (selected.value.length == 0)
-        return {
-          i18n: "button.detach",
-          icon: "fas fa-link-slash",
-          color: "error",
-        };
-    }
-    return {
-      i18n: "button.save",
-      icon: "fas fa-floppy-disk",
-      color: "success",
-    };
+const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
+  if (!hasStructureFonctions.value) {
+    if (!hasStructureAdditionalFonctions.value) return { i18n: 'button.attach', icon: 'fas fa-link', color: 'success' };
+    if (selected.value.length == 0)
+      return {
+        i18n: 'button.detach',
+        icon: 'fas fa-link-slash',
+        color: 'error',
+      };
   }
-);
+  return {
+    i18n: 'button.save',
+    icon: 'fas fa-floppy-disk',
+    color: 'success',
+  };
+});
 
 const save = async () => {
   try {
-    await setPersonneAdditional(
-      currentPersonne.value!.id,
-      currentStructureId.value!,
-      selected.value
-    );
+    await setPersonneAdditional(currentPersonne.value!.id, currentStructureId.value!, selected.value);
     closeAndResetModal(true);
   } catch (e) {
     errorHandler(e);
@@ -113,7 +104,7 @@ const save = async () => {
 
 const closeAndResetModal = (success?: boolean) => {
   const { i18n } = saveButton.value;
-  const title = i18n.replace("button.", "");
+  const title = i18n.replace('button.', '');
   if (success) {
     refreshCurrentPersonne();
     toast.success(t(`toast.additional.success.${title}`));
@@ -137,18 +128,18 @@ const currentTabValue = computed<{
   switch (currentTab.value) {
     case Tabs.AdministrativeStaff:
       return {
-        title: t("addAdditionalFonction"),
+        title: t('addAdditionalFonction'),
         searchList: administrativeList.value,
         filieres: customMapping.value?.filieres,
       };
     case Tabs.TeachingStaff:
       return {
-        title: t("addAdditionalTeaching"),
+        title: t('addAdditionalTeaching'),
         searchList: teachingList.value,
         filieres: [],
       };
     default:
-      return { title: "", searchList: undefined, filieres: undefined };
+      return { title: '', searchList: undefined, filieres: undefined };
   }
 });
 </script>
@@ -172,21 +163,12 @@ const currentTabValue = computed<{
       <checkbox-layout
         :filieres="currentTabValue.filieres"
         :selected="selected"
-        :disabled="
-          structureFonctions?.map(
-            (fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`
-          )
-        "
+        :disabled="structureFonctions?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)"
         @update:selected="setSelected"
       />
     </div>
     <template #footer v-if="currentPersonne">
-      <v-btn
-        :color="saveButton.color"
-        :prepend-icon="saveButton.icon"
-        :disabled="!canSave"
-        @click="save"
-      >
+      <v-btn :color="saveButton.color" :prepend-icon="saveButton.icon" :disabled="!canSave" @click="save">
         {{ t(saveButton.i18n) }}
       </v-btn>
     </template>

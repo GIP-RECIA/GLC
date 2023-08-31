@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import CustomPagination from "@/components/CustomPagination.vue";
-import PersonneCard from "@/components/PersonneCard.vue";
-import { usePersonneStore } from "@/stores/personneStore";
-import type { SimplePersonne } from "@/types/personneType";
-import { storeToRefs } from "pinia";
-import { ref } from "vue";
-import { useI18n } from "vue-i18n";
+import CustomPagination from '@/components/CustomPagination.vue';
+import PersonneCard from '@/components/PersonneCard.vue';
+import { usePersonneStore } from '@/stores/personneStore';
+import type { SimplePersonne } from '@/types/personneType';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
@@ -20,23 +20,10 @@ const pageItems = ref<Array<SimplePersonne> | undefined>();
     <v-card :subtitle="`${t('warning', 2)} (${0})`" flat class="mb-4">
       <v-card-text></v-card-text>
     </v-card>
-    <v-card
-      :subtitle="`${t('deletingOrDeletedAccounts')} (${
-        deletedPersonnes.length
-      })`"
-      flat
-    >
+    <v-card :subtitle="`${t('deletingOrDeletedAccounts')} (${deletedPersonnes.length})`" flat>
       <v-card-text>
         <v-row v-if="pageItems && pageItems.length > 0">
-          <v-col
-            v-for="(personne, index) in pageItems"
-            :key="index"
-            :cols="12"
-            :md="6"
-            :lg="4"
-            :xxl="3"
-            class="pa-2"
-          >
+          <v-col v-for="(personne, index) in pageItems" :key="index" :cols="12" :md="6" :lg="4" :xxl="3" class="pa-2">
             <personne-card variant="tonal" :personne="personne" />
           </v-col>
         </v-row>
