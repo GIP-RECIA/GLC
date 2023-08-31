@@ -48,10 +48,15 @@ watch(isCurrentPersonne, (newValue) => {
     }, 200);
     reset();
     selected.value = [];
-  } else {
-    selected.value = structureAdditionalFonctions.value
-      ? structureAdditionalFonctions.value.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-      : [];
+  }
+});
+
+watch(currentPersonne, (newValue) => {
+  if (isCurrentPersonne.value && newValue) {
+    if (isEditAllowed(newValue.etat))
+      selected.value = structureAdditionalFonctions.value
+        ? structureAdditionalFonctions.value.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
+        : [];
     isLocked.value = currentPersonne.value!.etat == Etat.Bloque;
   }
 });

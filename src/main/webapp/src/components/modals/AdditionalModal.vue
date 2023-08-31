@@ -51,7 +51,7 @@ const setSelectedUser = (id: number | undefined) => {
 };
 
 watch(currentPersonne, (newValue) => {
-  if (newValue) {
+  if (isAdditional.value && newValue) {
     if (isEditAllowed(newValue.etat))
       selected.value = structureAdditionalFonctions.value
         ? structureAdditionalFonctions.value?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
