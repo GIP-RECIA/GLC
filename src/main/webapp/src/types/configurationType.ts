@@ -5,4 +5,5 @@ export type Configuration = {
   externalSourcesAll: Array<string>;
   externalSources4Login: Array<string>;
   externalSources4LoginCategory: Array<string>;
+  editAllowedStates: Array<string>;
 };

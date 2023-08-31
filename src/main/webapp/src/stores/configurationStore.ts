@@ -48,6 +48,13 @@ export const useConfigurationStore = defineStore('configuration', () => {
     return false;
   };
 
+  const isEditAllowed = (etat: string): boolean => {
+    if (configuration.value) {
+      return configuration.value.editAllowedStates.includes(etat);
+    }
+    return false;
+  };
+
   /* --- Gestion des onglets de structure --- */
 
   const structures = ref<Array<{ id: number; name: string }>>([]);
@@ -89,6 +96,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
     administrativeCodes,
     teachingCodes,
     isExternalLogin,
+    isEditAllowed,
     structures,
     currentStructure,
     currentTab,

@@ -23,7 +23,7 @@ const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
-const { isExternalLogin } = configurationStore;
+const { isExternalLogin, isEditAllowed } = configurationStore;
 const { currentTab, currentStructureId, isAddMode, isAdmin } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
@@ -235,7 +235,7 @@ const resetAddMode = (success?: boolean) => {
 
         <div v-if="currentTab == Tabs.AdministrativeStaff || currentTab == Tabs.TeachingStaff">
           <v-btn
-            v-if="!isAddMode && isCustomMapping"
+            v-if="!isAddMode && isCustomMapping && currentPersonne && isEditAllowed(currentPersonne.etat)"
             color="primary"
             :prepend-icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'"
             @click="isAddMode = true"

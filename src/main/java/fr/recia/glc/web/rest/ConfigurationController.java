@@ -16,6 +16,7 @@
 package fr.recia.glc.web.rest;
 
 import fr.recia.glc.db.enums.CategoriePersonne;
+import fr.recia.glc.db.enums.Etat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -70,6 +71,13 @@ public class ConfigurationController {
     externalSources4LoginCategory.add(CategoriePersonne.Non_enseignant_service_academique);
     externalSources4LoginCategory.add(CategoriePersonne.Non_enseignant_etablissement);
     data.put("externalSources4LoginCategory", externalSources4LoginCategory);
+
+    List<Etat> editAllowedStates = new ArrayList<>();
+    editAllowedStates.add(Etat.Invalide);
+    editAllowedStates.add(Etat.Valide);
+    editAllowedStates.add(Etat.Bloque);
+    editAllowedStates.add(Etat.Incertain);
+    data.put("editAllowedStates", editAllowedStates);
 
     return new ResponseEntity<>(data, HttpStatus.OK);
   }
