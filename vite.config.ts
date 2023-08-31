@@ -22,9 +22,12 @@ export default ({ mode }) => {
           },
         },
       }),
-      vuetify({ autoImport: true }),
+      vuetify({ autoImport: true, styles: "expose" }),
       VueI18nPlugin({
-        include: resolve(dirname(fileURLToPath(import.meta.url)), "./src/main/webapp/src/locales/**"),
+        include: resolve(
+          dirname(fileURLToPath(import.meta.url)),
+          "./src/main/webapp/src/locales/**"
+        ),
       }),
     ],
     resolve: {
