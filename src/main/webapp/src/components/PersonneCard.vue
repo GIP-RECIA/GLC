@@ -17,18 +17,18 @@ const props = defineProps<{
 }>();
 
 const etat = computed<enumValues>(() => getEtat(props.personne.etat));
+const icon = computed<string>(() => {
+  if (etat.value.icon) return etat.value.icon;
+  return `${props.personne.source.startsWith('SarapisUi_') ? 'far' : 'fas'} fa-user`;
+});
 </script>
 
 <template>
   <v-card :variant="variant" @click="initCurrentPersonne(personne.id, true)">
     <v-card-text class="d-flex align-center pa-3">
-      <v-icon
-        :icon="personne.source.startsWith('SarapisUi_') ? 'far fa-user' : 'fas fa-user'"
-        :color="etat.color"
-        :title="t(etat.i18n)"
-        :alt="t(etat.i18n)"
-        class="mr-2"
-      />{{ personne.cn }}
+      <v-icon :icon="icon" :color="etat.color" :title="t(etat.i18n)" :alt="t(etat.i18n)" class="mr-2" />{{
+        personne.cn
+      }}
     </v-card-text>
   </v-card>
 </template>

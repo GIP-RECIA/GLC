@@ -17,27 +17,27 @@ export enum Etat {
 const getEtat = (etat: string): enumValues => {
   switch (etat) {
     case Etat.Inconnu.toString():
-      return { i18n: 'person.status.inconnu', color: '' };
+      return { i18n: 'person.status.inconnu', color: '#9E9E9E', icon: 'fas fa-user-secret' };
     case Etat.Invalide.toString():
-      return { i18n: 'person.status.invalid', color: 'yellow' };
+      return { i18n: 'person.status.invalid', color: '#A5D6A7' };
     case Etat.Valide.toString():
-      return { i18n: 'person.status.valid', color: 'green' };
+      return { i18n: 'person.status.valid', color: '#4CAF50' };
     case Etat.Unpublished.toString():
-      return { i18n: 'person.status.unpublished', color: '' };
+      return { i18n: 'person.status.unpublished', color: '#607D8B' };
     case Etat.Bloque.toString():
-      return { i18n: 'person.status.locked', color: 'orange' };
+      return { i18n: 'person.status.locked', color: '#795548', icon: 'fas fa-user-lock' };
     case Etat.Delete.toString():
-      return { i18n: 'person.status.deleted', color: 'gray' };
+      return { i18n: 'person.status.deleted', color: '#EF9A9A' };
     case Etat.Deleting.toString():
-      return { i18n: 'person.status.deleting', color: '' };
+      return { i18n: 'person.status.deleting', color: '#FF5722', icon: 'fas fa-user-clock' };
     case Etat.Incertain.toString():
-      return { i18n: 'person.status.uncertain', color: 'yellow' };
+      return { i18n: 'person.status.uncertain', color: '#FFEB3B' };
     case Etat.Incertain_Export_Add.toString():
-      return { i18n: 'person.status.uncertainExportAdd', color: '' };
+      return { i18n: 'person.status.uncertainExportAdd', color: '#FFEB3B' };
     case Etat.Incertain_Export_Delete.toString():
-      return { i18n: 'person.status.uncertainExportDelete', color: '' };
+      return { i18n: 'person.status.uncertainExportDelete', color: '#FFEB3B' };
     case Etat.Incertain_Export_Modify.toString():
-      return { i18n: 'person.status.uncertainExportModify', color: '' };
+      return { i18n: 'person.status.uncertainExportModify', color: '#FFEB3B' };
     default:
       throw new Error(`Non-existent etat in switch: ${etat}`);
   }
