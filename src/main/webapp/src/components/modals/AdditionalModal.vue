@@ -19,6 +19,7 @@ const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
+const { isEditAllowed } = configurationStore;
 const {
   currentTab,
   currentStructureId,
@@ -46,14 +47,16 @@ const setSelectedUser = (id: number | undefined) => {
   if (id) {
     // isAddMode.value = true;
     initCurrentPersonne(id, false);
-  }
+  } else currentPersonne.value = undefined;
 };
 
 watch(currentPersonne, (newValue) => {
   if (newValue) {
-    selected.value = structureAdditionalFonctions.value
-      ? structureAdditionalFonctions.value?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-      : [];
+    if (isEditAllowed(newValue.etat))
+      selected.value = structureAdditionalFonctions.value
+        ? structureAdditionalFonctions.value?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
+        : [];
+    else toast.error(t('toast.editStatusDenied'));
   }
 });
 
@@ -157,9 +160,9 @@ const currentTabValue = computed<{
     <personne-search
       :search-list="currentTabValue.searchList"
       @update:select="setSelectedUser"
-      :class="currentPersonne ? 'mb-4' : 'mb-6'"
+      :class="currentPersonne && isEditAllowed(currentPersonne.etat) ? 'mb-4' : 'mb-6'"
     />
-    <div v-if="currentPersonne">
+    <div v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
       <checkbox-layout
         :filieres="currentTabValue.filieres"
         :selected="selected"
@@ -167,7 +170,7 @@ const currentTabValue = computed<{
         @update:selected="setSelected"
       />
     </div>
-    <template #footer v-if="currentPersonne">
+    <template #footer v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
       <v-btn :color="saveButton.color" :prepend-icon="saveButton.icon" :disabled="!canSave" @click="save">
         {{ t(saveButton.i18n) }}
       </v-btn>

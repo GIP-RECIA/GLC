@@ -132,6 +132,7 @@
       "unmanaged": "An unmanaged error has occurred",
       "stock": "An error has occurred",
       "unknown": "An unknown error has occurred"
-    }
+    },
+    "editStatusDenied": "Unable to edit this account status"
   }
 }
