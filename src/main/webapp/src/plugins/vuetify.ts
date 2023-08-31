@@ -1,4 +1,3 @@
-import "@fortawesome/fontawesome-free/css/all.css";
 import { createVuetify } from "vuetify";
 import { md3 } from "vuetify/blueprints";
 import { aliases, fa } from "vuetify/iconsets/fa";
