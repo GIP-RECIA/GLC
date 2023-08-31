@@ -73,27 +73,27 @@ const filter = () => {
 
 const categoryTags = [
   // { "id": CategoriePersonne., i18n: "admin" },
-  { id: CategoriePersonne.Enseignant, i18n: "teacher" },
-  { id: CategoriePersonne.Eleve, i18n: "student" },
+  { id: CategoriePersonne.Enseignant, i18n: "person.category.teacher" },
+  { id: CategoriePersonne.Eleve, i18n: "person.category.student" },
   {
     id: CategoriePersonne.Personne_relation_eleve,
-    i18n: "legalRepresentative",
+    i18n: "person.category.personRelationshipStudent",
   },
   {
     id: CategoriePersonne.Non_enseignant_collectivite_locale,
-    i18n: "communityStaff",
+    i18n: "person.category.nonTeacherLocalCommunity",
   },
   {
     id: CategoriePersonne.Non_enseignant_etablissement,
-    i18n: "structureStaff",
+    i18n: "person.category.nonTeacherSchool",
   },
 ];
 
 const statusTags = [
-  { id: Etat.Invalide, i18n: "invalid" },
-  { id: Etat.Valide, i18n: "valid" },
-  { id: Etat.Bloque, i18n: "locked" },
-  { id: Etat.Delete, i18n: "deleted" },
+  { id: Etat.Invalide, i18n: "person.status.invalid" },
+  { id: Etat.Valide, i18n: "person.status.valid" },
+  { id: Etat.Bloque, i18n: "person.status.locked" },
+  { id: Etat.Delete, i18n: "person.status.deleted" },
 ];
 
 filter();
@@ -117,11 +117,11 @@ filter();
       </v-text-field>
     </v-card-text>
     <v-card-text>
-      <h2 class="text-h6 mb-2">{{ t("category") }}</h2>
+      <h2 class="text-h6 mb-2">{{ t("person.information.profile") }}</h2>
       <chips-filter :tags="categoryTags" @update:selected="setCategoryFilter" />
     </v-card-text>
     <v-card-text>
-      <h2 class="text-h6 mb-2">{{ t("status") }}</h2>
+      <h2 class="text-h6 mb-2">{{ t("person.information.status") }}</h2>
       <chips-filter :tags="statusTags" @update:selected="setStatusFilter" />
     </v-card-text>
     <v-card-text> {{ nbResults }} {{ t("result", nbResults) }} </v-card-text>

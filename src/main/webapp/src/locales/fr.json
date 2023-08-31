@@ -12,13 +12,6 @@
   "searchOutOfStructure": "Rechercher hors de la structure",
   "casSignIn": "Connexion CAS",
   "result": "Résultat | Résultats",
-  "admin": "Administrateur",
-  "teacher": "Enseignant",
-  "student": "Eleve",
-  "legalRepresentative": "Responsable légal",
-  "communityStaff": "Personnel de collectivité",
-  "structureStaff": "Personnel de la structure",
-  "category": "Catégorie",
   "addAdditionalFonction": "Gestion des fonctions complémentaires",
   "addAdditionalTeaching": "Gestion des enseignements complémentaires",
   "tabs": {
