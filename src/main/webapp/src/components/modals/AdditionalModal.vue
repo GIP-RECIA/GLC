@@ -11,7 +11,7 @@ import type { SimplePersonne } from '@/types/personneType';
 import { errorHandler } from '@/utils/axiosUtils';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
-import { watch, computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 

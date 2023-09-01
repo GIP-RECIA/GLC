@@ -5,7 +5,7 @@ import AccountFilter from '@/components/filter/AccountFilter.vue';
 import { usePersonneStore } from '@/stores/personneStore';
 import type { SimplePersonne } from '@/types/personneType';
 import { storeToRefs } from 'pinia';
-import { watch, ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const personneStore = usePersonneStore();
 const { personnes } = storeToRefs(personneStore);

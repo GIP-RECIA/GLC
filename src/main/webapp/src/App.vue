@@ -4,7 +4,7 @@ import LoginModal from '@/components/modals/LoginModal.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
 import { useConfigurationStore } from '@/stores/configurationStore';
 import { storeToRefs } from 'pinia';
-import { watch, onBeforeMount } from 'vue';
+import { onBeforeMount, watch } from 'vue';
 
 onBeforeMount(() => {
   let extendedUportalHeaderScript = document.createElement('script');

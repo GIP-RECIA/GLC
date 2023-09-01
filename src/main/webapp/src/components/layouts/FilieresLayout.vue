@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PersonneCard from '@/components/PersonneCard.vue';
 import type { Filiere } from '@/types/filiereType';
-import { watch, onBeforeMount, unref, ref } from 'vue';
+import { onBeforeMount, ref, unref, watch } from 'vue';
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;

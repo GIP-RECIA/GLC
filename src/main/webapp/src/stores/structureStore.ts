@@ -1,4 +1,4 @@
-import { getEtablissements, getEtablissement } from '@/services/structureService';
+import { getEtablissement, getEtablissements } from '@/services/structureService';
 import { useConfigurationStore } from '@/stores/configurationStore';
 import { Tabs } from '@/types/enums/Tabs';
 import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType';

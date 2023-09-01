@@ -3,7 +3,7 @@ import { useConfigurationStore } from '@/stores/configurationStore';
 import type { Filiere } from '@/types/filiereType';
 import type { PersonneFonction } from '@/types/fonctionType';
 import { storeToRefs } from 'pinia';
-import { watch, unref, ref, onBeforeMount } from 'vue';
+import { onBeforeMount, ref, unref, watch } from 'vue';
 
 const configurationStore = useConfigurationStore();
 const { currentStructureId } = storeToRefs(configurationStore);

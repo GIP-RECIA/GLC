@@ -2,7 +2,7 @@
 import { useConfigurationStore } from '@/stores/configurationStore';
 import { jsonp } from '@/utils/casUtils';
 import { storeToRefs } from 'pinia';
-import { onMounted, computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 

@@ -3,7 +3,7 @@ import CustomPagination from '@/components/CustomPagination.vue';
 import { useStructureStore } from '@/stores/structureStore';
 import type { SimpleEtablissement } from '@/types/etablissementType';
 import { storeToRefs } from 'pinia';
-import { watch, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
