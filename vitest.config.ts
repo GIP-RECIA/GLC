@@ -1,15 +1,14 @@
-import viteConfig from "./vite.config";
-import { fileURLToPath } from "node:url";
-import { mergeConfig } from "vite";
-import { configDefaults, defineConfig } from "vitest/config";
+import viteConfig from './vite.config';
+import { fileURLToPath } from 'node:url';
+import { configDefaults, defineConfig, mergeConfig } from 'vitest/config';
 
 export default mergeConfig(
-  viteConfig,
+  viteConfig({ mode: 'test' }),
   defineConfig({
     test: {
-      environment: "jsdom",
+      environment: 'jsdom',
       exclude: [...configDefaults.exclude],
-      root: fileURLToPath(new URL("./src/test/webapp/spec", import.meta.url)),
+      root: fileURLToPath(new URL('./src/test/webapp/spec', import.meta.url)),
     },
-  })
+  }),
 );
