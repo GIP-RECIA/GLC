@@ -3,8 +3,9 @@ import CustomPagination from '@/components/CustomPagination.vue';
 import { useStructureStore } from '@/stores/structureStore';
 import type { SimpleEtablissement } from '@/types/etablissementType';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 
@@ -15,6 +16,28 @@ const { etabs } = storeToRefs(structureStore);
 const select = ref<string>();
 const items = ref<Array<SimpleEtablissement> | undefined>();
 const pageItems = ref<Array<SimpleEtablissement> | undefined>();
+
+const itemsPerPage = computed<number>(() => {
+  const { name } = useDisplay();
+  const defaultItemsPerPage = 10;
+
+  switch (name.value) {
+    case 'xs':
+      return defaultItemsPerPage;
+    case 'sm':
+      return defaultItemsPerPage;
+    case 'md':
+      return 2 * defaultItemsPerPage;
+    case 'lg':
+      return 3 * defaultItemsPerPage;
+    case 'xl':
+      return 3 * defaultItemsPerPage;
+    case 'xxl':
+      return 4 * defaultItemsPerPage;
+    default:
+      return defaultItemsPerPage;
+  }
+});
 
 watch(etabs, (newValue) => {
   if (typeof newValue !== 'undefined' && newValue !== null) items.value = newValue;
@@ -88,7 +111,7 @@ watch(select, (newValue) => {
     </v-row>
     <custom-pagination
       :items="items"
-      :items-per-page="20"
+      :items-per-page="itemsPerPage"
       hide-single-page
       class="mt-8"
       @update:page="(items) => (pageItems = items)"

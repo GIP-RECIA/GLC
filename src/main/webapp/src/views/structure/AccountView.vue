@@ -5,13 +5,36 @@ import AccountFilter from '@/components/filter/AccountFilter.vue';
 import { usePersonneStore } from '@/stores/personneStore';
 import type { SimplePersonne } from '@/types/personneType';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { useDisplay } from 'vuetify';
 
 const personneStore = usePersonneStore();
 const { personnes } = storeToRefs(personneStore);
 
 const items = ref<Array<SimplePersonne> | undefined>();
 const pageItems = ref<Array<SimplePersonne> | undefined>();
+
+const itemsPerPage = computed<number>(() => {
+  const { name } = useDisplay();
+  const defaultItemsPerPage = 10;
+
+  switch (name.value) {
+    case 'xs':
+      return defaultItemsPerPage;
+    case 'sm':
+      return 2 * defaultItemsPerPage;
+    case 'md':
+      return 3 * defaultItemsPerPage;
+    case 'lg':
+      return 4 * defaultItemsPerPage;
+    case 'xl':
+      return 4 * defaultItemsPerPage;
+    case 'xxl':
+      return 6 * defaultItemsPerPage;
+    default:
+      return defaultItemsPerPage;
+  }
+});
 
 watch(personnes, (newValue) => {
   if (typeof newValue !== 'undefined' && newValue !== null) items.value = newValue;
@@ -41,7 +64,7 @@ watch(personnes, (newValue) => {
     </v-row>
     <custom-pagination
       :items="items"
-      :items-per-page="20"
+      :items-per-page="itemsPerPage"
       hide-single-page
       class="mt-8"
       @update:page="(items) => (pageItems = items)"
