@@ -108,7 +108,7 @@ onMounted(() => {
       </v-toolbar>
       <v-card-text> </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn color="primary" prepend-icon="fas fa-right-to-bracket" @click="login">
+        <v-btn id="signIn" color="primary" prepend-icon="fas fa-right-to-bracket" @click="login">
           {{ t('button.signIn') }}
         </v-btn>
       </v-card-actions>
