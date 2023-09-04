@@ -58,13 +58,21 @@ watch(select, (newValue) => {
       </template>
     </v-text-field>
     <v-row>
-      <v-col v-for="(etablissement, index) in pageItems" :key="index" :cols="12" :md="6" :lg="4" :xl="3" class="pa-2">
+      <v-col
+        v-for="(etablissement, index) in pageItems"
+        :key="index"
+        :cols="12"
+        :md="6"
+        :lg="4"
+        :xxl="3"
+        class="d-flex align-center pa-2"
+      >
         <v-card
           :to="{
             name: 'structure',
             params: { structureId: etablissement.id },
           }"
-          class="h-100"
+          class="w-100"
           flat
         >
           <v-card-text class="card-info">
@@ -96,7 +104,6 @@ watch(select, (newValue) => {
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: none;
-  white-space: nowrap;
 
   .subtitle {
     font-size: 0.775rem;

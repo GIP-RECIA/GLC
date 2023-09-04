@@ -26,7 +26,16 @@ watch(personnes, (newValue) => {
       @update:result="(result: Array<SimplePersonne>) => (items = result)"
     />
     <v-row>
-      <v-col v-for="(personne, index) in pageItems" :key="index" :cols="12" :md="6" :lg="4" :xxl="3" class="pa-2">
+      <v-col
+        v-for="(personne, index) in pageItems"
+        :key="index"
+        :cols="12"
+        :sm="6"
+        :md="4"
+        :lg="3"
+        :xxl="2"
+        class="pa-2"
+      >
         <personne-card variant="flat" :personne="personne" />
       </v-col>
     </v-row>
