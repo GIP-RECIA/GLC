@@ -44,7 +44,7 @@ watch(
       selected-class="slide-group-item--activate"
       class="mt-2"
     >
-      <v-tab :value="Tabs.Dashboard">{{ t('tabs.dashboard') }}</v-tab>
+      <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tabs.dashboard') }}</v-tab>
       <v-tab :value="Tabs.Info">{{ t('tabs.information') }}</v-tab>
       <v-tab :value="Tabs.AdministrativeStaff">{{ t('tabs.administrativeStaff') }}</v-tab>
       <v-tab :value="Tabs.TeachingStaff">{{ t('tabs.teachingStaff') }}</v-tab>
