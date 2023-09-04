@@ -25,10 +25,9 @@ const icon = computed<string>(() => {
 
 <template>
   <v-card :variant="variant" tag="button" width="100%" @click="initCurrentPersonne(personne.id, true)">
-    <v-card-text class="d-flex align-center pa-3">
-      <v-icon :icon="icon" :color="etat.color" :title="t(etat.i18n)" :alt="t(etat.i18n)" class="mr-2" />{{
-        personne.cn
-      }}
+    <v-card-text class="d-flex align-center text-left pa-3">
+      <v-icon :icon="icon" :color="etat.color" :title="t(etat.i18n)" :alt="t(etat.i18n)" class="mr-2" />
+      {{ personne.cn }}
     </v-card-text>
   </v-card>
 </template>
