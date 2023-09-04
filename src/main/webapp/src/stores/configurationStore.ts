@@ -3,6 +3,7 @@ import type { Configuration } from '@/types/configurationType';
 import { Tabs } from '@/types/enums/Tabs';
 import type { Identity } from '@/types/identityType';
 import { errorHandler } from '@/utils/axiosUtils';
+import { useStorage } from '@vueuse/core';
 import isEmpty from 'lodash.isempty';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
@@ -57,7 +58,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   /* --- Gestion des onglets de structure --- */
 
-  const structures = ref<Array<{ id: number; name: string }>>([]);
+  const structures = ref(useStorage<Array<{ id: number; name: string }>>('tabs', [], sessionStorage));
   const currentStructure = ref<number | undefined>();
   const currentTab = ref<number>(Tabs.Dashboard);
 
