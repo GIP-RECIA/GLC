@@ -8,9 +8,9 @@ import { useConfigurationStore } from '@/stores/configurationStore';
 import { useFonctionStore } from '@/stores/fonctionStore';
 import { usePersonneStore } from '@/stores/personneStore';
 import type { enumValues } from '@/types/enumValuesType';
-import { getCategoriePersonne } from '@/types/enums/CategoriePersonne';
-import { Etat, getEtat } from '@/types/enums/Etat';
+import { Etat } from '@/types/enums/Etat';
 import { Tabs } from '@/types/enums/Tabs';
+import { getCategoriePersonne, getEtat } from '@/utils/accountUtils';
 import { errorHandler } from '@/utils/axiosUtils';
 import debounce from 'lodash.debounce';
 import moment from 'moment';
@@ -24,7 +24,7 @@ const toast = useToast();
 
 const configurationStore = useConfigurationStore();
 const { isExternalLogin, isEditAllowed } = configurationStore;
-const { currentTab, currentStructureId, isAddMode, isAdmin } = storeToRefs(configurationStore);
+const { currentTab, currentStructureId, isAddMode } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { filieres, customMapping, isCustomMapping } = storeToRefs(fonctionStore);

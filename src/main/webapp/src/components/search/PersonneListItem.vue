@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { enumValues } from '@/types/enumValuesType';
-import { getEtat } from '@/types/enums/Etat';
 import type { SimplePersonne } from '@/types/personneType';
+import { getEtat, getIcon } from '@/utils/accountUtils';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -25,7 +25,7 @@ const subtitle = computed<string>(() => {
       {{ personne.cn }}
     </template>
     <template #prepend>
-      <v-icon :icon="personne.source.startsWith('SarapisUi_') ? 'far fa-user' : 'fas fa-user'" :color="etat.color" />
+      <v-icon :icon="getIcon(personne.source)" :color="etat.color" />
     </template>
   </v-list-item>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { enumValues } from '@/types/enumValuesType';
-import { getEtat } from '@/types/enums/Etat';
 import type { SimplePersonne } from '@/types/personneType';
+import { getEtat, getIcon } from '@/utils/accountUtils';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -25,12 +25,7 @@ const text = computed<string>(() => {
 <template>
   <v-chip :text="text" rounded>
     <template #prepend>
-      <v-icon
-        :icon="personne.source.startsWith('SarapisUi_') ? 'far fa-user' : 'fas fa-user'"
-        :color="etat.color"
-        :alt="t(etat.i18n)"
-        class="mr-2"
-      />
+      <v-icon :icon="getIcon(personne.source)" :color="etat.color" :alt="t(etat.i18n)" class="mr-2" />
     </template>
   </v-chip>
 </template>

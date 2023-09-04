@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { usePersonneStore } from '@/stores/personneStore';
 import type { enumValues } from '@/types/enumValuesType';
-import { getEtat } from '@/types/enums/Etat';
 import type { SimplePersonne } from '@/types/personneType';
+import { getEtat, getIcon } from '@/utils/accountUtils';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -19,7 +19,7 @@ const props = defineProps<{
 const etat = computed<enumValues>(() => getEtat(props.personne.etat));
 const icon = computed<string>(() => {
   if (etat.value.icon) return etat.value.icon;
-  return `${props.personne.source.startsWith('SarapisUi_') ? 'far' : 'fas'} fa-user`;
+  return getIcon(props.personne.source);
 });
 </script>
 

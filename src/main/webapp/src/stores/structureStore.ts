@@ -43,7 +43,7 @@ export const useStructureStore = defineStore('structure', () => {
           id: id,
           name: currentEtab?.value?.type
             ? `${currentEtab.value.type} ${currentEtab.value.nom}`
-            : currentEtab?.value?.nom || '',
+            : currentEtab?.value?.nom ?? '',
         });
         setCurrentStructure(structures.length - 1);
       } else setCurrentStructure(index);
