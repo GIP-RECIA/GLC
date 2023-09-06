@@ -1,4 +1,5 @@
 import i18n from '@/plugins/i18n';
+import { login } from '@/utils/casUtils';
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
 
@@ -12,6 +13,12 @@ const instance = axios.create({
   withCredentials: true,
   xsrfCookieName: 'CSRF-TOKEN',
   xsrfHeaderName: 'X-CSRF-TOKEN',
+});
+
+instance.interceptors.request.use(async (config) => {
+  await login();
+
+  return config;
 });
 
 const errorHandler = (e: any, toastOrI18n?: boolean | string): void => {

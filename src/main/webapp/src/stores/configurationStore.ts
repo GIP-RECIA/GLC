@@ -23,6 +23,8 @@ export const useConfigurationStore = defineStore('configuration', () => {
     }
   };
 
+  const isInit = computed<boolean>(() => configuration.value != undefined);
+
   /**
    * Retourne la liste des types de personnel administratif
    */
@@ -93,6 +95,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   return {
     init,
+    isInit,
     administrativeStaff,
     administrativeCodes,
     teachingCodes,

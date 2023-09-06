@@ -1,3 +1,6 @@
+import { useConfigurationStore } from '@/stores/configurationStore';
+import { storeToRefs } from 'pinia';
+
 const { VITE_API_URL } = import.meta.env;
 
 const jsonp = (uri: string, callbackName: string, timeout: number): Promise<object> => {
@@ -36,6 +39,7 @@ const jsonp = (uri: string, callbackName: string, timeout: number): Promise<obje
         clearTimeout(timeoutTimer);
       }
       removeErrorListener();
+      removeScript();
       reject(
         // @ts-ignore
         new Error({
@@ -77,4 +81,62 @@ const jsonp = (uri: string, callbackName: string, timeout: number): Promise<obje
   });
 };
 
-export { jsonp };
+// Objet en charge de la redirection vers le serveur CAS
+// eslint-disable-next-line
+let relogState = {};
+
+// Méthode en charge du processus de connexion
+// Une fois connecté, l'utilisateur est redirigé
+const login = async () => {
+  const configurationStore = useConfigurationStore();
+  const { identity } = storeToRefs(configurationStore);
+
+  try {
+    const response = await jsonp('/app/login', 'JSON_CALLBACK', 1000);
+    // @ts-ignore
+    identity.value = response;
+  } catch (e) {
+    identity.value = undefined;
+    relog();
+  }
+};
+
+// Méthode effectuant une redirection sur le serveur CAS,
+// un listener est mis en place afin de détecter la réponse
+// du serveur CAS
+const relog = () => {
+  windowOpenCleanup(relogState);
+  // @ts-ignore
+  relogState.listener = onmessage;
+  window.addEventListener('message', onmessage);
+
+  // @ts-ignore
+  relogState.window = window.open(`${VITE_API_URL}/app/login?postMessage`);
+};
+
+// Méthode de nettoyage de la page de login
+// @ts-ignore
+const windowOpenCleanup = (state) => {
+  try {
+    if (state.listener) window.removeEventListener('message', state.listener);
+    if (state.window) state.window.close();
+  } catch (e) {
+    // eslint-disable-next-line
+    console.error(e);
+  }
+};
+
+// Méthode utilisé lors de la réception de la réponse
+// du serveur CAS puis redirige l'utilisateur
+// @ts-ignore
+const onmessage = (e) => {
+  if (typeof e.data !== 'string') return;
+
+  const m = e.data.match(/^loggedUser=(.*)$/);
+  if (!m) return;
+
+  windowOpenCleanup(relogState);
+  login();
+};
+
+export { login };
