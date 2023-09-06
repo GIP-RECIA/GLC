@@ -35,10 +35,6 @@ import java.util.Map;
 @RequestMapping(value = "/api/config")
 public class ConfigurationController {
 
-  @Value("${security-configuration.cas.url.login}")
-  private String casUrlLogin;
-  @Value("${security-configuration.cas.url.logout}")
-  private String casUrlLogout;
   @Value("${app.config.filiere.administrative}")
   private List<String> administrativeCodes;
   @Value("${app.config.filiere.teaching}")
