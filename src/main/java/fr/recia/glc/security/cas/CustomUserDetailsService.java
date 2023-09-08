@@ -21,13 +21,13 @@ import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.cas.authentication.CasAssertionAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +39,7 @@ import java.util.Collection;
 @Slf4j
 public class CustomUserDetailsService implements AuthenticationUserDetailsService<CasAssertionAuthenticationToken> {
 
-  @Autowired
+  @Inject
   private APersonneRepository<APersonne> aPersonneRepository;
 
   public CustomUserDetailsService() {

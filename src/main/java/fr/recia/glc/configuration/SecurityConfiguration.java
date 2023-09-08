@@ -31,6 +31,7 @@ import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -145,6 +146,7 @@ public class SecurityConfiguration {
   }
 
   @Bean
+  @DependsOn({"customUserDetailsService"})
   public RememberCasAuthenticationProvider casAuthenticationProvider() {
     RememberCasAuthenticationProvider casAuthenticationProvider = new RememberCasAuthenticationProvider();
     casAuthenticationProvider.setAuthenticationUserDetailsService(userDetailsService);
