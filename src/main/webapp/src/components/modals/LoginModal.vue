@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useConfigurationStore } from '@/stores/configurationStore';
+import { intercept } from '@/utils/axiosUtils';
 import { login } from '@/utils/casUtils';
 import { watchOnce } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
@@ -19,7 +20,10 @@ const modelValue = computed<boolean>({
 });
 
 watchOnce(isInit, (newValue) => {
-  if (newValue && !isAuthenticated.value) login();
+  if (newValue && !isAuthenticated.value) {
+    login();
+    intercept();
+  }
 });
 </script>
 

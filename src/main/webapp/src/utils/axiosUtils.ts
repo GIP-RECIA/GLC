@@ -16,11 +16,13 @@ const instance = axios.create({
   xsrfHeaderName: 'X-CSRF-TOKEN',
 });
 
-instance.interceptors.request.use(async (config) => {
-  await login();
+const intercept = () => {
+  instance.interceptors.request.use(async (config) => {
+    await login();
 
-  return config;
-});
+    return config;
+  });
+};
 
 const errorHandler = (e: any, toastOrI18n?: boolean | string): void => {
   const showToast: boolean = typeof toastOrI18n == 'boolean' && toastOrI18n;
@@ -42,4 +44,4 @@ const errorHandler = (e: any, toastOrI18n?: boolean | string): void => {
   }
 };
 
-export { instance, errorHandler };
+export { instance, errorHandler, intercept };
