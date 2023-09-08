@@ -47,8 +47,8 @@ dist-ssr
 coverage
 .env
 *.local
-src/main/resources/application-*.yml
-!src/main/resources/application-*.example.yml
+src/main/resources/**/application-*.yml
+!src/main/resources/**/application-*.example.yml
 
 ### Tests ###
 playwright-report
