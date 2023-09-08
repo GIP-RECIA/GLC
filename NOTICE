@@ -37,7 +37,7 @@ This project includes:
   ClassMate under Apache License, Version 2.0
   Eclipse Compiler for Java(TM) under Eclipse Public License - v 2.0
   error-prone annotations under Apache 2.0
-  glc under Apache License, Version 2.0
+  esco-glc under Apache License, Version 2.0
   Hamcrest under BSD License 3
   Hibernate Commons Annotations under GNU Library General Public License v2.1 or later
   Hibernate ORM - hibernate-core under GNU Library General Public License v2.1 or later
