@@ -29,8 +29,6 @@ import fr.recia.glc.web.filter.CsrfCookieGeneratorFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.support.ErrorPageFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -50,7 +48,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CsrfFilter;
 
 import javax.inject.Inject;
-import javax.servlet.Filter;
 import java.util.Collections;
 import java.util.List;
 
@@ -228,24 +225,6 @@ public class SecurityConfiguration {
       .permitAll();
 
     return http.build();
-  }
-
-  @Bean
-  public ErrorPageFilter errorPageFilter() {
-    return new ErrorPageFilter();
-  }
-
-  @Bean
-  public FilterRegistrationBean<Filter> disableSpringBootErrorFilter() {
-    /*
-     * The ErrorPageFilter (Spring) makes extra calls to HttpServletResponse.flushBuffer(),
-     * and this behavior produces many warnings in the portal logs during portlet requests.
-     */
-    FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
-    filterRegistrationBean.setFilter(errorPageFilter());
-    filterRegistrationBean.setEnabled(false);
-
-    return filterRegistrationBean;
   }
 
 }
