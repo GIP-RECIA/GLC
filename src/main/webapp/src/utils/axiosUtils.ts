@@ -1,12 +1,13 @@
 import i18n from '@/plugins/i18n';
 import { login } from '@/utils/casUtils';
 import axios from 'axios';
+import { differenceInMilliseconds } from 'date-fns';
 import { useToast } from 'vue-toastification';
 
 const { t } = i18n.global;
 const toast = useToast();
 
-const { VITE_API_URL } = import.meta.env;
+const { VITE_API_URL, VITE_REFRESH_IDENTITY_MILLISECONDS } = import.meta.env;
 
 const instance = axios.create({
   baseURL: VITE_API_URL,
@@ -17,8 +18,13 @@ const instance = axios.create({
 });
 
 const intercept = () => {
+  let lastUpdated = new Date();
+
   instance.interceptors.request.use(async (config) => {
-    await login();
+    if (differenceInMilliseconds(new Date(), lastUpdated) > VITE_REFRESH_IDENTITY_MILLISECONDS) {
+      await login();
+      lastUpdated = new Date();
+    }
 
     return config;
   });
