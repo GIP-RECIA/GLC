@@ -10,7 +10,7 @@ import { usePersonneStore } from '@/stores/personneStore';
 import type { enumValues } from '@/types/enumValuesType';
 import { Etat } from '@/types/enums/Etat';
 import { Tabs } from '@/types/enums/Tabs';
-import { getCategoriePersonne, getEtat } from '@/utils/accountUtils';
+import { getCategoriePersonne, getEtat, toIdentifier } from '@/utils/accountUtils';
 import { errorHandler } from '@/utils/axiosUtils';
 import debounce from 'lodash.debounce';
 import moment from 'moment';
@@ -53,11 +53,15 @@ watch(isCurrentPersonne, (newValue) => {
 
 watch(currentPersonne, (newValue) => {
   if (isCurrentPersonne.value && newValue) {
-    if (isEditAllowed(newValue.etat))
-      selected.value = structureAdditionalFonctions.value
-        ? structureAdditionalFonctions.value.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-        : [];
+    if (isEditAllowed(newValue.etat)) selected.value = toIdentifier(structureAdditionalFonctions.value);
+
     isLocked.value = currentPersonne.value!.etat == Etat.Bloque;
+  }
+});
+
+watch(isAddMode, (newValue) => {
+  if (!newValue) {
+    selected.value = toIdentifier(structureAdditionalFonctions.value);
   }
 });
 
@@ -86,12 +90,7 @@ const setSelected = (value: Array<string>) => {
 
 const canSave = computed<boolean>(() => {
   if (selected.value?.length == structureAdditionalFonctions.value?.length) {
-    return !selected.value.every(
-      (entry) =>
-        structureAdditionalFonctions.value
-          ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-          .includes(entry),
-    );
+    return !selected.value.every((entry) => toIdentifier(structureAdditionalFonctions.value).includes(entry));
   }
   return true;
 });
@@ -210,15 +209,13 @@ const resetAddMode = (success?: boolean) => {
       </div>
     </div>
 
-    <div v-if="isAddMode">
-      <checkbox-layout
-        v-if="currentTab == Tabs.AdministrativeStaff"
-        :filieres="customMapping?.filieres"
-        :selected="selected"
-        :disabled="structureFonctions?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)"
-        @update:selected="setSelected"
-      />
-    </div>
+    <checkbox-layout
+      v-if="isAddMode && currentTab == Tabs.AdministrativeStaff"
+      :filieres="customMapping?.filieres"
+      :selected="selected"
+      :disabled="toIdentifier(structureFonctions)"
+      @update:selected="setSelected"
+    />
 
     <template #footer>
       <div class="d-flex justify-space-between w-100">

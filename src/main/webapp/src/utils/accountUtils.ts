@@ -1,6 +1,7 @@
 import type { enumValues } from '@/types/enumValuesType';
 import { CategoriePersonne } from '@/types/enums/CategoriePersonne';
 import { Etat } from '@/types/enums/Etat';
+import type { PersonneFonction } from '@/types/fonctionType';
 
 const isLocal = (source: string): boolean => source.startsWith('SarapisUi_');
 
@@ -60,4 +61,7 @@ const getCategoriePersonne = (categorie: string): enumValues => {
   }
 };
 
-export { isLocal, getIcon, getEtat, getCategoriePersonne };
+const toIdentifier = (fonctions: Array<PersonneFonction> | undefined): Array<string> =>
+  fonctions ? fonctions.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`) : [];
+
+export { isLocal, getIcon, getEtat, getCategoriePersonne, toIdentifier };

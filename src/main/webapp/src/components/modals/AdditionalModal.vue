@@ -8,6 +8,7 @@ import { useFonctionStore } from '@/stores/fonctionStore';
 import { usePersonneStore } from '@/stores/personneStore';
 import { Tabs } from '@/types/enums/Tabs';
 import type { SimplePersonne } from '@/types/personneType';
+import { toIdentifier } from '@/utils/accountUtils';
 import { errorHandler } from '@/utils/axiosUtils';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
@@ -52,11 +53,14 @@ const setSelectedUser = (id: number | undefined) => {
 
 watch(currentPersonne, (newValue) => {
   if (isAdditional.value && newValue) {
-    if (isEditAllowed(newValue.etat))
-      selected.value = structureAdditionalFonctions.value
-        ? structureAdditionalFonctions.value?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-        : [];
+    if (isEditAllowed(newValue.etat)) selected.value = toIdentifier(structureAdditionalFonctions.value);
     else toast.error(t('toast.editStatusDenied'));
+  }
+});
+
+watch(isAdditional, (newValue) => {
+  if (!newValue) {
+    selected.value = toIdentifier(structureAdditionalFonctions.value);
   }
 });
 
@@ -68,12 +72,7 @@ const setSelected = (value: Array<string>) => {
 
 const canSave = computed<boolean>(() => {
   if (selected.value.length == structureAdditionalFonctions.value?.length) {
-    return !selected.value.every(
-      (entry) =>
-        structureAdditionalFonctions.value
-          ?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)
-          .includes(entry),
-    );
+    return !selected.value.every((entry) => toIdentifier(structureAdditionalFonctions.value).includes(entry));
   }
   return true;
 });
@@ -162,14 +161,13 @@ const currentTabValue = computed<{
       @update:select="setSelectedUser"
       :class="currentPersonne && isEditAllowed(currentPersonne.etat) ? 'mb-4' : 'mb-6'"
     />
-    <div v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
-      <checkbox-layout
-        :filieres="currentTabValue.filieres"
-        :selected="selected"
-        :disabled="structureFonctions?.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`)"
-        @update:selected="setSelected"
-      />
-    </div>
+    <checkbox-layout
+      v-if="currentPersonne && isEditAllowed(currentPersonne.etat)"
+      :filieres="currentTabValue.filieres"
+      :selected="selected"
+      :disabled="toIdentifier(structureFonctions)"
+      @update:selected="setSelected"
+    />
     <template #footer v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
       <v-btn :color="saveButton.color" :prepend-icon="saveButton.icon" :disabled="!canSave" @click="save">
         {{ t(saveButton.i18n) }}

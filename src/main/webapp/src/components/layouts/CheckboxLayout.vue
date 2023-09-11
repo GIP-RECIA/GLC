@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Filiere } from '@/types/filiereType';
-import { onBeforeMount, ref } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
@@ -10,11 +10,7 @@ const props = defineProps<{
 
 const emit = defineEmits<(event: 'update:selected', payload: Array<string>) => void>();
 
-const checked = ref<Array<string>>([]);
-
-onBeforeMount(() => {
-  checked.value = props.selected ? props.selected : [];
-});
+const checked = ref<Array<string>>(props.selected ? props.selected : []);
 
 const updateSelected = () => {
   emit('update:selected', checked.value);
