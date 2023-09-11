@@ -73,12 +73,12 @@ const etat = computed<enumValues>(() => {
   };
 });
 
-const schoolYear = computed<string>(() => {
-  if (currentPersonne.value) {
+const schoolYear = computed<string | undefined>(() => {
+  if (currentPersonne.value?.anneeScolaire) {
     const year = getYear(parseISO(currentPersonne.value.anneeScolaire));
     return `${year}/${year + 1}`;
   }
-  return '';
+  return undefined;
 });
 
 const selected = ref<Array<string>>([]);
