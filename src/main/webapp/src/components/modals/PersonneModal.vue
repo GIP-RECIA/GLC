@@ -12,8 +12,8 @@ import { Etat } from '@/types/enums/Etat';
 import { Tabs } from '@/types/enums/Tabs';
 import { getCategoriePersonne, getEtat, toIdentifier } from '@/utils/accountUtils';
 import { errorHandler } from '@/utils/axiosUtils';
+import { format, getYear, parseISO } from 'date-fns';
 import debounce from 'lodash.debounce';
-import moment from 'moment';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -75,9 +75,8 @@ const etat = computed<enumValues>(() => {
 
 const schoolYear = computed<string>(() => {
   if (currentPersonne.value) {
-    const currentPersonneSchoolYear = moment(currentPersonne.value.anneeScolaire).format('Y');
-
-    return `${currentPersonneSchoolYear}/${parseInt(currentPersonneSchoolYear) + 1}`;
+    const year = getYear(parseISO(currentPersonne.value.anneeScolaire));
+    return `${year}/${year + 1}`;
   }
   return '';
 });
@@ -169,7 +168,7 @@ const resetAddMode = (success?: boolean) => {
         />
         <readonly-data
           :label="t('person.information.birthDate')"
-          :value="moment(currentPersonne.dateNaissance).format('L')"
+          :value="format(parseISO(currentPersonne.dateNaissance), 'P')"
           class="modal-flex-item"
         />
         <readonly-data :label="t('person.information.email')" :value="currentPersonne.email" class="modal-flex-item" />

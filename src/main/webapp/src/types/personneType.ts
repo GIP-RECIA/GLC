@@ -4,13 +4,13 @@ export type Personne = {
   id: number;
   uid?: string;
   etat: string;
-  anneeScolaire: Date;
+  anneeScolaire: string;
   categorie: string;
   civilite: string;
   source: string;
   cn: string;
   sn: string;
-  dateNaissance: Date;
+  dateNaissance: string;
   email?: string;
   givenName: string;
   patronyme?: string;
