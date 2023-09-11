@@ -39,7 +39,7 @@
     "@types/jsdom": "^21.1.2",
     "@types/lodash.debounce": "^4.0.7",
     "@types/lodash.isempty": "^4.4.7",
-    "@types/node": "^18.17.14",
+    "@types/node": "^18.17.15",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^11.0.3",
@@ -49,7 +49,7 @@
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
     "dotenv-checker": "^1.1.5",
-    "eslint": "^8.48.0",
+    "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
     "husky": "^8.0.3",
     "jsdom": "^22.1.0",
@@ -63,9 +63,9 @@
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
     "vite-plugin-vuetify": "^1.0.2",
-    "vitest": "^0.34.3",
+    "vitest": "^0.34.4",
     "vue-toastification": "v2.0.0-rc.5",
-    "vue-tsc": "^1.8.8"
+    "vue-tsc": "^1.8.10"
   },
   "packageManager": "yarn@3.6.3"
 }
