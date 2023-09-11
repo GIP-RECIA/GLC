@@ -445,12 +445,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/bundle-utils@npm:^7.2.0":
-  version: 7.2.0
-  resolution: "@intlify/bundle-utils@npm:7.2.0"
+"@intlify/bundle-utils@npm:^7.3.0":
+  version: 7.3.0
+  resolution: "@intlify/bundle-utils@npm:7.3.0"
   dependencies:
-    "@intlify/message-compiler": ^9.3.0
-    "@intlify/shared": ^9.3.0
+    "@intlify/message-compiler": ^9.4.0
+    "@intlify/shared": ^9.4.0
     acorn: ^8.8.2
     escodegen: ^2.0.0
     estree-walker: ^2.0.2
@@ -464,7 +464,7 @@ __metadata:
       optional: true
     vue-i18n:
       optional: true
-  checksum: 4ec605b79b39201fd94bc91e88a9e61c7aaf406d6bceda2c2481cecacd2be22a7247565afa664605eb9bb305a9f8a02373de2a41e3742d32ebaef9bf7ea93e18
+  checksum: ca9487fbc1917a83988af8d879c8b068ede9f69e150d918d1bddcad8215130ef9e189826c8c4a31a9465af3904200d3789efdb2289306f2c5b01fd8bc302af8b
   languageName: node
   linkType: hard
 
@@ -489,7 +489,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/message-compiler@npm:9.3.0, @intlify/message-compiler@npm:^9.3.0":
+"@intlify/message-compiler@npm:9.3.0":
   version: 9.3.0
   resolution: "@intlify/message-compiler@npm:9.3.0"
   dependencies:
@@ -499,19 +499,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/shared@npm:9.3.0, @intlify/shared@npm:^9.3.0":
+"@intlify/message-compiler@npm:^9.4.0":
+  version: 9.4.0
+  resolution: "@intlify/message-compiler@npm:9.4.0"
+  dependencies:
+    "@intlify/shared": 9.4.0
+    source-map-js: ^1.0.2
+  checksum: 4393bd722c9b9440819770e6b28b913751242e7c7498c4191715e744413a068101496371202e52fb80cecfe1d3490d2244077df8f53b83e15dd9e720b095eb58
+  languageName: node
+  linkType: hard
+
+"@intlify/shared@npm:9.3.0":
   version: 9.3.0
   resolution: "@intlify/shared@npm:9.3.0"
   checksum: d2995615d7c12d025d0ad088c7428d3b600af5e6fb585b3638c00cd6f2ae3a5dfc3d3b3706db36b7d5021cdb9a0082d711a82b3d38b899cc9554fd72e8576365
   languageName: node
   linkType: hard
 
-"@intlify/unplugin-vue-i18n@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@intlify/unplugin-vue-i18n@npm:1.0.1"
+"@intlify/shared@npm:9.4.0, @intlify/shared@npm:^9.4.0":
+  version: 9.4.0
+  resolution: "@intlify/shared@npm:9.4.0"
+  checksum: 617c0f02bbad0b5c65ed134a587d0931308bcd71ba05d598fd5513b56d0a2cc6c82724d754f1648f8869136125e30d5c227e9fcc3aa7310366666c3cab7cef2c
+  languageName: node
+  linkType: hard
+
+"@intlify/unplugin-vue-i18n@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@intlify/unplugin-vue-i18n@npm:1.2.0"
   dependencies:
-    "@intlify/bundle-utils": ^7.2.0
-    "@intlify/shared": ^9.3.0
+    "@intlify/bundle-utils": ^7.3.0
+    "@intlify/shared": ^9.4.0
     "@rollup/pluginutils": ^5.0.2
     "@vue/compiler-sfc": ^3.2.47
     debug: ^4.3.3
@@ -533,7 +550,7 @@ __metadata:
       optional: true
     vue-i18n-bridge:
       optional: true
-  checksum: 1737c3624eba6cac3c781786a317127c46fd86481c47714085554f0115a9de4fb7d5cb86ce43fe05fb50bcbd87849a71f3c6f33365dcfc0b9bf975341f2a05d4
+  checksum: 027291ba2cac52c2ca703ef3f8213f72aa079477ee653a8d2e2930493cec68be98a839c3d505fea56c5bef8c2377ff35980ab8da462e2cfcac0fe37855758cfb
   languageName: node
   linkType: hard
 
@@ -5412,7 +5429,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": ^6.4.2
     "@fortawesome/free-solid-svg-icons": ^6.4.2
     "@fortawesome/vue-fontawesome": latest-3
-    "@intlify/unplugin-vue-i18n": ^1.0.1
+    "@intlify/unplugin-vue-i18n": ^1.2.0
     "@playwright/test": ^1.37.1
     "@rushstack/eslint-patch": ^1.3.3
     "@trivago/prettier-plugin-sort-imports": ^4.2.0
