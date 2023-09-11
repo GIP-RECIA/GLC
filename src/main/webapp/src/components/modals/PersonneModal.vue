@@ -168,7 +168,7 @@ const resetAddMode = (success?: boolean) => {
         />
         <readonly-data
           :label="t('person.information.birthDate')"
-          :value="format(parseISO(currentPersonne.dateNaissance), 'P')"
+          :value="currentPersonne.dateNaissance ? format(parseISO(currentPersonne.dateNaissance), 'P') : undefined"
           class="modal-flex-item"
         />
         <readonly-data :label="t('person.information.email')" :value="currentPersonne.email" class="modal-flex-item" />

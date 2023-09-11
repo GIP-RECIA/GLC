@@ -10,7 +10,7 @@ export type Personne = {
   source: string;
   cn: string;
   sn: string;
-  dateNaissance: string;
+  dateNaissance?: string;
   email?: string;
   givenName: string;
   patronyme?: string;
