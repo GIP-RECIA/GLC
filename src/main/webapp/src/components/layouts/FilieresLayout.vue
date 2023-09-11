@@ -65,9 +65,9 @@ const filterFiliere = (): void => {
             <v-card-text>
               <v-row>
                 <v-col
-                  :cols="6"
                   v-for="(personne, index) in discipline.personnes"
                   :key="index"
+                  :cols="6"
                   class="d-flex align-center pa-2"
                 >
                   <personne-card variant="tonal" :personne="personne" />
