@@ -26,14 +26,18 @@ const setSearchFilter = (newValue: string | undefined) => {
   filter();
 };
 
-const setCategoryFilter = (newValue: Array<string>) => {
-  categoryFilter = newValue;
-  filter();
+const setCategoryFilter = (newValue: Array<number | string>) => {
+  if (typeof newValue == 'string') {
+    categoryFilter = newValue;
+    filter();
+  }
 };
 
-const setStatusFilter = (newValue: Array<string>) => {
-  statusFilter = newValue;
-  filter();
+const setStatusFilter = (newValue: Array<number | string>) => {
+  if (typeof newValue == 'string') {
+    statusFilter = newValue;
+    filter();
+  }
 };
 
 const filter = () => {
