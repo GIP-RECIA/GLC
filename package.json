@@ -10,7 +10,7 @@
     "test:e2e": "playwright test",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint": "eslint src/main/webapp/src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format:check": "prettier --check src/main/webapp/src/",
     "format": "prettier --write src/main/webapp/src/",
     "clean": "find . -name node_modules -type d -prune -o -name cache -type d -o -name dist -type d -o -name playwright-report -type d -o -name test-results -type d | xargs rm -rf",
