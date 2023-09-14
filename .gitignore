@@ -53,6 +53,7 @@ src/main/resources/**/application-*.yml
 ### Tests ###
 playwright-report
 test-results
+results.json
 
 
 ### Logs ###
