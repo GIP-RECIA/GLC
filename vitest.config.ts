@@ -9,6 +9,11 @@ export default mergeConfig(
       environment: 'jsdom',
       exclude: [...configDefaults.exclude],
       root: fileURLToPath(new URL('./src/test/webapp/spec', import.meta.url)),
+      server: {
+        deps: {
+          inline: ['vuetify'],
+        },
+      },
     },
   }),
 );
