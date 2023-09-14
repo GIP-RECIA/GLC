@@ -37,7 +37,7 @@ const init = () => {
 
 const showPage = (page: number) => {
   if (typeof props.items !== 'undefined' && props.items !== null) {
-    const items = props.items.filter((_, index) => {
+    const items: Array<any> = props.items.filter((_, index) => {
       return page == 1
         ? index < props.itemsPerPage
         : index >= (page - 1) * props.itemsPerPage && index < page * props.itemsPerPage;

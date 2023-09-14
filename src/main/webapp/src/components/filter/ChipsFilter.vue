@@ -4,13 +4,13 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const props = defineProps<{
-  tags: Array<{ id: any; i18n: string }>;
+  tags: Array<{ id: number | string; i18n: string }>;
 }>();
 
-const emit = defineEmits<(event: 'update:selected', payload: Array<any>) => void>();
+const emit = defineEmits<(event: 'update:selected', payload: Array<number | string>) => void>();
 
 const filter = (payload: Array<number>) => {
-  const ids = props.tags.filter((_, index) => payload.includes(index)).map((tag) => tag.id);
+  const ids: Array<number | string> = props.tags.filter((_, index) => payload.includes(index)).map((tag) => tag.id);
   emit('update:selected', ids);
 };
 </script>
