@@ -1,0 +1,11 @@
+{
+  "search": {
+    "noResults": "No results",
+    "structure": {
+      "placeholder": "Search structure"
+    },
+    "personne": {
+      "placeholder": "Search personne"
+    }
+  }
+}

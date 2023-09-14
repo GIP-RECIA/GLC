@@ -1,0 +1,43 @@
+{
+  "person": {
+    "category": {
+      "student": "Student/Apprentice",
+      "teacher": "Teacher/Instructor",
+      "nonTeacherLocalCommunity": "Community agent",
+      "nonTeacherSchool": "Establishment staff",
+      "nonTeacherAcademicService": "Academic staff",
+      "personRelationshipStudent": "Parent",
+      "externalStaff": "External",
+      "companyManager": "Company manager",
+      "internshipTutor": "Internship tutor"
+    },
+    "status": {
+      "inconnu": "Unknown!",
+      "invalid": "Inactivated",
+      "valid": "Activated",
+      "unpublished": "Unpublished",
+      "locked": "Locked",
+      "deleted": "Deleted",
+      "deleting": "Deleting",
+      "uncertain": "Uncertain",
+      "uncertainExportAdd": "Export error",
+      "uncertainExportDelete": "Delete error",
+      "uncertainExportModify": "Modify error"
+    },
+    "information": {
+      "civility": "Civility",
+      "lastName": "Last name",
+      "firstName": "First name",
+      "birthDate": "Birth date",
+      "email": "Email",
+      "schoolYear": "School year",
+      "login": "Login",
+      "status": "Status",
+      "profile": "Profile",
+      "source": "Source",
+      "function": "Fonction | Fonctions",
+      "additionalFunction": "Additional function | Additional functions",
+      "additionalTeaching": "Additional teaching | Additional teachings"
+    }
+  }
+}

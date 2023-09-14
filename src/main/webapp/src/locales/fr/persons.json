@@ -1,0 +1,43 @@
+{
+  "person": {
+    "category": {
+      "student": "Élève/Apprenti",
+      "teacher": "Enseignant/Formateur",
+      "nonTeacherLocalCommunity": "Agent de la collectivité",
+      "nonTeacherSchool": "Personnel d’établissement",
+      "nonTeacherAcademicService": "Personnel académique",
+      "personRelationshipStudent": "Parent",
+      "externalStaff": "Extérieur",
+      "companyManager": "Responsable d’entreprise",
+      "internshipTutor": "Tuteur de stage"
+    },
+    "status": {
+      "inconnu": "Inconnu !",
+      "invalid": "Inactivé",
+      "valid": "Activé",
+      "unpublished": "Non publié",
+      "locked": "Bloqué",
+      "deleted": "Supprimé",
+      "deleting": "En suppression",
+      "uncertain": "Incertain",
+      "uncertainExportAdd": "Erreur export",
+      "uncertainExportDelete": "Erreur suppression",
+      "uncertainExportModify": "Erreur modification"
+    },
+    "information": {
+      "civility": "Civilité",
+      "lastName": "Nom",
+      "firstName": "Prénom",
+      "birthDate": "Date de naissance",
+      "email": "Email",
+      "schoolYear": "Annnée scolaire",
+      "login": "Login",
+      "status": "Etat",
+      "profile": "Profil",
+      "source": "Source",
+      "function": "Fonction | Fonctions",
+      "additionalFunction": "Fonction complémentaire | Fonctions complémentaires",
+      "additionalTeaching": "Enseignement complémentaire | Enseignements complémentaires"
+    }
+  }
+}

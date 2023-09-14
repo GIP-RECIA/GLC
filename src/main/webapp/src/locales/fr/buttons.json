@@ -1,0 +1,18 @@
+{
+  "button": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "lock": "Bloquer",
+    "unlock": "Débloquer",
+    "reinitialize": "Reinitialiser",
+    "add": "Ajouter",
+    "delete": "Supprimer",
+    "close": "Fermer",
+    "attach": "Rattacher",
+    "detach": "Détacher",
+    "edit": "Editer",
+    "hideEmpty": "Masquer les séctions vides",
+    "showAll": "Tout afficher",
+    "signIn": "Connexion"
+  }
+}

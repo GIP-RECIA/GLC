@@ -1,0 +1,32 @@
+{
+  "toast": {
+    "additional": {
+      "success": {
+        "save": "Modifications appliqués avec succès",
+        "attach": "Rattachement effectué avec succès",
+        "detach": "Détachement effectué avec succès"
+      },
+      "error": {
+        "save": "Impossible d'appliquer les modifications",
+        "attach": "Impossible de rattacher la personne",
+        "detach": "Impossible de détacher la personne"
+      }
+    },
+    "initConfigurationStore": "Impossible de charger la configuration",
+    "initFonctionStore": "Impossible de charges les fonctions",
+    "initCurrentPersonne": "Impossible de charger la personne",
+    "refreshCurrentPersonne": "Impossible de raffraichir la personne",
+    "initStructureStore": "Imposible de charger les structures",
+    "initCurrentEtab": "Impossible de charger la structure",
+    "refreshCurrentStructure": "Impossible de raffraichir la structure",
+    "error": {
+      "401": "Vous n'êtes pas autorisé à consulter la ressource",
+      "404": "La ressource demandé n'as pas pu être trouvée",
+      "500": "Un erreur interne au serveur est survenue",
+      "unmanaged": "Une erreur non géré est survenue",
+      "stock": "Une erreur est survenue",
+      "unknown": "Une erreur inconnue est survenue"
+    },
+    "editStatusDenied": "Impossible d'agir sur cet état de compte"
+  }
+}

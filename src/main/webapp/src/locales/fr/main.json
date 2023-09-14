@@ -1,0 +1,17 @@
+{
+  "lessons": "Enseignement | Enseignements",
+  "externalLogin": "Identifiant EN",
+  "discipline": "Discipline",
+  "classOrEducationalGroup": "Classe ou groupe pédagogique",
+  "warning": "Alerte | Alertes",
+  "deletingOrDeletedAccounts": "Comptes en suppression/supprimés",
+  "filter": "Filtrer",
+  "all": "Tous",
+  "used": "Utilisés",
+  "people": "Personne | Personnes",
+  "searchOutOfStructure": "Rechercher hors de la structure",
+  "casSignIn": "Connexion CAS",
+  "result": "Résultat | Résultats",
+  "addAdditionalFonction": "Gestion des fonctions complémentaires",
+  "addAdditionalTeaching": "Gestion des enseignements complémentaires"
+}

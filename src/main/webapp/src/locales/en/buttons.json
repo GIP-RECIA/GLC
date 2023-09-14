@@ -1,0 +1,18 @@
+{
+  "button": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "lock": "Lock",
+    "unlock": "Unlock",
+    "reinitialize": "Reinitialize",
+    "add": "Add",
+    "delete": "Delete",
+    "close": "Close",
+    "attach": "Attach",
+    "detach": "Detach",
+    "edit": "Edit",
+    "hideEmpty": "Hide empty",
+    "showAll": "Show all",
+    "signIn": "Sign In"
+  }
+}

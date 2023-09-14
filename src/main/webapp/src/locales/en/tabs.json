@@ -1,0 +1,10 @@
+{
+  "tab": {
+    "dashboard": "Dashboard",
+    "information": "Information",
+    "administrativeStaff": "Administrative staff",
+    "teachingStaff": "Teaching staff",
+    "accounts": "Accounts",
+    "exports": "Exports"
+  }
+}

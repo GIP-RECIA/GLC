@@ -1,0 +1,19 @@
+{
+  "source": {
+    "AC-DEMO": "Source de démonstration",
+    "AC-ORLEANS-TOURS": "Annuaire Académique Fédérateur",
+    "CFA-CENTRE": "SI établissement",
+    "COLL-CD18": "Département 18",
+    "COLL-CD41": "Département 41",
+    "COLL-CVDL": "Région Centre-Val de Loire",
+    "EF2S-CENTRE": "SI établissement",
+    "GIP-RECIA": "GIP RECIA",
+    "LA-CENTRE": "Annuaire Enseignement Agricole",
+    "SarapisUi_AC-DEMO": "Compte local démonstration",
+    "SarapisUi_AC-ORLEANS-TOURS": "Compte local académique",
+    "SarapisUi_CFA-CENTRE": "Compte local établissement",
+    "SarapisUi_EF2S-CENTRE": "Compte local établissement",
+    "SarapisUi_GIP-RECIA": "Compte local GIP RECIA",
+    "SarapisUi_LA-CENTRE": "Compte local enseignement agricole"
+  }
+}

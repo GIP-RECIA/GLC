@@ -44,12 +44,12 @@ watch(
       selected-class="slide-group-item--activate"
       class="mt-2"
     >
-      <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tabs.dashboard') }}</v-tab>
-      <v-tab :value="Tabs.Info">{{ t('tabs.information') }}</v-tab>
-      <v-tab :value="Tabs.AdministrativeStaff">{{ t('tabs.administrativeStaff') }}</v-tab>
-      <v-tab :value="Tabs.TeachingStaff">{{ t('tabs.teachingStaff') }}</v-tab>
-      <v-tab :value="Tabs.Accounts">{{ t('tabs.accounts') }}</v-tab>
-      <v-tab :value="Tabs.Exports">{{ t('tabs.exports') }}</v-tab>
+      <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tab.dashboard') }}</v-tab>
+      <v-tab :value="Tabs.Info">{{ t('tab.information') }}</v-tab>
+      <v-tab :value="Tabs.AdministrativeStaff">{{ t('tab.administrativeStaff') }}</v-tab>
+      <v-tab :value="Tabs.TeachingStaff">{{ t('tab.teachingStaff') }}</v-tab>
+      <v-tab :value="Tabs.Accounts">{{ t('tab.accounts') }}</v-tab>
+      <v-tab :value="Tabs.Exports">{{ t('tab.exports') }}</v-tab>
     </v-tabs>
     <v-window v-model="currentTab">
       <v-window-item :value="Tabs.Dashboard">

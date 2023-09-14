@@ -1,0 +1,10 @@
+{
+  "tab": {
+    "dashboard": "Tableau de bord",
+    "information": "Informations",
+    "administrativeStaff": "Personnel administratif",
+    "teachingStaff": "Personnel enseignant",
+    "accounts": "Comptes",
+    "exports": "Exports"
+  }
+}

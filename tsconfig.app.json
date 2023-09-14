@@ -3,7 +3,7 @@
   "include": [
     "src/main/webapp/src/types/d/*.d.ts",
     "src/main/webapp/src/**/*",
-    "src/main/webapp/src/locales/*.json",
+    "src/main/webapp/src/locales/**/*.json",
     "src/main/webapp/src/**/*.vue"
   ],
   "exclude": ["src/test/**/*"],
