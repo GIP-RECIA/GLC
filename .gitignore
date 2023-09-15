@@ -36,9 +36,10 @@ build/
 !.vscode/extensions.json
 
 ### Yarn ###
-.yarn/install-state.gz
-.yarn/cache/
-!.yarn/releases/
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
 
 node_modules
 .DS_Store
