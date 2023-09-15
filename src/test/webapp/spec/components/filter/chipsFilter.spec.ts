@@ -1,4 +1,4 @@
-import { plugins } from '../config';
+import { plugins } from '../../config';
 // @ts-ignore
 import ChipsFilter from '@/components/filter/ChipsFilter.vue';
 import { flushPromises, mount } from '@vue/test-utils';
