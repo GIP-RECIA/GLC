@@ -820,10 +820,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.17.15":
-  version: 18.17.15
-  resolution: "@types/node@npm:18.17.15"
-  checksum: eed11d4398ccdb999a4c65658ee75de621a4ad57aece48ed2fb8803b1e2711fadf58d8aefbdb0a447d69cf3cba602ca32fe0fc92077575950a796e1dc13baa0f
+"@types/node@npm:^18.17.17":
+  version: 18.17.17
+  resolution: "@types/node@npm:18.17.17"
+  checksum: ff28f347c77723780836f9bb2ffa6db0cd72490bfd7604397c03db31db34f1f2899e82f0aaf3e825efeb09c15bd94d076ea9aca19a1407e1b56cb4603318936c
   languageName: node
   linkType: hard
 
@@ -2991,6 +2991,59 @@ __metadata:
   checksum: 9ceff8fe968f9270a37a1f73bf3f1f7bda69ca80f4f80850670e0e7b9444ff99323f7ac52f96567f8b5f5fbe7ac717a0d81d3407c7313e82810c6199446a5247
   languageName: node
   linkType: hard
+
+"glc@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "glc@workspace:."
+  dependencies:
+    "@fortawesome/fontawesome-free": ^6.4.2
+    "@fortawesome/fontawesome-svg-core": ^6.4.2
+    "@fortawesome/free-regular-svg-icons": ^6.4.2
+    "@fortawesome/free-solid-svg-icons": ^6.4.2
+    "@fortawesome/vue-fontawesome": latest-3
+    "@intlify/unplugin-vue-i18n": ^1.2.0
+    "@playwright/test": ^1.38.0
+    "@rushstack/eslint-patch": ^1.4.0
+    "@trivago/prettier-plugin-sort-imports": ^4.2.0
+    "@tsconfig/node18": ^18.2.2
+    "@types/jsdom": ^21.1.2
+    "@types/lodash.debounce": ^4.0.7
+    "@types/lodash.isempty": ^4.4.7
+    "@types/node": ^18.17.17
+    "@vitejs/plugin-vue": ^4.3.4
+    "@vue/eslint-config-prettier": ^8.0.0
+    "@vue/eslint-config-typescript": ^12.0.0
+    "@vue/test-utils": ^2.4.1
+    "@vue/tsconfig": ^0.4.0
+    "@vueuse/core": ^10.4.1
+    axios: ^1.5.0
+    date-fns: ^2.30.0
+    dotenv: ^16.3.1
+    dotenv-checker: ^1.1.5
+    eslint: ^8.49.0
+    eslint-plugin-vue: ^9.17.0
+    husky: ^8.0.3
+    jsdom: ^22.1.0
+    lint-staged: ^14.0.1
+    lodash.debounce: ^4.0.8
+    lodash.isempty: ^4.4.0
+    npm-run-all: ^4.1.5
+    pinia: ^2.1.6
+    prettier: ^3.0.3
+    resize-observer-polyfill: ^1.5.1
+    sass: ^1.67.0
+    typescript: ^5.2.2
+    vite: ^4.4.9
+    vite-plugin-vuetify: ^1.0.2
+    vitest: ^0.34.4
+    vue: ^3.3.4
+    vue-i18n: 9.4.0
+    vue-router: ^4.2.4
+    vue-toastification: v2.0.0-rc.5
+    vue-tsc: ^1.8.11
+    vuetify: ^3.3.16
+  languageName: unknown
+  linkType: soft
 
 "glob-parent@npm:^5.1.2, glob-parent@npm:~5.1.2":
   version: 5.1.2
@@ -5415,59 +5468,6 @@ __metadata:
   checksum: 3469d85c65f3245a279fa11afc250c3dca96e9e847f2f79d57f466940c5bb8495da08a542646086d499b7f24a74b8d0b42f3fc0f95d50ff99af1f599f6360ad7
   languageName: node
   linkType: hard
-
-"src-main-webapp@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "src-main-webapp@workspace:."
-  dependencies:
-    "@fortawesome/fontawesome-free": ^6.4.2
-    "@fortawesome/fontawesome-svg-core": ^6.4.2
-    "@fortawesome/free-regular-svg-icons": ^6.4.2
-    "@fortawesome/free-solid-svg-icons": ^6.4.2
-    "@fortawesome/vue-fontawesome": latest-3
-    "@intlify/unplugin-vue-i18n": ^1.2.0
-    "@playwright/test": ^1.38.0
-    "@rushstack/eslint-patch": ^1.4.0
-    "@trivago/prettier-plugin-sort-imports": ^4.2.0
-    "@tsconfig/node18": ^18.2.2
-    "@types/jsdom": ^21.1.2
-    "@types/lodash.debounce": ^4.0.7
-    "@types/lodash.isempty": ^4.4.7
-    "@types/node": ^18.17.15
-    "@vitejs/plugin-vue": ^4.3.4
-    "@vue/eslint-config-prettier": ^8.0.0
-    "@vue/eslint-config-typescript": ^12.0.0
-    "@vue/test-utils": ^2.4.1
-    "@vue/tsconfig": ^0.4.0
-    "@vueuse/core": ^10.4.1
-    axios: ^1.5.0
-    date-fns: ^2.30.0
-    dotenv: ^16.3.1
-    dotenv-checker: ^1.1.5
-    eslint: ^8.49.0
-    eslint-plugin-vue: ^9.17.0
-    husky: ^8.0.3
-    jsdom: ^22.1.0
-    lint-staged: ^14.0.1
-    lodash.debounce: ^4.0.8
-    lodash.isempty: ^4.4.0
-    npm-run-all: ^4.1.5
-    pinia: ^2.1.6
-    prettier: ^3.0.3
-    resize-observer-polyfill: ^1.5.1
-    sass: ^1.67.0
-    typescript: ^5.2.2
-    vite: ^4.4.9
-    vite-plugin-vuetify: ^1.0.2
-    vitest: ^0.34.4
-    vue: ^3.3.4
-    vue-i18n: 9.4.0
-    vue-router: ^4.2.4
-    vue-toastification: v2.0.0-rc.5
-    vue-tsc: ^1.8.11
-    vuetify: ^3.3.16
-  languageName: unknown
-  linkType: soft
 
 "ssri@npm:^10.0.0":
   version: 10.0.5
