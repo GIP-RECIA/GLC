@@ -1,11 +1,11 @@
-/*
- * Copyright (C) 2023 GIP-RECIA, Inc.
+/**
+ * Copyright (C) 2014 Esup Portail http://www.esup-portail.org
+ * @Author (C) 2012 Julien Gribonvald <julien.gribonvald@recia.fr>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *                 http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,15 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security.cas;
+package fr.recia.glc.security;
 
 import fr.recia.glc.web.dto.UserDTO;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-public interface IAuthorityService {
+public interface UserContextLoaderService {
 
-  Collection<? extends GrantedAuthority> getUserAuthorities(final UserDTO user);
+	void loadUserTree(Authentication authentication);
+
+	void doExpireForReload();
+
+	void loadUserTree(final UserDTO user,
+			final Collection<? extends GrantedAuthority> authorities);
 
 }

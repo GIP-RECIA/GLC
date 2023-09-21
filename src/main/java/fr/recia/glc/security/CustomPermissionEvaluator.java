@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security.cas;
+package fr.recia.glc.security;
 
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.ldap.StructureKey;
 import fr.recia.glc.ldap.enums.PermissionType;
+import fr.recia.glc.security.CustomUserDetails;
+import fr.recia.glc.security.IPermissionService;
 import fr.recia.glc.security.admingroup.DroitApplicatif;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.PermissionEvaluator;
@@ -51,14 +53,13 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     log.debug("Call custom hasPermission with object {} and permission {} !", ((IStructure) targetDomainObject).getStructureKey(), permission);
     IStructure context = (IStructure) targetDomainObject;
 
-    DroitApplicatif RoleInCtx = permissionService.getRoleOfUserInContext(authentication, context.getStructureKey());
+    PermissionType RoleInCtx = permissionService.getRoleOfUserInContext(authentication, context.getStructureKey());
 
     if (RoleInCtx == null) return false;
 
     PermissionType perm = PermissionType.valueOf((String) permission);
 
-    return perm != null;
-    //return perm != null && RoleInCtx;
+    return perm != null && RoleInCtx.getMask() >= perm.getMask();
   }
 
   @Override
@@ -71,14 +72,13 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
       "Call custom hasPermission with id {}, type {} and permission {} !", targetId, targetType, permission);
     CategorieStructure ctxType = CategorieStructure.valueOf(targetType);
 
-    DroitApplicatif RoleInCtx = permissionService.getRoleOfUserInContext(authentication, new StructureKey((String) targetId, ctxType));
+    PermissionType RoleInCtx = permissionService.getRoleOfUserInContext(authentication, new StructureKey((String) targetId, ctxType));
 
     if (RoleInCtx == null) return false;
 
     PermissionType perm = PermissionType.valueOf((String) permission);
 
-    return perm != null;
-    //return perm != null && RoleInCtx.getMask() >= perm.getMask();
+    return perm != null && RoleInCtx.getMask() >= perm.getMask();
   }
 
   private boolean checkAuthentication(Authentication authentication) {

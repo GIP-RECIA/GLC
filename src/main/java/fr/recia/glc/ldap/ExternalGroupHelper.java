@@ -50,14 +50,38 @@ public class ExternalGroupHelper {
   private boolean groupResolveUserMember;
   private boolean groupResolveUserMemberByUserAttributes;
   private Pattern groupsPatternWithoutMembersResolving;
-
-  private String structureFromGroupPattern = "([^:]+):([^:]+):(([^:]+)(_(\\d{7}[^:]+))+?):Tous_[^:]+";
-  private String filterGroupsOfStructure = "(&(cn=*:Etablissements:*:tous*)(!(cn=*:*:*:*:*)))";
   /**
    * The other attributes desired to show, facultative
    */
   private Set<String> otherGroupDisplayedAttributes;
   private String groupDNSubPath;
+
+  private Pattern structureFromGroupPattern = Pattern.compile("([^:]+):([^:]+):(([^:_]+)(_(\\d{7}[^:]+))?):Tous_[^:]+");
+  private String filterGroupsOfStructure = "(&(cn=*:Etablissements:*:tous*)(!(cn=*:*:*:*:*)))";
+
+  public ExternalGroupHelper(
+    String groupIdAttribute, String groupDisplayNameAttribute, String groupSearchAttribute, String groupMembersAttribute,
+    Pattern groupKeyMemberRegex, int groupKeyMemberIndex, Pattern userKeyMemberRegex, int userKeyMemberIndex,
+    Pattern groupDisplayNameRegex, boolean groupDNContainsDisplayName, boolean groupResolveUserMember,
+    boolean groupResolveUserMemberByUserAttributes, Pattern groupsPatternWithoutMembersResolving,
+    Set<String> otherGroupDisplayedAttributes, String groupDNSubPath) {
+
+    this.groupIdAttribute = groupIdAttribute;
+    this.groupDisplayNameAttribute = groupDisplayNameAttribute;
+    this.groupSearchAttribute = groupSearchAttribute;
+    this.groupMembersAttribute = groupMembersAttribute;
+    this.groupKeyMemberRegex = groupKeyMemberRegex;
+    this.groupKeyMemberIndex = groupKeyMemberIndex;
+    this.userKeyMemberRegex = userKeyMemberRegex;
+    this.userKeyMemberIndex = userKeyMemberIndex;
+    this.groupDisplayNameRegex = groupDisplayNameRegex;
+    this.groupDNContainsDisplayName = groupDNContainsDisplayName;
+    this.groupResolveUserMember = groupResolveUserMember;
+    this.groupResolveUserMemberByUserAttributes = groupResolveUserMemberByUserAttributes;
+    this.groupsPatternWithoutMembersResolving = groupsPatternWithoutMembersResolving;
+    this.otherGroupDisplayedAttributes = otherGroupDisplayedAttributes;
+    this.groupDNSubPath = groupDNSubPath;
+  }
 
   public Set<String> getAttributes() {
     Set<String> set = new HashSet<>(otherGroupDisplayedAttributes);

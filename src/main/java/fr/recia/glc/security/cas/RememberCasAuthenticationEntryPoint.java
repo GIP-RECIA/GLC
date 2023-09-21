@@ -16,6 +16,7 @@
 package fr.recia.glc.security.cas;
 
 import fr.recia.glc.configuration.SecurityConfiguration;
+import fr.recia.glc.security.SecurityUtils;
 import fr.recia.glc.services.beans.ServiceUrlHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.Protocol;

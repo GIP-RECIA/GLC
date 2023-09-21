@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.ldap.repository;
 
+import com.google.common.collect.Sets;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.IExternalGroup;
 import fr.recia.glc.ldap.IExternalGroupDisplayNameFormatter;
@@ -32,8 +33,10 @@ import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.query.LdapQueryBuilder;
 
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 /**
@@ -57,6 +60,9 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
   private List<IExternalGroupDisplayNameFormatter> groupDisplayNameFormatters;
 
   //@Autowired
+  private IExternalUserDao externalUserDao;
+
+  //@Autowired
   private List<IGroupMemberDesigner> groupMemberDesigners;
 
   /**
@@ -68,7 +74,19 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
 
   @Override
   public Set<IStructure> getStructuresFromGroups() {
-    return this.searchWithFilter(new HardcodedFilter(externalGroupHelper.getFilterGroupsOfStructure())).stream().collect(Collectors.toSet());
+    HardcodedFilter filter = new HardcodedFilter(externalGroupHelper.getFilterGroupsOfStructure());
+    if (log.isDebugEnabled()) {
+      log.debug("LDAP filter applied {} ", filter.encode());
+    }
+    //ContextMapper<IExternalGroup> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper, this.groupDisplayNameFormatters);
+    ContextMapper<IStructure> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper);
+    // SearchControls constraints = new SearchControls();
+    // constraints.setReturningAttributes((String[])
+    // ldapUserHelper.getAttributes().toArray());
+    LdapQuery query = LdapQueryBuilder.query()
+      .attributes(externalGroupHelper.getAttributes().toArray(new String[0]))
+      .base(externalGroupHelper.getGroupDNSubPath()).filter(filter);
+    return Sets.newHashSet(ldapTemplate.search(query, mapper));
   }
 
   //  @Override
@@ -262,17 +280,17 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
 //  }
 //
   // @Cacheable(value = "ExternalGroups", key = "#filter")
-  private List<IStructure> searchWithFilter(@NotNull final Filter filter) {
+  private List<IExternalGroup> searchWithFilter(@NotNull final Filter filter, final boolean withMembers) {
     if (log.isDebugEnabled()) {
-      log.debug("LDAP filter applied {}", filter.encode());
+      log.debug("LDAP filter applied {} and resolve members {} ", filter.encode(), withMembers);
     }
-    ContextMapper<IStructure> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper);
+    ContextMapper<IExternalGroup> mapper = new LdapGroupContextMapper(this.externalGroupHelper, this.groupDisplayNameFormatters);
 
     // SearchControls constraints = new SearchControls();
     // constraints.setReturningAttributes((String[])
     // ldapUserHelper.getAttributes().toArray());
     LdapQuery query = LdapQueryBuilder.query()
-      .attributes((String[]) externalGroupHelper.getAttributes().toArray(new String[externalGroupHelper.getAttributes().size()]))
+      .attributes(externalGroupHelper.getAttributes().toArray(new String[0]))
       .base(externalGroupHelper.getGroupDNSubPath()).filter(filter);
     return ldapTemplate.search(query, mapper);
   }

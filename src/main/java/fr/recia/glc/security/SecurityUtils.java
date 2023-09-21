@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security.cas;
+package fr.recia.glc.security;
 
 import fr.recia.glc.services.beans.ServiceUrlHelper;
 import org.springframework.security.access.AccessDeniedException;

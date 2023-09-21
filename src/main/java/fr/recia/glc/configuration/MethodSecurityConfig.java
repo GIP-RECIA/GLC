@@ -15,8 +15,8 @@
  */
 package fr.recia.glc.configuration;
 
-import fr.recia.glc.security.cas.AuthoritiesConstants;
-import fr.recia.glc.security.cas.CustomPermissionEvaluator;
+import fr.recia.glc.security.AuthoritiesConstants;
+import fr.recia.glc.security.CustomPermissionEvaluator;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;

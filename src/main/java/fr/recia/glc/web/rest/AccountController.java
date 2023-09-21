@@ -16,8 +16,8 @@
 package fr.recia.glc.web.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.recia.glc.security.cas.CustomUserDetails;
-import fr.recia.glc.security.cas.SecurityUtils;
+import fr.recia.glc.security.CustomUserDetails;
+import fr.recia.glc.security.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

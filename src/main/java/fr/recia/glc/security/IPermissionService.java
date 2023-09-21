@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security.cas;
+package fr.recia.glc.security;
 
 import fr.recia.glc.ldap.StructureKey;
+import fr.recia.glc.ldap.enums.PermissionType;
 import fr.recia.glc.security.admingroup.DroitApplicatif;
 import org.springframework.security.core.Authentication;
 
@@ -23,14 +24,6 @@ import javax.validation.constraints.NotNull;
 
 public interface IPermissionService {
 
-  DroitApplicatif getRoleOfUserInContext(Authentication authentication, @NotNull final StructureKey contextKey);
-
-//  Predicate filterAuthorizedAllOfContextType(Authentication authentication, @NotNull final ContextType contextType,
-//                                             @NotNull final DroitApplicatif permissionType, @NotNull final Predicate predicate);
-//
-//  Predicate filterAuthorizedChildsOfContext(Authentication authentication, @NotNull final StructureKey contextKey,
-//                                            @NotNull final DroitApplicatif permissionType, @NotNull final Predicate predicate);
-
-
+  PermissionType getRoleOfUserInContext(Authentication authentication, @NotNull final StructureKey contextKey);
 
 }

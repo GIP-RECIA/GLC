@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security.cas;
+package fr.recia.glc.security;
 
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.personne.QAPersonne;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.ldap.IExternalUser;
 import fr.recia.glc.ldap.repository.IExternalUserDao;
+import fr.recia.glc.security.CustomUserDetails;
+import fr.recia.glc.security.IAuthorityService;
 import fr.recia.glc.services.factories.UserDTOFactory;
 import fr.recia.glc.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;

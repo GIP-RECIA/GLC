@@ -40,14 +40,6 @@ public enum PermissionType {
    */
   MANAGER(2, "MANAGER", 64, "enum.permission.manager.title"),
   /**
-   * Editor.
-   */
-  EDITOR(3, "EDITOR", 32, "enum.permission.editor.title"),
-  /**
-   * Contributor.
-   */
-  CONTRIBUTOR(4, "CONTRIBUTOR", 16, "enum.permission.contributor.title"),
-  /**
    * No Permission expect to look over the object and go on his childs.
    */
   LOOKOVER(5, "LOOKOVER", 0, "enum.permission.lookover.title");
@@ -98,10 +90,8 @@ public enum PermissionType {
      * if (id == PermissionType.USER.getId()) { return PermissionType.USER;
      * } else
      */
-    if (id == PermissionType.CONTRIBUTOR.getId()) {
-      return PermissionType.CONTRIBUTOR;
-    } else if (id == PermissionType.EDITOR.getId()) {
-      return PermissionType.EDITOR;
+    if (id == PermissionType.LOOKOVER.getId()) {
+      return PermissionType.LOOKOVER;
     } else if (id == PermissionType.MANAGER.getId()) {
       return PermissionType.MANAGER;
     } else if (id == PermissionType.ADMIN.getId()) {

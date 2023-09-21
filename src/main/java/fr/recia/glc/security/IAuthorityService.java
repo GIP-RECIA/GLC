@@ -13,19 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security.cas;
+package fr.recia.glc.security;
 
-/**
- * Constants for Spring Security authorities.
- */
-public final class AuthoritiesConstants {
+import fr.recia.glc.web.dto.UserDTO;
+import org.springframework.security.core.GrantedAuthority;
 
-  private AuthoritiesConstants() {
-  }
+import java.util.Collection;
 
-  public static final String ADMIN = "ROLE_ADMIN";
-  public static final String USER = "ROLE_USER";
-  public static final String ANONYMOUS = "ROLE_ANONYMOUS";
-  public static final String AUTHENTICATED = "ROLE_AUTHENTICATED";
+public interface IAuthorityService {
+
+  Collection<? extends GrantedAuthority> getUserAuthorities(final UserDTO user);
 
 }

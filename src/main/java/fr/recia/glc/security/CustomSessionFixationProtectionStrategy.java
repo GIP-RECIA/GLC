@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security.cas;
+package fr.recia.glc.security;
 
+import fr.recia.glc.security.cas.RememberWebAuthenticationDetails;
 import fr.recia.glc.services.beans.ServiceUrlHelper;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.cas.ServiceProperties;

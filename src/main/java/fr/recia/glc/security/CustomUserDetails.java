@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security.cas;
+package fr.recia.glc.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
-import fr.recia.glc.security.admingroup.Droit2GroupNameMap;
-import fr.recia.glc.security.admingroup.Droit2StructureMap;
 import fr.recia.glc.web.dto.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,8 +42,6 @@ public class CustomUserDetails implements UserDetails {
   private List<String> roles;
   @Setter
   private String sessionId;
-  private final Droit2StructureMap droit2StructureMap = new Droit2StructureMap();
-  private final Droit2GroupNameMap droit2GroupNameMap = new Droit2GroupNameMap();
 
   public CustomUserDetails() {
     super();
