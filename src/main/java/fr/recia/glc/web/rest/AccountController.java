@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@RestController
 @Slf4j
+@RestController
 public class AccountController {
 
   @GetMapping(value = "/app/login")

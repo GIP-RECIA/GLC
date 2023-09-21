@@ -49,7 +49,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RestController()
+@RestController
 @RequestMapping(value = "/api/personne")
 public class PersonneController {
   @Autowired

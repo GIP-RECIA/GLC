@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@RestController()
+@RestController
 @RequestMapping(value = "/api/config")
 public class ConfigurationController {
 

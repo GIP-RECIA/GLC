@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 import static fr.recia.glc.configuration.Constants.SANS_OBJET;
 
 @Slf4j
-@RestController()
+@RestController
 @RequestMapping(value = "/api/structure/etablissement")
 public class EtablissementController {
 
