@@ -29,25 +29,34 @@ const newTab = () => {
 </script>
 
 <template>
-  <div class="d-flex">
-    <custom-tab-item
-      v-for="(structure, index) in structures"
-      :key="index"
-      :id="index"
-      :title="structure.name"
-      :link="{ name: 'structure', params: { structureId: structure.id } }"
-      :selected="currentStructure == index"
-      @close="close"
-    />
-    <v-btn
-      v-if="structures.length > 0"
-      :to="{ name: 'home' }"
-      variant="text"
-      density="comfortable"
-      icon
-      @click="newTab"
-    >
-      <v-icon icon="fas fa-plus" size="x-small" />
-    </v-btn>
+  <div class="scrollable-x">
+    <div class="d-flex my-2">
+      <custom-tab-item
+        v-for="(structure, index) in structures"
+        :key="index"
+        :id="index"
+        :title="structure.name"
+        :link="{ name: 'structure', params: { structureId: structure.id } }"
+        :selected="currentStructure == index"
+        @close="close"
+      />
+      <v-btn
+        v-if="structures.length > 0"
+        :to="{ name: 'home' }"
+        variant="text"
+        density="comfortable"
+        icon
+        @click="newTab"
+      >
+        <v-icon icon="fas fa-plus" size="x-small" />
+      </v-btn>
+    </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+.scrollable-x {
+  overflow-x: scroll;
+  scrollbar-width: thin;
+}
+</style>
