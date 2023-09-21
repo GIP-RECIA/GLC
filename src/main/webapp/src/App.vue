@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useFonctionStore } from './stores/fonctionStore';
+import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
 import { useConfigurationStore } from '@/stores/configurationStore';
@@ -57,6 +58,8 @@ watch(isAuthenticated, (newValue) => {
       />
       <v-toolbar density="compact" color="rgba(255, 255, 255, 0)" class="px-3">
         GLC<custom-tab-bar class="ml-2" />
+        <v-spacer />
+        <theme-switcher />
       </v-toolbar>
     </header>
     <v-main>
