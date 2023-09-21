@@ -22,7 +22,7 @@ const modelValue = computed<boolean>({
     <v-card>
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ title }}</v-toolbar-title>
-        <template v-slot:append>
+        <template #append>
           <v-btn
             v-if="!showXmark == true"
             icon="fas fa-xmark"
