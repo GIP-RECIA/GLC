@@ -19,33 +19,10 @@
   $utilities: false
 );
 
-html,
-body,
-#app {
-  height: 100%;
-  background-color: rgb(var(--v-theme-on-surface-variant));
-}
-
-#app {
-  display: flex;
-  flex-direction: column;
-  main {
-    flex: 1 0 auto;
-  }
-  footer {
-    flex-shrink: 0;
-  }
-}
-
 .fab {
   position: fixed;
   bottom: 0;
   right: 0;
-}
-
-::before,
-:after {
-  vertical-align: unset;
 }
 
 .mt--3 {
