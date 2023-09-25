@@ -33,4 +33,5 @@ public class RoleMappingProperties {
       + ",\n \"groupName\":\"" + groupName + "\""
       + "\n}\n}";
   }
+
 }

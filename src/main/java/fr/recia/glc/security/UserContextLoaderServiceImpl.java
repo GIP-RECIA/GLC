@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2014 Esup Portail http://www.esup-portail.org
- * @Author (C) 2012 Julien Gribonvald <julien.gribonvald@recia.fr>
+/*
+ * Copyright (C) 2023 GIP-RECIA, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *                 http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,35 +20,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mysema.commons.lang.Pair;
 import lombok.extern.slf4j.Slf4j;
-import org.esupportail.publisher.domain.AbstractClassification;
-import org.esupportail.publisher.domain.AbstractFeed;
-import org.esupportail.publisher.domain.AbstractItem;
-import org.esupportail.publisher.domain.Category;
-import org.esupportail.publisher.domain.ContextKey;
-import org.esupportail.publisher.domain.ItemClassificationOrder;
-import org.esupportail.publisher.domain.Organization;
-import org.esupportail.publisher.domain.PermissionOnContext;
-import org.esupportail.publisher.domain.Publisher;
-import org.esupportail.publisher.domain.enums.ContextType;
-import org.esupportail.publisher.domain.enums.PermissionClass;
-import org.esupportail.publisher.domain.enums.PermissionType;
-import org.esupportail.publisher.repository.CategoryRepository;
-import org.esupportail.publisher.repository.FeedRepository;
-import org.esupportail.publisher.repository.IPermissionRepositorySelector;
-import org.esupportail.publisher.repository.ItemClassificationOrderRepository;
-import org.esupportail.publisher.repository.ItemRepository;
-import org.esupportail.publisher.repository.OrganizationRepository;
-import org.esupportail.publisher.repository.PublisherRepository;
-import org.esupportail.publisher.repository.predicates.ClassificationPredicates;
-import org.esupportail.publisher.repository.predicates.ItemPredicates;
-import org.esupportail.publisher.repository.predicates.PermissionPredicates;
-import org.esupportail.publisher.repository.predicates.PublisherPredicates;
-import org.esupportail.publisher.service.bean.OwnerContextKey;
-import org.esupportail.publisher.service.bean.UserContextTree;
-import org.esupportail.publisher.service.evaluators.IEvaluationFactory;
-import org.esupportail.publisher.service.factories.PermissionDTOSelectorFactory;
-import org.esupportail.publisher.web.rest.dto.PermOnCtxDTO;
-import org.esupportail.publisher.web.rest.dto.UserDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

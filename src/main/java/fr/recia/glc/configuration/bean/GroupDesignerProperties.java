@@ -23,6 +23,10 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_DELIMITER;
+import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_PREFIX;
+import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_SUFFIX;
+
 @Data
 @Validated
 public class GroupDesignerProperties {
@@ -41,7 +45,8 @@ public class GroupDesignerProperties {
       + ",\n \"groupAttachEndMatch\":\"" + groupAttachEndMatch + "\""
       + ",\n \"groupToAttachEndPattern\":" + groupToAttachEndPattern.stream()
       .map(String::valueOf)
-      .collect(Collectors.joining("\",\"", "[\"", "\"]"))
+      .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX))
       + "\n}\n}";
   }
+
 }

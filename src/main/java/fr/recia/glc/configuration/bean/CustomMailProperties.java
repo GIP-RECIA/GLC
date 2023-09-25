@@ -34,4 +34,5 @@ public class CustomMailProperties {
       + ",\n \"from\":\"" + from + "\""
       + "\n}\n}";
   }
+
 }

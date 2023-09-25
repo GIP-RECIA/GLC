@@ -43,4 +43,5 @@ public class GroupRegexProperties {
       + ",\n \"groupSuffixeToAppend\":\"" + groupSuffixeToAppend + "\""
       + "\n}\n}";
   }
+
 }

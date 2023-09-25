@@ -32,6 +32,10 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_DELIMITER;
+import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_PREFIX;
+import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_SUFFIX;
+
 @Data
 @Validated
 public class CustomLdapProperties {
@@ -64,7 +68,7 @@ public class CustomLdapProperties {
       return "{\n\"ContextSourceProperties\":{"
         + "\n \" urls\":" + Arrays.stream(urls)
         .map(String::valueOf)
-        .collect(Collectors.joining("\",\"", "[\"", "\"]"))
+        .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX))
         + ",\n \"base\":\"" + base + "\""
         + ",\n \"username\":\"" + username + "\""
         + ",\n \"password\":\"*******\""
@@ -127,10 +131,10 @@ public class CustomLdapProperties {
         + ",\n \"groupAttribute\":\"" + groupAttribute + "\""
         + ",\n \"otherDisplayedAttributes\":" + (otherDisplayedAttributes != null ? otherDisplayedAttributes.stream()
         .map(String::valueOf)
-        .collect(Collectors.joining("\",\"", "[\"", "\"]")) : null)
+        .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX)) : null)
         + ",\n \"otherBackendAttributes\":" + (otherBackendAttributes != null ? otherBackendAttributes.stream()
         .map(String::valueOf)
-        .collect(Collectors.joining("\",\"", "[\"", "\"]")) : null)
+        .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX)) : null)
         + "\n}\n}";
     }
   }
@@ -196,4 +200,5 @@ public class CustomLdapProperties {
       + ",\n \"groupBranch\":" + groupBranch
       + "\n}\n}";
   }
+
 }

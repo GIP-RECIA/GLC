@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2014 Esup Portail http://www.esup-portail.org
- * @Author (C) 2012 Julien Gribonvald <julien.gribonvald@recia.fr>
+/*
+ * Copyright (C) 2023 GIP-RECIA, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *                 http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,15 +26,6 @@ import fr.recia.glc.ldap.enums.PermissionType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.esupportail.publisher.domain.StructureKey;
-import org.esupportail.publisher.domain.SubjectKey;
-import org.esupportail.publisher.domain.enums.ContextType;
-import org.esupportail.publisher.domain.enums.PermissionType;
-import org.esupportail.publisher.domain.enums.SubjectType;
-import org.esupportail.publisher.service.factories.CompositeKeyDTOFactory;
-import org.esupportail.publisher.web.rest.dto.PermOnCtxDTO;
-import org.esupportail.publisher.web.rest.dto.PermissionDTO;
-import org.esupportail.publisher.web.rest.dto.SubjectKeyDTO;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;

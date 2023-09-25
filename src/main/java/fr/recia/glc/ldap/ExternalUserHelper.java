@@ -30,28 +30,23 @@ public class ExternalUserHelper {
   /**
    * The uid ldap attribute name.
    */
-  //@Value("${ldap.userId:uid}")
   private String userIdAttribute;
 
   /**
    * The display name ldap attribute name.
    */
-  //@Value("${ldap.userDisplayNameAttribute:displayName}")
   private String userDisplayNameAttribute;
 
   /**
    * The email ldap attribute name.
    */
-  //@Value("${ldap.userEmailAttribute:mail}")
   private String userEmailAttribute;
 
   /**
    * The user search attribute name.
    */
-  //@Value("${ldap.userSearchAttribute:cn}")
   private String userSearchAttribute;
 
-  //@Value("${ldap.userGroupAttribute:isMemberOf}")
   private String userGroupAttribute;
 
   /**
@@ -62,10 +57,8 @@ public class ExternalUserHelper {
   /**
    * The other attributes desired to show, facultative
    */
-  //@Value("${ldap.otherUserDisplayedAttributes:#{null}}")
   private Set<String> otherUserDisplayedAttributes;
 
-  //@Value("${ldap.DNsubpath.people:ou=people}")
   private String userDNSubPath;
 
   public Set<String> getAttributes() {

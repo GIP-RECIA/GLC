@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2014 Esup Portail http://www.esup-portail.org
- * @Author (C) 2012 Julien Gribonvald <julien.gribonvald@recia.fr>
+/*
+ * Copyright (C) 2023 GIP-RECIA, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *                 http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

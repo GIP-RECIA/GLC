@@ -23,6 +23,10 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_DELIMITER;
+import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_PREFIX;
+import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_SUFFIX;
+
 /**
  * Created by jgribonvald on 03/06/16.
  */
@@ -39,7 +43,8 @@ public class IpRangeProperties {
     return "{\n\"IpRangeProperties\":{"
       + "\n \"ipRanges\":" + ipRanges.stream()
       .map(String::valueOf)
-      .collect(Collectors.joining("\",\"", "[\"", "\"]"))
+      .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX))
       + "\n}\n}";
   }
+
 }
