@@ -19,14 +19,20 @@ spring:
     username:
     password:
 
-security-configuration:
+app:
+  security:
+    #auth-uri-filter-path: j_spring_cas_security_check
+    #redirect-param-name: spring-security-redirect
+    #security: http://URL:PORT/j_spring_cas_security_check
+    authorized-domain-names: >
+      http://localhost:5173
+    protocol: http://
+    id-key-provider: esco_cas_glc
+
   cas:
-    id-key-provider:
-    service:
-    url:
-      prefix:
-      login:
-      logout:
+    url-prefix:
+    url-login:
+    url-logout:
 
   cors:
     enable: true

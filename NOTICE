@@ -38,12 +38,17 @@ This project includes:
   Eclipse Compiler for Java(TM) under Eclipse Public License - v 2.0
   error-prone annotations under Apache 2.0
   esco-glc under Apache License, Version 2.0
+  FindBugs-jsr305 under The Apache Software License, Version 2.0
+  Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
+  Guava ListenableFuture only under The Apache Software License, Version 2.0
+  Guava: Google Core Libraries for Java under Apache License, Version 2.0
   Hamcrest under BSD License 3
   Hibernate Commons Annotations under GNU Library General Public License v2.1 or later
   Hibernate ORM - hibernate-core under GNU Library General Public License v2.1 or later
   Hibernate Validator Engine under Apache License 2.0
   HikariCP under The Apache Software License, Version 2.0
   istack common utility code runtime under Eclipse Distribution License - v 1.0
+  J2ObjC Annotations under Apache License, Version 2.0
   Jackson datatype: jdk8 under The Apache Software License, Version 2.0
   Jackson datatype: JSR310 under The Apache Software License, Version 2.0
   Jackson-annotations under The Apache Software License, Version 2.0

@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.configuration;
 
+import com.google.common.collect.Lists;
 import fr.recia.glc.security.cas.AjaxAuthenticationFailureHandler;
 import fr.recia.glc.security.cas.AjaxAuthenticationSuccessHandler;
 import fr.recia.glc.security.cas.AjaxLogoutSuccessHandler;
@@ -28,10 +29,10 @@ import fr.recia.glc.services.beans.ServiceUrlHelper;
 import fr.recia.glc.web.filter.CsrfCookieGeneratorFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -47,6 +48,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import java.util.Collections;
@@ -57,26 +59,12 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-  @Value("${server.servlet.context-path}")
-  private String contextPath;
-
   public static final String PROTECTED_PATH = "/protected/";
-
+  private static final String APP_CONTEXT_PATH = "server.servlet.context-path";
   private static final String APP_URI_LOGIN = "/app/login";
 
-  @Value("${security-configuration.cors.allowed-origins}")
-  private List<String> corsAllowedOrigins;
-
-  @Value("${security-configuration.cas.service}")
-  private String casService;
-  @Value("${security-configuration.cas.id-key-provider}")
-  private String casIdKeyProvider;
-  @Value("${security-configuration.cas.url.login}")
-  private String casUrlLogin;
-  @Value("${security-configuration.cas.url.logout}")
-  private String casUrlLogout;
-  @Value("${security-configuration.cas.url.prefix}")
-  private String casUrlPrefix;
+  private Environment env;
+  private final GLCProperties glcProperties;
 
   @Inject
   private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler;
@@ -87,12 +75,18 @@ public class SecurityConfiguration {
   @Inject
   private AuthenticationUserDetailsService<CasAssertionAuthenticationToken> userDetailsService;
 
+  public SecurityConfiguration(Environment env, GLCProperties glcProperties) {
+    this.env = env;
+    this.glcProperties = glcProperties;
+  }
+
   // CAS
 
   @Bean
   public ServiceProperties serviceProperties() {
     ServiceProperties sp = new ServiceProperties();
-    sp.setService(casService);
+    Assert.hasText(glcProperties.getSecurity().getAuthUriFilterPath(), "The CAS URI service should be set to be able to apply CAS Auth Filter, see property 'app.security.auth-uri-filter-path'");
+    sp.setService(glcProperties.getSecurity().getAuthUriFilterPath());
     sp.setSendRenew(false);
     sp.setAuthenticateAllArtifacts(true);
 
@@ -101,10 +95,12 @@ public class SecurityConfiguration {
 
   @Bean
   public ServiceUrlHelper serviceUrlHelper() {
-    String ctxPath = contextPath;
+    String ctxPath = env.getRequiredProperty(APP_CONTEXT_PATH);
     if (!ctxPath.startsWith("/")) ctxPath = "/" + ctxPath;
-    final String protocol = "https://";
-    final List<String> domainNames = corsAllowedOrigins;
+    final String protocol = glcProperties.getSecurity().getProtocol();
+    Assert.isTrue(Lists.newArrayList("http://", "https://").contains(protocol), "Protocol param doesn't match required value, see property 'app.security.protocol'");
+    final List<String> domainNames = Lists.newArrayList(glcProperties.getSecurity().getAuthorizedDomainNames());
+    Assert.notEmpty(domainNames, "The list of the application Domain Names set shouldn't be empty, see property 'app.security.authorizedDomainNames'");
     ServiceUrlHelper serviceUrlHelper = new ServiceUrlHelper(ctxPath, domainNames, protocol, "/view/item/");
     log.info("ServiceUrlHelper is configured with properties : {}", serviceUrlHelper);
 
@@ -113,7 +109,8 @@ public class SecurityConfiguration {
 
   @Bean
   String getCasTargetUrlParameter() {
-    return "spring-security-redirect";
+    Assert.hasText(glcProperties.getSecurity().getRedirectParamName(), "Redirect Param Name shouldn't be null, see property 'app.security.redirectParamName'");
+    return glcProperties.getSecurity().getRedirectParamName();
   }
 
   @Bean
@@ -142,7 +139,7 @@ public class SecurityConfiguration {
 
   @Bean
   public Cas20ServiceTicketValidator cas20ServiceTicketValidator() {
-    return new Cas20ServiceTicketValidator(casUrlPrefix);
+    return new Cas20ServiceTicketValidator(glcProperties.getCas().getUrlPrefix());
   }
 
   @Bean
@@ -152,7 +149,8 @@ public class SecurityConfiguration {
     casAuthenticationProvider.setAuthenticationUserDetailsService(userDetailsService);
     casAuthenticationProvider.setServiceProperties(serviceProperties());
     casAuthenticationProvider.setTicketValidator(cas20ServiceTicketValidator());
-    casAuthenticationProvider.setKey(casIdKeyProvider);
+    Assert.hasText(glcProperties.getSecurity().getIdKeyProvider(), "The CAS security Key should be set, see property 'app.security.idKeyProvider'");
+    casAuthenticationProvider.setKey(glcProperties.getSecurity().getIdKeyProvider());
 
     return casAuthenticationProvider;
   }
@@ -160,7 +158,7 @@ public class SecurityConfiguration {
   @Bean
   public RememberCasAuthenticationEntryPoint casAuthenticationEntryPoint() {
     RememberCasAuthenticationEntryPoint casAuthenticationEntryPoint = new RememberCasAuthenticationEntryPoint();
-    casAuthenticationEntryPoint.setLoginUrl(casUrlLogin);
+    casAuthenticationEntryPoint.setLoginUrl(glcProperties.getCas().getUrlLogin());
     casAuthenticationEntryPoint.setServiceProperties(serviceProperties());
     casAuthenticationEntryPoint.setUrlHelper(serviceUrlHelper());
     casAuthenticationEntryPoint.setPathLogin(APP_URI_LOGIN);
@@ -171,7 +169,8 @@ public class SecurityConfiguration {
   @Bean
   public CasAuthenticationFilter casAuthenticationFilter() {
     CasAuthenticationFilter casAuthenticationFilter = new CasAuthenticationFilter();
-    casAuthenticationFilter.setFilterProcessesUrl("/" + casService);
+    Assert.hasText(glcProperties.getSecurity().getAuthUriFilterPath(), "The CAS URI service should be set to be able to apply CAS Auth Filter, see property 'app.security.auth-uri-filter-path'");
+    casAuthenticationFilter.setFilterProcessesUrl("/" + glcProperties.getSecurity().getAuthUriFilterPath());
     casAuthenticationFilter.setAuthenticationManager(authenticationManager());
     casAuthenticationFilter.setAuthenticationDetailsSource(new RememberWebAuthenticationDetailsSource(
       serviceUrlHelper(), serviceProperties(), getCasTargetUrlParameter()
@@ -186,7 +185,7 @@ public class SecurityConfiguration {
   @Bean
   public CustomSingleSignOutFilter singleSignOutFilter() {
     CustomSingleSignOutFilter singleSignOutFilter = new CustomSingleSignOutFilter();
-    singleSignOutFilter.setCasServerUrlPrefix(casUrlPrefix);
+    singleSignOutFilter.setCasServerUrlPrefix(glcProperties.getCas().getUrlPrefix());
 
     return singleSignOutFilter;
   }

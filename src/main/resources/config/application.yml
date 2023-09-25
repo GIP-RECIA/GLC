@@ -37,7 +37,7 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
         format_sql: true
 
-security-configuration:
+app:
   cors:
     enable: true
     allow-credentials: true
@@ -62,31 +62,27 @@ security-configuration:
       POST,
       DELETE
 
-app:
-  config:
-    filiere:
-      administrative: >
-        DIR,
-        ADF,
-        CTR,
-        EDU,
-        MDS,
-        PSY,
-        ADM,
-        AED
-      teaching: >
-        ACP,
-        APP,
-        DOC,
-        DCT,
-        ENS,
-        FCA,
-        FIJ,
-        REM,
-        STG
-    sources:
-      external:
-        all: >
-          AC-ORLEANS-TOURS
-        4login: >
-          LA-CENTRE
+  custom-config:
+    filiere-administrative: >
+      DIR,
+      ADF,
+      CTR,
+      EDU,
+      MDS,
+      PSY,
+      ADM,
+      AED
+    filiere-teaching: >
+      ACP,
+      APP,
+      DOC,
+      DCT,
+      ENS,
+      FCA,
+      FIJ,
+      REM,
+      STG
+    sources-external-all: >
+      AC-ORLEANS-TOURS
+    sources-external-4login: >
+      LA-CENTRE

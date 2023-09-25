@@ -15,10 +15,10 @@
  */
 package fr.recia.glc.web.rest;
 
+import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,15 +35,11 @@ import java.util.Map;
 @RequestMapping(value = "/api/config")
 public class ConfigurationController {
 
-  @Value("${app.config.filiere.administrative}")
-  private List<String> administrativeCodes;
-  @Value("${app.config.filiere.teaching}")
-  private List<String> teachingCodes;
-  @Value("${app.config.sources.external.all}")
-  private List<String> externalSourcesAll;
+  private final GLCProperties glcProperties;
 
-  @Value("${app.config.sources.external.4login}")
-  private List<String> externalSources4Login;
+  public ConfigurationController(GLCProperties glcProperties) {
+    this.glcProperties = glcProperties;
+  }
 
   @GetMapping()
   public ResponseEntity<Object> getConfiguration() {
@@ -56,11 +52,10 @@ public class ConfigurationController {
     administrativeStaff.add(CategoriePersonne.Non_enseignant_service_academique);
     data.put("administrativeStaff", administrativeStaff);
 
-    data.put("administrativeCodes", administrativeCodes);
-    data.put("teachingCodes", teachingCodes);
-
-    data.put("externalSourcesAll", externalSourcesAll);
-    data.put("externalSources4Login", externalSources4Login);
+    data.put("administrativeCodes", glcProperties.getCustomConfig().getFiliereAdministrative());
+    data.put("teachingCodes", glcProperties.getCustomConfig().getFiliereTeaching());
+    data.put("externalSourcesAll", glcProperties.getCustomConfig().getSourcesExternalAll());
+    data.put("externalSources4Login", glcProperties.getCustomConfig().getSourcesExternal4login());
 
     List<CategoriePersonne> externalSources4LoginCategory = new ArrayList<>();
     externalSources4LoginCategory.add(CategoriePersonne.Enseignant);

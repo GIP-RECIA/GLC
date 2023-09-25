@@ -13,14 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.configuration;
+package fr.recia.glc.configuration.bean;
 
-public class Constants {
+import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
-  public static final String SARAPISUI_ = "SarapisUi_";
-  public static final String SANS_OBJET =  "SANS OBJET";
-  public static final String PROPERTIES_TO_JSON_DELIMITER= "\",\"";
-  public static final String PROPERTIES_TO_JSON_PREFIX= "[\"";
-  public static final String PROPERTIES_TO_JSON_SUFFIX= "\"]";
+import javax.validation.constraints.NotEmpty;
+
+@Data
+@Validated
+public class CASProperties {
+
+  @NotEmpty
+  private String urlPrefix;
+  @NotEmpty
+  private String urlLogin;
+  private String urlLogout;
+
+  @Override
+  public String toString() {
+    return "\"CASProperties\": {"
+      + "\n\t\"urlPrefix\": \"" + urlPrefix + "\""
+      + ",\n\t\"urlLogin\": \"" + urlLogin + "\""
+      + ",\n\t\"urlLogout\": \"" + urlLogout + "\""
+      + "\n}";
+  }
 
 }
