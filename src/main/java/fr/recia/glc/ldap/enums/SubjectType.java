@@ -30,20 +30,34 @@ import lombok.Getter;
 @JsonDeserialize(using = SubjectTypeDeserializer.class)
 public enum SubjectType {
 
-  /** Type of userid. */
+  /**
+   * Type of userid.
+   */
   PERSON(0, "PERSON", "enum.subject.person.title"),
-  /** Type of group. */
+  /**
+   * Type of group.
+   */
   GROUP(1, "GROUP", "enum.subject.group.title"),
-  /** Type of User attr. */
+  /**
+   * Type of User attr.
+   */
   PERSON_ATTR(2, "PERSON_ATTR", "enum.subject.person_attr.title"),
-  /** Type of User attr with regex. */
+  /**
+   * Type of User attr with regex.
+   */
   PERSON_ATTR_REGEX(3, "PERSON_ATTR_REGEX", "enum.subject.person_attr_regex.title");
 
-  /** Identifier. */
+  /**
+   * Identifier.
+   */
   private int id;
-  /** The code. */
+  /**
+   * The code.
+   */
   private String code;
-  /** The I18N key. */
+  /**
+   * The I18N key.
+   */
   private String descKey;
 
   public static SubjectType fromName(final String name) {

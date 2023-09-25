@@ -15,11 +15,13 @@
  */
 package fr.recia.glc.security.cas;
 
-import fr.recia.glc.db.dto.UserDto;
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
-import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.db.entities.personne.QAPersonne;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
+import fr.recia.glc.ldap.IExternalUser;
+import fr.recia.glc.ldap.repository.IExternalUserDao;
+import fr.recia.glc.services.factories.UserDTOFactory;
+import fr.recia.glc.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.cas.authentication.CasAssertionAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,10 +41,16 @@ import java.util.Collection;
 public class CustomUserDetailsService implements AuthenticationUserDetailsService<CasAssertionAuthenticationToken> {
 
   @Inject
-  private APersonneRepository<APersonne> aPersonneRepository;
+  private transient APersonneRepository<APersonne> aPersonneRepository;
+
+  @Inject
+  private transient IExternalUserDao personLDAPDao;
 
   @Inject
   private transient IAuthorityService grantedAuthorityService;
+
+  @Inject
+  private transient UserDTOFactory userDTOFactory;
 
   public CustomUserDetailsService() {
     super();
@@ -59,16 +67,19 @@ public class CustomUserDetailsService implements AuthenticationUserDetailsServic
 
   @Transactional
   public CustomUserDetails loadUserByUid(String uid) throws UsernameNotFoundException {
-    SimplePersonneDto internal = aPersonneRepository.findByPersonneUid(uid);
-    UserDto user = new UserDto(
-      internal.getUid(),
-      internal.getEtat().equals(Etat.Valide),
-      true,
-      true
-    );
+    final APersonne internal = aPersonneRepository.findOne(QAPersonne.aPersonne.uid.eq(uid)).orElse(null);
+    final IExternalUser external = personLDAPDao.getUserByUid(uid);
+    if (external == null) {
+      throw new UsernameNotFoundException(String.format("User [%s] without permission !", uid));
+    }
+    UserDTO user = userDTOFactory.from(internal, external);
     Collection<? extends GrantedAuthority> authorities = grantedAuthorityService.getUserAuthorities(user);
 
-    return new CustomUserDetails(user, authorities);
+    if (internal == null) {
+      log.error("User with username {} could not found from database.", uid);
+      throw new UsernameNotFoundException(String.format("User with username [%s] could not be found from database.", uid));
+    }
+    return new CustomUserDetails(userDTOFactory.from(internal, external), internal, authorities);
   }
 
 }

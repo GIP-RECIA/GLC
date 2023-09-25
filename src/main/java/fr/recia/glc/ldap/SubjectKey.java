@@ -16,10 +16,10 @@
 package fr.recia.glc.ldap;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import fr.recia.glc.ldap.utils.CstPropertiesLength;
-import fr.recia.glc.ldap.utils.CustomEnumSerializer;
 import fr.recia.glc.ldap.enums.SubjectType;
-import fr.recia.glc.ldap.dto.ICompositeKey;
+import fr.recia.glc.ldap.utils.CstPropertiesLength;
+import fr.recia.glc.services.utils.CustomEnumSerializer;
+import fr.recia.glc.web.dto.ICompositeKey;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -39,23 +39,25 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Embeddable
 public class SubjectKey implements ICompositeKey<String, SubjectType>, Serializable {
 
-  /** Serial Version id. */
+  /**
+   * Serial Version id.
+   */
   private static final long serialVersionUID = 687644117634464074L;
 
-  /** This field corresponds to the database column subject_id. */
+  /**
+   * This field corresponds to the database column subject_id.
+   */
   @NonNull
   @NotNull
-  @Basic
-  @Column(length = CstPropertiesLength.SUBJECTID, name = "subject_id", nullable = false)
   private String keyId;
 
-  /** This field corresponds to the database column subject_type. */
+  /**
+   * This field corresponds to the database column subject_type.
+   */
   @NonNull
   @NotNull
-  @Column(length = 25, name = "subject_type", nullable = false)
   //@Convert(converter = SubjectTypeConverter.class)
   @Enumerated(EnumType.STRING)
   @JsonSerialize(using = CustomEnumSerializer.class)

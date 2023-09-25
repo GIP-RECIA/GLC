@@ -13,12 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap;
+package fr.recia.glc.configuration.bean;
 
-public interface IContext {
+import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
-  ContextKey getContextKey();
+@Data
+@Validated
+public class RoleMappingProperties {
 
-  String getDisplayName();
+  private String userName;
 
+  private String groupName;
+
+  @Override
+  public String toString() {
+    return "{\n\"RoleMappingProperties\":{"
+      + "\n \"userName\":\"" + userName + "\""
+      + ",\n \"groupName\":\"" + groupName + "\""
+      + "\n}\n}";
+  }
 }

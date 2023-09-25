@@ -47,6 +47,7 @@ This project includes:
   Hibernate ORM - hibernate-core under GNU Library General Public License v2.1 or later
   Hibernate Validator Engine under Apache License 2.0
   HikariCP under The Apache Software License, Version 2.0
+  IPAddress under The Apache Software License, Version 2.0
   istack common utility code runtime under Eclipse Distribution License - v 1.0
   J2ObjC Annotations under Apache License, Version 2.0
   Jackson datatype: jdk8 under The Apache Software License, Version 2.0

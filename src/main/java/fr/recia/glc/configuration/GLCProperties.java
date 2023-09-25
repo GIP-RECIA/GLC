@@ -43,6 +43,12 @@ public class GLCProperties {
   private CustomConfigProperties customConfig = new CustomConfigProperties();
   private SecurityProperties security = new SecurityProperties();
 
+  private RoleMappingProperties admins = new RoleMappingProperties();
+  private RoleMappingProperties users = new RoleMappingProperties();
+  private CustomMailProperties mail = new CustomMailProperties();
+  private IpRangeProperties authorizedServices = new IpRangeProperties();
+  private CustomLdapProperties ldap = new CustomLdapProperties();
+
   @PostConstruct
   private void init() throws JsonProcessingException {
     log.info("Loaded properties: {}", this);
@@ -54,7 +60,12 @@ public class GLCProperties {
       + cas + ",\n"
       + cors + ",\n"
       + customConfig + ",\n"
-      + security
+      + security + ",\n"
+      + admins + ",\n"
+      + users + ",\n"
+      + mail + ",\n"
+      + authorizedServices + ",\n"
+      + ldap
       + "\n}";
   }
 

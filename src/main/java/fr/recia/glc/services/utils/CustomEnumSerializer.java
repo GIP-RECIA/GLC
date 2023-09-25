@@ -13,12 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.repositories.application;
+package fr.recia.glc.services.utils;
 
-import fr.recia.glc.db.entities.application.PluginDescription;
-import fr.recia.glc.db.repositories.AbstractRepository;
-import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 
-@Repository
-public interface PluginDescriptionRepository<T extends PluginDescription> extends AbstractRepository<T, Long> {
+import java.io.IOException;
+
+/**
+ * Created by jgribonvald on 01/04/15.
+ */
+public class CustomEnumSerializer extends JsonSerializer<Enum<?>> {
+
+  @Override
+  public void serialize(Enum<?> value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+    jgen.writeString(value.toString());
+  }
+
 }

@@ -44,7 +44,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
  * @author GIP RECIA - Julien Gribonvald 11 juil. 2014
  */
 @Service

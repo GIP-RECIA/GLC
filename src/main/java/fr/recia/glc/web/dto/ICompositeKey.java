@@ -13,12 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.repositories.application;
+package fr.recia.glc.web.dto;
 
-import fr.recia.glc.db.entities.application.Application;
-import fr.recia.glc.db.repositories.AbstractRepository;
-import org.springframework.stereotype.Repository;
+import java.io.Serializable;
 
-@Repository
-public interface ApplicationRepository<T extends Application> extends AbstractRepository<T, Long> {
+
+public interface ICompositeKey<ID extends Serializable, TYPE> extends Serializable {
+
+  /**
+   * @return the keyId
+   */
+  public ID getKeyId();
+
+  /**
+   * @param keyId the keyId to set
+   */
+  //public void setKeyId(final ID keyId);
+
+  /**
+   * @return the keyType
+   */
+  public TYPE getKeyType();
+
+  /**
+   * @param keyType the keyType to set
+   */
+  //public void setKeyType(final TYPE keyType);
+
+
 }

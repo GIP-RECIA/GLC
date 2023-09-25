@@ -15,13 +15,13 @@
  */
 package fr.recia.glc.security.cas;
 
-import fr.recia.glc.db.dto.UserDto;
+import fr.recia.glc.web.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
 public interface IAuthorityService {
 
-  Collection<? extends GrantedAuthority> getUserAuthorities(final UserDto user);
+  Collection<? extends GrantedAuthority> getUserAuthorities(final UserDTO user);
 
 }

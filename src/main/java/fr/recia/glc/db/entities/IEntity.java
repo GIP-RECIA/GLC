@@ -13,12 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.repositories.gestion;
+/**
+ *
+ */
+package fr.recia.glc.db.entities;
 
-import fr.recia.glc.db.entities.gestion.DroitsAttribut;
-import fr.recia.glc.db.repositories.AbstractRepository;
-import org.springframework.stereotype.Repository;
+import java.io.Serializable;
 
-@Repository
-public interface DroitsAttributRepository<T extends DroitsAttribut> extends AbstractRepository<T, Long> {
+/**
+ * @author GIP RECIA - Julien Gribonvald 18 juil. 2014
+ */
+public interface IEntity<ID extends Serializable> {
+
+	ID getId();
+
 }

@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.repositories.groupe;
+package fr.recia.glc.ldap;
 
-import fr.recia.glc.db.entities.groupe.Profil;
-import fr.recia.glc.db.repositories.AbstractRepository;
-import org.springframework.stereotype.Repository;
+public interface IStructure {
 
-@Repository
-public interface ProfilRepository<T extends Profil> extends AbstractRepository<T, Long> {
+  StructureKey getStructureKey();
+
+  String getUAI();
+
+  String getDisplayName();
+
 }

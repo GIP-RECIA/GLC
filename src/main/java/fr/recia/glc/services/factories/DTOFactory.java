@@ -13,30 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap.dto;
+package fr.recia.glc.services.factories;
+
+import fr.recia.glc.db.entities.common.AbstractEntity;
+import fr.recia.glc.web.dto.AbstractIdDTO;
 
 import java.io.Serializable;
 
-public interface ICompositeKey<ID extends Serializable, TYPE> extends Serializable {
+/**
+ * Data Transfer Object factory for converting to and from models.
+ * @author GIP RECIA - Julien Gribonvald
+ * @param <DTObject> DTO type for the corresponding model
+ * @param <M> Model type
+ * @param <ID> Type of id of Model type
+ */
+public interface DTOFactory<DTObject extends AbstractIdDTO<ID>, M extends AbstractEntity<ID>, ID extends Serializable>
+    extends GenericDTOFactory<DTObject, M, ID, ID>{
 
-  /**
-   * @return the keyId
-   */
-  ID getKeyId();
-
-//  /**
-//   * @param keyId the keyId to set
-//   */
-//  void setKeyId(final ID keyId);
-
-  /**
-   * @return the keyType
-   */
-  TYPE getKeyType();
-
-//  /**
-//   * @param keyType the keyType to set
-//   */
-//  void setKeyType(final TYPE keyType);
 
 }

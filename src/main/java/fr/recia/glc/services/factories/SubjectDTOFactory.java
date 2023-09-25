@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.repositories.gestion;
+package fr.recia.glc.services.factories;
 
-import fr.recia.glc.db.entities.gestion.DroitsCategorie;
-import fr.recia.glc.db.repositories.AbstractRepository;
-import org.springframework.stereotype.Repository;
+import fr.recia.glc.db.entities.personne.APersonne;
+import fr.recia.glc.web.dto.SubjectDTO;
+import fr.recia.glc.web.dto.SubjectKeyDTO;
 
-@Repository
-public interface DroitsCategorieRepository<T extends DroitsCategorie> extends AbstractRepository<T, Long> {
+/**
+ *
+ * @author GIP RECIA - Julien Gribonvald
+ * 17 oct. 2014
+ */
+public interface SubjectDTOFactory extends GenericDTOFactory<SubjectDTO, APersonne, SubjectKeyDTO, Long> {
+
 }

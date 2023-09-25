@@ -50,6 +50,9 @@ public class ExternalGroupHelper {
   private boolean groupResolveUserMember;
   private boolean groupResolveUserMemberByUserAttributes;
   private Pattern groupsPatternWithoutMembersResolving;
+
+  private String structureFromGroupPattern = "([^:]+):([^:]+):(([^:]+)(_(\\d{7}[^:]+))+?):Tous_[^:]+";
+  private String filterGroupsOfStructure = "(&(cn=*:Etablissements:*:tous*)(!(cn=*:*:*:*:*)))";
   /**
    * The other attributes desired to show, facultative
    */

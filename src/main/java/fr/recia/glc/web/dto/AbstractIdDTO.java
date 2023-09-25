@@ -13,35 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.dto;
+package fr.recia.glc.web.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NonNull;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@EqualsAndHashCode
+/**
+ * @author GIP RECIA - Julien Gribonvald
+ * 24 mai 2014
+ */
 @ToString
-public class UserDto implements Serializable {
+@EqualsAndHashCode
+public abstract class AbstractIdDTO<ID extends Serializable> implements IAbstractDTO<ID>, Serializable {
 
-  private String uid;
-  private String displayName;
-  private boolean enabled;
-  private String email;
-  private boolean foundOnInternalSource;
-  private boolean foundOnExternalSource;
+  @NonNull
+  @NotNull
+  private ID modelId;
 
-  public UserDto(String uid, boolean enabled, boolean foundOnInternalSource, boolean foundOnExternalSource) {
-    this.uid = uid;
-    this.enabled = enabled;
-    this.foundOnInternalSource = foundOnInternalSource;
-    this.foundOnExternalSource = foundOnExternalSource;
+
+  public AbstractIdDTO(final ID modelId) {
+    super();
+    this.modelId = modelId;
+  }
+
+  public AbstractIdDTO() {
+    super();
+  }
+
+
+  public ID getModelId() {
+    return modelId;
+  }
+
+  public void setModelId(ID modelId) {
+    this.modelId = modelId;
   }
 
 }

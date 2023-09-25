@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.db.dto.personne;
 
+import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
 import lombok.AllArgsConstructor;
@@ -37,4 +38,13 @@ public class SimplePersonneDto {
   private String sn;
   private String uid;
 
+  public SimplePersonneDto(APersonne personne) {
+    this.id = personne.getId();
+    this.etat = personne.getEtat();
+    this.categorie = personne.getCategorie();
+    this.source = personne.getCleJointure().getSource();
+    this.cn = personne.getCn();
+    this.sn = personne.getSn();
+    this.uid = personne.getUid();
+  }
 }

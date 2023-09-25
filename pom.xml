@@ -82,6 +82,12 @@
       <artifactId>jackson-databind</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.github.seancfoley</groupId>
+      <artifactId>ipaddress</artifactId>
+      <version>5.4.0</version>
+    </dependency>
+
 <!--    <dependency>-->
 <!--      <groupId>jakarta.xml.bind</groupId>-->
 <!--      <artifactId>jakarta.xml.bind-api</artifactId>-->

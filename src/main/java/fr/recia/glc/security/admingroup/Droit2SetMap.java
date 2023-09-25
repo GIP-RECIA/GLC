@@ -51,7 +51,7 @@ public class Droit2SetMap<T> extends EnumMap<DroitApplicatif, Set<T>> {
    * Si l'objet n'était pas associé au droit et est ajouté, renvoie true ; false sinon.
    *
    * @param droitApplicatif
-   * @param T object
+   * @param T               object
    * @return true si modification
    */
   public boolean add(@NonNull final DroitApplicatif droitApplicatif, final T objectT) {

@@ -16,9 +16,11 @@
 package fr.recia.glc.security.cas;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import fr.recia.glc.db.dto.UserDto;
+import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.security.admingroup.Droit2GroupNameMap;
 import fr.recia.glc.security.admingroup.Droit2StructureMap;
+import fr.recia.glc.web.dto.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,7 +35,11 @@ public class CustomUserDetails implements UserDetails {
 
   private static final long serialVersionUID = -4777124807325532850L;
 
-  private UserDto user;
+  private UserDTO user;
+
+  @JsonIgnore
+  private APersonne internalUser;
+
   @JsonIgnore
   private Collection<? extends GrantedAuthority> authorities;
   private List<String> roles;
@@ -50,9 +56,10 @@ public class CustomUserDetails implements UserDetails {
    * @param user
    * @param authorities
    */
-  public CustomUserDetails(UserDto user, Collection<? extends GrantedAuthority> authorities) {
+  public CustomUserDetails(UserDTO user, APersonne internalUser, Collection<? extends GrantedAuthority> authorities) {
     super();
     this.user = user;
+    this.internalUser = internalUser;
     this.authorities = authorities;
     this.roles = new ArrayList<>();
     for (GrantedAuthority authority : authorities) {
@@ -62,12 +69,12 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public String getPassword() {
-    return user.getUid();
+    return user.getUserId();
   }
 
   @Override
   public String getUsername() {
-    return user.getUid();
+    return user.getUserId();
   }
 
   @Override
@@ -77,7 +84,7 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public boolean isAccountNonLocked() {
-    return user.isEnabled();
+    return true;
   }
 
   @Override

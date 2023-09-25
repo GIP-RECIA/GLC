@@ -13,49 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap;
+package fr.recia.glc.web.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import fr.recia.glc.ldap.dto.ICompositeKey;
-import fr.recia.glc.ldap.enums.ContextType;
-import fr.recia.glc.ldap.utils.CustomEnumSerializer;
+import fr.recia.glc.ldap.enums.SubjectType;
+import fr.recia.glc.services.utils.CustomEnumSerializer;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * @author GIP RECIA - Julien Gribonvald 14 juin 2014
+ *
+ * @author GIP RECIA - Julien Gribonvald
+ * 15 oct. 2014
  */
 @Data
+@ToString
 @NoArgsConstructor
-@RequiredArgsConstructor
-@Embeddable
-public class ContextKey implements ICompositeKey<Long, ContextType>, Serializable {
+@EqualsAndHashCode
+public class SubjectKeyDTO implements ICompositeKey<String, SubjectType>, Serializable {
 
-  /** Serial Id. */
-  private static final long serialVersionUID = -210670392798727508L;
-  /** The identifier of the context. */
-  @NonNull
   @NotNull
-  @Basic
-  @Column(name = "ctx_id", nullable = false)
-  private Long keyId;
-
-  /** The type of the context. */
   @NonNull
+  private String keyId;
   @NotNull
-  @Enumerated(EnumType.STRING)
-  @Column(length = 25, name = "ctx_type", nullable = false)
+  @NonNull
   @JsonSerialize(using = CustomEnumSerializer.class)
-  private ContextType keyType;
+  private SubjectType keyType;
+
+  /**
+   * @param keyId
+   * @param keyType
+   */
+  public SubjectKeyDTO(@NonNull final String keyId, @NonNull final SubjectType keyType) {
+    this.keyId = keyId;
+    this.keyType = keyType;
+  }
 
 }

@@ -13,23 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap.utils;
+package fr.recia.glc.ldap;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.io.IOException;
+@Setter
+@Getter
+@NoArgsConstructor
+@ToString
+public class StructureFromGroup implements IStructure {
 
-/**
- * Created by jgribonvald on 01/04/15.
- */
-public class CustomEnumSerializer extends JsonSerializer<Enum<?>> {
+  private StructureKey structureKey;
 
-  @Override
-  public void serialize(Enum<?> value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-    jgen.writeString(value.toString());
-  }
+  private String UAI;
+
+  private String displayName;
+
+  private String groupBranch;
+
+  private String groupNameEtab;
 
 }

@@ -15,10 +15,10 @@
  */
 package fr.recia.glc.ldap.dto;
 
-import fr.recia.glc.db.dto.UserDto;
+import fr.recia.glc.web.dto.UserDTO;
 
 public interface IEvaluation {
 
-  boolean isApplicable(UserDto userInfos);
+  boolean isApplicable(UserDTO userInfos);
 
 }

@@ -13,33 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap.enums;
+package fr.recia.glc.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
 
 /**
- * @author GIP RECIA - Julien Gribonvald 14 juin 2014
+ * @author GIP RECIA - Julien Gribonvald
+ * 18 juil. 2014
  */
-@JsonFormat(shape = JsonFormat.Shape.STRING)
-public enum ContextType {
-  /**
-   * Context Entity.
-   */
-  ORGANIZATION,
-  /**
-   * Context Publisher.
-   */
-  PUBLISHER,
-  /**
-   * Context Category.
-   */
-  CATEGORY,
-  /**
-   * Context Topic.
-   */
-  FEED,
-  /**
-   * Context Item.
-   */
-  ITEM
+public interface IAbstractDTO<ID extends Serializable> {
+
+  ID getModelId();
+
 }

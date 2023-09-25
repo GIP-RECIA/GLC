@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.repositories.groupe;
+package fr.recia.glc.security;
 
-import fr.recia.glc.db.entities.groupe.RoleApplicatif;
-import fr.recia.glc.db.repositories.AbstractRepository;
-import org.springframework.stereotype.Repository;
+import fr.recia.glc.ldap.IStructure;
 
-@Repository
-public interface RoleApplicatifRepository<T extends RoleApplicatif> extends AbstractRepository<T, Long> {
+import java.util.Set;
+
+public interface IStructureLoader {
+
+  Set<IStructure> getStructuresOfBranch(String branchGroup);
+
 }

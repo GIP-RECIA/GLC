@@ -16,9 +16,9 @@
 package fr.recia.glc.security.cas;
 
 import com.google.common.collect.Lists;
-import fr.recia.glc.db.dto.UserDto;
 import fr.recia.glc.ldap.beans.IAuthoritiesDefinition;
 import fr.recia.glc.ldap.dto.IEvaluation;
+import fr.recia.glc.web.dto.UserDTO;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -44,7 +44,7 @@ public class AuthorityServiceImpl implements IAuthorityService {
   }
 
   @Override
-  public Collection<? extends GrantedAuthority> getUserAuthorities(UserDto user) {
+  public Collection<? extends GrantedAuthority> getUserAuthorities(UserDTO user) {
     if (user == null || !user.isFoundOnExternalSource()) {
       return AuthorityUtils.NO_AUTHORITIES;
     }

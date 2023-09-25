@@ -15,51 +15,22 @@
  */
 package fr.recia.glc.security.cas;
 
-import com.mysema.commons.lang.Pair;
-import com.querydsl.core.types.Predicate;
-import fr.recia.glc.ldap.ContextKey;
-import fr.recia.glc.ldap.enums.ContextType;
-import fr.recia.glc.ldap.enums.PermissionType;
+import fr.recia.glc.ldap.StructureKey;
+import fr.recia.glc.security.admingroup.DroitApplicatif;
 import org.springframework.security.core.Authentication;
 
 import javax.validation.constraints.NotNull;
 
 public interface IPermissionService {
 
-  PermissionType getRoleOfUserInContext(Authentication authentication, @NotNull final ContextKey contextKey);
+  DroitApplicatif getRoleOfUserInContext(Authentication authentication, @NotNull final StructureKey contextKey);
 
-//  Pair<PermissionType, PermissionDTO> getPermsOfUserInContext(Authentication authentication, @NotNull final ContextKey contextKey);
+//  Predicate filterAuthorizedAllOfContextType(Authentication authentication, @NotNull final ContextType contextType,
+//                                             @NotNull final DroitApplicatif permissionType, @NotNull final Predicate predicate);
+//
+//  Predicate filterAuthorizedChildsOfContext(Authentication authentication, @NotNull final StructureKey contextKey,
+//                                            @NotNull final DroitApplicatif permissionType, @NotNull final Predicate predicate);
 
-  // Role getRoleOfUserInContext(UserDTO from,
-  // Collection<? extends GrantedAuthority> authorities,
-  // ContextKey contextKey);
 
-  Predicate filterAuthorizedAllOfContextType(Authentication authentication, @NotNull final ContextType contextType,
-                                             @NotNull final PermissionType permissionType, @NotNull final Predicate predicate);
-
-  Predicate filterAuthorizedChildsOfContext(Authentication authentication, @NotNull final ContextKey contextKey,
-                                            @NotNull final PermissionType permissionType, @NotNull final Predicate predicate);
-
-  boolean canCreateInCtx(Authentication authentication, @NotNull final ContextKey contextKey);
-
-  boolean canEditCtx(Authentication authentication, @NotNull final ContextKey contextKey);
-
-  boolean canDeleteCtx(Authentication authentication, @NotNull final ContextKey contextKey);
-
-  boolean canCreateInCtx(Authentication authentication, @NotNull final long contextId, @NotNull final ContextType contextType);
-
-  boolean canEditCtx(Authentication authentication, @NotNull final long contextId, @NotNull final ContextType contextType);
-
-  boolean canDeleteCtx(Authentication authentication, @NotNull final long contextId, @NotNull final ContextType contextType);
-
-  boolean canEditCtxPerms (Authentication authentication, @NotNull final ContextKey contextKey);
-
-  boolean canEditCtxTargets (Authentication authentication, @NotNull final ContextKey contextKey);
-
-  boolean canModerateSomething(Authentication authentication);
-
-  boolean hasAuthorizedChilds(Authentication authentication, @NotNull final ContextKey contextKey);
-
-  boolean canHighlightInCtx(Authentication authentication, @NotNull final ContextKey contextKey);
 
 }

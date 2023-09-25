@@ -15,10 +15,11 @@
  */
 package fr.recia.glc.security.cas;
 
-import fr.recia.glc.ldap.ContextKey;
-import fr.recia.glc.ldap.IContext;
-import fr.recia.glc.ldap.enums.ContextType;
+import fr.recia.glc.db.enums.CategorieStructure;
+import fr.recia.glc.ldap.IStructure;
+import fr.recia.glc.ldap.StructureKey;
 import fr.recia.glc.ldap.enums.PermissionType;
+import fr.recia.glc.security.admingroup.DroitApplicatif;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
@@ -43,20 +44,21 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
       log.error("Authentication has something wrong, check that the user is authenticated and security is wheel implemented !");
       return false;
     }
-    if (targetDomainObject == null || !(targetDomainObject instanceof IContext)) {
-      log.error("The object {} passed to check permission doesn't implements IContext interface.", targetDomainObject);
-      throw new IllegalArgumentException("The object passed to check permission doesn't implements IContext interface.");
+    if (targetDomainObject == null || !(targetDomainObject instanceof IStructure)) {
+      log.error("The object {} passed to check permission doesn't implements IStructure interface.", targetDomainObject);
+      throw new IllegalArgumentException("The object passed to check permission doesn't implements IStructure interface.");
     }
-    log.debug("Call custom hasPermission with object {} and permission {} !", ((IContext) targetDomainObject).getContextKey(), permission);
-    IContext context = (IContext) targetDomainObject;
+    log.debug("Call custom hasPermission with object {} and permission {} !", ((IStructure) targetDomainObject).getStructureKey(), permission);
+    IStructure context = (IStructure) targetDomainObject;
 
-    PermissionType RoleInCtx = permissionService.getRoleOfUserInContext(authentication, context.getContextKey());
+    DroitApplicatif RoleInCtx = permissionService.getRoleOfUserInContext(authentication, context.getStructureKey());
 
     if (RoleInCtx == null) return false;
 
     PermissionType perm = PermissionType.valueOf((String) permission);
 
-    return perm != null && RoleInCtx.getMask() >= perm.getMask();
+    return perm != null;
+    //return perm != null && RoleInCtx;
   }
 
   @Override
@@ -67,15 +69,16 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     }
     log.debug(
       "Call custom hasPermission with id {}, type {} and permission {} !", targetId, targetType, permission);
-    ContextType ctxType = ContextType.valueOf(targetType);
+    CategorieStructure ctxType = CategorieStructure.valueOf(targetType);
 
-    PermissionType RoleInCtx = permissionService.getRoleOfUserInContext(authentication, new ContextKey((Long) targetId, ctxType));
+    DroitApplicatif RoleInCtx = permissionService.getRoleOfUserInContext(authentication, new StructureKey((String) targetId, ctxType));
 
     if (RoleInCtx == null) return false;
 
     PermissionType perm = PermissionType.valueOf((String) permission);
 
-    return perm != null && RoleInCtx.getMask() >= perm.getMask();
+    return perm != null;
+    //return perm != null && RoleInCtx.getMask() >= perm.getMask();
   }
 
   private boolean checkAuthentication(Authentication authentication) {
