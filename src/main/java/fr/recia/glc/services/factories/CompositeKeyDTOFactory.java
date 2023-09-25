@@ -24,44 +24,41 @@ import java.util.Set;
 
 /**
  * Data Transfer Object factory for converting to and from models.
- * @author GIP RECIA - Julien Gribonvald
- * @param <DTOKEY> DTO type for the corresponding model
+ *
+ * @param <DTOKEY>   DTO type for the corresponding model
  * @param <MODELKEY> Model type
- * @param <KEY> Type of id of the composite key
- * @param <TYPE> Enum Type of the composite key
+ * @param <KEY>      Type of id of the composite key
+ * @param <TYPE>     Enum Type of the composite key
+ * @author GIP RECIA - Julien Gribonvald
  */
-public interface CompositeKeyDTOFactory<DTOKEY extends ICompositeKey<KEY, TYPE>, MODELKEY  extends ICompositeKey<KEY, TYPE>, KEY extends Serializable, TYPE extends Serializable> {
+public interface CompositeKeyDTOFactory<DTOKEY extends ICompositeKey<KEY, TYPE>, MODELKEY extends ICompositeKey<KEY, TYPE>, KEY extends Serializable, TYPE extends Serializable> {
 
 
-    /**
-     * Load model from storage based on the specified identifier.
-     *
-     * @param id
-     *            Load model for this identifier
-     *
-     * @return Model loaded from persistent storage
-     * //@throws org.esupportail.publisher.service.exceptions.ObjectNotFoundException
-     */
-    MODELKEY convertToModelKey(@NotNull final DTOKEY id);
+  /**
+   * Load model from storage based on the specified identifier.
+   *
+   * @param id Load model for this identifier
+   * @return Model loaded from persistent storage
+   * //@throws org.esupportail.publisher.service.exceptions.ObjectNotFoundException
+   */
+  MODELKEY convertToModelKey(@NotNull final DTOKEY id);
 
-    Set<MODELKEY> convertToModelKey(@NotNull final Set<DTOKEY> id);
+  Set<MODELKEY> convertToModelKey(@NotNull final Set<DTOKEY> id);
 
-    List<MODELKEY> convertToModelKey(@NotNull final List<DTOKEY> id);
+  List<MODELKEY> convertToModelKey(@NotNull final List<DTOKEY> id);
 
-    /**
-     * Load model from storage based on the specified identifier.
-     *
-     * @param set
-     *            Load model for this identifier
-     *
-     * @return Model loaded from persistent storage
-     * //@throws org.esupportail.publisher.service.exceptions.ObjectNotFoundException
-     */
-    DTOKEY convertToDTOKey(@NotNull final MODELKEY set);
+  /**
+   * Load model from storage based on the specified identifier.
+   *
+   * @param set Load model for this identifier
+   * @return Model loaded from persistent storage
+   * //@throws org.esupportail.publisher.service.exceptions.ObjectNotFoundException
+   */
+  DTOKEY convertToDTOKey(@NotNull final MODELKEY set);
 
-    Set<DTOKEY> convertToDTOKey(@NotNull final Set<MODELKEY> id);
+  Set<DTOKEY> convertToDTOKey(@NotNull final Set<MODELKEY> id);
 
-    List<DTOKEY> convertToDTOKey(@NotNull final List<MODELKEY> id);
+  List<DTOKEY> convertToDTOKey(@NotNull final List<MODELKEY> id);
 
 
 }

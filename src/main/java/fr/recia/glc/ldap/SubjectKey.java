@@ -17,7 +17,6 @@ package fr.recia.glc.ldap;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fr.recia.glc.ldap.enums.SubjectType;
-import fr.recia.glc.ldap.utils.CstPropertiesLength;
 import fr.recia.glc.services.utils.CustomEnumSerializer;
 import fr.recia.glc.web.dto.ICompositeKey;
 import lombok.Data;
@@ -25,9 +24,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;

@@ -50,71 +50,71 @@ import java.util.Set;
 @Slf4j
 public class SubjectDTOFactoryImpl implements SubjectDTOFactory {
 
-    @Inject
-    @Getter
-    private transient APersonneRepository dao;
+  @Inject
+  @Getter
+  private transient APersonneRepository dao;
 
-    @Inject
-    private transient CompositeKeyDTOFactory<SubjectKeyDTO, SubjectKey, String, SubjectType> subjectConverter;
+  @Inject
+  private transient CompositeKeyDTOFactory<SubjectKeyDTO, SubjectKey, String, SubjectType> subjectConverter;
 
-    public SubjectDTOFactoryImpl() {
-        super();
+  public SubjectDTOFactoryImpl() {
+    super();
+  }
+
+  public SubjectDTO from(final APersonne model) {
+    log.debug("Model to DTO of {}", model);
+    return new SubjectDTO(subjectConverter.convertToDTOKey(model.getSubject()), model.getDisplayName(), true);
+  }
+
+  public APersonne from(final SubjectDTO dtObject) throws ObjectNotFoundException {
+    log.debug("DTO to Model of {}", dtObject);
+    if (dtObject != null && SubjectType.PERSON.equals(dtObject.getModelId().getKeyType())) {
+      Optional<APersonne> optionalUser = getDao().findOne(QAPersonne.aPersonne.uid.eq(subjectConverter.convertToModelKey(dtObject.getModelId()).getKeyId()));
+      APersonne user = optionalUser.orElse(null);
+      if (user == null) {
+        throw new ObjectNotFoundException(dtObject.getModelId().getKeyId(), APersonne.class);
+      }
+      return user;
+    }
+    return null;
+  }
+
+  public List<SubjectDTO> asDTOList(final Collection<APersonne> models) {
+    final List<SubjectDTO> tos = Lists.newArrayList();
+
+    if ((models != null) && !models.isEmpty()) {
+      for (APersonne model : models) {
+        tos.add(from(model));
+      }
     }
 
-    public SubjectDTO from(final APersonne model) {
-        log.debug("Model to DTO of {}", model);
-        return new SubjectDTO(subjectConverter.convertToDTOKey(model.getSubject()), model.getDisplayName(), true);
+    return tos;
+  }
+
+  public Set<SubjectDTO> asDTOSet(final Collection<APersonne> models) {
+    final Set<SubjectDTO> dtos = Sets.newHashSet();
+    for (APersonne model : models) {
+      dtos.add(from(model));
     }
+    return dtos;
+  }
 
-    public APersonne from(final SubjectDTO dtObject) throws ObjectNotFoundException {
-        log.debug("DTO to Model of {}", dtObject);
-        if (dtObject != null && SubjectType.PERSON.equals(dtObject.getModelId().getKeyType())) {
-            Optional<APersonne> optionalUser = getDao().findOne(QAPersonne.aPersonne.uid.eq(subjectConverter.convertToModelKey(dtObject.getModelId()).getKeyId()));
-            APersonne user = optionalUser.orElse(null);
-            if (user == null) {
-                throw new ObjectNotFoundException(dtObject.getModelId().getKeyId(), APersonne.class);
-            }
-            return user;
-        }
-        return null;
+  public Set<APersonne> asSet(final Collection<SubjectDTO> dtObjects)
+    throws ObjectNotFoundException {
+    final Set<APersonne> models = Sets.newHashSet();
+    for (SubjectDTO dtObject : dtObjects) {
+      models.add(from(dtObject));
     }
+    return models;
+  }
 
-    public List<SubjectDTO> asDTOList(final Collection<APersonne> models) {
-        final List<SubjectDTO> tos = Lists.newArrayList();
-
-        if ((models != null) && !models.isEmpty()) {
-            for (APersonne model : models) {
-                tos.add(from(model));
-            }
-        }
-
-        return tos;
+  public APersonne from(final SubjectKeyDTO id) throws ObjectNotFoundException {
+    if (SubjectType.PERSON.equals(id.getKeyType())) {
+      Optional<APersonne> optionalUser = getDao().findOne(QAPersonne.aPersonne.uid.eq(subjectConverter.convertToModelKey(id).getKeyId()));
+      APersonne user = optionalUser.orElse(null);
+      return user;
     }
-
-    public Set<SubjectDTO> asDTOSet(final Collection<APersonne> models) {
-        final Set<SubjectDTO> dtos = Sets.newHashSet();
-        for (APersonne model : models) {
-            dtos.add(from(model));
-        }
-        return dtos;
-    }
-
-    public Set<APersonne> asSet(final Collection<SubjectDTO> dtObjects)
-            throws ObjectNotFoundException {
-        final Set<APersonne> models = Sets.newHashSet();
-        for (SubjectDTO dtObject : dtObjects) {
-            models.add(from(dtObject));
-        }
-        return models;
-    }
-
-    public APersonne from(final SubjectKeyDTO id) throws ObjectNotFoundException {
-        if (SubjectType.PERSON.equals(id.getKeyType())) {
-            Optional<APersonne> optionalUser = getDao().findOne(QAPersonne.aPersonne.uid.eq(subjectConverter.convertToModelKey(id).getKeyId()));
-            APersonne user = optionalUser.orElse(null);
-            return user;
-        }
-        return null;
-    }
+    return null;
+  }
 
 }

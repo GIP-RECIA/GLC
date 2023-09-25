@@ -33,11 +33,8 @@ import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.query.LdapQueryBuilder;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.stream.Collectors;
 
 /**
  * @author GIP RECIA - Julien Gribonvald 11 juil. 2014

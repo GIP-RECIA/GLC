@@ -16,11 +16,9 @@
 package fr.recia.glc.ldap.repository;
 
 import fr.recia.glc.ldap.IExternalGroup;
-import fr.recia.glc.ldap.IExternalUser;
 import fr.recia.glc.ldap.IStructure;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 

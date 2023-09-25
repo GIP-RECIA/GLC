@@ -23,11 +23,10 @@ import java.util.Collection;
 
 public interface UserContextLoaderService {
 
-	void loadUserTree(Authentication authentication);
+  void loadUserTree(Authentication authentication);
 
-	void doExpireForReload();
+  void doExpireForReload();
 
-	void loadUserTree(final UserDTO user,
-			final Collection<? extends GrantedAuthority> authorities);
+  void loadUserTree(final UserDTO user, final Collection<? extends GrantedAuthority> authorities);
 
 }

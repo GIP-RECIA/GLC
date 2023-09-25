@@ -18,7 +18,6 @@
  */
 package fr.recia.glc.services.factories;
 
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.ldap.IExternalUser;
 import fr.recia.glc.web.dto.UserDTO;

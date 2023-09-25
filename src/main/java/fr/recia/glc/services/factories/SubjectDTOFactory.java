@@ -20,7 +20,6 @@ import fr.recia.glc.web.dto.SubjectDTO;
 import fr.recia.glc.web.dto.SubjectKeyDTO;
 
 /**
- *
  * @author GIP RECIA - Julien Gribonvald
  * 17 oct. 2014
  */

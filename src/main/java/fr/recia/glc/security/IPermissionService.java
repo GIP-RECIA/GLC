@@ -17,7 +17,6 @@ package fr.recia.glc.security;
 
 import fr.recia.glc.ldap.StructureKey;
 import fr.recia.glc.ldap.enums.PermissionType;
-import fr.recia.glc.security.admingroup.DroitApplicatif;
 import org.springframework.security.core.Authentication;
 
 import javax.validation.constraints.NotNull;

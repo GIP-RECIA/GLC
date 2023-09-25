@@ -27,7 +27,6 @@ import org.springframework.util.Assert;
 
 import javax.naming.NamingException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
@@ -74,7 +73,7 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
     // récupération du groupe 1 pour la branche, le groupe 3 à split pour le displayName et l'UAI, le groupe 3 pour avoir le nom du groupe de l'établissement
     // Attention tester Branche == coll car groupe 6 vide dans ce cas, et renseigné obligatoirement sinon
     Matcher matcher = externalGroupHelper.getStructureFromGroupPattern().matcher(groupId);
-    if (matcher.find() && matcher.groupCount() >= 4 ) {
+    if (matcher.find() && matcher.groupCount() >= 4) {
       structure.setGroupBranch(matcher.group(1));
       structure.setDisplayName(matcher.group(4));
       if (matcher.groupCount() == 6)
