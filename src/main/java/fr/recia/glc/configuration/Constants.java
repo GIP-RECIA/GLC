@@ -18,9 +18,9 @@ package fr.recia.glc.configuration;
 public class Constants {
 
   public static final String SARAPISUI_ = "SarapisUi_";
-  public static final String SANS_OBJET =  "SANS OBJET";
-  public static final String PROPERTIES_TO_JSON_DELIMITER= "\",\"";
-  public static final String PROPERTIES_TO_JSON_PREFIX= "[\"";
-  public static final String PROPERTIES_TO_JSON_SUFFIX= "\"]";
+  public static final String SANS_OBJET = "SANS OBJET";
+  public static final String PROPERTIES_TO_JSON_DELIMITER = "\",\"";
+  public static final String PROPERTIES_TO_JSON_PREFIX = "[\"";
+  public static final String PROPERTIES_TO_JSON_SUFFIX = "\"]";
 
 }

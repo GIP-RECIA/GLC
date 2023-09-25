@@ -8,16 +8,7 @@
       },
       {
         "code": "ADF",
-        "disciplines": [
-          "SECDIR",
-          "SECELV",
-          "SECCTR",
-          "GEST",
-          "SECGEST",
-          "CPT",
-          "SECCPT",
-          "ADFGRETA"
-        ]
+        "disciplines": ["SECDIR", "SECELV", "SECCTR", "GEST", "SECGEST", "CPT", "SECCPT", "ADFGRETA"]
       },
       {
         "code": "CTR",
@@ -49,14 +40,7 @@
   {
     "source": "COLL-CVDL",
     "filieres": [],
-    "disciplines": [
-      "RESEQUENTLIN",
-      "RESEQUMAI",
-      "RESEQUPROLOC",
-      "RESEQURES",
-      "RESPMAG",
-      "RESCUI"
-    ]
+    "disciplines": ["RESEQUENTLIN", "RESEQUMAI", "RESEQUPROLOC", "RESEQURES", "RESPMAG", "RESCUI"]
   },
   {
     "source": "COLL-CD18",

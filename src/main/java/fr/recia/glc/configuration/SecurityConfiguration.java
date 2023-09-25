@@ -63,7 +63,7 @@ public class SecurityConfiguration {
   private static final String APP_CONTEXT_PATH = "server.servlet.context-path";
   private static final String APP_URI_LOGIN = "/app/login";
 
-  private Environment env;
+  private final Environment env;
   private final GLCProperties glcProperties;
 
   @Inject

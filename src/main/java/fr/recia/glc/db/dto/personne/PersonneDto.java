@@ -19,7 +19,6 @@ import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.db.enums.Etat;
-import fr.recia.glc.db.enums.ForceEtat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

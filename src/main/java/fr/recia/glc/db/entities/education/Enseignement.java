@@ -117,11 +117,11 @@ public class Enseignement extends AbstractSimpleEntity {
     } else {
       result = prime * result + this.code.hashCode();
     }
-		if (this.matiere == null) {
-			result = prime * result;
-		} else {
-			result = prime * result + this.matiere.hashCode();
-		}
+    if (this.matiere == null) {
+      result = prime * result;
+    } else {
+      result = prime * result + this.matiere.hashCode();
+    }
     if (this.source == null) {
       result = prime * result;
     } else {

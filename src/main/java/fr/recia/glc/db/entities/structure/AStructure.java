@@ -156,11 +156,12 @@ public abstract class AStructure extends AbstractEntity {
   @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
   @JoinColumn(name = "type_structure_fk")
   private TypeStructure type;
-  /** Relation bidirectionnelle.
+  /**
+   * Relation bidirectionnelle.
    * Liste des personnes rattachées à cette structure.
    */
-	@OneToMany(mappedBy = "structRattachement", fetch = FetchType.LAZY)
-	private Set<APersonne> personnesRattachement = new HashSet<>();
+  @OneToMany(mappedBy = "structRattachement", fetch = FetchType.LAZY)
+  private Set<APersonne> personnesRattachement = new HashSet<>();
   /**
    * Relation bidirectionnelle.
    * Liste des groupes de profils de cette structure.
