@@ -18,6 +18,8 @@ package fr.recia.glc.security;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.commons.lang.Pair;
+import fr.recia.glc.services.beans.UserContextTree;
+import fr.recia.glc.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -89,43 +91,43 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
     } else if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
       userSessionTree.setSuperAdmin(false);
       log.debug("Call loadUserTree for USER access !");
-      // Load list of organizations
-
-      @SuppressWarnings("unchecked") final List<PermissionOnContext> perms = Lists.newArrayList(permissionDao.getPermissionDao(
-        PermissionClass.CONTEXT).findAll(
-        PermissionPredicates.OnCtxType(ContextType.ORGANIZATION, PermissionClass.CONTEXT, false)));
-      Map<ContextKey, PermissionOnContext> ctxRoles = Maps.newHashMap();
-      // Evaluate perms on all Organizations, all users should have a role on the organization to access on it
-      for (PermissionOnContext perm : perms) {
-        if (evaluationFactory.from(perm.getEvaluator()).isApplicable(user)
-          && perm.getRole().getMask() >= PermissionType.LOOKOVER.getMask()) {
-          if (log.isDebugEnabled()) {
-            log.debug("TreeLoader should add {}", perm.getContext());
-          }
-          if (ctxRoles.containsKey(perm.getContext())) {
-            PermissionOnContext role = ctxRoles.get(perm.getContext());
-            if (role == null || perm.getRole().getMask() > role.getRole().getMask()) {
-              ctxRoles.put(perm.getContext(), perm);
-            }
-          } else {
-            ctxRoles.put(perm.getContext(), perm);
-          }
-        }
-      }
-
-      // now we can go on childs
-      for (Map.Entry<ContextKey, PermissionOnContext> ctx : ctxRoles.entrySet()) {
-        if (ctx.getValue() != null && PermissionType.MANAGER.getMask() <= ctx.getValue().getRole().getMask()) {
-          final PermOnCtxDTO permDTO = (PermOnCtxDTO) permissionDTOFactory.from(ctx.getValue());
-          userSessionTree.addCtx(ctx.getKey(), false, null, null, permDTO);
-          loadAuthorizedOrganizationChilds(user, ctx.getKey(), false, new Pair<PermissionType, PermOnCtxDTO>(
-            ctx.getValue().getRole(), permDTO));
-        } else {
-          final PermOnCtxDTO permDTO = (PermOnCtxDTO) permissionDTOFactory.from(ctx.getValue());
-          loadAuthorizedOrganizationChilds(user, ctx.getKey(), true, new Pair<PermissionType, PermOnCtxDTO>(
-            ctx.getValue().getRole(), permDTO));
-        }
-      }
+//      // Load list of organizations
+//
+//      @SuppressWarnings("unchecked") final List<PermissionOnContext> perms = Lists.newArrayList(permissionDao.getPermissionDao(
+//        PermissionClass.CONTEXT).findAll(
+//        PermissionPredicates.OnCtxType(ContextType.ORGANIZATION, PermissionClass.CONTEXT, false)));
+//      Map<ContextKey, PermissionOnContext> ctxRoles = Maps.newHashMap();
+//      // Evaluate perms on all Organizations, all users should have a role on the organization to access on it
+//      for (PermissionOnContext perm : perms) {
+//        if (evaluationFactory.from(perm.getEvaluator()).isApplicable(user)
+//          && perm.getRole().getMask() >= PermissionType.LOOKOVER.getMask()) {
+//          if (log.isDebugEnabled()) {
+//            log.debug("TreeLoader should add {}", perm.getContext());
+//          }
+//          if (ctxRoles.containsKey(perm.getContext())) {
+//            PermissionOnContext role = ctxRoles.get(perm.getContext());
+//            if (role == null || perm.getRole().getMask() > role.getRole().getMask()) {
+//              ctxRoles.put(perm.getContext(), perm);
+//            }
+//          } else {
+//            ctxRoles.put(perm.getContext(), perm);
+//          }
+//        }
+//      }
+//
+//      // now we can go on childs
+//      for (Map.Entry<ContextKey, PermissionOnContext> ctx : ctxRoles.entrySet()) {
+//        if (ctx.getValue() != null && PermissionType.MANAGER.getMask() <= ctx.getValue().getRole().getMask()) {
+//          final PermOnCtxDTO permDTO = (PermOnCtxDTO) permissionDTOFactory.from(ctx.getValue());
+//          userSessionTree.addCtx(ctx.getKey(), false, null, null, permDTO);
+//          loadAuthorizedOrganizationChilds(user, ctx.getKey(), false, new Pair<PermissionType, PermOnCtxDTO>(
+//            ctx.getValue().getRole(), permDTO));
+//        } else {
+//          final PermOnCtxDTO permDTO = (PermOnCtxDTO) permissionDTOFactory.from(ctx.getValue());
+//          loadAuthorizedOrganizationChilds(user, ctx.getKey(), true, new Pair<PermissionType, PermOnCtxDTO>(
+//            ctx.getValue().getRole(), permDTO));
+//        }
+//      }
     } else {
       userSessionTree.setSuperAdmin(false);
     }

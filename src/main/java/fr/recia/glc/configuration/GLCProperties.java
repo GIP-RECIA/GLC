@@ -21,6 +21,7 @@ import fr.recia.glc.configuration.bean.CorsProperties;
 import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.configuration.bean.CustomMailProperties;
+import fr.recia.glc.configuration.bean.CustomMetricsProperties;
 import fr.recia.glc.configuration.bean.IpRangeProperties;
 import fr.recia.glc.configuration.bean.RoleMappingProperties;
 import fr.recia.glc.configuration.bean.SecurityProperties;
@@ -51,6 +52,7 @@ public class GLCProperties {
   private RoleMappingProperties users = new RoleMappingProperties();
   private CustomMailProperties mail = new CustomMailProperties();
   private IpRangeProperties authorizedServices = new IpRangeProperties();
+  private CustomMetricsProperties metrics = new CustomMetricsProperties();
   private CustomLdapProperties ldap = new CustomLdapProperties();
 
   @PostConstruct
@@ -69,6 +71,7 @@ public class GLCProperties {
       + users + ",\n"
       + mail + ",\n"
       + authorizedServices + ",\n"
+      + metrics + ",\n"
       + ldap
       + "\n}";
   }

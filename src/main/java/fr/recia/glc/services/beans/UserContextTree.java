@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- *
- */
 package fr.recia.glc.services.beans;
 
 import com.google.common.collect.Maps;
@@ -73,20 +70,19 @@ public class UserContextTree {
    */
   public synchronized void addCtx(@NotNull final StructureKey ctx, final PermissionType permType) {
     if (!isCtxLoaded(ctx)) {
-
-      current.setLastLeaf(isLastNode);
-      if (!ctx.getKeyType().equals(ContextType.ORGANIZATION)) {
-        Assert.isTrue(parent != null && isCtxLoaded(parent),
-          "Context " + ctx.toString() + " doesn't have a parent = '" + parent.toString() + "' or parent isn't loaded !");
-        contexts.put(ctx, current);
-        this.linkToParent(ctx, parent);
-      } else {
-        contexts.put(ctx, current);
-      }
-    } else if (!ctx.getKeyType().equals(ContextType.ORGANIZATION)) {
-      Assert.isTrue(parent != null && isCtxLoaded(parent),
-        "Context " + ctx.toString() + " doesn't have a parent = '" + parent.toString() + "' or parent isn't loaded !");
-      this.linkToParent(ctx, parent);
+//      current.setLastLeaf(isLastNode);
+//      if (!ctx.getKeyType().equals(ContextType.ORGANIZATION)) {
+//        Assert.isTrue(parent != null && isCtxLoaded(parent),
+//          "Context " + ctx.toString() + " doesn't have a parent = '" + parent.toString() + "' or parent isn't loaded !");
+//        contexts.put(ctx, current);
+//        this.linkToParent(ctx, parent);
+//      } else {
+//        contexts.put(ctx, current);
+//      }
+//    } else if (!ctx.getKeyType().equals(ContextType.ORGANIZATION)) {
+//      Assert.isTrue(parent != null && isCtxLoaded(parent),
+//        "Context " + ctx.toString() + " doesn't have a parent = '" + parent.toString() + "' or parent isn't loaded !");
+//      this.linkToParent(ctx, parent);
     }
   }
 

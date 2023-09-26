@@ -69,7 +69,7 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
 
     structure.setStructureKey(new StructureKey(groupId, cat));
 
-    //extract infos from pattern
+    // extract infos from pattern
     // récupération du groupe 1 pour la branche, le groupe 3 à split pour le displayName et l'UAI, le groupe 3 pour avoir le nom du groupe de l'établissement
     // Attention tester Branche == coll car groupe 6 vide dans ce cas, et renseigné obligatoirement sinon
     Matcher matcher = externalGroupHelper.getStructureFromGroupPattern().matcher(groupId);

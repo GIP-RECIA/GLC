@@ -16,7 +16,9 @@
 package fr.recia.glc.security;
 
 import com.google.common.collect.Sets;
+import com.querydsl.core.types.Predicate;
 import fr.recia.glc.ldap.StructureKey;
+import fr.recia.glc.ldap.enums.ContextType;
 import fr.recia.glc.ldap.enums.PermissionType;
 import fr.recia.glc.services.factories.UserDTOFactory;
 import fr.recia.glc.web.dto.UserDTO;
@@ -77,10 +79,10 @@ public class PermissionServiceImpl implements IPermissionService {
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.USER)) && contextKey != null && contextKey.getKeyId() != null && contextKey.getKeyType() != null) {
-      if (!userSessionTree.isTreeLoaded()) {
-        userSessionTreeLoader.loadUserTree(user, authorities);
-      }
-      return userSessionTree.getRoleFromContextTree(contextKey);
+//      if (!userSessionTree.isTreeLoaded()) {
+//        userSessionTreeLoader.loadUserTree(user, authorities);
+//      }
+//      return userSessionTree.getRoleFromContextTree(contextKey);
     }
 
     return null;
@@ -99,25 +101,25 @@ public class PermissionServiceImpl implements IPermissionService {
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.USER))) {
-      if (!userSessionTree.isTreeLoaded()) {
-        userSessionTreeLoader.loadUserTree(user, authorities);
-      }
-      Set<Long> ids = userSessionTree.getAllAuthorizedContextIdsOfType(contextType, permissionType);
-
-      switch (contextType) {
-        case ORGANIZATION:
-          return QOrganization.organization.id.in(ids).and(predicate);
-        case PUBLISHER:
-          return QPublisher.publisher.id.in(ids).and(predicate);
-        case CATEGORY:
-          return QAbstractClassification.abstractClassification.id.in(ids).and(predicate).and(ClassificationPredicates.CategoryClassification());
-        case FEED:
-          return QAbstractClassification.abstractClassification.id.in(ids).and(predicate);
-        case ITEM:
-          return QAbstractItem.abstractItem.id.in(ids).and(predicate);
-        default:
-          break;
-      }
+//      if (!userSessionTree.isTreeLoaded()) {
+//        userSessionTreeLoader.loadUserTree(user, authorities);
+//      }
+//      Set<Long> ids = userSessionTree.getAllAuthorizedContextIdsOfType(contextType, permissionType);
+//
+//      switch (contextType) {
+//        case ORGANIZATION:
+//          return QOrganization.organization.id.in(ids).and(predicate);
+//        case PUBLISHER:
+//          return QPublisher.publisher.id.in(ids).and(predicate);
+//        case CATEGORY:
+//          return QAbstractClassification.abstractClassification.id.in(ids).and(predicate).and(ClassificationPredicates.CategoryClassification());
+//        case FEED:
+//          return QAbstractClassification.abstractClassification.id.in(ids).and(predicate);
+//        case ITEM:
+//          return QAbstractItem.abstractItem.id.in(ids).and(predicate);
+//        default:
+//          break;
+//      }
     }
     throw new AccessDeniedException(String.format("Access is denied for ContextType %s with upper PermissionType %s", contextType, permissionType));
   }
@@ -135,38 +137,38 @@ public class PermissionServiceImpl implements IPermissionService {
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.USER))) {
-      if (!userSessionTree.isTreeLoaded()) {
-        userSessionTreeLoader.loadUserTree(user, authorities);
-      }
-      Pair<ContextType, Set<Long>> p = userSessionTree.getChildsOfContext(contextKey, permissionType);
-      if (p != null) {
-        switch (p.getFirst()) {
-          // there is n't parent of orgnaization so this case doesn't exist
-          //case ORGANIZATION : filter = QOrganization.organization.id.in(p.getSecond()).and(predicate); break;
-          case PUBLISHER:
-            return QPublisher.publisher.id.in(p.getSecond()).and(predicate);
-          case CATEGORY:
-            return QCategory.category.id.in(p.getSecond()).and(predicate);
-          case FEED:
-            return QAbstractFeed.abstractFeed.id.in(p.getSecond()).and(predicate);
-          case ITEM:
-            PermissionType ctxPerm = getRoleOfUserInContext(user, authorities, contextKey);
-            // return all item if Role is greater and not equals than CONTRIBUTOR
-            if (ctxPerm != null && ctxPerm.getMask() > PermissionType.CONTRIBUTOR.getMask()) {
-              return QItemClassificationOrder.itemClassificationOrder.itemClassificationId.abstractItem.id.in(p.getSecond()).and(predicate);
-            }
-            // else we filter on items owned
-            Set<Long> ids = Sets.newHashSet();
-            for (Long id : p.getSecond()) {
-              if (canEditCtx(user, authorities, new StructureKey(id, ContextType.ITEM))) {
-                ids.add(id);
-              }
-            }
-            return QItemClassificationOrder.itemClassificationOrder.itemClassificationId.abstractItem.id.in(ids).and(predicate);
-          default:
-            break;
-        }
-      }
+//      if (!userSessionTree.isTreeLoaded()) {
+//        userSessionTreeLoader.loadUserTree(user, authorities);
+//      }
+//      Pair<ContextType, Set<Long>> p = userSessionTree.getChildsOfContext(contextKey, permissionType);
+//      if (p != null) {
+//        switch (p.getFirst()) {
+//          // there is n't parent of orgnaization so this case doesn't exist
+//          //case ORGANIZATION : filter = QOrganization.organization.id.in(p.getSecond()).and(predicate); break;
+//          case PUBLISHER:
+//            return QPublisher.publisher.id.in(p.getSecond()).and(predicate);
+//          case CATEGORY:
+//            return QCategory.category.id.in(p.getSecond()).and(predicate);
+//          case FEED:
+//            return QAbstractFeed.abstractFeed.id.in(p.getSecond()).and(predicate);
+//          case ITEM:
+//            PermissionType ctxPerm = getRoleOfUserInContext(user, authorities, contextKey);
+//            // return all item if Role is greater and not equals than CONTRIBUTOR
+//            if (ctxPerm != null && ctxPerm.getMask() > PermissionType.CONTRIBUTOR.getMask()) {
+//              return QItemClassificationOrder.itemClassificationOrder.itemClassificationId.abstractItem.id.in(p.getSecond()).and(predicate);
+//            }
+//            // else we filter on items owned
+//            Set<Long> ids = Sets.newHashSet();
+//            for (Long id : p.getSecond()) {
+//              if (canEditCtx(user, authorities, new StructureKey(id, ContextType.ITEM))) {
+//                ids.add(id);
+//              }
+//            }
+//            return QItemClassificationOrder.itemClassificationOrder.itemClassificationId.abstractItem.id.in(ids).and(predicate);
+//          default:
+//            break;
+//        }
+//      }
     }
     throw new AccessDeniedException(String.format("Access is denied for %s with upper PermissionType %s", contextKey.toString(), permissionType));
   }
@@ -185,32 +187,32 @@ public class PermissionServiceImpl implements IPermissionService {
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.USER))) {
-      if (!userSessionTree.isTreeLoaded()) {
-        userSessionTreeLoader.loadUserTree(user, authorities);
-      }
-      PermissionType perm = null;
-      switch (contextKey.getKeyType()) {
-        case ORGANIZATION:
-          return false;
-        case PUBLISHER:
-          perm = userSessionTree.getRoleFromContextTree(contextKey);
-          return perm != null && perm.getMask() >= PermissionType.MANAGER.getMask();
-        case CATEGORY:
-          perm = userSessionTree.getRoleFromContextTree(contextKey);
-          // if a category as items or feeds rights are not the sames
-          Boolean hasItemAsChilds = userSessionTree.contextContainsItems(contextKey);
-          if (hasItemAsChilds == null) {
-            return false;
-          } else if (hasItemAsChilds) {
-            return perm != null && perm.getMask() >= PermissionType.CONTRIBUTOR.getMask();
-          }
-          return perm != null && perm.getMask() >= PermissionType.MANAGER.getMask();
-        case FEED:
-          perm = userSessionTree.getRoleFromContextTree(contextKey);
-          return perm != null && perm.getMask() >= PermissionType.CONTRIBUTOR.getMask();
-        default:
-          return false;
-      }
+//      if (!userSessionTree.isTreeLoaded()) {
+//        userSessionTreeLoader.loadUserTree(user, authorities);
+//      }
+//      PermissionType perm = null;
+//      switch (contextKey.getKeyType()) {
+//        case ORGANIZATION:
+//          return false;
+//        case PUBLISHER:
+//          perm = userSessionTree.getRoleFromContextTree(contextKey);
+//          return perm != null && perm.getMask() >= PermissionType.MANAGER.getMask();
+//        case CATEGORY:
+//          perm = userSessionTree.getRoleFromContextTree(contextKey);
+//          // if a category as items or feeds rights are not the sames
+//          Boolean hasItemAsChilds = userSessionTree.contextContainsItems(contextKey);
+//          if (hasItemAsChilds == null) {
+//            return false;
+//          } else if (hasItemAsChilds) {
+//            return perm != null && perm.getMask() >= PermissionType.CONTRIBUTOR.getMask();
+//          }
+//          return perm != null && perm.getMask() >= PermissionType.MANAGER.getMask();
+//        case FEED:
+//          perm = userSessionTree.getRoleFromContextTree(contextKey);
+//          return perm != null && perm.getMask() >= PermissionType.CONTRIBUTOR.getMask();
+//        default:
+//          return false;
+//      }
 
     }
     return false;
@@ -218,7 +220,8 @@ public class PermissionServiceImpl implements IPermissionService {
 
   @Override
   public boolean canCreateInCtx(@NotNull Authentication authentication, @NotNull final long contextId, @NotNull final ContextType contextType) {
-    return canCreateInCtx(authentication, new StructureKey(contextId, contextType));
+//    return canCreateInCtx(authentication, new StructureKey(contextId, contextType));
+    return false;
   }
 
   private boolean canEditCtx(@NotNull UserDTO user, @NotNull Collection<? extends GrantedAuthority> authorities, @NotNull StructureKey contextKey) {
@@ -230,25 +233,25 @@ public class PermissionServiceImpl implements IPermissionService {
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.USER))) {
-      if (!userSessionTree.isTreeLoaded()) {
-        userSessionTreeLoader.loadUserTree(user, authorities);
-      }
-      PermissionType perm = null;
-      switch (contextKey.getKeyType()) {
-        case ORGANIZATION:
-        case PUBLISHER:
-        case CATEGORY:
-        case FEED:
-          perm = userSessionTree.getRoleFromContextTree(contextKey);
-          return perm != null && perm.getMask() >= PermissionType.MANAGER.getMask();
-        case ITEM:
-          perm = userSessionTree.getRoleFromContextTree(contextKey);
-          final boolean isOwner = userSessionTree.isItemOwner(contextKey.getKeyId(), user.getModelId());
-          //return perm != null && (perm.getMask() >=  PermissionType.MANAGER.getMask() || perm.getMask() >=  PermissionType.CONTRIBUTOR.getMask() && isOwner) || isOwner;
-          return perm != null && (perm.getMask() >= PermissionType.MANAGER.getMask() || isOwner);
-        default:
-          return false;
-      }
+//      if (!userSessionTree.isTreeLoaded()) {
+//        userSessionTreeLoader.loadUserTree(user, authorities);
+//      }
+//      PermissionType perm = null;
+//      switch (contextKey.getKeyType()) {
+//        case ORGANIZATION:
+//        case PUBLISHER:
+//        case CATEGORY:
+//        case FEED:
+//          perm = userSessionTree.getRoleFromContextTree(contextKey);
+//          return perm != null && perm.getMask() >= PermissionType.MANAGER.getMask();
+//        case ITEM:
+//          perm = userSessionTree.getRoleFromContextTree(contextKey);
+//          final boolean isOwner = userSessionTree.isItemOwner(contextKey.getKeyId(), user.getModelId());
+//          //return perm != null && (perm.getMask() >=  PermissionType.MANAGER.getMask() || perm.getMask() >=  PermissionType.CONTRIBUTOR.getMask() && isOwner) || isOwner;
+//          return perm != null && (perm.getMask() >= PermissionType.MANAGER.getMask() || isOwner);
+//        default:
+//          return false;
+//      }
 
     }
     return false;
@@ -264,7 +267,8 @@ public class PermissionServiceImpl implements IPermissionService {
 
   @Override
   public boolean canEditCtx(@NotNull Authentication authentication, @NotNull final long contextId, @NotNull final ContextType contextType) {
-    return canEditCtx(authentication, new StructureKey(contextId, contextType));
+//    return canEditCtx(authentication, new StructureKey(contextId, contextType));
+    return false;
   }
 
   @Override
@@ -280,33 +284,34 @@ public class PermissionServiceImpl implements IPermissionService {
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.USER))) {
-      if (!userSessionTree.isTreeLoaded()) {
-        userSessionTreeLoader.loadUserTree(user, authorities);
-      }
-      PermissionType perm = null;
-      switch (contextKey.getKeyType()) {
-        case ORGANIZATION:
-          return false;
-        case PUBLISHER:
-          return false;
-        case CATEGORY:
-        case FEED:
-          perm = userSessionTree.getRoleFromContextTree(contextKey);
-          return perm != null && perm.getMask() >= PermissionType.MANAGER.getMask();
-        case ITEM:
-          perm = userSessionTree.getRoleFromContextTree(contextKey);
-          boolean isOwner = userSessionTree.isItemOwner(contextKey.getKeyId(), user.getModelId());
-          return perm != null && (perm.getMask() >= PermissionType.MANAGER.getMask() || perm.getMask() >= PermissionType.CONTRIBUTOR.getMask() && isOwner) || isOwner;
-        default:
-          return false;
-      }
+//      if (!userSessionTree.isTreeLoaded()) {
+//        userSessionTreeLoader.loadUserTree(user, authorities);
+//      }
+//      PermissionType perm = null;
+//      switch (contextKey.getKeyType()) {
+//        case ORGANIZATION:
+//          return false;
+//        case PUBLISHER:
+//          return false;
+//        case CATEGORY:
+//        case FEED:
+//          perm = userSessionTree.getRoleFromContextTree(contextKey);
+//          return perm != null && perm.getMask() >= PermissionType.MANAGER.getMask();
+//        case ITEM:
+//          perm = userSessionTree.getRoleFromContextTree(contextKey);
+//          boolean isOwner = userSessionTree.isItemOwner(contextKey.getKeyId(), user.getModelId());
+//          return perm != null && (perm.getMask() >= PermissionType.MANAGER.getMask() || perm.getMask() >= PermissionType.CONTRIBUTOR.getMask() && isOwner) || isOwner;
+//        default:
+//          return false;
+//      }
     }
     return false;
   }
 
   @Override
   public boolean canDeleteCtx(@NotNull Authentication authentication, @NotNull final long contextId, @NotNull final ContextType contextType) {
-    return canDeleteCtx(authentication, new StructureKey(contextId, contextType));
+//    return canDeleteCtx(authentication, new StructureKey(contextId, contextType));
+    return false;
   }
 
   @Override
@@ -317,18 +322,18 @@ public class PermissionServiceImpl implements IPermissionService {
     log.debug("Testing canEditCtxPerm in context {} for  user {}", contextKey, user);
 
     // Permission must check if linked publisher permit to set permission on subcontext
-    if (specialPermsPublisher.contains(contextKey.getKeyType()) &&
-      !contextService.isLinkedPublisherHasSubPermManagement(contextKey)) {
-      return false;
-    }
+//    if (specialPermsPublisher.contains(contextKey.getKeyType()) &&
+//      !contextService.isLinkedPublisherHasSubPermManagement(contextKey)) {
+//      return false;
+//    }
 
     // Permissions are autorized only for ADMIN on ORGANIZATIONS
-    if (authorities.contains(new SimpleGrantedAuthority(
-      AuthoritiesConstants.ADMIN))) {
-      return true;
-    } else if (contextKey.getKeyType().equals(ContextType.ORGANIZATION)) {
-      return false;
-    }
+//    if (authorities.contains(new SimpleGrantedAuthority(
+//      AuthoritiesConstants.ADMIN))) {
+//      return true;
+//    } else if (contextKey.getKeyType().equals(ContextType.ORGANIZATION)) {
+//      return false;
+//    }
     return canEditCtx(user, authorities, contextKey);
   }
 
@@ -348,15 +353,15 @@ public class PermissionServiceImpl implements IPermissionService {
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.ADMIN))) {
-      return !ContextType.ITEM.equals(contextKey.getKeyType());
+//      return !ContextType.ITEM.equals(contextKey.getKeyType());
     }
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.USER))) {
-      if (!userSessionTree.isTreeLoaded()) {
-        userSessionTreeLoader.loadUserTree(user, authorities);
-      }
-      return !ContextType.ITEM.equals(contextKey.getKeyType()) && userSessionTree.hasChildsOnContext(contextKey, PermissionType.LOOKOVER);
+//      if (!userSessionTree.isTreeLoaded()) {
+//        userSessionTreeLoader.loadUserTree(user, authorities);
+//      }
+//      return !ContextType.ITEM.equals(contextKey.getKeyType()) && userSessionTree.hasChildsOnContext(contextKey, PermissionType.LOOKOVER);
 
     }
 
@@ -376,11 +381,11 @@ public class PermissionServiceImpl implements IPermissionService {
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.USER))) {
-      if (!userSessionTree.isTreeLoaded()) {
-        userSessionTreeLoader.loadUserTree(user, authorities);
-      }
-
-      return userSessionTree.getUpperPerm() != null && userSessionTree.getUpperPerm().getMask() > PermissionType.EDITOR.getMask();
+//      if (!userSessionTree.isTreeLoaded()) {
+//        userSessionTreeLoader.loadUserTree(user, authorities);
+//      }
+//
+//      return userSessionTree.getUpperPerm() != null && userSessionTree.getUpperPerm().getMask() > PermissionType.EDITOR.getMask();
     }
     return false;
   }
@@ -398,11 +403,11 @@ public class PermissionServiceImpl implements IPermissionService {
 
     if (authorities.contains(new SimpleGrantedAuthority(
       AuthoritiesConstants.USER))) {
-      if (!userSessionTree.isTreeLoaded()) {
-        userSessionTreeLoader.loadUserTree(user, authorities);
-      }
-      final PermissionType perm = userSessionTree.getRoleFromContextTree(contextKey);
-      return perm != null && perm.getMask() > PermissionType.CONTRIBUTOR.getMask();
+//      if (!userSessionTree.isTreeLoaded()) {
+//        userSessionTreeLoader.loadUserTree(user, authorities);
+//      }
+//      final PermissionType perm = userSessionTree.getRoleFromContextTree(contextKey);
+//      return perm != null && perm.getMask() > PermissionType.CONTRIBUTOR.getMask();
     }
     return false;
   }
