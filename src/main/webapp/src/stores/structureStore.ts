@@ -4,7 +4,7 @@ import { Tabs } from '@/types/enums/Tabs';
 import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType';
 import { errorHandler } from '@/utils/axiosUtils';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useStructureStore = defineStore('structure', () => {
   const configurationStore = useConfigurationStore();
@@ -16,13 +16,17 @@ export const useStructureStore = defineStore('structure', () => {
    * Initialise `etabs`
    */
   const init = async (): Promise<void> => {
-    try {
-      const response = await getEtablissements();
-      etabs.value = response.data;
-    } catch (e) {
-      errorHandler(e, 'initStructureStore');
+    if (!isInit.value) {
+      try {
+        const response = await getEtablissements();
+        etabs.value = response.data;
+      } catch (e) {
+        errorHandler(e, 'initStructureStore');
+      }
     }
   };
+
+  const isInit = computed<boolean>(() => (etabs.value ? etabs.value.length > 0 : false));
 
   /**
    * Initialise `currentEtab`

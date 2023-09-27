@@ -15,11 +15,13 @@ export const useConfigurationStore = defineStore('configuration', () => {
    * Initialise `configuration`
    */
   const init = async (): Promise<void> => {
-    try {
-      const response = await getConfiguration();
-      configuration.value = response.data;
-    } catch (e) {
-      errorHandler(e, 'initConfigurationStore');
+    if (!isInit.value) {
+      try {
+        const response = await getConfiguration();
+        configuration.value = response.data;
+      } catch (e) {
+        errorHandler(e, 'initConfigurationStore');
+      }
     }
   };
 
@@ -78,6 +80,10 @@ export const useConfigurationStore = defineStore('configuration', () => {
     currentStructureId.value = id;
   };
 
+  /* --- Gestion de la home --- */
+
+  const search = ref<string | undefined>();
+
   /* -- Gestion de la modale des complémentaires -- */
 
   const isAdditional = ref<boolean>(false);
@@ -108,6 +114,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
     setCurrentTab,
     currentStructureId,
     setCurrentStructureId,
+    search,
     isAdditional,
     isAddMode,
     identity,

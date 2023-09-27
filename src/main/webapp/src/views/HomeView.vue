@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import CustomPagination from '@/components/CustomPagination.vue';
+import { useConfigurationStore } from '@/stores/configurationStore';
 import { useStructureStore } from '@/stores/structureStore';
 import type { SimpleEtablissement } from '@/types/etablissementType';
 import { storeToRefs } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 
+const configurationStore = useConfigurationStore();
+const { search } = storeToRefs(configurationStore);
 const structureStore = useStructureStore();
 structureStore.init();
 const { etabs } = storeToRefs(structureStore);
 
-const select = ref<string>();
-const items = ref<Array<SimpleEtablissement> | undefined>();
 const pageItems = ref<Array<SimpleEtablissement> | undefined>();
 
 const itemsPerPage = computed<number>(() => {
@@ -39,17 +40,14 @@ const itemsPerPage = computed<number>(() => {
   }
 });
 
-watch(etabs, (newValue) => {
-  if (typeof newValue !== 'undefined' && newValue !== null) items.value = newValue;
-});
-
-watch(select, (newValue) => {
-  if (typeof newValue !== 'undefined' && newValue !== null) {
-    const searchValue = newValue
+const items = computed<Array<SimpleEtablissement> | undefined>(() => {
+  if (search.value != undefined && search.value != null) {
+    const searchValue = search.value
       .toLowerCase()
       .normalize('NFD')
       .replace(/\p{Diacritic}/gu, '');
-    items.value = etabs.value?.filter((etablissement) => {
+
+    return etabs.value?.filter((etablissement) => {
       let filters =
         etablissement.nom.toLowerCase().indexOf(searchValue) > -1 ||
         etablissement.uai.toLowerCase().indexOf(searchValue) > -1 ||
@@ -60,14 +58,14 @@ watch(select, (newValue) => {
 
       return filters;
     });
-  } else items.value = etabs.value;
+  } else return etabs.value;
 });
 </script>
 
 <template>
   <v-container>
     <v-text-field
-      v-model="select"
+      v-model="search"
       :placeholder="t('search.structure.placeholder')"
       variant="solo"
       rounded

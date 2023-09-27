@@ -81,7 +81,6 @@ export const useFonctionStore = defineStore('fonctions', () => {
 
   return {
     init,
-    isInit,
     filieres,
     customMapping,
     isCustomMapping,
