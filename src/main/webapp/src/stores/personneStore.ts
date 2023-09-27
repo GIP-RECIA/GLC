@@ -26,6 +26,7 @@ export const usePersonneStore = defineStore('personne', () => {
    * @param id Identifiant de la personne
    */
   const initCurrentPersonne = async (id: number, showModal: boolean): Promise<void> => {
+    configurationStore.isLoading = true;
     try {
       const response = await getPersonne(id);
       currentPersonne.value = response.data;
@@ -33,11 +34,13 @@ export const usePersonneStore = defineStore('personne', () => {
     } catch (e) {
       errorHandler(e, 'initCurrentPersonne');
     }
+    configurationStore.isLoading = false;
   };
 
   const refreshCurrentPersonne = async (): Promise<void> => {
     const personneId = currentPersonne.value?.id;
     if (personneId) {
+      configurationStore.isLoading = true;
       structureStore.refreshCurrentStructure();
       try {
         const response = await getPersonne(personneId);
@@ -45,6 +48,7 @@ export const usePersonneStore = defineStore('personne', () => {
       } catch (e) {
         errorHandler(e, 'refreshCurrentPersonne');
       }
+      configurationStore.isLoading = false;
     }
   };
 

@@ -18,7 +18,7 @@ onBeforeMount(() => {
 
 const configurationStore = useConfigurationStore();
 configurationStore.init();
-const { isAuthenticated } = storeToRefs(configurationStore);
+const { isLoading, isAuthenticated } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 isAuthenticated.value && fonctionStore.init();
@@ -56,10 +56,13 @@ watch(isAuthenticated, (newValue) => {
         return-home-target="_self"
         icon-type="nine-square"
       />
-      <v-toolbar density="compact" color="rgba(255, 255, 255, 0)" class="px-3">
-        GLC<custom-tab-bar class="ml-2" />
-        <v-spacer />
-        <theme-switcher />
+      <v-toolbar density="compact" color="rgba(255, 255, 255, 0)">
+        <v-progress-linear :active="isLoading" :indeterminate="isLoading" absolute bottom color="primary" />
+        <div class="d-flex align-center w-100 px-3">
+          GLC<custom-tab-bar class="ml-2" />
+          <v-spacer />
+          <theme-switcher />
+        </div>
       </v-toolbar>
     </header>
     <v-main>

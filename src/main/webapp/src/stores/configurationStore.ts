@@ -84,6 +84,10 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   const search = ref<string | undefined>();
 
+  /* --- Gestion du spinner --- */
+
+  const isLoading = ref<boolean>(false);
+
   /* -- Gestion de la modale des complémentaires -- */
 
   const isAdditional = ref<boolean>(false);
@@ -115,6 +119,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
     currentStructureId,
     setCurrentStructureId,
     search,
+    isLoading,
     isAdditional,
     isAddMode,
     identity,

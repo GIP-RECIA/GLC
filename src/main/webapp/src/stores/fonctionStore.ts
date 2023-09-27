@@ -20,12 +20,14 @@ export const useFonctionStore = defineStore('fonctions', () => {
    */
   const init = async (): Promise<void> => {
     if (!isInit.value) {
+      configurationStore.isLoading = true;
       try {
         const response = await getFonctions();
         fonctions.value = response.data;
       } catch (e) {
         errorHandler(e, 'initFonctionStore');
       }
+      configurationStore.isLoading = false;
     }
   };
 

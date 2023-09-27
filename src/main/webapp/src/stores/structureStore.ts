@@ -17,12 +17,14 @@ export const useStructureStore = defineStore('structure', () => {
    */
   const init = async (): Promise<void> => {
     if (!isInit.value) {
+      configurationStore.isLoading = true;
       try {
         const response = await getEtablissements();
         etabs.value = response.data;
       } catch (e) {
         errorHandler(e, 'initStructureStore');
       }
+      configurationStore.isLoading = false;
     }
   };
 
@@ -34,7 +36,7 @@ export const useStructureStore = defineStore('structure', () => {
    */
   const initCurrentEtab = async (id: number): Promise<void> => {
     const { structures, setCurrentStructure, setCurrentTab, setCurrentStructureId } = configurationStore;
-
+    configurationStore.isLoading = true;
     try {
       const response = await getEtablissement(id);
       currentEtab.value = response.data;
@@ -55,17 +57,20 @@ export const useStructureStore = defineStore('structure', () => {
     } catch (e) {
       errorHandler(e, 'initCurrentEtab');
     }
+    configurationStore.isLoading = false;
   };
 
   const refreshCurrentStructure = async (): Promise<void> => {
     const structureId = currentEtab.value?.id;
     if (structureId) {
+      configurationStore.isLoading = true;
       try {
         const response = await getEtablissement(structureId);
         currentEtab.value = response.data;
       } catch (e) {
         errorHandler(e, 'refreshCurrentStructure');
       }
+      configurationStore.isLoading = false;
     }
   };
 
