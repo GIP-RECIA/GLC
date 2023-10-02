@@ -16,6 +16,7 @@
 package fr.recia.glc.ldap.repository;
 
 import com.google.common.collect.Sets;
+import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.IExternalGroup;
 import fr.recia.glc.ldap.IExternalGroupDisplayNameFormatter;
@@ -62,21 +63,24 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
   //@Autowired
   private List<IGroupMemberDesigner> groupMemberDesigners;
 
+  private final CustomLdapProperties ldapProperties;
+
   /**
    * constructor.
    */
-  public LdapGroupDaoImpl() {
+  public LdapGroupDaoImpl(CustomLdapProperties ldapProperties) {
     super();
+    this.ldapProperties = ldapProperties;
   }
 
   @Override
   public Set<IStructure> getStructuresFromGroups() {
-    HardcodedFilter filter = new HardcodedFilter(externalGroupHelper.getFilterGroupsOfStructure());
+    HardcodedFilter filter = new HardcodedFilter(ldapProperties.getGroupBranch().getStructureProperties().getFilterGroupsOfStructure());
     if (log.isDebugEnabled()) {
       log.debug("LDAP filter applied {} ", filter.encode());
     }
     //ContextMapper<IExternalGroup> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper, this.groupDisplayNameFormatters);
-    ContextMapper<IStructure> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper);
+    ContextMapper<IStructure> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper, ldapProperties);
     // SearchControls constraints = new SearchControls();
     // constraints.setReturningAttributes((String[])
     // ldapUserHelper.getAttributes().toArray());

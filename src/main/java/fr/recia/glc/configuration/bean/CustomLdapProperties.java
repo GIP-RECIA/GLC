@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.configuration.bean;
 
+import fr.recia.glc.db.enums.CategorieStructure;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -154,14 +156,10 @@ public class CustomLdapProperties {
     private boolean DNContainsDisplayName = false;
     private boolean resolveUserMembers = false;
     private boolean resolveUserMembersByUserAttributes = true;
-
     private List<GroupDesignerProperties> designers;
-
     private List<GroupRegexProperties> nameFormatters;
-
     private Pattern dontResolveMembersWithGroupPattern;
-
-    //TODO @NotNull
+    @NotNull
     private StructureProperties structureProperties;
 
     public GroupBranchProperties() {
@@ -175,10 +173,19 @@ public class CustomLdapProperties {
     @Validated
     public static class StructureProperties {
 
+      private Pattern structureFromGroupPattern;
+      private String filterGroupsOfStructure;
+      private Map<CategorieStructure, Pattern> structureCategoriesPatterns;
+
       @Override
       public String toString() {
-        return "{\n\"StructureProperties\":"
-          + "\n}";
+        return "{" +
+          "\n\t\"structureFromGroupPattern\": \"" + structureFromGroupPattern + "\"" +
+          ",\n\t\"filterGroupsOfStructure\": \"" + filterGroupsOfStructure + "\"" +
+          ",\n\t\"structureCategoriesPatterns\": " + structureCategoriesPatterns.keySet().stream()
+          .map(key -> "\"" + key + "\": \"" + structureCategoriesPatterns.get(key) + "\"")
+          .collect(Collectors.joining(", ", "{", "}"))+
+          "\n}";
       }
 
     }
@@ -197,11 +204,12 @@ public class CustomLdapProperties {
         + ",\n \"resolveUserMembersByUserAttributes\":\"" + resolveUserMembersByUserAttributes + "\""
         + ",\n \"designers\":" + designers.stream()
         .map(String::valueOf)
-        .collect(Collectors.joining(",", "[", "]"))
+        .collect(Collectors.joining(", ", "[", "]"))
         + ",\n \"nameFormatters\":" + nameFormatters.stream()
         .map(String::valueOf)
-        .collect(Collectors.joining(",", "[", "]"))
+        .collect(Collectors.joining(", ", "[", "]"))
         + ",\n \"dontResolveMembersWithGroupPattern\":\"" + dontResolveMembersWithGroupPattern + "\""
+        + ",\n \"structureProperties\": " + structureProperties
         + "\n}";
     }
   }

@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.ldap.repository;
 
+import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.IStructure;
@@ -26,12 +27,9 @@ import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.util.Assert;
 
 import javax.naming.NamingException;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * @author GIP RECIA - Julien Gribonvald 3 juin. 2015
@@ -40,13 +38,15 @@ import java.util.stream.Collectors;
 public class LdapGroupStructureContextMapper implements ContextMapper<IStructure> {
 
   private ExternalGroupHelper externalGroupHelper;
+  private final CustomLdapProperties ldapProperties;
 
   /**
    * @param externalGroupHelper
    */
-  public LdapGroupStructureContextMapper(ExternalGroupHelper externalGroupHelper) {
+  public LdapGroupStructureContextMapper(ExternalGroupHelper externalGroupHelper, CustomLdapProperties ldapProperties) {
     super();
     this.externalGroupHelper = externalGroupHelper;
+    this.ldapProperties = ldapProperties;
   }
 
   @Override
@@ -62,7 +62,7 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
     // extract infos from pattern
     // récupération du groupe 1 pour la branche, le groupe 3 à split pour le displayName et l'UAI, le groupe 3 pour avoir le nom du groupe de l'établissement
     // Attention tester Branche == coll car groupe 6 vide dans ce cas, et renseigné obligatoirement sinon
-    Matcher matcher = externalGroupHelper.getStructureFromGroupPattern().matcher(groupId);
+    Matcher matcher = ldapProperties.getGroupBranch().getStructureProperties().getStructureFromGroupPattern().matcher(groupId);
     if (matcher.find() && matcher.groupCount() >= 4) {
       structure.setGroupBranch(matcher.group(1));
       structure.setDisplayName(matcher.group(4));
@@ -74,7 +74,7 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
   }
 
   private CategorieStructure getCategorieStructure(final String group) {
-    for (Map.Entry<CategorieStructure, Pattern> entry: externalGroupHelper.getStructureCategoriesPatterns().entrySet()) {
+    for (Map.Entry<CategorieStructure, Pattern> entry: ldapProperties.getGroupBranch().getStructureProperties().getStructureCategoriesPatterns().entrySet()) {
       if (entry.getValue().matcher(group).matches()) return entry.getKey();
     }
     throw new IllegalArgumentException(String.format("Extracted Structure type unknown from %s", group));

@@ -136,7 +136,7 @@ public class LDAPConfiguration {
       designers.add(new LdapGroupAttachMemberDesignerImpl(externalGroupHelper(), grp.getGroupRootPattern(),
         grp.getGroupAttachEndMatch(), grp.getGroupToAttachEndPattern()));
     }
-    return new LdapGroupDaoImpl(ldapTemplate, externalGroupHelper(), formatters, externalUserDao, designers);
+    return new LdapGroupDaoImpl(ldapTemplate, externalGroupHelper(), formatters, externalUserDao, designers, ldapProperties);
   }
 
   @Bean
