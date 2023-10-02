@@ -25,36 +25,13 @@ import javax.validation.constraints.NotNull;
 
 public interface IPermissionService {
 
-  PermissionType getRoleOfUserInContext(Authentication authentication, @NotNull final StructureKey contextKey);
+  PermissionType getRoleOfUserInContext(Authentication authentication, @NotNull final StructureKey structureKey);
 
-//  Pair<PermissionType, PermissionDTO> getPermsOfUserInContext(Authentication authentication, @NotNull final StructureKey contextKey);
+  boolean canManageCtx(Authentication authentication, @NotNull final StructureKey contextKey);
 
-// Role getRoleOfUserInContext(UserDTO from, Collection<? extends GrantedAuthority> authorities, StructureKey contextKey);
+  boolean canViewCtx(Authentication authentication, @NotNull final StructureKey contextKey);
 
-  Predicate filterAuthorizedAllOfContextType(Authentication authentication, @NotNull final ContextType contextType, @NotNull final PermissionType permissionType, @NotNull final Predicate predicate);
+  boolean hasAuthorizedStructure(Authentication authentication);
 
-  Predicate filterAuthorizedChildsOfContext(Authentication authentication, @NotNull final StructureKey contextKey, @NotNull final PermissionType permissionType, @NotNull final Predicate predicate);
-
-  boolean canCreateInCtx(Authentication authentication, @NotNull final StructureKey contextKey);
-
-  boolean canEditCtx(Authentication authentication, @NotNull final StructureKey contextKey);
-
-  boolean canDeleteCtx(Authentication authentication, @NotNull final StructureKey contextKey);
-
-  boolean canCreateInCtx(Authentication authentication, @NotNull final long contextId, @NotNull final ContextType contextType);
-
-  boolean canEditCtx(Authentication authentication, @NotNull final long contextId, @NotNull final ContextType contextType);
-
-  boolean canDeleteCtx(Authentication authentication, @NotNull final long contextId, @NotNull final ContextType contextType);
-
-  boolean canEditCtxPerms(Authentication authentication, @NotNull final StructureKey contextKey);
-
-  boolean canEditCtxTargets(Authentication authentication, @NotNull final StructureKey contextKey);
-
-  boolean canModerateSomething(Authentication authentication);
-
-  boolean hasAuthorizedChilds(Authentication authentication, @NotNull final StructureKey contextKey);
-
-  boolean canHighlightInCtx(Authentication authentication, @NotNull final StructureKey contextKey);
 
 }

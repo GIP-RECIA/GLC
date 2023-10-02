@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security;
+package fr.recia.glc.services.beans;
 
 import fr.recia.glc.ldap.IStructure;
 
@@ -22,5 +22,7 @@ import java.util.Set;
 public interface IStructureLoader {
 
   Set<IStructure> getStructuresOfBranch(String branchGroup);
+
+  Set<IStructure> getAllStructures();
 
 }

@@ -30,6 +30,8 @@ import fr.recia.glc.ldap.repository.LdapGroupDaoImpl;
 import fr.recia.glc.ldap.repository.LdapGroupRegexpDisplayNameFormatter;
 import fr.recia.glc.ldap.repository.LdapGroupRegexpDisplayNameFormatterESCO;
 import fr.recia.glc.ldap.repository.LdapGroupRegexpDisplayNameFormatterESCOReplace;
+import fr.recia.glc.services.beans.IStructureLoader;
+import fr.recia.glc.services.beans.StructureLoaderImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -135,6 +137,13 @@ public class LDAPConfiguration {
         grp.getGroupAttachEndMatch(), grp.getGroupToAttachEndPattern()));
     }
     return new LdapGroupDaoImpl(ldapTemplate, externalGroupHelper(), formatters, externalUserDao, designers);
+  }
+
+  @Bean
+  public IStructureLoader loadedStructure(IExternalGroupDao externalGroupDao){
+    log.debug("Loading Structure extracted from groups");
+    IStructureLoader loader = new StructureLoaderImpl(externalGroupDao);
+    return loader;
   }
 
 //  @Bean

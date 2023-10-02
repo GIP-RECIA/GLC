@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap.repositories;
+package fr.recia.glc.services.beans;
 
-import org.springframework.data.ldap.repository.LdapRepository;
-import org.springframework.data.repository.NoRepositoryBean;
+import fr.recia.glc.services.evaluators.IEvaluation;
 
-@NoRepositoryBean
-public interface AbstractRepository<T> extends LdapRepository<T> {
+import java.util.Map;
+
+public interface IAuthoritiesDefinition {
+
+  Map<String, IEvaluation> getAppRoles();
+
 }

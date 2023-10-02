@@ -13,20 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.security;
+package fr.recia.glc.services.evaluators;
 
-import fr.recia.glc.web.dto.UserDTO;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Collection;
-
-public interface UserContextLoaderService {
-
-  void loadUserRoles(Authentication authentication);
-
-  void doExpireForReload();
-
-  void loadUserRoles(final UserDTO user, final Collection<? extends GrantedAuthority> authorities);
-
+/**
+ * Type operator to evaluate the list of evaluators.
+ */
+@JsonFormat(shape = JsonFormat.Shape.STRING)
+public enum OperatorType {
+  OR,
+  AND,
+  NOT
 }

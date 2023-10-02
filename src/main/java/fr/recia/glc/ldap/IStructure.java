@@ -23,4 +23,8 @@ public interface IStructure {
 
   String getDisplayName();
 
+  String getGroupBranch();
+
+  String getGroupNameEtab();
+
 }

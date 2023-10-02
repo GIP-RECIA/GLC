@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap.dto;
+package fr.recia.glc.services.evaluators;
 
 import fr.recia.glc.web.dto.UserDTO;
 

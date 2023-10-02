@@ -161,11 +161,26 @@ public class CustomLdapProperties {
 
     private Pattern dontResolveMembersWithGroupPattern;
 
+    //TODO @NotNull
+    private StructureProperties structureProperties;
+
     public GroupBranchProperties() {
       this.setBaseDN("ou=groups");
       this.setGroupAttribute("member");
       this.setIdAttribute("cn");
       this.setDisplayNameAttribute("cn");
+    }
+
+    @Data
+    @Validated
+    public static class StructureProperties {
+
+      @Override
+      public String toString() {
+        return "{\n\"StructureProperties\":"
+          + "\n}";
+      }
+
     }
 
     @Override

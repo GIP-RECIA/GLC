@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap.beans;
+package fr.recia.glc.services.evaluators;
 
-import fr.recia.glc.ldap.dto.IEvaluation;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Map;
-
-public interface IAuthoritiesDefinition {
-
-  Map<String, IEvaluation> getAppRoles();
-
+@JsonFormat(shape = JsonFormat.Shape.STRING)
+public enum StringEvaluationMode {
+  CONTAINS,
+  EQUALS,
+  STARTS_WITH,
+  ENDS_WITH,
+  EXISTS,
+  MATCH,
 }

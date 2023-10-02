@@ -16,10 +16,8 @@
 package fr.recia.glc.security;
 
 import com.google.common.collect.Lists;
-import fr.recia.glc.ldap.beans.IAuthoritiesDefinition;
-import fr.recia.glc.ldap.dto.IEvaluation;
-import fr.recia.glc.security.AuthoritiesConstants;
-import fr.recia.glc.security.IAuthorityService;
+import fr.recia.glc.services.beans.IAuthoritiesDefinition;
+import fr.recia.glc.services.evaluators.IEvaluation;
 import fr.recia.glc.web.dto.UserDTO;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.core.GrantedAuthority;

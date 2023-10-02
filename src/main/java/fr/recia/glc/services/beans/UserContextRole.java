@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
@@ -38,14 +37,14 @@ import java.util.Map;
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Slf4j
-public class UserContextTree {
+public class UserContextRole {
 
   private Map<StructureKey, PermissionType> contexts = Maps.newConcurrentMap();
 
   @Setter
   private Boolean superAdmin;
 
-  private boolean userTreeLoaded;
+  private boolean userRolesLoaded;
 
   /**
    * Estimated duration before a reload can be done, here 10 seconds.
@@ -58,31 +57,19 @@ public class UserContextTree {
   private volatile Instant expiringInstant;
   private volatile boolean loadingInProgress = false;
 
-  public UserContextTree() {
+  public UserContextRole() {
     super();
   }
 
   /**
-   * To construct the tree use this add on all context.
+   * To construct the Roles, use this add on all context.
    *
    * @param ctx      the context to add discovered.
    * @param permType The Role that the user has in the context.
    */
   public synchronized void addCtx(@NotNull final StructureKey ctx, final PermissionType permType) {
     if (!isCtxLoaded(ctx)) {
-//      current.setLastLeaf(isLastNode);
-//      if (!ctx.getKeyType().equals(ContextType.ORGANIZATION)) {
-//        Assert.isTrue(parent != null && isCtxLoaded(parent),
-//          "Context " + ctx.toString() + " doesn't have a parent = '" + parent.toString() + "' or parent isn't loaded !");
-//        contexts.put(ctx, current);
-//        this.linkToParent(ctx, parent);
-//      } else {
-//        contexts.put(ctx, current);
-//      }
-//    } else if (!ctx.getKeyType().equals(ContextType.ORGANIZATION)) {
-//      Assert.isTrue(parent != null && isCtxLoaded(parent),
-//        "Context " + ctx.toString() + " doesn't have a parent = '" + parent.toString() + "' or parent isn't loaded !");
-//      this.linkToParent(ctx, parent);
+      contexts.put(ctx,permType);
     }
   }
 
@@ -93,25 +80,29 @@ public class UserContextTree {
    * @return
    */
   public PermissionType getRoleFromContext(@NotNull final StructureKey ctx) {
-    if (userTreeLoaded) {
+    if (userRolesLoaded) {
       if (this.superAdmin) return PermissionType.ADMIN;
       if (contexts.containsKey(ctx)) return contexts.get(ctx);
-      log.warn("Call getRoleFromContextTree - StructureKey {} not found in User Tree !", ctx);
+      log.warn("Call getRoleFromContext - StructureKey {} not found in User Roles !", ctx);
     } else {
-      log.warn("Call getRoleFromContextTree - User Tree is not loaded !");
+      log.warn("Call getRoleFromContext - User Roles are not loaded !");
     }
     return null;
+  }
+
+  public boolean hasContextRoles() {
+    return !this.contexts.isEmpty();
   }
 
   public boolean isCtxLoaded(final StructureKey ctx) {
     return contexts.containsKey(ctx) && contexts.get(ctx) != null;
   }
 
-  public boolean isTreeLoaded() {
-    return superAdmin != null && userTreeLoaded;
+  public boolean areRolesLoaded() {
+    return superAdmin != null && userRolesLoaded;
   }
 
-  public boolean isTreeLoadInProgress() {
+  public boolean areRolesLoadInProgress() {
     return loadingInProgress;
   }
 
@@ -123,12 +114,12 @@ public class UserContextTree {
     loadingInProgress = true;
     contexts.clear();
     superAdmin = null;
-    userTreeLoaded = false;
+    userRolesLoaded = false;
     log.debug("============ >>>>>>> processingLoading");
   }
 
   public void notifyEndLoading() {
-    userTreeLoaded = true;
+    userRolesLoaded = true;
     // we set this expiration time to avoid to make several reload at the same time
     expiringInstant = Instant.now().plus(duration);
     loadingInProgress = false;
@@ -138,9 +129,9 @@ public class UserContextTree {
 
   @Override
   public String toString() {
-    StringBuilder str = new StringBuilder("UserContextTree{" +
+    StringBuilder str = new StringBuilder("UserContextRoles{" +
       "superAdmin=" + superAdmin +
-      ", userTreeLoaded=" + userTreeLoaded +
+      ", userRolesLoaded=" + userRolesLoaded +
       ", contexts= [");
 
     for (Map.Entry<StructureKey, PermissionType> entry : contexts.entrySet()) {

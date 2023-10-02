@@ -15,11 +15,13 @@
  */
 package fr.recia.glc.ldap;
 
+import fr.recia.glc.db.enums.CategorieStructure;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -57,7 +59,12 @@ public class ExternalGroupHelper {
   private String groupDNSubPath;
 
   private Pattern structureFromGroupPattern = Pattern.compile("([^:]+):([^:]+):(([^:_]+)(_(\\d{7}[^:]+))?):Tous_[^:]+");
-  private String filterGroupsOfStructure = "(&(cn=*:Etablissements:*:tous*)(!(cn=*:*:*:*:*)))";
+  private String filterGroupsOfStructure = "(&(|(cn=*:Etablissements:*:tous*)(cn=*:Services_Academique:*:tous*))(!(cn=*:*:*:*:*)))";
+  private Map<CategorieStructure, Pattern> structureCategoriesPatterns = Map.ofEntries(
+    Map.entry(CategorieStructure.Etablissement,  Pattern.compile("((esco)|(clg[0-9]{2})|(agri)|(cfa)|(ef2s)):.*")),
+    Map.entry(CategorieStructure.Collectivite_locale, Pattern.compile("coll:.*")),
+    Map.entry(CategorieStructure.Service_academique, Pattern.compile("acad:.*"))
+  );
 
   public ExternalGroupHelper(
     String groupIdAttribute, String groupDisplayNameAttribute, String groupSearchAttribute, String groupMembersAttribute,

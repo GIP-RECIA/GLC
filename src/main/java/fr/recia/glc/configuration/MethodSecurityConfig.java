@@ -17,6 +17,14 @@ package fr.recia.glc.configuration;
 
 import fr.recia.glc.security.AuthoritiesConstants;
 import fr.recia.glc.security.CustomPermissionEvaluator;
+import fr.recia.glc.services.beans.AuthoritiesDefinition;
+import fr.recia.glc.services.beans.IAuthoritiesDefinition;
+import fr.recia.glc.services.evaluators.IEvaluation;
+import fr.recia.glc.services.evaluators.OperatorEvaluation;
+import fr.recia.glc.services.evaluators.OperatorType;
+import fr.recia.glc.services.evaluators.StringEvaluationMode;
+import fr.recia.glc.services.evaluators.UserAttributesEvaluation;
+import fr.recia.glc.services.evaluators.UserMultivaluedAttributesEvaluation;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +38,10 @@ import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.util.Assert;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Configuration
 @AutoConfigureBefore(SecurityConfiguration.class)
@@ -37,9 +49,11 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
   private ApplicationContext applicationContext;
+  private final GLCProperties glcProperties;
 
-  public MethodSecurityConfig(ApplicationContext applicationContext) {
+  public MethodSecurityConfig(ApplicationContext applicationContext, GLCProperties glcProperties) {
     this.applicationContext = applicationContext;
+    this.glcProperties = glcProperties;
   }
 
   @Bean
@@ -81,5 +95,40 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
     return expressionHandler;
   }
+
+  @Bean
+  public IAuthoritiesDefinition mainRolesDefs() {
+    Assert.notNull(glcProperties, "Properties must not be null");
+    AuthoritiesDefinition defs = new AuthoritiesDefinition();
+
+    Set<IEvaluation> set = new HashSet<>();
+
+    final String userAdmin = glcProperties.getAdmins().getUserName();
+    if (userAdmin != null && !userAdmin.isEmpty()) {
+      final UserAttributesEvaluation uae1 = new UserAttributesEvaluation("uid", userAdmin, StringEvaluationMode.EQUALS);
+      set.add(uae1);
+    }
+
+    final String groupAdmin = glcProperties.getAdmins().getGroupName();
+    if (groupAdmin != null && !groupAdmin.isEmpty()) {
+      final UserAttributesEvaluation uae2 = new UserMultivaluedAttributesEvaluation("isMemberOf", groupAdmin, StringEvaluationMode.EQUALS);
+      set.add(uae2);
+    }
+
+    Assert.isTrue(set.size() > 0, "Properties that define admins aren't set in properties, there are needed to define an Admin user" +
+      ", name should be 'app.admins.userName' or 'app.admins.groupName'");
+
+    OperatorEvaluation admins = new OperatorEvaluation(OperatorType.OR, set);
+    defs.setAdmins(admins);
+
+    final String groupUsers = glcProperties.getUsers().getGroupName();
+    UserMultivaluedAttributesEvaluation umae = new UserMultivaluedAttributesEvaluation("isMemberOf", groupUsers, StringEvaluationMode.MATCH);
+    defs.setUsers(umae);
+
+    Assert.isTrue(!groupUsers.isEmpty(), "Properties that define users aren't set in properties, there are needed to define all access users" +
+      ", name should be 'app.users.groupName'");
+    return defs;
+  }
+
 
 }

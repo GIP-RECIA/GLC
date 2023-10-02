@@ -15,23 +15,16 @@
  */
 package fr.recia.glc.security;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.mysema.commons.lang.Pair;
-import fr.recia.glc.services.beans.UserContextTree;
+import fr.recia.glc.services.beans.UserContextRole;
 import fr.recia.glc.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Complex bean to obtains objects Organization, Publisher, Category, Internal/ExternalFeed, Item where the authenticated user has a permission.
@@ -40,35 +33,34 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 public class UserContextLoaderServiceImpl implements UserContextLoaderService {
 
   @Inject
-  public UserContextTree userSessionTree;
+  public UserContextRole userSessionRoles;
 
-  public void loadUserTree(Authentication authentication) {
-    loadUserTree(((CustomUserDetails) authentication.getPrincipal()).getUser(),
+  public void loadUserRoles(Authentication authentication) {
+    loadUserRoles(((CustomUserDetails) authentication.getPrincipal()).getUser(),
       ((CustomUserDetails) authentication.getPrincipal()).getAuthorities());
   }
 
   public void doExpireForReload() {
-    userSessionTree.setExpiringInstant(null);
+    userSessionRoles.setExpiringInstant(null);
   }
 
-  public synchronized void loadUserTree(final UserDTO user, final Collection<? extends GrantedAuthority> authorities) {
+  public synchronized void loadUserRoles(final UserDTO user, final Collection<? extends GrantedAuthority> authorities) {
     // init userTree
-    if (!userSessionTree.loadingCanBeDone()) {
-      log.debug("loadUserTree can't be done !");
+    if (!userSessionRoles.loadingCanBeDone()) {
+      log.debug("loadUserRoles can't be done !");
       return;
     }
-    if (userSessionTree.isTreeLoadInProgress()) {
+    if (userSessionRoles.areRolesLoadInProgress()) {
       // we should wait that the loading is done
       long totalSleep = 0;
       boolean isInterrupted = false;
-      log.debug("watching loading : {}", userSessionTree.toString());
-      while (userSessionTree.isTreeLoadInProgress() && totalSleep < 10000) {
+      log.debug("watching loading : {}", userSessionRoles.toString());
+      while (userSessionRoles.areRolesLoadInProgress() && totalSleep < 10000) {
         try {
-          log.debug("waiting loading : {}", userSessionTree.toString());
+          log.debug("waiting loading : {}", userSessionRoles.toString());
           Thread.sleep(300);
           totalSleep += 300;
         } catch (InterruptedException e) {
@@ -85,12 +77,12 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
       return;
     }
     log.warn("========================= WARNING loadingUserTree ========================");
-    userSessionTree.processingLoading();
+    userSessionRoles.processingLoading();
     if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) {
-      userSessionTree.setSuperAdmin(true);
+      userSessionRoles.setSuperAdmin(true);
     } else if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
-      userSessionTree.setSuperAdmin(false);
-      log.debug("Call loadUserTree for USER access !");
+      userSessionRoles.setSuperAdmin(false);
+      log.debug("Call loadUserRoles for USER access !");
 //      // Load list of organizations
 //
 //      @SuppressWarnings("unchecked") final List<PermissionOnContext> perms = Lists.newArrayList(permissionDao.getPermissionDao(
@@ -129,11 +121,11 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
 //        }
 //      }
     } else {
-      userSessionTree.setSuperAdmin(false);
+      userSessionRoles.setSuperAdmin(false);
     }
-    userSessionTree.notifyEndLoading();
+    userSessionRoles.notifyEndLoading();
     if (log.isDebugEnabled()) {
-      log.debug("Tree loaded : {}", userSessionTree.toString());
+      log.debug("Tree loaded : {}", userSessionRoles.toString());
     }
   }
 

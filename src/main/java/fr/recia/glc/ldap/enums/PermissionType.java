@@ -30,7 +30,7 @@ import lombok.Getter;
 @JsonDeserialize(using = PermissionTypeDeserializer.class)
 public enum PermissionType {
 
-  // Warning the order should be greater rights to lessers
+  // Warning the order should be greater rights to lessor's
   /**
    * Admin.
    */

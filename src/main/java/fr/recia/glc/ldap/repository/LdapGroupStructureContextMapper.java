@@ -27,8 +27,10 @@ import org.springframework.util.Assert;
 
 import javax.naming.NamingException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -53,21 +55,9 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
     DirContextAdapter context = (DirContextAdapter) ctx;
     StructureFromGroup structure = new StructureFromGroup();
 
-    Set<String> types = Arrays.stream(context.getStringAttributes("ObjectClass")).collect(Collectors.toSet());
-    CategorieStructure cat = null;
-    if (types.contains("ENTCollLoc")) {
-      cat = CategorieStructure.Collectivite_locale;
-    } else if (types.contains("ENTEtablissement")) {
-      cat = CategorieStructure.Etablissement;
-    } else if (types.contains("ENTServAc")) {
-      cat = CategorieStructure.Service_academique;
-    } else if (types.contains("ENTEntreprise")) {
-      cat = CategorieStructure.Entreprise;
-    } else throw new IllegalArgumentException(String.format("Types inconnus from {}", types));
-
     final String groupId = context.getStringAttribute(externalGroupHelper.getGroupIdAttribute());
 
-    structure.setStructureKey(new StructureKey(groupId, cat));
+    structure.setStructureKey(new StructureKey(groupId, getCategorieStructure(groupId)));
 
     // extract infos from pattern
     // récupération du groupe 1 pour la branche, le groupe 3 à split pour le displayName et l'UAI, le groupe 3 pour avoir le nom du groupe de l'établissement
@@ -81,6 +71,13 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
     }
 
     return structure;
+  }
+
+  private CategorieStructure getCategorieStructure(final String group) {
+    for (Map.Entry<CategorieStructure, Pattern> entry: externalGroupHelper.getStructureCategoriesPatterns().entrySet()) {
+      if (entry.getValue().matcher(group).matches()) return entry.getKey();
+    }
+    throw new IllegalArgumentException(String.format("Extracted Structure type unknown from %s", group));
   }
 
   public ExternalGroupHelper getLdapGroupHelper() {
