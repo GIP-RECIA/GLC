@@ -33,5 +33,4 @@ public interface IPermissionService {
 
   boolean hasAuthorizedStructure(Authentication authentication);
 
-
 }

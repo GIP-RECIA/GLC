@@ -64,10 +64,13 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
   @Bean
   public RoleHierarchy roleHierarchy() {
     RoleHierarchyImpl rhi = new RoleHierarchyImpl();
-    rhi.setHierarchy(AuthoritiesConstants.ADMIN + " > " +
+    rhi.setHierarchy(
+      AuthoritiesConstants.ADMIN + " > " +
       AuthoritiesConstants.USER + " > " +
       AuthoritiesConstants.AUTHENTICATED + " > " +
-      AuthoritiesConstants.ANONYMOUS);
+      AuthoritiesConstants.ANONYMOUS
+    );
+
     return rhi;
   }
 

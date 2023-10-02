@@ -52,26 +52,25 @@ public class PermissionServiceImpl implements IPermissionService {
   }
 
   @Override
-  public PermissionType getRoleOfUserInContext(@NotNull Authentication authentication,
-                                               @NotNull final StructureKey contextKey) {
+  public PermissionType getRoleOfUserInContext(
+    @NotNull Authentication authentication, @NotNull final StructureKey contextKey
+  ) {
     return getRoleOfUserInContext(
       ((CustomUserDetails) authentication.getPrincipal()).getUser(),
       ((CustomUserDetails) authentication.getPrincipal()).getAuthorities(),
       contextKey);
   }
 
-  private PermissionType getRoleOfUserInContext(final UserDTO user,
-                                                final Collection<? extends GrantedAuthority> authorities,
-                                                final StructureKey contextKey) {
-    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) {
-      return PermissionType.ADMIN;
-    }
+  private PermissionType getRoleOfUserInContext(
+    final UserDTO user, final Collection<? extends GrantedAuthority> authorities, final StructureKey contextKey
+  ) {
+    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) return PermissionType.ADMIN;
 
-    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))
-      && contextKey != null && contextKey.getKeyId() != null && contextKey.getKeyType() != null) {
-      if (!userContextRole.areRolesLoaded()) {
+    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER)) &&
+      contextKey != null && contextKey.getKeyId() != null && contextKey.getKeyType() != null) {
+      if (!userContextRole.areRolesLoaded())
         userContextLoaderService.loadUserRoles(user, authorities);
-      }
+
       return userContextRole.getRoleFromContext(contextKey);
     }
 
@@ -84,15 +83,13 @@ public class PermissionServiceImpl implements IPermissionService {
     final Collection<? extends GrantedAuthority> authorities = ((CustomUserDetails) authentication.getPrincipal()).getAuthorities();
 
     log.debug("Testing canManageCtx in context {} for  user {}", structureKey, user);
-    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) {
-      return true;
-    }
+    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) return true;
 
     if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
-      if (!userContextRole.areRolesLoaded()) {
+      if (!userContextRole.areRolesLoaded())
         userContextLoaderService.loadUserRoles(user, authorities);
-      }
       final PermissionType perm = userContextRole.getRoleFromContext(structureKey);
+
       return perm != null && perm.getMask() >= PermissionType.MANAGER.getMask();
     }
 
@@ -103,15 +100,13 @@ public class PermissionServiceImpl implements IPermissionService {
     final UserDTO user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
     final Collection<? extends GrantedAuthority> authorities = ((CustomUserDetails) authentication.getPrincipal()).getAuthorities();
     log.debug("Testing canViewCtx in context {} for  user {}", structureKey, user);
-    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) {
-      return true;
-    }
+    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) return true;
 
     if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
-      if (!userContextRole.areRolesLoaded()) {
+      if (!userContextRole.areRolesLoaded())
         userContextLoaderService.loadUserRoles(user, authorities);
-      }
       final PermissionType perm = userContextRole.getRoleFromContext(structureKey);
+
       return perm != null && perm.getMask() >= PermissionType.LOOKOVER.getMask();
 
     }
@@ -125,17 +120,13 @@ public class PermissionServiceImpl implements IPermissionService {
 
     log.debug("Testing hasAuthorizedStructure for  user {}", user);
 
-    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) {
-      return true;
-    }
+    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) return true;
 
     if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
-      if (!userContextRole.areRolesLoaded()) {
+      if (!userContextRole.areRolesLoaded())
         userContextLoaderService.loadUserRoles(user, authorities);
-      }
 
       return userContextRole.hasContextRoles();
-
     }
 
     return false;

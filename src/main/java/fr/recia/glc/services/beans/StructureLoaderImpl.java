@@ -26,8 +26,10 @@ import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Slf4j
@@ -48,16 +50,39 @@ public class StructureLoaderImpl implements IStructureLoader {
   private void loadingStructures() {
     loadedStructures = groupDao.getStructuresFromGroups();
     loadedStructures.forEach(structure -> {
-      if (loadedStructuresByBranch.containsKey(structure.getGroupBranch())) {
+      if (loadedStructuresByBranch.containsKey(structure.getGroupBranch()))
         loadedStructuresByBranch.get(structure.getGroupBranch()).add(structure);
-      } else {
-         loadedStructuresByBranch.put(structure.getGroupBranch(), Sets.newHashSet(structure));
-      }
+      else loadedStructuresByBranch.put(structure.getGroupBranch(), Sets.newHashSet(structure));
     });
-    log.debug("Loaded Structure: {}", loadedStructuresByBranch);
-  }
+    log.debug(
+      "Loaded Structure: {}",
+      loadedStructuresByBranch.keySet().stream()
+        .map(key -> {
+          List<String> values = loadedStructuresByBranch.get(key).stream()
+            .map(structure -> "\n\t\t\t{" +
+              "\n\t\t\t\t\"keyId\": \"" + structure.getStructureKey().getKeyId() + "\"" +
+              ",\n\t\t\t\t\"keyType\": \"" + structure.getStructureKey().getKeyType() + "\"" +
+              ",\n\t\t\t\t\"UAI\": \"" + structure.getUAI() + "\"" +
+              ",\n\t\t\t\t\"displayName\": \"" + structure.getDisplayName() + "\"" +
+              ",\n\t\t\t\t\"groupBranch\": \"" + structure.getGroupBranch() + "\"" +
+              ",\n\t\t\t\t\"groupNameEtab\": \"" + structure.getGroupNameEtab() + "\"" +
+              "\n\t\t\t}"
+            )
+            .collect(Collectors.toList());
 
-  //TODO managing structure refresh like a cache but on  managed way like on esco-ChangeEtablissement
+          return "\t{" +
+            "\n\t\t\"" + key + "\": " + values +
+            "\n\t}";
+        })
+        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+    );
+    log.debug(
+      "Loaded Structure recap: {}",
+      loadedStructuresByBranch.keySet().stream()
+        .map(key -> "\t{ \"" + key + "\": " + loadedStructuresByBranch.get(key).size() + " }")
+        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+    );
+  }
 
   @Override
   public Set<IStructure> getStructuresOfBranch(String branchGroup) {
@@ -68,4 +93,5 @@ public class StructureLoaderImpl implements IStructureLoader {
   public Set<IStructure> getAllStructures() {
     return loadedStructures;
   }
+
 }
