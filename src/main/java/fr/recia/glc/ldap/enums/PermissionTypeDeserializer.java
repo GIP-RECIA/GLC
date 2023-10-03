@@ -31,11 +31,10 @@ public class PermissionTypeDeserializer extends JsonDeserializer<PermissionType>
   @Override
   public PermissionType deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
     PermissionType type = PermissionType.fromName(jp.getValueAsString());
-    if (type != null) {
-      return type;
-    }
-    throw new JsonMappingException(jp, String.format("Invalid value '%s' for %s, must be in range of %s", jp.getValueAsString(),
-      PermissionType.class.getSimpleName(), PermissionType.values().toString()));
+    if (type != null) return type;
+    throw new JsonMappingException(jp, String.format("Invalid value '%s' for %s, must be in range of %s",
+      jp.getValueAsString(), PermissionType.class.getSimpleName(), PermissionType.values().toString()
+    ));
   }
 
 }

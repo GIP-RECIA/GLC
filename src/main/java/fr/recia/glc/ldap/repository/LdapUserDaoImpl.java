@@ -21,8 +21,7 @@ import fr.recia.glc.ldap.ExternalUserHelper;
 import fr.recia.glc.ldap.IExternalUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.ldap.core.ContextMapper;
@@ -46,15 +45,11 @@ import java.util.List;
 /**
  * @author GIP RECIA - Julien Gribonvald 11 juil. 2014
  */
+@Slf4j
 @Service
 @Data
 @AllArgsConstructor
 public class LdapUserDaoImpl implements IExternalUserDao {
-
-  /**
-   * Logger.
-   */
-  private final Logger logger = LoggerFactory.getLogger(getClass());
 
   /**
    * Spring template used to perform search in the ldap.
@@ -78,8 +73,8 @@ public class LdapUserDaoImpl implements IExternalUserDao {
     final AndFilter filter = new AndFilter();
     filter.append(new EqualsFilter(externalUserHelper.getUserIdAttribute(),
       uid));
-    if (logger.isDebugEnabled()) {
-      logger.debug("LDAP filter applied : " + filter);
+    if (log.isDebugEnabled()) {
+      log.debug("LDAP filter applied : " + filter);
     }
     ContextMapper<IExternalUser> mapper = new LdapUserContextMapper(
       this.externalUserHelper);
@@ -95,8 +90,8 @@ public class LdapUserDaoImpl implements IExternalUserDao {
     } catch (IncorrectResultSizeDataAccessException e) {
       user = null;
     }
-    if (logger.isDebugEnabled()) {
-      logger.debug("LDAP user found : {}", user);
+    if (log.isDebugEnabled()) {
+      log.debug("LDAP user found : {}", user);
     }
     return user;
   }
@@ -166,10 +161,10 @@ public class LdapUserDaoImpl implements IExternalUserDao {
     for (IExternalUser externalUser : getUsersByUids(uids)) {
       String mail = externalUser.getEmail();
       if (mail != null) {
-        logger.debug("mail added to list :" + mail);
+        log.debug("mail added to list :" + mail);
         retVal.add(mail.trim());
       } else {
-        logger.warn("no mail for " + externalUser.getId());
+        log.warn("no mail for " + externalUser.getId());
       }
     }
     return retVal;
@@ -220,8 +215,8 @@ public class LdapUserDaoImpl implements IExternalUserDao {
   // @Cacheable(value = "ExternalUsers", key = "#filter")
   private List<IExternalUser> searchWithFilter(final Filter filter) {
     final String filterAsStr = filter.encode();
-    if (logger.isDebugEnabled()) {
-      logger.debug("LDAP filter applied : " + filterAsStr);
+    if (log.isDebugEnabled()) {
+      log.debug("LDAP filter applied : " + filterAsStr);
     }
     ContextMapper<IExternalUser> mapper = new LdapUserContextMapper(
       this.externalUserHelper);

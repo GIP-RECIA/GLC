@@ -41,8 +41,10 @@ public class LdapGroupRegexpDisplayNameFormatterESCO implements IExternalGroupDi
 
   private final ExternalGroupHelper externalGroupHelper;
 
-  public LdapGroupRegexpDisplayNameFormatterESCO(final ExternalGroupHelper externalGroupHelper, final String groupNamePattern,
-                                                 final String groupNameRegex, final String strIndex, final String strSeparator, final String suffixAppend) {
+  public LdapGroupRegexpDisplayNameFormatterESCO(
+    final ExternalGroupHelper externalGroupHelper, final String groupNamePattern, final String groupNameRegex,
+    final String strIndex, final String strSeparator, final String suffixAppend
+  ) {
     Assert.hasText(groupNamePattern, "You should provide a Pattern to format Groups Name (bean alternative should be used if you doesn't want to use this one) !");
     Assert.hasText(groupNameRegex, "You should provide a Group Matcher to format Groups Name (bean alternative should be used if you doesn't want to use this one) !");
     Assert.hasText(strIndex, "You should provide a Group Index to format Groups Name (bean alternative should be used if you doesn't want to use this one) !");
@@ -54,14 +56,9 @@ public class LdapGroupRegexpDisplayNameFormatterESCO implements IExternalGroupDi
     for (int i = 0; i < indexes.length; i++) {
       this.grpNameIndex[i] = Integer.parseInt(indexes[i]);
     }
-    Assert.isTrue(this.grpNameIndex.length > 0,
-      "You should provide a Group Index to format Groups Name (bean alternative should be used if you doesn't want to use this one) !");
-    if (StringUtils.hasLength(strSeparator)) {
-      this.grpSeparator = strSeparator;
-    }
-    if (StringUtils.hasLength(suffixAppend)) {
-      this.grpSuffixe = suffixAppend;
-    }
+    Assert.isTrue(this.grpNameIndex.length > 0, "You should provide a Group Index to format Groups Name (bean alternative should be used if you doesn't want to use this one) !");
+    if (StringUtils.hasLength(strSeparator)) this.grpSeparator = strSeparator;
+    if (StringUtils.hasLength(suffixAppend)) this.grpSuffixe = suffixAppend;
   }
 
   @Override

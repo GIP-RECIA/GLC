@@ -44,8 +44,10 @@ public class LdapGroupAttachMemberDesignerImpl implements IGroupMemberDesigner {
 
   private final Pattern patternGroupIntoAttach;
 
-  public LdapGroupAttachMemberDesignerImpl(@NotNull final ExternalGroupHelper externalGroupHelper, @NotNull final String groupRootPattern,
-                                           @NotNull final String groupAttachEndMatch, @NotEmpty final List<String> groupToAttachEndPattern) {
+  public LdapGroupAttachMemberDesignerImpl(
+    @NotNull final ExternalGroupHelper externalGroupHelper, @NotNull final String groupRootPattern,
+    @NotNull final String groupAttachEndMatch, @NotEmpty final List<String> groupToAttachEndPattern
+  ) {
     this.externalGroupHelper = externalGroupHelper;
     this.groupAttachEndMatch = groupAttachEndMatch;
     this.groupToAttachEndPattern = groupToAttachEndPattern;
@@ -60,7 +62,12 @@ public class LdapGroupAttachMemberDesignerImpl implements IGroupMemberDesigner {
     if (profMatcher.matches()) {
       StringBuilder filter = new StringBuilder("(|");
       for (String endPattern : groupToAttachEndPattern) {
-        filter.append("(").append(externalGroupHelper.getGroupSearchAttribute()).append("=").append(group.getId().replaceFirst(groupAttachEndMatch, endPattern)).append(")");
+        filter
+          .append("(")
+          .append(externalGroupHelper.getGroupSearchAttribute())
+          .append("=")
+          .append(group.getId().replaceFirst(groupAttachEndMatch, endPattern))
+          .append(")");
       }
       filter.append(")");
       log.debug(" ldap filter that will be used : {}", filter);
@@ -77,9 +84,8 @@ public class LdapGroupAttachMemberDesignerImpl implements IGroupMemberDesigner {
 
   @Override
   public boolean isDesignerMatchGroup(String groupId) {
-    if (groupId != null && !groupId.isEmpty()) {
+    if (groupId != null && !groupId.isEmpty())
       return patternGroupIntoAttach.matcher(groupId).matches();
-    }
     return false;
   }
 

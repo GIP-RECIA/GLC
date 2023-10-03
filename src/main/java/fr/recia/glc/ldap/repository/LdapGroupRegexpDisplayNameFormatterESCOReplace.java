@@ -36,13 +36,13 @@ public class LdapGroupRegexpDisplayNameFormatterESCOReplace implements IExternal
     // setting as new displayName the origin displayName formatted
     group.setDisplayName(format(input.getDisplayName()));
     log.debug("DisplayNameFormatter renamed {} to {}", input.getDisplayName(), group.getDisplayName());
+
     return group;
   }
 
   private String format(String input) {
-    if (input != null && !input.isEmpty()) {
+    if (input != null && !input.isEmpty())
       return input.replaceFirst("Tous_", "").replaceAll("_", " ");
-    }
     return input;
   }
 

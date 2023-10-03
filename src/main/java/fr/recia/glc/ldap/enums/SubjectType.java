@@ -63,9 +63,7 @@ public enum SubjectType {
   public static SubjectType fromName(final String name) {
     if (name != null) {
       for (SubjectType val : SubjectType.values()) {
-        if (name.equalsIgnoreCase(val.toString())) {
-          return val;
-        }
+        if (name.equalsIgnoreCase(val.toString())) return val;
       }
     }
     return null;
