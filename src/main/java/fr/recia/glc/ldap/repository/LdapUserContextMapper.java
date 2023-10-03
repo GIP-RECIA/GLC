@@ -48,54 +48,40 @@ public class LdapUserContextMapper implements ContextMapper<IExternalUser> {
   public IExternalUser mapFromContext(Object ctx) throws NamingException {
     Assert.notNull(externalUserHelper, "The externalUserHelper should not be null !");
     DirContextAdapter context = (DirContextAdapter) ctx;
-    Map<String, List<String>> attrs = new HashMap<String, List<String>>();
+    Map<String, List<String>> attrs = new HashMap<>();
     ExternalUser person = new ExternalUser();
-    person.setId(context.getStringAttribute(externalUserHelper
-      .getUserIdAttribute()));
-    attrs.put(externalUserHelper.getUserIdAttribute(),
-      Lists.newArrayList(person.getId()));
-    person.setDisplayName(context.getStringAttribute(externalUserHelper
-      .getUserDisplayNameAttribute()));
-    attrs.put(externalUserHelper.getUserDisplayNameAttribute(),
-      Lists.newArrayList(person.getDisplayName()));
+    person.setId(context.getStringAttribute(externalUserHelper.getUserIdAttribute()));
+    attrs.put(externalUserHelper.getUserIdAttribute(), Lists.newArrayList(person.getId()));
+    person.setDisplayName(context.getStringAttribute(externalUserHelper.getUserDisplayNameAttribute()));
+    attrs.put(externalUserHelper.getUserDisplayNameAttribute(), Lists.newArrayList(person.getDisplayName()));
 
     if (context.attributeExists(externalUserHelper.getUserEmailAttribute())) {
-      person.setEmail(context.getStringAttribute(externalUserHelper
-        .getUserEmailAttribute()));
-      attrs.put(externalUserHelper.getUserEmailAttribute(),
-        Lists.newArrayList(person.getEmail()));
+      person.setEmail(context.getStringAttribute(externalUserHelper.getUserEmailAttribute()));
+      attrs.put(externalUserHelper.getUserEmailAttribute(), Lists.newArrayList(person.getEmail()));
     }
 
     if (externalUserHelper.getUserGroupAttribute() != null
       && !externalUserHelper.getUserGroupAttribute().isEmpty()
-      && context.attributeExists(externalUserHelper
-      .getUserGroupAttribute())) {
-      attrs.put(externalUserHelper.getUserGroupAttribute(), Lists
-        .newArrayList(context
-          .getStringAttributes(externalUserHelper
-            .getUserGroupAttribute())));
+      && context.attributeExists(externalUserHelper.getUserGroupAttribute())) {
+      attrs.put(
+        externalUserHelper.getUserGroupAttribute(),
+        Lists.newArrayList(context.getStringAttributes(externalUserHelper.getUserGroupAttribute()))
+      );
     }
 
     if (externalUserHelper.getOtherUserDisplayedAttributes() != null
-      && !externalUserHelper.getOtherUserDisplayedAttributes()
-      .isEmpty()) {
-      for (String attr : externalUserHelper
-        .getOtherUserDisplayedAttributes()) {
+      && !externalUserHelper.getOtherUserDisplayedAttributes().isEmpty()) {
+      for (String attr : externalUserHelper.getOtherUserDisplayedAttributes()) {
         if (context.attributeExists(attr)) {
-          attrs.put(attr,
-            Arrays.asList(context.getStringAttributes(attr)));
+          attrs.put(attr, Arrays.asList(context.getStringAttributes(attr)));
         }
       }
     }
 
-    if (externalUserHelper.getOtherUserAttributes() != null
-      && !externalUserHelper.getOtherUserAttributes()
-      .isEmpty()) {
-      for (String attr : externalUserHelper
-        .getOtherUserAttributes()) {
+    if (externalUserHelper.getOtherUserAttributes() != null && !externalUserHelper.getOtherUserAttributes().isEmpty()) {
+      for (String attr : externalUserHelper.getOtherUserAttributes()) {
         if (context.attributeExists(attr)) {
-          attrs.put(attr,
-            Arrays.asList(context.getStringAttributes(attr)));
+          attrs.put(attr, Arrays.asList(context.getStringAttributes(attr)));
         }
       }
     }

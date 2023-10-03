@@ -15,9 +15,7 @@
  */
 package fr.recia.glc.security;
 
-import com.querydsl.core.types.Predicate;
 import fr.recia.glc.ldap.StructureKey;
-import fr.recia.glc.ldap.enums.ContextType;
 import fr.recia.glc.ldap.enums.PermissionType;
 import org.springframework.security.core.Authentication;
 

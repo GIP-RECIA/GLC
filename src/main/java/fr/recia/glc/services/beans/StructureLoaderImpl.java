@@ -18,9 +18,15 @@ package fr.recia.glc.services.beans;
 import com.google.common.collect.Sets;
 import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.ldap.repository.IExternalGroupDao;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.Duration;
+import org.joda.time.Instant;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.cache.Cache;
+import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
@@ -29,11 +35,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Slf4j
-public class StructureLoaderImpl implements IStructureLoader {
+public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
 
   Set<IStructure> loadedStructures = new HashSet<>();
 
@@ -48,6 +56,10 @@ public class StructureLoaderImpl implements IStructureLoader {
 
   @PostConstruct
   private void loadingStructures() {
+    init();
+  }
+
+  private void init() {
     loadedStructures = groupDao.getStructuresFromGroups();
     loadedStructures.forEach(structure -> {
       if (loadedStructuresByBranch.containsKey(structure.getGroupBranch()))
@@ -92,6 +104,108 @@ public class StructureLoaderImpl implements IStructureLoader {
   @Override
   public Set<IStructure> getAllStructures() {
     return loadedStructures;
+  }
+
+  /* managing structure refresh like a cache but on managed way like on esco-ChangeEtablissement */
+
+  /**
+   * Cache Read / Write lock.
+   */
+  private final ReentrantReadWriteLock cacheRwl = new ReentrantReadWriteLock();
+  private final Lock cacheRl = cacheRwl.readLock();
+  private final Lock cacheWl = cacheRwl.writeLock();
+
+  /**
+   * Instant when the cache will be expiring.
+   */
+  @Getter
+  @Setter
+  protected volatile Instant expiringInstant;
+
+  @Getter
+  @Setter
+  private Cache c1;
+
+  @Getter
+  @Setter
+  private Cache c2;
+
+  /**
+   * Configured caching duration (default 1 hour).
+   */
+  private Duration cachingDuration = Duration.standardHours(1L);
+
+  /**
+   * Configured caching duration (default 3 second).
+   */
+  private Duration refreshExpiredDuration = Duration.standardSeconds(3);
+
+  /**
+   * True if cache is loading.
+   */
+  private volatile boolean loadingInProgress = false;
+
+//  protected synchronized void reload() {
+//    // Test if another concurrent thread just didn't already load the cache
+//    if (this.cacheLoadingNeeded()) {
+//      this.loadingInProgress = true;
+//      log.debug("Loading structure cache...");
+//
+//      init();
+//    }
+//  }
+
+  /**
+   * Test if a cache loading is needed.
+   * Cache loading is needed if Cache is not initialized or is expired and no loading is already in progress.
+   *
+   * @return true if cache loading is needed.
+   */
+  protected boolean cacheLoadingNeeded() {
+    return (this.expiringInstant == null || this.expiringInstant.isBeforeNow()) && !this.loadingInProgress;
+  }
+
+  /**
+   * Getter of cachingDuration.
+   *
+   * @return the cachingDuration
+   */
+  public long getCachingDuration() {
+    return this.cachingDuration.getMillis();
+  }
+
+  /**
+   * Setter of cachingDuration (in ms).
+   *
+   * @param cachingDuration the cachingDuration to set
+   */
+  public void setCachingDuration(final long cachingDuration) {
+    this.cachingDuration = Duration.millis(cachingDuration);
+  }
+
+  /**
+   * Getter of refreshExpiredDuration
+   *
+   * @return the refreshExpiredDuration
+   */
+  public long getRefreshExpiredDuration() {
+    return refreshExpiredDuration.getMillis();
+  }
+
+  /**
+   * Setter of refreshExpiredDuration
+   *
+   * @param refreshExpiredDuration the refreshExpiredDuration to set
+   */
+  public void setRefreshExpiredDuration(final long refreshExpiredDuration) {
+    this.refreshExpiredDuration = Duration.millis(refreshExpiredDuration);
+  }
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
+//    Assert.notNull(this.groupDao, "No IExternalGroupDao configured !");
+//    Assert.notNull(this.c1, "No c1 cache configured !");
+//    Assert.notNull(this.c2, "No c2 cache configured !");
   }
 
 }
