@@ -39,17 +39,24 @@ public enum PermissionType {
    * Manager.
    */
   MANAGER(2, "MANAGER", 64, "enum.permission.manager.title"),
+  MANAGER_BRANCH(3, "MANAGER_BRANCH", 64, "enum.permission.manager.title"),
   /**
    * No Permission expect to look over the object and go on his childs.
    */
-  LOOKOVER(5, "LOOKOVER", 0, "enum.permission.lookover.title");
-  // ,
-  // /** User. */
-  // USER(2, 8, "permission.user.desc"),
-  // /** Authenticated User And Without Permission. */
-  // AUTHENTICATED(1, 4, "permission.authenticated.desc"),
-  // /** UnAuthenticated Users */
-  // ANONYMOUS(0, 0, "permission.anonymous.desc");
+  LOOKOVER(4, "LOOKOVER", 0, "enum.permission.lookover.title"),
+  LOOKOVER_BRANCH(5, "LOOKOVER_BRANCH", 0, "enum.permission.lookover.title");
+//  /**
+//   * User.
+//   */
+//  USER(8, "USER", 8, "permission.user.desc"),
+//  /**
+//   * Authenticated User And Without Permission.
+//   */
+//  AUTHENTICATED(9, "AUTHENTICATED", 4, "permission.authenticated.desc"),
+//  /**
+//   * UnAuthenticated Users
+//   */
+//  ANONYMOUS(10, "ANONYMOUS", 0, "permission.anonymous.desc");
 
   /**
    * Identifier.
@@ -71,9 +78,7 @@ public enum PermissionType {
   public static PermissionType fromName(final String name) {
     if (name != null) {
       for (PermissionType val : PermissionType.values()) {
-        if (name.equalsIgnoreCase(val.toString())) {
-          return val;
-        }
+        if (name.equalsIgnoreCase(val.toString())) return val;
       }
     }
     return null;
@@ -90,18 +95,20 @@ public enum PermissionType {
      * if (id == PermissionType.USER.getId()) { return PermissionType.USER;
      * } else
      */
-    if (id == PermissionType.LOOKOVER.getId()) {
+    if (id == PermissionType.LOOKOVER_BRANCH.getId()) {
+      return PermissionType.LOOKOVER_BRANCH;
+    } else if (id == PermissionType.LOOKOVER.getId()) {
       return PermissionType.LOOKOVER;
+    } else if (id == PermissionType.MANAGER_BRANCH.getId()) {
+      return PermissionType.MANAGER_BRANCH;
     } else if (id == PermissionType.MANAGER.getId()) {
       return PermissionType.MANAGER;
     } else if (id == PermissionType.ADMIN.getId()) {
       return PermissionType.ADMIN;
-      /*
-       * } else if (id == PermissionType.AUTHENTICATED.getId()) { return
-       * PermissionType.AUTHENTICATED; } else if (id ==
-       * PermissionType.ANONYMOUS.getId()) { return
-       * PermissionType.ANONYMOUS;
-       */
+//    } else if (id == PermissionType.AUTHENTICATED.getId()) {
+//      return PermissionType.AUTHENTICATED;
+//    } else if (id == PermissionType.ANONYMOUS.getId()) {
+//      return PermissionType.ANONYMOUS;
     } else
       return null;
   }
