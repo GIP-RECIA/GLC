@@ -599,9 +599,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/bundle-utils@npm:^7.3.0":
-  version: 7.3.0
-  resolution: "@intlify/bundle-utils@npm:7.3.0"
+"@intlify/bundle-utils@npm:^7.4.0":
+  version: 7.4.0
+  resolution: "@intlify/bundle-utils@npm:7.4.0"
   dependencies:
     "@intlify/message-compiler": ^9.4.0
     "@intlify/shared": ^9.4.0
@@ -618,7 +618,7 @@ __metadata:
       optional: true
     vue-i18n:
       optional: true
-  checksum: ca9487fbc1917a83988af8d879c8b068ede9f69e150d918d1bddcad8215130ef9e189826c8c4a31a9465af3904200d3789efdb2289306f2c5b01fd8bc302af8b
+  checksum: 3938142d6eb3ed58b13de86645f591206ff01f5ca0598efa1e142c6d1f464f102f0ec9ee030c8eb99fc02481e7dbeb7ba4955541f69487091e7bf6dae0af9f8e
   languageName: node
   linkType: hard
 
@@ -666,11 +666,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/unplugin-vue-i18n@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@intlify/unplugin-vue-i18n@npm:1.2.0"
+"@intlify/unplugin-vue-i18n@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@intlify/unplugin-vue-i18n@npm:1.4.0"
   dependencies:
-    "@intlify/bundle-utils": ^7.3.0
+    "@intlify/bundle-utils": ^7.4.0
     "@intlify/shared": ^9.4.0
     "@rollup/pluginutils": ^5.0.2
     "@vue/compiler-sfc": ^3.2.47
@@ -693,7 +693,7 @@ __metadata:
       optional: true
     vue-i18n-bridge:
       optional: true
-  checksum: 027291ba2cac52c2ca703ef3f8213f72aa079477ee653a8d2e2930493cec68be98a839c3d505fea56c5bef8c2377ff35980ab8da462e2cfcac0fe37855758cfb
+  checksum: 04f37f72d1d396a7746e2cae8daed83d06b6d7affab36110225dfc5b2735bc18a41eb1065eb6055ceabd627f176b13277709105471f6a8d274678e2521b7f6cf
   languageName: node
   linkType: hard
 
@@ -3232,7 +3232,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": ^6.4.2
     "@fortawesome/free-solid-svg-icons": ^6.4.2
     "@fortawesome/vue-fontawesome": latest-3
-    "@intlify/unplugin-vue-i18n": ^1.2.0
+    "@intlify/unplugin-vue-i18n": ^1.4.0
     "@playwright/test": ^1.38.1
     "@rushstack/eslint-patch": ^1.5.1
     "@trivago/prettier-plugin-sort-imports": ^4.2.0
