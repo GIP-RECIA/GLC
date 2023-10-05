@@ -15,6 +15,12 @@
  */
 package fr.recia.glc.security;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.mysema.commons.lang.Pair;
+import fr.recia.glc.ldap.StructureKey;
+import fr.recia.glc.ldap.enums.ContextType;
+import fr.recia.glc.ldap.enums.PermissionType;
 import fr.recia.glc.services.beans.UserContextRole;
 import fr.recia.glc.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Complex bean to obtains objects Organization, Publisher, Category, Internal/ExternalFeed, Item where the authenticated user has a permission.
@@ -39,8 +46,10 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
   public UserContextRole userSessionRoles;
 
   public void loadUserRoles(Authentication authentication) {
-    loadUserRoles(((CustomUserDetails) authentication.getPrincipal()).getUser(),
-      ((CustomUserDetails) authentication.getPrincipal()).getAuthorities());
+    loadUserRoles(
+      ((CustomUserDetails) authentication.getPrincipal()).getUser(),
+      ((CustomUserDetails) authentication.getPrincipal()).getAuthorities()
+    );
   }
 
   public void doExpireForReload() {
@@ -53,6 +62,7 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
       log.debug("loadUserRoles can't be done !");
       return;
     }
+
     if (userSessionRoles.areRolesLoadInProgress()) {
       // we should wait that the loading is done
       long totalSleep = 0;
@@ -67,66 +77,58 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
           isInterrupted = true;
         }
       }
-      if (totalSleep > 10000) {
-        isInterrupted = true;
-      }
+      if (totalSleep > 10000) isInterrupted = true;
 
-      if (isInterrupted) {
+      if (isInterrupted)
         throw new IllegalStateException("The tree loader was interrupted for the user " + user.toString());
-      }
       return;
     }
+
     log.warn("========================= WARNING loadingUserTree ========================");
     userSessionRoles.processingLoading();
-    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) {
+    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN)))
       userSessionRoles.setSuperAdmin(true);
-    } else if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
+    else if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
       userSessionRoles.setSuperAdmin(false);
       log.debug("Call loadUserRoles for USER access !");
-//      // Load list of organizations
-//
-//      @SuppressWarnings("unchecked") final List<PermissionOnContext> perms = Lists.newArrayList(permissionDao.getPermissionDao(
-//        PermissionClass.CONTEXT).findAll(
-//        PermissionPredicates.OnCtxType(ContextType.ORGANIZATION, PermissionClass.CONTEXT, false)));
-//      Map<ContextKey, PermissionOnContext> ctxRoles = Maps.newHashMap();
+      // Load list of organizations
+
+//      @SuppressWarnings("unchecked")
+//      final List<PermissionOnContext> perms = Lists.newArrayList(permissionDao
+//        .getPermissionDao(PermissionClass.CONTEXT)
+//        .findAll(PermissionPredicates.OnCtxType(ContextType.ORGANIZATION, PermissionClass.CONTEXT, false))
+//      );
+//      Map<StructureKey, PermissionOnContext> ctxRoles = Maps.newHashMap();
 //      // Evaluate perms on all Organizations, all users should have a role on the organization to access on it
 //      for (PermissionOnContext perm : perms) {
 //        if (evaluationFactory.from(perm.getEvaluator()).isApplicable(user)
 //          && perm.getRole().getMask() >= PermissionType.LOOKOVER.getMask()) {
-//          if (log.isDebugEnabled()) {
-//            log.debug("TreeLoader should add {}", perm.getContext());
-//          }
+//          if (log.isDebugEnabled()) log.debug("TreeLoader should add {}", perm.getContext());
+//
 //          if (ctxRoles.containsKey(perm.getContext())) {
 //            PermissionOnContext role = ctxRoles.get(perm.getContext());
-//            if (role == null || perm.getRole().getMask() > role.getRole().getMask()) {
+//            if (role == null || perm.getRole().getMask() > role.getRole().getMask())
 //              ctxRoles.put(perm.getContext(), perm);
-//            }
-//          } else {
-//            ctxRoles.put(perm.getContext(), perm);
-//          }
+//          } else ctxRoles.put(perm.getContext(), perm);
 //        }
 //      }
 //
 //      // now we can go on childs
-//      for (Map.Entry<ContextKey, PermissionOnContext> ctx : ctxRoles.entrySet()) {
+//      for (Map.Entry<StructureKey, PermissionOnContext> ctx : ctxRoles.entrySet()) {
 //        if (ctx.getValue() != null && PermissionType.MANAGER.getMask() <= ctx.getValue().getRole().getMask()) {
 //          final PermOnCtxDTO permDTO = (PermOnCtxDTO) permissionDTOFactory.from(ctx.getValue());
 //          userSessionTree.addCtx(ctx.getKey(), false, null, null, permDTO);
-//          loadAuthorizedOrganizationChilds(user, ctx.getKey(), false, new Pair<PermissionType, PermOnCtxDTO>(
-//            ctx.getValue().getRole(), permDTO));
+//          loadAuthorizedOrganizationChilds(user, ctx.getKey(), false, new Pair<>(ctx.getValue().getRole(), permDTO));
 //        } else {
 //          final PermOnCtxDTO permDTO = (PermOnCtxDTO) permissionDTOFactory.from(ctx.getValue());
-//          loadAuthorizedOrganizationChilds(user, ctx.getKey(), true, new Pair<PermissionType, PermOnCtxDTO>(
-//            ctx.getValue().getRole(), permDTO));
+//          loadAuthorizedOrganizationChilds(user, ctx.getKey(), true, new Pair<>(ctx.getValue().getRole(), permDTO));
 //        }
 //      }
-    } else {
-      userSessionRoles.setSuperAdmin(false);
-    }
+    } else userSessionRoles.setSuperAdmin(false);
+
     userSessionRoles.notifyEndLoading();
-    if (log.isDebugEnabled()) {
-      log.debug("Tree loaded : {}", userSessionRoles.toString());
-    }
+
+    if (log.isDebugEnabled()) log.debug("Tree loaded : {}", userSessionRoles.toString());
   }
 
 }

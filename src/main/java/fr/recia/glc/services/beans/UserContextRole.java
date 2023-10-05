@@ -68,9 +68,7 @@ public class UserContextRole {
    * @param permType The Role that the user has in the context.
    */
   public synchronized void addCtx(@NotNull final StructureKey ctx, final PermissionType permType) {
-    if (!isCtxLoaded(ctx)) {
-      contexts.put(ctx,permType);
-    }
+    if (!isCtxLoaded(ctx)) contexts.put(ctx, permType);
   }
 
   /**
@@ -84,9 +82,8 @@ public class UserContextRole {
       if (this.superAdmin) return PermissionType.ADMIN;
       if (contexts.containsKey(ctx)) return contexts.get(ctx);
       log.warn("Call getRoleFromContext - StructureKey {} not found in User Roles !", ctx);
-    } else {
-      log.warn("Call getRoleFromContext - User Roles are not loaded !");
-    }
+    } else log.warn("Call getRoleFromContext - User Roles are not loaded !");
+
     return null;
   }
 
@@ -126,7 +123,6 @@ public class UserContextRole {
     log.debug("============ >>>>>>> notifyEndLoading");
   }
 
-
   @Override
   public String toString() {
     StringBuilder str = new StringBuilder("UserContextRoles{" +
@@ -135,11 +131,17 @@ public class UserContextRole {
       ", contexts= [");
 
     for (Map.Entry<StructureKey, PermissionType> entry : contexts.entrySet()) {
-      str.append("\n{").append(entry.getKey()).append("=").append(entry.getValue()).append("}");
+      str
+        .append("\n{")
+        .append(entry.getKey())
+        .append("=")
+        .append(entry.getValue())
+        .append("}");
     }
     if (!contexts.entrySet().isEmpty()) str.append("\n");
     str.append("]}");
 
     return str.toString();
   }
+
 }
