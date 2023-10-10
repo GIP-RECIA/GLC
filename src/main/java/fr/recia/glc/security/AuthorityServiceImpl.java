@@ -45,9 +45,8 @@ public class AuthorityServiceImpl implements IAuthorityService {
 
   @Override
   public Collection<? extends GrantedAuthority> getUserAuthorities(UserDTO user) {
-    if (user == null || !user.isFoundOnExternalSource()) {
-      return AuthorityUtils.NO_AUTHORITIES;
-    }
+    if (user == null || !user.isFoundOnExternalSource()) return AuthorityUtils.NO_AUTHORITIES;
+
     List<GrantedAuthority> authorities = Lists.newArrayList();
     if (!rolesDefs.getAppRoles().isEmpty()) {
       for (Map.Entry<String, IEvaluation> map : rolesDefs.getAppRoles().entrySet()) {
@@ -57,9 +56,8 @@ public class AuthorityServiceImpl implements IAuthorityService {
         }
       }
     }
-    if (authorities.isEmpty()) {
+    if (authorities.isEmpty())
       authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.AUTHENTICATED));
-    }
 
     return roleHierarchy.getReachableGrantedAuthorities(authorities);
   }

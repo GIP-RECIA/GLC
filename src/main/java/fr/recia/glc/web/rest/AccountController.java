@@ -40,9 +40,7 @@ public class AccountController {
 
     // retrieve the user
     CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
-    if (user == null) {
-      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
+    if (user == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
     log.debug("UserDetails {}", user);
     String uri = request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : "");

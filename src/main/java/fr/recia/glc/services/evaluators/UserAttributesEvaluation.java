@@ -71,9 +71,7 @@ public class UserAttributesEvaluation implements IEvaluation, Serializable {
 
     final String attrib = attribs.get(0);
 
-    if (log.isDebugEnabled()) {
-      log.debug(this.toString() + " evaluation over value '" + attrib + "'");
-    }
+    if (log.isDebugEnabled()) log.debug(this + " evaluation over value '" + attrib + "'");
 
     // for tests other than 'exists' the attribute must be defined
     if (attrib == null && !StringEvaluationMode.EXISTS.equals(mode)) return false;

@@ -53,14 +53,11 @@ public class UserMultivaluedAttributesEvaluation extends UserAttributesEvaluatio
 
   @Override
   public boolean isApplicable(@NotNull final UserDTO userInfos) {
-    Assert.notEmpty(userInfos.getAttributes(),
-      "User Attributes not loaded from source !");
+    Assert.notEmpty(userInfos.getAttributes(), "User Attributes not loaded from source !");
     final List<String> attribs = userInfos.getAttributes().get(this.getAttribute());
     if (attribs == null || attribs.isEmpty()) return false;
 
-    if (log.isDebugEnabled()) {
-      log.debug(this.toString() + " evaluation over values " + attribs.toString());
-    }
+    if (log.isDebugEnabled()) log.debug(this + " evaluation over values " + attribs);
 
     // for tests other than 'exists' the attribute must be defined
     if ((attribs == null || attribs.isEmpty()) && !StringEvaluationMode.EXISTS.equals(this.getMode())) return false;

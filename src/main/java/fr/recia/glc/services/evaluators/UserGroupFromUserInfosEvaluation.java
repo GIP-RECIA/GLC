@@ -63,11 +63,8 @@ public class UserGroupFromUserInfosEvaluation implements IEvaluation, Serializab
     final List<String> attribs = userInfos.getAttributes().get(userGroupAttribute);
     if (attribs == null || attribs.isEmpty()) return false;
 
-    if (log.isDebugEnabled()) {
-      log.debug(this.toString()
-        + " evaluation over UserMultivaluedAttributes on "
-        + userGroupAttribute + " over values " + attribs.toString());
-    }
+    if (log.isDebugEnabled())
+      log.debug(this + " evaluation over UserMultivaluedAttributes on " + userGroupAttribute + " over values " + attribs);
 
     // test on startWith as some groups in IsMemberOf has only a part the
     // real group name.

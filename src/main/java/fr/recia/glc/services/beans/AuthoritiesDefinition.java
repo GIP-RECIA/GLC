@@ -53,9 +53,8 @@ public class AuthoritiesDefinition implements IAuthoritiesDefinition {
 		Map<String, IEvaluation> accessRoles = Maps.newLinkedHashMap();
 		accessRoles.put(AuthoritiesConstants.ADMIN, admins);
 		accessRoles.put(AuthoritiesConstants.USER, users);
-		if (log.isDebugEnabled()) {
-			log.debug("App Roles defined : {}", accessRoles.toString());
-		}
+		if (log.isDebugEnabled()) log.debug("App Roles defined : {}", accessRoles);
+
 		return accessRoles;
 	}
 

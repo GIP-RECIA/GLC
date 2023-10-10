@@ -65,7 +65,6 @@ public class EtablissementController {
   private DisciplineRepository<Discipline> disciplineRepository;
   @Autowired
   private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
-
   @Autowired
   private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
 

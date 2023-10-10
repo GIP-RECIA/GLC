@@ -125,7 +125,7 @@ public class UserContextRole {
 
   @Override
   public String toString() {
-    StringBuilder str = new StringBuilder("UserContextRoles{" +
+    StringBuilder str = new StringBuilder("UserContextRoles {" +
       "superAdmin=" + superAdmin +
       ", userRolesLoaded=" + userRolesLoaded +
       ", contexts= [");
