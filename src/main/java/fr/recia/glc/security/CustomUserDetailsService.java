@@ -69,9 +69,8 @@ public class CustomUserDetailsService implements AuthenticationUserDetailsServic
   public CustomUserDetails loadUserByUid(String uid) throws UsernameNotFoundException {
     final APersonne internal = aPersonneRepository.findOne(QAPersonne.aPersonne.uid.eq(uid)).orElse(null);
     final IExternalUser external = personLDAPDao.getUserByUid(uid);
-    if (external == null) {
+    if (external == null)
       throw new UsernameNotFoundException(String.format("User [%s] without permission !", uid));
-    }
     UserDTO user = userDTOFactory.from(internal, external);
     Collection<? extends GrantedAuthority> authorities = grantedAuthorityService.getUserAuthorities(user);
 
@@ -79,6 +78,7 @@ public class CustomUserDetailsService implements AuthenticationUserDetailsServic
       log.error("User with username {} could not found from database.", uid);
       throw new UsernameNotFoundException(String.format("User with username [%s] could not be found from database.", uid));
     }
+
     return new CustomUserDetails(userDTOFactory.from(internal, external), internal, authorities);
   }
 

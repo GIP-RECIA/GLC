@@ -73,10 +73,9 @@ public class LdapGroupRegexpDisplayNameFormatterESCO implements IExternalGroupDi
       formatted = format(input.getDisplayName());
     }
 
-    if (formatted != null) {
-      group.setDisplayName(formatted);
-    }
+    if (formatted != null) group.setDisplayName(formatted);
     log.debug("DisplayNameFormatter renamed {} to {}", input.getDisplayName(), group.getDisplayName());
+
     return group;
   }
 
@@ -88,19 +87,19 @@ public class LdapGroupRegexpDisplayNameFormatterESCO implements IExternalGroupDi
         if (group.find()) {
           StringBuilder displayName = new StringBuilder();
           for (int i = 0; i < this.grpNameIndex.length; i++) {
-            if (i > 0 || this.grpNameIndex.length == 1) {
+            if (i > 0 || this.grpNameIndex.length == 1)
               displayName.append(this.grpSeparator).append(group.group(this.grpNameIndex[i]));
-            } else {
-              displayName.append(group.group(this.grpNameIndex[i]));
-            }
+            else displayName.append(group.group(this.grpNameIndex[i]));
           }
           displayName.append(this.grpSuffixe);
           log.debug("Matcher found group displayName, value is : {}", displayName);
+
           return displayName.toString();
         }
       }
       log.debug("No displayname formatting will be done as pattern isn't matching !");
     }
+
     return null;
   }
 

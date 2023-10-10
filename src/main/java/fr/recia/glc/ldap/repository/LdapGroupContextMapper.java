@@ -106,9 +106,8 @@ public class LdapGroupContextMapper implements ContextMapper<IExternalGroup> {
     if (externalGroupHelper.getOtherGroupDisplayedAttributes() != null
       && !externalGroupHelper.getOtherGroupDisplayedAttributes().isEmpty()) {
       for (String attr : externalGroupHelper.getOtherGroupDisplayedAttributes()) {
-        if (context.attributeExists(attr)) {
+        if (context.attributeExists(attr))
           attrs.put(attr.toLowerCase(), Arrays.asList(context.getStringAttributes(attr)));
-        }
       }
     }
     group.setAttributes(attrs);

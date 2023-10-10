@@ -41,8 +41,7 @@ public class LdapGroupRegexpDisplayNameFormatterESCOReplace implements IExternal
   }
 
   private String format(String input) {
-    if (input != null && !input.isEmpty())
-      return input.replaceFirst("Tous_", "").replaceAll("_", " ");
+    if (input != null && !input.isEmpty()) return input.replaceFirst("Tous_", "").replaceAll("_", " ");
     return input;
   }
 

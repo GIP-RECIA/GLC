@@ -66,8 +66,7 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
     if (matcher.find() && matcher.groupCount() >= 4) {
       structure.setGroupBranch(matcher.group(1));
       structure.setDisplayName(matcher.group(4));
-      if (matcher.groupCount() == 6)
-        structure.setUAI(matcher.group(6));
+      if (matcher.groupCount() == 6) structure.setUAI(matcher.group(6));
     }
 
     return structure;

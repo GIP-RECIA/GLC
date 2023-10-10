@@ -72,17 +72,13 @@ public class LdapUserContextMapper implements ContextMapper<IExternalUser> {
     if (externalUserHelper.getOtherUserDisplayedAttributes() != null
       && !externalUserHelper.getOtherUserDisplayedAttributes().isEmpty()) {
       for (String attr : externalUserHelper.getOtherUserDisplayedAttributes()) {
-        if (context.attributeExists(attr)) {
-          attrs.put(attr, Arrays.asList(context.getStringAttributes(attr)));
-        }
+        if (context.attributeExists(attr)) attrs.put(attr, Arrays.asList(context.getStringAttributes(attr)));
       }
     }
 
     if (externalUserHelper.getOtherUserAttributes() != null && !externalUserHelper.getOtherUserAttributes().isEmpty()) {
       for (String attr : externalUserHelper.getOtherUserAttributes()) {
-        if (context.attributeExists(attr)) {
-          attrs.put(attr, Arrays.asList(context.getStringAttributes(attr)));
-        }
+        if (context.attributeExists(attr)) attrs.put(attr, Arrays.asList(context.getStringAttributes(attr)));
       }
     }
     person.setAttributes(attrs);

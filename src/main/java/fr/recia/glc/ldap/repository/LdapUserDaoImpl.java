@@ -71,28 +71,26 @@ public class LdapUserDaoImpl implements IExternalUserDao {
   // @Cacheable(value = "ExternalUsers", key = "#uid")
   public IExternalUser getUserByUid(String uid) {
     final AndFilter filter = new AndFilter();
-    filter.append(new EqualsFilter(externalUserHelper.getUserIdAttribute(),
-      uid));
+    filter.append(new EqualsFilter(externalUserHelper.getUserIdAttribute(), uid));
     if (log.isDebugEnabled()) {
       log.debug("LDAP filter applied : " + filter);
     }
-    ContextMapper<IExternalUser> mapper = new LdapUserContextMapper(
-      this.externalUserHelper);
+    ContextMapper<IExternalUser> mapper = new LdapUserContextMapper(this.externalUserHelper);
     // SearchControls constraints = new SearchControls();
     // constraints.setReturningAttributes((String[])
     // ldapUserHelper.getAttributes().toArray());
     LdapQuery query = LdapQueryBuilder.query()
       .attributes((String[]) externalUserHelper.getAttributes().toArray(new String[externalUserHelper.getAttributes().size()]))
-      .base(externalUserHelper.getUserDNSubPath()).filter(filter);
+      .base(externalUserHelper.getUserDNSubPath())
+      .filter(filter);
     IExternalUser user;
     try {
       user = ldapTemplate.searchForObject(query, mapper);
     } catch (IncorrectResultSizeDataAccessException e) {
       user = null;
     }
-    if (log.isDebugEnabled()) {
-      log.debug("LDAP user found : {}", user);
-    }
+    if (log.isDebugEnabled()) log.debug("LDAP user found : {}", user);
+
     return user;
   }
 
@@ -113,9 +111,8 @@ public class LdapUserDaoImpl implements IExternalUserDao {
       mainFilter.append(tokenFilter);
       canSearch = true;
     }
+    if (canSearch) return searchWithFilter(mainFilter);
 
-    if (canSearch)
-      return searchWithFilter(mainFilter);
     return Lists.newArrayList();
   }
 
@@ -127,10 +124,8 @@ public class LdapUserDaoImpl implements IExternalUserDao {
   // @Cacheable(value = "ExternalUsers")
   public List<IExternalUser> getUsersByUids(final Iterable<String> uids) {
     final OrFilter filter = orFilterOnUids(uids);
-    if (filter == null)
-      return new LinkedList<>();
-    else
-      return searchWithFilter(filter);
+    if (filter == null) return new LinkedList<>();
+    else return searchWithFilter(filter);
   }
 
   /**
@@ -142,12 +137,12 @@ public class LdapUserDaoImpl implements IExternalUserDao {
   // @Cacheable(value = "ExternalUsers")
   public List<IExternalUser> getUsersByUidsWithFilter(final Iterable<String> uids, final String token) {
     final OrFilter filter = orFilterOnUids(uids);
-    if (filter == null || token == null || token.trim().isEmpty())
-      return new LinkedList<>();
-    else
-      return searchWithFilter(new AndFilter().append(filter).append(new WhitespaceWildcardsFilter(externalUserHelper.getUserSearchAttribute(), token.trim())));
+    if (filter == null || token == null || token.trim().isEmpty()) return new LinkedList<>();
+    else return searchWithFilter(new AndFilter()
+      .append(filter)
+      .append(new WhitespaceWildcardsFilter(externalUserHelper.getUserSearchAttribute(), token.trim()))
+    );
   }
-
 
   /**
    * userSearchAttribute
@@ -163,10 +158,9 @@ public class LdapUserDaoImpl implements IExternalUserDao {
       if (mail != null) {
         log.debug("mail added to list :" + mail);
         retVal.add(mail.trim());
-      } else {
-        log.warn("no mail for " + externalUser.getId());
-      }
+      } else log.warn("no mail for " + externalUser.getId());
     }
+
     return retVal;
   }
 
@@ -177,6 +171,7 @@ public class LdapUserDaoImpl implements IExternalUserDao {
       Filter filter = new EqualsFilter(userAttrGroup, groupId.trim());
       return searchWithFilter(filter);
     }
+
     return new LinkedList<>();
   }
 
@@ -195,18 +190,17 @@ public class LdapUserDaoImpl implements IExternalUserDao {
       if (emptyFilter) return new LinkedList<>();
 
       AndFilter filter = new AndFilter().and(groupFilter);
-      if (search != null && !search.trim().isEmpty()) {
+      if (search != null && !search.trim().isEmpty())
         filter.and(new WhitespaceWildcardsFilter(externalUserHelper.getUserSearchAttribute(), search.trim()));
-      }
       return searchWithFilter(filter);
     }
+
     return new LinkedList<>();
   }
 
   @Override
   public boolean isUserFoundWithFilter(@NotNull final String stringFilter, @NotNull final String uid) {
-    AndFilter filter = new AndFilter()
-      .and(new HardcodedFilter(stringFilter));
+    AndFilter filter = new AndFilter().and(new HardcodedFilter(stringFilter));
     filter.and(new EqualsFilter(externalUserHelper.getUserIdAttribute(), uid));
 
     return !searchWithFilter(filter).isEmpty();
@@ -215,16 +209,13 @@ public class LdapUserDaoImpl implements IExternalUserDao {
   // @Cacheable(value = "ExternalUsers", key = "#filter")
   private List<IExternalUser> searchWithFilter(final Filter filter) {
     final String filterAsStr = filter.encode();
-    if (log.isDebugEnabled()) {
-      log.debug("LDAP filter applied : " + filterAsStr);
-    }
-    ContextMapper<IExternalUser> mapper = new LdapUserContextMapper(
-      this.externalUserHelper);
+    if (log.isDebugEnabled()) log.debug("LDAP filter applied : " + filterAsStr);
+    ContextMapper<IExternalUser> mapper = new LdapUserContextMapper(this.externalUserHelper);
     // SearchControls constraints = new SearchControls();
     // constraints.setReturningAttributes((String[])
     // ldapUserHelper.getAttributes().toArray());
-    LdapQuery query = LdapQueryBuilder.query()
-      .base(externalUserHelper.getUserDNSubPath()).filter(filter);
+    LdapQuery query = LdapQueryBuilder.query().base(externalUserHelper.getUserDNSubPath()).filter(filter);
+
     return ldapTemplate.search(query, mapper);
   }
 
@@ -232,8 +223,7 @@ public class LdapUserDaoImpl implements IExternalUserDao {
     // needed since empty OrFilter() is true instead of false
     // we must not have an empty filter !
     // (https://jira.springsource.org/browse/LDAP-226)
-    if (Iterables.isEmpty(uids))
-      return null;
+    if (Iterables.isEmpty(uids)) return null;
 
     OrFilter filter = new OrFilter();
     boolean emptyFilter = true;
@@ -244,6 +234,7 @@ public class LdapUserDaoImpl implements IExternalUserDao {
       }
     }
     if (emptyFilter) return null;
+
     return filter;
   }
 

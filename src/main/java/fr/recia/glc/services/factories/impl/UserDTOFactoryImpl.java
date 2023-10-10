@@ -61,12 +61,14 @@ public class UserDTOFactoryImpl implements UserDTOFactory {
   public UserDTO from(final APersonne model) {
     log.debug("Model to DTO of {}", model);
     IExternalUser extUser = getExtDao().getUserByUid(model.getUid());
+
     return from(model, extUser);
   }
 
   public UserDTO from(final String id) {
     log.debug("from login Id to DTO of {}", id);
     IExternalUser extUser = getExtDao().getUserByUid(id);
+
     return from(extUser, true);
   }
 
@@ -78,20 +80,20 @@ public class UserDTOFactoryImpl implements UserDTOFactory {
       Optional<APersonne> optionalAPersonne = dao.findOne(QAPersonne.aPersonne.uid.eq(extModel.getId()));
       model = optionalAPersonne.orElse(null);
     }
+
     return from(model, extModel);
   }
 
   @Override
   public UserDTO from(final APersonne model, final IExternalUser extModel) {
     if (model != null && extModel != null) {
-      return new UserDTO(model.getUid(), extModel.getDisplayName(),
-        extModel.getEmail(), extModel.getAttributes());
+      return new UserDTO(model.getUid(), extModel.getDisplayName(), extModel.getEmail(), extModel.getAttributes());
     } else if (model != null) {
       return new UserDTO(model.getUid(), model.getDisplayName());
     } else if (extModel != null) {
-      return new UserDTO(extModel.getId(), extModel.getDisplayName(),
-        extModel.getEmail(), extModel.getAttributes());
+      return new UserDTO(extModel.getId(), extModel.getDisplayName(), extModel.getEmail(), extModel.getAttributes());
     }
+
     return null;
   }
 
@@ -99,18 +101,14 @@ public class UserDTOFactoryImpl implements UserDTOFactory {
     log.debug("DTO to model of {}", dtObject);
     if (dtObject != null) {
       Optional<APersonne> optionalUser = dao.findOne(QAPersonne.aPersonne.uid.eq(dtObject.getUserId()));
-      APersonne user = optionalUser.orElse(null);
-      if (user == null) {
-        return null;
-      }
-      return user;
+      return optionalUser.orElse(null);
     }
+
     return null;
   }
 
   public List<UserDTO> asDTOList(final Collection<APersonne> models) {
     final List<UserDTO> tos = Lists.newLinkedList();
-
     if ((models != null) && !models.isEmpty()) {
       for (APersonne model : models) {
         tos.add(from(model));
@@ -120,10 +118,8 @@ public class UserDTOFactoryImpl implements UserDTOFactory {
     return tos;
   }
 
-  public List<UserDTO> asDTOList(final Collection<IExternalUser> models,
-                                 boolean withInternal) {
+  public List<UserDTO> asDTOList(final Collection<IExternalUser> models, boolean withInternal) {
     final List<UserDTO> tos = Lists.newLinkedList();
-
     if ((models != null) && !models.isEmpty()) {
       for (IExternalUser model : models) {
         tos.add(from(model, withInternal));
@@ -138,13 +134,12 @@ public class UserDTOFactoryImpl implements UserDTOFactory {
     for (APersonne model : models) {
       dtos.add(from(model));
     }
+
     return dtos;
   }
 
-  public Set<UserDTO> asDTOSet(final Collection<IExternalUser> models,
-                               boolean withInternal) {
+  public Set<UserDTO> asDTOSet(final Collection<IExternalUser> models, boolean withInternal) {
     final Set<UserDTO> tos = Sets.newLinkedHashSet();
-
     if ((models != null) && !models.isEmpty()) {
       for (IExternalUser model : models) {
         tos.add(from(model, withInternal));
@@ -159,6 +154,7 @@ public class UserDTOFactoryImpl implements UserDTOFactory {
     for (UserDTO dtObject : dtObjects) {
       models.add(from(dtObject));
     }
+
     return models;
   }
 
