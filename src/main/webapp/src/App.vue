@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFonctionStore } from './stores/fonctionStore';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
-import LoginModal from '@/components/modals/LoginModal.vue';
+import LoginDialog from '@/components/dialogs/LoginDialog.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
 import { useConfigurationStore } from '@/stores/configurationStore';
 import { storeToRefs } from 'pinia';
@@ -67,7 +67,7 @@ watch(isAuthenticated, (newValue) => {
     </header>
     <v-main>
       <router-view v-if="isAuthenticated" />
-      <login-modal />
+      <login-dialog />
     </v-main>
     <footer v-if="isAuthenticated">
       <extended-uportal-footer

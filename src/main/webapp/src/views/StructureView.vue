@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AdditionalModal from '@/components/modals/AdditionalModal.vue';
-import PersonneModal from '@/components/modals/PersonneModal.vue';
+import AdditionalDialog from '@/components/dialogs/AdditionalDialog.vue';
+import PersonneDialog from '@/components/dialogs/PersonneDialog.vue';
 import { useConfigurationStore } from '@/stores/configurationStore';
 import { useStructureStore } from '@/stores/structureStore';
 import { Tabs } from '@/types/enums/Tabs';
@@ -71,8 +71,8 @@ watch(
         <export-view />
       </v-window-item>
     </v-window>
-    <personne-modal />
-    <additional-modal />
+    <personne-dialog />
+    <additional-dialog />
   </div>
 </template>
 

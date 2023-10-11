@@ -2,7 +2,6 @@ import { createApp } from 'vue';
 
 import { register as registerDirectives } from '@/directives';
 import { register as registerFontAwsome } from '@/plugins/fontawsome';
-
 import '@/plugins/date-fns';
 import i18n from '@/plugins/i18n';
 import pinia from '@/plugins/pinia';
@@ -21,10 +20,10 @@ const app = createApp(App);
 registerDirectives(app);
 registerFontAwsome(app);
 
-app.use(pinia);
-app.use(router);
-app.use(vuetify);
 app.use(i18n);
+app.use(pinia);
+app.use(vuetify);
+app.use(router);
 app.use(Toast);
 
 app.mount('#app');

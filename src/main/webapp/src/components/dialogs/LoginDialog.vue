@@ -31,13 +31,19 @@ watchOnce(isInit, (newValue) => {
   <v-dialog v-model="modelValue" :max-width="300">
     <v-card>
       <v-toolbar color="rgba(255, 255, 255, 0)">
-        <v-toolbar-title class="text-h6">{{ t('casSignIn') }}</v-toolbar-title>
+        <v-toolbar-title :text="t('casSignIn')" class="text-h6" />
       </v-toolbar>
-      <v-card-text></v-card-text>
-      <v-card-actions class="d-flex justify-end">
-        <v-btn id="signIn" color="primary" prepend-icon="fas fa-right-to-bracket" :disabled="!isInit" @click="login">
-          {{ t('button.signIn') }}
-        </v-btn>
+      <v-card-text />
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          id="signIn"
+          color="primary"
+          prepend-icon="fas fa-right-to-bracket"
+          :text="t('button.signIn')"
+          :disabled="!isInit"
+          @click="login"
+        />
       </v-card-actions>
     </v-card>
   </v-dialog>

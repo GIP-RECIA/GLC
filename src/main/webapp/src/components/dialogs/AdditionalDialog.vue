@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
-import BaseModal from '@/components/modals/BaseModal.vue';
 import PersonneSearch from '@/components/search/PersonneSearch.vue';
 import { setPersonneAdditional } from '@/services/personneService';
 import { useConfigurationStore } from '@/stores/configurationStore';
@@ -42,6 +41,13 @@ const {
   administrativeList,
   teachingList,
 } = storeToRefs(personneStore);
+
+const modelValue = computed<boolean>({
+  get() {
+    return isAdditional.value;
+  },
+  set() {},
+});
 
 const setSelectedUser = (id: number | undefined) => {
   currentPersonne.value = undefined;
@@ -147,31 +153,34 @@ const currentTabValue = computed<{
 </script>
 
 <template>
-  <base-modal
-    v-model="isAdditional"
-    :title="currentTabValue.title"
-    @update:model-value="
-      (value: boolean) => {
-        if (!value) closeAndResetModal();
-      }
-    "
-  >
-    <personne-search
-      :search-list="currentTabValue.searchList"
-      @update:select="setSelectedUser"
-      :class="currentPersonne && isEditAllowed(currentPersonne.etat) ? 'mb-4' : 'mb-6'"
-    />
-    <checkbox-layout
-      v-if="currentPersonne && isEditAllowed(currentPersonne.etat)"
-      :filieres="currentTabValue.filieres"
-      :selected="selected"
-      :disabled="toIdentifier(structureFonctions)"
-      @update:selected="setSelected"
-    />
-    <template #footer v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
-      <v-btn :color="saveButton.color" :prepend-icon="saveButton.icon" :disabled="!canSave" @click="save">
-        {{ t(saveButton.i18n) }}
-      </v-btn>
-    </template>
-  </base-modal>
+  <v-dialog v-model="modelValue" scrollable :max-width="1024">
+    <v-card>
+      <v-toolbar color="rgba(255, 255, 255, 0)">
+        <v-toolbar-title class="text-h6">{{ currentTabValue.title }}</v-toolbar-title>
+        <template #append>
+          <v-btn icon="fas fa-xmark" color="default" variant="plain" @click="closeAndResetModal()" />
+        </template>
+      </v-toolbar>
+      <v-card-text class="py-0">
+        <personne-search
+          :search-list="currentTabValue.searchList"
+          @update:select="setSelectedUser"
+          :class="currentPersonne && isEditAllowed(currentPersonne.etat) ? 'mb-4' : 'mb-6'"
+        />
+        <checkbox-layout
+          v-if="currentPersonne && isEditAllowed(currentPersonne.etat)"
+          :filieres="currentTabValue.filieres"
+          :selected="selected"
+          :disabled="toIdentifier(structureFonctions)"
+          @update:selected="setSelected"
+        />
+      </v-card-text>
+      <v-card-actions v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
+        <v-spacer />
+        <v-btn :color="saveButton.color" :prepend-icon="saveButton.icon" :disabled="!canSave" @click="save">
+          {{ t(saveButton.i18n) }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
