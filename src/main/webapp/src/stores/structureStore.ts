@@ -5,9 +5,12 @@ import type { Etablissement, SimpleEtablissement } from '@/types/etablissementTy
 import { errorHandler } from '@/utils/axiosUtils';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export const useStructureStore = defineStore('structure', () => {
   const configurationStore = useConfigurationStore();
+
+  const router = useRouter();
 
   const etabs = ref<Array<SimpleEtablissement> | undefined>();
   const currentEtab = ref<Etablissement | undefined>();
@@ -56,6 +59,7 @@ export const useStructureStore = defineStore('structure', () => {
       setCurrentStructureId(id);
     } catch (e) {
       errorHandler(e, 'initCurrentEtab');
+      router.replace({ name: 'home' });
     }
     configurationStore.isLoading = false;
   };
