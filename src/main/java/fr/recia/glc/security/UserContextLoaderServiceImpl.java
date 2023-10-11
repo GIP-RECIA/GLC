@@ -15,12 +15,12 @@
  */
 package fr.recia.glc.security;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.mysema.commons.lang.Pair;
+import fr.recia.glc.configuration.GLCProperties;
+import fr.recia.glc.db.repositories.structure.TypeStructureRepository;
+import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.ldap.StructureKey;
-import fr.recia.glc.ldap.enums.ContextType;
 import fr.recia.glc.ldap.enums.PermissionType;
+import fr.recia.glc.services.beans.IStructureLoader;
 import fr.recia.glc.services.beans.UserContextRole;
 import fr.recia.glc.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +30,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Complex bean to obtains objects Organization, Publisher, Category, Internal/ExternalFeed, Item where the authenticated user has a permission.
@@ -41,9 +45,21 @@ import java.util.Map;
 @Slf4j
 @Service
 public class UserContextLoaderServiceImpl implements UserContextLoaderService {
+  private final TypeStructureRepository typeStructureRepository;
 
   @Inject
   public UserContextRole userSessionRoles;
+
+  @Inject
+  public IStructureLoader structureLoader;
+
+  private GLCProperties glcProperties;
+
+  public UserContextLoaderServiceImpl(GLCProperties glcProperties,
+                                      TypeStructureRepository typeStructureRepository) {
+    this.glcProperties = glcProperties;
+    this.typeStructureRepository = typeStructureRepository;
+  }
 
   public void loadUserRoles(Authentication authentication) {
     loadUserRoles(
@@ -86,46 +102,62 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
 
     log.warn("========================= WARNING loadingUserTree ========================");
     userSessionRoles.processingLoading();
-    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN)))
+
+    if (log.isDebugEnabled())
+      log.debug(
+        "\n<==\n\t- UID : {}\n\t- authorities : {}\n\t- isMemberOf : {}\n==>",
+        user.getUserId(),
+        authorities,
+        user.getAttributes().get("isMemberOf").stream().map(s -> "\t\t- " + s).collect(Collectors.joining("\n", "\n", "\n"))
+      );
+
+    if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) {
       userSessionRoles.setSuperAdmin(true);
-    else if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
+    } else if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
       userSessionRoles.setSuperAdmin(false);
       log.debug("Call loadUserRoles for USER access !");
-      // Load list of organizations
 
-//      @SuppressWarnings("unchecked")
-//      final List<PermissionOnContext> perms = Lists.newArrayList(permissionDao
-//        .getPermissionDao(PermissionClass.CONTEXT)
-//        .findAll(PermissionPredicates.OnCtxType(ContextType.ORGANIZATION, PermissionClass.CONTEXT, false))
-//      );
-//      Map<StructureKey, PermissionOnContext> ctxRoles = Maps.newHashMap();
-//      // Evaluate perms on all Organizations, all users should have a role on the organization to access on it
-//      for (PermissionOnContext perm : perms) {
-//        if (evaluationFactory.from(perm.getEvaluator()).isApplicable(user)
-//          && perm.getRole().getMask() >= PermissionType.LOOKOVER.getMask()) {
-//          if (log.isDebugEnabled()) log.debug("TreeLoader should add {}", perm.getContext());
-//
-//          if (ctxRoles.containsKey(perm.getContext())) {
-//            PermissionOnContext role = ctxRoles.get(perm.getContext());
-//            if (role == null || perm.getRole().getMask() > role.getRole().getMask())
-//              ctxRoles.put(perm.getContext(), perm);
-//          } else ctxRoles.put(perm.getContext(), perm);
-//        }
-//      }
-//
-//      // now we can go on childs
-//      for (Map.Entry<StructureKey, PermissionOnContext> ctx : ctxRoles.entrySet()) {
-//        if (ctx.getValue() != null && PermissionType.MANAGER.getMask() <= ctx.getValue().getRole().getMask()) {
-//          final PermOnCtxDTO permDTO = (PermOnCtxDTO) permissionDTOFactory.from(ctx.getValue());
-//          userSessionTree.addCtx(ctx.getKey(), false, null, null, permDTO);
-//          loadAuthorizedOrganizationChilds(user, ctx.getKey(), false, new Pair<>(ctx.getValue().getRole(), permDTO));
-//        } else {
-//          final PermOnCtxDTO permDTO = (PermOnCtxDTO) permissionDTOFactory.from(ctx.getValue());
-//          loadAuthorizedOrganizationChilds(user, ctx.getKey(), true, new Pair<>(ctx.getValue().getRole(), permDTO));
-//        }
-//      }
+      List<String> allowed = new ArrayList<>();
+      List<String> denied = new ArrayList<>();
+
+      Pattern permissionPattern = Pattern.compile(glcProperties.getUsers().getGroupName());
+      user.getAttributes().get("isMemberOf").forEach(item -> {
+        Matcher matcher = permissionPattern.matcher(item);
+        if (matcher.find()) {
+          PermissionType permission = null;
+          switch (matcher.group(2)) {
+            case "admin":
+              permission = PermissionType.ADMIN;
+              break;
+            case "local":
+              permission = PermissionType.MANAGER;
+              break;
+            case "ESCOLAN":
+              permission = PermissionType.MANAGER;
+              break;
+            default:
+              break;
+          }
+          if (matcher.groupCount() > 2) {
+            StructureKey structureKey = structureLoader.getAllStructures().stream()
+              .filter(structure -> structure.getUAI().equals(matcher.group(3)))
+              .map(IStructure::getStructureKey)
+              .findAny().orElse(null);
+            if (structureKey != null) {
+              allowed.add(item);
+              userSessionRoles.addCtx(structureKey, permission);
+            } else denied.add(item);
+          }
+        }
+      });
+
+      if (log.isDebugEnabled())
+        log.debug(
+          "\n<==\n\t- allowed : {}\n\t- denied : {}\n==>",
+          allowed.stream().map(s -> "\t\t- " + s).collect(Collectors.joining("\n", "\n", "\n")),
+          denied.stream().map(s -> "\t\t- " + s).collect(Collectors.joining("\n", "\n", "\n"))
+        );
     } else userSessionRoles.setSuperAdmin(false);
-
     userSessionRoles.notifyEndLoading();
 
     if (log.isDebugEnabled()) log.debug("Tree loaded : {}", userSessionRoles.toString());
