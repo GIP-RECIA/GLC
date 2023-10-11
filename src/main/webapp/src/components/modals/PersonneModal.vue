@@ -150,7 +150,7 @@ const resetAddMode = (success?: boolean) => {
   <base-modal v-model="isCurrentPersonne" :title="currentPersonne ? currentPersonne.cn : ''" :show-xmark="isAddMode">
     <div v-if="currentPersonne && !isAddMode">
       <div class="d-flex flex-row flex-wrap">
-        <readonly-data label="uid" :value="currentPersonne.uid" class="modal-flex-item" />
+        <readonly-data v-admin label="uid" :value="currentPersonne.uid" class="modal-flex-item" />
         <readonly-data
           :label="t('person.information.civility')"
           :value="currentPersonne.civilite"

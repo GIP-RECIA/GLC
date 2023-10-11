@@ -1,5 +1,7 @@
 import { createApp } from 'vue';
 
+import { register as registerDirectives } from '@/directives';
+
 import '@/plugins/date-fns';
 // @ts-ignore
 // import '@/plugins/fontawsome';
@@ -7,8 +9,8 @@ import i18n from '@/plugins/i18n';
 import pinia from '@/plugins/pinia';
 import vuetify from '@/plugins/vuetify';
 import router from '@/router';
-
 import Toast from 'vue-toastification';
+
 // @ts-ignore
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -20,6 +22,8 @@ import '@/assets/main.scss';
 import App from '@/App.vue';
 
 const app = createApp(App);
+
+registerDirectives(app);
 
 // app.component('font-awesome-icon', FontAwesomeIcon)
 

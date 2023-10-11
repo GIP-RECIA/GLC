@@ -97,11 +97,6 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   const identity = ref<Identity | undefined>();
   const isAuthenticated = computed<boolean>(() => !isEmpty(identity.value));
-  const isAdmin = computed<boolean>(() => {
-    const hasRoleAdmin = identity.value?.roles.includes('ROLE_ADMIN');
-
-    return hasRoleAdmin != undefined && hasRoleAdmin;
-  });
 
   return {
     init,
@@ -124,6 +119,5 @@ export const useConfigurationStore = defineStore('configuration', () => {
     isAddMode,
     identity,
     isAuthenticated,
-    isAdmin,
   };
 });
