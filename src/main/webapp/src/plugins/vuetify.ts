@@ -1,6 +1,6 @@
 import { type ThemeDefinition, createVuetify } from 'vuetify';
 import { md3 } from 'vuetify/blueprints';
-import { aliases, fa } from 'vuetify/iconsets/fa';
+import { aliases, fa } from 'vuetify/iconsets/fa-svg';
 
 const light: ThemeDefinition = {
   dark: false,

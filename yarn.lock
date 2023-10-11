@@ -530,13 +530,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-free@npm:^6.4.2":
-  version: 6.4.2
-  resolution: "@fortawesome/fontawesome-free@npm:6.4.2"
-  checksum: 14be8fbb8faa62473c01fe70590e39cdc76a0083b791537fd3d2215a790d2722d917242b1f7948e160876934a8d3823c764af9b8d4ef6dc1ecad55b585e5b776
-  languageName: node
-  linkType: hard
-
 "@fortawesome/fontawesome-svg-core@npm:^6.4.2":
   version: 6.4.2
   resolution: "@fortawesome/fontawesome-svg-core@npm:6.4.2"
@@ -3214,7 +3207,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "glc@workspace:."
   dependencies:
-    "@fortawesome/fontawesome-free": ^6.4.2
     "@fortawesome/fontawesome-svg-core": ^6.4.2
     "@fortawesome/free-regular-svg-icons": ^6.4.2
     "@fortawesome/free-solid-svg-icons": ^6.4.2
