@@ -27,7 +27,9 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author GIP RECIA - Julien Gribonvald
@@ -121,6 +123,10 @@ public class UserContextRole {
     expiringInstant = Instant.now().plus(duration);
     loadingInProgress = false;
     log.debug("============ >>>>>>> notifyEndLoading");
+  }
+
+  public Set<StructureKey> allowedStructures() {
+    return contexts.keySet();
   }
 
   @Override

@@ -23,6 +23,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface EtablissementRepository<T extends Etablissement> extends AbstractRepository<T, Long> {
@@ -32,6 +33,12 @@ public interface EtablissementRepository<T extends Etablissement> extends Abstra
     "FROM Etablissement e " +
     "WHERE e.uai IS NOT NULL")
   List<SimpleEtablissementDto> findAllEtablissements();
+
+  @Query("SELECT new fr.recia.glc.db.dto.structure.SimpleEtablissementDto(e.id, e.uai, e.categorie, e.nom, e.nomCourt, " +
+    "e.siren) " +
+    "FROM Etablissement e " +
+    "WHERE e.uai IS NOT NULL AND e.uai IN (:uai)")
+  List<SimpleEtablissementDto> findAllowedEtablissements(Set<String> uai);
 
   @Query("SELECT new fr.recia.glc.db.dto.structure.EtablissementDto(e.id, e.uai, e.etat, e.etatAlim, " +
     "e.cleJointure.source, e.anneeScolaire, e.adresse.adresse , " +

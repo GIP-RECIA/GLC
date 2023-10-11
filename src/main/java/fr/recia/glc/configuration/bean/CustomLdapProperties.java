@@ -176,6 +176,7 @@ public class CustomLdapProperties {
       private Pattern structureFromGroupPattern;
       private String filterGroupsOfStructure;
       private Map<CategorieStructure, Pattern> structureCategoriesPatterns;
+      private Pattern uaiPattern;
 
       @Override
       public String toString() {
@@ -185,6 +186,7 @@ public class CustomLdapProperties {
           ",\n\t\"structureCategoriesPatterns\": " + structureCategoriesPatterns.keySet().stream()
           .map(key -> "\"" + key + "\": \"" + structureCategoriesPatterns.get(key) + "\"")
           .collect(Collectors.joining(", ", "{", "}"))+
+          ",\n\t\"uaiPattern\": \"" + uaiPattern + "\"" +
           "\n}";
       }
 

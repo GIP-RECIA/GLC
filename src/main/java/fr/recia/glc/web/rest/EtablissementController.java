@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.web.rest;
 
+import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
@@ -33,19 +34,27 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.EtablissementRepository;
+import fr.recia.glc.security.AuthoritiesConstants;
+import fr.recia.glc.security.CustomUserDetails;
+import fr.recia.glc.security.SecurityUtils;
+import fr.recia.glc.services.beans.UserContextRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static fr.recia.glc.configuration.Constants.SANS_OBJET;
@@ -68,21 +77,51 @@ public class EtablissementController {
   @Autowired
   private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
 
+  private GLCProperties glcProperties;
+  @Inject
+  private UserContextRole userContextRole;
+
+  public EtablissementController(GLCProperties glcProperties) {
+    this.glcProperties = glcProperties;
+  }
+
   @GetMapping()
   public ResponseEntity<List<SimpleEtablissementDto>> getEtablissements() {
-    List<SimpleEtablissementDto> etablissements =
-      etablissementRepository.findAllEtablissements().stream()
-        .map(etablissement -> {
-          String[] split = etablissement.getNom().split("\\$");
-          if (split.length > 1) {
-            etablissement.setType(split[0]);
-            etablissement.setVille(split[2]);
-            etablissement.setNom(split[1]);
-          }
+    final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
+    if (user == null) {
+      log.trace("user is not authenticated -> throw an error to redirect on authentication");
+      throw new AccessDeniedException("Access is denied to anonymous !");
+    }
 
-          return etablissement;
+    List<SimpleEtablissementDto> etablissements;
+    if (user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+      etablissements = etablissementRepository.findAllEtablissements();
+    } else {
+      Pattern permissionPattern = glcProperties.getLdap().getGroupBranch().getStructureProperties().getUaiPattern();
+      Set<String> allowedUAI = userContextRole.allowedStructures().stream()
+        .map(structureKey -> {
+          Matcher matcher = permissionPattern.matcher(structureKey.getKeyId());
+          log.debug("structureKey : {}", structureKey.getKeyId());
+          return matcher.find() ? matcher.group(1) : null;
         })
-        .collect(Collectors.toList());
+        .filter(s -> s != null)
+        .collect(Collectors.toSet());
+
+      etablissements = etablissementRepository.findAllowedEtablissements(allowedUAI);
+    }
+
+    etablissements = etablissements.stream()
+      .map(etablissement -> {
+        String[] split = etablissement.getNom().split("\\$");
+        if (split.length > 1) {
+          etablissement.setType(split[0]);
+          etablissement.setVille(split[2]);
+          etablissement.setNom(split[1]);
+        }
+
+        return etablissement;
+      })
+      .collect(Collectors.toList());
     if (etablissements.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     return new ResponseEntity<>(etablissements, HttpStatus.OK);
@@ -90,8 +129,27 @@ public class EtablissementController {
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<EtablissementDto> getEtablissement(@PathVariable Long id) {
+    final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
+    if (user == null) {
+      log.trace("user is not authenticated -> throw an error to redirect on authentication");
+      throw new AccessDeniedException("Access is denied to anonymous !");
+    }
+
     EtablissementDto etablissement = etablissementRepository.findByEtablissementId(id);
     if (etablissement == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    if (!user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+      Pattern permissionPattern = glcProperties.getLdap().getGroupBranch().getStructureProperties().getUaiPattern();
+      Set<String> allowedUAI = userContextRole.allowedStructures().stream()
+        .map(structureKey -> {
+          Matcher matcher = permissionPattern.matcher(structureKey.getKeyId());
+          log.debug("structureKey : {}", structureKey.getKeyId());
+          return matcher.find() ? matcher.group(1) : null;
+        })
+        .filter(s -> s != null)
+        .collect(Collectors.toSet());
+
+      if (!allowedUAI.contains(etablissement.getUai())) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
     String[] split = etablissement.getNom().split("\\$");
     if (split.length > 1) {
       etablissement.setType(split[0]);
@@ -99,6 +157,15 @@ public class EtablissementController {
     }
     List<Long> personnesIds = aPersonneAStructureRepository.findPersonneByStructureId(id);
     List<SimplePersonneDto> etabPersonnes = aPersonneRepository.findByPersonneIds(personnesIds);
+    if (!user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+      etabPersonnes = etabPersonnes.stream()
+        .map((personne) -> {
+          personne.setUid("");
+
+          return personne;
+        })
+        .collect(Collectors.toList());
+    }
     etablissement.setPersonnes(etabPersonnes);
     etablissement.setFilieres(getFilieresWithDisciplinesAndUsers(id, etablissement.getSource(), etabPersonnes));
 

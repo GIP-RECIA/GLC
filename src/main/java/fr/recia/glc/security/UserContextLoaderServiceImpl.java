@@ -55,8 +55,7 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
 
   private GLCProperties glcProperties;
 
-  public UserContextLoaderServiceImpl(GLCProperties glcProperties,
-                                      TypeStructureRepository typeStructureRepository) {
+  public UserContextLoaderServiceImpl(GLCProperties glcProperties, TypeStructureRepository typeStructureRepository) {
     this.glcProperties = glcProperties;
     this.typeStructureRepository = typeStructureRepository;
   }

@@ -16,6 +16,7 @@
 package fr.recia.glc.services.evaluators;
 
 import fr.recia.glc.web.dto.UserDTO;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +28,9 @@ import java.util.Set;
 /**
  * @author GIP RECIA - Julien Gribonvald 27 oct. 2014
  */
-@Service
 @Slf4j
+@ToString
+@Service
 public class OperatorEvaluation implements IEvaluation, Serializable {
 
   private static final long serialVersionUID = -1694431861034222417L;

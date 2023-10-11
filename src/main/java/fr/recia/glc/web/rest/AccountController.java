@@ -18,21 +18,27 @@ package fr.recia.glc.web.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.recia.glc.security.CustomUserDetails;
 import fr.recia.glc.security.SecurityUtils;
+import fr.recia.glc.security.UserContextLoaderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Slf4j
 @RestController
 public class AccountController {
+
+  @Inject
+  public UserContextLoaderService userContextLoaderService;
 
   @GetMapping(value = "/app/login")
   public Object login(Model model, HttpServletRequest request) throws IOException {
@@ -65,6 +71,8 @@ public class AccountController {
     log.debug("content : {}", content);
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.valueOf(type));
+
+    userContextLoaderService.loadUserRoles(SecurityContextHolder.getContext().getAuthentication());
 
     return new ResponseEntity<>(content, responseHeaders, HttpStatus.OK);
   }

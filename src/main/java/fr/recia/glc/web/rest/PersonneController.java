@@ -31,10 +31,14 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.security.AuthoritiesConstants;
+import fr.recia.glc.security.CustomUserDetails;
+import fr.recia.glc.security.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,6 +74,12 @@ public class PersonneController {
 
   @GetMapping
   public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
+    final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
+    if (user == null) {
+      log.trace("user is not authenticated -> throw an error to redirect on authentication");
+      throw new AccessDeniedException("Access is denied to anonymous !");
+    }
+
     List<SimplePersonneDto> personnes = aPersonneRepository.findByNameLike(name);
     if (personnes.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
@@ -78,8 +88,17 @@ public class PersonneController {
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<PersonneDto> getPersonne(@PathVariable Long id) {
+    final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
+    if (user == null) {
+      log.trace("user is not authenticated -> throw an error to redirect on authentication");
+      throw new AccessDeniedException("Access is denied to anonymous !");
+    }
+
     PersonneDto personne = aPersonneRepository.findByPersonneId(id);
     if (personne == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    if (!user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+      personne.setUid("");
+    }
     List<FonctionDto> fonctions = fonctionRepository.findByPersonne(id);
     if (!fonctions.isEmpty()) {
       personne.setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
@@ -91,6 +110,12 @@ public class PersonneController {
 
   @PostMapping(value = "/{id}/fonction")
   public ResponseEntity setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody Map<String, Object> body) throws Exception {
+    final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
+    if (user == null) {
+      log.trace("user is not authenticated -> throw an error to redirect on authentication");
+      throw new AccessDeniedException("Access is denied to anonymous !");
+    }
+
     SimplePersonneDto personne = aPersonneRepository.findByPersonneIdSimple(id);
     if (personne == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     String source = personne.getSource().startsWith(Constants.SARAPISUI_)
