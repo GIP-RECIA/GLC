@@ -34,6 +34,7 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.EtablissementRepository;
+import fr.recia.glc.ldap.StructureKey;
 import fr.recia.glc.security.AuthoritiesConstants;
 import fr.recia.glc.security.CustomUserDetails;
 import fr.recia.glc.security.SecurityUtils;
@@ -147,6 +148,15 @@ public class EtablissementController {
         })
         .filter(s -> s != null)
         .collect(Collectors.toSet());
+
+      StructureKey structureKey = userContextRole.allowedStructures().stream()
+        .filter(sk -> {
+          Matcher matcher = permissionPattern.matcher(sk.getKeyId());
+          return matcher.find() && matcher.group(1).equals(etablissement.getUai());
+        })
+        .findAny().orElse(null);
+
+      etablissement.setPermission(userContextRole.getRoleFromContext(structureKey).getName());
 
       if (!allowedUAI.contains(etablissement.getUai())) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }

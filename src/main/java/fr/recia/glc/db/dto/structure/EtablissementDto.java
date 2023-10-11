@@ -21,6 +21,7 @@ import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
+import fr.recia.glc.ldap.enums.PermissionType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,6 +52,7 @@ public class EtablissementDto {
   private String logo;
   private List<TypeFonctionFiliereDto> filieres;
   private List<SimplePersonneDto> personnes;
+  private String permission;
 
   public EtablissementDto(Long id, String uai, Etat etat, EtatAlim etatAlim, String source, Date anneeScolaire,
                           String adresse, String codePostal, String ville, String boitePostale, String pays,
