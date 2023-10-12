@@ -2,6 +2,7 @@
 import type { enumValues } from '@/types/enumValuesType';
 import type { SimplePersonne } from '@/types/personneType';
 import { getEtat, getIcon } from '@/utils/accountUtils';
+import { concatenate } from '@/utils/stringUtils';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -9,21 +10,11 @@ const props = defineProps<{
 }>();
 
 const etat = computed<enumValues>(() => getEtat(props.personne.etat));
-const subtitle = computed<string>(() => {
-  let str = '';
-  if (props.personne.email) str = props.personne.email;
-  if (str != '') str += ' - ';
-  if (props.personne.uid) str += props.personne.uid;
-
-  return str;
-});
 </script>
 
 <template>
-  <v-list-item :subtitle="subtitle">
-    <template #title>
-      {{ personne.cn }}
-    </template>
+  <v-list-item :subtitle="concatenate([personne.email, personne.uid], ' - ')">
+    <template #title>{{ personne.cn }}</template>
     <template #prepend>
       <v-icon :icon="getIcon(personne.source)" :color="etat.color" />
     </template>
