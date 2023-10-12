@@ -118,7 +118,7 @@ const filterFromSource = (source: Array<SimplePersonne>, searchValue: string): v
         <personne-list-item v-bind="props" :personne="item?.raw" />
       </template>
       <template #prepend-inner>
-        <v-icon v-if="isLoading" icon="fas fa-circle-notch fa-spin" />
+        <font-awesome-icon v-if="isLoading" :icon="['fas', 'circle-notch']" size="lg" class="text-grey" spin />
       </template>
     </v-autocomplete>
   </div>
