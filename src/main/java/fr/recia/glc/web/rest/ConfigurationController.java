@@ -18,6 +18,7 @@ package fr.recia.glc.web.rest;
 import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.ldap.enums.PermissionType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,14 @@ public class ConfigurationController {
     editAllowedStates.add(Etat.Bloque);
     editAllowedStates.add(Etat.Incertain);
     data.put("editAllowedStates", editAllowedStates);
+
+    List<String> permissionTypes = new ArrayList<>();
+    permissionTypes.add(PermissionType.ADMIN.getName());
+    permissionTypes.add(PermissionType.MANAGER.getName());
+    permissionTypes.add(PermissionType.MANAGER_BRANCH.getName());
+    permissionTypes.add(PermissionType.LOOKOVER.getName());
+    permissionTypes.add(PermissionType.LOOKOVER_BRANCH.getName());
+    data.put("permissionTypes", permissionTypes);
 
     return new ResponseEntity<>(data, HttpStatus.OK);
   }

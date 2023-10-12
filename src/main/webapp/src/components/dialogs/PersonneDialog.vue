@@ -163,7 +163,7 @@ const resetAddMode = (success?: boolean) => {
             icon="fas fa-xmark"
             color="default"
             variant="plain"
-            @click="isCurrentPersonne = undefined"
+            @click="isCurrentPersonne = false"
           />
         </template>
       </v-toolbar>

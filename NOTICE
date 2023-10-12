@@ -72,6 +72,7 @@ This project includes:
   JBoss Logging 3 under Apache License, version 2.0
   JCL 1.2 implemented over SLF4J under Apache License, Version 2.0
   JDT Annotations for Enhanced Null Analysis under Eclipse Public License - v 2.0
+  Joda-Time under Apache License, Version 2.0
   JSON library from Android SDK under Apache License 2.0
   JSON Small and Fast Parser under The Apache Software License, Version 2.0
   JSONassert under The Apache Software License, Version 2.0

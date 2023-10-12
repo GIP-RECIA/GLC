@@ -21,6 +21,7 @@ export type Etablissement = {
   logo: string;
   personnes: Array<SimplePersonne>;
   filieres: Array<Filiere>;
+  permission?: string;
 };
 
 export type SimpleEtablissement = {

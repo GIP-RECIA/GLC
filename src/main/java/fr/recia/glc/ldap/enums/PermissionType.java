@@ -34,29 +34,29 @@ public enum PermissionType {
   /**
    * Admin.
    */
-  ADMIN(1, "ADMIN", 128, "enum.permission.superAdm.title"),
+  ADMIN(1, "ADMIN", 128),
   /**
    * Manager.
    */
-  MANAGER(2, "MANAGER", 64, "enum.permission.manager.title"),
-  MANAGER_BRANCH(3, "MANAGER_BRANCH", 64, "enum.permission.manager.title"),
+  MANAGER(2, "MANAGER", 64),
+  MANAGER_BRANCH(3, "MANAGER_BRANCH", 64),
   /**
    * No Permission expect to look over the object and go on his childs.
    */
-  LOOKOVER(4, "LOOKOVER", 0, "enum.permission.lookover.title"),
-  LOOKOVER_BRANCH(5, "LOOKOVER_BRANCH", 0, "enum.permission.lookover.title");
+  LOOKOVER(4, "LOOKOVER", 0),
+  LOOKOVER_BRANCH(5, "LOOKOVER_BRANCH", 0);
 //  /**
 //   * User.
 //   */
-//  USER(8, "USER", 8, "permission.user.desc"),
+//  USER(8, "USER", 8),
 //  /**
 //   * Authenticated User And Without Permission.
 //   */
-//  AUTHENTICATED(9, "AUTHENTICATED", 4, "permission.authenticated.desc"),
+//  AUTHENTICATED(9, "AUTHENTICATED", 4),
 //  /**
 //   * UnAuthenticated Users
 //   */
-//  ANONYMOUS(10, "ANONYMOUS", 0, "permission.anonymous.desc");
+//  ANONYMOUS(10, "ANONYMOUS", 0);
 
   /**
    * Identifier.
@@ -70,10 +70,6 @@ public enum PermissionType {
    * Mask.
    */
   private int mask;
-  /**
-   * The I18N key.
-   */
-  private String label;
 
   public static PermissionType fromName(final String name) {
     if (name != null) {
