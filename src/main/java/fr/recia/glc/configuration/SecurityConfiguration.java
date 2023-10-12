@@ -16,11 +16,11 @@
 package fr.recia.glc.configuration;
 
 import com.google.common.collect.Lists;
+import fr.recia.glc.security.AuthoritiesConstants;
+import fr.recia.glc.security.CustomSessionFixationProtectionStrategy;
 import fr.recia.glc.security.cas.AjaxAuthenticationFailureHandler;
 import fr.recia.glc.security.cas.AjaxAuthenticationSuccessHandler;
 import fr.recia.glc.security.cas.AjaxLogoutSuccessHandler;
-import fr.recia.glc.security.AuthoritiesConstants;
-import fr.recia.glc.security.CustomSessionFixationProtectionStrategy;
 import fr.recia.glc.security.cas.CustomSingleSignOutFilter;
 import fr.recia.glc.security.cas.RememberCasAuthenticationEntryPoint;
 import fr.recia.glc.security.cas.RememberCasAuthenticationProvider;

@@ -21,7 +21,6 @@ import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
-import fr.recia.glc.ldap.enums.PermissionType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

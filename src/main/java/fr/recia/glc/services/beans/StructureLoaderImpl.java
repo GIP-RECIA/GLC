@@ -26,7 +26,6 @@ import org.joda.time.Duration;
 import org.joda.time.Instant;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cache.Cache;
-import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;

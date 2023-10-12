@@ -23,16 +23,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Calendar;
-import java.util.Date;
 
 @MappedSuperclass
 @Getter
