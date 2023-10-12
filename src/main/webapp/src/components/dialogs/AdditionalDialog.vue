@@ -177,9 +177,13 @@ const currentTabValue = computed<{
       </v-card-text>
       <v-card-actions v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
         <v-spacer />
-        <v-btn :color="saveButton.color" :prepend-icon="saveButton.icon" :disabled="!canSave" @click="save">
-          {{ t(saveButton.i18n) }}
-        </v-btn>
+        <v-btn
+          :color="saveButton.color"
+          :prepend-icon="saveButton.icon"
+          :text="t(saveButton.i18n)"
+          :disabled="!canSave"
+          @click="save"
+        />
       </v-card-actions>
     </v-card>
   </v-dialog>

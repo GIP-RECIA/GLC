@@ -23,11 +23,9 @@ const showAll = ref<boolean>(false);
       <v-btn
         variant="tonal"
         :prepend-icon="showAll ? 'fas fa-eye-slash' : 'fas fa-eye'"
-        :alt="t(showAll ? 'button.hideEmpty' : 'button.showAll')"
+        :text="t(showAll ? 'button.hideEmpty' : 'button.showAll')"
         @click="showAll = !showAll"
-      >
-        {{ t(showAll ? 'button.hideEmpty' : 'button.showAll') }}
-      </v-btn>
+      />
     </div>
     <filieres-layout :filieres="teaching" :show-all="showAll" />
 
