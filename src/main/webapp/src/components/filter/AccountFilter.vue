@@ -3,6 +3,7 @@ import ChipsFilter from '@/components/filter/ChipsFilter.vue';
 import { CategoriePersonne } from '@/types/enums/CategoriePersonne';
 import { Etat } from '@/types/enums/Etat';
 import type { SimplePersonne } from '@/types/personneType';
+import { isArrayOf } from '@/utils/arrayUtils';
 import isEmpty from 'lodash.isempty';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -20,6 +21,7 @@ const nbResults = ref<number>(props.searchList ? props.searchList.length : 0);
 let searchFilter: string | undefined;
 let categoryFilter: Array<string>;
 let statusFilter: Array<string>;
+let typeFilter: Array<string>;
 
 const setSearchFilter = (newValue: string | undefined) => {
   searchFilter = newValue;
@@ -27,15 +29,22 @@ const setSearchFilter = (newValue: string | undefined) => {
 };
 
 const setCategoryFilter = (newValue: Array<number | string>) => {
-  if (typeof newValue == 'string') {
-    categoryFilter = newValue;
+  if (isArrayOf(newValue, 'string')) {
+    categoryFilter = newValue as string[];
     filter();
   }
 };
 
 const setStatusFilter = (newValue: Array<number | string>) => {
-  if (typeof newValue == 'string') {
-    statusFilter = newValue;
+  if (isArrayOf(newValue, 'string')) {
+    statusFilter = newValue as string[];
+    filter();
+  }
+};
+
+const setTypeFilter = (newValue: Array<number | string>) => {
+  if (isArrayOf(newValue, 'string')) {
+    typeFilter = newValue as string[];
     filter();
   }
 };
@@ -62,6 +71,12 @@ const filter = () => {
 
   if (!isEmpty(statusFilter)) {
     result = result?.filter((personne) => statusFilter.includes(personne.etat));
+  }
+
+  if (!isEmpty(typeFilter)) {
+    result = result.filter((personne) =>
+      typeFilter.includes(personne.source.startsWith('SarapisUi_') ? 'SarapisUi_' : ''),
+    );
   }
 
   nbResults.value = result.length;
@@ -93,6 +108,11 @@ const statusTags = [
   { id: Etat.Delete, i18n: 'person.status.deleted' },
 ];
 
+const typeTags = [
+  { id: '', i18n: 'source.official' },
+  { id: 'SarapisUi_', i18n: 'source.SarapisUi_' },
+];
+
 filter();
 </script>
 
@@ -102,6 +122,7 @@ filter();
       <v-text-field
         :placeholder="t('search.personne.placeholder')"
         variant="solo-filled"
+        class="mb-3"
         rounded
         clearable
         flat
@@ -112,15 +133,22 @@ filter();
           <v-icon icon="fas fa-search" size="x-small" class="mx-1" />
         </template>
       </v-text-field>
+      <div class="mb-2">
+        <h2 class="text-h6">{{ t('person.information.profile') }}</h2>
+        <chips-filter :tags="categoryTags" @update:selected="setCategoryFilter" />
+      </div>
+      <div class="mb-2">
+        <h2 class="text-h6">{{ t('person.information.status') }}</h2>
+        <chips-filter :tags="statusTags" @update:selected="setStatusFilter" />
+      </div>
+      <div class="mb-2">
+        <h2 class="text-h6">{{ t('person.information.source') }}</h2>
+        <chips-filter :tags="typeTags" @update:selected="setTypeFilter" />
+      </div>
+      <div class="d-flex">
+        <v-spacer />
+        <div>{{ nbResults }} {{ t('result', nbResults) }}</div>
+      </div>
     </v-card-text>
-    <v-card-text>
-      <h2 class="text-h6 mb-2">{{ t('person.information.profile') }}</h2>
-      <chips-filter :tags="categoryTags" @update:selected="setCategoryFilter" />
-    </v-card-text>
-    <v-card-text>
-      <h2 class="text-h6 mb-2">{{ t('person.information.status') }}</h2>
-      <chips-filter :tags="statusTags" @update:selected="setStatusFilter" />
-    </v-card-text>
-    <v-card-text>{{ nbResults }} {{ t('result', nbResults) }}</v-card-text>
   </v-card>
 </template>

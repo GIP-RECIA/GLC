@@ -17,6 +17,6 @@ const filter = (payload: Array<number>) => {
 
 <template>
   <v-chip-group column multiple selected-class="text-primary" @update:model-value="filter">
-    <v-chip v-for="(tag, index) in tags" :key="index" rounded>{{ t(tag.i18n) }}</v-chip>
+    <v-chip v-for="(tag, index) in tags" :key="index" :text="t(tag.i18n)" rounded />
   </v-chip-group>
 </template>

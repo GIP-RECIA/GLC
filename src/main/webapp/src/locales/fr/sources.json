@@ -14,6 +14,8 @@
     "SarapisUi_CFA-CENTRE": "Compte local établissement",
     "SarapisUi_EF2S-CENTRE": "Compte local établissement",
     "SarapisUi_GIP-RECIA": "Compte local GIP RECIA",
-    "SarapisUi_LA-CENTRE": "Compte local enseignement agricole"
+    "SarapisUi_LA-CENTRE": "Compte local enseignement agricole",
+    "SarapisUi_": "Compte local",
+    "official": "Annuaire"
   }
 }
