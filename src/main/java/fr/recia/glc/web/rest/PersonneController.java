@@ -82,6 +82,15 @@ public class PersonneController {
 
     List<SimplePersonneDto> personnes = aPersonneRepository.findByNameLike(name);
     if (personnes.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    if (!user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+      personnes = personnes.stream()
+        .map(personne -> {
+          personne.setUid("");
+
+          return personne;
+        })
+        .collect(Collectors.toList());
+    }
 
     return new ResponseEntity<>(personnes, HttpStatus.OK);
   }
