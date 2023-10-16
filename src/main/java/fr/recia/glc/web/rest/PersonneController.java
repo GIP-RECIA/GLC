@@ -19,6 +19,7 @@ import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.education.Discipline;
 import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
@@ -57,9 +58,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/personne")
 public class PersonneController {
-  @Autowired
-  private APersonneAStructureRepository aPersonneAStructureRepository;
 
+  @Autowired
+  private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
   @Autowired
   private APersonneRepository<APersonne> aPersonneRepository;
   @Autowired

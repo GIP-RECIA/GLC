@@ -28,10 +28,13 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.models.mappers.AdditionalFonctionMapping;
 import fr.recia.glc.models.mappers.AdditionalFonctionMappingFiliere;
+import fr.recia.glc.security.CustomUserDetails;
+import fr.recia.glc.security.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,6 +69,12 @@ public class FonctionController {
 
   @GetMapping()
   public ResponseEntity<List<Object>> getFonctions() {
+    final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
+    if (user == null) {
+      log.trace("user is not authenticated -> throw an error to redirect on authentication");
+      throw new AccessDeniedException("Access is denied to anonymous !");
+    }
+
     ArrayList<Object> data = new ArrayList<>();
 
     List<String> sources = disciplineRepository.findAllNonSarapisSources();

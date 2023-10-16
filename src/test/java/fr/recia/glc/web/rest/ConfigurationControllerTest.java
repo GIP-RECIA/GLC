@@ -15,44 +15,46 @@
  */
 package fr.recia.glc.web.rest;
 
-import fr.recia.glc.test.TestUtil;
+import fr.recia.glc.configuration.GLCProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.PostConstruct;
 
-import static org.mockito.MockitoAnnotations.openMocks;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class HealthCheckTest {
+class ConfigurationControllerTest {
 
-  private MockMvc mockHealthCheckMvc;
+  private MockMvc mockConfigurationControllerMvc;
 
   @PostConstruct
-  public void setup() {
-    openMocks(this);
-    HealthCheckController healthCheckController = new HealthCheckController();
+  void setup() {
+    GLCProperties glcProperties = new GLCProperties();
+    ConfigurationController configurationController = new ConfigurationController(glcProperties);
 
-    mockHealthCheckMvc = standaloneSetup(healthCheckController).build();
+    mockConfigurationControllerMvc = standaloneSetup(configurationController).build();
   }
 
   @Test
-  void testHealthCheck() throws Exception {
-    mockHealthCheckMvc.perform(head("/health-check")
-        .contentType(TestUtil.APPLICATION_JSON_UTF8)
-        .accept(TestUtil.APPLICATION_JSON_UTF8))
+  void getConfigurationTest() throws Exception {
+    mockConfigurationControllerMvc.perform(get("/api/config")
+        .accept(MediaType.APPLICATION_JSON))
       .andDo(print())
-      .andExpect(status().isOk());
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andReturn();
   }
 
 }
