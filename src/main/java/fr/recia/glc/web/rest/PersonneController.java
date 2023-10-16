@@ -142,7 +142,8 @@ public class PersonneController {
         return new FonctionDto(
           Long.parseLong(split[1]),
           Long.parseLong(split[0]),
-          source
+          source,
+          structureId
         );
       })
       .collect(Collectors.toList());
@@ -155,30 +156,37 @@ public class PersonneController {
       .filter(fonction -> !requiredAdditional.contains(fonction))
       .collect(Collectors.toList());
 
-    log.debug("{} fonctions to add : {}", newAdditional.size(), newAdditional);
-    log.debug("{} fonctions to delete : {}", deletedAdditional.size(), deletedAdditional);
-
     APersonne apersonne = aPersonneRepository.findById(id).orElse(null);
     AStructure structure = aStructureRepository.findById(structureId).orElse(null);
-
-    boolean isInStructure = aPersonneAStructureRepository.isInStructure(id, structureId) > 0;
-
-    if (!isInStructure) {
-      log.debug("User is not in structure !");
-      aPersonneAStructureRepository2.insertInStructure(id, structureId);
-    }
+    if (apersonne == null || structure == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     int officialFonctionsInStructure = fonctionRepository.findByPersonne(id).stream()
       .filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_) && Objects.equals(fonction.getStructure(), structureId))
       .collect(Collectors.toList()).size();
-    if (newAdditional.isEmpty() && !deletedAdditional.isEmpty() && officialFonctionsInStructure == 0) {
-      log.debug("Detach user from structure !");
-      aPersonneAStructureRepository2.deleteFromStructure(id, structureId);
-    }
+
+    boolean isInStructure = aPersonneAStructureRepository.isInStructure(id, structureId) > 0;
+    boolean attachToStructure = !isInStructure && !newAdditional.isEmpty();
+    boolean detachFromStructure = newAdditional.isEmpty() && !deletedAdditional.isEmpty() && additionalFonctions.size() == deletedAdditional.size() && officialFonctionsInStructure == 0;
+
+    if (attachToStructure) aPersonneAStructureRepository2.insertInStructure(id, structureId);
+    if (detachFromStructure) aPersonneAStructureRepository2.deleteFromStructure(id, structureId);
+
+    if (log.isDebugEnabled())
+      log.debug(
+        "<==\n\t- additional fonctions : {}\n\t- require to add : {}\n\t- {} fonctions to add : {}\n\t- {} fonctions to delete : {}\n\t- is in structure : {}\n\t- attach to structure : {}\n\t- detach from structure : {}\n==>",
+        additionalFonctions,
+        requiredAdditional,
+        newAdditional.size(),
+        newAdditional,
+        deletedAdditional.size(),
+        deletedAdditional,
+        isInStructure,
+        attachToStructure,
+        detachFromStructure
+      );
 
     List<Fonction> saveAdditional = newAdditional.stream()
       .map(fonction -> {
-        log.debug("DisciplineId={}, filiereId={}", fonction.getDisciplinePoste(), fonction.getFiliere());
         Discipline discipline = disciplineRepository.findById(fonction.getDisciplinePoste()).orElse(null);
         TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
 
