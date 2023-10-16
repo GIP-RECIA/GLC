@@ -2,10 +2,10 @@
   "search": {
     "noResults": "Aucun résultats",
     "structure": {
-      "placeholder": "Rechercher une structure"
+      "placeholder": "Rechercher une structure par nom, uai, siren ou ville"
     },
     "personne": {
-      "placeholder": "Rechercher une personne"
+      "placeholder": "Nom Prénom"
     }
   }
 }

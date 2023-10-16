@@ -101,6 +101,7 @@ const filterFromSource = (source: Array<SimplePersonne>, searchValue: string): v
       :hide-no-data="isHideNoData || isLoading"
       :no-data-text="t('search.noResults')"
       :item-title="['cn']"
+      :placeholder="t('search.personne.placeholder')"
       autofocus
       hide-details
       return-object
