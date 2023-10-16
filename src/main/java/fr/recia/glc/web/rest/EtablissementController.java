@@ -60,6 +60,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static fr.recia.glc.configuration.Constants.SANS_OBJET;
+import static fr.recia.glc.configuration.Constants.SARAPISUI_;
 
 @Slf4j
 @RestController
@@ -186,11 +187,23 @@ public class EtablissementController {
   private List<TypeFonctionFiliereDto> getFilieresWithDisciplinesAndUsers(
     Long structureId, String source, List<SimplePersonneDto> personnes
   ) {
-    List<FonctionDto> fonctions = fonctionRepository.findByStructureIdAndSource(structureId, source);
+    List<FonctionDto> fonctions = fonctionRepository.findByStructureId(structureId);
+    if (fonctions.isEmpty()) return Collections.emptyList();
+
     List<TypeFonctionFiliereDto> typesFonctionFiliere = typeFonctionFiliereRepository.findBySourceSarapis(source);
     List<DisciplineDto> disciplines = disciplineRepository.findBySourceSarapis(source);
 
-    if (fonctions.isEmpty()) return Collections.emptyList();
+    if (log.isDebugEnabled())
+      log.debug(
+        "<==\n\t- structure : {}\n\t- filieres : {}\n\t- disciplines : {}\n\t- personnes : {}\n\t- source : {}\n\t- filieres of source : {}\n\t- disciplines of source : {}\n==>",
+        structureId,
+        fonctions.stream().map(FonctionDto::getFiliere).collect(Collectors.toSet()),
+        fonctions.stream().map(FonctionDto::getDisciplinePoste).collect(Collectors.toSet()),
+        fonctions.stream().map(FonctionDto::getPersonne).collect(Collectors.toSet()),
+        source.startsWith(SARAPISUI_) ? source : source + " AND " + SARAPISUI_ + source,
+        typesFonctionFiliere.stream().map(TypeFonctionFiliereDto::getId).collect(Collectors.toSet()),
+        disciplines.stream().map(DisciplineDto::getId).collect(Collectors.toSet())
+      );
 
     return typesFonctionFiliere.stream()
       // Ajout des disciplines aux filières

@@ -54,9 +54,8 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
   @Query("SELECT new fr.recia.glc.db.dto.fonction.FonctionDto(f.personne.id, f.disciplinePoste.id, f.filiere.id, " +
     "f.source) " +
     "FROM Fonction f " +
-    "WHERE f.structure.id = :structureId " +
-    "AND (f.source = :source OR f.source = CONCAT('SarapisUi_', :source))")
-  List<FonctionDto> findByStructureIdAndSource(Long structureId, String source);
+    "WHERE f.structure.id = :structureId")
+  List<FonctionDto> findByStructureId(Long structureId);
 
   @Query("SELECT f.id " +
     "FROM Fonction f " +
