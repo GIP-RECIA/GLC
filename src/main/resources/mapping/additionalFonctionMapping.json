@@ -38,6 +38,44 @@
     "disciplines": []
   },
   {
+    "source": "AC-DEMO",
+    "filieres": [
+      {
+        "code": "DIR",
+        "disciplines": ["D0010", "D0011", "DIRSEGPA"]
+      },
+      {
+        "code": "ADF",
+        "disciplines": ["SECDIR", "SECELV", "SECCTR", "GEST", "SECGEST", "CPT", "SECCPT", "ADFGRETA"]
+      },
+      {
+        "code": "CTR",
+        "disciplines": ["L2001", "L2020", "L2070", "L2080", "L2085", "P2001"]
+      },
+      {
+        "code": "EDU",
+        "disciplines": ["E0030"]
+      },
+      {
+        "code": "MDS",
+        "disciplines": ["P9110", "P9111", "P9222"]
+      },
+      {
+        "code": "PSY",
+        "disciplines": ["Y0012"]
+      },
+      {
+        "code": "ADM",
+        "disciplines": ["COORULIS", "COORMLDS"]
+      },
+      {
+        "code": "AED",
+        "disciplines": ["S0097"]
+      }
+    ],
+    "disciplines": []
+  },
+  {
     "source": "COLL-CVDL",
     "filieres": [],
     "disciplines": ["RESEQUENTLIN", "RESEQUMAI", "RESEQUPROLOC", "RESEQURES", "RESPMAG", "RESCUI"]
