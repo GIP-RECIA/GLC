@@ -24,6 +24,7 @@ import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
+import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository2;
 import fr.recia.glc.db.repositories.education.DisciplineRepository;
@@ -168,9 +169,6 @@ public class PersonneController {
     boolean attachToStructure = !isInStructure && !newAdditional.isEmpty();
     boolean detachFromStructure = newAdditional.isEmpty() && !deletedAdditional.isEmpty() && additionalFonctions.size() == deletedAdditional.size() && officialFonctionsInStructure == 0;
 
-    if (attachToStructure) aPersonneAStructureRepository2.insertInStructure(id, structureId);
-    if (detachFromStructure) aPersonneAStructureRepository2.deleteFromStructure(id, structureId);
-
     if (log.isDebugEnabled())
       log.debug(
         "<==\n\t- additional fonctions : {}\n\t- require to add : {}\n\t- {} fonctions to add : {}\n\t- {} fonctions to delete : {}\n\t- is in structure : {}\n\t- attach to structure : {}\n\t- detach from structure : {}\n==>",
@@ -200,7 +198,13 @@ public class PersonneController {
 
     if (!saveAdditional.isEmpty()) fonctionRepository.saveAll(saveAdditional);
     if (!deleteAdditionalIds.isEmpty()) fonctionRepository.deleteAllById(deleteAdditionalIds);
-    if (!saveAdditional.isEmpty() || !deletedAdditional.isEmpty()) fonctionRepository.flush();
+    if (!saveAdditional.isEmpty() || !deletedAdditional.isEmpty()) {
+      fonctionRepository.flush();
+      if (attachToStructure) aPersonneAStructureRepository2.insertInStructure(id, structureId);
+      if (detachFromStructure) aPersonneAStructureRepository2.deleteFromStructure(id, structureId);
+      apersonne.prePersist();
+      aPersonneRepository.saveAndFlush(apersonne);
+    }
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
