@@ -1,10 +1,10 @@
 import { useConfigurationStore } from '@/stores/configurationStore';
 import { storeToRefs } from 'pinia';
 
-const { VITE_API_URL } = import.meta.env;
+const { VITE_API_URI } = import.meta.env;
 
 const jsonp = (uri: string, callbackName: string, timeout: number): Promise<object> => {
-  let url = VITE_API_URL.endsWith('/') ? VITE_API_URL.slice(0, -1) : VITE_API_URL;
+  let url = VITE_API_URI.endsWith('/') ? VITE_API_URI.slice(0, -1) : VITE_API_URI;
   url += uri;
 
   return new Promise((resolve, reject) => {
@@ -111,7 +111,7 @@ const relog = () => {
   window.addEventListener('message', onmessage);
 
   // @ts-ignore
-  relogState.window = window.open(`${VITE_API_URL}/app/login?postMessage`);
+  relogState.window = window.open(`${VITE_API_URI}/app/login?postMessage`);
 };
 
 // Méthode de nettoyage de la page de login

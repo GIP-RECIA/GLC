@@ -16,7 +16,7 @@ export default ({ mode }: { mode: string }) => {
       vue({
         template: {
           compilerOptions: {
-            isCustomElement: (tag) => tag.includes('extended-uportal-'),
+            isCustomElement: (tag) => ['extended-uportal-header', 'extended-uportal-footer'].includes(tag),
           },
         },
       }),
@@ -26,6 +26,18 @@ export default ({ mode }: { mode: string }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src/main/webapp/src', import.meta.url)),
+      },
+    },
+    server: {
+      proxy: {
+        '^(?:/.*)?/api': {
+          target: process.env.VITE_PROXY_API_URL,
+          changeOrigin: true,
+        },
+        '^(?:/.*)?/app': {
+          target: process.env.VITE_PROXY_API_URL,
+          changeOrigin: true,
+        },
       },
     },
     build: {
