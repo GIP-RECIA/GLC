@@ -68,7 +68,6 @@ public class ConfigurationController {
     editAllowedStates.add(Etat.Invalide);
     editAllowedStates.add(Etat.Valide);
     editAllowedStates.add(Etat.Bloque);
-    editAllowedStates.add(Etat.Incertain);
     data.put("editAllowedStates", editAllowedStates);
 
     List<String> permissionTypes = new ArrayList<>();
