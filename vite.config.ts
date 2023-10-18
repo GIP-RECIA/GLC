@@ -30,11 +30,11 @@ export default ({ mode }: { mode: string }) => {
     },
     server: {
       proxy: {
-        '^(?:/.*)?/api': {
+        '^(?:/[^/]*)?/api': {
           target: process.env.VITE_PROXY_API_URL,
           changeOrigin: true,
         },
-        '^(?:/.*)?/app': {
+        '^(?:/[^/]*)?/app': {
           target: process.env.VITE_PROXY_API_URL,
           changeOrigin: true,
         },
@@ -43,9 +43,9 @@ export default ({ mode }: { mode: string }) => {
     build: {
       rollupOptions: {
         output: {
-          assetFileNames: 'assets/glc-[name].[ext]',
-          entryFileNames: 'assets/glc-[name].js',
-          chunkFileNames: 'assets/glc-[name].js',
+          assetFileNames: 'assets/[name].[ext]',
+          entryFileNames: 'assets/[name].js',
+          chunkFileNames: 'assets/[name].js',
         },
       },
     },
