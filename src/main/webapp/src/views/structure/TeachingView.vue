@@ -2,8 +2,9 @@
 import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
 import { useConfigurationStore } from '@/stores/configurationStore';
 import { useFonctionStore } from '@/stores/fonctionStore';
+import isEmpty from 'lodash.isempty';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -15,12 +16,21 @@ const fonctionStore = useFonctionStore();
 const { teaching } = storeToRefs(fonctionStore);
 
 const showAll = ref<boolean>(false);
+const isEmptyDisciplines = computed<boolean>(() => {
+  return (
+    teaching.value != undefined &&
+    teaching.value.filter(
+      (filiere) => filiere.disciplines.filter((discipline) => isEmpty(discipline.personnes)).length > 0,
+    ).length > 0
+  );
+});
 </script>
 
 <template>
   <v-container fluid>
     <div class="d-flex justify-end mb-4 mb-sm-0">
       <v-btn
+        v-if="isEmptyDisciplines"
         variant="tonal"
         :prepend-icon="showAll ? 'fas fa-eye-slash' : 'fas fa-eye'"
         :text="t(showAll ? 'button.hideEmpty' : 'button.showAll')"
