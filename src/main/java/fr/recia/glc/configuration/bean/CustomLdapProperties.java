@@ -34,9 +34,9 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_DELIMITER;
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_PREFIX;
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_SUFFIX;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
 
 @Data
 @Validated
@@ -67,16 +67,18 @@ public class CustomLdapProperties {
 
     @Override
     public String toString() {
-      return "{\n\"ContextSourceProperties\":{"
-        + "\n \" urls\":" + Arrays.stream(urls)
+      return "{" +
+        "\n\t\t\t\"ContextSourceProperties\": {" +
+        "\n\t\t\t\t\"urls\": " + Arrays.stream(urls)
         .map(String::valueOf)
-        .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX))
-        + ",\n \"base\":\"" + base + "\""
-        + ",\n \"username\":\"" + username + "\""
-        + ",\n \"password\":\"*******\""
-        + ",\n \"anonymousReadOnly\":\"" + anonymousReadOnly + "\""
-        + ",\n \"nativePooling\":\"" + nativePooling + "\""
-        + "\n}\n}";
+        .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
+        "\n\t\t\t\t\"base\": \"" + base + "\"," +
+        "\n\t\t\t\t\"username\": \"" + username + "\"," +
+        "\n\t\t\t\t\"password\": \"*******\"," +
+        "\n\t\t\t\t\"anonymousReadOnly\": \"" + anonymousReadOnly + "\"," +
+        "\n\t\t\t\t\"nativePooling\": \"" + nativePooling + "\"" +
+        "\n\t\t\t}" +
+        "\n\t\t}";
     }
   }
 
@@ -91,14 +93,16 @@ public class CustomLdapProperties {
 
     @Override
     public String toString() {
-      return "{\n\"LdapTemplateProperties\":{"
-        + "\n \"ignorePartialResultException\":\"" + ignorePartialResultException + "\""
-        + ",\n \"ignoreNameNotFoundException\":\"" + ignoreNameNotFoundException + "\""
-        + ",\n \"ignoreSizeLimitExceededException\":\"" + ignoreSizeLimitExceededException + "\""
-        + ",\n \"searchScope\":\"" + searchScope + "\""
-        + ",\n \"timeLimit\":\"" + timeLimit + "\""
-        + ",\n \"countLimit\":\"" + countLimit + "\""
-        + "\n}\n}";
+      return "{" +
+        "\n\t\t\t\"LdapTemplateProperties\": {" +
+        "\n\t\t\t\t\"ignorePartialResultException\": \"" + ignorePartialResultException + "\"," +
+        "\n\t\t\t\t\"ignoreNameNotFoundException\": \"" + ignoreNameNotFoundException + "\"," +
+        "\n\t\t\t\t\"ignoreSizeLimitExceededException\": \"" + ignoreSizeLimitExceededException + "\"," +
+        "\n\t\t\t\t\"searchScope\": \"" + searchScope + "\"," +
+        "\n\t\t\t\t\"timeLimit\": \"" + timeLimit + "\"," +
+        "\n\t\t\t\t\"countLimit\": \"" + countLimit + "\"" +
+        "\n\t\t\t}" +
+        "\n\t\t}";
     }
   }
 
@@ -124,20 +128,22 @@ public class CustomLdapProperties {
 
     @Override
     public String toString() {
-      return "{\n\"branchProperties\":{"
-        + "\n \"baseDN\":\"" + baseDN + "\""
-        + ",\n \"idAttribute\":\"" + idAttribute + "\""
-        + ",\n \"displayNameAttribute\":\"" + displayNameAttribute + "\""
-        + ",\n \"mailAttribute\":\"" + mailAttribute + "\""
-        + ",\n \"searchAttribute\":\"" + searchAttribute + "\""
-        + ",\n \"groupAttribute\":\"" + groupAttribute + "\""
-        + ",\n \"otherDisplayedAttributes\":" + (otherDisplayedAttributes != null ? otherDisplayedAttributes.stream()
+      return "{" +
+        "\n\t\t\t\"BranchProperties\": {" +
+        "\n\t\t\t\t\"baseDN\": \"" + baseDN + "\"," +
+        "\n\t\t\t\t\"idAttribute\": \"" + idAttribute + "\"," +
+        "\n\t\t\t\t\"displayNameAttribute\": \"" + displayNameAttribute + "\"," +
+        "\n\t\t\t\t\"mailAttribute\": \"" + mailAttribute + "\"," +
+        "\n\t\t\t\t\"searchAttribute\": \"" + searchAttribute + "\"," +
+        "\n\t\t\t\t\"groupAttribute\": \"" + groupAttribute + "\"," +
+        "\n\t\t\t\t\"otherDisplayedAttributes\": " + (otherDisplayedAttributes != null ? otherDisplayedAttributes.stream()
         .map(String::valueOf)
-        .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX)) : null)
-        + ",\n \"otherBackendAttributes\":" + (otherBackendAttributes != null ? otherBackendAttributes.stream()
+        .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) : null) + "," +
+        "\n\t\t\t\t\"otherBackendAttributes\": " + (otherBackendAttributes != null ? otherBackendAttributes.stream()
         .map(String::valueOf)
-        .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX)) : null)
-        + "\n}\n}";
+        .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) : null) +
+        "\n\t\t\t}" +
+        "\n\t\t}";
     }
   }
 
@@ -181,49 +187,53 @@ public class CustomLdapProperties {
       @Override
       public String toString() {
         return "{" +
-          "\n\t\"structureFromGroupPattern\": \"" + structureFromGroupPattern + "\"" +
-          ",\n\t\"filterGroupsOfStructure\": \"" + filterGroupsOfStructure + "\"" +
-          ",\n\t\"structureCategoriesPatterns\": " + structureCategoriesPatterns.keySet().stream()
+          "\n\t\t\t\t\"StructureProperties\": {" +
+          "\n\t\t\t\t\t\"structureFromGroupPattern\": \"" + structureFromGroupPattern + "\"," +
+          "\n\t\t\t\t\t\"filterGroupsOfStructure\": \"" + filterGroupsOfStructure + "\"," +
+          "\n\t\t\t\t\t\"structureCategoriesPatterns\": " + structureCategoriesPatterns.keySet().stream()
           .map(key -> "\"" + key + "\": \"" + structureCategoriesPatterns.get(key) + "\"")
-          .collect(Collectors.joining(", ", "{", "}"))+
-          ",\n\t\"uaiPattern\": \"" + uaiPattern + "\"" +
-          "\n}";
+          .collect(Collectors.joining(",\n\t\t\t\t\t\t\t", "{\n\t\t\t\t\t\t\t", "\n\t\t\t\t\t\t}")) + "," +
+          "\n\t\t\t\t\t\"uaiPattern\": \"" + uaiPattern + "\"" +
+          "\n\t\t\t\t}" +
+          "\n\t\t\t}";
       }
 
     }
 
     @Override
     public String toString() {
-      return "{\n\"GroupBranchProperties\":"
-        + super.toString()
-        + ",\n \"groupMemberKeyPattern\":\"" + groupMemberKeyPattern + "\""
-        + ",\n \"groupMemberKeyPatternIndex\":\"" + groupMemberKeyPatternIndex + "\""
-        + ",\n \"userMemberKeyPattern\":\"" + userMemberKeyPattern + "\""
-        + ",\n \"userMemberKeyPatternIndex\":\"" + userMemberKeyPatternIndex + "\""
-        + ",\n \"groupDisplayNamePattern\":\"" + groupDisplayNamePattern + "\""
-        + ",\n \"DNContainsDisplayName\":\"" + DNContainsDisplayName + "\""
-        + ",\n \"resolveUserMembers\":\"" + resolveUserMembers + "\""
-        + ",\n \"resolveUserMembersByUserAttributes\":\"" + resolveUserMembersByUserAttributes + "\""
-        + ",\n \"designers\":" + designers.stream()
+      return "{" +
+        "\n\t\t\t\"GroupBranchProperties\": " + super.toString() + "," +
+        "\n\t\t\t\"groupMemberKeyPattern\": \"" + groupMemberKeyPattern + "\"," +
+        "\n\t\t\t\"groupMemberKeyPatternIndex\": \"" + groupMemberKeyPatternIndex + "\"," +
+        "\n\t\t\t\"userMemberKeyPattern\": \"" + userMemberKeyPattern + "\"," +
+        "\n\t\t\t\"userMemberKeyPatternIndex\": \"" + userMemberKeyPatternIndex + "\"," +
+        "\n\t\t\t\"groupDisplayNamePattern\": \"" + groupDisplayNamePattern + "\"," +
+        "\n\t\t\t\"DNContainsDisplayName\": \"" + DNContainsDisplayName + "\"," +
+        "\n\t\t\t\"resolveUserMembers\": \"" + resolveUserMembers + "\"," +
+        "\n\t\t\t\"resolveUserMembersByUserAttributes\": \"" + resolveUserMembersByUserAttributes + "\"," +
+        "\n\t\t\t\"designers\": " + designers.stream()
         .map(String::valueOf)
-        .collect(Collectors.joining(", ", "[", "]"))
-        + ",\n \"nameFormatters\":" + nameFormatters.stream()
+        .collect(Collectors.joining(",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]")) + "," +
+        "\n\t\t\t\"nameFormatters\": " + nameFormatters.stream()
         .map(String::valueOf)
-        .collect(Collectors.joining(", ", "[", "]"))
-        + ",\n \"dontResolveMembersWithGroupPattern\":\"" + dontResolveMembersWithGroupPattern + "\""
-        + ",\n \"structureProperties\": " + structureProperties
-        + "\n}";
+        .collect(Collectors.joining(",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]")) + "," +
+        "\n\t\t\t\"dontResolveMembersWithGroupPattern\": \"" + dontResolveMembersWithGroupPattern + "\"," +
+        "\n\t\t\t\"structureProperties\": " + structureProperties +
+        "\n\t\t}";
     }
   }
 
   @Override
   public String toString() {
-    return "{\n\"CustomLdapProperties\":{"
-      + "\n \"contextSource\":" + contextSource
-      + ",\n \"ldapTemplate\":" + ldapTemplate
-      + ",\n \"userBranch\":" + userBranch
-      + ",\n \"groupBranch\":" + groupBranch
-      + "\n}\n}";
+    return "{" +
+      "\n\t\"CustomLdapProperties\": {" +
+      "\n\t\t\"contextSource\": " + contextSource + "," +
+      "\n\t\t\"ldapTemplate\": " + ldapTemplate + "," +
+      "\n\t\t\"userBranch\": " + userBranch + "," +
+      "\n\t\t\"groupBranch\": " + groupBranch +
+      "\n\t}" +
+      "\n}";
   }
 
 }

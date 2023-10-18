@@ -66,9 +66,9 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
     RoleHierarchyImpl rhi = new RoleHierarchyImpl();
     rhi.setHierarchy(
       AuthoritiesConstants.ADMIN + " > " +
-      AuthoritiesConstants.USER + " > " +
-      AuthoritiesConstants.AUTHENTICATED + " > " +
-      AuthoritiesConstants.ANONYMOUS
+        AuthoritiesConstants.USER + " > " +
+        AuthoritiesConstants.AUTHENTICATED + " > " +
+        AuthoritiesConstants.ANONYMOUS
     );
 
     return rhi;
@@ -108,28 +108,38 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
     final String userAdmin = glcProperties.getAdmins().getUserName();
     if (userAdmin != null && !userAdmin.isEmpty()) {
-      final UserAttributesEvaluation uae1 = new UserAttributesEvaluation("uid", userAdmin, StringEvaluationMode.EQUALS);
+      final UserAttributesEvaluation uae1 =
+        new UserAttributesEvaluation("uid", userAdmin, StringEvaluationMode.EQUALS);
       set.add(uae1);
     }
 
     final String groupAdmin = glcProperties.getAdmins().getGroupName();
     if (groupAdmin != null && !groupAdmin.isEmpty()) {
-      final UserAttributesEvaluation uae2 = new UserMultivaluedAttributesEvaluation("isMemberOf", groupAdmin, StringEvaluationMode.EQUALS);
+      final UserAttributesEvaluation uae2 =
+        new UserMultivaluedAttributesEvaluation("isMemberOf", groupAdmin, StringEvaluationMode.EQUALS);
       set.add(uae2);
     }
 
-    Assert.isTrue(set.size() > 0, "Properties that define admins aren't set in properties, there are needed to define an Admin user" +
-      ", name should be 'app.admins.userName' or 'app.admins.groupName'");
+    Assert.isTrue(
+      !set.isEmpty(),
+      "Properties that define admins aren't set in properties, there are needed to define an Admin user," +
+        " name should be 'app.admins.userName' or 'app.admins.groupName'"
+    );
 
     OperatorEvaluation admins = new OperatorEvaluation(OperatorType.OR, set);
     defs.setAdmins(admins);
 
     final String groupUsers = glcProperties.getUsers().getGroupName();
-    UserMultivaluedAttributesEvaluation umae = new UserMultivaluedAttributesEvaluation("isMemberOf", groupUsers, StringEvaluationMode.MATCH);
+    UserMultivaluedAttributesEvaluation umae =
+      new UserMultivaluedAttributesEvaluation("isMemberOf", groupUsers, StringEvaluationMode.MATCH);
     defs.setUsers(umae);
 
-    Assert.isTrue(!groupUsers.isEmpty(), "Properties that define users aren't set in properties, there are needed to define all access users" +
-      ", name should be 'app.users.groupName'");
+    Assert.isTrue(
+      !groupUsers.isEmpty(),
+      "Properties that define users aren't set in properties, there are needed to define all access users," +
+        " name should be 'app.users.groupName'"
+    );
+
     return defs;
   }
 

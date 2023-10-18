@@ -23,9 +23,9 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_DELIMITER;
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_PREFIX;
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_SUFFIX;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
 
 @Data
 @Validated
@@ -40,13 +40,15 @@ public class GroupDesignerProperties {
 
   @Override
   public String toString() {
-    return "{\n\"GroupDesignerProperties\":{"
-      + "\n \"groupRootPattern\":\"" + groupRootPattern + "\""
-      + ",\n \"groupAttachEndMatch\":\"" + groupAttachEndMatch + "\""
-      + ",\n \"groupToAttachEndPattern\":" + groupToAttachEndPattern.stream()
+    return "{" +
+      "\n\t\t\t\t\t\"GroupDesignerProperties\": {" +
+      "\n\t\t\t\t\t\t\"groupRootPattern\": \"" + groupRootPattern + "\"," +
+      "\n\t\t\t\t\t\t\"groupAttachEndMatch\": \"" + groupAttachEndMatch + "\"," +
+      "\n\t\t\t\t\t\t\"groupToAttachEndPattern\": " + groupToAttachEndPattern.stream()
       .map(String::valueOf)
-      .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX))
-      + "\n}\n}";
+      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
+      "\n\t\t\t\t\t}" +
+      "\n\t\t\t\t}";
   }
 
 }

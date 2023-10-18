@@ -62,18 +62,18 @@ public class GLCProperties {
 
   @Override
   public String toString() {
-    return "{\n"
-      + cas + ",\n"
-      + cors + ",\n"
-      + customConfig + ",\n"
-      + security + ",\n"
-      + admins + ",\n"
-      + users + ",\n"
-      + mail + ",\n"
-      + authorizedServices + ",\n"
-      + metrics + ",\n"
-      + ldap
-      + "\n}";
+    return "{\n" +
+      "\"cas\" : " + cas + "," +
+      "\n\"cors\" : " + cors + "," +
+      "\n\"customConfig\" : " + customConfig + "," +
+      "\n\"security\" : " + security + "," +
+      "\n\"admins\" : " + admins + "," +
+      "\n\"users\" : " + users + "," +
+      "\n\"mail\" : " + mail + "," +
+      "\n\"authorizedServices\" : " + authorizedServices + "," +
+      "\n\"metrics\" : " + metrics + "," +
+      "\n\"ldap\" : " + ldap +
+      "\n}";
   }
 
 }

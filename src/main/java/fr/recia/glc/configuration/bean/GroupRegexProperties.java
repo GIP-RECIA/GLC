@@ -35,13 +35,15 @@ public class GroupRegexProperties {
 
   @Override
   public String toString() {
-    return "{\n\"GroupRegexProperties\":{"
-      + "\n\"groupMatcher\":\"" + groupMatcher + "\""
-      + ",\n \"groupNameRegex\":\"" + groupNameRegex + "\""
-      + ",\n \"groupNameIndex\":\"" + groupNameIndex + "\""
-      + ",\n \"groupRecomposerSeparator\":\"" + groupRecomposerSeparator + "\""
-      + ",\n \"groupSuffixeToAppend\":\"" + groupSuffixeToAppend + "\""
-      + "\n}\n}";
+    return "{" +
+      "\n\t\t\t\t\t\"GroupRegexProperties\": {" +
+      "\n\t\t\t\t\t\t\"groupMatcher\": \"" + groupMatcher + "\"," +
+      "\n\t\t\t\t\t\t\"groupNameRegex\": \"" + groupNameRegex + "\"," +
+      "\n\t\t\t\t\t\t\"groupNameIndex\": \"" + groupNameIndex + "\"," +
+      "\n\t\t\t\t\t\t\"groupRecomposerSeparator\": \"" + groupRecomposerSeparator + "\"," +
+      "\n\t\t\t\t\t\t\"groupSuffixeToAppend\": \"" + groupSuffixeToAppend + "\"" +
+      "\n\t\t\t\t\t}" +
+      "\n\t\t\t\t}";
   }
 
 }

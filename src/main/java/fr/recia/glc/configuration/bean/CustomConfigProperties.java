@@ -20,9 +20,9 @@ import lombok.Data;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_DELIMITER;
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_PREFIX;
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_SUFFIX;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
 
 @Data
 public class CustomConfigProperties {
@@ -34,19 +34,21 @@ public class CustomConfigProperties {
 
   @Override
   public String toString() {
-    return "\"CustomConfigProperties\": {" +
-      "\n\t\"administrative\": " + filiereAdministrative.stream()
+    return "{" +
+      "\n\t\"CustomConfigProperties\": {" +
+      "\n\t\t\"administrative\": " + filiereAdministrative.stream()
       .map(String::valueOf)
-      .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX)) +
-      ",\n\t\"teaching\": " + filiereTeaching.stream()
+      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
+      "\n\t\t\"teaching\": " + filiereTeaching.stream()
       .map(String::valueOf)
-      .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX)) +
-      ",\n\t\"sourcesExternalAll\": " + sourcesExternalAll.stream()
+      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
+      "\n\t\t\"sourcesExternalAll\": " + sourcesExternalAll.stream()
       .map(String::valueOf)
-      .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX)) +
-      ",\n\t\"sourcesExternal4login\": " + sourcesExternal4login.stream()
+      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
+      "\n\t\t\"sourcesExternal4login\": " + sourcesExternal4login.stream()
       .map(String::valueOf)
-      .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX)) +
+      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
+      "\n\t}" +
       "\n}";
   }
 

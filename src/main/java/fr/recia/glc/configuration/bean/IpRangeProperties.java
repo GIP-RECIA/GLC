@@ -23,9 +23,9 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_DELIMITER;
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_PREFIX;
-import static fr.recia.glc.configuration.Constants.PROPERTIES_TO_JSON_SUFFIX;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;
+import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
 
 /**
  * Created by jgribonvald on 03/06/16.
@@ -40,11 +40,13 @@ public class IpRangeProperties {
 
   @Override
   public String toString() {
-    return "{\n\"IpRangeProperties\":{"
-      + "\n \"ipRanges\":" + ipRanges.stream()
+    return "{" +
+      "\n\t\"IpRangeProperties\": {" +
+      "\n\t\t\"ipRanges\": " + ipRanges.stream()
       .map(String::valueOf)
-      .collect(Collectors.joining(PROPERTIES_TO_JSON_DELIMITER, PROPERTIES_TO_JSON_PREFIX, PROPERTIES_TO_JSON_SUFFIX))
-      + "\n}\n}";
+      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
+      "\n\t}" +
+      "\n}";
   }
 
 }

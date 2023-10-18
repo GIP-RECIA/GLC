@@ -29,9 +29,11 @@ public class CustomMetricsProperties {
 
   @Override
   public String toString() {
-    return "{\n\"CustomMetricsProperties\":{"
-      + "\n \"prometeusAuthorizedAcess\":" + prometeusAuthorizedAcess
-      + "\n}\n}";
+    return "{" +
+      "\n\t\"CustomMetricsProperties\": {" +
+      "\n\t\t\"prometeusAuthorizedAcess\": " + prometeusAuthorizedAcess +
+      "\n\t}" +
+      "\n}";
   }
 
 }

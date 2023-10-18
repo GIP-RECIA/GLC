@@ -62,6 +62,7 @@ public class LDAPConfiguration {
     ldapCtx.setPassword(ldapProperties.getContextSource().getPassword());
     ldapCtx.setPooled(ldapProperties.getContextSource().isNativePooling());
     log.debug("LDAPContext is configured with properties {}", ldapProperties.getContextSource());
+
     return ldapCtx;
   }
 
@@ -75,6 +76,7 @@ public class LDAPConfiguration {
     ldapTpl.setIgnoreNameNotFoundException(ldapProperties.getLdapTemplate().isIgnoreNameNotFoundException());
     ldapTpl.setIgnorePartialResultException(ldapProperties.getLdapTemplate().isIgnorePartialResultException());
     ldapTpl.setIgnoreSizeLimitExceededException(ldapProperties.getLdapTemplate().isIgnoreSizeLimitExceededException());
+
     return ldapTpl;
   }
 
@@ -88,15 +90,20 @@ public class LDAPConfiguration {
       ldapProperties.getUserBranch().getGroupAttribute(),
       ldapProperties.getUserBranch().getOtherBackendAttributes(),
       ldapProperties.getUserBranch().getOtherDisplayedAttributes(),
-      ldapProperties.getUserBranch().getBaseDN());
+      ldapProperties.getUserBranch().getBaseDN()
+    );
     log.debug("LdapAttributes for Users configured : {}", ldapUh);
+
     return ldapUh;
   }
 
   @Bean
   public ExternalGroupHelper externalGroupHelper() {
     log.debug("Configure bean ExternalGroupHelper with LDAP attributes");
-    Assert.notNull(ldapProperties.getGroupBranch(), "Use of LDAP group branch require 'app.ldap.groupBranch.*' properties configured !");
+    Assert.notNull(
+      ldapProperties.getGroupBranch(),
+      "Use of LDAP group branch require 'app.ldap.groupBranch.*' properties configured !"
+    );
     ExternalGroupHelper ldapUh = new ExternalGroupHelper(
       ldapProperties.getGroupBranch().getIdAttribute(),
       ldapProperties.getGroupBranch().getDisplayNameAttribute(),
@@ -112,43 +119,64 @@ public class LDAPConfiguration {
       ldapProperties.getGroupBranch().isResolveUserMembersByUserAttributes(),
       ldapProperties.getGroupBranch().getDontResolveMembersWithGroupPattern(),
       ldapProperties.getGroupBranch().getOtherDisplayedAttributes(),
-      ldapProperties.getGroupBranch().getBaseDN());
+      ldapProperties.getGroupBranch().getBaseDN()
+    );
     log.debug("LdapAttributes for Groups configured : {}", ldapUh);
+
     return ldapUh;
   }
 
   @Bean
   public IExternalGroupDao ldapExternalGroupDao(IExternalUserDao externalUserDao, LdapTemplate ldapTemplate) {
     log.debug("Configuring IExternalGroupDao with LDAP DAO");
-    Assert.notNull(ldapProperties.getGroupBranch(), "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !");
+    Assert.notNull(
+      ldapProperties.getGroupBranch(),
+      "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !"
+    );
     List<IExternalGroupDisplayNameFormatter> formatters = Lists.newLinkedList();
     // should be run firstly !
     formatters.add(new LdapGroupRegexpDisplayNameFormatter(externalGroupHelper()));
     for (GroupRegexProperties grp : ldapProperties.getGroupBranch().getNameFormatters()) {
-      formatters.add(new LdapGroupRegexpDisplayNameFormatterESCO(externalGroupHelper(), grp.getGroupMatcher(),
-        grp.getGroupNameRegex(), grp.getGroupNameIndex(), grp.getGroupRecomposerSeparator(), grp.getGroupSuffixeToAppend()));
+      formatters.add(new LdapGroupRegexpDisplayNameFormatterESCO(
+        externalGroupHelper(),
+        grp.getGroupMatcher(),
+        grp.getGroupNameRegex(),
+        grp.getGroupNameIndex(),
+        grp.getGroupRecomposerSeparator(),
+        grp.getGroupSuffixeToAppend()
+      ));
     }
     //should be run at final
     formatters.add(new LdapGroupRegexpDisplayNameFormatterESCOReplace());
 
     List<IGroupMemberDesigner> designers = Lists.newArrayList();
     for (GroupDesignerProperties grp : ldapProperties.getGroupBranch().getDesigners()) {
-      designers.add(new LdapGroupAttachMemberDesignerImpl(externalGroupHelper(), grp.getGroupRootPattern(),
-        grp.getGroupAttachEndMatch(), grp.getGroupToAttachEndPattern()));
+      designers.add(new LdapGroupAttachMemberDesignerImpl(
+        externalGroupHelper(),
+        grp.getGroupRootPattern(),
+        grp.getGroupAttachEndMatch(),
+        grp.getGroupToAttachEndPattern()
+      ));
     }
+
     return new LdapGroupDaoImpl(ldapTemplate, externalGroupHelper(), formatters, externalUserDao, designers, ldapProperties);
   }
 
   @Bean
-  public IStructureLoader loadedStructure(IExternalGroupDao externalGroupDao){
+  public IStructureLoader loadedStructure(IExternalGroupDao externalGroupDao) {
     log.debug("Loading Structure extracted from groups");
     IStructureLoader loader = new StructureLoaderImpl(externalGroupDao);
+
     return loader;
   }
 
 //  @Bean
-//  public IGroupService ldapGroupService(IPermissionService permissionService, TreeJSDTOFactory treeJSDTOFactory, UserDTOFactory userDTOFactory,
-//                                        SubscriberService subscriberService, FilterRepository filterRepository, ContextService contextService, IExternalGroupDao externalGroupDao) {
+//  public IGroupService ldapGroupService(
+//    IPermissionService permissionService, TreeJSDTOFactory treeJSDTOFactory, UserDTOFactory userDTOFactory,
+//    SubscriberService subscriberService, FilterRepository filterRepository, ContextService contextService,
+//    IExternalGroupDao externalGroupDao
+//  ) {
 //    return new GroupService(permissionService, treeJSDTOFactory, userDTOFactory, externalGroupDao, subscriberService, filterRepository, contextService);
 //  }
+
 }

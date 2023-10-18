@@ -23,15 +23,16 @@ import org.springframework.validation.annotation.Validated;
 public class RoleMappingProperties {
 
   private String userName;
-
   private String groupName;
 
   @Override
   public String toString() {
-    return "{\n\"RoleMappingProperties\":{"
-      + "\n \"userName\":\"" + userName + "\""
-      + ",\n \"groupName\":\"" + groupName + "\""
-      + "\n}\n}";
+    return "{" +
+      "\n\t\"RoleMappingProperties\": {" +
+      "\n\t\t\"userName\": \"" + userName + "\"," +
+      "\n\t\t\"groupName\": \"" + groupName + "\"" +
+      "\n\t} " +
+      "\n}";
   }
 
 }
