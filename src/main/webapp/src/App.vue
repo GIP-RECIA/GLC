@@ -7,6 +7,13 @@ import { useConfigurationStore } from '@/stores/configurationStore';
 import { storeToRefs } from 'pinia';
 import { onBeforeMount, watch } from 'vue';
 
+const configurationStore = useConfigurationStore();
+configurationStore.init();
+const { isLoading, isAuthenticated } = storeToRefs(configurationStore);
+
+const fonctionStore = useFonctionStore();
+isAuthenticated.value && fonctionStore.init();
+
 onBeforeMount(() => {
   let extendedUportalHeaderScript = document.createElement('script');
   extendedUportalHeaderScript.setAttribute('src', '/commun/extended-uportal-header.min.js');
@@ -16,12 +23,7 @@ onBeforeMount(() => {
   document.head.appendChild(extendedUportalFooterScript);
 });
 
-const configurationStore = useConfigurationStore();
-configurationStore.init();
-const { isLoading, isAuthenticated } = storeToRefs(configurationStore);
-
-const fonctionStore = useFonctionStore();
-isAuthenticated.value && fonctionStore.init();
+const domain = window.location.hostname;
 
 watch(isAuthenticated, (newValue) => {
   newValue && fonctionStore.init();
@@ -32,7 +34,7 @@ watch(isAuthenticated, (newValue) => {
   <v-app>
     <header v-if="isAuthenticated">
       <extended-uportal-header
-        domain="test-lycee.giprecia.net"
+        :domain="domain"
         service-name="Gestion Locale des Comptes"
         context-api-url="/portail"
         sign-out-url="/portail/Logout"
@@ -70,10 +72,7 @@ watch(isAuthenticated, (newValue) => {
       <login-dialog />
     </v-main>
     <footer v-if="isAuthenticated">
-      <extended-uportal-footer
-        domain="test-lycee.giprecia.net"
-        template-api-path="/commun/portal_template_api.tpl.json"
-      />
+      <extended-uportal-footer :domain="domain" template-api-path="/commun/portal_template_api.tpl.json" />
     </footer>
   </v-app>
 </template>
