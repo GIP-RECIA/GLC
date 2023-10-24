@@ -927,12 +927,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash.isempty@npm:^4.4.7":
-  version: 4.4.7
-  resolution: "@types/lodash.isempty@npm:4.4.7"
+"@types/lodash.isempty@npm:^4.4.8":
+  version: 4.4.8
+  resolution: "@types/lodash.isempty@npm:4.4.8"
   dependencies:
     "@types/lodash": "*"
-  checksum: d941e2d9eca0e4059ed9fafbba3b39ed9be4afea69a599a431c1818f2ab8565ca2e1e891bbea4aff10ab51335b33c978517490c6dbd67b5bb9ca6c7bcc832dce
+  checksum: e5ecec24b2f4264d9a7c1062e374f5de2b470f45b095f7aae1f0a8f5e27aeae1e79f3d44385e27d11ee56855ae77f4f0d3d7146f0700e983b526afd9a0cb47ea
   languageName: node
   linkType: hard
 
@@ -3250,7 +3250,7 @@ __metadata:
     "@tsconfig/node18": ^18.2.2
     "@types/jsdom": ^21.1.3
     "@types/lodash.debounce": ^4.0.8
-    "@types/lodash.isempty": ^4.4.7
+    "@types/lodash.isempty": ^4.4.8
     "@types/node": ^18.18.5
     "@vitejs/plugin-vue": ^4.4.0
     "@vue/eslint-config-prettier": ^8.0.0
