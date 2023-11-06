@@ -38,7 +38,7 @@
     "@types/jsdom": "^21.1.4",
     "@types/lodash.debounce": "^4.0.8",
     "@types/lodash.isempty": "^4.4.8",
-    "@types/node": "^18.18.7",
+    "@types/node": "^18.18.8",
     "@vitejs/plugin-vue": "^4.4.0",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
