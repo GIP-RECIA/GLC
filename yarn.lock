@@ -659,9 +659,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/unplugin-vue-i18n@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@intlify/unplugin-vue-i18n@npm:1.4.0"
+"@intlify/unplugin-vue-i18n@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@intlify/unplugin-vue-i18n@npm:1.5.0"
   dependencies:
     "@intlify/bundle-utils": ^7.4.0
     "@intlify/shared": ^9.4.0
@@ -686,7 +686,7 @@ __metadata:
       optional: true
     vue-i18n-bridge:
       optional: true
-  checksum: 04f37f72d1d396a7746e2cae8daed83d06b6d7affab36110225dfc5b2735bc18a41eb1065eb6055ceabd627f176b13277709105471f6a8d274678e2521b7f6cf
+  checksum: a82480f0f69268fad18d756fd682c3924b4e6b63d25809e04846bec48eeb4ecb7f02f14f0648e7501c373bb43947a97c60652642d5855319d1ac673b2455b9e4
   languageName: node
   linkType: hard
 
@@ -3330,7 +3330,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": ^6.4.2
     "@fortawesome/free-solid-svg-icons": ^6.4.2
     "@fortawesome/vue-fontawesome": latest-3
-    "@intlify/unplugin-vue-i18n": ^1.4.0
+    "@intlify/unplugin-vue-i18n": ^1.5.0
     "@playwright/test": ^1.39.0
     "@rushstack/eslint-patch": ^1.5.1
     "@trivago/prettier-plugin-sort-imports": ^4.2.0
