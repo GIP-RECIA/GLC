@@ -867,9 +867,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trivago/prettier-plugin-sort-imports@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "@trivago/prettier-plugin-sort-imports@npm:4.2.1"
+"@trivago/prettier-plugin-sort-imports@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "@trivago/prettier-plugin-sort-imports@npm:4.3.0"
   dependencies:
     "@babel/generator": 7.17.7
     "@babel/parser": ^7.20.5
@@ -883,7 +883,7 @@ __metadata:
   peerDependenciesMeta:
     "@vue/compiler-sfc":
       optional: true
-  checksum: 7f40a31368e2718a7e23085f2bc7b6daf2f1f5841c42b3a238e5900770178b6a8addf1f873906b7b342bf6cdbca49004e73f884153dc927be77ad3d4d1697f70
+  checksum: 22bb311ca24f09eef25915a66727e7be113b703f196f6ea0589dc9730b11a6f1e5e4bcc468213101d138b570d310792c83abb8d9487c53f9e597942fea052b6e
   languageName: node
   linkType: hard
 
@@ -3333,7 +3333,7 @@ __metadata:
     "@intlify/unplugin-vue-i18n": ^1.5.0
     "@playwright/test": ^1.39.0
     "@rushstack/eslint-patch": ^1.5.1
-    "@trivago/prettier-plugin-sort-imports": ^4.2.1
+    "@trivago/prettier-plugin-sort-imports": ^4.3.0
     "@tsconfig/node18": ^18.2.2
     "@types/jsdom": ^21.1.4
     "@types/lodash.debounce": ^4.0.8
