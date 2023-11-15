@@ -52,22 +52,22 @@ watch(
       <v-tab :value="Tabs.Exports">{{ t('tab.exports') }}</v-tab>
     </v-tabs>
     <v-window v-model="currentTab">
-      <v-window-item :value="Tabs.Dashboard">
+      <v-window-item :value="Tabs.Dashboard" eager>
         <dashboard-view />
       </v-window-item>
-      <v-window-item :value="Tabs.Info">
+      <v-window-item :value="Tabs.Info" eager>
         <info-view />
       </v-window-item>
-      <v-window-item :value="Tabs.AdministrativeStaff">
+      <v-window-item :value="Tabs.AdministrativeStaff" eager>
         <administrative-view />
       </v-window-item>
-      <v-window-item :value="Tabs.TeachingStaff">
+      <v-window-item :value="Tabs.TeachingStaff" eager>
         <teaching-view />
       </v-window-item>
-      <v-window-item :value="Tabs.Accounts">
+      <v-window-item :value="Tabs.Accounts" eager>
         <account-view />
       </v-window-item>
-      <v-window-item :value="Tabs.Exports">
+      <v-window-item :value="Tabs.Exports" eager>
         <export-view />
       </v-window-item>
     </v-window>
