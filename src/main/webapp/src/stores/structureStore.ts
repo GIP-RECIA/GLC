@@ -42,7 +42,7 @@ export const useStructureStore = defineStore('structure', () => {
     configurationStore.isLoading = true;
     try {
       const response = await getEtablissement(id);
-      currentEtab.value = response.data;
+      const etab = response.data;
 
       // Mise à jour de l'onglet
       const index = structures.findIndex((structures) => structures.id == id);
@@ -50,12 +50,11 @@ export const useStructureStore = defineStore('structure', () => {
         setCurrentTab(Tabs.Dashboard);
         structures.push({
           id: id,
-          name: currentEtab?.value?.type
-            ? `${currentEtab.value.type} ${currentEtab.value.nom}`
-            : currentEtab?.value?.nom ?? '',
+          name: etab.type ? `${etab.type} ${etab.nom}` : etab.nom ?? '',
         });
         setCurrentStructure(structures.length - 1);
       } else setCurrentStructure(index);
+      currentEtab.value = etab;
       setCurrentStructureId(id);
     } catch (e) {
       errorHandler(e, 'initCurrentEtab');
