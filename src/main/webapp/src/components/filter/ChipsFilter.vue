@@ -9,8 +9,10 @@ const props = defineProps<{
 
 const emit = defineEmits<(event: 'update:selected', payload: Array<number | string>) => void>();
 
-const filter = (payload: Array<number>) => {
-  const ids: Array<number | string> = props.tags.filter((_, index) => payload.includes(index)).map((tag) => tag.id);
+const filter = (payload: unknown) => {
+  const ids: Array<number | string> = props.tags
+    .filter((_, index) => (payload as Array<number>).includes(index))
+    .map((tag) => tag.id);
   emit('update:selected', ids);
 };
 </script>
