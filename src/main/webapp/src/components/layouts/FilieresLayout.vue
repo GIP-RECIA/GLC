@@ -47,36 +47,42 @@ const filterFiliere = (): void => {
 
 <template>
   <div v-if="filieres && filieres.length > 0">
-    <div v-for="(filiere, index) in filteredFilieres" :key="index" class="pb-4">
-      <div class="pb-2">
-        {{ filiere.libelleFiliere }}
+    <transition-group>
+      <div v-for="(filiere, index) in filteredFilieres" :key="index" class="pb-4">
+        <div class="pb-2">
+          {{ filiere.libelleFiliere }}
+        </div>
+        <v-row>
+          <transition-group>
+            <v-col
+              v-for="(discipline, index) in filiere.disciplines"
+              :key="index"
+              :cols="12"
+              :md="6"
+              :lg="4"
+              :xxl="3"
+              class="pa-2"
+            >
+              <v-card :subtitle="discipline.disciplinePoste" flat min-height="100%">
+                <v-card-text>
+                  <v-row>
+                    <transition-group>
+                      <v-col
+                        v-for="(personne, index) in discipline.personnes"
+                        :key="index"
+                        :cols="6"
+                        class="d-flex align-center pa-2"
+                      >
+                        <personne-card variant="tonal" :personne="personne" />
+                      </v-col>
+                    </transition-group>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </transition-group>
+        </v-row>
       </div>
-      <v-row>
-        <v-col
-          v-for="(discipline, index) in filiere.disciplines"
-          :key="index"
-          :cols="12"
-          :md="6"
-          :lg="4"
-          :xxl="3"
-          class="pa-2"
-        >
-          <v-card :subtitle="discipline.disciplinePoste" flat min-height="100%">
-            <v-card-text>
-              <v-row>
-                <v-col
-                  v-for="(personne, index) in discipline.personnes"
-                  :key="index"
-                  :cols="6"
-                  class="d-flex align-center pa-2"
-                >
-                  <personne-card variant="tonal" :personne="personne" />
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
+    </transition-group>
   </div>
 </template>

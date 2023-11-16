@@ -49,18 +49,20 @@ watch(personnes, (newValue) => {
       @update:result="(result: Array<SimplePersonne>) => (items = result)"
     />
     <v-row>
-      <v-col
-        v-for="(personne, index) in pageItems"
-        :key="index"
-        :cols="12"
-        :sm="6"
-        :md="4"
-        :lg="3"
-        :xxl="2"
-        class="pa-2"
-      >
-        <personne-card variant="flat" :personne="personne" />
-      </v-col>
+      <transition-group>
+        <v-col
+          v-for="(personne, index) in pageItems"
+          :key="index"
+          :cols="12"
+          :sm="6"
+          :md="4"
+          :lg="3"
+          :xxl="2"
+          class="pa-2"
+        >
+          <personne-card variant="flat" :personne="personne" />
+        </v-col>
+      </transition-group>
     </v-row>
     <custom-pagination
       :items="items"

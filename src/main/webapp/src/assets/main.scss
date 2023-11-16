@@ -19,6 +19,12 @@
   $utilities: false
 );
 
+.app-container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
 .fab {
   position: fixed;
   bottom: 0;
@@ -37,4 +43,18 @@
   .modal-flex-item {
     width: 50%;
   }
+}
+
+.v-move,
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.v-leave-active {
 }

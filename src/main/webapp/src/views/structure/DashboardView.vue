@@ -46,18 +46,20 @@ const itemsPerPage = computed<number>(() => {
     <v-card :subtitle="`${t('deletingOrDeletedAccounts')} (${deletedPersonnes.length})`" flat>
       <v-card-text>
         <v-row v-if="pageItems && pageItems.length > 0">
-          <v-col
-            v-for="(personne, index) in pageItems"
-            :key="index"
-            :cols="12"
-            :sm="6"
-            :md="4"
-            :lg="3"
-            :xxl="2"
-            class="pa-2"
-          >
-            <personne-card variant="tonal" :personne="personne" />
-          </v-col>
+          <transition-group>
+            <v-col
+              v-for="(personne, index) in pageItems"
+              :key="index"
+              :cols="12"
+              :sm="6"
+              :md="4"
+              :lg="3"
+              :xxl="2"
+              class="pa-2"
+            >
+              <personne-card variant="tonal" :personne="personne" />
+            </v-col>
+          </transition-group>
         </v-row>
         <custom-pagination
           :items="deletedPersonnes"

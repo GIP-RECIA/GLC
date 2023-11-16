@@ -31,15 +31,17 @@ const newTab = () => {
 <template>
   <div class="scrollable-x">
     <div class="d-flex my-2">
-      <custom-tab-item
-        v-for="(structure, index) in structures"
-        :key="index"
-        :id="index"
-        :title="structure.name"
-        :link="{ name: 'structure', params: { structureId: structure.id } }"
-        :selected="currentStructure == index"
-        @close="close"
-      />
+      <transition-group>
+        <custom-tab-item
+          v-for="(structure, index) in structures"
+          :key="index"
+          :id="index"
+          :title="structure.name"
+          :link="{ name: 'structure', params: { structureId: structure.id } }"
+          :selected="currentStructure == index"
+          @close="close"
+        />
+      </transition-group>
       <v-btn
         v-if="structures.length > 0"
         :to="{ name: 'home' }"
