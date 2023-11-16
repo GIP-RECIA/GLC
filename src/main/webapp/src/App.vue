@@ -31,7 +31,7 @@ watch(isAuthenticated, (newValue) => {
 </script>
 
 <template>
-  <v-app>
+  <v-app class="app-container">
     <header v-if="isAuthenticated">
       <extended-uportal-header
         :domain="domain"
@@ -67,12 +67,22 @@ watch(isAuthenticated, (newValue) => {
         </div>
       </v-toolbar>
     </header>
-    <v-main>
-      <router-view v-if="isAuthenticated" />
-      <login-dialog />
-    </v-main>
-    <footer v-if="isAuthenticated">
-      <extended-uportal-footer :domain="domain" template-api-path="/commun/portal_template_api.tpl.json" />
-    </footer>
+    <div class="d-flex flex-column h-100 overflow-y-auto">
+      <v-main class="flex-grow-1">
+        <router-view v-if="isAuthenticated" />
+        <login-dialog />
+      </v-main>
+      <footer v-if="isAuthenticated">
+        <extended-uportal-footer :domain="domain" template-api-path="/commun/portal_template_api.tpl.json" />
+      </footer>
+    </div>
   </v-app>
 </template>
+
+<style scoped lang="scss">
+.app-container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+</style>
