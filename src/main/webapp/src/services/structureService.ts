@@ -1,4 +1,4 @@
-import { instance as axios } from '@/utils/axiosUtils';
+import { instance as axios } from '@/utils/axiosUtils.ts';
 
 const getEtablissements = async () => await axios.get('/api/structure/etablissement');
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
-import { useConfigurationStore } from '@/stores/configurationStore';
-import { useFonctionStore } from '@/stores/fonctionStore';
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import isEmpty from 'lodash.isempty';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';

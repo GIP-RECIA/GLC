@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Filiere } from '@/types/filiereType';
+import type { Filiere } from '@/types/filiereType.ts';
 import { ref } from 'vue';
 
 const props = defineProps<{

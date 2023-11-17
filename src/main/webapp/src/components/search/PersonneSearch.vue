@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import PersonneChip from '@/components/search/PersonneChip.vue';
 import PersonneListItem from '@/components/search/PersonneListItem.vue';
-import { searchPersonne } from '@/services/personneService';
-import type { SimplePersonne } from '@/types/personneType';
-import { errorHandler } from '@/utils/axiosUtils';
+import { searchPersonne } from '@/services/personneService.ts';
+import type { SimplePersonne } from '@/types/personneType.ts';
+import { errorHandler } from '@/utils/axiosUtils.ts';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 

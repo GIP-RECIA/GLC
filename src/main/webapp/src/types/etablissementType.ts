@@ -1,6 +1,6 @@
-import type { SimplePersonne } from './personneType';
-import type { Adresse } from '@/types/adresseType';
-import type { Filiere } from '@/types/filiereType';
+import type { SimplePersonne } from './personneType.ts';
+import type { Adresse } from '@/types/adresseType.ts';
+import type { Filiere } from '@/types/filiereType.ts';
 
 export type Etablissement = {
   id: number;

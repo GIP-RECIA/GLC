@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import AdditionalDialog from '@/components/dialogs/AdditionalDialog.vue';
 import PersonneDialog from '@/components/dialogs/PersonneDialog.vue';
-import { useConfigurationStore } from '@/stores/configurationStore';
-import { useStructureStore } from '@/stores/structureStore';
-import { Tabs } from '@/types/enums/Tabs';
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { useStructureStore } from '@/stores/structureStore.ts';
+import { Tabs } from '@/types/enums/Tabs.ts';
 import AccountView from '@/views/structure/AccountView.vue';
 import AdministrativeView from '@/views/structure/AdministrativeView.vue';
 import DashboardView from '@/views/structure/DashboardView.vue';

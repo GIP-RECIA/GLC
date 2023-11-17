@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores/configurationStore';
-import type { Filiere } from '@/types/filiereType';
-import type { PersonneFonction } from '@/types/fonctionType';
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import type { Filiere } from '@/types/filiereType.ts';
+import type { PersonneFonction } from '@/types/fonctionType.ts';
 import { storeToRefs } from 'pinia';
 import { onBeforeMount, ref, unref, watch } from 'vue';
 

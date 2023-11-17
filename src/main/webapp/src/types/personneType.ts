@@ -1,4 +1,4 @@
-import type { PersonneFonction } from '@/types/fonctionType';
+import type { PersonneFonction } from '@/types/fonctionType.ts';
 
 export type Personne = {
   id: number;

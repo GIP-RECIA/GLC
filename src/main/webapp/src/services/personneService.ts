@@ -1,4 +1,4 @@
-import { instance as axios } from '@/utils/axiosUtils';
+import { instance as axios } from '@/utils/axiosUtils.ts';
 
 const getPersonne = async (id: number) => await axios.get(`/api/personne/${id}`);
 

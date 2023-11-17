@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import CustomPagination from '@/components/CustomPagination.vue';
-import { useConfigurationStore } from '@/stores/configurationStore';
-import { useStructureStore } from '@/stores/structureStore';
-import type { SimpleEtablissement } from '@/types/etablissementType';
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { useStructureStore } from '@/stores/structureStore.ts';
+import type { SimpleEtablissement } from '@/types/etablissementType.ts';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

@@ -1,8 +1,8 @@
-import { getEtablissement, getEtablissements } from '@/services/structureService';
-import { useConfigurationStore } from '@/stores/configurationStore';
-import { Tabs } from '@/types/enums/Tabs';
-import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType';
-import { errorHandler } from '@/utils/axiosUtils';
+import { getEtablissement, getEtablissements } from '@/services/structureService.ts';
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { Tabs } from '@/types/enums/Tabs.ts';
+import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType.ts';
+import { errorHandler } from '@/utils/axiosUtils.ts';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';

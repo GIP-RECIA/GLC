@@ -1,4 +1,4 @@
-import { useConfigurationStore } from '@/stores/configurationStore';
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { storeToRefs } from 'pinia';
 
 const { VITE_API_URI } = import.meta.env;

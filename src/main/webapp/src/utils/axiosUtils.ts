@@ -1,5 +1,5 @@
-import i18n from '@/plugins/i18n';
-import { login } from '@/utils/casUtils';
+import i18n from '@/plugins/i18n.ts';
+import { login } from '@/utils/casUtils.ts';
 import axios from 'axios';
 import { differenceInMilliseconds } from 'date-fns';
 import { useToast } from 'vue-toastification';

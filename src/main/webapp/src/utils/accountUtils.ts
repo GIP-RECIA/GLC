@@ -1,7 +1,7 @@
-import type { enumValues } from '@/types/enumValuesType';
-import { CategoriePersonne } from '@/types/enums/CategoriePersonne';
-import { Etat } from '@/types/enums/Etat';
-import type { PersonneFonction } from '@/types/fonctionType';
+import type { enumValues } from '@/types/enumValuesType.ts';
+import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
+import { Etat } from '@/types/enums/Etat.ts';
+import type { PersonneFonction } from '@/types/fonctionType.ts';
 
 const isLocal = (source: string): boolean => source.startsWith('SarapisUi_');
 

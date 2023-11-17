@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
 import PersonneSearch from '@/components/search/PersonneSearch.vue';
-import { setPersonneAdditional } from '@/services/personneService';
-import { useConfigurationStore } from '@/stores/configurationStore';
-import { useFonctionStore } from '@/stores/fonctionStore';
-import { usePersonneStore } from '@/stores/personneStore';
-import { Tabs } from '@/types/enums/Tabs';
-import type { SimplePersonne } from '@/types/personneType';
-import { toIdentifier } from '@/utils/accountUtils';
-import { errorHandler } from '@/utils/axiosUtils';
+import { setPersonneAdditional } from '@/services/personneService.ts';
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { useFonctionStore } from '@/stores/fonctionStore.ts';
+import { usePersonneStore } from '@/stores/personneStore.ts';
+import { Tabs } from '@/types/enums/Tabs.ts';
+import type { SimplePersonne } from '@/types/personneType.ts';
+import { toIdentifier } from '@/utils/accountUtils.ts';
+import { errorHandler } from '@/utils/axiosUtils.ts';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';

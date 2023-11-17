@@ -1,4 +1,4 @@
-import { useConfigurationStore } from '@/stores/configurationStore';
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { storeToRefs } from 'pinia';
 import { type Directive, watch } from 'vue';
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useFonctionStore } from './stores/fonctionStore';
+import { useFonctionStore } from './stores/fonctionStore.ts';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
-import { useConfigurationStore } from '@/stores/configurationStore';
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { storeToRefs } from 'pinia';
 import { onBeforeMount, watch } from 'vue';
 

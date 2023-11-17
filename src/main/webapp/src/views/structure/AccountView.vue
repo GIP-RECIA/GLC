@@ -2,8 +2,8 @@
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
 import AccountFilter from '@/components/filter/AccountFilter.vue';
-import { usePersonneStore } from '@/stores/personneStore';
-import type { SimplePersonne } from '@/types/personneType';
+import { usePersonneStore } from '@/stores/personneStore.ts';
+import type { SimplePersonne } from '@/types/personneType.ts';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { useDisplay } from 'vuetify';

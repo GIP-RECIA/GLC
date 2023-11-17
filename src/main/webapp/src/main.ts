@@ -1,12 +1,12 @@
 import { createApp } from 'vue';
 
-import { register as registerDirectives } from '@/directives';
-import { register as registerFontAwsome } from '@/plugins/fontawsome';
-import '@/plugins/date-fns';
-import i18n from '@/plugins/i18n';
-import pinia from '@/plugins/pinia';
-import vuetify from '@/plugins/vuetify';
-import router from '@/router';
+import { register as registerDirectives } from '@/directives/index.ts';
+import { register as registerFontAwsome } from '@/plugins/fontawsome.ts';
+import '@/plugins/date-fns.ts';
+import i18n from '@/plugins/i18n.ts';
+import pinia from '@/plugins/pinia.ts';
+import vuetify from '@/plugins/vuetify.ts';
+import router from '@/router/index.ts';
 import Toast from 'vue-toastification';
 
 import 'vuetify/styles';

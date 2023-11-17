@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import ChipsFilter from '@/components/filter/ChipsFilter.vue';
-import { CategoriePersonne } from '@/types/enums/CategoriePersonne';
-import { Etat } from '@/types/enums/Etat';
-import type { SimplePersonne } from '@/types/personneType';
-import { isArrayOf } from '@/utils/arrayUtils';
+import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
+import { Etat } from '@/types/enums/Etat.ts';
+import type { SimplePersonne } from '@/types/personneType.ts';
+import { isArrayOf } from '@/utils/arrayUtils.ts';
 import isEmpty from 'lodash.isempty';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';

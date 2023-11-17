@@ -1,4 +1,4 @@
-import { useStructureStore } from '@/stores/structureStore';
+import { useStructureStore } from '@/stores/structureStore.ts';
 import { storeToRefs } from 'pinia';
 import { type Directive, watch } from 'vue';
 

@@ -1,8 +1,8 @@
-import { getConfiguration } from '@/services/configurationService';
-import type { Configuration } from '@/types/configurationType';
-import { Tabs } from '@/types/enums/Tabs';
-import type { Identity } from '@/types/identityType';
-import { errorHandler } from '@/utils/axiosUtils';
+import { getConfiguration } from '@/services/configurationService.ts';
+import type { Configuration } from '@/types/configurationType.ts';
+import { Tabs } from '@/types/enums/Tabs.ts';
+import type { Identity } from '@/types/identityType.ts';
+import { errorHandler } from '@/utils/axiosUtils.ts';
 import { useStorage } from '@vueuse/core';
 import isEmpty from 'lodash.isempty';
 import { defineStore } from 'pinia';

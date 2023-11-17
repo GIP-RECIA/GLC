@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { usePersonneStore } from '@/stores/personneStore';
-import type { enumValues } from '@/types/enumValuesType';
-import type { SimplePersonne } from '@/types/personneType';
-import { getEtat, getIcon } from '@/utils/accountUtils';
+import { usePersonneStore } from '@/stores/personneStore.ts';
+import type { enumValues } from '@/types/enumValuesType.ts';
+import type { SimplePersonne } from '@/types/personneType.ts';
+import { getEtat, getIcon } from '@/utils/accountUtils.ts';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

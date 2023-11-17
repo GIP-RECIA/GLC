@@ -1,4 +1,4 @@
-import type { Discipline } from '@/types/disciplineType';
+import type { Discipline } from '@/types/disciplineType.ts';
 
 export type Filiere = {
   id: number;

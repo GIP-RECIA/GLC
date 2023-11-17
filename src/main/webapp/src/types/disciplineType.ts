@@ -1,4 +1,4 @@
-import type { SimplePersonne } from '@/types/personneType';
+import type { SimplePersonne } from '@/types/personneType.ts';
 
 export type Discipline = {
   id: number;

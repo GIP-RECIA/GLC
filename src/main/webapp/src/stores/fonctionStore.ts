@@ -1,9 +1,9 @@
-import { useConfigurationStore } from './configurationStore';
-import { useStructureStore } from './structureStore';
-import { getFonctions } from '@/services/fonctionService';
+import { useConfigurationStore } from './configurationStore.ts';
+import { useStructureStore } from './structureStore.ts';
+import { getFonctions } from '@/services/fonctionService.ts';
 import type { Filiere } from '@/types/filiereType';
-import type { CustomMapping, SourceFonction } from '@/types/fonctionType';
-import { errorHandler } from '@/utils/axiosUtils';
+import type { CustomMapping, SourceFonction } from '@/types/fonctionType.ts';
+import { errorHandler } from '@/utils/axiosUtils.ts';
 import isEmpty from 'lodash.isempty';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
