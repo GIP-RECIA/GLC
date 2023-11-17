@@ -29,9 +29,9 @@ import fr.recia.glc.services.beans.ServiceUrlHelper;
 import fr.recia.glc.web.filter.CsrfCookieGeneratorFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,7 +50,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.util.Assert;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,13 +65,13 @@ public class SecurityConfiguration {
   private final Environment env;
   private final GLCProperties glcProperties;
 
-  @Inject
+  @Autowired
   private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler;
-  @Inject
+  @Autowired
   private AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler;
-  @Inject
+  @Autowired
   private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
-  @Inject
+  @Autowired
   private AuthenticationUserDetailsService<CasAssertionAuthenticationToken> userDetailsService;
 
   public SecurityConfiguration(Environment env, GLCProperties glcProperties) {
@@ -143,7 +142,6 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  @DependsOn({"customUserDetailsService"})
   public RememberCasAuthenticationProvider casAuthenticationProvider() {
     RememberCasAuthenticationProvider casAuthenticationProvider = new RememberCasAuthenticationProvider();
     casAuthenticationProvider.setAuthenticationUserDetailsService(userDetailsService);

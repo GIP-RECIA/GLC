@@ -21,6 +21,7 @@ import fr.recia.glc.services.beans.UserContextRole;
 import fr.recia.glc.services.factories.UserDTOFactory;
 import fr.recia.glc.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -29,7 +30,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
@@ -39,12 +39,12 @@ import java.util.Collection;
 @Slf4j
 public class PermissionServiceImpl implements IPermissionService {
 
-  @Inject
+  @Autowired
   public UserDTOFactory userDTOFactory;
 
-  @Inject
+  @Autowired
   public UserContextRole userContextRole;
-  @Inject
+  @Autowired
   public UserContextLoaderService userContextLoaderService;
 
   public PermissionServiceImpl() {

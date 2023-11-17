@@ -20,16 +20,16 @@ import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.ldap.StructureKey;
 import fr.recia.glc.ldap.enums.PermissionType;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
-import javax.inject.Inject;
 import java.io.Serializable;
 
 @Slf4j
 public class CustomPermissionEvaluator implements PermissionEvaluator {
 
-  @Inject
+  @Autowired
   public IPermissionService permissionService;
 
   public CustomPermissionEvaluator() {

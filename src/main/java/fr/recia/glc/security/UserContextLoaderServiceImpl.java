@@ -24,12 +24,12 @@ import fr.recia.glc.services.beans.IStructureLoader;
 import fr.recia.glc.services.beans.UserContextRole;
 import fr.recia.glc.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,10 +47,10 @@ import java.util.stream.Collectors;
 public class UserContextLoaderServiceImpl implements UserContextLoaderService {
   private final TypeStructureRepository typeStructureRepository;
 
-  @Inject
+  @Autowired
   public UserContextRole userSessionRoles;
 
-  @Inject
+  @Autowired
   public IStructureLoader structureLoader;
 
   private GLCProperties glcProperties;

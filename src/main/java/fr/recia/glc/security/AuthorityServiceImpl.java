@@ -19,13 +19,13 @@ import com.google.common.collect.Lists;
 import fr.recia.glc.services.beans.IAuthoritiesDefinition;
 import fr.recia.glc.services.evaluators.IEvaluation;
 import fr.recia.glc.web.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +33,10 @@ import java.util.Map;
 @Service
 public class AuthorityServiceImpl implements IAuthorityService {
 
-  @Inject
+  @Autowired
   private RoleHierarchy roleHierarchy;
 
-  @Inject
+  @Autowired
   public IAuthoritiesDefinition rolesDefs;
 
   public AuthorityServiceImpl() {

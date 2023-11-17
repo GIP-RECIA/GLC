@@ -32,6 +32,7 @@ import fr.recia.glc.web.dto.SubjectDTO;
 import fr.recia.glc.web.dto.SubjectKeyDTO;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,11 +51,11 @@ import java.util.Set;
 @Slf4j
 public class SubjectDTOFactoryImpl implements SubjectDTOFactory {
 
-  @Inject
+  @Autowired
   @Getter
   private transient APersonneRepository dao;
 
-  @Inject
+  @Autowired
   private transient CompositeKeyDTOFactory<SubjectKeyDTO, SubjectKey, String, SubjectType> subjectConverter;
 
   public SubjectDTOFactoryImpl() {

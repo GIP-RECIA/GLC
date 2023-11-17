@@ -23,13 +23,13 @@ import fr.recia.glc.ldap.repository.IExternalUserDao;
 import fr.recia.glc.services.factories.UserDTOFactory;
 import fr.recia.glc.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.cas.authentication.CasAssertionAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.Collection;
 
@@ -40,16 +40,16 @@ import java.util.Collection;
 @Slf4j
 public class CustomUserDetailsService implements AuthenticationUserDetailsService<CasAssertionAuthenticationToken> {
 
-  @Inject
+  @Autowired
   private transient APersonneRepository<APersonne> aPersonneRepository;
 
-  @Inject
+  @Autowired
   private transient IExternalUserDao personLDAPDao;
 
-  @Inject
+  @Autowired
   private transient IAuthorityService grantedAuthorityService;
 
-  @Inject
+  @Autowired
   private transient UserDTOFactory userDTOFactory;
 
   public CustomUserDetailsService() {

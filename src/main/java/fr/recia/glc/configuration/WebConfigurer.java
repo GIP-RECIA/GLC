@@ -17,6 +17,7 @@ package fr.recia.glc.configuration;
 
 import fr.recia.glc.web.filter.StaticResourcesProductionFilter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.server.WebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -45,7 +46,7 @@ import java.util.EnumSet;
 @Configuration
 public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<WebServerFactory> {
 
-  @Inject
+  @Autowired
   private Environment env;
 
   @Override

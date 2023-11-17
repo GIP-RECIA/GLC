@@ -50,7 +50,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -81,7 +80,7 @@ public class EtablissementController {
   private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
 
   private GLCProperties glcProperties;
-  @Inject
+  @Autowired
   private UserContextRole userContextRole;
 
   public EtablissementController(GLCProperties glcProperties) {
