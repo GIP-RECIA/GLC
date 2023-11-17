@@ -129,7 +129,8 @@ public class PersonneController {
 
     SimplePersonneDto personne = aPersonneRepository.findByPersonneIdSimple(id);
     if (personne == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    if (!List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(personne.getEtat())) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    if (!List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(personne.getEtat()))
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     String source = personne.getSource().startsWith(Constants.SARAPISUI_)
       ? personne.getSource()
       : Constants.SARAPISUI_ + personne.getSource();

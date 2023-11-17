@@ -29,33 +29,33 @@ import java.util.Map;
 @Slf4j
 public class AuthoritiesDefinition implements IAuthoritiesDefinition {
 
-	/**
-	 * Admins are super admin of the app.
-	 */
-	private IEvaluation admins;
+  /**
+   * Admins are super admin of the app.
+   */
+  private IEvaluation admins;
 
-	/**
-	 * Users are users that can manage, edit or contributes.
-	 */
-	private IEvaluation users;
+  /**
+   * Users are users that can manage, edit or contributes.
+   */
+  private IEvaluation users;
 
-	public AuthoritiesDefinition() {
-		super();
-	}
+  public AuthoritiesDefinition() {
+    super();
+  }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see fr.recia.glc.service.beans.IRolesDefinition#getAppRoles()
-	 */
-	@Override
-	public Map<String, IEvaluation> getAppRoles() {
-		Map<String, IEvaluation> accessRoles = Maps.newLinkedHashMap();
-		accessRoles.put(AuthoritiesConstants.ADMIN, admins);
-		accessRoles.put(AuthoritiesConstants.USER, users);
-		if (log.isDebugEnabled()) log.debug("App Roles defined : {}", accessRoles);
+  /*
+   * (non-Javadoc)
+   *
+   * @see fr.recia.glc.service.beans.IRolesDefinition#getAppRoles()
+   */
+  @Override
+  public Map<String, IEvaluation> getAppRoles() {
+    Map<String, IEvaluation> accessRoles = Maps.newLinkedHashMap();
+    accessRoles.put(AuthoritiesConstants.ADMIN, admins);
+    accessRoles.put(AuthoritiesConstants.USER, users);
+    if (log.isDebugEnabled()) log.debug("App Roles defined : {}", accessRoles);
 
-		return accessRoles;
-	}
+    return accessRoles;
+  }
 
 }

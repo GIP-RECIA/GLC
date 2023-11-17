@@ -73,7 +73,7 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
   }
 
   private CategorieStructure getCategorieStructure(final String group) {
-    for (Map.Entry<CategorieStructure, Pattern> entry: ldapProperties.getGroupBranch().getStructureProperties().getStructureCategoriesPatterns().entrySet()) {
+    for (Map.Entry<CategorieStructure, Pattern> entry : ldapProperties.getGroupBranch().getStructureProperties().getStructureCategoriesPatterns().entrySet()) {
       if (entry.getValue().matcher(group).matches()) return entry.getKey();
     }
     throw new IllegalArgumentException(String.format("Extracted Structure type unknown from %s", group));
