@@ -13,12 +13,6 @@ spring:
     username:
     password:
 
-  ldap:
-    url:
-    base:
-    username:
-    password:
-
 app:
   security:
     #auth-uri-filter-path: j_spring_cas_security_check
