@@ -32,6 +32,7 @@ import fr.recia.glc.security.CustomUserDetails;
 import fr.recia.glc.security.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -127,11 +128,9 @@ public class FonctionController {
     // Lecture du fichier JSON
     List<AdditionalFonctionMapping> jsonFile;
     try {
-      jsonFile = objectMapper.readValue(
-        new File("src/main/resources/mapping/additionalFonctionMapping.json"),
-        new TypeReference<>() {
-        }
-      );
+      File resource = new ClassPathResource("mapping/additionalFonctionMapping.json").getFile();
+      jsonFile = objectMapper.readValue(resource, new TypeReference<>() {
+      });
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
