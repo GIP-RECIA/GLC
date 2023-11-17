@@ -207,7 +207,7 @@ public class SecurityConfiguration {
     http
       .authorizeHttpRequests(authz -> authz
         .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-        .antMatchers("/app/**/*.{js,html}").permitAll()
+        .antMatchers("/app/**/*.{js,html}", "/ui/**").permitAll()
         .antMatchers("/health-check", "/api/config").permitAll()
         .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.USER)
         .antMatchers(
