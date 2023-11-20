@@ -44,6 +44,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +149,7 @@ public class FonctionController {
       .collect(Collectors.toList());
     List<TypeFonctionFiliereDto> typesFonctionFiliere =
       typeFonctionFiliereRepository.findByCodeAndSourceSarapis(typeFonctionFiliereCodes, source);
+    typesFonctionFiliere.sort(Comparator.comparingInt(tff -> typeFonctionFiliereCodes.indexOf(tff.getCodeFiliere())));
 
     // Ajout des disciplines aux filières
     if (!typesFonctionFiliere.isEmpty()) {
@@ -160,6 +162,7 @@ public class FonctionController {
             .orElse(new ArrayList<>());
 
           List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(disciplineCodes, source);
+          disciplines.sort(Comparator.comparingInt(discipline -> disciplineCodes.indexOf(discipline.getCode())));
           typeFonctionFiliere.setDisciplines(disciplines);
 
           return typeFonctionFiliere;
