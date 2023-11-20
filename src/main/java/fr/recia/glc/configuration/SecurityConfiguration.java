@@ -16,7 +16,6 @@
 package fr.recia.glc.configuration;
 
 import com.google.common.collect.Lists;
-import fr.recia.glc.configuration.bean.SecurityProperties;
 import fr.recia.glc.security.AuthoritiesConstants;
 import fr.recia.glc.security.CustomSessionFixationProtectionStrategy;
 import fr.recia.glc.security.cas.AjaxAuthenticationFailureHandler;
@@ -193,9 +192,8 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
     http.csrf()
-      .ignoringAntMatchers("/"+glcProperties.getSecurity().getAuthUriFilterPath());
+      .ignoringAntMatchers("/" + glcProperties.getSecurity().getAuthUriFilterPath());
 
     http
       .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class).exceptionHandling()
