@@ -1,7 +1,9 @@
 import { getConfiguration } from '@/services/configurationService.ts';
 import type { Configuration } from '@/types/configurationType.ts';
+import type { enumValues } from '@/types/enumValuesType';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Identity } from '@/types/identityType.ts';
+import { getEtat } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
 import { useStorage } from '@vueuse/core';
 import isEmpty from 'lodash.isempty';
@@ -60,6 +62,13 @@ export const useConfigurationStore = defineStore('configuration', () => {
     return false;
   };
 
+  const filterAccountStates = computed<Array<enumValues & { value: string }> | undefined>(
+    () =>
+      configuration.value?.filterAccountStates?.map((state) => {
+        return { ...getEtat(state), value: state };
+      }),
+  );
+
   /* --- Gestion des onglets de structure --- */
 
   const structures = ref(useStorage<Array<{ id: number; name: string }>>('tabs', [], sessionStorage));
@@ -106,6 +115,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
     teachingCodes,
     isExternalLogin,
     isEditAllowed,
+    filterAccountStates,
     structures,
     currentStructure,
     currentTab,

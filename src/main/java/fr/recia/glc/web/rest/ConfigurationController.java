@@ -70,6 +70,14 @@ public class ConfigurationController {
     editAllowedStates.add(Etat.Bloque);
     data.put("editAllowedStates", editAllowedStates);
 
+    List<Etat> filterAccountStates = new ArrayList<>();
+    filterAccountStates.add(Etat.Invalide);
+    filterAccountStates.add(Etat.Valide);
+    filterAccountStates.add(Etat.Bloque);
+    filterAccountStates.add(Etat.Delete);
+    filterAccountStates.add(Etat.Incertain);
+    data.put("filterAccountStates", filterAccountStates);
+
     List<String> permissionTypes = new ArrayList<>();
     permissionTypes.add(PermissionType.ADMIN.getName());
     permissionTypes.add(PermissionType.MANAGER.getName());

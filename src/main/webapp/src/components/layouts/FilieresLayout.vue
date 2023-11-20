@@ -1,47 +1,63 @@
 <script setup lang="ts">
 import PersonneCard from '@/components/PersonneCard.vue';
+import type { Discipline } from '@/types/disciplineType';
 import type { Filiere } from '@/types/filiereType.ts';
-import { onBeforeMount, ref, unref, watch } from 'vue';
+import type { SimplePersonne } from '@/types/personneType';
+import isEmpty from 'lodash.isempty';
+import { onBeforeMount, ref, watch } from 'vue';
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
-  showAll: boolean;
+  accountStates?: Array<string>;
 }>();
 
 const filteredFilieres = ref<Array<Filiere>>([]);
 
 onBeforeMount(() => {
-  if (props.filieres && props.filieres.length > 0) filterFiliere();
+  if (props.filieres && props.filieres.length > 0) filteredFilieres.value = getFiliere();
 });
 
 watch(
   () => props.filieres,
   (oldValue, newValue) => {
-    if (newValue != oldValue) filterFiliere();
+    if (newValue != oldValue) filteredFilieres.value = getFiliere();
   },
 );
 
 watch(
-  () => props.showAll,
+  () => props.accountStates,
   (newValue, oldValue) => {
-    if (newValue != oldValue) filterFiliere();
+    if (newValue != oldValue) filteredFilieres.value = getFiliere();
   },
 );
 
-const filterFiliere = (): void => {
-  let filterFiliere = unref(props.filieres);
+const getPersonnesByState = (discipline: Discipline): Array<SimplePersonne> => {
+  return !isEmpty(props.accountStates)
+    ? discipline.personnes.filter((personne) => props.accountStates!.includes(personne.etat))
+    : discipline.personnes;
+};
 
-  if (!unref(props.showAll)) {
-    filterFiliere = filterFiliere
-      ?.map((filiere) => {
-        const disciplines = filiere.disciplines.filter((discipline) => discipline.personnes.length > 0);
+const getDisciplinesWithPersonnes = (filiere: Filiere): Array<Discipline> => {
+  let disciplines: Array<Discipline> = filiere.disciplines.map((discipline) => {
+    let personnes = getPersonnesByState(discipline);
 
-        return { ...filiere, disciplines };
-      })
-      .filter((filiere) => filiere.disciplines.length > 0);
-  }
+    return { ...discipline, personnes };
+  });
+  disciplines = disciplines.filter((discipline) => discipline.personnes.length > 0);
 
-  filteredFilieres.value = filterFiliere ? filterFiliere : [];
+  return disciplines;
+};
+
+const getFiliere = (): Array<Filiere> => {
+  let filieres = props.filieres ? props.filieres : [];
+  filieres = filieres.map((filiere) => {
+    let disciplines = getDisciplinesWithPersonnes(filiere);
+
+    return { ...filiere, disciplines };
+  });
+  filieres = filieres.filter((filiere) => filiere.disciplines.length > 0);
+
+  return filieres;
 };
 </script>
 

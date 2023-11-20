@@ -1,10 +1,11 @@
 export type Configuration = {
-  administrativeStaff: Array<string>;
-  teachingCodes: Array<string>;
   administrativeCodes: Array<string>;
-  externalSourcesAll: Array<string>;
+  administrativeStaff: Array<string>;
+  editAllowedStates: Array<string>;
   externalSources4Login: Array<string>;
   externalSources4LoginCategory: Array<string>;
-  editAllowedStates: Array<string>;
+  externalSourcesAll: Array<string>;
+  filterAccountStates: Array<string>;
   permissionTypes: Array<string>;
+  teachingCodes: Array<string>;
 };
