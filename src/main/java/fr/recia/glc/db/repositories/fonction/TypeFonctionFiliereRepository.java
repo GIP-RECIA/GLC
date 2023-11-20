@@ -30,7 +30,8 @@ public interface TypeFonctionFiliereRepository<T extends TypeFonctionFiliere> ex
     "tff.libelleFiliere, tff.source) " +
     "FROM TypeFonctionFiliere tff " +
     "WHERE tff.codeFiliere IN :codes " +
-    "AND tff.source = :source")
+    "AND tff.source = :source " +
+    "ORDER BY tff.libelleFiliere")
   List<TypeFonctionFiliereDto> findByCodeAndSource(List<String> codes, String source);
 
   @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
@@ -38,20 +39,23 @@ public interface TypeFonctionFiliereRepository<T extends TypeFonctionFiliere> ex
     "FROM TypeFonctionFiliere tff " +
     "WHERE tff.codeFiliere IN :codes " +
     "AND (tff.source = :source " +
-    "OR tff.source = CONCAT('SarapisUi_', :source))")
+    "OR tff.source = CONCAT('SarapisUi_', :source)) " +
+    "ORDER BY tff.libelleFiliere")
   List<TypeFonctionFiliereDto> findByCodeAndSourceSarapis(List<String> codes, String source);
 
   @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
     "tff.libelleFiliere, tff.source) " +
     "FROM TypeFonctionFiliere tff " +
-    "WHERE tff.source = :source")
+    "WHERE tff.source = :source " +
+    "ORDER BY tff.libelleFiliere")
   List<TypeFonctionFiliereDto> findBySource(String source);
 
   @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
     "tff.libelleFiliere, tff.source) " +
     "FROM TypeFonctionFiliere tff " +
     "WHERE tff.source = :source " +
-    "OR tff.source = CONCAT('SarapisUi_', :source)")
+    "OR tff.source = CONCAT('SarapisUi_', :source) " +
+    "ORDER BY tff.libelleFiliere")
   List<TypeFonctionFiliereDto> findBySourceSarapis(String source);
 
 }

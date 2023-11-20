@@ -31,13 +31,15 @@ public interface EtablissementRepository<T extends Etablissement> extends Abstra
   @Query("SELECT new fr.recia.glc.db.dto.structure.SimpleEtablissementDto(e.id, e.uai, e.categorie, e.nom, e.nomCourt, " +
     "e.siren) " +
     "FROM Etablissement e " +
-    "WHERE e.uai IS NOT NULL")
+    "WHERE e.uai IS NOT NULL " +
+    "ORDER BY e.nom")
   List<SimpleEtablissementDto> findAllEtablissements();
 
   @Query("SELECT new fr.recia.glc.db.dto.structure.SimpleEtablissementDto(e.id, e.uai, e.categorie, e.nom, e.nomCourt, " +
     "e.siren) " +
     "FROM Etablissement e " +
-    "WHERE e.uai IS NOT NULL AND e.uai IN (:uai)")
+    "WHERE e.uai IS NOT NULL AND e.uai IN (:uai) " +
+    "ORDER BY e.nom")
   List<SimpleEtablissementDto> findAllowedEtablissements(Set<String> uai);
 
   @Query("SELECT new fr.recia.glc.db.dto.structure.EtablissementDto(e.id, e.uai, e.etat, e.etatAlim, " +

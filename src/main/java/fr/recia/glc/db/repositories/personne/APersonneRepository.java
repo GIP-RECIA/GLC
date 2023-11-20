@@ -37,7 +37,8 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
     "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid) " +
     "FROM APersonne ap " +
-    "WHERE ap.id IN :ids")
+    "WHERE ap.id IN :ids " +
+    "ORDER BY ap.cn, ap.sn")
   List<SimplePersonneDto> findByPersonneIds(List<Long> ids);
 
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie," +
@@ -59,7 +60,8 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
     "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
     "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
-    "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique)")
+    "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
+    "ORDER BY ap.cn, ap.sn")
   List<SimplePersonneDto> findByNameLike(String name);
 
 }
