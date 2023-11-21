@@ -26,7 +26,7 @@ const accountStates = ref<Array<string>>([Etat.Valide]);
     <filieres-layout :filieres="teaching" :account-states="accountStates" />
 
     <div class="fab ma-4">
-      <v-btn variant="tonal" icon="fas fa-user-pen" @click="isAdditional = true" />
+      <v-btn variant="tonal" size="x-large" icon="fas fa-user-pen" @click="isAdditional = true" />
     </div>
   </v-container>
 </template>

@@ -26,7 +26,13 @@ const accountStates = ref<Array<string>>([Etat.Valide]);
     <filieres-layout :filieres="administrative" :account-states="accountStates" />
 
     <div class="fab ma-4">
-      <v-btn v-if="isCustomMapping" variant="tonal" icon="fas fa-user-pen" @click="isAdditional = true" />
+      <v-btn
+        v-if="isCustomMapping"
+        variant="tonal"
+        size="x-large"
+        icon="fas fa-user-pen"
+        @click="isAdditional = true"
+      />
     </div>
   </v-container>
 </template>
