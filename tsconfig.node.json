@@ -3,6 +3,7 @@
   "include": ["vite.config.*", "vitest.config.*", "cypress.config.*", "nightwatch.conf.*", "playwright.config.*"],
   "compilerOptions": {
     "allowImportingTsExtensions": true,
+    "noEmit": true,
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
