@@ -24,7 +24,7 @@ const structureStore = useStructureStore();
 structureStore.initCurrentEtab(Number(structureId));
 
 const configurationStore = useConfigurationStore();
-const { currentTab } = storeToRefs(configurationStore);
+const { structureTab } = storeToRefs(configurationStore);
 
 watch(
   () => route.params.structureId,
@@ -37,7 +37,7 @@ watch(
 <template>
   <div>
     <v-tabs
-      v-model="currentTab"
+      v-model="structureTab"
       align-tabs="center"
       show-arrows
       hide-slider
@@ -51,7 +51,7 @@ watch(
       <v-tab :value="Tabs.Accounts">{{ t('tab.accounts') }}</v-tab>
       <v-tab :value="Tabs.Exports">{{ t('tab.exports') }}</v-tab>
     </v-tabs>
-    <v-window v-model="currentTab">
+    <v-window v-model="structureTab">
       <v-window-item :value="Tabs.Dashboard" eager>
         <dashboard-view />
       </v-window-item>

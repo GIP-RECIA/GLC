@@ -23,7 +23,7 @@ const toast = useToast();
 
 const configurationStore = useConfigurationStore();
 const { isExternalLogin, isEditAllowed } = configurationStore;
-const { currentTab, currentStructureId, isAddMode } = storeToRefs(configurationStore);
+const { currentStructureId, structureTab, isAddMode } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { filieres, customMapping, isCustomMapping } = storeToRefs(fonctionStore);
@@ -228,7 +228,7 @@ const resetAddMode = (success?: boolean) => {
             <b>{{ t('person.information.function', 2) }}</b>
             <fonctions-layout :filieres="filieres" :fonctions="structureFonctions" class="mt-2" />
           </div>
-          <div v-if="currentTab == Tabs.AdministrativeStaff" class="mb-4">
+          <div v-if="structureTab == Tabs.AdministrativeStaff" class="mb-4">
             <div class="d-flex align-center">
               <b>{{ t('person.information.additionalFunction', 2) }}</b>
               <v-btn
@@ -251,14 +251,14 @@ const resetAddMode = (success?: boolean) => {
               class="mt-2"
             />
           </div>
-          <div v-if="currentTab == Tabs.TeachingStaff" class="mb-4">
+          <div v-if="structureTab == Tabs.TeachingStaff" class="mb-4">
             <b>{{ t('person.information.additionalTeaching', 2) }}</b>
             <fonctions-layout :filieres="undefined" :fonctions="structureAdditionalFonctions" class="mt-2" />
           </div>
         </div>
 
         <checkbox-layout
-          v-if="isAddMode && currentTab == Tabs.AdministrativeStaff"
+          v-if="isAddMode && structureTab == Tabs.AdministrativeStaff"
           :filieres="customMapping?.filieres"
           :selected="selected"
           :disabled="toIdentifier(structureFonctions)"
@@ -282,7 +282,7 @@ const resetAddMode = (success?: boolean) => {
           />
         </div>
         <v-spacer />
-        <div v-if="isAddMode && currentTab == Tabs.AdministrativeStaff">
+        <div v-if="isAddMode && structureTab == Tabs.AdministrativeStaff">
           <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="cancel" />
           <v-btn
             :color="saveButton.color"

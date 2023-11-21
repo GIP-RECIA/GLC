@@ -21,8 +21,8 @@ const toast = useToast();
 const configurationStore = useConfigurationStore();
 const { isEditAllowed } = configurationStore;
 const {
-  currentTab,
   currentStructureId,
+  structureTab,
   isAdditional,
   // isAddMode
 } = storeToRefs(configurationStore);
@@ -133,7 +133,7 @@ const currentTabValue = computed<{
   searchList: Array<SimplePersonne> | undefined;
   filieres: Array<any> | undefined;
 }>(() => {
-  switch (currentTab.value) {
+  switch (structureTab.value) {
     case Tabs.AdministrativeStaff:
       return {
         title: t('addAdditionalFonction'),

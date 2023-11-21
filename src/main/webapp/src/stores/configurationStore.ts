@@ -75,15 +75,10 @@ export const useConfigurationStore = defineStore('configuration', () => {
   const structures = ref(
     useStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>('tabs', [], sessionStorage),
   );
-  const currentStructure = ref<number | undefined>();
-  const currentTab = ref<number>(Tabs.Dashboard);
+  const appTab = ref<number | undefined>();
 
-  const setCurrentStructure = (value: number): void => {
-    currentStructure.value = value;
-  };
-
-  const setCurrentTab = (value: number): void => {
-    currentTab.value = value;
+  const setAppTab = (value: number): void => {
+    appTab.value = value;
   };
 
   const currentStructureId = ref<number | undefined>();
@@ -106,6 +101,14 @@ export const useConfigurationStore = defineStore('configuration', () => {
       }
     },
   });
+
+  /* --- Gestion de la structure courrante --- */
+
+  const structureTab = ref<number>(Tabs.Dashboard);
+
+  const setStructureTab = (value: number): void => {
+    structureTab.value = value;
+  };
 
   /* --- Gestion de la home --- */
 
@@ -135,13 +138,13 @@ export const useConfigurationStore = defineStore('configuration', () => {
     isEditAllowed,
     filterAccountStates,
     structures,
-    currentStructure,
-    currentTab,
-    setCurrentStructure,
-    setCurrentTab,
+    appTab,
+    setAppTab,
     currentStructureId,
     setCurrentStructureId,
     currentStructureConfig,
+    structureTab,
+    setStructureTab,
     search,
     isLoading,
     isAdditional,

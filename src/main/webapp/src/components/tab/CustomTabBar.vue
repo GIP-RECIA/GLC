@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 
 const configurationStore = useConfigurationStore();
-const { structures, currentStructure } = storeToRefs(configurationStore);
+const { structures, appTab } = storeToRefs(configurationStore);
 
 const router = useRouter();
 
@@ -13,18 +13,18 @@ const close = (i: number) => {
   structures.value.splice(i, 1);
 
   // Definition du nouvel onglet
-  const newCurrentStructure = currentStructure.value! - 1;
-  currentStructure.value = newCurrentStructure >= 0 ? newCurrentStructure : 0;
+  const newCurrentStructure = appTab.value! - 1;
+  appTab.value = newCurrentStructure >= 0 ? newCurrentStructure : 0;
 
   // Changement de page
-  const structureId = structures.value.find((structure, index) => index == currentStructure.value)?.id;
+  const structureId = structures.value.find((structure, index) => index == appTab.value)?.id;
   if (structureId) router.push({ name: 'structure', params: { structureId: structureId } });
   else newTab();
 };
 
 const newTab = () => {
   router.push({ name: 'home' });
-  currentStructure.value = undefined;
+  appTab.value = undefined;
 };
 </script>
 
@@ -38,7 +38,7 @@ const newTab = () => {
           :id="index"
           :title="structure.name"
           :link="{ name: 'structure', params: { structureId: structure.id } }"
-          :selected="currentStructure == index"
+          :selected="appTab == index"
           @close="close"
         />
       </transition-group>

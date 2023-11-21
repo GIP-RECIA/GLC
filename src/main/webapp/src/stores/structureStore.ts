@@ -39,7 +39,7 @@ export const useStructureStore = defineStore('structure', () => {
    * @param id Identifiant de la structure
    */
   const initCurrentEtab = async (id: number): Promise<void> => {
-    const { structures, setCurrentStructure, setCurrentTab, setCurrentStructureId } = configurationStore;
+    const { structures, setAppTab, setStructureTab, setCurrentStructureId } = configurationStore;
     configurationStore.isLoading = true;
     try {
       const response = await getEtablissement(id);
@@ -48,7 +48,7 @@ export const useStructureStore = defineStore('structure', () => {
       // Mise à jour de l'onglet
       const index = structures.findIndex((structures) => structures.id == id);
       if (index == -1) {
-        setCurrentTab(Tabs.Dashboard);
+        setStructureTab(Tabs.Dashboard);
         structures.push({
           id: id,
           name: etab.type ? `${etab.type} ${etab.nom}` : etab.nom ?? '',
@@ -62,8 +62,8 @@ export const useStructureStore = defineStore('structure', () => {
             accounts: {},
           },
         });
-        setCurrentStructure(structures.length - 1);
-      } else setCurrentStructure(index);
+        setAppTab(structures.length - 1);
+      } else setAppTab(index);
       currentEtab.value = etab;
       setCurrentStructureId(id);
     } catch (e) {
