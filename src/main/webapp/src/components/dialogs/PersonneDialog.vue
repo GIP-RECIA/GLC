@@ -282,17 +282,15 @@ const resetAddMode = (success?: boolean) => {
           />
         </div>
         <v-spacer />
-        <div v-if="currentTab == Tabs.AdministrativeStaff || currentTab == Tabs.TeachingStaff">
-          <div v-if="isAddMode">
-            <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="cancel" />
-            <v-btn
-              :color="saveButton.color"
-              :prepend-icon="saveButton.icon"
-              :text="t(saveButton.i18n)"
-              :disabled="!canSave"
-              @click="save"
-            />
-          </div>
+        <div v-if="isAddMode && currentTab == Tabs.AdministrativeStaff">
+          <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="cancel" />
+          <v-btn
+            :color="saveButton.color"
+            :prepend-icon="saveButton.icon"
+            :text="t(saveButton.i18n)"
+            :disabled="!canSave"
+            @click="save"
+          />
         </div>
       </v-card-actions>
     </v-card>
