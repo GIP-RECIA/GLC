@@ -38,7 +38,7 @@ const modelValue = computed<Array<number | string>>({
     <template #chip="{ props, item }">
       <v-chip v-bind="props" rounded>
         <div class="d-flex flex-row align-center">
-          <v-icon v-if="item.raw.color" icon="fas fa-circle" :color="item.raw.color" class="mr-2" />
+          <v-icon v-if="item.raw.color" icon="fas fa-circle" :color="item.raw.color" size="md" class="mr-2" />
           <div>{{ t(item.raw.i18n) }}</div>
         </div>
       </v-chip>
@@ -46,7 +46,7 @@ const modelValue = computed<Array<number | string>>({
     <template #item="{ props, item }">
       <v-list-item v-bind="props" title="">
         <div class="d-flex flex-row align-center">
-          <v-icon v-if="item.raw.color" icon="fas fa-circle" :color="item.raw.color" class="mr-2" />
+          <v-icon v-if="item.raw.color" icon="fas fa-circle" :color="item.raw.color" size="md" class="mr-2" />
           <div>{{ t(item.raw.i18n) }}</div>
         </div>
       </v-list-item>
