@@ -3,17 +3,26 @@ import SelectFilter from '@/components/filter/SelectFilter.vue';
 import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';
-import { Etat } from '@/types/enums/Etat';
+import { Etat } from '@/types/enums/Etat.ts';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { computed } from 'vue';
 
 const configurationStore = useConfigurationStore();
-const { filterAccountStates, isAdditional } = storeToRefs(configurationStore);
+const { filterAccountStates, currentStructureConfig, isAdditional } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { teaching } = storeToRefs(fonctionStore);
 
-const accountStates = ref<Array<string>>([Etat.Valide]);
+const accountStates = computed<Array<Etat>>({
+  get() {
+    return currentStructureConfig.value ? currentStructureConfig.value.teachingStaff.accountStates : [];
+  },
+  set(states) {
+    let config = currentStructureConfig.value!;
+    config.teachingStaff.accountStates = states;
+    currentStructureConfig.value = config;
+  },
+});
 </script>
 
 <template>

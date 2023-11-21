@@ -1,5 +1,6 @@
 import { getEtablissement, getEtablissements } from '@/services/structureService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { Etat } from '@/types/enums/Etat.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
@@ -51,6 +52,15 @@ export const useStructureStore = defineStore('structure', () => {
         structures.push({
           id: id,
           name: etab.type ? `${etab.type} ${etab.nom}` : etab.nom ?? '',
+          config: {
+            administrativeStaff: {
+              accountStates: [Etat.Valide],
+            },
+            teachingStaff: {
+              accountStates: [Etat.Valide],
+            },
+            accounts: {},
+          },
         });
         setCurrentStructure(structures.length - 1);
       } else setCurrentStructure(index);

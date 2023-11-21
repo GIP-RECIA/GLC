@@ -1,8 +1,9 @@
 import { getConfiguration } from '@/services/configurationService.ts';
 import type { Configuration } from '@/types/configurationType.ts';
-import type { enumValues } from '@/types/enumValuesType';
+import type { enumValues } from '@/types/enumValuesType.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Identity } from '@/types/identityType.ts';
+import type { StructureConfiguration } from '@/types/structureConfigurationType.ts';
 import { getEtat } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
 import { useStorage } from '@vueuse/core';
@@ -71,7 +72,9 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   /* --- Gestion des onglets de structure --- */
 
-  const structures = ref(useStorage<Array<{ id: number; name: string }>>('tabs', [], sessionStorage));
+  const structures = ref(
+    useStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>('tabs', [], sessionStorage),
+  );
   const currentStructure = ref<number | undefined>();
   const currentTab = ref<number>(Tabs.Dashboard);
 
@@ -88,6 +91,21 @@ export const useConfigurationStore = defineStore('configuration', () => {
   const setCurrentStructureId = (id: number): void => {
     currentStructureId.value = id;
   };
+
+  const currentStructureConfig = computed<StructureConfiguration | undefined>({
+    get() {
+      const index = structures.value.findIndex((structure) => structure.id == currentStructureId.value);
+      return index >= 0 ? structures.value[index].config : undefined;
+    },
+    set(configuration) {
+      if (configuration != undefined) {
+        const index = structures.value.findIndex((structure) => structure.id == currentStructureId.value);
+        if (index >= 0) {
+          structures.value[index].config = configuration;
+        }
+      }
+    },
+  });
 
   /* --- Gestion de la home --- */
 
@@ -123,6 +141,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
     setCurrentTab,
     currentStructureId,
     setCurrentStructureId,
+    currentStructureConfig,
     search,
     isLoading,
     isAdditional,
