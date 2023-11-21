@@ -1,5 +1,6 @@
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import vue from '@vitejs/plugin-vue';
+import path from 'node:path';
 import { URL, fileURLToPath } from 'node:url';
 import { defineConfig, loadEnv } from 'vite';
 import vuetify from 'vite-plugin-vuetify';
@@ -21,7 +22,9 @@ export default ({ mode }: { mode: string }) => {
         },
       }),
       vuetify({ autoImport: true, styles: 'expose' }),
-      VueI18nPlugin({}),
+      VueI18nPlugin({
+        include: [path.resolve(__dirname, './src/main/webapp/src/locales/**/*.json')],
+      }),
     ],
     resolve: {
       alias: {
