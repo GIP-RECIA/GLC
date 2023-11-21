@@ -102,7 +102,12 @@ const canSave = computed<boolean>(() => {
 
 const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
   if (!hasStructureFonctions.value) {
-    if (!hasStructureAdditionalFonctions.value) return { i18n: 'button.attach', icon: 'fas fa-link', color: 'success' };
+    if (!hasStructureAdditionalFonctions.value)
+      return {
+        i18n: 'button.attach',
+        icon: 'fas fa-link',
+        color: 'success',
+      };
     if (selected.value.length == 0)
       return {
         i18n: 'button.detach',
@@ -219,32 +224,36 @@ const resetAddMode = (success?: boolean) => {
             />
             <readonly-data label="Source" :value="t('source.' + currentPersonne.source)" class="modal-flex-item" />
           </div>
-          <div class="mb-3">
+          <div :class="[currentTab == Tabs.AdministrativeStaff || currentTab == Tabs.TeachingStaff ? 'mb-4' : '']">
             <b>{{ t('person.information.function', 2) }}</b>
-            <fonctions-layout :filieres="filieres" :fonctions="structureFonctions" class="mt-2 mb-3" />
+            <fonctions-layout :filieres="filieres" :fonctions="structureFonctions" class="mt-2" />
           </div>
-          <div v-if="currentTab == Tabs.AdministrativeStaff" class="mt-3">
+          <div v-if="currentTab == Tabs.AdministrativeStaff" class="mb-4">
             <div class="d-flex align-center">
               <b>{{ t('person.information.additionalFunction', 2) }}</b>
               <v-btn
-                v-if="!isAddMode && isCustomMapping && currentPersonne && isEditAllowed(currentPersonne.etat)"
+                v-if="isCustomMapping && isEditAllowed(currentPersonne.etat)"
                 color="primary"
                 variant="tonal"
-                :prepend-icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'"
+                density="compact"
                 :text="t(hasStructureAdditionalFonctions ? 'button.edit' : 'button.add')"
                 class="ml-2"
                 @click="isAddMode = true"
-              />
+              >
+                <template #prepend>
+                  <v-icon :icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
+                </template>
+              </v-btn>
             </div>
             <fonctions-layout
               :filieres="customMapping?.filieres"
               :fonctions="structureAdditionalFonctions"
-              class="mt-2 mb-3"
+              class="mt-2"
             />
           </div>
-          <div v-if="currentTab == Tabs.TeachingStaff">
+          <div v-if="currentTab == Tabs.TeachingStaff" class="mb-4">
             <b>{{ t('person.information.additionalTeaching', 2) }}</b>
-            <fonctions-layout :filieres="undefined" :fonctions="structureAdditionalFonctions" class="mt-2 mb-3" />
+            <fonctions-layout :filieres="undefined" :fonctions="structureAdditionalFonctions" class="mt-2" />
           </div>
         </div>
 
