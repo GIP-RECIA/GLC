@@ -206,7 +206,12 @@ const resetAddMode = (success?: boolean) => {
               "
               class="modal-flex-item"
             />
-            <readonly-data :label="t('person.information.status')" :value="t(etat.i18n)" class="modal-flex-item" />
+            <readonly-data :label="t('person.information.status')" class="modal-flex-item">
+              <div class="d-flex flex-row align-center">
+                <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="sm" class="mr-2" />
+                <div>{{ t(etat.i18n) }}</div>
+              </div>
+            </readonly-data>
             <readonly-data
               :label="t('person.information.profile')"
               :value="t(getCategoriePersonne(currentPersonne.categorie).i18n)"

@@ -8,7 +8,9 @@ defineProps<{
 <template>
   <div class="mb-3">
     <b>{{ label }}</b>
-    <br />
-    {{ value ? value : '-' }}
+    <slot />
+    <div v-if="!$slots.default">
+      {{ value ? value : '-' }}
+    </div>
   </div>
 </template>
