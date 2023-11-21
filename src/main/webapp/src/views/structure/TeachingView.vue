@@ -19,7 +19,9 @@ const accountStates = ref<Array<string>>([Etat.Valide]);
 <template>
   <v-container fluid>
     <div class="d-flex justify-end mb-4 mb-sm-0">
-      <select-filter v-if="filterAccountStates" v-model="accountStates" :items="filterAccountStates" />
+      <div class="account-filter">
+        <select-filter v-if="filterAccountStates" v-model="accountStates" :items="filterAccountStates" />
+      </div>
     </div>
     <filieres-layout :filieres="teaching" :account-states="accountStates" />
 

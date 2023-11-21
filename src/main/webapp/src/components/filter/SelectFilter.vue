@@ -28,19 +28,21 @@ const modelValue = computed<Array<number | string>>({
     rounded="xl"
     variant="solo"
     density="compact"
+    prepend-inner-icon="fas fa-filter"
     flat
     chips
     multiple
     hide-details
     class="select-filter"
   >
-    <template #prepend-inner>
-      <v-badge v-if="modelValue.length > 0" :content="modelValue.length" color="info">
-        <v-icon icon="fas fa-filter" />
-      </v-badge>
-      <v-icon v-else icon="fas fa-filter" />
+    <template #chip="{ props, item }">
+      <v-chip v-bind="props" rounded>
+        <div class="d-flex flex-row align-center">
+          <v-icon v-if="item.raw.color" icon="fas fa-circle" :color="item.raw.color" class="mr-2" />
+          <div>{{ t(item.raw.i18n) }}</div>
+        </div>
+      </v-chip>
     </template>
-    <template #chip />
     <template #item="{ props, item }">
       <v-list-item v-bind="props" title="">
         <div class="d-flex flex-row align-center">
