@@ -224,7 +224,7 @@ const resetAddMode = (success?: boolean) => {
             />
             <readonly-data label="Source" :value="t('source.' + currentPersonne.source)" class="modal-flex-item" />
           </div>
-          <div :class="[currentTab == Tabs.AdministrativeStaff || currentTab == Tabs.TeachingStaff ? 'mb-4' : '']">
+          <div class="mb-4">
             <b>{{ t('person.information.function', 2) }}</b>
             <fonctions-layout :filieres="filieres" :fonctions="structureFonctions" class="mt-2" />
           </div>
