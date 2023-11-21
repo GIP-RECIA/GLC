@@ -218,8 +218,19 @@ const resetAddMode = (success?: boolean) => {
             <b>{{ t('person.information.function', 2) }}</b>
             <fonctions-layout :filieres="filieres" :fonctions="structureFonctions" class="mt-2 mb-3" />
           </div>
-          <div v-if="currentTab == Tabs.AdministrativeStaff">
-            <b>{{ t('person.information.additionalFunction', 2) }}</b>
+          <div v-if="currentTab == Tabs.AdministrativeStaff" class="mt-3">
+            <div class="d-flex align-center">
+              <b>{{ t('person.information.additionalFunction', 2) }}</b>
+              <v-btn
+                v-if="!isAddMode && isCustomMapping && currentPersonne && isEditAllowed(currentPersonne.etat)"
+                color="primary"
+                variant="tonal"
+                :prepend-icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'"
+                :text="t(hasStructureAdditionalFonctions ? 'button.edit' : 'button.add')"
+                class="ml-2"
+                @click="isAddMode = true"
+              />
+            </div>
             <fonctions-layout
               :filieres="customMapping?.filieres"
               :fonctions="structureAdditionalFonctions"
@@ -258,13 +269,6 @@ const resetAddMode = (success?: boolean) => {
         </div>
         <v-spacer />
         <div v-if="currentTab == Tabs.AdministrativeStaff || currentTab == Tabs.TeachingStaff">
-          <v-btn
-            v-if="!isAddMode && isCustomMapping && currentPersonne && isEditAllowed(currentPersonne.etat)"
-            color="primary"
-            :prepend-icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'"
-            :text="t(hasStructureAdditionalFonctions ? 'button.edit' : 'button.add')"
-            @click="isAddMode = true"
-          />
           <div v-if="isAddMode">
             <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="cancel" />
             <v-btn

@@ -69,5 +69,4 @@ const filterFilieres = (): void => {
       </v-col>
     </v-row>
   </div>
-  <div v-else>-</div>
 </template>
