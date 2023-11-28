@@ -1,0 +1,58 @@
+# For more information see: https://docs.github.com/en/actions/
+
+name: Project CI
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: ['11', '17']
+        node: ['20']
+
+    name: Java ${{ matrix.java }} & Node ${{ matrix.node }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Setup Java
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: '${{ matrix.java }}'
+          distribution: 'temurin'
+          cache: maven
+      - name: Check license hearders
+        run: ./mvnw license:check
+      - name: Check NOTICE
+        run: ./mvnw -B notice:check
+
+      # Setup Node
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'yarn'
+      - run: yarn install --immutable
+
+      - name: Build frontend
+        run: yarn build
+
+      - name: Build backend
+        run: ./mvnw -B package --file pom.xml -Dmaven.test.skip=true -Darguments="-DskipTests"
+
+      # Tests frontend
+      - name: Tests frontend (unit tests)
+        run: yarn test:unit
+      # - name: Tests frontend (e2e tests)
+      #   run: yarn test:e2e
+
+      - name: Tests backend
+        run: ./mvnw -B test --file pom.xml
