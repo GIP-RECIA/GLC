@@ -5,6 +5,9 @@ import type { Filiere } from '@/types/filiereType.ts';
 import type { SimplePersonne } from '@/types/personneType';
 import isEmpty from 'lodash.isempty';
 import { onBeforeMount, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
@@ -62,7 +65,7 @@ const getFiliere = (): Array<Filiere> => {
 </script>
 
 <template>
-  <div v-if="filieres && filieres.length > 0">
+  <div v-if="filteredFilieres.length > 0">
     <transition-group>
       <div v-for="(filiere, index) in filteredFilieres" :key="index" class="pb-4">
         <div class="pb-2">
@@ -100,5 +103,9 @@ const getFiliere = (): Array<Filiere> => {
         </v-row>
       </div>
     </transition-group>
+  </div>
+  <div v-else class="d-flex flex-column align-center justify-center pa-10">
+    <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
+    <div class="pt-2">{{ t('search.noResults') }}</div>
   </div>
 </template>
