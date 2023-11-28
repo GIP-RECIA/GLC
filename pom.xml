@@ -443,14 +443,16 @@
               <addClasspath>true</addClasspath>
             </manifest>
           </archive>
-          <packagingExcludes>WEB-INF/lib/tomcat-*.jar,
+          <packagingExcludes>
+            WEB-INF/lib/tomcat-*.jar,
             WEB-INF/lib-provided,
             WEB-INF/classes/config/application-*.yml,
             scripts/**,
             assets/**,
             index.html,
           </packagingExcludes>
-          <warSourceExcludes>org/,
+          <warSourceExcludes>
+            org/,
             public/,
             src/,
           </warSourceExcludes>
@@ -583,7 +585,6 @@
           <version>${project.parent.version}</version>
         </dependency>
       </dependencies>
-      <!-- Same as dev expect for some properties to have less log, etc... all things required by travis -->
       <build>
         <plugins>
           <plugin>
@@ -616,7 +617,6 @@
           <version>${project.parent.version}</version>
         </dependency>
       </dependencies>
-      <!-- Same as dev expect for some properties to have less log, etc... all things required by travis -->
       <build>
         <plugins>
           <plugin>
