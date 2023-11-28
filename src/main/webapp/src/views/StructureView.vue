@@ -35,45 +35,43 @@ watch(
 </script>
 
 <template>
-  <div>
-    <v-tabs
-      v-model="structureTab"
-      align-tabs="center"
-      show-arrows
-      hide-slider
-      selected-class="slide-group-item--activate"
-      class="mt-2"
-    >
-      <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tab.dashboard') }}</v-tab>
-      <v-tab :value="Tabs.Info">{{ t('tab.information') }}</v-tab>
-      <v-tab :value="Tabs.AdministrativeStaff">{{ t('tab.administrativeStaff') }}</v-tab>
-      <v-tab :value="Tabs.TeachingStaff">{{ t('tab.teachingStaff') }}</v-tab>
-      <v-tab :value="Tabs.Accounts">{{ t('tab.accounts') }}</v-tab>
-      <v-tab :value="Tabs.Exports">{{ t('tab.exports') }}</v-tab>
-    </v-tabs>
-    <v-window v-model="structureTab">
-      <v-window-item :value="Tabs.Dashboard" eager>
-        <dashboard-view />
-      </v-window-item>
-      <v-window-item :value="Tabs.Info" eager>
-        <info-view />
-      </v-window-item>
-      <v-window-item :value="Tabs.AdministrativeStaff" eager>
-        <administrative-view />
-      </v-window-item>
-      <v-window-item :value="Tabs.TeachingStaff" eager>
-        <teaching-view />
-      </v-window-item>
-      <v-window-item :value="Tabs.Accounts" eager>
-        <account-view />
-      </v-window-item>
-      <v-window-item :value="Tabs.Exports" eager>
-        <export-view />
-      </v-window-item>
-    </v-window>
-    <personne-dialog />
-    <additional-dialog />
-  </div>
+  <v-tabs
+    v-model="structureTab"
+    align-tabs="center"
+    show-arrows
+    hide-slider
+    selected-class="slide-group-item--activate"
+    class="mt-2"
+  >
+    <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tab.dashboard') }}</v-tab>
+    <v-tab :value="Tabs.Info">{{ t('tab.information') }}</v-tab>
+    <v-tab :value="Tabs.AdministrativeStaff">{{ t('tab.administrativeStaff') }}</v-tab>
+    <v-tab :value="Tabs.TeachingStaff">{{ t('tab.teachingStaff') }}</v-tab>
+    <v-tab :value="Tabs.Accounts">{{ t('tab.accounts') }}</v-tab>
+    <v-tab :value="Tabs.Exports">{{ t('tab.exports') }}</v-tab>
+  </v-tabs>
+  <v-window v-model="structureTab">
+    <v-window-item :value="Tabs.Dashboard" eager>
+      <dashboard-view />
+    </v-window-item>
+    <v-window-item :value="Tabs.Info" eager>
+      <info-view />
+    </v-window-item>
+    <v-window-item :value="Tabs.AdministrativeStaff" eager>
+      <administrative-view />
+    </v-window-item>
+    <v-window-item :value="Tabs.TeachingStaff" eager>
+      <teaching-view />
+    </v-window-item>
+    <v-window-item :value="Tabs.Accounts" eager>
+      <account-view />
+    </v-window-item>
+    <v-window-item :value="Tabs.Exports" eager>
+      <export-view />
+    </v-window-item>
+  </v-window>
+  <personne-dialog />
+  <additional-dialog />
 </template>
 
 <style scoped lang="scss">
