@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.db.dto.personne;
 
+import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
@@ -26,6 +27,7 @@ import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -82,6 +84,13 @@ public class PersonneDto {
     this.uid = uid;
     this.login = login;
     this.structure = structure;
+  }
+
+  public void setAllFonctions(List<FonctionDto> fonctions) {
+    if (!fonctions.isEmpty()) {
+      setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+      setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+    }
   }
 
 }

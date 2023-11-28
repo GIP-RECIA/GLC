@@ -16,6 +16,8 @@
 package fr.recia.glc.db.dto.structure;
 
 import fr.recia.glc.db.dto.common.AdresseDto;
+import fr.recia.glc.db.dto.education.DisciplineDto;
+import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.enums.CategorieStructure;
@@ -27,6 +29,11 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static fr.recia.glc.configuration.Constants.SANS_OBJET;
 
 @Getter
 @Setter
@@ -92,6 +99,54 @@ public class EtablissementDto {
     this.siteWeb = siteWeb;
     this.modeleLogin = modeleLogin;
     this.logo = logo;
+  }
+
+  public void setFilieres(
+    Long structureId, String source, List<SimplePersonneDto> personnes, List<FonctionDto> fonctions,
+    List<TypeFonctionFiliereDto> typesFonctionFiliere, List<DisciplineDto> disciplines
+  ) {
+    if (fonctions.isEmpty()) return;
+
+    setFilieres(typesFonctionFiliere.stream()
+      // Ajout des disciplines aux filières
+      .map(typeFonctionFiliere -> {
+        // Filtre les fonctions de la filière
+        List<FonctionDto> fonctionsInFiliere = fonctions.stream()
+          .filter(fonction -> Objects.equals(fonction.getFiliere(), typeFonctionFiliere.getId()))
+          .collect(Collectors.toList());
+        // Liste les ID de disciplines de la filière
+        Set<Long> disciplineIds = fonctionsInFiliere.stream()
+          .map(FonctionDto::getDisciplinePoste)
+          .collect(Collectors.toSet());
+        // Liste les disciplines de la filière
+        List<DisciplineDto> disciplinesInFiliere = disciplines.stream()
+          .filter(discipline -> disciplineIds.contains(discipline.getId()) && !Objects.equals(discipline.getDisciplinePoste(), SANS_OBJET))
+          .collect(Collectors.toList());
+        // Ajout des personnes aux disciplines
+        disciplinesInFiliere = disciplinesInFiliere.stream()
+          .map(discipline -> {
+            // Liste des ID de personne de la discipline
+            Set<Long> personneIds = fonctionsInFiliere.stream()
+              .filter(fonction -> Objects.equals(fonction.getDisciplinePoste(), discipline.getId()))
+              .map(FonctionDto::getPersonne)
+              .collect(Collectors.toSet());
+            // Liste les personnes de la discipline
+            List<SimplePersonneDto> personnesInDiscipline = personnes.stream()
+              .filter(personne -> personneIds.contains(personne.getId()))
+              .collect(Collectors.toList());
+            discipline.setPersonnes(personnesInDiscipline);
+
+            return discipline;
+          })
+          .collect(Collectors.toList());
+        typeFonctionFiliere.setDisciplines(disciplinesInFiliere);
+
+        return typeFonctionFiliere;
+      })
+      // Retrait des filières sans disciplines
+      .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty() && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
+      .collect(Collectors.toList())
+    );
   }
 
 }

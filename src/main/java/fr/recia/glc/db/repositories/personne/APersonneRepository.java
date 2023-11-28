@@ -23,6 +23,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface APersonneRepository<T extends APersonne> extends AbstractRepository<T, Long> {
@@ -39,7 +40,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     "FROM APersonne ap " +
     "WHERE ap.id IN :ids " +
     "ORDER BY ap.cn, ap.sn")
-  List<SimplePersonneDto> findByPersonneIds(List<Long> ids);
+  List<SimplePersonneDto> findByPersonneIds(Set<Long> ids);
 
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie," +
     "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid) " +
