@@ -392,12 +392,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-regular-svg-icons@npm:^6.5.0":
-  version: 6.5.0
-  resolution: "@fortawesome/free-regular-svg-icons@npm:6.5.0"
+"@fortawesome/free-regular-svg-icons@npm:^6.5.1":
+  version: 6.5.1
+  resolution: "@fortawesome/free-regular-svg-icons@npm:6.5.1"
   dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:6.5.0"
-  checksum: d8084f1356e82205b39ec0f4ec50d554a4f879bd5959ec7bbacc285d8b823aa6b801ec579e58f144985aa98efc58613efef236a1b5dc1b0a7c69d11af26a6e24
+    "@fortawesome/fontawesome-common-types": "npm:6.5.1"
+  checksum: 58a9f4dcf5b08c1fad4f4353cb4c280f3a1919f3c7fe3b9b411d24f82b1e75a1edc12f5521721f8b01c3d080e6f12953353ceb3876d045f214f3a1ff1357a29d
   languageName: node
   linkType: hard
 
@@ -3101,7 +3101,7 @@ __metadata:
   resolution: "glc@workspace:."
   dependencies:
     "@fortawesome/fontawesome-svg-core": "npm:^6.5.1"
-    "@fortawesome/free-regular-svg-icons": "npm:^6.5.0"
+    "@fortawesome/free-regular-svg-icons": "npm:^6.5.1"
     "@fortawesome/free-solid-svg-icons": "npm:^6.5.0"
     "@fortawesome/vue-fontawesome": "npm:3.0.5"
     "@intlify/unplugin-vue-i18n": "npm:^1.5.0"
