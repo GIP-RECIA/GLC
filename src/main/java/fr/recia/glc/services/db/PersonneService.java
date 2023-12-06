@@ -18,18 +18,9 @@ package fr.recia.glc.services.db;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
-import fr.recia.glc.db.entities.education.Discipline;
-import fr.recia.glc.db.entities.fonction.Fonction;
-import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.entities.personne.APersonne;
-import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
-import fr.recia.glc.db.repositories.APersonneAStructureRepository2;
-import fr.recia.glc.db.repositories.education.DisciplineRepository;
-import fr.recia.glc.db.repositories.fonction.FonctionRepository;
-import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
-import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
