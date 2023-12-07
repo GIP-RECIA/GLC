@@ -46,45 +46,42 @@ public class ConfigurationController {
   public ResponseEntity<Object> getConfiguration() {
     Map<String, Object> data = new HashMap<>();
 
-    List<CategoriePersonne> administrativeStaff = new ArrayList<>();
-    administrativeStaff.add(CategoriePersonne.Enseignant);
-    administrativeStaff.add(CategoriePersonne.Non_enseignant_collectivite_locale);
-    administrativeStaff.add(CategoriePersonne.Non_enseignant_etablissement);
-    administrativeStaff.add(CategoriePersonne.Non_enseignant_service_academique);
-    data.put("administrativeStaff", administrativeStaff);
+    data.put("administrativeStaff", List.of(
+      CategoriePersonne.Non_enseignant_etablissement
+    ));
 
     data.put("administrativeCodes", glcProperties.getCustomConfig().getFiliereAdministrative());
     data.put("teachingCodes", glcProperties.getCustomConfig().getFiliereTeaching());
     data.put("externalSourcesAll", glcProperties.getCustomConfig().getSourcesExternalAll());
     data.put("externalSources4Login", glcProperties.getCustomConfig().getSourcesExternal4login());
 
-    List<CategoriePersonne> externalSources4LoginCategory = new ArrayList<>();
-    externalSources4LoginCategory.add(CategoriePersonne.Enseignant);
-    externalSources4LoginCategory.add(CategoriePersonne.Non_enseignant_service_academique);
-    externalSources4LoginCategory.add(CategoriePersonne.Non_enseignant_etablissement);
-    data.put("externalSources4LoginCategory", externalSources4LoginCategory);
+    data.put("externalSources4LoginCategory", List.of(
+      CategoriePersonne.Enseignant,
+      CategoriePersonne.Non_enseignant_service_academique,
+      CategoriePersonne.Non_enseignant_etablissement
+    ));
 
-    List<Etat> editAllowedStates = new ArrayList<>();
-    editAllowedStates.add(Etat.Invalide);
-    editAllowedStates.add(Etat.Valide);
-    editAllowedStates.add(Etat.Bloque);
-    data.put("editAllowedStates", editAllowedStates);
+    data.put("editAllowedStates", List.of(
+      Etat.Invalide,
+      Etat.Valide,
+      Etat.Bloque
+    ));
 
-    List<Etat> filterAccountStates = new ArrayList<>();
-    filterAccountStates.add(Etat.Invalide);
-    filterAccountStates.add(Etat.Valide);
-    filterAccountStates.add(Etat.Bloque);
-    filterAccountStates.add(Etat.Delete);
-    filterAccountStates.add(Etat.Incertain);
-    data.put("filterAccountStates", filterAccountStates);
+    data.put("filterAccountStates", List.of(
+      Etat.Invalide,
+      Etat.Valide,
+      Etat.Bloque,
+      Etat.Delete,
+      Etat.Incertain
+    ));
 
-    List<String> permissionTypes = new ArrayList<>();
-    permissionTypes.add(PermissionType.ADMIN.getName());
-    permissionTypes.add(PermissionType.MANAGER.getName());
-    permissionTypes.add(PermissionType.MANAGER_BRANCH.getName());
-    permissionTypes.add(PermissionType.LOOKOVER.getName());
-    permissionTypes.add(PermissionType.LOOKOVER_BRANCH.getName());
-    data.put("permissionTypes", permissionTypes);
+    data.put("permissionTypes", List.of(
+      PermissionType.ADMIN.getName(),
+      PermissionType.MANAGER.getName(),
+      PermissionType.MANAGER_BRANCH.getName(),
+      PermissionType.LOOKOVER.getName(),
+      PermissionType.LOOKOVER_BRANCH.getName()
+    ));
 
     return new ResponseEntity<>(data, HttpStatus.OK);
   }
