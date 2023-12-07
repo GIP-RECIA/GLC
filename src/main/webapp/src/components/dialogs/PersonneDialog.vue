@@ -49,6 +49,14 @@ const preFill = () => {
   selected.value = toIdentifier(structureAdditionalFonctions.value);
 };
 
+const title = computed<string>(() => {
+  return currentPersonne.value
+    ? isAddMode.value
+      ? `${t('person.information.additionalFunction', 2)} - ${currentPersonne.value.cn}`
+      : currentPersonne.value.cn
+    : '';
+});
+
 const etat = computed<enumValues>(() => {
   return currentPersonne.value
     ? getEtat(currentPersonne.value.etat)
@@ -153,7 +161,7 @@ watch(isAddMode, (newValue) => {
   <v-dialog v-model="modelValue" scrollable :max-width="1024">
     <v-card>
       <v-toolbar color="rgba(255, 255, 255, 0)">
-        <v-toolbar-title class="text-h6">{{ currentPersonne ? currentPersonne.cn : '' }}</v-toolbar-title>
+        <v-toolbar-title class="text-h6">{{ title }}</v-toolbar-title>
         <template #append>
           <v-btn
             v-if="!isAddMode"
