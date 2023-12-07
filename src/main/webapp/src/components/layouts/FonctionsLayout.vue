@@ -61,6 +61,6 @@ watch(
     </v-col>
   </v-row>
   <div v-else>
-    <v-slot name="empty" />
+    <slot name="empty" />
   </div>
 </template>
