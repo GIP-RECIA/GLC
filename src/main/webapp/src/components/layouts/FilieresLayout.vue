@@ -2,9 +2,8 @@
 import PersonneCard from '@/components/PersonneCard.vue';
 import type { Discipline } from '@/types/disciplineType';
 import type { Filiere } from '@/types/filiereType.ts';
-import type { SimplePersonne } from '@/types/personneType';
 import isEmpty from 'lodash.isempty';
-import { onBeforeMount, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -16,52 +15,32 @@ const props = defineProps<{
 
 const filteredFilieres = ref<Array<Filiere>>([]);
 
-onBeforeMount(() => {
-  if (props.filieres && props.filieres.length > 0) filteredFilieres.value = getFiliere();
-});
-
-watch(
-  () => props.filieres,
-  (oldValue, newValue) => {
-    if (newValue != oldValue) filteredFilieres.value = getFiliere();
-  },
-);
-
-watch(
-  () => props.accountStates,
-  (newValue, oldValue) => {
-    if (newValue != oldValue) filteredFilieres.value = getFiliere();
-  },
-);
-
-const getPersonnesByState = (discipline: Discipline): Array<SimplePersonne> => {
-  return !isEmpty(props.accountStates)
-    ? discipline.personnes.filter((personne) => props.accountStates!.includes(personne.etat))
-    : discipline.personnes;
-};
-
-const getDisciplinesWithPersonnes = (filiere: Filiere): Array<Discipline> => {
-  let disciplines: Array<Discipline> = filiere.disciplines.map((discipline) => {
-    let personnes = getPersonnesByState(discipline);
-
-    return { ...discipline, personnes };
-  });
-  disciplines = disciplines.filter((discipline) => discipline.personnes.length > 0);
-
-  return disciplines;
-};
-
-const getFiliere = (): Array<Filiere> => {
+const filterFilieres = () => {
   let filieres = props.filieres ? props.filieres : [];
   filieres = filieres.map((filiere) => {
-    let disciplines = getDisciplinesWithPersonnes(filiere);
+    let disciplines: Array<Discipline> = filiere.disciplines.map((discipline) => {
+      let personnes = !isEmpty(props.accountStates)
+        ? discipline.personnes.filter((personne) => props.accountStates!.includes(personne.etat))
+        : discipline.personnes;
+
+      return { ...discipline, personnes };
+    });
+    disciplines = disciplines.filter((discipline) => discipline.personnes.length > 0);
 
     return { ...filiere, disciplines };
   });
   filieres = filieres.filter((filiere) => filiere.disciplines.length > 0);
 
-  return filieres;
+  filteredFilieres.value = filieres;
 };
+
+watch(
+  () => props.accountStates,
+  (newValue, oldValue) => {
+    if (newValue != oldValue) filterFilieres();
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
