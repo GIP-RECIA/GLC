@@ -11,7 +11,7 @@ const configurationStore = useConfigurationStore();
 const { filterAccountStates, currentStructureConfig } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
-// const {} = storeToRefs(fonctionStore);
+const { collectivityStaff } = storeToRefs(fonctionStore);
 
 const accountStates = computed<Array<Etat>>({
   get() {
@@ -32,6 +32,6 @@ const accountStates = computed<Array<Etat>>({
         <select-filter v-if="filterAccountStates" v-model="accountStates" :items="filterAccountStates" />
       </div>
     </div>
-    <filieres-layout :filieres="[]" :account-states="accountStates" />
+    <filieres-layout :filieres="collectivityStaff" :account-states="accountStates" />
   </v-container>
 </template>

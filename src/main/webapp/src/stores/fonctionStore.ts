@@ -59,26 +59,28 @@ export const useFonctionStore = defineStore('fonctions', () => {
 
   const isCustomMapping = computed<boolean>(() => customMapping.value != undefined);
 
-  /**
-   * Retourne les filières administratives avec disciline et personnes
-   * de la structure courante
-   */
-  const administrative = computed<Array<Filiere> | undefined>(() => {
-    const { administrativeCodes } = configurationStore;
+  const teachingStaff = computed<Array<Filiere> | undefined>(() => {
     const { currentEtab } = structureStore;
 
-    return currentEtab?.filieres.filter((filiere) => administrativeCodes?.includes(filiere.codeFiliere));
+    return currentEtab?.teachingStaff;
   });
 
-  /**
-   * Retourne les filières d'enseignement avec disciplines et personnes
-   * de la structure courante
-   */
-  const teaching = computed<Array<Filiere> | undefined>(() => {
-    const { teachingCodes } = configurationStore;
+  const schoolStaff = computed<Array<Filiere> | undefined>(() => {
     const { currentEtab } = structureStore;
 
-    return currentEtab?.filieres.filter((filiere) => teachingCodes?.includes(filiere.codeFiliere));
+    return currentEtab?.schoolStaff;
+  });
+
+  const collectivityStaff = computed<Array<Filiere> | undefined>(() => {
+    const { currentEtab } = structureStore;
+
+    return currentEtab?.collectivityStaff;
+  });
+
+  const academicStaff = computed<Array<Filiere> | undefined>(() => {
+    const { currentEtab } = structureStore;
+
+    return currentEtab?.academicStaff;
   });
 
   return {
@@ -86,7 +88,9 @@ export const useFonctionStore = defineStore('fonctions', () => {
     filieres,
     customMapping,
     isCustomMapping,
-    administrative,
-    teaching,
+    teachingStaff,
+    schoolStaff,
+    collectivityStaff,
+    academicStaff,
   };
 });

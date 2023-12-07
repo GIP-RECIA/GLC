@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -40,6 +41,14 @@ public class DisciplineDto {
     this.code = code;
     this.disciplinePoste = disciplinePoste;
     this.source = source;
+  }
+
+  public DisciplineDto(DisciplineDto disciplineDto) {
+    this.id = disciplineDto.getId();
+    this.code = disciplineDto.getCode();
+    this.disciplinePoste = disciplineDto.getDisciplinePoste();
+    this.source = disciplineDto.getSource();
+    this.personnes = disciplineDto.getPersonnes().stream().map(SimplePersonneDto::new).collect(Collectors.toList());
   }
 
 }

@@ -20,12 +20,14 @@ import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,7 @@ import java.util.stream.Collectors;
 
 import static fr.recia.glc.configuration.Constants.SANS_OBJET;
 
+@Slf4j
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -57,6 +60,10 @@ public class EtablissementDto {
   private String modeleLogin;
   private String logo;
   private List<TypeFonctionFiliereDto> filieres;
+  private List<TypeFonctionFiliereDto> teachingStaff;
+  private List<TypeFonctionFiliereDto> schoolStaff;
+  private List<TypeFonctionFiliereDto> collectivityStaff;
+  private List<TypeFonctionFiliereDto> academicStaff;
   private List<SimplePersonneDto> personnes;
   private String permission;
 
@@ -147,6 +154,39 @@ public class EtablissementDto {
       .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty() && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
       .collect(Collectors.toList())
     );
+
+    setTeachingStaff(getFiliereByCategoriePersonne(CategoriePersonne.Enseignant));
+    setSchoolStaff(getFiliereByCategoriePersonne(CategoriePersonne.Non_enseignant_etablissement));
+    setCollectivityStaff(getFiliereByCategoriePersonne(CategoriePersonne.Non_enseignant_collectivite_locale));
+    setAcademicStaff(getFiliereByCategoriePersonne(CategoriePersonne.Non_enseignant_service_academique));
+  }
+
+  private List<TypeFonctionFiliereDto> getFiliereByCategoriePersonne(CategoriePersonne categoriePersonne) {
+    final List<TypeFonctionFiliereDto> tmpFilieres = filieres.stream()
+      .map(TypeFonctionFiliereDto::new)
+      .collect(Collectors.toList());
+
+    return tmpFilieres.stream()
+      .map(typeFonctionFiliere -> {
+        typeFonctionFiliere.setDisciplines(
+          typeFonctionFiliere.getDisciplines().stream()
+            .map(discipline -> {
+              discipline.setPersonnes(
+                discipline.getPersonnes().stream()
+                  .filter(personne -> personne.getCategorie() == categoriePersonne)
+                  .collect(Collectors.toList())
+              );
+
+              return discipline;
+            })
+            .filter(discipline -> !discipline.getPersonnes().isEmpty())
+            .collect(Collectors.toList())
+        );
+
+        return typeFonctionFiliere;
+      })
+      .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
+      .collect(Collectors.toList());
   }
 
 }

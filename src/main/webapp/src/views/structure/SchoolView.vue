@@ -14,7 +14,7 @@ const configurationStore = useConfigurationStore();
 const { filterAccountStates, currentStructureConfig, isAdditional } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
-const { administrative, isCustomMapping } = storeToRefs(fonctionStore);
+const { schoolStaff, isCustomMapping } = storeToRefs(fonctionStore);
 
 const accountStates = computed<Array<Etat>>({
   get() {
@@ -44,7 +44,7 @@ const accountStates = computed<Array<Etat>>({
         <select-filter v-if="filterAccountStates" v-model="accountStates" :items="filterAccountStates" />
       </div>
     </div>
-    <filieres-layout :filieres="administrative" :account-states="accountStates" />
+    <filieres-layout :filieres="schoolStaff" :account-states="accountStates" />
 
     <div class="fab ma-4 d-md-none">
       <v-btn

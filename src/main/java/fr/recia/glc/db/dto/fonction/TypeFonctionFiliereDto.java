@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -40,6 +41,14 @@ public class TypeFonctionFiliereDto {
     this.codeFiliere = codeFiliere;
     this.libelleFiliere = libelleFiliere;
     this.source = source;
+  }
+
+  public TypeFonctionFiliereDto(TypeFonctionFiliereDto typeFonctionFiliereDto) {
+    this.id = typeFonctionFiliereDto.getId();
+    this.codeFiliere = typeFonctionFiliereDto.getCodeFiliere();
+    this.libelleFiliere = typeFonctionFiliereDto.getLibelleFiliere();
+    this.source = typeFonctionFiliereDto.getSource();
+    this.disciplines = typeFonctionFiliereDto.getDisciplines().stream().map(DisciplineDto::new).collect(Collectors.toList());
   }
 
 }
