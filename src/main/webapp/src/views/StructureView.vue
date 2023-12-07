@@ -4,11 +4,12 @@ import PersonneDialog from '@/components/dialogs/PersonneDialog.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
+import AcademicView from '@/views/structure/AcademicView.vue';
 import AccountView from '@/views/structure/AccountView.vue';
-import AdministrativeView from '@/views/structure/AdministrativeView.vue';
+import CollectivityView from '@/views/structure/CollectivityView.vue';
 import DashboardView from '@/views/structure/DashboardView.vue';
-import ExportView from '@/views/structure/ExportView.vue';
 import InfoView from '@/views/structure/InfoView.vue';
+import SchoolView from '@/views/structure/SchoolView.vue';
 import TeachingView from '@/views/structure/TeachingView.vue';
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
@@ -18,10 +19,8 @@ import { useRoute } from 'vue-router';
 const { t } = useI18n();
 
 const route = useRoute();
-const { structureId } = route.params;
 
 const structureStore = useStructureStore();
-structureStore.initCurrentEtab(Number(structureId));
 
 const configurationStore = useConfigurationStore();
 const { structureTab } = storeToRefs(configurationStore);
@@ -31,6 +30,7 @@ watch(
   (newValue) => {
     if (typeof newValue !== 'undefined' && newValue !== null) structureStore.initCurrentEtab(Number(newValue));
   },
+  { immediate: true },
 );
 </script>
 
@@ -45,10 +45,11 @@ watch(
   >
     <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tab.dashboard') }}</v-tab>
     <v-tab :value="Tabs.Info">{{ t('tab.information') }}</v-tab>
-    <v-tab :value="Tabs.AdministrativeStaff">{{ t('tab.administrativeStaff') }}</v-tab>
     <v-tab :value="Tabs.TeachingStaff">{{ t('tab.teachingStaff') }}</v-tab>
+    <v-tab :value="Tabs.SchoolStaff">{{ t('tab.schoolStaff') }}</v-tab>
+    <v-tab :value="Tabs.CollectivityStaff">{{ t('tab.collectivityStaff') }}</v-tab>
+    <v-tab :value="Tabs.AcademicStaff">{{ t('tab.academicStaff') }}</v-tab>
     <v-tab :value="Tabs.Accounts">{{ t('tab.accounts') }}</v-tab>
-    <v-tab :value="Tabs.Exports">{{ t('tab.exports') }}</v-tab>
   </v-tabs>
   <v-window v-model="structureTab">
     <v-window-item :value="Tabs.Dashboard" eager>
@@ -57,17 +58,20 @@ watch(
     <v-window-item :value="Tabs.Info" eager>
       <info-view />
     </v-window-item>
-    <v-window-item :value="Tabs.AdministrativeStaff" eager>
-      <administrative-view />
-    </v-window-item>
     <v-window-item :value="Tabs.TeachingStaff" eager>
       <teaching-view />
     </v-window-item>
+    <v-window-item :value="Tabs.SchoolStaff" eager>
+      <school-view />
+    </v-window-item>
+    <v-window-item :value="Tabs.CollectivityStaff" eager>
+      <collectivity-view />
+    </v-window-item>
+    <v-window-item :value="Tabs.AcademicStaff" eager>
+      <academic-view />
+    </v-window-item>
     <v-window-item :value="Tabs.Accounts" eager>
       <account-view />
-    </v-window-item>
-    <v-window-item :value="Tabs.Exports" eager>
-      <export-view />
     </v-window-item>
   </v-window>
   <personne-dialog />

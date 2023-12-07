@@ -1,8 +1,9 @@
 export enum Tabs {
   Dashboard,
   Info,
-  AdministrativeStaff,
   TeachingStaff,
+  SchoolStaff,
+  CollectivityStaff,
+  AcademicStaff,
   Accounts,
-  Exports,
 }

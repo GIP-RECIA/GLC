@@ -2,8 +2,10 @@
   "tab": {
     "dashboard": "Dashboard",
     "information": "Information",
-    "administrativeStaff": "Administrative staff",
     "teachingStaff": "Teaching staff",
+    "schoolStaff": "School staff",
+    "collectivityStaff": "Collectivity staff",
+    "academicStaff": "Academic staff",
     "accounts": "Accounts",
     "exports": "Exports"
   }
