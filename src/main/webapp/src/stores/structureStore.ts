@@ -53,10 +53,18 @@ export const useStructureStore = defineStore('structure', () => {
           id: id,
           name: etab.type ? `${etab.type} ${etab.nom}` : etab.nom ?? '',
           config: {
-            administrativeStaff: {
+            dashboard: {},
+            info: {},
+            teachingStaff: {
               accountStates: [Etat.Valide],
             },
-            teachingStaff: {
+            schoolStaff: {
+              accountStates: [Etat.Valide],
+            },
+            academicStaff: {
+              accountStates: [Etat.Valide],
+            },
+            collectivityStaff: {
               accountStates: [Etat.Valide],
             },
             accounts: {},

@@ -1,14 +1,19 @@
 import type { Etat } from '@/types/enums/Etat.ts';
 
 export type StructureConfiguration = {
-  dashboard?: {};
-  info?: {};
-  administrativeStaff: {
-    accountStates: Array<Etat>;
-  };
+  dashboard: {};
+  info: {};
   teachingStaff: {
     accountStates: Array<Etat>;
   };
-  accounts?: {};
-  exports?: {};
+  schoolStaff: {
+    accountStates: Array<Etat>;
+  };
+  academicStaff: {
+    accountStates: Array<Etat>;
+  };
+  collectivityStaff: {
+    accountStates: Array<Etat>;
+  };
+  accounts: {};
 };

@@ -18,11 +18,11 @@ const { administrative, isCustomMapping } = storeToRefs(fonctionStore);
 
 const accountStates = computed<Array<Etat>>({
   get() {
-    return currentStructureConfig.value ? currentStructureConfig.value.administrativeStaff.accountStates : [];
+    return currentStructureConfig.value ? currentStructureConfig.value.schoolStaff.accountStates : [];
   },
   set(states) {
     let config = currentStructureConfig.value!;
-    config.administrativeStaff.accountStates = states;
+    config.schoolStaff.accountStates = states;
     currentStructureConfig.value = config;
   },
 });
