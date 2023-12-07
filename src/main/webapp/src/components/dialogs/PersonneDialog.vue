@@ -7,7 +7,6 @@ import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
-import { Etat } from '@/types/enums/Etat.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import { getCategoriePersonne, getEtat, toIdentifier } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
@@ -46,37 +45,17 @@ const modelValue = computed<boolean>({
   set() {},
 });
 
-watch(isCurrentPersonne, (newValue) => {
-  if (!newValue) {
-    const reset = debounce(() => {
-      currentPersonne.value = undefined;
-      isAddMode.value = false;
-    }, 200);
-    reset();
-    selected.value = [];
-  }
-});
-
-watch(currentPersonne, (newValue) => {
-  if (isCurrentPersonne.value && newValue) {
-    if (isEditAllowed(newValue.etat)) selected.value = toIdentifier(structureAdditionalFonctions.value);
-
-    isLocked.value = currentPersonne.value!.etat == Etat.Bloque;
-  }
-});
-
-watch(isAddMode, (newValue) => {
-  if (!newValue) {
-    selected.value = toIdentifier(structureAdditionalFonctions.value);
-  }
-});
+const preFill = () => {
+  selected.value = toIdentifier(structureAdditionalFonctions.value);
+};
 
 const etat = computed<enumValues>(() => {
-  if (currentPersonne.value) return getEtat(currentPersonne.value.etat);
-  return {
-    i18n: '',
-    color: '',
-  };
+  return currentPersonne.value
+    ? getEtat(currentPersonne.value.etat)
+    : {
+        i18n: '',
+        color: '',
+      };
 });
 
 const schoolYear = computed<string | undefined>(() => {
@@ -89,15 +68,14 @@ const schoolYear = computed<string | undefined>(() => {
 
 const selected = ref<Array<string>>([]);
 
-const setSelected = (value: Array<string>) => {
+const setSelected = (value: Array<string>): void => {
   selected.value = value;
 };
 
 const canSave = computed<boolean>(() => {
-  if (selected.value?.length == structureAdditionalFonctions.value?.length) {
-    return !selected.value.every((entry) => toIdentifier(structureAdditionalFonctions.value).includes(entry));
-  }
-  return true;
+  return selected.value?.length == structureAdditionalFonctions.value?.length
+    ? !selected.value.every((entry) => toIdentifier(structureAdditionalFonctions.value).includes(entry))
+    : true;
 });
 
 const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
@@ -136,14 +114,6 @@ const cancel = () => {
   isAddMode.value = false;
 };
 
-const reinitialize = () => {};
-
-const isLocked = ref<boolean>(false);
-
-const lockManager = () => {
-  isLocked.value = !isLocked.value;
-};
-
 const resetAddMode = (success?: boolean) => {
   const { i18n } = saveButton.value;
   const title = i18n.replace('button.', '');
@@ -155,6 +125,28 @@ const resetAddMode = (success?: boolean) => {
   }
   isAddMode.value = false;
 };
+
+// Reset modal on close
+watch(isCurrentPersonne, (newValue) => {
+  if (!newValue) {
+    const reset = debounce(() => {
+      currentPersonne.value = undefined;
+      isAddMode.value = false;
+    }, 200);
+    reset();
+    selected.value = [];
+  }
+});
+
+// Pre-fill when user is loaded
+watch(currentPersonne, (newValue) => {
+  if (isCurrentPersonne.value && newValue && isEditAllowed(newValue.etat)) preFill();
+});
+
+// Reset pre-filling on exit add mode
+watch(isAddMode, (newValue) => {
+  if (!newValue) preFill();
+});
 </script>
 
 <template>
@@ -172,7 +164,7 @@ const resetAddMode = (success?: boolean) => {
           />
         </template>
       </v-toolbar>
-      <v-card-text class="py-0">
+      <v-card-text :class="[isAddMode ? 'py-0' : 'pt-0']">
         <div v-if="currentPersonne && !isAddMode">
           <div class="d-flex flex-row flex-wrap">
             <readonly-data v-admin label="uid" :value="currentPersonne.uid" class="modal-flex-item" />
@@ -229,11 +221,11 @@ const resetAddMode = (success?: boolean) => {
               class="modal-flex-item"
             />
           </div>
-          <div class="mb-4">
+          <div class="mb-3">
             <b>{{ t('person.information.function', 2) }}</b>
-            <fonctions-layout :filieres="filieres" :fonctions="structureFonctions" class="mt-2" />
+            <fonctions-layout :filieres="filieres" :fonctions="structureFonctions" class="my-0" />
           </div>
-          <div v-if="structureTab == Tabs.AdministrativeStaff" class="mb-4">
+          <div v-if="structureTab == Tabs.SchoolStaff" class="mb-3">
             <div class="d-flex align-center">
               <b>{{ t('person.information.additionalFunction', 2) }}</b>
               <v-btn
@@ -253,41 +245,22 @@ const resetAddMode = (success?: boolean) => {
             <fonctions-layout
               :filieres="customMapping?.filieres"
               :fonctions="structureAdditionalFonctions"
-              class="mt-2"
+              class="my-0"
             />
-          </div>
-          <div v-if="structureTab == Tabs.TeachingStaff" class="mb-4">
-            <b>{{ t('person.information.additionalTeaching', 2) }}</b>
-            <fonctions-layout :filieres="undefined" :fonctions="structureAdditionalFonctions" class="mt-2" />
           </div>
         </div>
 
         <checkbox-layout
-          v-if="isAddMode && structureTab == Tabs.AdministrativeStaff"
+          v-if="isAddMode && structureTab == Tabs.SchoolStaff"
           :filieres="customMapping?.filieres"
           :selected="selected"
           :disabled="toIdentifier(structureFonctions)"
           @update:selected="setSelected"
         />
       </v-card-text>
-      <v-card-actions>
-        <div v-if="!isAddMode">
-          <v-btn
-            v-if="currentPersonne?.etat == Etat.Bloque || currentPersonne?.etat == Etat.Valide"
-            color="secondary"
-            :prepend-icon="isLocked ? 'fas fa-lock-open' : 'fas fa-lock'"
-            :text="isLocked ? t('button.unlock') : t('button.lock')"
-            @click="lockManager"
-          />
-          <v-btn
-            color="secondary"
-            prepend-icon="fas fa-rotate-right"
-            :text="t('button.reinitialize')"
-            @click="reinitialize"
-          />
-        </div>
+      <v-card-actions v-if="isAddMode">
         <v-spacer />
-        <div v-if="isAddMode && structureTab == Tabs.AdministrativeStaff">
+        <div v-if="structureTab == Tabs.SchoolStaff">
           <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="cancel" />
           <v-btn
             :color="saveButton.color"
