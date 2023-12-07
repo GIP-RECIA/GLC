@@ -57,35 +57,30 @@ const setSelectedUser = (id: number | undefined) => {
   } else currentPersonne.value = undefined;
 };
 
-watch(currentPersonne, (newValue) => {
-  if (isAdditional.value && newValue) {
-    if (isEditAllowed(newValue.etat)) selected.value = toIdentifier(structureAdditionalFonctions.value);
-    else toast.error(t('toast.editStatusDenied'));
-  }
-});
-
-watch(isAdditional, (newValue) => {
-  if (!newValue) {
-    selected.value = toIdentifier(structureAdditionalFonctions.value);
-  }
-});
-
 const selected = ref<Array<string>>([]);
 
 const setSelected = (value: Array<string>) => {
   selected.value = value;
 };
 
+const preFill = () => {
+  selected.value = toIdentifier(structureAdditionalFonctions.value);
+};
+
 const canSave = computed<boolean>(() => {
-  if (selected.value.length == structureAdditionalFonctions.value?.length) {
-    return !selected.value.every((entry) => toIdentifier(structureAdditionalFonctions.value).includes(entry));
-  }
-  return true;
+  return selected.value.length == structureAdditionalFonctions.value?.length
+    ? !selected.value.every((entry) => toIdentifier(structureAdditionalFonctions.value).includes(entry))
+    : true;
 });
 
 const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
   if (!hasStructureFonctions.value) {
-    if (!hasStructureAdditionalFonctions.value) return { i18n: 'button.attach', icon: 'fas fa-link', color: 'success' };
+    if (!hasStructureAdditionalFonctions.value)
+      return {
+        i18n: 'button.attach',
+        icon: 'fas fa-link',
+        color: 'success',
+      };
     if (selected.value.length == 0)
       return {
         i18n: 'button.detach',
@@ -134,7 +129,7 @@ const currentTabValue = computed<{
   filieres: Array<any> | undefined;
 }>(() => {
   switch (structureTab.value) {
-    case Tabs.AdministrativeStaff:
+    case Tabs.SchoolStaff:
       return {
         title: t('addAdditionalFonction'),
         searchList: administrativeList.value,
@@ -149,6 +144,19 @@ const currentTabValue = computed<{
     default:
       return { title: '', searchList: undefined, filieres: undefined };
   }
+});
+
+// Pre-fill when user is loaded
+watch(currentPersonne, (newValue) => {
+  if (isAdditional.value && newValue) {
+    if (isEditAllowed(newValue.etat)) preFill();
+    else toast.error(t('toast.editStatusDenied'));
+  }
+});
+
+// Reset pre-filling on exit
+watch(isAdditional, (newValue) => {
+  if (!newValue) preFill();
 });
 </script>
 

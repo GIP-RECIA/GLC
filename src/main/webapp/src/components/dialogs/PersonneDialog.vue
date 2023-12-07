@@ -45,10 +45,6 @@ const modelValue = computed<boolean>({
   set() {},
 });
 
-const preFill = () => {
-  selected.value = toIdentifier(structureAdditionalFonctions.value);
-};
-
 const title = computed<string>(() => {
   return currentPersonne.value
     ? isAddMode.value
@@ -78,6 +74,10 @@ const selected = ref<Array<string>>([]);
 
 const setSelected = (value: Array<string>): void => {
   selected.value = value;
+};
+
+const preFill = () => {
+  selected.value = toIdentifier(structureAdditionalFonctions.value);
 };
 
 const canSave = computed<boolean>(() => {
