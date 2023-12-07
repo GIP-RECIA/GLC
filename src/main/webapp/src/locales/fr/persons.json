@@ -35,6 +35,7 @@
       "status": "Etat",
       "profile": "Profil",
       "source": "Source",
+      "sourceModificationDate": "Modification de la source",
       "function": "Fonction | Fonctions",
       "additionalFunction": "Fonction complémentaire | Fonctions complémentaires",
       "additionalTeaching": "Enseignement complémentaire | Enseignements complémentaires"

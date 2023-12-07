@@ -35,6 +35,7 @@
       "status": "Status",
       "profile": "Profile",
       "source": "Source",
+      "sourceModificationDate": "Source modification",
       "function": "Fonction | Fonctions",
       "additionalFunction": "Additional function | Additional functions",
       "additionalTeaching": "Additional teaching | Additional teachings"

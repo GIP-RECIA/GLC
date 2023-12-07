@@ -177,6 +177,11 @@ const resetAddMode = (success?: boolean) => {
           <div class="d-flex flex-row flex-wrap">
             <readonly-data v-admin label="uid" :value="currentPersonne.uid" class="modal-flex-item" />
             <readonly-data
+              :label="t('person.information.profile')"
+              :value="t(getCategoriePersonne(currentPersonne.categorie).i18n)"
+              class="modal-flex-item"
+            />
+            <readonly-data
               :label="t('person.information.civility')"
               :value="currentPersonne.civilite"
               class="modal-flex-item"
@@ -217,12 +222,12 @@ const resetAddMode = (success?: boolean) => {
                 <div>{{ t(etat.i18n) }}</div>
               </div>
             </readonly-data>
+            <readonly-data label="Source" :value="t('source.' + currentPersonne.source)" class="modal-flex-item" />
             <readonly-data
-              :label="t('person.information.profile')"
-              :value="t(getCategoriePersonne(currentPersonne.categorie).i18n)"
+              :label="t('person.information.sourceModificationDate')"
+              :value="format(parseISO(currentPersonne.dateSourceModification), 'P')"
               class="modal-flex-item"
             />
-            <readonly-data label="Source" :value="t('source.' + currentPersonne.source)" class="modal-flex-item" />
           </div>
           <div class="mb-4">
             <b>{{ t('person.information.function', 2) }}</b>

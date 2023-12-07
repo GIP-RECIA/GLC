@@ -15,6 +15,8 @@ export type Personne = {
   givenName: string;
   patronyme?: string;
   login: string;
+  dateFin?: string;
+  dateSourceModification: string;
   fonctions?: Array<PersonneFonction>;
   additionalFonctions?: Array<PersonneFonction>;
 };

@@ -57,6 +57,8 @@ public class PersonneDto {
 //  private boolean listeRouge;
 //  private ForceEtat forceEtat;
 //  private String idEduConnect;
+  private Date dateFin;
+  private Date dateSourceModification;
   private String login;
 //  private String alias;
 //  private Set<String> prenoms;
@@ -64,10 +66,9 @@ public class PersonneDto {
   private List<FonctionDto> fonctions;
   private List<FonctionDto> additionalFonctions;
 
-
   public PersonneDto(Long id, Etat etat, Date anneeScolaire, CategoriePersonne categorie, Civilite civilite,
                      String source, String cn, Date dateNaissance, String email, String givenName, String patronyme,
-                     String sn, String uid, String login, Long structure
+                     String sn, String uid, String login, Long structure, Date dateFin, Date dateSourceModification
   ) {
     this.id = id;
     this.etat = etat;
@@ -84,6 +85,8 @@ public class PersonneDto {
     this.uid = uid;
     this.login = login;
     this.structure = structure;
+    this.dateFin = dateFin;
+    this.dateSourceModification = dateSourceModification;
   }
 
   public void setAllFonctions(List<FonctionDto> fonctions) {

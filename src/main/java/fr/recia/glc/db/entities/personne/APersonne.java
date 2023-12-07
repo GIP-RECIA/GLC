@@ -214,7 +214,16 @@ public abstract class APersonne extends AbstractTracedEntity implements Subject 
    */
   @Column(length = IntConst.I100)
   private String idEduConnect;
-
+  /**
+   *
+   */
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date dateFin;
+  /**
+   *
+   */
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date dateSourceModification;
   /**
    * Relation bidirectionnelle.
    * Login de l'individu généré par l'ENT.
