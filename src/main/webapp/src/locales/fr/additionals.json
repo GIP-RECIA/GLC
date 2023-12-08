@@ -1,0 +1,10 @@
+{
+  "additional": {
+    "teaching": {
+      "add": "Gestion des enseignements complémentaires"
+    },
+    "fonction": {
+      "add": "Gestion des fonctions complémentaires"
+    }
+  }
+}

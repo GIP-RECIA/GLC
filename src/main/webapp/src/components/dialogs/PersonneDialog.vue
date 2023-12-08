@@ -21,7 +21,7 @@ const { t } = useI18n();
 const toast = useToast();
 
 const configurationStore = useConfigurationStore();
-const { isExternalLogin, isEditAllowed } = configurationStore;
+const { isEditAllowed, getLoginOffice } = configurationStore;
 const { currentStructureId, structureTab, isAddMode } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
@@ -46,11 +46,12 @@ const modelValue = computed<boolean>({
 });
 
 const title = computed<string>(() => {
-  return currentPersonne.value
-    ? isAddMode.value
+  if (currentPersonne.value) {
+    return isAddMode.value
       ? `${t('person.information.additionalFunction', 2)} - ${currentPersonne.value.cn}`
-      : currentPersonne.value.cn
-    : '';
+      : currentPersonne.value.cn;
+  }
+  return '';
 });
 
 const etat = computed<enumValues>(() => {
@@ -68,6 +69,18 @@ const schoolYear = computed<string | undefined>(() => {
     return `${year}/${year + 1}`;
   }
   return undefined;
+});
+
+const login = computed<{ i18n: string; info?: string }>(() => {
+  if (currentPersonne.value) {
+    const office = getLoginOffice(currentPersonne.value.categorie, currentPersonne.value.source);
+
+    return {
+      i18n: office ? t('externalLogin') : currentPersonne.value.login,
+      info: office ? t(`office.${office}`) : undefined,
+    };
+  }
+  return { i18n: '', info: '' };
 });
 
 const suppressDate = computed<string>(() => {
@@ -211,15 +224,9 @@ watch(isAddMode, (newValue) => {
               class="modal-flex-item"
             />
             <readonly-data :label="t('person.information.schoolYear')" :value="schoolYear" class="modal-flex-item" />
-            <readonly-data
-              :label="t('person.information.login')"
-              :value="
-                isExternalLogin(currentPersonne.categorie, currentPersonne.source)
-                  ? t('externalLogin')
-                  : currentPersonne.login
-              "
-              class="modal-flex-item"
-            />
+            <readonly-data :label="t('person.information.login')" class="modal-flex-item">
+              <div :title="login.info">{{ login.i18n }}</div>
+            </readonly-data>
             <readonly-data :label="t('person.information.status')" class="modal-flex-item">
               <div>
                 <div class="d-flex flex-row align-center">

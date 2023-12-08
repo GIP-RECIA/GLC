@@ -15,17 +15,23 @@
  */
 package fr.recia.glc.web.rest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.ldap.enums.PermissionType;
+import fr.recia.glc.models.mappers.LoginMapping;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,14 +58,6 @@ public class ConfigurationController {
 
     data.put("administrativeCodes", glcProperties.getCustomConfig().getFiliereAdministrative());
     data.put("teachingCodes", glcProperties.getCustomConfig().getFiliereTeaching());
-    data.put("externalSourcesAll", glcProperties.getCustomConfig().getSourcesExternalAll());
-    data.put("externalSources4Login", glcProperties.getCustomConfig().getSourcesExternal4login());
-
-    data.put("externalSources4LoginCategory", List.of(
-      CategoriePersonne.Enseignant,
-      CategoriePersonne.Non_enseignant_service_academique,
-      CategoriePersonne.Non_enseignant_etablissement
-    ));
 
     data.put("editAllowedStates", List.of(
       Etat.Invalide,
@@ -83,6 +81,17 @@ public class ConfigurationController {
       PermissionType.LOOKOVER.getName(),
       PermissionType.LOOKOVER_BRANCH.getName()
     ));
+
+    List<LoginMapping> loginOffices;
+    try {
+      File resource = new ClassPathResource("mapping/loginMapping.json").getFile();
+      ObjectMapper objectMapper = new ObjectMapper();
+      loginOffices = objectMapper.readValue(resource, new TypeReference<>() {
+      });
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    data.put("loginOffices", loginOffices);
 
     return new ResponseEntity<>(data, HttpStatus.OK);
   }

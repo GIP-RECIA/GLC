@@ -78,7 +78,3 @@ app:
       FIJ,
       REM,
       STG
-    sources-external-all: >
-      AC-ORLEANS-TOURS
-    sources-external-4login: >
-      LA-CENTRE

@@ -45,22 +45,35 @@ export const useConfigurationStore = defineStore('configuration', () => {
    */
   const teachingCodes = computed<Array<string> | undefined>(() => configuration.value?.teachingCodes);
 
-  const isExternalLogin = (categorie: string, source: string): boolean => {
-    if (configuration.value) {
-      return (
-        configuration.value.externalSourcesAll.includes(source) ||
-        (configuration.value.externalSources4Login.includes(source) &&
-          configuration.value.externalSources4LoginCategory.includes(categorie))
-      );
-    }
-    return false;
-  };
-
   const isEditAllowed = (etat: string): boolean => {
     if (configuration.value) {
       return configuration.value.editAllowedStates.includes(etat);
     }
     return false;
+  };
+
+  const loginOffices = computed(() => configuration.value?.loginOffices);
+
+  const getLoginOffice = (categorie: string, source: string): string | undefined => {
+    let guichet = undefined;
+
+    if (loginOffices.value) {
+      if (!loginOffices.value.map((office) => office.source).includes(source)) return undefined;
+
+      loginOffices.value.forEach((office) => {
+        if (office.source == source) {
+          const guichets: Array<string> = office.guichets
+            .filter((guichet) => guichet.categoriesPersonne.includes(categorie))
+            .map((guichet) => guichet.nom);
+
+          if (guichets.length > 1) throw new Error(`Can not resolve guichet for ${categorie} ${source}`);
+
+          guichet = guichets[0];
+        }
+      });
+    }
+
+    return guichet;
   };
 
   const filterAccountStates = computed<Array<enumValues & { value: string }> | undefined>(
@@ -134,8 +147,8 @@ export const useConfigurationStore = defineStore('configuration', () => {
     administrativeStaff,
     administrativeCodes,
     teachingCodes,
-    isExternalLogin,
     isEditAllowed,
+    getLoginOffice,
     filterAccountStates,
     structures,
     appTab,
