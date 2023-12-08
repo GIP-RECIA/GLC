@@ -11,9 +11,10 @@ import { useDisplay } from 'vuetify';
 const { t } = useI18n();
 
 const personneStore = usePersonneStore();
-const { deletedPersonnes } = storeToRefs(personneStore);
+const { deletingPersonnes, deletedPersonnes } = storeToRefs(personneStore);
 
 const pageItems = ref<Array<SimplePersonne> | undefined>();
+const pageItems2 = ref<Array<SimplePersonne> | undefined>();
 
 const itemsPerPage = computed<number>(() => {
   const { name } = useDisplay();
@@ -43,7 +44,7 @@ const itemsPerPage = computed<number>(() => {
     <v-card :subtitle="`${t('warning', 2)} (${0})`" flat class="mb-4">
       <v-card-text></v-card-text>
     </v-card>
-    <v-card :subtitle="`${t('deletingOrDeletedAccounts')} (${deletedPersonnes.length})`" flat>
+    <v-card :subtitle="`${t('deletingAccounts')} (${deletingPersonnes.length})`" flat class="mb-4">
       <v-card-text>
         <v-row v-if="pageItems && pageItems.length > 0">
           <transition-group>
@@ -62,11 +63,38 @@ const itemsPerPage = computed<number>(() => {
           </transition-group>
         </v-row>
         <custom-pagination
-          :items="deletedPersonnes"
+          :items="deletingPersonnes"
           :items-per-page="itemsPerPage"
           hide-single-page
           class="mt-4"
           @update:page="(items) => (pageItems = items)"
+        />
+      </v-card-text>
+    </v-card>
+    <v-card :subtitle="`${t('deletedAccounts')} (${deletedPersonnes.length})`" flat>
+      <v-card-text>
+        <v-row v-if="pageItems2 && pageItems2.length > 0">
+          <transition-group>
+            <v-col
+              v-for="(personne, index) in pageItems2"
+              :key="index"
+              :cols="12"
+              :sm="6"
+              :md="4"
+              :lg="3"
+              :xxl="2"
+              class="pa-2"
+            >
+              <personne-card variant="tonal" :personne="personne" />
+            </v-col>
+          </transition-group>
+        </v-row>
+        <custom-pagination
+          :items="deletedPersonnes"
+          :items-per-page="itemsPerPage"
+          hide-single-page
+          class="mt-4"
+          @update:page="(items) => (pageItems2 = items)"
         />
       </v-card-text>
     </v-card>

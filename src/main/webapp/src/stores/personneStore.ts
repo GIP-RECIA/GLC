@@ -83,6 +83,14 @@ export const usePersonneStore = defineStore('personne', () => {
     return currentEtab?.personnes;
   });
 
+  const deletingPersonnes = computed<Array<SimplePersonne>>(() => {
+    const { currentEtab } = structureStore;
+
+    const result = currentEtab?.personnes?.filter((personne) => personne.etat == Etat.Deleting);
+
+    return isEmpty(result) ? [] : result!;
+  });
+
   const deletedPersonnes = computed<Array<SimplePersonne>>(() => {
     const { currentEtab } = structureStore;
 
@@ -122,6 +130,7 @@ export const usePersonneStore = defineStore('personne', () => {
     structureAdditionalFonctions,
     hasStructureAdditionalFonctions,
     personnes,
+    deletingPersonnes,
     deletedPersonnes,
     administrativeList,
     teachingList,

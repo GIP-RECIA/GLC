@@ -70,6 +70,10 @@ const schoolYear = computed<string | undefined>(() => {
   return undefined;
 });
 
+const suppressDate = computed<string>(() => {
+  return currentPersonne.value?.dateSuppression ? format(parseISO(currentPersonne.value.dateSuppression), 'P') : '';
+});
+
 const selected = ref<Array<string>>([]);
 
 const setSelected = (value: Array<string>): void => {
@@ -217,9 +221,11 @@ watch(isAddMode, (newValue) => {
               class="modal-flex-item"
             />
             <readonly-data :label="t('person.information.status')" class="modal-flex-item">
-              <div class="d-flex flex-row align-center">
-                <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="sm" class="mr-2" />
-                <div>{{ t(etat.i18n) }}</div>
+              <div>
+                <div class="d-flex flex-row align-center">
+                  <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="sm" class="mr-2" />
+                  <div>{{ t(etat.i18n, { suppressDate }) }}</div>
+                </div>
               </div>
             </readonly-data>
             <readonly-data label="Source" :value="t('source.' + currentPersonne.source)" class="modal-flex-item" />

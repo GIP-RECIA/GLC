@@ -18,12 +18,14 @@ package fr.recia.glc.db.dto.personne;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.services.utils.PersonneUtils;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -44,6 +46,8 @@ public class SimplePersonneDto {
   @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
   private Instant dateAcquittement;
+  @Setter(AccessLevel.NONE)
+  private Date dateSuppression;
 
   public SimplePersonneDto(
     Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email, String sn, String uid,
@@ -58,8 +62,10 @@ public class SimplePersonneDto {
     this.sn = sn;
     this.uid = uid;
 
-    if (etat == Etat.Delete && dateModification.equals(dateAcquittement))
+    if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
       this.etat = Etat.Deleting;
+      this.dateSuppression = PersonneUtils.getSupressionDate(dateModification);
+    }
   }
 
   public SimplePersonneDto(APersonne aPersonne) {
@@ -71,8 +77,10 @@ public class SimplePersonneDto {
     this.sn = aPersonne.getSn();
     this.uid = aPersonne.getUid();
 
-    if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement()))
+    if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
       this.etat = Etat.Deleting;
+      this.dateSuppression = PersonneUtils.getSupressionDate(aPersonne.getDateModification());
+    }
   }
 
   public SimplePersonneDto(SimplePersonneDto simplePersonneDto) {

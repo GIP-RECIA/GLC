@@ -19,6 +19,7 @@ export type Personne = {
   dateSourceModification: string;
   fonctions?: Array<PersonneFonction>;
   additionalFonctions?: Array<PersonneFonction>;
+  dateSuppression?: string;
 };
 
 export type SimplePersonne = {
@@ -30,4 +31,5 @@ export type SimplePersonne = {
   cn: string;
   sn: string;
   email?: string;
+  dateSuppression?: string;
 };

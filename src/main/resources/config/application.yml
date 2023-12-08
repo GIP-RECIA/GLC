@@ -58,6 +58,7 @@ app:
       DELETE
 
   custom-config:
+    suppress-days: 20
     filiere-administrative: >
       DIR,
       ADF,

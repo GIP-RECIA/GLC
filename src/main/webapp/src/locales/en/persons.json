@@ -18,7 +18,7 @@
       "unpublished": "Unpublished",
       "locked": "Locked",
       "deleted": "Deleted",
-      "deleting": "Deleting",
+      "deleting": "Deleting (Final on {suppressDate})",
       "uncertain": "Uncertain",
       "uncertainExportAdd": "Export error",
       "uncertainExportDelete": "Delete error",
