@@ -47,5 +47,6 @@ public enum Etat {
   /**
    * Objet dans un état incertain suite à une erreur d'export lors de l'ajout.
    */
-  Incertain_Export_Add
+  Incertain_Export_Add,
+  Deleting
 }

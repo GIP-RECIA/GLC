@@ -18,14 +18,15 @@ package fr.recia.glc.db.dto.personne;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
-@AllArgsConstructor
 @EqualsAndHashCode
 public class SimplePersonneDto {
 
@@ -37,15 +38,41 @@ public class SimplePersonneDto {
   private String email;
   private String sn;
   private String uid;
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  private Instant dateModification;
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  private Instant dateAcquittement;
 
-  public SimplePersonneDto(APersonne personne) {
-    this.id = personne.getId();
-    this.etat = personne.getEtat();
-    this.categorie = personne.getCategorie();
-    this.source = personne.getCleJointure().getSource();
-    this.cn = personne.getCn();
-    this.sn = personne.getSn();
-    this.uid = personne.getUid();
+  public SimplePersonneDto(
+    Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email, String sn, String uid,
+    Instant dateModification, Instant dateAcquittement
+  ) {
+    this.id = id;
+    this.etat = etat;
+    this.categorie = categorie;
+    this.source = source;
+    this.cn = cn;
+    this.email = email;
+    this.sn = sn;
+    this.uid = uid;
+
+    if (etat == Etat.Delete && dateModification.equals(dateAcquittement))
+      this.etat = Etat.Deleting;
+  }
+
+  public SimplePersonneDto(APersonne aPersonne) {
+    this.id = aPersonne.getId();
+    this.etat = aPersonne.getEtat();
+    this.categorie = aPersonne.getCategorie();
+    this.source = aPersonne.getCleJointure().getSource();
+    this.cn = aPersonne.getCn();
+    this.sn = aPersonne.getSn();
+    this.uid = aPersonne.getUid();
+
+    if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement()))
+      this.etat = Etat.Deleting;
   }
 
   public SimplePersonneDto(SimplePersonneDto simplePersonneDto) {
@@ -56,7 +83,7 @@ public class SimplePersonneDto {
     this.cn = simplePersonneDto.getCn();
     this.email = simplePersonneDto.getEmail();
     this.sn = simplePersonneDto.getSn();
-    this.uid = simplePersonneDto.getEmail();
+    this.uid = simplePersonneDto.getUid();
   }
 
 }

@@ -72,6 +72,7 @@ public class ConfigurationController {
       Etat.Valide,
       Etat.Bloque,
       Etat.Delete,
+      Etat.Deleting,
       Etat.Incertain
     ));
 

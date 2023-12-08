@@ -40,7 +40,7 @@ public class PersonneService {
   }
 
   public List<SimplePersonneDto> getPersonnes(Long structureId) {
-    List<Long> personnesIds = aPersonneAStructureRepository.findPersonneByStructureId(structureId);
+    final List<Long> personnesIds = aPersonneAStructureRepository.findPersonneByStructureId(structureId);
     return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
   }
 

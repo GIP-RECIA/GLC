@@ -17,14 +17,17 @@ package fr.recia.glc.db.dto.personne;
 
 import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
+import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.db.enums.Etat;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,10 +68,17 @@ public class PersonneDto {
   private Long structure;
   private List<FonctionDto> fonctions;
   private List<FonctionDto> additionalFonctions;
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  private Instant dateModification;
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  private Instant dateAcquittement;
 
-  public PersonneDto(Long id, Etat etat, Date anneeScolaire, CategoriePersonne categorie, Civilite civilite,
-                     String source, String cn, Date dateNaissance, String email, String givenName, String patronyme,
-                     String sn, String uid, String login, Long structure, Date dateFin, Date dateSourceModification
+  public PersonneDto(
+    Long id, Etat etat, Date anneeScolaire, CategoriePersonne categorie, Civilite civilite, String source, String cn,
+    Date dateNaissance, String email, String givenName, String patronyme, String sn, String uid, String login,
+    Long structure, Date dateFin, Date dateSourceModification, Instant dateModification, Instant dateAcquittement
   ) {
     this.id = id;
     this.etat = etat;
@@ -87,6 +97,32 @@ public class PersonneDto {
     this.structure = structure;
     this.dateFin = dateFin;
     this.dateSourceModification = dateSourceModification;
+
+    if (etat == Etat.Delete && dateModification.equals(dateAcquittement))
+      this.etat = Etat.Deleting;
+  }
+
+  public PersonneDto(APersonne aPersonne) {
+    this.id = aPersonne.getId();
+    this.etat = aPersonne.getEtat();
+    this.anneeScolaire = aPersonne.getAnneeScolaire();
+    this.categorie = aPersonne.getCategorie();
+    this.civilite = aPersonne.getCivilite();
+    this.source = aPersonne.getCleJointure().getSource();
+    this.cn = aPersonne.getCn();
+    this.dateNaissance = aPersonne.getDateNaissance();
+    this.email = aPersonne.getEmail();
+    this.givenName = aPersonne.getGivenName();
+    this.patronyme = aPersonne.getPatronyme();
+    this.sn = aPersonne.getSn();
+    this.uid = aPersonne.getUid();
+    this.login = aPersonne.getLogin().getNom();
+//    this.structure = aPersonne.getStructRattachement().getId(); // TODO
+    this.dateFin = aPersonne.getDateFin();
+    this.dateSourceModification = aPersonne.getDateSourceModification();
+
+    if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement()))
+      this.etat = Etat.Deleting;
   }
 
   public void setAllFonctions(List<FonctionDto> fonctions) {
