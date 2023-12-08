@@ -35,16 +35,6 @@ export const useConfigurationStore = defineStore('configuration', () => {
    */
   const administrativeStaff = computed<Array<string> | undefined>(() => configuration.value?.administrativeStaff);
 
-  /**
-   * Retourne la liste des codes de filière d'administration
-   */
-  const administrativeCodes = computed<Array<string> | undefined>(() => configuration.value?.administrativeCodes);
-
-  /**
-   * Retourne la liste des codes de filière d'enseigments
-   */
-  const teachingCodes = computed<Array<string> | undefined>(() => configuration.value?.teachingCodes);
-
   const isEditAllowed = (etat: string): boolean => {
     if (configuration.value) {
       return configuration.value.editAllowedStates.includes(etat);
@@ -145,8 +135,6 @@ export const useConfigurationStore = defineStore('configuration', () => {
     init,
     isInit,
     administrativeStaff,
-    administrativeCodes,
-    teachingCodes,
     isEditAllowed,
     getLoginOffice,
     filterAccountStates,

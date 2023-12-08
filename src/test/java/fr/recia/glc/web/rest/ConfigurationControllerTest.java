@@ -15,7 +15,6 @@
  */
 package fr.recia.glc.web.rest;
 
-import fr.recia.glc.configuration.GLCProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,8 +40,7 @@ class ConfigurationControllerTest {
 
   @PostConstruct
   void setup() {
-    GLCProperties glcProperties = new GLCProperties();
-    ConfigurationController configurationController = new ConfigurationController(glcProperties);
+    ConfigurationController configurationController = new ConfigurationController();
 
     mockConfigurationControllerMvc = standaloneSetup(configurationController).build();
   }

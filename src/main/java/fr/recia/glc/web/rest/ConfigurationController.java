@@ -17,7 +17,6 @@ package fr.recia.glc.web.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.ldap.enums.PermissionType;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,12 +40,6 @@ import java.util.Map;
 @RequestMapping(value = "/api/config")
 public class ConfigurationController {
 
-  private final GLCProperties glcProperties;
-
-  public ConfigurationController(GLCProperties glcProperties) {
-    this.glcProperties = glcProperties;
-  }
-
   @GetMapping()
   public ResponseEntity<Object> getConfiguration() {
     Map<String, Object> data = new HashMap<>();
@@ -55,9 +47,6 @@ public class ConfigurationController {
     data.put("administrativeStaff", List.of(
       CategoriePersonne.Non_enseignant_etablissement
     ));
-
-    data.put("administrativeCodes", glcProperties.getCustomConfig().getFiliereAdministrative());
-    data.put("teachingCodes", glcProperties.getCustomConfig().getFiliereTeaching());
 
     data.put("editAllowedStates", List.of(
       Etat.Invalide,

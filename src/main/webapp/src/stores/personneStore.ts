@@ -110,16 +110,6 @@ export const usePersonneStore = defineStore('personne', () => {
     return currentEtab?.personnes.filter((personne) => administrativeStaff?.includes(personne.categorie));
   });
 
-  /**
-   * Retourne la liste des personnels enseignants de la structure courante pour
-   * la recherche
-   */
-  const teachingList = computed<Array<SimplePersonne> | undefined>(() => {
-    const { currentEtab } = structureStore;
-
-    return currentEtab?.personnes.filter((personne) => (personne.categorie = CategoriePersonne.Enseignant));
-  });
-
   return {
     currentPersonne,
     initCurrentPersonne,
@@ -133,6 +123,5 @@ export const usePersonneStore = defineStore('personne', () => {
     deletingPersonnes,
     deletedPersonnes,
     administrativeList,
-    teachingList,
   };
 });

@@ -39,7 +39,6 @@ const {
   structureAdditionalFonctions,
   hasStructureAdditionalFonctions,
   administrativeList,
-  teachingList,
 } = storeToRefs(personneStore);
 
 const modelValue = computed<boolean>({
@@ -134,12 +133,6 @@ const currentTabValue = computed<{
         title: t('addAdditionalFonction'),
         searchList: administrativeList.value,
         filieres: customMapping.value?.filieres,
-      };
-    case Tabs.TeachingStaff:
-      return {
-        title: t('addAdditionalTeaching'),
-        searchList: teachingList.value,
-        filieres: [],
       };
     default:
       return { title: '', searchList: undefined, filieres: undefined };

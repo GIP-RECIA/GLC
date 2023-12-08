@@ -59,22 +59,3 @@ app:
 
   custom-config:
     suppress-days: 20
-    filiere-administrative: >
-      DIR,
-      ADF,
-      CTR,
-      EDU,
-      MDS,
-      PSY,
-      ADM,
-      AED
-    filiere-teaching: >
-      ACP,
-      APP,
-      DOC,
-      DCT,
-      ENS,
-      FCA,
-      FIJ,
-      REM,
-      STG

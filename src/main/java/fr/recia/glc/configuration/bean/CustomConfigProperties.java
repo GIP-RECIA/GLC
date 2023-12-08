@@ -17,39 +17,16 @@ package fr.recia.glc.configuration.bean;
 
 import lombok.Data;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
-import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;
-import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
-
 @Data
 public class CustomConfigProperties {
 
   private Integer suppressDays;
-  private List<String> filiereAdministrative;
-  private List<String> filiereTeaching;
-  private List<String> sourcesExternalAll;
-  private List<String> sourcesExternal4login;
 
   @Override
   public String toString() {
     return "{" +
       "\n\t\"CustomConfigProperties\": {" +
-      "\n\t\t\"suppressDays\": " + suppressDays + "," +
-      "\n\t\t\"administrative\": " + filiereAdministrative.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\t\"teaching\": " + filiereTeaching.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\t\"sourcesExternalAll\": " + sourcesExternalAll.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\t\"sourcesExternal4login\": " + sourcesExternal4login.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
+      "\n\t\t\"suppressDays\": " + suppressDays +
       "\n\t}" +
       "\n}";
   }
