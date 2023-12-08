@@ -1,7 +1,6 @@
 import { getPersonne } from '@/services/personneService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
-import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
 import { Etat } from '@/types/enums/Etat.ts';
 import type { PersonneFonction } from '@/types/fonctionType.ts';
 import type { Personne, SimplePersonne } from '@/types/personneType.ts';

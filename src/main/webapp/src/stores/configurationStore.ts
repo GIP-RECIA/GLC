@@ -45,25 +45,19 @@ export const useConfigurationStore = defineStore('configuration', () => {
   const loginOffices = computed(() => configuration.value?.loginOffices);
 
   const getLoginOffice = (categorie: string, source: string): string | undefined => {
-    let guichet = undefined;
-
     if (loginOffices.value) {
-      if (!loginOffices.value.map((office) => office.source).includes(source)) return undefined;
+      const sources = loginOffices.value.filter((office) => office.source == source);
+      if (sources.length <= 0) return undefined;
+      else if (sources.length > 1) throw new Error(`Can not resolve guichet for source ${source}`);
 
-      loginOffices.value.forEach((office) => {
-        if (office.source == source) {
-          const guichets: Array<string> = office.guichets
-            .filter((guichet) => guichet.categoriesPersonne.includes(categorie))
-            .map((guichet) => guichet.nom);
+      const offices: Array<string> = sources[0].guichets
+        .filter((guichet) => guichet.categoriesPersonne.includes(categorie))
+        .map((guichet) => guichet.nom);
+      if (offices.length > 1) throw new Error(`Can not resolve guichet for categorie ${categorie}`);
 
-          if (guichets.length > 1) throw new Error(`Can not resolve guichet for ${categorie} ${source}`);
-
-          guichet = guichets[0];
-        }
-      });
+      return offices[0];
     }
-
-    return guichet;
+    return undefined;
   };
 
   const filterAccountStates = computed<Array<enumValues & { value: string }> | undefined>(
