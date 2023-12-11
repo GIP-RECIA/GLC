@@ -21,13 +21,6 @@ const isSearchingOut = ref<boolean>(false);
 const select = ref<SimplePersonne | undefined>();
 const items = ref<Array<SimplePersonne>>([]);
 
-watch(isSearchingOut, () => {
-  if (select.value != undefined) {
-    select.value = undefined;
-    emit('update:select', undefined);
-  }
-});
-
 const filterItems = (newSearch: string | undefined) => {
   if (typeof newSearch !== 'undefined' && newSearch !== null) {
     if (newSearch.length > 3 && !newSearch.includes('(')) {
@@ -81,6 +74,13 @@ const filterFromSource = (source: Array<SimplePersonne>, searchValue: string): v
     return filter;
   });
 };
+
+watch(isSearchingOut, () => {
+  if (select.value != undefined) {
+    select.value = undefined;
+    emit('update:select', undefined);
+  }
+});
 </script>
 
 <template>
