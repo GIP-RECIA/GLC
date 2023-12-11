@@ -282,6 +282,7 @@ public class FonctionService {
       if (attachToStructure) aPersonneAStructureRepository2.insertInStructure(personneId, structureId);
       if (detachFromStructure) aPersonneAStructureRepository2.deleteFromStructure(personneId, structureId);
       apersonne.prePersist();
+      apersonne.prePersistAPersonne();
       aPersonneRepository.saveAndFlush(apersonne);
     }
 

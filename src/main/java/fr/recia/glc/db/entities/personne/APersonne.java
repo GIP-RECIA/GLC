@@ -57,6 +57,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -65,6 +66,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import static fr.recia.glc.configuration.Constants.SARAPISUI_;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -312,6 +315,12 @@ public abstract class APersonne extends AbstractTracedEntity implements Subject 
     }
   )
   private Set<ExternalId> externalIds = new HashSet<>();
+
+  @PrePersist
+  public void prePersistAPersonne() {
+    if (getCleJointure().getSource().startsWith(SARAPISUI_))
+      dateSourceModification = new Date();
+  }
 
   /**
    * Constructeur de l'objet APersonne.java.
