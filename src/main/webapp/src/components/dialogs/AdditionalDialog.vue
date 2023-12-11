@@ -58,10 +58,6 @@ const setSelectedUser = (id: number | undefined) => {
 
 const selected = ref<Array<string>>([]);
 
-const setSelected = (value: Array<string>) => {
-  selected.value = value;
-};
-
 const preFill = () => {
   selected.value = toIdentifier(structureAdditionalFonctions.value);
 };
@@ -171,9 +167,8 @@ watch(isAdditional, (newValue) => {
         <checkbox-layout
           v-if="currentPersonne && isEditAllowed(currentPersonne.etat)"
           :filieres="currentTabValue.filieres"
-          :selected="selected"
+          v-model:selected="selected"
           :disabled="toIdentifier(structureFonctions)"
-          @update:selected="setSelected"
         />
       </v-card-text>
       <v-card-actions v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">

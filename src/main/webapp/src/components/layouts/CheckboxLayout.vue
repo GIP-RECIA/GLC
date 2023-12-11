@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Filiere } from '@/types/filiereType.ts';
-import { ref } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
@@ -10,11 +10,14 @@ const props = defineProps<{
 
 const emit = defineEmits<(event: 'update:selected', payload: Array<string>) => void>();
 
-const checked = ref<Array<string>>(props.selected ? props.selected : []);
-
-const updateSelected = () => {
-  emit('update:selected', checked.value);
-};
+const checked = computed<Array<string>>({
+  get() {
+    return props.selected ? props.selected : [];
+  },
+  set(newValue) {
+    emit('update:selected', newValue);
+  },
+});
 </script>
 
 <template>
@@ -31,7 +34,6 @@ const updateSelected = () => {
           :disabled="disabled?.includes(`${filiere.id}-${discipline.id}`)"
           color="primary"
           :hide-details="true"
-          @update:model-value="updateSelected"
         />
       </div>
     </div>

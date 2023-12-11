@@ -91,10 +91,6 @@ const suppressDate = computed<string | undefined>(() => {
 
 const selected = ref<Array<string>>([]);
 
-const setSelected = (value: Array<string>): void => {
-  selected.value = value;
-};
-
 const preFill = () => {
   selected.value = toIdentifier(structureAdditionalFonctions.value);
 };
@@ -279,9 +275,8 @@ watch(isAddMode, (newValue) => {
         <checkbox-layout
           v-if="isAddMode && structureTab == Tabs.SchoolStaff"
           :filieres="customMapping?.filieres"
-          :selected="selected"
+          v-model:selected="selected"
           :disabled="toIdentifier(structureFonctions)"
-          @update:selected="setSelected"
         />
       </v-card-text>
       <v-card-actions v-if="isAddMode">
