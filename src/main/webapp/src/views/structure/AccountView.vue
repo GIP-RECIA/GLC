@@ -5,7 +5,7 @@ import AccountFilter from '@/components/filter/AccountFilter.vue';
 import { usePersonneStore } from '@/stores/personneStore.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { storeToRefs } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useDisplay } from 'vuetify';
 
 const personneStore = usePersonneStore();
@@ -34,10 +34,6 @@ const itemsPerPage = computed<number>(() => {
     default:
       return defaultItemsPerPage;
   }
-});
-
-watch(personnes, (newValue) => {
-  if (typeof newValue !== 'undefined' && newValue !== null) items.value = newValue;
 });
 </script>
 

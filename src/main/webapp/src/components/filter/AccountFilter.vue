@@ -5,7 +5,7 @@ import { Etat } from '@/types/enums/Etat.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { isArrayOf } from '@/utils/arrayUtils.ts';
 import isEmpty from 'lodash.isempty';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -113,7 +113,12 @@ const typeTags = [
   { id: 'SarapisUi_', i18n: 'source.SarapisUi_' },
 ];
 
-filter();
+watch(
+  () => props.searchList,
+  (newValue, oldValue) => {
+    if (newValue != oldValue) filter();
+  },
+);
 </script>
 
 <template>
