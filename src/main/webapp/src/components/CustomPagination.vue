@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
   items: Array<any> | undefined;
@@ -9,31 +9,21 @@ const props = defineProps<{
 
 const emit = defineEmits<(event: 'update:page', payload: Array<any>) => void>();
 
-const pagination = ref({
-  page: 1,
-  pages: 1,
+const page = ref<number>(1);
+const currentPage = computed<number>({
+  get() {
+    return page.value;
+  },
+  set(newValue) {
+    page.value = newValue;
+    showPage(newValue);
+  },
 });
 
-watch(
-  () => props.items,
-  () => {
-    init();
-  },
-);
-
-watch(
-  () => props.itemsPerPage,
-  () => {
-    init();
-  },
-);
-
-const init = () => {
-  pagination.value.page = 1;
+const nbPages = computed<number>(() => {
   const pages = Math.round(props.items ? props.items.length / props.itemsPerPage : 1);
-  pagination.value.pages = pages > 0 ? pages : 1;
-  showPage(1);
-};
+  return pages > 0 ? pages : 1;
+});
 
 const showPage = (page: number) => {
   if (typeof props.items !== 'undefined' && props.items !== null) {
@@ -46,15 +36,22 @@ const showPage = (page: number) => {
   }
 };
 
-init();
+watch(
+  () => props.items,
+  () => {
+    showPage(1);
+  },
+  { immediate: true },
+);
+
+watch(
+  () => props.itemsPerPage,
+  () => {
+    showPage(1);
+  },
+);
 </script>
 
 <template>
-  <v-pagination
-    v-if="pagination.pages > 1 || !hideSinglePage"
-    v-model="pagination.page"
-    :length="pagination.pages"
-    rounded="circle"
-    @update:model-value="showPage"
-  />
+  <v-pagination v-if="nbPages > 1 || !hideSinglePage" v-model="currentPage" :length="nbPages" rounded="circle" />
 </template>
