@@ -35,11 +35,18 @@ const filterFilieres = () => {
 };
 
 watch(
-  () => props.accountStates,
+  () => props.filieres,
   (newValue, oldValue) => {
     if (newValue != oldValue) filterFilieres();
   },
   { immediate: true },
+);
+
+watch(
+  () => props.accountStates,
+  (newValue, oldValue) => {
+    if (newValue != oldValue) filterFilieres();
+  },
 );
 </script>
 
