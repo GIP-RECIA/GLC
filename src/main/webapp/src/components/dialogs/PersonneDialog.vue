@@ -83,8 +83,10 @@ const login = computed<{ i18n: string; info?: string }>(() => {
   return { i18n: '', info: '' };
 });
 
-const suppressDate = computed<string>(() => {
-  return currentPersonne.value?.dateSuppression ? format(parseISO(currentPersonne.value.dateSuppression), 'P') : '';
+const suppressDate = computed<string | undefined>(() => {
+  return currentPersonne.value?.dateSuppression
+    ? format(parseISO(currentPersonne.value.dateSuppression), 'P')
+    : undefined;
 });
 
 const selected = ref<Array<string>>([]);
@@ -231,7 +233,10 @@ watch(isAddMode, (newValue) => {
               <div>
                 <div class="d-flex flex-row align-center">
                   <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="sm" class="mr-2" />
-                  <div>{{ t(etat.i18n, { suppressDate }) }}</div>
+                  <div>
+                    {{ t(etat.i18n) }}
+                    {{ suppressDate ? ` (${t('person.status.deletingDate', { suppressDate })})` : '' }}
+                  </div>
                 </div>
               </div>
             </readonly-data>

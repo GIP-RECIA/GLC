@@ -92,6 +92,7 @@ public class SimplePersonneDto {
     this.email = simplePersonneDto.getEmail();
     this.sn = simplePersonneDto.getSn();
     this.uid = simplePersonneDto.getUid();
+    this.dateSuppression = simplePersonneDto.getDateSuppression();
   }
 
 }

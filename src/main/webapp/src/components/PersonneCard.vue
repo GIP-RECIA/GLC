@@ -22,21 +22,19 @@ const icon = computed<string>(() => {
   if (etat.value.icon) return etat.value.icon;
   return getIcon(props.personne.source);
 });
-const suppressDate = computed<string>(() => {
-  return props.personne.dateSuppression ? format(parseISO(props.personne.dateSuppression), 'P') : '';
+const title = computed<string>(() => {
+  const suppressDate = props.personne.dateSuppression
+    ? format(parseISO(props.personne.dateSuppression), 'P')
+    : undefined;
+  const supressString = suppressDate ? ` (${t('person.status.deletingDate', { suppressDate })})` : '';
+  return t(etat.value.i18n) + supressString;
 });
 </script>
 
 <template>
   <v-card :variant="variant" tag="button" class="w-100" @click="initCurrentPersonne(personne.id, true)">
     <v-card-text class="d-flex align-center text-left pa-3">
-      <v-icon
-        :icon="icon"
-        :color="etat.color"
-        :title="t(etat.i18n, { suppressDate })"
-        :alt="t(etat.i18n, { suppressDate })"
-        class="mr-2"
-      />
+      <v-icon :icon="icon" :color="etat.color" :title="title" class="mr-2" />
       {{ personne.cn }}
     </v-card-text>
   </v-card>
