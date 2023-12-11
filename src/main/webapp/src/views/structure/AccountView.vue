@@ -6,7 +6,10 @@ import { usePersonneStore } from '@/stores/personneStore.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
+
+const { t } = useI18n();
 
 const personneStore = usePersonneStore();
 const { personnes } = storeToRefs(personneStore);
@@ -44,7 +47,7 @@ const itemsPerPage = computed<number>(() => {
       :search-list="personnes"
       @update:result="(result: Array<SimplePersonne>) => (items = result)"
     />
-    <v-row>
+    <v-row v-if="pageItems && pageItems.length > 0">
       <transition-group>
         <v-col
           v-for="(personne, index) in pageItems"
@@ -60,6 +63,10 @@ const itemsPerPage = computed<number>(() => {
         </v-col>
       </transition-group>
     </v-row>
+    <div v-else class="d-flex flex-column align-center justify-center pa-10">
+      <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
+      <div class="pt-2">{{ t('search.noResults') }}</div>
+    </div>
     <custom-pagination
       :items="items"
       :items-per-page="itemsPerPage"
