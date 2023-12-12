@@ -99,7 +99,7 @@ watch(isSearchingOut, () => {
       :items="items"
       :custom-filter="() => true"
       :hide-no-data="isHideNoData || isLoading"
-      :no-data-text="t('search.noResults')"
+      no-data-text="search.noResults"
       :item-title="['cn']"
       :placeholder="t('search.personne.placeholder')"
       autofocus
@@ -119,7 +119,7 @@ watch(isSearchingOut, () => {
         <personne-list-item v-bind="props" :personne="item?.raw" />
       </template>
       <template #prepend-inner>
-        <font-awesome-icon v-if="isLoading" :icon="['fas', 'circle-notch']" size="lg" class="text-grey" spin />
+        <v-progress-circular v-show="isLoading" indeterminate />
       </template>
     </v-autocomplete>
   </div>
