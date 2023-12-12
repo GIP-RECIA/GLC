@@ -89,6 +89,13 @@ const suppressDate = computed<string | undefined>(() => {
     : undefined;
 });
 
+const etatI18n = computed<string>(() => {
+  const supressString = suppressDate.value
+    ? ` (${t('person.status.deletingDate', { suppressDate: suppressDate.value })})`
+    : '';
+  return t(etat.value.i18n) + supressString;
+});
+
 const selected = ref<Array<string>>([]);
 
 const preFill = () => {
@@ -229,10 +236,7 @@ watch(isAddMode, (newValue) => {
               <div>
                 <div class="d-flex flex-row align-center">
                   <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="sm" class="mr-2" />
-                  <div>
-                    {{ t(etat.i18n) }}
-                    {{ suppressDate ? ` (${t('person.status.deletingDate', { suppressDate })})` : '' }}
-                  </div>
+                  <div>{{ etatI18n }}</div>
                 </div>
               </div>
             </readonly-data>
