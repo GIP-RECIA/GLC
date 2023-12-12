@@ -1,3 +1,4 @@
+import additionals from './additionals.json';
 import buttons from './buttons.json';
 import main from './main.json';
 import offices from './offices.json';
@@ -9,6 +10,7 @@ import toasts from './toasts.json';
 import { fr } from 'vuetify/locale';
 
 export default {
+  ...additionals,
   ...buttons,
   ...main,
   ...offices,
