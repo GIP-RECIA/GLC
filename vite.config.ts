@@ -21,7 +21,7 @@ export default ({ mode }: { mode: string }) => {
           },
         },
       }),
-      vuetify({ autoImport: true, styles: 'expose' }),
+      vuetify({ styles: 'sass' }),
       VueI18nPlugin({
         include: [path.resolve(__dirname, './src/main/webapp/src/locales/**/*.json')],
       }),
