@@ -6,7 +6,7 @@ export default createI18n({
   legacy: false,
   allowComposition: true,
   locale: window.navigator.language,
-  fallbackLocale: 'en',
+  fallbackLocale: 'fr',
   messages: {
     en,
     'en-US': en,

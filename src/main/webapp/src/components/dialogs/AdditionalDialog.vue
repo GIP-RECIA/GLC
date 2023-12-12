@@ -126,7 +126,7 @@ const currentTabValue = computed<{
   switch (structureTab.value) {
     case Tabs.SchoolStaff:
       return {
-        title: t('addAdditionalFonction'),
+        title: t('additional.fonction.add'),
         searchList: administrativeList.value,
         filieres: customMapping.value?.filieres,
       };
