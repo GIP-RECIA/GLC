@@ -89,13 +89,6 @@ const suppressDate = computed<string | undefined>(() => {
     : undefined;
 });
 
-const etatI18n = computed<string>(() => {
-  const supressString = suppressDate.value
-    ? ` (${t('person.status.deletingDate', { suppressDate: suppressDate.value })})`
-    : '';
-  return t(etat.value.i18n) + supressString;
-});
-
 const selected = ref<Array<string>>([]);
 
 const preFill = () => {
@@ -233,12 +226,18 @@ watch(isAddMode, (newValue) => {
               <div :title="login.info">{{ login.i18n }}</div>
             </readonly-data>
             <readonly-data :label="t('person.information.status')" class="modal-flex-item">
-              <div>
-                <div class="d-flex flex-row align-center">
-                  <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="sm" class="mr-2" />
-                  <div>{{ etatI18n }}</div>
-                </div>
-              </div>
+              <v-tooltip
+                :text="t('person.status.deletingDate', { suppressDate })"
+                location="bottom start"
+                :disabled="suppressDate == undefined"
+              >
+                <template v-slot:activator="{ props }">
+                  <div v-bind="props" class="d-flex flex-row align-center w-fit">
+                    <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="sm" class="mr-2" />
+                    <div>{{ t(etat.i18n) }}</div>
+                  </div>
+                </template>
+              </v-tooltip>
             </readonly-data>
             <readonly-data label="Source" :value="t('source.' + currentPersonne.source)" class="modal-flex-item" />
             <readonly-data

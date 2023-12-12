@@ -22,7 +22,7 @@ const icon = computed<string>(() => {
   if (etat.value.icon) return etat.value.icon;
   return getIcon(props.personne.source);
 });
-const title = computed<string>(() => {
+const tooltip = computed<string>(() => {
   const suppressDate = props.personne.dateSuppression
     ? format(parseISO(props.personne.dateSuppression), 'P')
     : undefined;
@@ -34,7 +34,11 @@ const title = computed<string>(() => {
 <template>
   <v-card :variant="variant" tag="button" class="w-100" @click="initCurrentPersonne(personne.id, true)">
     <v-card-text class="d-flex align-center text-left pa-3">
-      <v-icon :icon="icon" :color="etat.color" :title="title" class="mr-2" />
+      <v-tooltip :text="tooltip" location="bottom start">
+        <template v-slot:activator="{ props }">
+          <v-icon v-bind="props" :icon="icon" :color="etat.color" class="mr-2" />
+        </template>
+      </v-tooltip>
       {{ personne.cn }}
     </v-card-text>
   </v-card>
