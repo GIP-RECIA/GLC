@@ -1,6 +1,9 @@
+import i18n from '@/plugins/i18n.ts';
+import { useI18n } from 'vue-i18n';
 import { type ThemeDefinition, createVuetify } from 'vuetify';
 import { md3 } from 'vuetify/blueprints';
 import { aliases, fa } from 'vuetify/iconsets/fa-svg';
+import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
 
 const light: ThemeDefinition = {
   dark: false,
@@ -28,5 +31,8 @@ export default createVuetify({
       light,
       dark,
     },
+  },
+  locale: {
+    adapter: createVueI18nAdapter({ i18n, useI18n }),
   },
 });

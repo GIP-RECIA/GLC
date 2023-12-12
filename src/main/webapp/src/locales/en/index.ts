@@ -6,6 +6,7 @@ import searchs from './searchs.json';
 import sources from './sources.json';
 import tabs from './tabs.json';
 import toasts from './toasts.json';
+import { en } from 'vuetify/locale';
 
 export default {
   ...buttons,
@@ -16,4 +17,7 @@ export default {
   ...sources,
   ...tabs,
   ...toasts,
+  $vuetify: {
+    ...en,
+  },
 };
