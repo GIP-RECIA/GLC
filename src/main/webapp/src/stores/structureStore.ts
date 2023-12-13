@@ -56,16 +56,16 @@ export const useStructureStore = defineStore('structure', () => {
             dashboard: {},
             info: {},
             teachingStaff: {
-              accountStates: [Etat.Valide],
+              accountStates: [],
             },
             schoolStaff: {
-              accountStates: [Etat.Valide],
+              accountStates: [],
             },
             academicStaff: {
-              accountStates: [Etat.Valide],
+              accountStates: [],
             },
             collectivityStaff: {
-              accountStates: [Etat.Valide],
+              accountStates: [],
             },
             accounts: {},
           },
