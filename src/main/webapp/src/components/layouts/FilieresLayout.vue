@@ -3,7 +3,7 @@ import PersonneCard from '@/components/PersonneCard.vue';
 import type { Discipline } from '@/types/disciplineType.ts';
 import type { Filiere } from '@/types/filiereType.ts';
 import isEmpty from 'lodash.isempty';
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -13,47 +13,29 @@ const props = defineProps<{
   accountStates?: Array<string>;
 }>();
 
-const filteredFilieres = ref<Array<Filiere>>([]);
-
-const filterFilieres = () => {
+const filteredFilieres = computed<Array<Filiere>>(() => {
   let filieres = props.filieres ? props.filieres : [];
-  if (props.accountStates && props.accountStates.length > 0) {
+  if (!isEmpty(props.accountStates)) {
     filieres = filieres.map((filiere) => {
-      let disciplines: Array<Discipline> = filiere.disciplines.map((discipline) => {
-        let personnes = !isEmpty(props.accountStates)
-          ? discipline.personnes.filter((personne) => props.accountStates!.includes(personne.etat))
-          : discipline.personnes;
+      const disciplines: Array<Discipline> = filiere.disciplines
+        .map((discipline) => {
+          const personnes = discipline.personnes.filter((personne) => props.accountStates!.includes(personne.etat));
 
-        return { ...discipline, personnes };
-      });
-      disciplines = disciplines.filter((discipline) => discipline.personnes.length > 0);
+          return { ...discipline, personnes };
+        })
+        .filter((discipline) => discipline.personnes.length > 0);
 
       return { ...filiere, disciplines };
     });
   }
   filieres = filieres.filter((filiere) => filiere.disciplines.length > 0);
 
-  filteredFilieres.value = filieres;
-};
-
-watch(
-  () => props.filieres,
-  (newValue, oldValue) => {
-    if (newValue?.toString() != oldValue?.toString()) filterFilieres();
-  },
-  { immediate: true },
-);
-
-watch(
-  () => props.accountStates,
-  (newValue, oldValue) => {
-    if (newValue?.toString() != oldValue?.toString()) filterFilieres();
-  },
-);
+  return filieres;
+});
 </script>
 
 <template>
-  <div v-if="filteredFilieres.length > 0">
+  <div v-show="filteredFilieres.length > 0">
     <transition-group>
       <div v-for="(filiere, index) in filteredFilieres" :key="index" class="pb-4">
         <div class="pb-2">{{ filiere.libelleFiliere }}</div>
@@ -90,7 +72,7 @@ watch(
       </div>
     </transition-group>
   </div>
-  <div v-else class="d-flex flex-column align-center justify-center pa-10">
+  <div v-if="filteredFilieres.length == 0" class="d-flex flex-column align-center justify-center pa-10">
     <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
     <div class="pt-2">{{ t('search.noResults') }}</div>
   </div>
