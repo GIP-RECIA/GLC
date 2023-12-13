@@ -224,7 +224,11 @@ watch(isAddMode, (newValue) => {
             />
             <readonly-data :label="t('person.information.schoolYear')" :value="schoolYear" class="modal-flex-item" />
             <readonly-data :label="t('person.information.login')" class="modal-flex-item">
-              <div :title="login.info">{{ login.i18n }}</div>
+              <v-tooltip :text="login.info" location="bottom start" :disabled="login.info == undefined">
+                <template v-slot:activator="{ props }">
+                  <div v-bind="props">{{ login.i18n }}</div>
+                </template>
+              </v-tooltip>
             </readonly-data>
             <readonly-data :label="t('person.information.status')" class="modal-flex-item">
               <v-tooltip
