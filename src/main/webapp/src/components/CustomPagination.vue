@@ -21,7 +21,7 @@ const currentPage = computed<number>({
 });
 
 const nbPages = computed<number>(() => {
-  const pages = Math.round(props.items ? props.items.length / props.itemsPerPage : 1);
+  const pages = Math.ceil(props.items ? props.items.length / props.itemsPerPage : 1);
   return pages > 0 ? pages : 1;
 });
 
@@ -38,16 +38,16 @@ const showPage = (page: number) => {
 
 watch(
   () => props.items,
-  () => {
-    showPage(1);
+  (newValue, oldValue) => {
+    if (newValue?.length != oldValue?.length) showPage(1);
   },
   { immediate: true },
 );
 
 watch(
   () => props.itemsPerPage,
-  () => {
-    showPage(1);
+  (newValue, oldValue) => {
+    if (newValue != oldValue) showPage(1);
   },
 );
 </script>
