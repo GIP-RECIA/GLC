@@ -90,9 +90,9 @@ public class FonctionService {
     ArrayList<Object> data = new ArrayList<>();
 
     Map<String, Object> all = new HashMap<>();
-      all.put("source", ALL);
-      all.put(FILIERE, getOfficial(ALL));
-      data.add(all);
+    all.put("source", ALL);
+    all.put(FILIERE, getOfficial(ALL));
+    data.add(all);
 
     sources.forEach(source -> {
       Map<String, Object> object = new HashMap<>();
@@ -108,8 +108,8 @@ public class FonctionService {
   private List<TypeFonctionFiliereDto> getOfficial(String source) {
     // Recherche des filières, disciplines et fonctions les liants
     List<FonctionDto> fonctions;
-      List<TypeFonctionFiliereDto> typesFonctionFiliere;
-      List<DisciplineDto> disciplines;
+    List<TypeFonctionFiliereDto> typesFonctionFiliere;
+    List<DisciplineDto> disciplines;
     if (source.equals(ALL)) {
       fonctions = fonctionRepository.findWithoutSource();
       typesFonctionFiliere = typeFonctionFiliereRepository.findWithoutSource();
@@ -138,7 +138,10 @@ public class FonctionService {
         return typeFonctionFiliere;
       }).collect(Collectors.toList());
 
-    if (source.equals(ALL)) return typesFonctionFiliere;
+    if (source.equals(ALL))
+      return typesFonctionFiliere.stream()
+        .filter(typeFonctionFiliere -> !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
+        .collect(Collectors.toList());
     // Retrait des filières sans disciplines
     return typesFonctionFiliere.stream()
       .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty() && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
