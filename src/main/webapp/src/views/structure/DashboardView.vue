@@ -2,6 +2,7 @@
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
 import { usePersonneStore } from '@/stores/personneStore.ts';
+import { DashboardPanel } from '@/types/enums/DashboardPanel.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
@@ -37,6 +38,8 @@ const itemsPerPage = computed<number>(() => {
       return defaultItemsPerPage;
   }
 });
+
+const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
 </script>
 
 <template>
@@ -44,59 +47,92 @@ const itemsPerPage = computed<number>(() => {
     <v-card :subtitle="`${t('warning', 2)} (${0})`" flat class="mb-4">
       <v-card-text></v-card-text>
     </v-card>
-    <v-card :subtitle="`${t('deletingAccounts')} (${deletingPersonnes.length})`" flat class="mb-4">
-      <v-card-text>
-        <v-row v-if="pageItems && pageItems.length > 0">
-          <transition-group>
-            <v-col
-              v-for="(personne, index) in pageItems"
-              :key="index"
-              :cols="12"
-              :sm="6"
-              :md="4"
-              :lg="3"
-              :xxl="2"
-              class="pa-2"
-            >
-              <personne-card variant="tonal" :personne="personne" />
-            </v-col>
-          </transition-group>
-        </v-row>
-        <custom-pagination
-          :items="deletingPersonnes"
-          :items-per-page="itemsPerPage"
-          hide-single-page
-          class="mt-4"
-          @update:page="(items) => (pageItems = items)"
-        />
-      </v-card-text>
-    </v-card>
-    <v-card :subtitle="`${t('deletedAccounts')} (${deletedPersonnes.length})`" flat>
-      <v-card-text>
-        <v-row v-if="pageItems2 && pageItems2.length > 0">
-          <transition-group>
-            <v-col
-              v-for="(personne, index) in pageItems2"
-              :key="index"
-              :cols="12"
-              :sm="6"
-              :md="4"
-              :lg="3"
-              :xxl="2"
-              class="pa-2"
-            >
-              <personne-card variant="tonal" :personne="personne" />
-            </v-col>
-          </transition-group>
-        </v-row>
-        <custom-pagination
-          :items="deletedPersonnes"
-          :items-per-page="itemsPerPage"
-          hide-single-page
-          class="mt-4"
-          @update:page="(items) => (pageItems2 = items)"
-        />
-      </v-card-text>
-    </v-card>
+
+    <v-expansion-panels v-model="panel" mandatory>
+      <v-expansion-panel :value="DashboardPanel.DeletingAccounts" :elevation="0" rounded="lg">
+        <v-expansion-panel-title>
+          <div class="expansion-title">
+            {{ `${t('deletingAccounts')} (${deletingPersonnes.length})` }}
+          </div>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-row v-if="pageItems && pageItems.length > 0">
+            <transition-group>
+              <v-col
+                v-for="(personne, index) in pageItems"
+                :key="index"
+                :cols="12"
+                :sm="6"
+                :md="4"
+                :lg="3"
+                :xxl="2"
+                class="pa-2"
+              >
+                <personne-card variant="tonal" :personne="personne" />
+              </v-col>
+            </transition-group>
+          </v-row>
+          <custom-pagination
+            :items="deletingPersonnes"
+            :items-per-page="itemsPerPage"
+            hide-single-page
+            class="mt-4"
+            @update:page="(items) => (pageItems = items)"
+          />
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+
+      <v-expansion-panel :value="DashboardPanel.DeletedAccounts" :elevation="0" rounded="lg">
+        <v-expansion-panel-title>
+          <div class="expansion-title">
+            {{ `${t('deletedAccounts')} (${deletedPersonnes.length})` }}
+          </div>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-row v-if="pageItems2 && pageItems2.length > 0">
+            <transition-group>
+              <v-col
+                v-for="(personne, index) in pageItems2"
+                :key="index"
+                :cols="12"
+                :sm="6"
+                :md="4"
+                :lg="3"
+                :xxl="2"
+                class="pa-2"
+              >
+                <personne-card variant="tonal" :personne="personne" />
+              </v-col>
+            </transition-group>
+          </v-row>
+          <custom-pagination
+            :items="deletedPersonnes"
+            :items-per-page="itemsPerPage"
+            hide-single-page
+            class="mt-4"
+            @update:page="(items) => (pageItems2 = items)"
+          />
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </v-container>
 </template>
+
+<style scoped lang="scss">
+.expansion-title {
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.0178571429em;
+  opacity: var(--v-medium-emphasis-opacity);
+}
+</style>
+<style lang="scss">
+.v-expansion-panel-title__overlay {
+  opacity: 0 !important;
+}
+
+.v-expansion-panel-text__wrapper {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+</style>
