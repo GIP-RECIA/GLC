@@ -33,6 +33,10 @@ export const useFonctionStore = defineStore('fonctions', () => {
 
   const isInit = computed<boolean>(() => (fonctions.value ? fonctions.value.length > 0 : false));
 
+  const allFilieres = computed<Array<Filiere> | undefined>(() => {
+    return fonctions.value ? fonctions.value.find((fonction) => fonction.source === 'ALL')?.filieres : undefined;
+  });
+
   /* -- Pour la structure courante -- */
 
   /**
@@ -85,6 +89,7 @@ export const useFonctionStore = defineStore('fonctions', () => {
 
   return {
     init,
+    allFilieres,
     filieres,
     customMapping,
     isCustomMapping,

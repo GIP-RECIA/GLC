@@ -54,6 +54,11 @@ public interface DisciplineRepository<T extends Discipline> extends AbstractRepo
     "ORDER BY d.disciplinePoste")
   List<DisciplineDto> findBySourceSarapis(String source);
 
+  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
+    "FROM Discipline d " +
+    "ORDER BY d.disciplinePoste")
+  List<DisciplineDto> findWithoutSource();
+
   @Query("SELECT DISTINCT d.source " +
     "FROM Discipline d " +
     "WHERE d.source NOT LIKE 'SarapisUi_%'" +

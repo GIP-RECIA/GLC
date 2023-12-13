@@ -58,4 +58,10 @@ public interface TypeFonctionFiliereRepository<T extends TypeFonctionFiliere> ex
     "ORDER BY tff.libelleFiliere")
   List<TypeFonctionFiliereDto> findBySourceSarapis(String source);
 
+  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
+    "tff.libelleFiliere, tff.source) " +
+    "FROM TypeFonctionFiliere tff " +
+    "ORDER BY tff.libelleFiliere")
+  List<TypeFonctionFiliereDto> findWithoutSource();
+
 }

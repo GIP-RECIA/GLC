@@ -57,7 +57,7 @@ watch(
         <div class="pb-2">
           {{ filiere.libelleFiliere }}
         </div>
-        <v-row>
+        <v-row class="px-1">
           <transition-group>
             <v-col
               v-for="(discipline, index) in filiere.disciplines"
@@ -70,7 +70,7 @@ watch(
             >
               <v-card :subtitle="discipline.disciplinePoste" flat min-height="100%">
                 <v-card-text>
-                  <v-row>
+                  <v-row class="px-1">
                     <transition-group>
                       <v-col
                         v-for="(personne, index) in discipline.personnes"

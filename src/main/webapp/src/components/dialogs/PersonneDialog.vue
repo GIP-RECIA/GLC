@@ -7,6 +7,7 @@ import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
+import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import { getCategoriePersonne, getEtat, toIdentifier } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
@@ -25,7 +26,7 @@ const { isEditAllowed, getLoginOffice } = configurationStore;
 const { currentStructureId, structureTab, isAddMode } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
-const { filieres, customMapping, isCustomMapping } = storeToRefs(fonctionStore);
+const { allFilieres, filieres, customMapping, isCustomMapping } = storeToRefs(fonctionStore);
 
 const personneStore = usePersonneStore();
 const { refreshCurrentPersonne } = personneStore;
@@ -246,32 +247,38 @@ watch(isAddMode, (newValue) => {
               class="modal-flex-item"
             />
           </div>
-          <div class="mb-3">
-            <b>{{ t('person.information.function', 2) }}</b>
-            <fonctions-layout :filieres="filieres" :fonctions="structureFonctions" class="my-0" />
-          </div>
-          <div v-if="structureTab == Tabs.SchoolStaff" class="mb-3">
-            <div class="d-flex align-center">
-              <b>{{ t('person.information.additionalFunction', 2) }}</b>
-              <v-btn
-                v-if="isCustomMapping && isEditAllowed(currentPersonne.etat)"
-                color="primary"
-                variant="tonal"
-                density="compact"
-                :text="t(hasStructureAdditionalFonctions ? 'button.edit' : 'button.add')"
-                class="ml-2"
-                @click="isAddMode = true"
-              >
-                <template #prepend>
-                  <v-icon :icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
-                </template>
-              </v-btn>
+          <div
+            v-if="
+              [
+                CategoriePersonne.Enseignant.toString(),
+                CategoriePersonne.Non_enseignant_etablissement.toString(),
+                CategoriePersonne.Non_enseignant_collectivite_locale.toString(),
+              ].includes(currentPersonne.categorie)
+            "
+          >
+            <div class="mb-3">
+              <b>{{ t('person.information.function', 2) }}</b>
+              <fonctions-layout :filieres="allFilieres" :fonctions="structureFonctions" class="my-0 px-1" />
             </div>
-            <fonctions-layout
-              :filieres="customMapping?.filieres"
-              :fonctions="structureAdditionalFonctions"
-              class="my-0"
-            />
+            <div class="mb-3">
+              <div class="d-flex align-center">
+                <b>{{ t('person.information.additionalFunction', 2) }}</b>
+                <v-btn
+                  v-if="structureTab == Tabs.SchoolStaff && isCustomMapping && isEditAllowed(currentPersonne.etat)"
+                  color="primary"
+                  variant="tonal"
+                  density="compact"
+                  :text="t(hasStructureAdditionalFonctions ? 'button.edit' : 'button.add')"
+                  class="ml-2"
+                  @click="isAddMode = true"
+                >
+                  <template #prepend>
+                    <v-icon :icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
+                  </template>
+                </v-btn>
+              </div>
+              <fonctions-layout :filieres="allFilieres" :fonctions="structureAdditionalFonctions" class="my-0 px-1" />
+            </div>
           </div>
         </div>
 

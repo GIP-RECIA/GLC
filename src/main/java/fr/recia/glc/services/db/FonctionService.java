@@ -79,6 +79,7 @@ public class FonctionService {
   @Autowired
   private PersonneService personneService;
 
+  private static final String ALL = "ALL";
   public static final String FILIERE = "filieres";
   public static final String DISCIPLINE = "disciplines";
 
@@ -87,6 +88,11 @@ public class FonctionService {
     if (sources.isEmpty()) return Collections.emptyList();
 
     ArrayList<Object> data = new ArrayList<>();
+
+    Map<String, Object> all = new HashMap<>();
+      all.put("source", ALL);
+      all.put(FILIERE, getOfficial(ALL));
+      data.add(all);
 
     sources.forEach(source -> {
       Map<String, Object> object = new HashMap<>();
@@ -101,9 +107,18 @@ public class FonctionService {
 
   private List<TypeFonctionFiliereDto> getOfficial(String source) {
     // Recherche des filières, disciplines et fonctions les liants
-    List<FonctionDto> fonctions = fonctionRepository.findBySource(source);
-    List<TypeFonctionFiliereDto> typesFonctionFiliere = typeFonctionFiliereRepository.findBySource(source);
-    List<DisciplineDto> disciplines = disciplineRepository.findBySource(source);
+    List<FonctionDto> fonctions;
+      List<TypeFonctionFiliereDto> typesFonctionFiliere;
+      List<DisciplineDto> disciplines;
+    if (source.equals(ALL)) {
+      fonctions = fonctionRepository.findWithoutSource();
+      typesFonctionFiliere = typeFonctionFiliereRepository.findWithoutSource();
+      disciplines = disciplineRepository.findWithoutSource();
+    } else {
+      fonctions = fonctionRepository.findBySource(source);
+      typesFonctionFiliere = typeFonctionFiliereRepository.findBySource(source);
+      disciplines = disciplineRepository.findBySource(source);
+    }
 
     // Retourne les filières et disciplines s'il n'y a pas de fonction les liants
     if (fonctions.isEmpty()) return Collections.emptyList();
@@ -123,6 +138,7 @@ public class FonctionService {
         return typeFonctionFiliere;
       }).collect(Collectors.toList());
 
+    if (source.equals(ALL)) return typesFonctionFiliere;
     // Retrait des filières sans disciplines
     return typesFonctionFiliere.stream()
       .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty() && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))

@@ -47,7 +47,7 @@ const itemsPerPage = computed<number>(() => {
       :search-list="personnes"
       @update:result="(result: Array<SimplePersonne>) => (items = result)"
     />
-    <v-row v-if="pageItems && pageItems.length > 0">
+    <v-row v-if="pageItems && pageItems.length > 0" class="px-1">
       <transition-group>
         <v-col
           v-for="(personne, index) in pageItems"
