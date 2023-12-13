@@ -34,6 +34,7 @@ const tags = {
     { id: CategoriePersonne.Enseignant, i18n: 'person.category.teacher' },
     { id: CategoriePersonne.Non_enseignant_etablissement, i18n: 'person.category.nonTeacherSchool' },
     { id: CategoriePersonne.Non_enseignant_collectivite_locale, i18n: 'person.category.nonTeacherLocalCommunity' },
+    { id: CategoriePersonne.Non_enseignant_service_academique, i18n: 'person.category.nonTeacherAcademicService' },
     { id: CategoriePersonne.Eleve, i18n: 'person.category.student' },
     { id: CategoriePersonne.Personne_relation_eleve, i18n: 'person.category.personRelationshipStudent' },
   ],
