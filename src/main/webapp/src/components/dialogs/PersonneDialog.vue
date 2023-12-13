@@ -224,25 +224,29 @@ watch(isAddMode, (newValue) => {
             />
             <readonly-data :label="t('person.information.schoolYear')" :value="schoolYear" class="modal-flex-item" />
             <readonly-data :label="t('person.information.login')" class="modal-flex-item">
-              <v-tooltip :text="login.info" location="bottom start" :disabled="login.info == undefined">
-                <template v-slot:activator="{ props }">
-                  <div v-bind="props">{{ login.i18n }}</div>
-                </template>
-              </v-tooltip>
+              <div class="d-flex flex-row align-center w-fit">
+                <div>{{ login.i18n }}</div>
+                <v-tooltip v-if="login.info != undefined" :text="login.info" location="bottom start">
+                  <template v-slot:activator="{ props }">
+                    <v-icon v-bind="props" icon="fas fa-circle-info" color="info" size="small" class="ml-2" />
+                  </template>
+                </v-tooltip>
+              </div>
             </readonly-data>
             <readonly-data :label="t('person.information.status')" class="modal-flex-item">
-              <v-tooltip
-                :text="t('person.status.deletingDate', { suppressDate })"
-                location="bottom start"
-                :disabled="suppressDate == undefined"
-              >
-                <template v-slot:activator="{ props }">
-                  <div v-bind="props" class="d-flex flex-row align-center w-fit">
-                    <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="sm" class="mr-2" />
-                    <div>{{ t(etat.i18n) }}</div>
-                  </div>
-                </template>
-              </v-tooltip>
+              <div class="d-flex flex-row align-center w-fit">
+                <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="small" class="mr-2" />
+                <div>{{ t(etat.i18n) }}</div>
+                <v-tooltip
+                  v-if="suppressDate != undefined"
+                  :text="t('person.status.deletingDate', { suppressDate })"
+                  location="bottom start"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-icon v-bind="props" icon="fas fa-circle-info" color="info" size="small" class="ml-2" />
+                  </template>
+                </v-tooltip>
+              </div>
             </readonly-data>
             <readonly-data label="Source" :value="t('source.' + currentPersonne.source)" class="modal-flex-item" />
             <readonly-data
