@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PersonneCard from '@/components/PersonneCard.vue';
-import type { Discipline } from '@/types/disciplineType';
+import type { Discipline } from '@/types/disciplineType.ts';
 import type { Filiere } from '@/types/filiereType.ts';
 import isEmpty from 'lodash.isempty';
 import { ref, watch } from 'vue';
@@ -17,18 +17,20 @@ const filteredFilieres = ref<Array<Filiere>>([]);
 
 const filterFilieres = () => {
   let filieres = props.filieres ? props.filieres : [];
-  filieres = filieres.map((filiere) => {
-    let disciplines: Array<Discipline> = filiere.disciplines.map((discipline) => {
-      let personnes = !isEmpty(props.accountStates)
-        ? discipline.personnes.filter((personne) => props.accountStates!.includes(personne.etat))
-        : discipline.personnes;
+  if (props.accountStates && props.accountStates.length > 0) {
+    filieres = filieres.map((filiere) => {
+      let disciplines: Array<Discipline> = filiere.disciplines.map((discipline) => {
+        let personnes = !isEmpty(props.accountStates)
+          ? discipline.personnes.filter((personne) => props.accountStates!.includes(personne.etat))
+          : discipline.personnes;
 
-      return { ...discipline, personnes };
+        return { ...discipline, personnes };
+      });
+      disciplines = disciplines.filter((discipline) => discipline.personnes.length > 0);
+
+      return { ...filiere, disciplines };
     });
-    disciplines = disciplines.filter((discipline) => discipline.personnes.length > 0);
-
-    return { ...filiere, disciplines };
-  });
+  }
   filieres = filieres.filter((filiere) => filiere.disciplines.length > 0);
 
   filteredFilieres.value = filieres;
@@ -37,7 +39,7 @@ const filterFilieres = () => {
 watch(
   () => props.filieres,
   (newValue, oldValue) => {
-    if (newValue != oldValue) filterFilieres();
+    if (newValue?.toString() != oldValue?.toString()) filterFilieres();
   },
   { immediate: true },
 );
@@ -45,7 +47,7 @@ watch(
 watch(
   () => props.accountStates,
   (newValue, oldValue) => {
-    if (newValue != oldValue) filterFilieres();
+    if (newValue?.toString() != oldValue?.toString()) filterFilieres();
   },
 );
 </script>
@@ -54,9 +56,7 @@ watch(
   <div v-if="filteredFilieres.length > 0">
     <transition-group>
       <div v-for="(filiere, index) in filteredFilieres" :key="index" class="pb-4">
-        <div class="pb-2">
-          {{ filiere.libelleFiliere }}
-        </div>
+        <div class="pb-2">{{ filiere.libelleFiliere }}</div>
         <v-row class="px-1">
           <transition-group>
             <v-col
