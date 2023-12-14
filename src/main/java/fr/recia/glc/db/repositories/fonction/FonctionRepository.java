@@ -105,4 +105,13 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
     "AND f.structure.id = :structureId")
   Long findId(Long disciplineId, Long filiereId, Long personneId, Long structureId);
 
+  @Query(value = "select count(af.id) " +
+    "from afonction af " +
+    "inner join fonction f on f.id = af.id " +
+    "inner join discipline d on f.discipline_poste_fk = d.id " +
+    "where f.astructure_fk = :structureId " +
+    "and d.code = :disciplineCode",
+    nativeQuery = true)
+  Long nbDiscipline(Long structureId, String disciplineCode);
+
 }

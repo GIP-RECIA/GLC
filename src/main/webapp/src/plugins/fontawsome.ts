@@ -3,6 +3,7 @@ import { faSquare as farSquare, faUser as farUser } from '@fortawesome/free-regu
 import {
   faCaretDown,
   faCaretUp,
+  faCheckCircle,
   faCheckSquare,
   faChevronDown,
   faChevronLeft,
@@ -10,6 +11,8 @@ import {
   faChevronUp,
   faCircle,
   faCircleInfo,
+  faExclamation,
+  faExclamationTriangle,
   faFilter,
   faFilterCircleXmark,
   faFloppyDisk,
@@ -37,6 +40,7 @@ const register = (app: App) => {
   library.add(
     faCaretDown,
     faCaretUp,
+    faCheckCircle,
     faCheckSquare,
     faChevronDown,
     faChevronLeft,
@@ -44,6 +48,8 @@ const register = (app: App) => {
     faChevronUp,
     faCircle,
     faCircleInfo,
+    faExclamation,
+    faExclamationTriangle,
     faFilter,
     faFilterCircleXmark,
     faFloppyDisk,

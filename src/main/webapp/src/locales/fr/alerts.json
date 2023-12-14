@@ -1,0 +1,13 @@
+{
+  "alert": {
+    "title": {
+      "ADF": {
+        "GEST": "Aucun gestionnaire"
+      },
+      "DIR": {
+        "D0010": "Aucun directeur"
+      }
+    },
+    "text": {}
+  }
+}

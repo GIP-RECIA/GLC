@@ -1,5 +1,6 @@
 import type { SimplePersonne } from './personneType.ts';
 import type { Adresse } from '@/types/adresseType.ts';
+import type { Alert } from '@/types/alertType.ts';
 import type { Filiere } from '@/types/filiereType.ts';
 
 export type Etablissement = {
@@ -30,6 +31,7 @@ export type Etablissement = {
   withoutFunctionsSchool: Array<SimplePersonne>;
   withoutFunctionsCollectivity: Array<SimplePersonne>;
   withoutFunctionsAcademic: Array<SimplePersonne>;
+  alerts: Array<Alert>;
   permission?: string;
 };
 

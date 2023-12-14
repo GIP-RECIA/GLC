@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.db.dto.structure;
 
+import fr.recia.glc.db.dto.AlertDto;
 import fr.recia.glc.db.dto.common.AdresseDto;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
@@ -72,6 +73,7 @@ public class EtablissementDto {
   private List<SimplePersonneDto> withoutFunctionsSchool;
   private List<SimplePersonneDto> withoutFunctionsCollectivity;
   private List<SimplePersonneDto> withoutFunctionsAcademic;
+  private List<AlertDto> alerts;
   private String permission;
 
   public EtablissementDto(Long id, String uai, Etat etat, EtatAlim etatAlim, String source, Date anneeScolaire,

@@ -49,11 +49,17 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
 
 <template>
   <v-container fluid>
-    <v-card :subtitle="`${t('warning', 2)} (${0})`" flat class="mb-4">
-      <v-card-text></v-card-text>
-    </v-card>
+    <v-alert
+      v-for="(alert, index) in currentEtab?.alerts"
+      :key="index"
+      :title="alert.title && t(`alert.title.${alert.title}`)"
+      :text="alert.text && t(`alert.text.${alert.text}`)"
+      :type="alert.type"
+      rounded="lg"
+      class="mb-4"
+    />
 
-    <v-expansion-panels v-model="panel" mandatory>
+    <v-expansion-panels v-model="panel">
       <v-expansion-panel :value="DashboardPanel.DeletingAccounts" :elevation="0" rounded="lg">
         <v-expansion-panel-title>
           <div class="expansion-title">

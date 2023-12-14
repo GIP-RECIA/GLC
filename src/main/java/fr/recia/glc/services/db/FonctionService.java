@@ -314,4 +314,8 @@ public class FonctionService {
     return true;
   }
 
+  public boolean isDiscipline(Long structureId, String disciplineCode) {
+    return fonctionRepository.nbDiscipline(structureId, disciplineCode) > 0;
+  }
+
 }

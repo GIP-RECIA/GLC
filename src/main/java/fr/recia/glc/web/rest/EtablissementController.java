@@ -16,6 +16,8 @@
 package fr.recia.glc.web.rest;
 
 import fr.recia.glc.configuration.GLCProperties;
+import fr.recia.glc.db.dto.AlertDto;
+import fr.recia.glc.db.dto.AlertType;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
@@ -41,6 +43,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -171,6 +174,11 @@ public class EtablissementController {
         .collect(Collectors.toList());
     }
     etablissement.setWithoutFunctions(withoutFunction);
+
+    List<AlertDto> alerts = new ArrayList<>();
+    if (!fonctionService.isDiscipline(id, "GEST")) alerts.add(AlertDto.builder().title("ADF.GEST").type(AlertType.error).build());
+    if (!fonctionService.isDiscipline(id, "D0010")) alerts.add(AlertDto.builder().title("DIR.D0010").type(AlertType.error).build());
+    etablissement.setAlerts(alerts);
 
     List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);
     List<TypeFonctionFiliereDto> typesFonctionFiliere = fonctionService.getTypesFonctionFiliere(etablissement.getSource());
