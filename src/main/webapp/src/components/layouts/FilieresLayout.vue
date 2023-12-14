@@ -68,7 +68,8 @@ const filteredWithoutFunctions = computed(() => {
                       <v-col
                         v-for="(personne, index) in discipline.personnes"
                         :key="index"
-                        :cols="6"
+                        :cols="12"
+                        :sm="6"
                         class="d-flex align-center pa-2"
                       >
                         <personne-card variant="tonal" :personne="personne" />
@@ -95,9 +96,8 @@ const filteredWithoutFunctions = computed(() => {
               :key="index"
               :cols="12"
               :sm="6"
-              :md="4"
-              :lg="3"
-              :xxl="2"
+              :md="3"
+              :lg="2"
               class="d-flex align-center pa-2"
             >
               <personne-card variant="tonal" :personne="personne" />
