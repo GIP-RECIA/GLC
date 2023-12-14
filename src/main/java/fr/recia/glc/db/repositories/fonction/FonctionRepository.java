@@ -57,6 +57,34 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
     "ORDER BY f.filiere.libelleFiliere")
   List<FonctionDto> findWithoutSource();
 
+  @Query(value = "select distinct apas.APERSONNE_ID " +
+    "from apersonnes_astructures apas " +
+    "inner join apersonne ap on ap.id = apas.APERSONNE_ID " +
+    "where apas.ASTRUCTURE_ID = :structureId " +
+    "and (" +
+    "apas.APERSONNE_ID not in (" +
+    "select distinct af.personne_fk " +
+    "from afonction af " +
+    "inner join fonction f on f.id = af.id " +
+    "inner join apersonne ap on ap.id = af.personne_fk " +
+    "where f.astructure_fk = :structureId" +
+    ") " +
+    "or apas.APERSONNE_ID not in (" +
+    "select distinct af.personne_fk " +
+    "from afonction af " +
+    "inner join fonction f on af.id = f.id " +
+    "inner join typefonctionfiliere tff on f.filiere_fk = tff.id " +
+    "inner join discipline d on f.discipline_poste_fk = d.id " +
+    "where f.astructure_fk = :structureId " +
+    "and (tff.codeFiliere  != '-' and d.code != '-' and f.discipline_poste_fk is not null) " +
+    "group by af.personne_fk " +
+    "having count(f.filiere_fk) > 0" +
+    ") " +
+    ") " +
+    "and ap.categorie in ('Enseignant', 'Non_enseignant_collectivite_locale', 'Non_enseignant_etablissement', 'Non_enseignant_service_academique')",
+    nativeQuery = true)
+  List<Long> findPersonnesWithoutFunctions(Long structureId);
+
   @Query("SELECT DISTINCT f.filiere.id " +
     "FROM Fonction f " +
     "WHERE f.structure.id = :id")

@@ -160,6 +160,18 @@ public class EtablissementController {
     }
     etablissement.setPersonnes(etabPersonnes);
 
+    List<SimplePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id);
+    if (!user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+      withoutFunction = withoutFunction.stream()
+        .map((personne) -> {
+          personne.setUid("");
+
+          return personne;
+        })
+        .collect(Collectors.toList());
+    }
+    etablissement.setWithoutFunctions(withoutFunction);
+
     List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);
     List<TypeFonctionFiliereDto> typesFonctionFiliere = fonctionService.getTypesFonctionFiliere(etablissement.getSource());
     List<DisciplineDto> disciplines = fonctionService.getDisciplines(etablissement.getSource());

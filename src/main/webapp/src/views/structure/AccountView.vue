@@ -57,7 +57,7 @@ const itemsPerPage = computed<number>(() => {
           :md="4"
           :lg="3"
           :xxl="2"
-          class="pa-2"
+          class="d-flex align-center pa-2"
         >
           <personne-card variant="flat" :personne="personne" />
         </v-col>

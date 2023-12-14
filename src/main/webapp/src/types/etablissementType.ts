@@ -25,6 +25,11 @@ export type Etablissement = {
   schoolStaff: Array<Filiere>;
   collectivityStaff: Array<Filiere>;
   academicStaff: Array<Filiere>;
+  withoutFunctions: Array<SimplePersonne>;
+  withoutFunctionsTeaching: Array<SimplePersonne>;
+  withoutFunctionsSchool: Array<SimplePersonne>;
+  withoutFunctionsCollectivity: Array<SimplePersonne>;
+  withoutFunctionsAcademic: Array<SimplePersonne>;
   permission?: string;
 };
 

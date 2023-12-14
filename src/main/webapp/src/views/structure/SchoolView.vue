@@ -3,6 +3,7 @@ import SelectFilter from '@/components/filter/SelectFilter.vue';
 import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';
+import { useStructureStore } from '@/stores/structureStore.ts';
 import { Etat } from '@/types/enums/Etat.ts';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
@@ -14,7 +15,10 @@ const configurationStore = useConfigurationStore();
 const { filterAccountStates, currentStructureConfig, isAdditional } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
-const { schoolStaff, isCustomMapping } = storeToRefs(fonctionStore);
+const { isCustomMapping } = storeToRefs(fonctionStore);
+
+const structureStore = useStructureStore();
+const { currentEtab } = storeToRefs(structureStore);
 
 const accountStates = computed<Array<Etat>>({
   get() {
@@ -44,7 +48,11 @@ const accountStates = computed<Array<Etat>>({
         <select-filter v-if="filterAccountStates" v-model="accountStates" :items="filterAccountStates" />
       </div>
     </div>
-    <filieres-layout :filieres="schoolStaff" :account-states="accountStates" />
+    <filieres-layout
+      :filieres="currentEtab?.schoolStaff"
+      :without-functions="currentEtab?.withoutFunctionsSchool"
+      :account-states="accountStates"
+    />
 
     <div class="fab ma-4 d-md-none">
       <v-btn

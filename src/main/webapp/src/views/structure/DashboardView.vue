@@ -66,7 +66,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
                 :md="4"
                 :lg="3"
                 :xxl="2"
-                class="pa-2"
+                class="d-flex align-center pa-2"
               >
                 <personne-card variant="tonal" :personne="personne" />
               </v-col>
@@ -99,7 +99,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
                 :md="4"
                 :lg="3"
                 :xxl="2"
-                class="pa-2"
+                class="d-flex align-center pa-2"
               >
                 <personne-card variant="tonal" :personne="personne" />
               </v-col>

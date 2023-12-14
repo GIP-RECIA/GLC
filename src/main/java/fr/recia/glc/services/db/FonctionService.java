@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -224,6 +225,11 @@ public class FonctionService {
 
   public List<DisciplineDto> getDisciplines(String source) {
     return disciplineRepository.findBySourceSarapis(source);
+  }
+
+  public List<SimplePersonneDto> getPersonnesWithoutFunctions(Long structureId) {
+    final List<Long> personnesIds = fonctionRepository.findPersonnesWithoutFunctions(structureId);
+    return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
   }
 
   public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<String> additional) {

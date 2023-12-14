@@ -63,39 +63,11 @@ export const useFonctionStore = defineStore('fonctions', () => {
 
   const isCustomMapping = computed<boolean>(() => customMapping.value != undefined);
 
-  const teachingStaff = computed<Array<Filiere> | undefined>(() => {
-    const { currentEtab } = structureStore;
-
-    return currentEtab?.teachingStaff;
-  });
-
-  const schoolStaff = computed<Array<Filiere> | undefined>(() => {
-    const { currentEtab } = structureStore;
-
-    return currentEtab?.schoolStaff;
-  });
-
-  const collectivityStaff = computed<Array<Filiere> | undefined>(() => {
-    const { currentEtab } = structureStore;
-
-    return currentEtab?.collectivityStaff;
-  });
-
-  const academicStaff = computed<Array<Filiere> | undefined>(() => {
-    const { currentEtab } = structureStore;
-
-    return currentEtab?.academicStaff;
-  });
-
   return {
     init,
     allFilieres,
     filieres,
     customMapping,
     isCustomMapping,
-    teachingStaff,
-    schoolStaff,
-    collectivityStaff,
-    academicStaff,
   };
 });

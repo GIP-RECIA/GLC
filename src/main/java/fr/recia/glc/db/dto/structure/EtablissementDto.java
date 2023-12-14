@@ -24,6 +24,7 @@ import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -65,6 +66,12 @@ public class EtablissementDto {
   private List<TypeFonctionFiliereDto> collectivityStaff;
   private List<TypeFonctionFiliereDto> academicStaff;
   private List<SimplePersonneDto> personnes;
+  @Setter(AccessLevel.NONE)
+  private List<SimplePersonneDto> withoutFunctions;
+  private List<SimplePersonneDto> withoutFunctionsTeaching;
+  private List<SimplePersonneDto> withoutFunctionsSchool;
+  private List<SimplePersonneDto> withoutFunctionsCollectivity;
+  private List<SimplePersonneDto> withoutFunctionsAcademic;
   private String permission;
 
   public EtablissementDto(Long id, String uai, Etat etat, EtatAlim etatAlim, String source, Date anneeScolaire,
@@ -186,6 +193,24 @@ public class EtablissementDto {
         return typeFonctionFiliere;
       })
       .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
+      .collect(Collectors.toList());
+  }
+
+  public void setWithoutFunctions(List<SimplePersonneDto> personnes) {
+    this.withoutFunctions = personnes;
+    setWithoutFunctionsTeaching(getPersonneByCategoriePersonne(CategoriePersonne.Enseignant));
+    setWithoutFunctionsSchool(getPersonneByCategoriePersonne(CategoriePersonne.Non_enseignant_etablissement));
+    setWithoutFunctionsCollectivity(getPersonneByCategoriePersonne(CategoriePersonne.Non_enseignant_collectivite_locale));
+    setWithoutFunctionsAcademic(getPersonneByCategoriePersonne(CategoriePersonne.Non_enseignant_service_academique));
+  }
+
+  private List<SimplePersonneDto> getPersonneByCategoriePersonne(CategoriePersonne categoriePersonne) {
+    final List<SimplePersonneDto> tmpPersonnes = withoutFunctions.stream()
+      .map(SimplePersonneDto::new)
+      .collect(Collectors.toList());
+
+    return tmpPersonnes.stream()
+      .filter(personne -> personne.getCategorie() == categoriePersonne)
       .collect(Collectors.toList());
   }
 
