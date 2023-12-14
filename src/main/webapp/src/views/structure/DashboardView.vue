@@ -2,6 +2,7 @@
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
 import { usePersonneStore } from '@/stores/personneStore.ts';
+import { useStructureStore } from '@/stores/structureStore.ts';
 import { DashboardPanel } from '@/types/enums/DashboardPanel.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { storeToRefs } from 'pinia';
@@ -14,8 +15,12 @@ const { t } = useI18n();
 const personneStore = usePersonneStore();
 const { deletingPersonnes, deletedPersonnes } = storeToRefs(personneStore);
 
+const structureStore = useStructureStore();
+const { currentEtab } = storeToRefs(structureStore);
+
 const pageItems = ref<Array<SimplePersonne> | undefined>();
 const pageItems2 = ref<Array<SimplePersonne> | undefined>();
+const pageItems3 = ref<Array<SimplePersonne> | undefined>();
 
 const itemsPerPage = computed<number>(() => {
   const { name } = useDisplay();
@@ -111,6 +116,41 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
             hide-single-page
             class="mt-4"
             @update:page="(items) => (pageItems2 = items)"
+          />
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+
+      <v-expansion-panel :value="DashboardPanel.WithoutFunctions" :elevation="0" rounded="lg">
+        <v-expansion-panel-title>
+          <div class="expansion-title">
+            {{
+              `${t('withoutFunctions')} (${currentEtab?.withoutFunctions ? currentEtab.withoutFunctions.length : 0})`
+            }}
+          </div>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-row v-if="pageItems3 && pageItems3.length > 0">
+            <transition-group>
+              <v-col
+                v-for="(personne, index) in pageItems3"
+                :key="index"
+                :cols="12"
+                :sm="6"
+                :md="4"
+                :lg="3"
+                :xxl="2"
+                class="d-flex align-center pa-2"
+              >
+                <personne-card variant="tonal" :personne="personne" />
+              </v-col>
+            </transition-group>
+          </v-row>
+          <custom-pagination
+            :items="currentEtab?.withoutFunctions"
+            :items-per-page="itemsPerPage"
+            hide-single-page
+            class="mt-4"
+            @update:page="(items) => (pageItems3 = items)"
           />
         </v-expansion-panel-text>
       </v-expansion-panel>
