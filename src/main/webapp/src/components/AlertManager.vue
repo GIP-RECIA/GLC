@@ -19,25 +19,14 @@ const { currentEtab } = storeToRefs(structureStore);
 
 const doAlert = (alert: Alert): void => {
   if (alert.action) {
-    switch (alert.title) {
-      case 'ADF.GEST':
-        requestAdd.value = {
-          i18n: 'additional.add.ADF.GEST',
-          function: 'ADF-GEST',
-          type: 'code',
-          searchList: administrativeList.value,
-        };
-        isQuickAdd.value = true;
-        break;
-      case 'DIR.D0010':
-        requestAdd.value = {
-          i18n: 'additional.add.DIR.D0010',
-          function: 'DIR-D0010',
-          type: 'code',
-          searchList: administrativeList.value,
-        };
-        isQuickAdd.value = true;
-        break;
+    if (alert.title) {
+      requestAdd.value = {
+        i18n: `additional.add.${alert.title}`,
+        function: alert.title.replace('.', '-'),
+        type: 'code',
+        searchList: administrativeList.value,
+      };
+      isQuickAdd.value = true;
     }
   }
 };
