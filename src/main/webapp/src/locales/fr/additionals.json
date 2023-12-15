@@ -5,6 +5,14 @@
     },
     "fonction": {
       "add": "Gestion des fonctions complémentaires"
+    },
+    "add": {
+      "ADF": {
+        "GEST": "Ajouter un Gestionnaire"
+      },
+      "DIR": {
+        "D0010": "Ajouter un directeur"
+      }
     }
   }
 }

@@ -65,4 +65,7 @@ public interface DisciplineRepository<T extends Discipline> extends AbstractRepo
     "ORDER BY d.source")
   List<String> findAllNonSarapisSources();
 
+  @Query(value = "select d.id from discipline d where d.code = :code and (d.source = :source or d.source = CONCAT('SarapisUi_', :source))", nativeQuery = true)
+  Long findByCode(String code, String source);
+
 }

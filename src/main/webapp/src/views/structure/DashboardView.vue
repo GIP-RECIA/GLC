@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AlertManager from '@/components/AlertManager.vue';
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
 import { usePersonneStore } from '@/stores/personneStore.ts';
@@ -49,15 +50,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
 
 <template>
   <v-container fluid>
-    <v-alert
-      v-for="(alert, index) in currentEtab?.alerts"
-      :key="index"
-      :title="alert.title && t(`alert.title.${alert.title}`)"
-      :text="alert.text && t(`alert.text.${alert.text}`)"
-      :type="alert.type"
-      rounded="lg"
-      class="mb-4"
-    />
+    <alert-manager />
 
     <v-expansion-panels v-model="panel">
       <v-expansion-panel :value="DashboardPanel.DeletingAccounts" :elevation="0" rounded="lg">

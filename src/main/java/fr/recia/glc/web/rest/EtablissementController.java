@@ -176,8 +176,8 @@ public class EtablissementController {
     etablissement.setWithoutFunctions(withoutFunction);
 
     List<AlertDto> alerts = new ArrayList<>();
-    if (!fonctionService.isDiscipline(id, "GEST")) alerts.add(AlertDto.builder().title("ADF.GEST").type(AlertType.error).build());
-    if (!fonctionService.isDiscipline(id, "D0010")) alerts.add(AlertDto.builder().title("DIR.D0010").type(AlertType.error).build());
+    if (!fonctionService.isDiscipline(id, "GEST")) alerts.add(AlertDto.builder().title("ADF.GEST").type(AlertType.error).action(true).build());
+    if (!fonctionService.isDiscipline(id, "D0010")) alerts.add(AlertDto.builder().title("DIR.D0010").type(AlertType.error).action(true).build());
     etablissement.setAlerts(alerts);
 
     List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);

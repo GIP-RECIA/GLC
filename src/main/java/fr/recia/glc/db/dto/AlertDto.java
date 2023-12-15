@@ -25,5 +25,6 @@ public class AlertDto {
   private String title;
   private String text;
   private AlertType type;
+  private boolean action;
 
 }

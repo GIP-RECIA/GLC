@@ -76,7 +76,7 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
     "inner join typefonctionfiliere tff on f.filiere_fk = tff.id " +
     "inner join discipline d on f.discipline_poste_fk = d.id " +
     "where f.astructure_fk = :structureId " +
-    "and (tff.codeFiliere  != '-' and d.code != '-' and f.discipline_poste_fk is not null) " +
+    "and (tff.codeFiliere != '-' and d.code != '-' and f.discipline_poste_fk is not null) " +
     "group by af.personne_fk " +
     "having count(f.filiere_fk) > 0" +
     ") " +

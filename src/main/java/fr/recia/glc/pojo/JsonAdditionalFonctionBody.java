@@ -24,5 +24,6 @@ public class JsonAdditionalFonctionBody {
 
   private Long structureId;
   private List<String> additional;
+  private String additionalCode;
 
 }

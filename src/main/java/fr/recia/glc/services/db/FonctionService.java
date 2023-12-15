@@ -232,6 +232,23 @@ public class FonctionService {
     return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
   }
 
+  public boolean saveAdditionalFonction(Long personneId, Long structureId, String additional) {
+    SimplePersonneDto personne = personneService.getPersonneSimple(personneId);
+    if (personne == null) return false;
+    if (!List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(personne.getEtat())) return false;
+    String source = personne.getSource().startsWith(Constants.SARAPISUI_)
+      ? personne.getSource().substring(Constants.SARAPISUI_.length())
+      : personne.getSource();
+
+    final String[] split = additional.split("-");
+    final Long filiere = typeFonctionFiliereRepository.findByCode(split[0], source);
+    final Long discipline = disciplineRepository.findByCode(split[1], source);
+    final String fonction = filiere + "-" + discipline;
+    log.debug("==>\n - {}\n - {}\n - {}\n<==", split, source, fonction);
+
+    return saveAdditionalFonctions(personneId, structureId, List.of(fonction));
+  }
+
   public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<String> additional) {
     SimplePersonneDto personne = personneService.getPersonneSimple(personneId);
     if (personne == null) return false;

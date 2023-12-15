@@ -97,7 +97,12 @@ public class PersonneController {
       throw new AccessDeniedException("Access is denied to anonymous !");
     }
 
-    boolean success = fonctionService.saveAdditionalFonctions(id, body.getStructureId(), body.getAdditional());
+    boolean success;
+    if (body.getAdditionalCode() == null) {
+      success = fonctionService.saveAdditionalFonctions(id, body.getStructureId(), body.getAdditional());
+    } else {
+      success = fonctionService.saveAdditionalFonction(id, body.getStructureId(), body.getAdditionalCode());
+    }
     if (!success) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     return new ResponseEntity<>(HttpStatus.OK);

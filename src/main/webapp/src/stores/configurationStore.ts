@@ -3,6 +3,7 @@ import type { Configuration } from '@/types/configurationType.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Identity } from '@/types/identityType.ts';
+import type { SimplePersonne } from '@/types/personneType.ts';
 import type { StructureConfiguration } from '@/types/structureConfigurationType.ts';
 import { getEtat } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
@@ -120,6 +121,14 @@ export const useConfigurationStore = defineStore('configuration', () => {
   const isAdditional = ref<boolean>(false);
   const isAddMode = ref<boolean>(false);
 
+  const isQuickAdd = ref<boolean>(false);
+  const requestAdd = ref<{
+    i18n?: string;
+    function?: string;
+    type: 'id' | 'code';
+    searchList?: Array<SimplePersonne>;
+  }>();
+
   /* -- Gestion de l'authentification -- */
 
   const identity = ref<Identity | undefined>();
@@ -144,6 +153,8 @@ export const useConfigurationStore = defineStore('configuration', () => {
     isLoading,
     isAdditional,
     isAddMode,
+    isQuickAdd,
+    requestAdd,
     identity,
     isAuthenticated,
   };

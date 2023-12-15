@@ -5,6 +5,14 @@
     },
     "fonction": {
       "add": "Manage additional functions"
+    },
+    "add": {
+      "ADF": {
+        "GEST": "Add a manager"
+      },
+      "DIR": {
+        "D0010": "Add a director"
+      }
     }
   }
 }
