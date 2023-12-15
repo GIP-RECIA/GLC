@@ -443,11 +443,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-            </manifest>
-          </archive>
           <packagingExcludes>
             WEB-INF/lib/tomcat-*.jar,
             WEB-INF/lib-provided,
@@ -461,11 +456,6 @@
             public/,
             src/,
           </warSourceExcludes>
-          <webResources>
-            <resource>
-              <directory>src/main/webapp/dist</directory>
-            </resource>
-          </webResources>
         </configuration>
       </plugin>
       <plugin>
