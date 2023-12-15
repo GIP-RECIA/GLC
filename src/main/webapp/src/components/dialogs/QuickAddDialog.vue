@@ -3,6 +3,7 @@ import PersonneSearch from '@/components/search/PersonneSearch.vue';
 import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/personneService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
+import { useStructureStore } from '@/stores/structureStore.ts';
 import { toIdentifier } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
 import debounce from 'lodash.debounce';
@@ -19,8 +20,11 @@ const { isEditAllowed } = configurationStore;
 const { currentStructureId, isQuickAdd, requestAdd } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
-const { initCurrentPersonne, refreshCurrentPersonne } = personneStore;
+const { initCurrentPersonne } = personneStore;
 const { currentPersonne, structureFonctions, structureAdditionalFonctions } = storeToRefs(personneStore);
+
+const structureStore = useStructureStore();
+const { refreshCurrentStructure } = structureStore;
 
 const modelValue = computed<boolean>({
   get() {
@@ -71,7 +75,7 @@ const save = async () => {
 
 const closeAndResetModal = (success?: boolean) => {
   if (success) {
-    refreshCurrentPersonne();
+    refreshCurrentStructure();
     toast.success(t('toast.additional.success.save'));
   } else if (!success && success != undefined) {
     toast.error(t('toast.additional.error.save'));

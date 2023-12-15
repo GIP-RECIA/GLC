@@ -5,6 +5,7 @@ import { setPersonneAdditional } from '@/services/personneService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
+import { useStructureStore } from '@/stores/structureStore.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { toIdentifier } from '@/utils/accountUtils.ts';
@@ -31,7 +32,7 @@ const fonctionStore = useFonctionStore();
 const { customMapping } = storeToRefs(fonctionStore);
 
 const personneStore = usePersonneStore();
-const { initCurrentPersonne, refreshCurrentPersonne } = personneStore;
+const { initCurrentPersonne } = personneStore;
 const {
   currentPersonne,
   structureFonctions,
@@ -40,6 +41,9 @@ const {
   hasStructureAdditionalFonctions,
   administrativeList,
 } = storeToRefs(personneStore);
+
+const structureStore = useStructureStore();
+const { refreshCurrentStructure } = structureStore;
 
 const modelValue = computed<boolean>({
   get() {
@@ -104,7 +108,7 @@ const closeAndResetModal = (success?: boolean) => {
   const { i18n } = saveButton.value;
   const title = i18n.replace('button.', '');
   if (success) {
-    refreshCurrentPersonne();
+    refreshCurrentStructure();
     toast.success(t(`toast.additional.success.${title}`));
   } else if (!success && success != undefined) {
     toast.error(t(`toast.additional.error.${title}`));
