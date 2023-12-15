@@ -88,6 +88,7 @@ watch(isSearchingOut, () => {
     <v-switch
       v-model="isSearchingOut"
       :label="t('searchOutOfStructure')"
+      color="primary"
       density="compact"
       class="mb-2"
       hide-details
