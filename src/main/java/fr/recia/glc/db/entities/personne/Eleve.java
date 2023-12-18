@@ -39,7 +39,7 @@ import java.util.Set;
 
 @Entity
 @Table(indexes = {
-  @Index(name = "sconetId", columnList = "sconetId"),
+  @Index(name = "siecleId", columnList = "siecleId"),
   @Index(name = "INE", columnList = "INE")
 })
 @Getter
@@ -50,7 +50,7 @@ public class Eleve extends APersonne {
    * Identifiant sconet.
    */
   @Column(length = IntConst.I15)
-  private String sconetId;
+  private String siecleId;
   /**
    * Identifiant National.
    */
@@ -135,7 +135,7 @@ public class Eleve extends APersonne {
   public String toString() {
     return "Eleve [" +
       super.toString() + ", " +
-      this.sconetId + ", " +
+      this.siecleId + ", " +
       this.INE + ", " +
       this.boursier + ", " +
       this.majeur + ", " +
