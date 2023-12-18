@@ -31,7 +31,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/vue-fontawesome": "3.0.5",
-    "@intlify/unplugin-vue-i18n": "^1.5.0",
+    "@intlify/unplugin-vue-i18n": "^1.6.0",
     "@playwright/test": "^1.40.1",
     "@rushstack/eslint-patch": "^1.6.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
