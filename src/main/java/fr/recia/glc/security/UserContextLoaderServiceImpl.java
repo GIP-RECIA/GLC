@@ -62,8 +62,8 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
 
   public void loadUserRoles(Authentication authentication) {
     loadUserRoles(
-      ((CustomUserDetails) authentication.getPrincipal()).getUser(),
-      ((CustomUserDetails) authentication.getPrincipal()).getAuthorities()
+            ((CustomUserDetails) authentication.getPrincipal()).getUser(),
+            ((CustomUserDetails) authentication.getPrincipal()).getAuthorities()
     );
   }
 
@@ -104,59 +104,59 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
 
     if (log.isDebugEnabled())
       log.debug(
-        "\n<==\n\t- UID : {}\n\t- authorities : {}\n\t- isMemberOf : {}\n==>",
-        user.getUserId(),
-        authorities,
-        user.getAttributes().get("isMemberOf").stream().map(s -> "\t\t- " + s).collect(Collectors.joining("\n", "\n", "\n"))
+              "\n<==\n\t- UID : {}\n\t- authorities : {}\n\t- isMemberOf : {}\n==>",
+              user.getUserId(),
+              authorities,
+              user.getAttributes().get("isMemberOf").stream().map(s -> "\t\t- " + s).collect(Collectors.joining("\n", "\n", "\n"))
       );
 
+    userSessionRoles.setSuperAdmin(false);
     if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN))) {
       userSessionRoles.setSuperAdmin(true);
     } else if (authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
-      userSessionRoles.setSuperAdmin(false);
       log.debug("Call loadUserRoles for USER access !");
-
-      List<String> allowed = new ArrayList<>();
-      List<String> denied = new ArrayList<>();
 
       Pattern permissionPattern = Pattern.compile(glcProperties.getUsers().getGroupName());
       user.getAttributes().get("isMemberOf").forEach(item -> {
         Matcher matcher = permissionPattern.matcher(item);
         if (matcher.find()) {
+          log.debug("Pattern match rights on structure for group attribute '{}', count of matchers '{}'", item, matcher.groupCount());
           PermissionType permission = null;
           switch (matcher.group(2)) {
-            case "admin":
-              permission = PermissionType.ADMIN;
+            case "central":
+              permission = PermissionType.MANAGER_BRANCH;
               break;
             case "local":
               permission = PermissionType.MANAGER;
               break;
             case "ESCOLAN":
-              permission = PermissionType.MANAGER;
+              permission = PermissionType.MANAGER_BRANCH;
               break;
             default:
               break;
           }
-          if (matcher.groupCount() > 2) {
-            StructureKey structureKey = structureLoader.getAllStructures().stream()
-              .filter(structure -> structure.getUAI().equals(matcher.group(3)))
-              .map(IStructure::getStructureKey)
-              .findAny().orElse(null);
-            if (structureKey != null) {
-              allowed.add(item);
-              userSessionRoles.addCtx(structureKey, permission);
-            } else denied.add(item);
+          if (PermissionType.MANAGER.equals(permission) && matcher.groupCount() > 2) {
+            log.debug("MANAGER + matcher group 3  {}", matcher.group(3));
+            structureLoader.getAllStructures().stream()
+                    .filter(structure -> structure.getUAI().equals(matcher.group(3)))
+                    .findFirst()
+                    .ifPresent(structure -> {
+                      log.debug("Add structure key {} to managed branch", structure.getStructureKey());
+                      userSessionRoles.addCtx(structure.getStructureKey(), PermissionType.MANAGER);
+                    });
+          } else if (PermissionType.MANAGER_BRANCH.equals(permission)) {
+            log.debug("MANAGER_BRANCH + matcher group 1  {}", matcher.group(1));
+            //TODO nécessité de fournir l'ensemble des structures ?
+            structureLoader.getAllStructures().stream()
+                    .filter(structure -> structure.getGroupBranch().equals(matcher.group(1)))
+                    .forEach(structure -> {
+                      log.debug("Add structure key {} to managed branch", structure.getStructureKey());
+                      userSessionRoles.addCtx(structure.getStructureKey(), PermissionType.MANAGER_BRANCH);
+                    });
           }
         }
       });
-
-      if (log.isDebugEnabled())
-        log.debug(
-          "\n<==\n\t- allowed : {}\n\t- denied : {}\n==>",
-          allowed.stream().map(s -> "\t\t- " + s).collect(Collectors.joining("\n", "\n", "\n")),
-          denied.stream().map(s -> "\t\t- " + s).collect(Collectors.joining("\n", "\n", "\n"))
-        );
-    } else userSessionRoles.setSuperAdmin(false);
+    }
     userSessionRoles.notifyEndLoading();
 
     if (log.isDebugEnabled()) log.debug("Tree loaded : {}", userSessionRoles.toString());
