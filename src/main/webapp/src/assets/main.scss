@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@use 'vuetify/styles' with (
+@use 'vuetify/settings' with (
   $color-pack: false,
   $utilities: false
 );
