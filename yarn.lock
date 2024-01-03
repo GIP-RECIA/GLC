@@ -1029,13 +1029,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^4.5.2":
-  version: 4.5.2
-  resolution: "@vitejs/plugin-vue@npm:4.5.2"
+"@vitejs/plugin-vue@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@vitejs/plugin-vue@npm:5.0.2"
   peerDependencies:
-    vite: ^4.0.0 || ^5.0.0
+    vite: ^5.0.0
     vue: ^3.2.25
-  checksum: 4d01d5222e5b96f5c90ef34260c57ff296d141a76011f9a41af0c4583a52b8666a8e14aed703fac7f53e0120fe3316f208c22d65af4a94efa92c7a53c36993c1
+  checksum: 6155aaf3f488762d91b8191b32edfc6fa59ad034abd85faa6b9a52f0291c7d8d58658f5b0dbfc752bec2346c703bbe4138395d5d84626210640dd32a8ae099e0
   languageName: node
   linkType: hard
 
@@ -3090,7 +3090,7 @@ __metadata:
     "@types/lodash.debounce": "npm:^4.0.9"
     "@types/lodash.isempty": "npm:^4.4.9"
     "@types/node": "npm:^20.9.1"
-    "@vitejs/plugin-vue": "npm:^4.5.2"
+    "@vitejs/plugin-vue": "npm:^5.0.2"
     "@vue/eslint-config-prettier": "npm:^9.0.0"
     "@vue/eslint-config-typescript": "npm:^12.0.0"
     "@vue/test-utils": "npm:^2.4.3"
