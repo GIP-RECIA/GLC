@@ -2547,7 +2547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:^9.18.1":
+"eslint-plugin-vue@npm:^9.19.2":
   version: 9.19.2
   resolution: "eslint-plugin-vue@npm:9.19.2"
   dependencies:
@@ -3077,7 +3077,7 @@ __metadata:
     dotenv: "npm:^16.3.1"
     dotenv-checker: "npm:^1.1.5"
     eslint: "npm:^8.56.0"
-    eslint-plugin-vue: "npm:^9.18.1"
+    eslint-plugin-vue: "npm:^9.19.2"
     husky: "npm:^8.0.3"
     jsdom: "npm:^23.0.0"
     lint-staged: "npm:^15.2.0"
