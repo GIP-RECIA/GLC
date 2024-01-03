@@ -3079,7 +3079,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     eslint-plugin-vue: "npm:^9.19.2"
     husky: "npm:^8.0.3"
-    jsdom: "npm:^23.0.0"
+    jsdom: "npm:^23.0.1"
     lint-staged: "npm:^15.2.0"
     lodash.debounce: "npm:^4.0.8"
     lodash.isempty: "npm:^4.4.0"
@@ -3841,7 +3841,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsdom@npm:^23.0.0":
+"jsdom@npm:^23.0.1":
   version: 23.0.1
   resolution: "jsdom@npm:23.0.1"
   dependencies:
