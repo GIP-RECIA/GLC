@@ -13,7 +13,7 @@ describe('ChipsFilter', () => {
         plugins: [...plugins],
       },
       props: {
-        tags: [
+        items: [
           { id: 1, i18n: 'foo' },
           { id: 2, i18n: 'bar' },
         ],
