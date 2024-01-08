@@ -33,6 +33,5 @@ public class PersonneUtils {
     return Date.from(suppressDate.atZone(ZoneId.systemDefault()).toInstant());
   }
 
-  
 
 }

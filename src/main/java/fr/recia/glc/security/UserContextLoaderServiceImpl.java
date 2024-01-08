@@ -17,8 +17,6 @@ package fr.recia.glc.security;
 
 import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.repositories.structure.TypeStructureRepository;
-import fr.recia.glc.ldap.IStructure;
-import fr.recia.glc.ldap.StructureKey;
 import fr.recia.glc.ldap.enums.PermissionType;
 import fr.recia.glc.services.beans.IStructureLoader;
 import fr.recia.glc.services.beans.UserContextRole;
@@ -30,9 +28,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -62,8 +58,8 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
 
   public void loadUserRoles(Authentication authentication) {
     loadUserRoles(
-            ((CustomUserDetails) authentication.getPrincipal()).getUser(),
-            ((CustomUserDetails) authentication.getPrincipal()).getAuthorities()
+      ((CustomUserDetails) authentication.getPrincipal()).getUser(),
+      ((CustomUserDetails) authentication.getPrincipal()).getAuthorities()
     );
   }
 
@@ -104,10 +100,10 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
 
     if (log.isDebugEnabled())
       log.debug(
-              "\n<==\n\t- UID : {}\n\t- authorities : {}\n\t- isMemberOf : {}\n==>",
-              user.getUserId(),
-              authorities,
-              user.getAttributes().get("isMemberOf").stream().map(s -> "\t\t- " + s).collect(Collectors.joining("\n", "\n", "\n"))
+        "\n<==\n\t- UID : {}\n\t- authorities : {}\n\t- isMemberOf : {}\n==>",
+        user.getUserId(),
+        authorities,
+        user.getAttributes().get("isMemberOf").stream().map(s -> "\t\t- " + s).collect(Collectors.joining("\n", "\n", "\n"))
       );
 
     userSessionRoles.setSuperAdmin(false);
@@ -138,21 +134,21 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
           if (PermissionType.MANAGER.equals(permission) && matcher.groupCount() > 2) {
             log.debug("MANAGER + matcher group 3  {}", matcher.group(3));
             structureLoader.getAllStructures().stream()
-                    .filter(structure -> structure.getUAI().equals(matcher.group(3)))
-                    .findFirst()
-                    .ifPresent(structure -> {
-                      log.debug("Add structure key {} to managed branch", structure.getStructureKey());
-                      userSessionRoles.addCtx(structure.getStructureKey(), PermissionType.MANAGER);
-                    });
+              .filter(structure -> structure.getUAI().equals(matcher.group(3)))
+              .findFirst()
+              .ifPresent(structure -> {
+                log.debug("Add structure key {} to managed branch", structure.getStructureKey());
+                userSessionRoles.addCtx(structure.getStructureKey(), PermissionType.MANAGER);
+              });
           } else if (PermissionType.MANAGER_BRANCH.equals(permission)) {
             log.debug("MANAGER_BRANCH + matcher group 1  {}", matcher.group(1));
-            //TODO nécessité de fournir l'ensemble des structures ?
+            // TODO nécessité de fournir l'ensemble des structures ?
             structureLoader.getAllStructures().stream()
-                    .filter(structure -> structure.getGroupBranch().equals(matcher.group(1)))
-                    .forEach(structure -> {
-                      log.debug("Add structure key {} to managed branch", structure.getStructureKey());
-                      userSessionRoles.addCtx(structure.getStructureKey(), PermissionType.MANAGER_BRANCH);
-                    });
+              .filter(structure -> structure.getGroupBranch().equals(matcher.group(1)))
+              .forEach(structure -> {
+                log.debug("Add structure key {} to managed branch", structure.getStructureKey());
+                userSessionRoles.addCtx(structure.getStructureKey(), PermissionType.MANAGER_BRANCH);
+              });
           }
         }
       });
