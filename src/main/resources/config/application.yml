@@ -36,26 +36,26 @@ app:
   cors:
     enable: true
     allow-credentials: true
-    allowed-origins: >
-      http://localhost:5173,
-      https://*.giprecia.net
-    exposed-headers: >
-      x-auth-token,
-      x-requested-with,
-      x-xsrf-token
-    allowed-headers: >
-      content-type,
-      authorization,
-      x-com-persist,
-      X-Auth-Token,
-      x-auth-token,
-      x-requested-with,
-      x-xsrf-token
-    allowed-methods: >
-      GET,
-      PUT,
-      POST,
-      DELETE
+    allowed-origins:
+      - http://localhost:5173
+      - https://*.giprecia.net
+    exposed-headers:
+      - x-auth-token
+      - x-requested-with
+      - x-xsrf-token
+    allowed-headers:
+      - content-type
+      - authorization
+      - x-com-persist
+      - X-Auth-Token
+      - x-auth-token
+      - x-requested-with
+      - x-xsrf-token
+    allowed-methods:
+      - GET,
+      - PUT,
+      - POST,
+      - DELETE
 
   custom-config:
     suppress-days: 20
