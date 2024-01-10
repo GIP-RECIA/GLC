@@ -26,6 +26,8 @@ const structureStore = useStructureStore();
 const configurationStore = useConfigurationStore();
 const { structureTab } = storeToRefs(configurationStore);
 
+const isDev = import.meta.env.DEV;
+
 watch(
   () => route.params.structureId,
   (newValue) => {
@@ -45,18 +47,18 @@ watch(
     class="mt-2"
   >
     <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tab.dashboard') }}</v-tab>
-    <v-tab :value="Tabs.Info">{{ t('tab.information') }}</v-tab>
+    <v-tab v-if="isDev" :value="Tabs.Info">{{ t('tab.information') }}</v-tab>
     <v-tab :value="Tabs.TeachingStaff">{{ t('tab.teachingStaff') }}</v-tab>
     <v-tab :value="Tabs.SchoolStaff">{{ t('tab.schoolStaff') }}</v-tab>
     <v-tab :value="Tabs.CollectivityStaff">{{ t('tab.collectivityStaff') }}</v-tab>
     <v-tab :value="Tabs.AcademicStaff">{{ t('tab.academicStaff') }}</v-tab>
-    <v-tab :value="Tabs.Accounts">{{ t('tab.accounts') }}</v-tab>
+    <v-tab v-if="isDev" :value="Tabs.Accounts">{{ t('tab.accounts') }}</v-tab>
   </v-tabs>
   <v-window v-model="structureTab">
     <v-window-item :value="Tabs.Dashboard" eager>
       <dashboard-view />
     </v-window-item>
-    <v-window-item :value="Tabs.Info" eager>
+    <v-window-item v-if="isDev" :value="Tabs.Info" eager>
       <info-view />
     </v-window-item>
     <v-window-item :value="Tabs.TeachingStaff" eager>
@@ -71,7 +73,7 @@ watch(
     <v-window-item :value="Tabs.AcademicStaff" eager>
       <academic-view />
     </v-window-item>
-    <v-window-item :value="Tabs.Accounts" eager>
+    <v-window-item v-if="isDev" :value="Tabs.Accounts" eager>
       <account-view />
     </v-window-item>
   </v-window>
