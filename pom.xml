@@ -451,6 +451,11 @@
             public/,
             src/,
           </warSourceExcludes>
+          <webResources>
+            <resource>
+              <directory>src/main/webapp/dist</directory>
+            </resource>
+          </webResources>
         </configuration>
       </plugin>
       <plugin>
