@@ -10,7 +10,7 @@ Gestion locale des comptes.
 ## Prepare environment
 
 ```bash
-./init.sh
+./scripts/init.sh
 ```
 
 Complete the `.env.local` (located at root) file and the `application-dev.yml` file (located in `src/main/resources/config`).
@@ -32,5 +32,5 @@ yarn dev
 ## Build
 
 ```bash
-./build.sh
+./scripts/build.sh
 ```
