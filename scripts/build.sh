@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
 
-echo "GLC Bulding Tool"
-echo ""
-echo "0 -> package"
-echo "1 -> shapshot"
-echo "2 -> release"
-echo ""
-
-read -p "Choose build type: " choice
-
 init () {
-  echo "--- Initialize ---"
-  source ./scripts/init.sh
+  read -r -p "Initialize environment? [y/N] " initialize
+  initialize=${initialize,,}
+
+  if [[ "$initialize" =~ ^(yes|y)$ ]]; then
+    echo "--- Initialize ---"
+    source ./scripts/init.sh
+  fi
+}
+
+build () {
+  read -r -p "Build frontend? [y/N] " frontend
+  frontend=${frontend,,}
+
+  if [[ "$frontend" =~ ^(yes|y)$ ]]; then
+    echo "--- Build frontend ---"
+    if ! yarn build; then exit; fi
+  fi
 }
 
 package () {
@@ -29,21 +35,33 @@ release () {
   ./mvnw clean package release:prepare release:perform -P prod -Dmaven.test.skip=true -Darguments="-DskipTests -Dmaven.deploy.skip=true"
 }
 
+echo "GLC Building Tool"
+echo ""
+echo "0 -> package"
+echo "1 -> snapshot"
+echo "2 -> release"
+echo ""
+
+read -r -p "Build type: " choice
+
 case $choice in
 
   0)
     init
-    if yarn build; then package; fi
+    build
+    package
   ;;
 
   1)
     init
-    if yarn build; then snapshot; fi
+    build
+    snapshot
   ;;
 
   2)
     init
-    if yarn build; then release; fi
+    build
+    release
   ;;
 
   *)
@@ -51,4 +69,3 @@ case $choice in
   ;;
 
 esac
-echo "GLC Builder"
