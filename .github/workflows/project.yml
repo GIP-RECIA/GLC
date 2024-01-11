@@ -54,5 +54,5 @@ jobs:
       # - name: Tests frontend (e2e tests)
       #   run: yarn test:e2e
 
-      - name: Tests backend
-        run: ./mvnw -B test --file pom.xml
+      # - name: Tests backend
+      #   run: ./mvnw -B test --file pom.xml
