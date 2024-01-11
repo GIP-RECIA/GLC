@@ -51,6 +51,7 @@ coverage
 *.local
 src/main/resources/**/application-*.yml
 !src/main/resources/**/application-*.example.yml
+*.bak
 
 ### Tests ###
 playwright-report
