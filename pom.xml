@@ -288,10 +288,8 @@
         <version>3.3.0</version>
         <configuration>
           <sortProperties>true</sortProperties>
-          <nrOfIndentSpace>4</nrOfIndentSpace>
           <sortDependencies>groupId,artifactId</sortDependencies>
           <sortPlugins>groupId,artifactId</sortPlugins>
-          <keepBlankLines>true</keepBlankLines>
           <expandEmptyElements>false</expandEmptyElements>
         </configuration>
         <executions>
