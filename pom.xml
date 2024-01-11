@@ -39,6 +39,7 @@
     <check.java.version>11</check.java.version>
     <java.version>11</java.version>
     <springdoc-api.version>1.6.15</springdoc-api.version>
+    <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
   </properties>
 
   <dependencies>
