@@ -205,18 +205,14 @@ public class SecurityConfiguration {
 
     http.headers().frameOptions().disable();
 
-    http
-      .authorizeHttpRequests(authz -> authz
-        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-        .antMatchers("/app/**/*.{js,html}", "/ui/**").permitAll()
-        .antMatchers("/health-check", "/api/config").permitAll()
-        .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.USER)
-        .antMatchers(
-          "/app/**",
-          PROTECTED_PATH + "**"
-        ).authenticated()
-        .anyRequest().denyAll()
-      );
+    http.authorizeHttpRequests(authz -> authz
+      .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+      .antMatchers("/app/**/*.{js,html}", "/ui/**").permitAll()
+      .antMatchers("/health-check", "/api/config").permitAll()
+      .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.USER)
+      .antMatchers("/app/**", PROTECTED_PATH + "**").authenticated()
+      .anyRequest().denyAll()
+    );
 
     http
       .logout()
