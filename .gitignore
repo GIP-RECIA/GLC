@@ -42,6 +42,7 @@ build/
 .pnp.*
 
 node_modules
+node
 .DS_Store
 dist
 dist-ssr
