@@ -12,7 +12,7 @@
 
   <groupId>fr.recia.glc</groupId>
   <artifactId>esco-glc</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.2</version>
   <packaging>war</packaging>
   <name>esco-glc</name>
   <description>API de Gestion Locale des Comptes</description>
@@ -20,7 +20,7 @@
   <scm>
     <connection>scm:git:ssh://git@github.com/GIP-RECIA/GLC.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/GIP-RECIA/GLC.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>0.0.2</tag>
     <url>https://github.com/GIP-RECIA/GLC.git</url>
   </scm>
 
@@ -38,8 +38,8 @@
   <properties>
     <check.java.version>11</check.java.version>
     <java.version>11</java.version>
-    <springdoc-api.version>1.6.15</springdoc-api.version>
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+    <springdoc-api.version>1.6.15</springdoc-api.version>
   </properties>
 
   <dependencies>
