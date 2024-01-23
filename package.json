@@ -33,7 +33,7 @@
     "@fortawesome/vue-fontawesome": "3.0.5",
     "@intlify/unplugin-vue-i18n": "^2.0.0",
     "@playwright/test": "^1.41.1",
-    "@rushstack/eslint-patch": "^1.6.1",
+    "@rushstack/eslint-patch": "^1.7.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@tsconfig/node20": "^20.1.2",
     "@types/jsdom": "^21.1.6",
