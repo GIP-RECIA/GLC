@@ -251,7 +251,11 @@ watch(isAddMode, (newValue) => {
             <readonly-data label="Source" :value="t('source.' + currentPersonne.source)" class="modal-flex-item" />
             <readonly-data
               :label="t('person.information.sourceModificationDate')"
-              :value="format(parseISO(currentPersonne.dateSourceModification), 'P')"
+              :value="
+                currentPersonne.dateSourceModification
+                  ? format(parseISO(currentPersonne.dateSourceModification), 'P')
+                  : undefined
+              "
               class="modal-flex-item"
             />
           </div>
