@@ -42,6 +42,9 @@ export default ({ mode }: { mode: string }) => {
           changeOrigin: true,
         },
       },
+      hmr: {
+        path: 'ws',
+      },
     },
     build: {
       rollupOptions: {
