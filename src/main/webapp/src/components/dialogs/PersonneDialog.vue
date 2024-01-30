@@ -2,6 +2,7 @@
 import ReadonlyData from '@/components/ReadonlyData.vue';
 import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue';
+import { app } from '@/constants.ts';
 import { setPersonneAdditional } from '@/services/personneService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';
@@ -11,6 +12,7 @@ import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import { getCategoriePersonne, getEtat, toIdentifier } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
+import { useSessionStorage } from '@vueuse/core';
 import { format, getYear, parseISO } from 'date-fns';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
@@ -171,6 +173,8 @@ watch(currentPersonne, (newValue) => {
 watch(isAddMode, (newValue) => {
   if (!newValue) preFill();
 });
+
+const isInfo2 = useSessionStorage<boolean>(`${app.slug}.is-info2`, true);
 </script>
 
 <template>
@@ -289,6 +293,10 @@ watch(isAddMode, (newValue) => {
                   </template>
                 </v-btn>
               </div>
+              <v-alert v-if="structureTab != Tabs.SchoolStaff" v-model="isInfo2" type="info" class="my-2" closable>
+                Pour gérer les fonctions complémentaires de ce profil, veuillez utiliser
+                <a href="/GLC" target="_self">GLC</a>.
+              </v-alert>
               <fonctions-layout :filieres="allFilieres" :fonctions="structureAdditionalFonctions" class="my-0 px-1" />
             </div>
           </div>

@@ -3,6 +3,7 @@ import { useFonctionStore } from './stores/fonctionStore.ts';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
+import { app } from '@/constants.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { storeToRefs } from 'pinia';
 import { onBeforeMount, watch } from 'vue';
@@ -28,6 +29,8 @@ const domain = window.location.hostname;
 watch(isAuthenticated, (newValue) => {
   newValue && fonctionStore.init();
 });
+
+document.title = app.name;
 </script>
 
 <template>
@@ -35,7 +38,7 @@ watch(isAuthenticated, (newValue) => {
     <header v-if="isAuthenticated">
       <extended-uportal-header
         :domain="domain"
-        service-name="Gestion Locale des Comptes"
+        :service-name="app.name"
         context-api-url="/portail"
         sign-out-url="/portail/Logout"
         default-org-logo-path="/annuaire_images/default_banner_v1.jpg"
@@ -60,8 +63,8 @@ watch(isAuthenticated, (newValue) => {
       />
       <v-toolbar density="compact" color="rgba(255, 255, 255, 0)">
         <v-progress-linear :active="isLoading" :indeterminate="isLoading" absolute bottom color="primary" />
-        <div class="d-flex align-center w-100 px-3">
-          GLC<custom-tab-bar class="ml-2" />
+        <div class="d-flex align-center w-100 px-1">
+          <custom-tab-bar />
           <v-spacer />
           <theme-switcher />
         </div>

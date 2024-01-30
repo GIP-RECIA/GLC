@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import CustomPagination from '@/components/CustomPagination.vue';
+import { app } from '@/constants.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
 import type { SimpleEtablissement } from '@/types/etablissementType.ts';
+import { useSessionStorage } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -60,10 +62,17 @@ const items = computed<Array<SimpleEtablissement> | undefined>(() => {
     });
   } else return etabs.value;
 });
+
+const isInfo = useSessionStorage<boolean>(`${app.slug}.is-info`, true);
 </script>
 
 <template>
   <v-container>
+    <v-alert v-model="isInfo" type="info" class="mb-8" closable>
+      Cette application vient compléter l'application de gestion des comptes en permettant de gérer plus finement les
+      fonctions des personnels administratifs. Elle remplacera progressivement l'application historique de gestion des
+      comptes de l'ENT.
+    </v-alert>
     <v-text-field
       v-model="search"
       :placeholder="t('search.structure.placeholder')"

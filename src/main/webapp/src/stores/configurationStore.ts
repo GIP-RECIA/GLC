@@ -1,3 +1,4 @@
+import { app } from '@/constants.ts';
 import { getConfiguration } from '@/services/configurationService.ts';
 import type { Configuration } from '@/types/configurationType.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
@@ -7,7 +8,7 @@ import type { SimplePersonne } from '@/types/personneType.ts';
 import type { StructureConfiguration } from '@/types/structureConfigurationType.ts';
 import { getEtat } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
-import { useStorage } from '@vueuse/core';
+import { useSessionStorage } from '@vueuse/core';
 import isEmpty from 'lodash.isempty';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
@@ -61,17 +62,16 @@ export const useConfigurationStore = defineStore('configuration', () => {
     return undefined;
   };
 
-  const filterAccountStates = computed<Array<enumValues & { value: string }> | undefined>(
-    () =>
-      configuration.value?.filterAccountStates?.map((state) => {
-        return { ...getEtat(state), value: state };
-      }),
+  const filterAccountStates = computed<Array<enumValues & { value: string }> | undefined>(() =>
+    configuration.value?.filterAccountStates?.map((state) => {
+      return { ...getEtat(state), value: state };
+    }),
   );
 
   /* --- Gestion des onglets de structure --- */
 
   const structures = ref(
-    useStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>('tabs', [], sessionStorage),
+    useSessionStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>(`${app.slug}.tabs`, []),
   );
   const appTab = ref<number | undefined>();
 
