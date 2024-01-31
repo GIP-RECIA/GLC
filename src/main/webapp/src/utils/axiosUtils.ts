@@ -2,10 +2,9 @@ import i18n from '@/plugins/i18n.ts';
 import { login } from '@/utils/casUtils.ts';
 import axios from 'axios';
 import { differenceInMilliseconds } from 'date-fns';
-import { useToast } from 'vue-toastification';
+import { toast } from 'vue3-toastify';
 
 const { t } = i18n.global;
-const toast = useToast();
 
 const { VITE_API_URI, VITE_REFRESH_IDENTITY_MILLISECONDS } = import.meta.env;
 

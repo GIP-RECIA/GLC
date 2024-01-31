@@ -2923,8 +2923,8 @@ __metadata:
     vue: "npm:^3.4.15"
     vue-i18n: "npm:9.9.0"
     vue-router: "npm:^4.2.5"
-    vue-toastification: "npm:v2.0.0-rc.5"
     vue-tsc: "npm:^1.8.27"
+    vue3-toastify: "npm:^0.2.1"
     vuetify: "npm:^3.5.1"
   languageName: unknown
   linkType: soft
@@ -5954,15 +5954,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-toastification@npm:v2.0.0-rc.5":
-  version: 2.0.0-rc.5
-  resolution: "vue-toastification@npm:2.0.0-rc.5"
-  peerDependencies:
-    vue: ^3.0.2
-  checksum: 10/da2698e8a24f3de99269d71327879c389236179225dca9112d1de971fcd2e809d83670e1195f3c59a232f8b53c5625b93d573e809da7cb587527b5d339ec9bdb
-  languageName: node
-  linkType: hard
-
 "vue-tsc@npm:^1.8.27":
   version: 1.8.27
   resolution: "vue-tsc@npm:1.8.27"
@@ -5975,6 +5966,18 @@ __metadata:
   bin:
     vue-tsc: bin/vue-tsc.js
   checksum: 10/fb84ff195de75e3529cf01b917f111bee561d15e1e437aa97a47e797f99f913783f24ec2d595271240240a21df08ba43b36aa7fc82a48a4c396a0f6d0e409376
+  languageName: node
+  linkType: hard
+
+"vue3-toastify@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "vue3-toastify@npm:0.2.1"
+  peerDependencies:
+    vue: ">=3.2.0"
+  peerDependenciesMeta:
+    vue:
+      optional: true
+  checksum: 10/cd11f2a5e8fcaf14f97c972a37fc745a8bad9bef0bd2b4ea648c9c05863b55ff2941522e288196f1afe9b22db9cd7327d60348e243826307f4d0a7beb8cafa5c
   languageName: node
   linkType: hard
 

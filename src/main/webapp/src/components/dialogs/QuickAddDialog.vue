@@ -9,11 +9,10 @@ import { errorHandler } from '@/utils/axiosUtils.ts';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
 import { computed, watch } from 'vue';
+import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
-import { useToast } from 'vue-toastification';
 
 const { t } = useI18n();
-const toast = useToast();
 
 const configurationStore = useConfigurationStore();
 const { isEditAllowed } = configurationStore;

@@ -7,10 +7,10 @@ import i18n from '@/plugins/i18n.ts';
 import pinia from '@/plugins/pinia.ts';
 import vuetify from '@/plugins/vuetify.ts';
 import router from '@/router/index.ts';
-import Toast from 'vue-toastification';
+import Vue3Toasity, { type ToastContainerOptions } from 'vue3-toastify';
 
 import 'vuetify/styles';
-import 'vue-toastification/dist/index.css';
+import 'vue3-toastify/dist/index.css';
 import '@/assets/main.scss';
 
 import App from '@/App.vue';
@@ -24,6 +24,6 @@ app.use(i18n);
 app.use(pinia);
 app.use(vuetify);
 app.use(router);
-app.use(Toast);
+app.use(Vue3Toasity, { limit: 0, newestOnTop: true, theme: 'colored' } as ToastContainerOptions);
 
 app.mount('#app');

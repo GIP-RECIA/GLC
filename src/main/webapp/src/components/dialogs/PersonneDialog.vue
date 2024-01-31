@@ -16,8 +16,8 @@ import { format, getYear, parseISO } from 'date-fns';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
+import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
-import { useToast } from 'vue-toastification';
 
 const configurationStore = useConfigurationStore();
 const { isEditAllowed, getLoginOffice } = configurationStore;
@@ -40,7 +40,6 @@ const {
 const { VITE_APP_SLUG } = import.meta.env;
 
 const { t } = useI18n();
-const toast = useToast();
 
 const modelValue = computed<boolean>({
   get() {
