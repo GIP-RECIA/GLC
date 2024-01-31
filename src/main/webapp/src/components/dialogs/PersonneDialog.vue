@@ -2,7 +2,6 @@
 import ReadonlyData from '@/components/ReadonlyData.vue';
 import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue';
-import { app } from '@/constants.ts';
 import { setPersonneAdditional } from '@/services/personneService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';
@@ -19,9 +18,6 @@ import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
-
-const { t } = useI18n();
-const toast = useToast();
 
 const configurationStore = useConfigurationStore();
 const { isEditAllowed, getLoginOffice } = configurationStore;
@@ -40,6 +36,11 @@ const {
   structureAdditionalFonctions,
   hasStructureAdditionalFonctions,
 } = storeToRefs(personneStore);
+
+const { VITE_APP_SLUG } = import.meta.env;
+
+const { t } = useI18n();
+const toast = useToast();
 
 const modelValue = computed<boolean>({
   get() {
@@ -174,7 +175,7 @@ watch(isAddMode, (newValue) => {
   if (!newValue) preFill();
 });
 
-const isInfo2 = useSessionStorage<boolean>(`${app.slug}.is-info2`, true);
+const isInfo2 = useSessionStorage<boolean>(`${VITE_APP_SLUG}.is-info2`, true);
 </script>
 
 <template>

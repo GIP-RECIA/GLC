@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import CustomPagination from '@/components/CustomPagination.vue';
-import { app } from '@/constants.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
 import type { SimpleEtablissement } from '@/types/etablissementType.ts';
@@ -10,13 +9,16 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
-const { t } = useI18n();
-
 const configurationStore = useConfigurationStore();
 const { search } = storeToRefs(configurationStore);
+
 const structureStore = useStructureStore();
 structureStore.init();
 const { etabs } = storeToRefs(structureStore);
+
+const { VITE_APP_SLUG } = import.meta.env;
+
+const { t } = useI18n();
 
 const pageItems = ref<Array<SimpleEtablissement> | undefined>();
 
@@ -63,7 +65,7 @@ const items = computed<Array<SimpleEtablissement> | undefined>(() => {
   } else return etabs.value;
 });
 
-const isInfo = useSessionStorage<boolean>(`${app.slug}.is-info`, true);
+const isInfo = useSessionStorage<boolean>(`${VITE_APP_SLUG}.is-info`, true);
 </script>
 
 <template>

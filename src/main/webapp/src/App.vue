@@ -3,7 +3,6 @@ import { useFonctionStore } from './stores/fonctionStore.ts';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
-import { app } from '@/constants.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { storeToRefs } from 'pinia';
 import { onBeforeMount, watch } from 'vue';
@@ -15,7 +14,11 @@ const { isLoading, isAuthenticated } = storeToRefs(configurationStore);
 const fonctionStore = useFonctionStore();
 isAuthenticated.value && fonctionStore.init();
 
+const { VITE_APP_NAME } = import.meta.env;
+
 onBeforeMount(() => {
+  document.title = VITE_APP_NAME;
+
   let extendedUportalHeaderScript = document.createElement('script');
   extendedUportalHeaderScript.setAttribute('src', '/commun/extended-uportal-header.min.js');
   document.head.appendChild(extendedUportalHeaderScript);
@@ -24,13 +27,11 @@ onBeforeMount(() => {
   document.head.appendChild(extendedUportalFooterScript);
 });
 
-const domain = window.location.hostname;
-
 watch(isAuthenticated, (newValue) => {
   newValue && fonctionStore.init();
 });
 
-document.title = app.name;
+const domain = window.location.hostname;
 </script>
 
 <template>
@@ -38,7 +39,7 @@ document.title = app.name;
     <header v-if="isAuthenticated">
       <extended-uportal-header
         :domain="domain"
-        :service-name="app.name"
+        :service-name="VITE_APP_NAME"
         context-api-url="/portail"
         sign-out-url="/portail/Logout"
         default-org-logo-path="/annuaire_images/default_banner_v1.jpg"

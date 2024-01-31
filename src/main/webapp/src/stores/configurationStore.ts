@@ -1,4 +1,3 @@
-import { app } from '@/constants.ts';
 import { getConfiguration } from '@/services/configurationService.ts';
 import type { Configuration } from '@/types/configurationType.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
@@ -14,6 +13,8 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 export const useConfigurationStore = defineStore('configuration', () => {
+  const { VITE_APP_SLUG } = import.meta.env;
+
   const configuration = ref<Configuration | undefined>();
 
   /**
@@ -71,7 +72,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
   /* --- Gestion des onglets de structure --- */
 
   const structures = ref(
-    useSessionStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>(`${app.slug}.tabs`, []),
+    useSessionStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>(`${VITE_APP_SLUG}.tabs`, []),
   );
   const appTab = ref<number | undefined>();
 
