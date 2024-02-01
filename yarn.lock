@@ -401,13 +401,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/vue-fontawesome@npm:3.0.5":
-  version: 3.0.5
-  resolution: "@fortawesome/vue-fontawesome@npm:3.0.5"
+"@fortawesome/vue-fontawesome@npm:3.0.6":
+  version: 3.0.6
+  resolution: "@fortawesome/vue-fontawesome@npm:3.0.6"
   peerDependencies:
     "@fortawesome/fontawesome-svg-core": ~1 || ~6
     vue: ">= 3.0.0 < 4"
-  checksum: 10/74c828a09f2c179bac8c550d80fb6c308eb925ac6ffa84197a77562996a5218b6271e2764d85ac0aa2841ef35d89d62e97444c60fc54cb950fb7a87efec05d40
+  checksum: 10/26e78c067d52c5fd314706b34cac84c13be707b27ec36a278e42c5c3eb3f98ca952c594de699757b55f628b44a2daa2672977c92c91849823063ccecb85a87c6
   languageName: node
   linkType: hard
 
@@ -2901,7 +2901,7 @@ __metadata:
     "@fortawesome/fontawesome-svg-core": "npm:^6.5.1"
     "@fortawesome/free-regular-svg-icons": "npm:^6.5.1"
     "@fortawesome/free-solid-svg-icons": "npm:^6.5.1"
-    "@fortawesome/vue-fontawesome": "npm:3.0.5"
+    "@fortawesome/vue-fontawesome": "npm:3.0.6"
     "@intlify/unplugin-vue-i18n": "npm:^2.0.0"
     "@playwright/test": "npm:^1.41.1"
     "@rushstack/eslint-patch": "npm:^1.7.2"
