@@ -24,6 +24,6 @@ app.use(i18n);
 app.use(pinia);
 app.use(vuetify);
 app.use(router);
-app.use(Vue3Toasity, { limit: 0, newestOnTop: true, theme: 'colored', clearOnUrlChange: false } as ToastContainerOptions);
+app.use(Vue3Toasity, { limit: 0, newestOnTop: true, theme: 'colored' } as ToastContainerOptions);
 
 app.mount('#app');
