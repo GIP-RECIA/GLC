@@ -91,7 +91,7 @@ const isInfo = useSessionStorage<boolean>(`${VITE_APP_SLUG}.is-info`, true);
     </v-text-field>
 
     <v-row v-if="pageItems && pageItems.length > 0">
-      <transition-group>
+      <transition-group name="custom">
         <v-col
           v-for="(etablissement, index) in pageItems"
           :key="index"

@@ -31,7 +31,7 @@ const newTab = () => {
 <template>
   <div class="scrollable-x">
     <div class="d-flex my-2">
-      <transition-group>
+      <transition-group name="custom">
         <custom-tab-item
           v-for="(structure, index) in structures"
           :key="index"

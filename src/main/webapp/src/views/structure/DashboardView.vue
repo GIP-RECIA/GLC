@@ -61,7 +61,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <v-row v-if="pageItems && pageItems.length > 0">
-            <transition-group>
+            <transition-group name="custom">
               <v-col
                 v-for="(personne, index) in pageItems"
                 :key="index"
@@ -94,7 +94,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <v-row v-if="pageItems2 && pageItems2.length > 0">
-            <transition-group>
+            <transition-group name="custom">
               <v-col
                 v-for="(personne, index) in pageItems2"
                 :key="index"
@@ -129,7 +129,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <v-row v-if="pageItems3 && pageItems3.length > 0">
-            <transition-group>
+            <transition-group name="custom">
               <v-col
                 v-for="(personne, index) in pageItems3"
                 :key="index"

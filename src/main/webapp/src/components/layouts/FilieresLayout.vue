@@ -47,11 +47,11 @@ const filteredWithoutFunctions = computed(() => {
 
 <template>
   <div v-show="filteredFilieres.length > 0">
-    <transition-group>
+    <transition-group name="custom">
       <div v-for="(filiere, index) in filteredFilieres" :key="index" class="pb-4">
         <div class="pb-2">{{ filiere.libelleFiliere }}</div>
         <v-row class="px-1">
-          <transition-group>
+          <transition-group name="custom">
             <v-col
               v-for="(discipline, index) in filiere.disciplines"
               :key="index"
@@ -64,7 +64,7 @@ const filteredWithoutFunctions = computed(() => {
               <v-card :subtitle="discipline.disciplinePoste" flat min-height="100%">
                 <v-card-text>
                   <v-row class="px-1 pb-1">
-                    <transition-group>
+                    <transition-group name="custom">
                       <v-col
                         v-for="(personne, index) in discipline.personnes"
                         :key="index"
@@ -90,7 +90,7 @@ const filteredWithoutFunctions = computed(() => {
     <v-card flat>
       <v-card-text>
         <v-row class="pa-1">
-          <transition-group>
+          <transition-group name="custom">
             <v-col
               v-for="(personne, index) in filteredWithoutFunctions"
               :key="index"

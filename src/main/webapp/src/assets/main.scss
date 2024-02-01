@@ -53,16 +53,13 @@
   }
 }
 
-.v-move,
-.v-enter-active,
-.v-leave-active {
+.custom-enter-active,
+.custom-leave-active {
   transition: all 0.5s ease;
 }
 
-.v-enter-from,
-.v-leave-to {
+.custom-enter-from,
+.custom-leave-to {
   opacity: 0;
-}
-
-.v-leave-active {
+  transform: translateY(-20px);
 }
