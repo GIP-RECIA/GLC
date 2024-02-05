@@ -31,8 +31,8 @@ jobs:
           cache: maven
       - name: Check license hearders
         run: ./mvnw license:check
-      # - name: Check NOTICE
-      #   run: ./mvnw -B notice:check
+      - name: Check NOTICE
+        run: ./mvnw -B notice:check
 
       # Setup Node
       - name: Use Node.js ${{ matrix.node }}
