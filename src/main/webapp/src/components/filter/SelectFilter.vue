@@ -1,24 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const props = defineProps<{
-  modelValue: Array<number | string>;
+defineProps<{
   items: Array<{ i18n: string; value: number | string; color?: string }>;
 }>();
 
-const emit = defineEmits<(event: 'update:modelValue', payload: Array<number | string>) => void>();
-
-const modelValue = computed<Array<number | string>>({
-  get() {
-    return props.modelValue;
-  },
-  set(payload: unknown) {
-    emit('update:modelValue', payload as Array<number | string>);
-  },
-});
+const modelValue = defineModel<Array<number | string>>();
 </script>
 
 <template>
