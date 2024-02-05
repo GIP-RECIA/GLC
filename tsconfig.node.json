@@ -10,7 +10,7 @@
   ],
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "noEmit": false,
+    "noEmit": true,
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",

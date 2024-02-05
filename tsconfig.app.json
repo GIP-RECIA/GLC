@@ -9,7 +9,6 @@
   "exclude": ["src/test/**/*"],
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "noEmit": false,
     "composite": true,
     "baseUrl": ".",
     "paths": {
