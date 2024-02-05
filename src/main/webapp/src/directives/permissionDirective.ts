@@ -19,9 +19,7 @@ const permission: Directive<HTMLElement, Array<string>> = (el, binding) => {
 
   watch(
     () => currentEtab.value?.permission,
-    (oldValue, newValue) => {
-      if (newValue != oldValue) checkPermissions();
-    },
+    () => checkPermissions(),
   );
 };
 

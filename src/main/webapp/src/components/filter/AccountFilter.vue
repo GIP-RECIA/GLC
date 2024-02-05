@@ -85,9 +85,7 @@ const filter = () => {
 
 watch(
   () => props.searchList,
-  (newValue, oldValue) => {
-    if (newValue != oldValue) filter();
-  },
+  () => filter(),
 );
 
 watch(filters, () => filter(), { deep: true });

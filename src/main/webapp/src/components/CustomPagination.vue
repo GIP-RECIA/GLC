@@ -38,17 +38,13 @@ const showPage = (page: number) => {
 
 watch(
   () => props.items,
-  (newValue, oldValue) => {
-    if (newValue?.length != oldValue?.length) showPage(1);
-  },
+  () => showPage(1),
   { immediate: true },
 );
 
 watch(
   () => props.itemsPerPage,
-  (newValue, oldValue) => {
-    if (newValue != oldValue) showPage(1);
-  },
+  () => showPage(1),
 );
 </script>
 

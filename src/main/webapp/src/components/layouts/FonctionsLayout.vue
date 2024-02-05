@@ -33,9 +33,7 @@ const filterFilieres = (): void => {
 
 watch(
   () => props.fonctions,
-  (newValue, oldValue) => {
-    if (newValue != oldValue) filterFilieres();
-  },
+  () => filterFilieres(),
   { immediate: true },
 );
 </script>
