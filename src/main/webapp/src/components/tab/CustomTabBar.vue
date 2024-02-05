@@ -2,6 +2,7 @@
 import CustomTabItem from '@/components/tab/CustomTabItem.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const configurationStore = useConfigurationStore();
@@ -26,10 +27,18 @@ const newTab = () => {
   router.push({ name: 'home' });
   appTab.value = undefined;
 };
+
+onMounted(() => {
+  const tabBar = document.querySelector('#tab-bar.scrollable-x');
+  tabBar?.addEventListener('wheel', (event) => {
+    event.preventDefault();
+    tabBar.scrollLeft += (event as WheelEvent).deltaY;
+  });
+});
 </script>
 
 <template>
-  <div class="scrollable-x">
+  <div id="tab-bar" class="scrollable-x">
     <div class="d-flex my-2">
       <transition-group name="custom">
         <custom-tab-item
@@ -59,6 +68,6 @@ const newTab = () => {
 <style scoped lang="scss">
 .scrollable-x {
   overflow-x: scroll;
-  scrollbar-width: thin;
+  scrollbar-width: none;
 }
 </style>
