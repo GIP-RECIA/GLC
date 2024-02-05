@@ -12,8 +12,6 @@ import { computed, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 const configurationStore = useConfigurationStore();
 const { isEditAllowed } = configurationStore;
 const { currentStructureId, isQuickAdd, requestAdd } = storeToRefs(configurationStore);
@@ -24,6 +22,8 @@ const { currentPersonne, structureFonctions, structureAdditionalFonctions } = st
 
 const structureStore = useStructureStore();
 const { refreshCurrentStructure } = structureStore;
+
+const { t } = useI18n();
 
 const modelValue = computed<boolean>({
   get() {

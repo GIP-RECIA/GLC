@@ -9,8 +9,6 @@ import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 const configurationStore = useConfigurationStore();
 const { filterAccountStates, currentStructureConfig, isAdditional } = storeToRefs(configurationStore);
 
@@ -19,6 +17,8 @@ const { isCustomMapping } = storeToRefs(fonctionStore);
 
 const structureStore = useStructureStore();
 const { currentEtab } = storeToRefs(structureStore);
+
+const { t } = useI18n();
 
 const accountStates = computed<Array<Etat>>({
   get() {

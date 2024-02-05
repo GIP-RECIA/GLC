@@ -37,8 +37,6 @@ const {
   hasStructureAdditionalFonctions,
 } = storeToRefs(personneStore);
 
-const { VITE_APP_SLUG } = import.meta.env;
-
 const { t } = useI18n();
 
 const modelValue = computed<boolean>({
@@ -174,7 +172,7 @@ watch(isAddMode, (newValue) => {
   if (!newValue) preFill();
 });
 
-const isInfo2 = useSessionStorage<boolean>(`${VITE_APP_SLUG}.is-info2`, true);
+const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
 </script>
 
 <template>

@@ -9,10 +9,10 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
-const { t } = useI18n();
-
 const personneStore = usePersonneStore();
 const { personnes } = storeToRefs(personneStore);
+
+const { t } = useI18n();
 
 const items = ref<Array<SimplePersonne> | undefined>();
 const pageItems = ref<Array<SimplePersonne> | undefined>();

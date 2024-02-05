@@ -6,8 +6,6 @@ import type { Alert } from '@/types/alertType.ts';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 const configurationStore = useConfigurationStore();
 const { isQuickAdd, requestAdd } = storeToRefs(configurationStore);
 
@@ -16,6 +14,8 @@ const { administrativeList } = storeToRefs(personneStore);
 
 const structureStore = useStructureStore();
 const { currentEtab } = storeToRefs(structureStore);
+
+const { t } = useI18n();
 
 const doAlert = (alert: Alert): void => {
   if (alert.action) {

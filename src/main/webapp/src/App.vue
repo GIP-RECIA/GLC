@@ -14,10 +14,8 @@ const { isLoading, isAuthenticated } = storeToRefs(configurationStore);
 const fonctionStore = useFonctionStore();
 isAuthenticated.value && fonctionStore.init();
 
-const { VITE_APP_NAME } = import.meta.env;
-
 onBeforeMount(() => {
-  document.title = VITE_APP_NAME;
+  document.title = __APP_NAME__;
 
   let extendedUportalHeaderScript = document.createElement('script');
   extendedUportalHeaderScript.setAttribute('src', '/commun/extended-uportal-header.min.js');
@@ -31,6 +29,7 @@ watch(isAuthenticated, (newValue) => {
   newValue && fonctionStore.init();
 });
 
+const appName = __APP_NAME__;
 const domain = window.location.hostname;
 </script>
 
@@ -39,7 +38,7 @@ const domain = window.location.hostname;
     <header v-if="isAuthenticated">
       <extended-uportal-header
         :domain="domain"
-        :service-name="VITE_APP_NAME"
+        :service-name="appName"
         context-api-url="/portail"
         sign-out-url="/portail/Logout"
         default-org-logo-path="/annuaire_images/default_banner_v1.jpg"

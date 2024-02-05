@@ -17,21 +17,21 @@ import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
-const { t } = useI18n();
-
-const route = useRoute();
+const isDev = import.meta.env.DEV;
 
 const structureStore = useStructureStore();
+const { initCurrentEtab } = structureStore;
 
 const configurationStore = useConfigurationStore();
 const { structureTab } = storeToRefs(configurationStore);
 
-const isDev = import.meta.env.DEV;
+const { t } = useI18n();
+const route = useRoute();
 
 watch(
   () => route.params.structureId,
   (newValue) => {
-    if (typeof newValue !== 'undefined' && newValue !== null) structureStore.initCurrentEtab(Number(newValue));
+    if (typeof newValue !== 'undefined' && newValue !== null) initCurrentEtab(Number(newValue));
   },
   { immediate: true },
 );

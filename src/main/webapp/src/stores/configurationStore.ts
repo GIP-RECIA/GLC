@@ -13,8 +13,6 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 export const useConfigurationStore = defineStore('configuration', () => {
-  const { VITE_APP_SLUG } = import.meta.env;
-
   const configuration = ref<Configuration | undefined>();
 
   /**
@@ -72,7 +70,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
   /* --- Gestion des onglets de structure --- */
 
   const structures = ref(
-    useSessionStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>(`${VITE_APP_SLUG}.tabs`, []),
+    useSessionStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>(`${__APP_SLUG__}.tabs`, []),
   );
   const appTab = ref<number | undefined>();
 
