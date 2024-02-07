@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AdditionalDialog from '@/components/dialogs/AdditionalDialog.vue';
-import PersonneDialog from '@/components/dialogs/PersonneDialog.vue';
 import QuickAddDialog from '@/components/dialogs/QuickAddDialog.vue';
+import PersonneDialog from '@/components/dialogs/personne/PersonneDialog.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
