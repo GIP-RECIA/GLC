@@ -4,6 +4,7 @@ import PersonneDialogInfo from '@/components/dialogs/personne/PersonneDialogInfo
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
+import { PersonneDialogState } from '@/types/enums/PersonneDialogState';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
@@ -12,7 +13,7 @@ import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
 const { isEditAllowed } = configurationStore;
-const { structureTab, isAddMode } = storeToRefs(configurationStore);
+const { structureTab, personneDialogState } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { customMapping, isCustomMapping } = storeToRefs(fonctionStore);
@@ -30,12 +31,15 @@ const modelValue = computed<boolean>({
 });
 
 const title = computed<string>(() => {
-  if (currentPersonne.value) {
-    return isAddMode.value
-      ? `${t('person.information.additionalFunction', 2)} - ${currentPersonne.value.cn}`
-      : currentPersonne.value.cn;
+  if (!currentPersonne.value) return '';
+  const { cn } = currentPersonne.value;
+  switch (personneDialogState.value) {
+    case PersonneDialogState.ManageAdditional:
+      return `${t('person.information.additionalFunction', 2)} - ${cn}`;
+    case PersonneDialogState.Info:
+    default:
+      return cn;
   }
-  return '';
 });
 
 // Reset modal on close
@@ -43,7 +47,7 @@ watch(isCurrentPersonne, (newValue) => {
   if (!newValue) {
     const reset = debounce(() => {
       currentPersonne.value = undefined;
-      isAddMode.value = false;
+      personneDialogState.value = PersonneDialogState.Info;
     }, 200);
     reset();
   }
@@ -55,16 +59,16 @@ watch(isCurrentPersonne, (newValue) => {
     <v-card>
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ title }}</v-toolbar-title>
-        <template v-if="!isAddMode" #append>
+        <template v-if="personneDialogState == PersonneDialogState.Info" #append>
           <v-btn icon="fas fa-xmark" color="default" variant="plain" @click="isCurrentPersonne = false" />
         </template>
       </v-toolbar>
 
-      <personne-dialog-info v-if="!isAddMode" :personne="currentPersonne" />
+      <personne-dialog-info v-if="personneDialogState == PersonneDialogState.Info" :personne="currentPersonne" />
 
       <personne-dialog-additional
         v-if="
-          isAddMode &&
+          personneDialogState == PersonneDialogState.ManageAdditional &&
           structureTab == Tabs.SchoolStaff &&
           isCustomMapping &&
           isEditAllowed(currentPersonne ? currentPersonne.etat : '')

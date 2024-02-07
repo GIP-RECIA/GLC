@@ -6,6 +6,7 @@ import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
 import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
+import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Personne } from '@/types/personneType.ts';
 import { getCategoriePersonne, getEtat } from '@/utils/accountUtils.ts';
@@ -17,7 +18,7 @@ import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
 const { isEditAllowed, getLoginOffice } = configurationStore;
-const { structureTab, isAddMode } = storeToRefs(configurationStore);
+const { structureTab, personneDialogState } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { allFilieres, isCustomMapping } = storeToRefs(fonctionStore);
@@ -141,7 +142,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
             density="compact"
             :text="t(hasStructureAdditionalFonctions ? 'button.edit' : 'button.add')"
             class="ml-2"
-            @click="isAddMode = true"
+            @click="personneDialogState = PersonneDialogState.ManageAdditional"
           >
             <template #prepend>
               <v-icon :icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />

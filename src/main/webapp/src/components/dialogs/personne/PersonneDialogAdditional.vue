@@ -3,6 +3,7 @@ import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
 import { setPersonneAdditional } from '@/services/personneService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
+import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
 import type { Filiere } from '@/types/filiereType.ts';
 import type { Personne } from '@/types/personneType.ts';
 import { toIdentifier } from '@/utils/accountUtils.ts';
@@ -13,7 +14,7 @@ import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
-const { currentStructureId, isAddMode } = storeToRefs(configurationStore);
+const { currentStructureId, personneDialogState } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
 const { refreshCurrentPersonne } = personneStore;
@@ -68,7 +69,7 @@ const save = async () => {
 };
 
 const cancel = () => {
-  isAddMode.value = false;
+  personneDialogState.value = PersonneDialogState.Info;
 };
 
 const resetAddMode = (success?: boolean) => {
@@ -79,7 +80,7 @@ const resetAddMode = (success?: boolean) => {
   } else if (!success && success != undefined) {
     toast.error(t(`toast.additional.error.${title}`));
   }
-  isAddMode.value = false;
+  cancel();
 };
 
 onMounted(() => {

@@ -1,6 +1,7 @@
 import { getConfiguration } from '@/services/configurationService.ts';
 import type { Configuration } from '@/types/configurationType.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
+import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Identity } from '@/types/identityType.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
@@ -115,10 +116,13 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   const isLoading = ref<boolean>(false);
 
+  /* -- Gestion de la modale personne -- */
+
+  const personneDialogState = ref<PersonneDialogState>(PersonneDialogState.Info);
+
   /* -- Gestion de la modale des complémentaires -- */
 
   const isAdditional = ref<boolean>(false);
-  const isAddMode = ref<boolean>(false);
 
   const isQuickAdd = ref<boolean>(false);
   const requestAdd = ref<{
@@ -150,8 +154,8 @@ export const useConfigurationStore = defineStore('configuration', () => {
     setStructureTab,
     search,
     isLoading,
+    personneDialogState,
     isAdditional,
-    isAddMode,
     isQuickAdd,
     requestAdd,
     identity,

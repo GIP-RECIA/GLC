@@ -18,12 +18,7 @@ import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
 const { isEditAllowed } = configurationStore;
-const {
-  currentStructureId,
-  structureTab,
-  isAdditional,
-  // isAddMode
-} = storeToRefs(configurationStore);
+const { currentStructureId, structureTab, isAdditional } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { customMapping } = storeToRefs(fonctionStore);
@@ -54,7 +49,6 @@ const modelValue = computed<boolean>({
 const setSelectedUser = (id: number | undefined) => {
   currentPersonne.value = undefined;
   if (id) {
-    // isAddMode.value = true;
     initCurrentPersonne(id, false);
   } else currentPersonne.value = undefined;
 };
