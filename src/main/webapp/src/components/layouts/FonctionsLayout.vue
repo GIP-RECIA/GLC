@@ -43,12 +43,13 @@ watch(
     <v-col v-for="(filiere, index) in filteredFilieres" :key="index" :cols="12" :md="6" class="pa-2">
       <v-card :subtitle="filiere.libelleFiliere" variant="tonal" min-height="100%">
         <v-card-text class="pb-2 mt--3">
-          <div class="v-chip-group v-chip-group--column v-theme--light">
+          <div class="v-chip-group v-chip-group--column flex-wrap">
             <v-chip
               v-for="(discipline, index) in filiere.disciplines"
               :key="index"
               :text="discipline.disciplinePoste"
               color="primary"
+              :ripple="false"
               rounded
             />
           </div>
