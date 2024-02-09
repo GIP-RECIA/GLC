@@ -9,7 +9,7 @@ import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Personne } from '@/types/personneType.ts';
-import { getCategoriePersonne, getEtat } from '@/utils/accountUtils.ts';
+import { getCategoriePersonne, getEtat, getIcon } from '@/utils/accountUtils.ts';
 import { useSessionStorage } from '@vueuse/core';
 import { format, getYear, parseISO } from 'date-fns';
 import { storeToRefs } from 'pinia';
@@ -120,7 +120,12 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
           </v-tooltip>
         </div>
       </readonly-data>
-      <readonly-data label="Source" :value="t('source.' + personne.source)" class="modal-flex-item" />
+      <readonly-data label="Source" class="modal-flex-item">
+        <div class="d-flex flex-row align-center w-fit">
+          <v-icon :icon="getIcon(personne.source)" size="small" class="mr-2 text-medium-emphasis" />
+          <div>{{ t('source.' + personne.source) }}</div>
+        </div>
+      </readonly-data>
       <readonly-data
         :label="t('person.information.sourceModificationDate')"
         :value="personne.dateSourceModification ? format(parseISO(personne.dateSourceModification), 'P') : undefined"
