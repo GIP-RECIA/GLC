@@ -1,7 +1,11 @@
+import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import type { endInfo } from '@/types/endInfoType.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
 import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
 import { Etat } from '@/types/enums/Etat.ts';
 import type { PersonneFonction } from '@/types/fonctionType.ts';
+import { differenceInCalendarMonths, isPast } from 'date-fns';
+import { storeToRefs } from 'pinia';
 
 const isLocal = (source: string): boolean => source.startsWith('SarapisUi_');
 
@@ -61,7 +65,40 @@ const getCategoriePersonne = (categorie: string): enumValues => {
   }
 };
 
+const getDateFin = (date: string): endInfo => {
+  const configurationStore = useConfigurationStore();
+  const { configuration } = storeToRefs(configurationStore);
+
+  if (isPast(date))
+    return {
+      date,
+      isPast: true,
+      i18n: 'person.function.hourglass.end',
+      color: '',
+      icon: 'fas fa-hourglass-end',
+    };
+  const months: number = differenceInCalendarMonths(date, new Date());
+  if (months < (configuration.value?.endFunctionWarning ?? 2))
+    return {
+      date,
+      months,
+      isPast: false,
+      i18n: 'person.function.hourglass.half',
+      color: 'warning',
+      icon: 'fas fa-hourglass-half',
+    };
+
+  return {
+    date,
+    months,
+    isPast: false,
+    i18n: 'person.function.hourglass.start',
+    color: 'primary',
+    icon: 'fas fa-hourglass-start',
+  };
+};
+
 const toIdentifier = (fonctions: Array<PersonneFonction> | undefined): Array<string> =>
   fonctions ? fonctions.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`) : [];
 
-export { isLocal, getIcon, getEtat, getCategoriePersonne, toIdentifier };
+export { isLocal, getIcon, getEtat, getCategoriePersonne, getDateFin, toIdentifier };

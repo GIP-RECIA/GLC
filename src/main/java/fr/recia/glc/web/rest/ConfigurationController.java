@@ -17,11 +17,13 @@ package fr.recia.glc.web.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.ldap.enums.PermissionType;
 import fr.recia.glc.models.mappers.LoginMapping;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,9 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/api/config")
 public class ConfigurationController {
+
+  @Autowired
+  private GLCProperties glcProperties;
 
   @GetMapping()
   public ResponseEntity<Object> getConfiguration() {
@@ -81,6 +86,8 @@ public class ConfigurationController {
       throw new RuntimeException(e);
     }
     data.put("loginOffices", loginOffices);
+
+    data.put("endFunctionWarning", glcProperties.getFront().getEndFunctionWarning());
 
     return new ResponseEntity<>(data, HttpStatus.OK);
   }

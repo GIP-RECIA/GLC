@@ -10,4 +10,5 @@ export type Configuration = {
       categoriesPersonne: Array<string>;
     }>;
   }>;
+  endFunctionWarning: number;
 };

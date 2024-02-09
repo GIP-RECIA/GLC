@@ -40,6 +40,13 @@
       "function": "Fonction | Fonctions",
       "additionalFunction": "Fonction complémentaire | Fonctions complémentaires",
       "additionalTeaching": "Enseignement complémentaire | Enseignements complémentaires"
+    },
+    "function": {
+      "hourglass": {
+        "start": "Expirera dans {months} mois ({date})",
+        "half": "Expire dans {months} mois ({date})",
+        "end": "A expiré le {date}"
+      }
     }
   }
 }

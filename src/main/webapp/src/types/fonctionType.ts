@@ -17,4 +17,5 @@ export type PersonneFonction = {
   filiere: number;
   source: string;
   structure: number;
+  dateFin?: string;
 };

@@ -30,6 +30,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -58,6 +61,9 @@ public abstract class AFonction extends AbstractTracedEntity {
   @JoinColumn(name = "personne_fk")
   private APersonne personne;
 
+  @Temporal(TemporalType.DATE)
+  private Date dateFin;
+
   /**
    * Constructeur de l'objet AFonction.java.
    */
@@ -84,7 +90,8 @@ public abstract class AFonction extends AbstractTracedEntity {
     return "AFonction [" +
       super.toString() + ", " +
       this.categorie + ", " +
-      this.source +
+      this.source + ", " +
+      this.dateFin +
       "]";
   }
 
@@ -106,6 +113,11 @@ public abstract class AFonction extends AbstractTracedEntity {
       result = prime * result;
     } else {
       result = prime * result + this.personne.hashCode();
+    }
+    if (this.dateFin == null) {
+      result = prime * result;
+    } else {
+      result = prime * result + this.dateFin.hashCode();
     }
     return result;
   }
@@ -141,6 +153,13 @@ public abstract class AFonction extends AbstractTracedEntity {
         return false;
       }
     } else if (!personne.equals(other.personne)) {
+      return false;
+    }
+    if (dateFin == null) {
+      if (other.dateFin != null) {
+        return false;
+      }
+    } else if (!dateFin.equals(other.dateFin)) {
       return false;
     }
     return true;

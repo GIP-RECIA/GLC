@@ -138,6 +138,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
   const isAuthenticated = computed<boolean>(() => !isEmpty(identity.value));
 
   return {
+    configuration,
     init,
     isInit,
     administrativeStaff,

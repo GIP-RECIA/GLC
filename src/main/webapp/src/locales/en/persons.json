@@ -40,6 +40,13 @@
       "function": "Fonction | Fonctions",
       "additionalFunction": "Additional function | Additional functions",
       "additionalTeaching": "Additional teaching | Additional teachings"
+    },
+    "function": {
+      "hourglass": {
+        "start": "Will expire in {months} month ({date}) | Will expire in {months} months ({date}) ",
+        "half": "Expires in {months} month ({date}) | Expires in {months} months ({date})",
+        "end": "Expired on {date}"
+      }
     }
   }
 }
