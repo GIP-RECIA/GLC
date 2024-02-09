@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
-import PersonneSearch from '@/components/search/PersonneSearch.vue';
+import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
 import { setPersonneAdditional } from '@/services/personneService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';

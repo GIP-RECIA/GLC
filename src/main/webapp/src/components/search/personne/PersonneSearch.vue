@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PersonneChip from '@/components/search/PersonneChip.vue';
-import PersonneListItem from '@/components/search/PersonneListItem.vue';
+import PersonneChip from '@/components/search/personne/PersonneChip.vue';
+import PersonneListItem from '@/components/search/personne/PersonneListItem.vue';
 import { searchPersonne } from '@/services/personneService.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';

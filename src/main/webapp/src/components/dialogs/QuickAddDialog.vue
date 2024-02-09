@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PersonneSearch from '@/components/search/PersonneSearch.vue';
+import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
 import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/personneService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
