@@ -87,7 +87,7 @@ public class ConfigurationController {
     }
     data.put("loginOffices", loginOffices);
 
-    data.put("endFunctionWarning", glcProperties.getFront().getEndFunctionWarning());
+    data.put("front", glcProperties.getFront());
 
     return new ResponseEntity<>(data, HttpStatus.OK);
   }

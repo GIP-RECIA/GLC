@@ -78,7 +78,7 @@ const getDateFin = (date: string): endInfo => {
       icon: 'fas fa-hourglass-end',
     };
   const months: number = differenceInCalendarMonths(date, new Date());
-  if (months < (configuration.value?.endFunctionWarning ?? 2))
+  if (months < (configuration.value?.front.endFunctionWarning ?? 2))
     return {
       date,
       months,
