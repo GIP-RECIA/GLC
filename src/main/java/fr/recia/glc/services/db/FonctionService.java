@@ -50,13 +50,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static fr.recia.glc.configuration.Constants.SANS_OBJET;
+import static fr.recia.glc.configuration.Constants.SARAPISUI_;
 
 @Slf4j
 @Service
@@ -106,19 +109,70 @@ public class FonctionService {
     return data;
   }
 
+  private boolean areSourcesEquals(String source1, String source2, boolean clean) {
+    if (clean) {
+      source1 = source1.startsWith(SARAPISUI_) ? source1.substring(SARAPISUI_.length()) : source1;
+      source2 = source2.startsWith(SARAPISUI_) ? source2.substring(SARAPISUI_.length()) : source2;
+    }
+
+    return Objects.equals(source1, source2);
+  }
+
+  private List<FonctionDto> getFonctionsFromMapping(
+    List<TypeFonctionFiliereDto> typesFonctionFiliere,
+    List<DisciplineDto> disciplines
+  ) {
+    List<FonctionDto> data = new ArrayList<>();
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // Lecture du fichier JSON
+    List<AdditionalFonctionMapping> jsonFile;
+    try {
+      File resource = new ClassPathResource("mapping/additionalFonctionMapping.json").getFile();
+      jsonFile = objectMapper.readValue(resource, new TypeReference<>() {
+      });
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    jsonFile.forEach(file -> {
+      file.getFilieres().forEach(filiere -> {
+        TypeFonctionFiliereDto filiereDto = typesFonctionFiliere.stream()
+          .filter(tffdto -> Objects.equals(tffdto.getCodeFiliere(), filiere.getCode()) && areSourcesEquals(tffdto.getSource(), file.getSource(), true))
+          .findAny()
+          .orElse(null);
+
+        filiere.getDisciplines().forEach(discipline -> {
+          DisciplineDto disciplineDto = disciplines.stream()
+            .filter(ddto -> Objects.equals(ddto.getCode(), discipline) && areSourcesEquals(ddto.getSource(), file.getSource(), true))
+            .findAny()
+            .orElse(null);
+
+          if (disciplineDto != null && filiereDto != null)
+            data.add(new FonctionDto(disciplineDto.getId(), filiereDto.getId(), file.getSource()));
+        });
+      });
+    });
+
+    return data;
+  }
+
   private List<TypeFonctionFiliereDto> getOfficial(String source) {
     // Recherche des filières, disciplines et fonctions les liants
-    List<FonctionDto> fonctions;
     List<TypeFonctionFiliereDto> typesFonctionFiliere;
     List<DisciplineDto> disciplines;
+    List<FonctionDto> fonctions;
     if (source.equals(ALL)) {
-      fonctions = fonctionRepository.findWithoutSource();
       typesFonctionFiliere = typeFonctionFiliereRepository.findWithoutSource();
       disciplines = disciplineRepository.findWithoutSource();
+      fonctions = new ArrayList<>(new LinkedHashSet<>(Stream.concat(
+        fonctionRepository.findWithoutSource().stream(),
+        getFonctionsFromMapping(typesFonctionFiliere, disciplines).stream()
+      ).collect(Collectors.toList())));
     } else {
-      fonctions = fonctionRepository.findBySource(source);
       typesFonctionFiliere = typeFonctionFiliereRepository.findBySource(source);
       disciplines = disciplineRepository.findBySource(source);
+      fonctions = fonctionRepository.findBySource(source);
     }
 
     // Retourne les filières et disciplines s'il n'y a pas de fonction les liants
@@ -139,13 +193,9 @@ public class FonctionService {
         return typeFonctionFiliere;
       }).collect(Collectors.toList());
 
-    if (source.equals(ALL))
-      return typesFonctionFiliere.stream()
-        .filter(typeFonctionFiliere -> !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
-        .collect(Collectors.toList());
     // Retrait des filières sans disciplines
     return typesFonctionFiliere.stream()
-      .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty() && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
+      .filter(typeFonctionFiliere -> (!source.equals(ALL) || !typeFonctionFiliere.getDisciplines().isEmpty()) && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
       .collect(Collectors.toList());
   }
 
