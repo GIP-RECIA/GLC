@@ -94,7 +94,6 @@ public class FonctionService {
     final List<TypeFonctionFiliereDto> typesFonctionFiliere = typeFonctionFiliereRepository.findWithoutSource();
     final List<DisciplineDto> disciplines = disciplineRepository.findWithoutSource();
     final List<FonctionDto> fonctions = fonctionRepository.findWithoutSource();
-    final List<FonctionDto> customMappingfonctions = getFonctionsFromMapping(typesFonctionFiliere, disciplines);
 
     final ArrayList<Object> data = new ArrayList<>();
 
@@ -105,7 +104,7 @@ public class FonctionService {
       disciplines,
       new ArrayList<>(new LinkedHashSet<>(Stream.concat(
         fonctions.stream(),
-        customMappingfonctions.stream()
+        getFonctionsFromMapping(typesFonctionFiliere, disciplines).stream()
       ).collect(Collectors.toList()))),
       ALL));
     data.add(all);
@@ -167,25 +166,23 @@ public class FonctionService {
     String source
   ) {
     if (!source.equals(ALL)) {
-      typesFonctionFiliere = typesFonctionFiliere.stream()
-        .filter(typeFonctionFiliere -> areSourcesEquals(typeFonctionFiliere.getSource(), source))
-        .collect(Collectors.toList());
-      disciplines = disciplines.stream()
-        .filter(discipline -> areSourcesEquals(discipline.getSource(), source))
-        .collect(Collectors.toList());
-      fonctions = fonctions.stream()
-        .filter(fonction -> areSourcesEquals(fonction.getSource(), source, false))
+      return getDisciplinesByFiliere(
+        typesFonctionFiliere.stream()
+          .filter(typeFonctionFiliere -> areSourcesEquals(typeFonctionFiliere.getSource(), source))
+          .collect(Collectors.toList()),
+        disciplines.stream()
+          .filter(discipline -> areSourcesEquals(discipline.getSource(), source))
+          .collect(Collectors.toList()),
+        fonctions.stream()
+          .filter(fonction -> areSourcesEquals(fonction.getSource(), source, false))
+          .collect(Collectors.toList()),
+        source
+      ).stream()
+        .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
         .collect(Collectors.toList());
     }
 
-    List<TypeFonctionFiliereDto> disciplinesByFiliere = getDisciplinesByFiliere(typesFonctionFiliere, disciplines, fonctions, source);
-
-    if (!source.equals(ALL))
-      return disciplinesByFiliere.stream()
-        .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
-        .collect(Collectors.toList());
-
-    return disciplinesByFiliere;
+    return getDisciplinesByFiliere(typesFonctionFiliere, disciplines, fonctions, source);
   }
 
   private Map<String, Object> getCustomMapping(String source) {
@@ -263,14 +260,24 @@ public class FonctionService {
   ) {
     if (fonctions.isEmpty()) return Collections.emptyList();
 
-    return typesFonctionFiliere.stream()
+    final List<TypeFonctionFiliereDto> tmpTypesFonctionFiliere = typesFonctionFiliere.stream()
+      .map(TypeFonctionFiliereDto::new)
+      .collect(Collectors.toList());
+    final List<DisciplineDto> tmpDisciplines = disciplines.stream()
+      .map(DisciplineDto::new)
+      .collect(Collectors.toList());
+    final List<FonctionDto> tmpFonctions = fonctions.stream()
+      .map(FonctionDto::new)
+      .collect(Collectors.toList());
+
+    return tmpTypesFonctionFiliere.stream()
       .filter(typeFonctionFiliere -> !typesFonctionFiliereToNotInclue.contains(typeFonctionFiliere.getLibelleFiliere()))
       .map(typeFonctionFiliere -> {
-        Set<Long> disciplineIds = fonctions.stream()
+        Set<Long> disciplineIds = tmpFonctions.stream()
           .filter(fonction -> Objects.equals(fonction.getFiliere(), typeFonctionFiliere.getId()))
           .map(FonctionDto::getDisciplinePoste)
           .collect(Collectors.toSet());
-        List<DisciplineDto> disciplinesInFiliere = disciplines.stream()
+        List<DisciplineDto> disciplinesInFiliere = tmpDisciplines.stream()
           .filter(discipline -> disciplineIds.contains(discipline.getId()) && !disciplinesToNotInclue.contains(discipline.getDisciplinePoste()))
           .collect(Collectors.toList());
         typeFonctionFiliere.setDisciplines(disciplinesInFiliere);

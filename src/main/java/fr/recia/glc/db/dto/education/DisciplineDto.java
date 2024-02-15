@@ -48,7 +48,9 @@ public class DisciplineDto {
     this.code = disciplineDto.getCode();
     this.disciplinePoste = disciplineDto.getDisciplinePoste();
     this.source = disciplineDto.getSource();
-    this.personnes = disciplineDto.getPersonnes().stream().map(SimplePersonneDto::new).collect(Collectors.toList());
+    if (disciplineDto.getPersonnes() != null)
+      this.personnes = disciplineDto.getPersonnes().stream().map(SimplePersonneDto::new).collect(Collectors.toList());
+    else this.personnes = null;
   }
 
 }

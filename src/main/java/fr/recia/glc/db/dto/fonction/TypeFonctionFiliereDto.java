@@ -48,7 +48,9 @@ public class TypeFonctionFiliereDto {
     this.codeFiliere = typeFonctionFiliereDto.getCodeFiliere();
     this.libelleFiliere = typeFonctionFiliereDto.getLibelleFiliere();
     this.source = typeFonctionFiliereDto.getSource();
-    this.disciplines = typeFonctionFiliereDto.getDisciplines().stream().map(DisciplineDto::new).collect(Collectors.toList());
+    if (typeFonctionFiliereDto.getDisciplines() != null)
+      this.disciplines = typeFonctionFiliereDto.getDisciplines().stream().map(DisciplineDto::new).collect(Collectors.toList());
+    else this.disciplines = null;
   }
 
 }

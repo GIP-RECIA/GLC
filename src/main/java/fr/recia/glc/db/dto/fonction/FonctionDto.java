@@ -65,4 +65,13 @@ public class FonctionDto {
     this.source = source;
   }
 
+  public FonctionDto(FonctionDto fonctionDto) {
+    this.personne = fonctionDto.getPersonne();
+    this.disciplinePoste = fonctionDto.getDisciplinePoste();
+    this.filiere = fonctionDto.getFiliere();
+    this.source = fonctionDto.getSource();
+    this.structure = fonctionDto.getStructure();
+    this.dateFin = fonctionDto.getDateFin();
+  }
+
 }
