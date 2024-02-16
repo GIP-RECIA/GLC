@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AdditionalDialog from '@/components/dialogs/AdditionalDialog.vue';
+import PersonneSearchDialog from '@/components/dialogs/PersonneSearchDialog.vue';
 import QuickAddDialog from '@/components/dialogs/QuickAddDialog.vue';
 import PersonneDialog from '@/components/dialogs/personne/PersonneDialog.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
@@ -78,7 +78,7 @@ watch(
     </v-window-item>
   </v-window>
   <personne-dialog />
-  <additional-dialog />
+  <personne-search-dialog />
   <quick-add-dialog />
 </template>
 
