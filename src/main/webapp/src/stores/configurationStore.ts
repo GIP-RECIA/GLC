@@ -120,7 +120,8 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   const personneDialogState = ref<PersonneDialogState>(PersonneDialogState.Info);
 
-  const isPersonneSearch = ref<boolean>(false);
+  const isAttach = ref<boolean>(false);
+  const attachMode = ref<boolean>(false);
 
   /* -- Gestion de la modale des complémentaires -- */
 
@@ -156,7 +157,8 @@ export const useConfigurationStore = defineStore('configuration', () => {
     search,
     isLoading,
     personneDialogState,
-    isPersonneSearch,
+    isAttach,
+    attachMode,
     isQuickAdd,
     requestAdd,
     identity,

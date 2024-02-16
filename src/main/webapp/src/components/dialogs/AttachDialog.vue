@@ -9,7 +9,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
-const { personneDialogState, isPersonneSearch } = storeToRefs(configurationStore);
+const { personneDialogState, isAttach, attachMode } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
@@ -19,7 +19,7 @@ const { t } = useI18n();
 
 const modelValue = computed<boolean>({
   get() {
-    return isPersonneSearch.value;
+    return isAttach.value;
   },
   set() {},
 });
@@ -31,7 +31,8 @@ const selectedUser = computed<SimplePersonne | undefined>({
   set(user) {
     currentPersonne.value = undefined;
     if (user) {
-      isPersonneSearch.value = false;
+      attachMode.value = true;
+      isAttach.value = false;
       personneDialogState.value = PersonneDialogState.ManageAdditional;
       initCurrentPersonne(user.id, true);
     }
@@ -45,7 +46,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ t('button.attach') }}</v-toolbar-title>
         <template #append>
-          <v-btn icon="fas fa-xmark" color="default" variant="plain" @click="isPersonneSearch = false" />
+          <v-btn icon="fas fa-xmark" color="default" variant="plain" @click="isAttach = false" />
         </template>
       </v-toolbar>
       <v-card-text class="pt-0 pb-6">

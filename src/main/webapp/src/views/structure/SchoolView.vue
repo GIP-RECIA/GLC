@@ -13,7 +13,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
-const { filterAccountStates, currentStructureConfig, isPersonneSearch } = storeToRefs(configurationStore);
+const { filterAccountStates, currentStructureConfig, isAttach } = storeToRefs(configurationStore);
 
 const fonctionStore = useFonctionStore();
 const { isCustomMapping } = storeToRefs(fonctionStore);
@@ -57,7 +57,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
         variant="tonal"
         prepend-icon="fas fa-link"
         class="d-none d-sm-flex me-2 custom-height"
-        @click="isPersonneSearch = true"
+        @click="isAttach = true"
       >
         {{ t('button.attach') }}
       </v-btn>
@@ -82,13 +82,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
     />
 
     <div class="fab ma-4 d-sm-none">
-      <v-btn
-        v-if="isCustomMapping"
-        variant="tonal"
-        size="x-large"
-        icon="fas fa-link"
-        @click="isPersonneSearch = true"
-      />
+      <v-btn v-if="isCustomMapping" variant="tonal" size="x-large" icon="fas fa-link" @click="isAttach = true" />
     </div>
   </v-container>
 </template>

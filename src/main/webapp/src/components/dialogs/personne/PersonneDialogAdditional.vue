@@ -14,12 +14,17 @@ import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
-const { currentStructureId, personneDialogState } = storeToRefs(configurationStore);
+const { currentStructureId, personneDialogState, attachMode } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
 const { refreshCurrentPersonne } = personneStore;
-const { structureFonctions, hasStructureFonctions, structureAdditionalFonctions, hasStructureAdditionalFonctions } =
-  storeToRefs(personneStore);
+const {
+  isCurrentPersonne,
+  structureFonctions,
+  hasStructureFonctions,
+  structureAdditionalFonctions,
+  hasStructureAdditionalFonctions,
+} = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -76,7 +81,10 @@ const save = async () => {
 };
 
 const cancel = () => {
-  personneDialogState.value = PersonneDialogState.Info;
+  if (attachMode.value) {
+    isCurrentPersonne.value = false;
+    attachMode.value = false;
+  } else personneDialogState.value = PersonneDialogState.Info;
 };
 
 const resetAddMode = (success?: boolean) => {
