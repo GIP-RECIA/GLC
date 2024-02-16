@@ -38,6 +38,7 @@ import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.models.mappers.AdditionalFonctionMapping;
 import fr.recia.glc.models.mappers.AdditionalFonctionMappingFiliere;
+import fr.recia.glc.utils.SourceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -318,9 +319,7 @@ public class FonctionService {
     final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
     if (aStructure == null) return false;
 
-    final String source = aStructure.getCleJointure().getSource().startsWith(Constants.SARAPISUI_)
-      ? aStructure.getCleJointure().getSource().substring(Constants.SARAPISUI_.length())
-      : aStructure.getCleJointure().getSource();
+    final String source = SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
 
     final String[] split = additional.split("-");
     final Long filiere = typeFonctionFiliereRepository.findByCode(split[0], source);
@@ -345,9 +344,7 @@ public class FonctionService {
       || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())
     ) return false;
 
-    final String source = aStructure.getCleJointure().getSource().startsWith(Constants.SARAPISUI_)
-      ? aStructure.getCleJointure().getSource()
-      : Constants.SARAPISUI_ + aStructure.getCleJointure().getSource();
+    final String source = Constants.SARAPISUI_ + SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
 
     final List<FonctionDto> toAddAdditional = getFunctions(toAddFunctions, source, structureId);
     final List<FonctionDto> toDeleteAdditional = getFunctions(toDeleteFunctions, source, structureId);
@@ -374,7 +371,7 @@ public class FonctionService {
 
       boolean isInStructure = aPersonneAStructureRepository.isInStructure(personneId, structureId) > 0;
       int officialFonctionsInStructure = (int) fonctionRepository.findByPersonne(personneId).stream()
-        .filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_) && Objects.equals(fonction.getStructure(), structureId))
+        .filter(fonction -> !SourceUtils.isSourceOfficial(fonction.getSource()) && Objects.equals(fonction.getStructure(), structureId))
         .count();
 
       switch (requiredAction) {

@@ -25,17 +25,22 @@ public class SourceUtils {
     throw new IllegalStateException("Utility class");
   }
 
+  public static boolean isSourceOfficial(String source) {
+    return !source.startsWith(SARAPISUI_);
+  }
+
+  public static String getOfficialSource(String source) {
+    return !isSourceOfficial(source) ? source.substring(SARAPISUI_.length()) : source;
+  }
+
   public static boolean areSourcesEquals(String source1, String source2) {
     return areSourcesEquals(source1, source2, true);
   }
 
   public static boolean areSourcesEquals(String source1, String source2, boolean strict) {
-    if (!strict) {
-      source1 = source1.startsWith(SARAPISUI_) ? source1.substring(SARAPISUI_.length()) : source1;
-      source2 = source2.startsWith(SARAPISUI_) ? source2.substring(SARAPISUI_.length()) : source2;
-    }
-
-    return Objects.equals(source1, source2);
+    return !strict
+      ? Objects.equals(getOfficialSource(source1), getOfficialSource(source2))
+      : Objects.equals(source1, source2);
   }
 
 }
