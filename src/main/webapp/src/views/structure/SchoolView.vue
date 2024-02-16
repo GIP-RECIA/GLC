@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SelectFilter from '@/components/filter/SelectFilter.vue';
 import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
-import PersonneSearchIn from '@/components/search/personne/PersonneSearchIn.vue';
+import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
@@ -61,7 +61,13 @@ const selectedUser = computed<SimplePersonne | undefined>({
       >
         {{ t('button.attach') }}
       </v-btn>
-      <personne-search-in v-model="selectedUser" :search-list="administrativeList" class="me-2" />
+      <personne-search
+        v-model="selectedUser"
+        :search-list="administrativeList"
+        search-type="IN"
+        variant="solo"
+        class="w-100 max-width me-2"
+      />
       <select-filter
         v-if="filterAccountStates"
         v-model="accountStates"
@@ -86,3 +92,9 @@ const selectedUser = computed<SimplePersonne | undefined>({
     </div>
   </v-container>
 </template>
+
+<style scoped lang="scss">
+.max-width {
+  max-width: 300px;
+}
+</style>

@@ -4,45 +4,44 @@ import PersonneListItem from '@/components/search/personne/PersonneListItem.vue'
 import { searchPersonne } from '@/services/personneService.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  searchList: Array<SimplePersonne> | undefined;
+  searchList?: Array<SimplePersonne>;
+  searchType?: 'IN' | 'OUT';
+  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled';
+  chips?: boolean;
 }>();
 
-const emit = defineEmits<(event: 'update:select', payload: number | undefined) => void>();
+const modelValue = defineModel<SimplePersonne | undefined>();
 
 const isLoading = ref<boolean>(false);
 const isHideNoData = ref<boolean>(true);
-const isSearchingOut = ref<boolean>(false);
-const select = ref<SimplePersonne | undefined>();
+const isSearchingOut = ref<boolean>(props.searchType == 'OUT');
 const items = ref<Array<SimplePersonne>>([]);
 
 const filterItems = (newSearch: string | undefined) => {
-  if (typeof newSearch !== 'undefined' && newSearch !== null) {
-    if (newSearch.length > 3 && !newSearch.includes('(')) {
-      newSearch = newSearch
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/\p{Diacritic}/gu, '');
+  if (newSearch && newSearch.length > 3 && !newSearch.includes('(')) {
+    newSearch = newSearch
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '');
 
-      isLoading.value = true;
-      isHideNoData.value = false;
-      isSearchingOut.value ? findOutOfStructure(newSearch) : findInStructure(newSearch);
-    } else {
-      items.value = [];
-      isLoading.value = false;
-      isHideNoData.value = true;
-    }
-  } else items.value = [];
+    isLoading.value = true;
+    isHideNoData.value = false;
+    isSearchingOut.value ? findOutOfStructure(newSearch) : findInStructure(newSearch);
+  } else {
+    items.value = [];
+    isLoading.value = false;
+    isHideNoData.value = true;
+  }
 };
 
 const findInStructure = (searchValue: string): void => {
   if (props.searchList) filterFromSource(props.searchList, searchValue);
-  isLoading.value = false;
 };
 
 let out: { request?: string; response: Array<SimplePersonne> } = {
@@ -60,9 +59,9 @@ const findOutOfStructure = async (searchValue: string) => {
       out.response = items.value;
     } catch (e) {
       errorHandler(e);
+      isLoading.value = false;
     }
   }
-  isLoading.value = false;
 };
 
 const filterFromSource = (source: Array<SimplePersonne>, searchValue: string): void => {
@@ -73,19 +72,14 @@ const filterFromSource = (source: Array<SimplePersonne>, searchValue: string): v
 
     return filter;
   });
+  isLoading.value = false;
 };
-
-watch(isSearchingOut, () => {
-  if (select.value != undefined) {
-    select.value = undefined;
-    emit('update:select', undefined);
-  }
-});
 </script>
 
 <template>
   <div>
     <v-switch
+      v-if="props.searchType == undefined"
       v-model="isSearchingOut"
       :label="t('searchOutOfStructure')"
       color="primary"
@@ -95,23 +89,24 @@ watch(isSearchingOut, () => {
       inset
     />
     <v-autocomplete
-      v-model="select"
-      :label="t('people', 1)"
+      v-model="modelValue"
       :items="items"
       :custom-filter="() => true"
       :hide-no-data="isHideNoData || isLoading"
       no-data-text="search.noResults"
       :item-title="['cn']"
       :placeholder="t('search.personne.placeholder')"
-      autofocus
+      density="compact"
+      :variant="variant"
+      rounded="xl"
+      menu-icon=""
+      prepend-inner-icon="fas fa-magnifying-glass"
+      :chips="chips"
+      clearable
       hide-details
       return-object
-      clearable
-      chips
-      variant="outlined"
+      flat
       @update:search="filterItems"
-      @click:clear="items = []"
-      @update:model-value="$emit('update:select', select?.id)"
     >
       <template #chip="{ props, item }">
         <personne-chip v-bind="props" :personne="item?.raw" />
@@ -119,8 +114,8 @@ watch(isSearchingOut, () => {
       <template #item="{ props, item }">
         <personne-list-item v-bind="props" :personne="item?.raw" />
       </template>
-      <template #prepend-inner>
-        <v-progress-circular v-show="isLoading" indeterminate />
+      <template #append-inner>
+        <v-progress-circular v-show="isLoading" indeterminate size="small" />
       </template>
     </v-autocomplete>
   </div>

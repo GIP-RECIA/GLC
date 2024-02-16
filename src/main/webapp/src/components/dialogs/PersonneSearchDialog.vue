@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PersonneSearchOut from '@/components/search/personne/PersonneSearchOut.vue';
+import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState';
@@ -49,7 +49,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
         </template>
       </v-toolbar>
       <v-card-text class="pt-0 pb-6">
-        <personne-search-out v-model="selectedUser" />
+        <personne-search v-model="selectedUser" search-type="OUT" variant="outlined" />
       </v-card-text>
     </v-card>
   </v-dialog>

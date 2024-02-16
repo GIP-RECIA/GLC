@@ -4,11 +4,12 @@ import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/se
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
+import type { SimplePersonne } from '@/types/personneType.ts';
 import { toIdentifier } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
 
@@ -38,11 +39,19 @@ const modelValue = computed<boolean>({
   set() {},
 });
 
-const setSelectedUser = (id: number | undefined) => {
-  currentPersonne.value = undefined;
-  if (id) initCurrentPersonne(id, false);
-  else currentPersonne.value = undefined;
-};
+const user = ref<SimplePersonne | undefined>();
+const selectedUser = computed<SimplePersonne | undefined>({
+  get() {
+    return user.value;
+  },
+  set(selected) {
+    currentPersonne.value = undefined;
+    if (selected) {
+      user.value = selected;
+      initCurrentPersonne(selected.id, false);
+    } else user.value = undefined;
+  },
+});
 
 const canSave = computed<boolean>(() => {
   const functions: Array<string> = [
@@ -117,7 +126,7 @@ watch(currentPersonne, (newValue) => {
 </script>
 
 <template>
-  <v-dialog v-model="modelValue" scrollable :max-width="1024">
+  <v-dialog v-model="modelValue" scrollable :max-width="1024 / 2">
     <v-card>
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ requestAdd?.i18n && t(requestAdd.i18n) }}</v-toolbar-title>
@@ -127,8 +136,9 @@ watch(currentPersonne, (newValue) => {
       </v-toolbar>
       <v-card-text class="py-0">
         <personne-search
+          v-model="selectedUser"
           :search-list="requestAdd?.searchList"
-          @update:select="setSelectedUser"
+          variant="outlined"
           :class="currentPersonne && isEditAllowed(currentPersonne.etat) ? 'mb-4' : 'mb-6'"
         />
       </v-card-text>
