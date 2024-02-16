@@ -314,35 +314,99 @@ public class FonctionService {
     return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
   }
 
-  public boolean saveAdditionalFonction(Long personneId, Long structureId, String additional) {
-    SimplePersonneDto personne = personneService.getPersonneSimple(personneId);
-    if (personne == null) return false;
-    if (!List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(personne.getEtat())) return false;
-    String source = personne.getSource().startsWith(Constants.SARAPISUI_)
-      ? personne.getSource().substring(Constants.SARAPISUI_.length())
-      : personne.getSource();
+  public boolean saveAdditionalFonction(Long personneId, Long structureId, String additional, String requiredAction) {
+    final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
+    if (aStructure == null) return false;
+
+    final String source = aStructure.getCleJointure().getSource().startsWith(Constants.SARAPISUI_)
+      ? aStructure.getCleJointure().getSource().substring(Constants.SARAPISUI_.length())
+      : aStructure.getCleJointure().getSource();
 
     final String[] split = additional.split("-");
     final Long filiere = typeFonctionFiliereRepository.findByCode(split[0], source);
     final Long discipline = disciplineRepository.findByCode(split[1], source);
+    if (filiere == null || discipline == null) return false;
     final String fonction = filiere + "-" + discipline;
-    log.debug("==>\n - {}\n - {}\n - {}\n<==", split, source, fonction);
 
-    return saveAdditionalFonctions(personneId, structureId, List.of(fonction));
+    return saveAdditionalFonctions(personneId, structureId, List.of(fonction), List.of(), requiredAction);
   }
 
-  public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<String> additional) {
-    SimplePersonneDto personne = personneService.getPersonneSimple(personneId);
-    if (personne == null) return false;
-    if (!List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(personne.getEtat())) return false;
-    String source = personne.getSource().startsWith(Constants.SARAPISUI_)
-      ? personne.getSource()
-      : Constants.SARAPISUI_ + personne.getSource();
+  public boolean saveAdditionalFonctions(
+    Long personneId,
+    Long structureId,
+    List<String> toAddFunctions,
+    List<String> toDeleteFunctions,
+    String requiredAction
+  ) {
+    final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
+    final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
+    if (aPersonne == null
+      || aStructure == null
+      || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())
+    ) return false;
 
-    List<FonctionDto> additionalFonctions = getAdditionalFonctions(personneId);
-    List<FonctionDto> requiredAdditional = additional.stream()
-      .map(fonction -> {
-        String[] split = fonction.split("-");
+    final String source = aStructure.getCleJointure().getSource().startsWith(Constants.SARAPISUI_)
+      ? aStructure.getCleJointure().getSource()
+      : Constants.SARAPISUI_ + aStructure.getCleJointure().getSource();
+
+    final List<FonctionDto> toAddAdditional = getFunctions(toAddFunctions, source, structureId);
+    final List<FonctionDto> toDeleteAdditional = getFunctions(toDeleteFunctions, source, structureId);
+
+    if (!toAddAdditional.isEmpty()) {
+      fonctionRepository.saveAll(toAddAdditional.stream()
+        .map(fonction -> {
+          TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
+          Discipline discipline = disciplineRepository.findById(fonction.getDisciplinePoste()).orElse(null);
+
+          return new Fonction(discipline, filiere, aStructure, aPersonne, source);
+        })
+        .collect(Collectors.toList()));
+    }
+
+    if (!toDeleteAdditional.isEmpty()) {
+      fonctionRepository.deleteAllById(toDeleteAdditional.stream()
+        .map(fonction -> fonctionRepository.findId(fonction.getDisciplinePoste(), fonction.getFiliere(), personneId, fonction.getStructure()))
+        .collect(Collectors.toList()));
+    }
+
+    if (!toAddAdditional.isEmpty() || !toDeleteAdditional.isEmpty()) {
+      fonctionRepository.flush();
+
+      boolean isInStructure = aPersonneAStructureRepository.isInStructure(personneId, structureId) > 0;
+      int officialFonctionsInStructure = (int) fonctionRepository.findByPersonne(personneId).stream()
+        .filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_) && Objects.equals(fonction.getStructure(), structureId))
+        .count();
+
+      switch (requiredAction) {
+        case "attach":
+          if (isInStructure || toAddAdditional.isEmpty()) {
+            log.error("Unable to attach user {} to structure {}", aPersonne.getId(), aStructure.getId());
+            break;
+          }
+          aPersonneAStructureRepository2.insertInStructure(personneId, structureId);
+          break;
+        case "detach":
+          if (!isInStructure || !toAddAdditional.isEmpty() || toDeleteAdditional.isEmpty() || officialFonctionsInStructure > 0) {
+            log.error("Unable to detach user {} to structure {}", aPersonne.getId(), aStructure.getId());
+            break;
+          }
+          aPersonneAStructureRepository2.deleteFromStructure(personneId, structureId);
+          break;
+        default:
+          break;
+      }
+      aPersonne.prePersist();
+      aPersonne.prePersistAPersonne();
+      aPersonneRepository.saveAndFlush(aPersonne);
+    }
+
+    return true;
+  }
+
+  public List<FonctionDto> getFunctions(List<String> strings, String source, Long structureId) {
+    return strings.stream()
+      .map(s -> {
+        String[] split = s.split("-");
 
         return new FonctionDto(
           Long.parseLong(split[1]),
@@ -352,65 +416,6 @@ public class FonctionService {
         );
       })
       .collect(Collectors.toList());
-
-    List<FonctionDto> newAdditional = requiredAdditional.stream()
-      .filter(fonction -> !additionalFonctions.contains(fonction))
-      .collect(Collectors.toList());
-
-    List<FonctionDto> deletedAdditional = additionalFonctions.stream()
-      .filter(fonction -> !requiredAdditional.contains(fonction))
-      .collect(Collectors.toList());
-
-    APersonne apersonne = aPersonneRepository.findById(personneId).orElse(null);
-    AStructure structure = aStructureRepository.findById(structureId).orElse(null);
-    if (apersonne == null || structure == null) return false;
-
-    int officialFonctionsInStructure = fonctionRepository.findByPersonne(personneId).stream()
-      .filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_) && Objects.equals(fonction.getStructure(), structureId))
-      .collect(Collectors.toList()).size();
-
-    boolean isInStructure = aPersonneAStructureRepository.isInStructure(personneId, structureId) > 0;
-    boolean attachToStructure = !isInStructure && !newAdditional.isEmpty();
-    boolean detachFromStructure = newAdditional.isEmpty() && !deletedAdditional.isEmpty() && additionalFonctions.size() == deletedAdditional.size() && officialFonctionsInStructure == 0;
-
-    log.debug(
-      "<==\n\t- additional fonctions : {}\n\t- require to add : {}\n\t- {} fonctions to add : {}\n\t- {} fonctions to delete : {}\n\t- is in structure : {}\n\t- attach to structure : {}\n\t- detach from structure : {}\n==>",
-      additionalFonctions,
-      requiredAdditional,
-      newAdditional.size(),
-      newAdditional,
-      deletedAdditional.size(),
-      deletedAdditional,
-      isInStructure,
-      attachToStructure,
-      detachFromStructure
-    );
-
-    List<Fonction> saveAdditional = newAdditional.stream()
-      .map(fonction -> {
-        Discipline discipline = disciplineRepository.findById(fonction.getDisciplinePoste()).orElse(null);
-        TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
-
-        return new Fonction(discipline, filiere, structure, apersonne, source);
-      })
-      .collect(Collectors.toList());
-
-    List<Long> deleteAdditionalIds = deletedAdditional.stream()
-      .map(fonction -> fonctionRepository.findId(fonction.getDisciplinePoste(), fonction.getFiliere(), personneId, fonction.getStructure()))
-      .collect(Collectors.toList());
-
-    if (!saveAdditional.isEmpty()) fonctionRepository.saveAll(saveAdditional);
-    if (!deleteAdditionalIds.isEmpty()) fonctionRepository.deleteAllById(deleteAdditionalIds);
-    if (!saveAdditional.isEmpty() || !deletedAdditional.isEmpty()) {
-      fonctionRepository.flush();
-      if (attachToStructure) aPersonneAStructureRepository2.insertInStructure(personneId, structureId);
-      if (detachFromStructure) aPersonneAStructureRepository2.deleteFromStructure(personneId, structureId);
-      apersonne.prePersist();
-      apersonne.prePersistAPersonne();
-      aPersonneRepository.saveAndFlush(apersonne);
-    }
-
-    return true;
   }
 
   public boolean isDiscipline(Long structureId, String disciplineCode) {

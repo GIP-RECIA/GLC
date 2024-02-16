@@ -18,7 +18,13 @@ const { currentStructureId, isQuickAdd, requestAdd } = storeToRefs(configuration
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
-const { currentPersonne, structureFonctions, structureAdditionalFonctions } = storeToRefs(personneStore);
+const {
+  currentPersonne,
+  structureFonctions,
+  hasStructureFonctions,
+  structureAdditionalFonctions,
+  hasStructureAdditionalFonctions,
+} = storeToRefs(personneStore);
 
 const structureStore = useStructureStore();
 const { refreshCurrentStructure } = structureStore;
@@ -48,6 +54,20 @@ const canSave = computed<boolean>(() => {
   return currentPersonne.value ? !alreadyHasFunction : false;
 });
 
+const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
+  if (!hasStructureFonctions.value && !hasStructureAdditionalFonctions.value)
+    return {
+      i18n: 'button.attach',
+      icon: 'fas fa-link',
+      color: 'success',
+    };
+  return {
+    i18n: 'button.save',
+    icon: 'fas fa-floppy-disk',
+    color: 'success',
+  };
+});
+
 const save = async () => {
   if (requestAdd.value?.function) {
     try {
@@ -56,12 +76,14 @@ const save = async () => {
           currentPersonne.value!.id,
           currentStructureId.value!,
           requestAdd.value.function,
+          saveButton.value.i18n.split('.')[1],
         );
       } else {
         await setPersonneAdditionalWithCode(
           currentPersonne.value!.id,
           currentStructureId.value!,
           requestAdd.value.function,
+          saveButton.value.i18n.split('.')[1],
         );
       }
       closeAndResetModal(true);
@@ -113,9 +135,9 @@ watch(currentPersonne, (newValue) => {
       <v-card-actions v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
         <v-spacer />
         <v-btn
-          color="success"
-          prepend-icon="fas fa-floppy-disk"
-          :text="t('button.save')"
+          :color="saveButton.color"
+          :prepend-icon="saveButton.icon"
+          :text="t(saveButton.i18n)"
           :disabled="!canSave"
           @click="save"
         />

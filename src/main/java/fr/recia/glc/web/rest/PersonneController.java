@@ -95,12 +95,24 @@ public class PersonneController {
       log.trace("user is not authenticated -> throw an error to redirect on authentication");
       throw new AccessDeniedException("Access is denied to anonymous !");
     }
+    if (!body.postDataOk()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     boolean success;
     if (body.getAdditionalCode() == null) {
-      success = fonctionService.saveAdditionalFonctions(id, body.getStructureId(), body.getAdditional());
+      success = fonctionService.saveAdditionalFonctions(
+        id,
+        body.getStructureId(),
+        body.getToAddFunctions(),
+        body.getToDeleteFunctions(),
+        body.getRequiredAction()
+      );
     } else {
-      success = fonctionService.saveAdditionalFonction(id, body.getStructureId(), body.getAdditionalCode());
+      success = fonctionService.saveAdditionalFonction(
+        id,
+        body.getStructureId(),
+        body.getAdditionalCode(),
+        body.getRequiredAction()
+      );
     }
     if (!success) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 

@@ -23,7 +23,15 @@ import java.util.List;
 public class JsonAdditionalFonctionBody {
 
   private Long structureId;
-  private List<String> additional;
+  private List<String> toAddFunctions;
+  private List<String> toDeleteFunctions;
+  private String requiredAction;
   private String additionalCode;
+
+  public boolean postDataOk() {
+    final boolean standard = (toAddFunctions != null && !toAddFunctions.isEmpty()) || (toDeleteFunctions != null && !toDeleteFunctions.isEmpty());
+
+    return (structureId != null && (standard || additionalCode != null) && requiredAction != null);
+  }
 
 }

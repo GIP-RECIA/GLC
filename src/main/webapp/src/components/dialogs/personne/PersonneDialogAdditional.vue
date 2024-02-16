@@ -60,7 +60,14 @@ const saveButton = computed<{ i18n: string; icon: string; color: string }>(() =>
 
 const save = async () => {
   try {
-    await setPersonneAdditional(props.personne!.id, currentStructureId.value!, selected.value);
+    const existFunctions = toIdentifier(structureAdditionalFonctions.value);
+    await setPersonneAdditional(
+      props.personne!.id,
+      currentStructureId.value!,
+      selected.value.filter((checked) => !existFunctions.includes(checked)),
+      existFunctions.filter((checked) => !selected.value.includes(checked)),
+      saveButton.value.i18n.split('.')[1],
+    );
     resetAddMode(true);
   } catch (e) {
     errorHandler(e);
