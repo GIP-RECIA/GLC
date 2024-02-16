@@ -21,27 +21,27 @@ const props = defineProps<{
 const filteredFilieres = ref<Array<Filiere>>([]);
 
 const filterFilieres = (): void => {
-  if (props.filieres && props.fonctions) {
-    const etabFonctions = props.fonctions.filter((fonction) => fonction.structure == currentStructureId.value);
-    const filiereIds = [...new Set(etabFonctions.map((fonction) => fonction.filiere))];
-    const disciplineIds = [...new Set(etabFonctions.map((fonction) => fonction.disciplinePoste))];
-    const datesFin = etabFonctions.map((fonction) => {
-      return { disciplinePoste: fonction.disciplinePoste, dateFin: fonction.dateFin };
-    });
+  if (!props.filieres || !props.fonctions) return;
 
-    filteredFilieres.value = props.filieres
-      .filter((filiere) => filiereIds.includes(filiere.id))
-      .map((filiere) => {
-        let disciplines = filiere.disciplines.filter((discipline) => disciplineIds.includes(discipline.id));
-        disciplines = disciplines.map((discipline) => {
-          const dateFin = datesFin.find((endDate) => endDate.disciplinePoste == discipline.id)?.dateFin;
+  const etabFonctions = props.fonctions.filter((fonction) => fonction.structure == currentStructureId.value);
+  const filiereIds = [...new Set(etabFonctions.map((fonction) => fonction.filiere))];
+
+  filteredFilieres.value = props.filieres
+    .filter((filiere) => filiereIds.includes(filiere.id))
+    .map((filiere) => {
+      const filiereFonctions = etabFonctions.filter((fonction) => fonction.filiere == filiere.id);
+      const disciplineIds = filiereFonctions.map((fonction) => fonction.disciplinePoste);
+
+      const disciplines = filiere.disciplines
+        .filter((discipline) => disciplineIds.includes(discipline.id))
+        .map((discipline) => {
+          const dateFin = filiereFonctions.find((fonction) => fonction.disciplinePoste == discipline.id)?.dateFin;
 
           return { ...discipline, endInfo: dateFin ? getDateFin(dateFin) : undefined };
         });
 
-        return { ...filiere, disciplines };
-      });
-  }
+      return { ...filiere, disciplines };
+    });
 };
 
 watch(
