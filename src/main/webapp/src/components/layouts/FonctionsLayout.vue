@@ -80,7 +80,7 @@ watch(
                   location="bottom start"
                 >
                   <template v-slot:activator="{ props }">
-                    <v-icon v-bind="props" :icon="discipline.endInfo.icon" size="x-small" class="ml-1" />
+                    <v-icon v-bind="props" :icon="discipline.endInfo.icon" size="x-small" class="ms-1" />
                   </template>
                 </v-tooltip>
               </template>

@@ -100,14 +100,14 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
           <div>{{ login.i18n }}</div>
           <v-tooltip v-if="login.info != undefined" :text="login.info" location="bottom start">
             <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" icon="fas fa-circle-info" color="info" size="small" class="ml-2" />
+              <v-icon v-bind="props" icon="fas fa-circle-info" color="info" size="small" class="ms-2" />
             </template>
           </v-tooltip>
         </div>
       </readonly-data>
       <readonly-data :label="t('person.information.status')" class="modal-flex-item">
         <div class="d-flex flex-row align-center w-fit">
-          <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="small" class="mr-2" />
+          <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="small" class="me-2" />
           <div>{{ t(etat.i18n) }}</div>
           <v-tooltip
             v-if="suppressDate != undefined"
@@ -115,14 +115,14 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
             location="bottom start"
           >
             <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" icon="fas fa-circle-info" color="info" size="small" class="ml-2" />
+              <v-icon v-bind="props" icon="fas fa-circle-info" color="info" size="small" class="ms-2" />
             </template>
           </v-tooltip>
         </div>
       </readonly-data>
       <readonly-data label="Source" class="modal-flex-item">
         <div class="d-flex flex-row align-center w-fit">
-          <v-icon :icon="getIcon(personne.source)" size="small" class="mr-2 text-medium-emphasis" />
+          <v-icon :icon="getIcon(personne.source)" size="small" class="me-2 text-medium-emphasis" />
           <div>{{ t('source.' + personne.source) }}</div>
         </div>
       </readonly-data>
@@ -146,7 +146,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
             variant="tonal"
             density="compact"
             :text="t(hasStructureAdditionalFonctions ? 'button.edit' : 'button.add')"
-            class="ml-2"
+            class="ms-2"
             @click="personneDialogState = PersonneDialogState.ManageAdditional"
           >
             <template #prepend>
