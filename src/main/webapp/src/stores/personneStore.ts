@@ -6,7 +6,7 @@ import type { PersonneFonction } from '@/types/fonctionType.ts';
 import type { Personne, SimplePersonne } from '@/types/personneType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
 import isEmpty from 'lodash.isempty';
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
 export const usePersonneStore = defineStore('personne', () => {
@@ -98,6 +98,42 @@ export const usePersonneStore = defineStore('personne', () => {
     return isEmpty(result) ? [] : result!;
   });
 
+  const teachingStaffList = computed<Array<SimplePersonne> | undefined>(() => {
+    const { currentEtab } = storeToRefs(structureStore);
+    const { configuration } = storeToRefs(configurationStore);
+
+    return currentEtab.value?.personnes.filter(
+      (personne) => personne.categorie == configuration.value?.front.staff.teaching,
+    );
+  });
+
+  const schoolStaffList = computed<Array<SimplePersonne> | undefined>(() => {
+    const { currentEtab } = storeToRefs(structureStore);
+    const { configuration } = storeToRefs(configurationStore);
+
+    return currentEtab.value?.personnes.filter(
+      (personne) => personne.categorie == configuration.value?.front.staff.school,
+    );
+  });
+
+  const collectivityStaffList = computed<Array<SimplePersonne> | undefined>(() => {
+    const { currentEtab } = storeToRefs(structureStore);
+    const { configuration } = storeToRefs(configurationStore);
+
+    return currentEtab.value?.personnes.filter(
+      (personne) => personne.categorie == configuration.value?.front.staff.collectivity,
+    );
+  });
+
+  const academicStaffList = computed<Array<SimplePersonne> | undefined>(() => {
+    const { currentEtab } = storeToRefs(structureStore);
+    const { configuration } = storeToRefs(configurationStore);
+
+    return currentEtab.value?.personnes.filter(
+      (personne) => personne.categorie == configuration.value?.front.staff.academic,
+    );
+  });
+
   /**
    * Retourne la liste des personnels administratifs de la structure courante
    * pour la recherche
@@ -121,6 +157,10 @@ export const usePersonneStore = defineStore('personne', () => {
     personnes,
     deletingPersonnes,
     deletedPersonnes,
+    teachingStaffList,
+    schoolStaffList,
+    collectivityStaffList,
+    academicStaffList,
     administrativeList,
   };
 });

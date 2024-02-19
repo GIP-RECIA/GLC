@@ -23,7 +23,7 @@ const { currentEtab } = storeToRefs(structureStore);
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
-const { currentPersonne, administrativeList } = storeToRefs(personneStore);
+const { currentPersonne, schoolStaffList } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -63,10 +63,10 @@ const selectedUser = computed<SimplePersonne | undefined>({
       </v-btn>
       <personne-search
         v-model="selectedUser"
-        :search-list="administrativeList"
+        :search-list="schoolStaffList"
         search-type="IN"
         variant="solo"
-        class="w-100 max-width me-2"
+        class="w-100 staff-search me-2"
       />
       <select-filter
         v-if="filterAccountStates"
@@ -86,9 +86,3 @@ const selectedUser = computed<SimplePersonne | undefined>({
     </div>
   </v-container>
 </template>
-
-<style scoped lang="scss">
-.max-width {
-  max-width: 300px;
-}
-</style>
