@@ -15,24 +15,16 @@
  */
 package fr.recia.glc.web.rest;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.recia.glc.configuration.GLCProperties;
-import fr.recia.glc.db.enums.CategoriePersonne;
-import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.ldap.enums.PermissionType;
-import fr.recia.glc.models.mappers.LoginMapping;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,25 +41,6 @@ public class ConfigurationController {
   public ResponseEntity<Object> getConfiguration() {
     Map<String, Object> data = new HashMap<>();
 
-    data.put("administrativeStaff", List.of(
-      CategoriePersonne.Non_enseignant_etablissement
-    ));
-
-    data.put("editAllowedStates", List.of(
-      Etat.Invalide,
-      Etat.Valide,
-      Etat.Bloque
-    ));
-
-    data.put("filterAccountStates", List.of(
-      Etat.Invalide,
-      Etat.Valide,
-      Etat.Bloque,
-      Etat.Delete,
-      Etat.Deleting,
-      Etat.Incertain
-    ));
-
     data.put("permissionTypes", List.of(
       PermissionType.ADMIN.getName(),
       PermissionType.MANAGER.getName(),
@@ -75,17 +48,6 @@ public class ConfigurationController {
       PermissionType.LOOKOVER.getName(),
       PermissionType.LOOKOVER_BRANCH.getName()
     ));
-
-    List<LoginMapping> loginOffices;
-    try {
-      File resource = new ClassPathResource("mapping/loginMapping.json").getFile();
-      ObjectMapper objectMapper = new ObjectMapper();
-      loginOffices = objectMapper.readValue(resource, new TypeReference<>() {
-      });
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    data.put("loginOffices", loginOffices);
 
     data.put("front", glcProperties.getFront());
 

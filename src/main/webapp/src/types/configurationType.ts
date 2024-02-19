@@ -1,17 +1,15 @@
 export type Configuration = {
-  administrativeStaff: Array<string>;
-  editAllowedStates: Array<string>;
-  filterAccountStates: Array<string>;
   permissionTypes: Array<string>;
-  loginOffices: Array<{
-    source: string;
-    guichets: Array<{
-      nom: string;
-      categoriesPersonne: Array<string>;
-    }>;
-  }>;
   front: {
     endFunctionWarning: number;
+    staff: {
+      teaching: string;
+      school: string;
+      collectivity: string;
+      academic: string;
+    };
+    editAllowedStates: Array<string>;
+    filterAccountStates: Array<string>;
     extendedUportalHeader: {
       componentPath: string;
       contextApiUrl: string;
@@ -40,5 +38,12 @@ export type Configuration = {
       componentPath: string;
       templateApiPath: string;
     };
+    loginOffices: Array<{
+      source: string;
+      guichets: Array<{
+        nom: string;
+        categoriesPersonne: Array<string>;
+      }>;
+    }>;
   };
 };

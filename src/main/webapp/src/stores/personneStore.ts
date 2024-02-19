@@ -106,7 +106,7 @@ export const usePersonneStore = defineStore('personne', () => {
     const { currentEtab } = structureStore;
     const { administrativeStaff } = configurationStore;
 
-    return currentEtab?.personnes.filter((personne) => administrativeStaff?.includes(personne.categorie));
+    return currentEtab?.personnes.filter((personne) => personne.categorie == administrativeStaff);
   });
 
   return {

@@ -35,16 +35,16 @@ export const useConfigurationStore = defineStore('configuration', () => {
   /**
    * Retourne la liste des types de personnel administratif
    */
-  const administrativeStaff = computed<Array<string> | undefined>(() => configuration.value?.administrativeStaff);
+  const administrativeStaff = computed<string | undefined>(() => configuration.value?.front.staff.school);
 
   const isEditAllowed = (etat: string): boolean => {
     if (configuration.value) {
-      return configuration.value.editAllowedStates.includes(etat);
+      return configuration.value.front.editAllowedStates.includes(etat);
     }
     return false;
   };
 
-  const loginOffices = computed(() => configuration.value?.loginOffices);
+  const loginOffices = computed(() => configuration.value?.front.loginOffices);
 
   const getLoginOffice = (categorie: string, source: string): string | undefined => {
     if (loginOffices.value) {
@@ -63,7 +63,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
   };
 
   const filterAccountStates = computed<Array<enumValues & { value: string }> | undefined>(() =>
-    configuration.value?.filterAccountStates?.map((state) => {
+    configuration.value?.front.filterAccountStates?.map((state) => {
       return { ...getEtat(state), value: state };
     }),
   );
