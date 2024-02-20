@@ -71,11 +71,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
         class="account-filter"
       />
     </div>
-    <filieres-layout
-      :filieres="filieresByStaff.school"
-      :without-functions="currentEtab?.withoutFunctionsSchool"
-      :account-states="accountStates"
-    />
+    <filieres-layout :filieres="filieresByStaff.school" :account-states="accountStates" />
 
     <div class="fab ma-4 d-sm-none">
       <v-btn

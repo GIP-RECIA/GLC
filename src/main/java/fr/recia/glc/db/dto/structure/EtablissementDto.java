@@ -63,12 +63,7 @@ public class EtablissementDto {
   private String logo;
   private List<TypeFonctionFiliereDto> filieres;
   private List<SimplePersonneDto> personnes;
-  @Setter(AccessLevel.NONE)
   private List<SimplePersonneDto> withoutFunctions;
-  private List<SimplePersonneDto> withoutFunctionsTeaching;
-  private List<SimplePersonneDto> withoutFunctionsSchool;
-  private List<SimplePersonneDto> withoutFunctionsCollectivity;
-  private List<SimplePersonneDto> withoutFunctionsAcademic;
   private List<AlertDto> alerts;
   private String permission;
 
@@ -114,69 +109,58 @@ public class EtablissementDto {
   }
 
   public void setFilieres(
-    Long structureId, String source, List<SimplePersonneDto> personnes, List<FonctionDto> fonctions,
-    List<TypeFonctionFiliereDto> typesFonctionFiliere, List<DisciplineDto> disciplines
+    List<FonctionDto> fonctions,
+    List<TypeFonctionFiliereDto> typesFonctionFiliere,
+    List<DisciplineDto> disciplines
   ) {
     if (fonctions.isEmpty()) return;
 
-    setFilieres(typesFonctionFiliere.stream()
-      // Ajout des disciplines aux filières
-      .map(typeFonctionFiliere -> {
-        // Filtre les fonctions de la filière
-        List<FonctionDto> fonctionsInFiliere = fonctions.stream()
-          .filter(fonction -> Objects.equals(fonction.getFiliere(), typeFonctionFiliere.getId()))
-          .collect(Collectors.toList());
-        // Liste les ID de disciplines de la filière
-        Set<Long> disciplineIds = fonctionsInFiliere.stream()
+    final List<TypeFonctionFiliereDto> filieresWithDisciplines = typesFonctionFiliere.stream()
+      .map(tff -> {
+        final Set<Long> disciplineIds = fonctions.stream()
+          .filter(fonction -> Objects.equals(fonction.getFiliere(), tff.getId()))
           .map(FonctionDto::getDisciplinePoste)
           .collect(Collectors.toSet());
-        // Liste les disciplines de la filière
-        List<DisciplineDto> disciplinesInFiliere = disciplines.stream()
-          .filter(discipline -> disciplineIds.contains(discipline.getId()) && !Objects.equals(discipline.getDisciplinePoste(), SANS_OBJET))
-          .collect(Collectors.toList());
-        // Ajout des personnes aux disciplines
-        disciplinesInFiliere = disciplinesInFiliere.stream()
+
+        final List<DisciplineDto> disciplinesWithPersonnes = disciplines.stream()
+          .map(DisciplineDto::new)
+          .filter(discipline -> disciplineIds.contains(discipline.getId()))
           .map(discipline -> {
-            // Liste des ID de personne de la discipline
-            Set<Long> personneIds = fonctionsInFiliere.stream()
-              .filter(fonction -> Objects.equals(fonction.getDisciplinePoste(), discipline.getId()))
+            final Set<Long> personneIds = fonctions.stream()
+              .filter(fonction -> Objects.equals(fonction.getFiliere(), tff.getId())
+                && Objects.equals(fonction.getDisciplinePoste(), discipline.getId())
+              )
               .map(FonctionDto::getPersonne)
               .collect(Collectors.toSet());
-            // Liste les personnes de la discipline
-            List<SimplePersonneDto> personnesInDiscipline = personnes.stream()
-              .filter(personne -> personneIds.contains(personne.getId()))
+
+            final List<SimplePersonneDto> personnesInDiscipline = personnes.stream()
+              .filter(personne -> {
+                if (Objects.equals(discipline.getDisciplinePoste(), SANS_OBJET)) {
+                  final List<FonctionDto> personneOtherFonctions = fonctions.stream()
+                    .filter(fonction -> Objects.equals(fonction.getPersonne(), personne.getId()))
+                    .filter(fonction -> !(Objects.equals(fonction.getFiliere(), tff.getId()) && Objects.equals(fonction.getDisciplinePoste(), discipline.getId())))
+                    .collect(Collectors.toList());
+
+                  if (!personneOtherFonctions.isEmpty()) return false;
+                }
+
+                return personneIds.contains(personne.getId());
+              })
               .collect(Collectors.toList());
             discipline.setPersonnes(personnesInDiscipline);
 
             return discipline;
           })
+          .filter(discipline -> discipline.getPersonnes() != null && !discipline.getPersonnes().isEmpty())
           .collect(Collectors.toList());
-        typeFonctionFiliere.setDisciplines(disciplinesInFiliere);
+        tff.setDisciplines(disciplinesWithPersonnes);
 
-        return typeFonctionFiliere;
+        return tff;
       })
-      // Retrait des filières sans disciplines
-      .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty() && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
-      .collect(Collectors.toList())
-    );
-  }
-
-  public void setWithoutFunctions(List<SimplePersonneDto> personnes) {
-    this.withoutFunctions = personnes;
-    setWithoutFunctionsTeaching(getPersonneByCategoriePersonne(CategoriePersonne.Enseignant));
-    setWithoutFunctionsSchool(getPersonneByCategoriePersonne(CategoriePersonne.Non_enseignant_etablissement));
-    setWithoutFunctionsCollectivity(getPersonneByCategoriePersonne(CategoriePersonne.Non_enseignant_collectivite_locale));
-    setWithoutFunctionsAcademic(getPersonneByCategoriePersonne(CategoriePersonne.Non_enseignant_service_academique));
-  }
-
-  private List<SimplePersonneDto> getPersonneByCategoriePersonne(CategoriePersonne categoriePersonne) {
-    final List<SimplePersonneDto> tmpPersonnes = withoutFunctions.stream()
-      .map(SimplePersonneDto::new)
+      .filter(tff -> !tff.getDisciplines().isEmpty())
       .collect(Collectors.toList());
-
-    return tmpPersonnes.stream()
-      .filter(personne -> personne.getCategorie() == categoriePersonne)
-      .collect(Collectors.toList());
+    setFilieres(filieresWithDisciplines);
   }
+
 
 }

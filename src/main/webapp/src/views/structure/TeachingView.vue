@@ -59,10 +59,6 @@ const selectedUser = computed<SimplePersonne | undefined>({
         class="account-filter"
       />
     </div>
-    <filieres-layout
-      :filieres="filieresByStaff.teaching"
-      :without-functions="currentEtab?.withoutFunctionsTeaching"
-      :account-states="accountStates"
-    />
+    <filieres-layout :filieres="filieresByStaff.teaching" :account-states="accountStates" />
   </v-container>
 </template>

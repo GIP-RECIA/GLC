@@ -2,7 +2,6 @@
 import PersonneCard from '@/components/PersonneCard.vue';
 import type { Discipline } from '@/types/disciplineType.ts';
 import type { Filiere } from '@/types/filiereType.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
 import isEmpty from 'lodash.isempty';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -11,7 +10,6 @@ const { t } = useI18n();
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined;
-  withoutFunctions: Array<SimplePersonne> | undefined;
   accountStates?: Array<string>;
 }>();
 
@@ -34,22 +32,15 @@ const filteredFilieres = computed<Array<Filiere>>(() => {
 
   return filieres;
 });
-
-const filteredWithoutFunctions = computed(() => {
-  let withoutFunctions = props.withoutFunctions ? props.withoutFunctions : [];
-  if (!isEmpty(props.accountStates)) {
-    withoutFunctions = withoutFunctions.filter((personne) => props.accountStates!.includes(personne.etat));
-  }
-
-  return withoutFunctions;
-});
 </script>
 
 <template>
   <div v-show="filteredFilieres.length > 0">
     <transition-group name="custom">
       <div v-for="(filiere, index) in filteredFilieres" :key="index" class="pb-4">
-        <div class="pb-2">{{ filiere.libelleFiliere }}</div>
+        <div class="text-uppercase pb-2">
+          {{ filiere.codeFiliere != '-' ? filiere.libelleFiliere : t('withoutFunctions') }}
+        </div>
         <v-row class="px-1">
           <transition-group name="custom">
             <v-col
@@ -61,7 +52,7 @@ const filteredWithoutFunctions = computed(() => {
               :xxl="3"
               class="pa-2"
             >
-              <v-card :subtitle="discipline.disciplinePoste" flat min-height="100%">
+              <v-card :subtitle="discipline.code != '-' ? discipline.disciplinePoste : ''" flat min-height="100%">
                 <v-card-text>
                   <v-row class="px-1 pb-1">
                     <transition-group name="custom">
@@ -85,33 +76,7 @@ const filteredWithoutFunctions = computed(() => {
     </transition-group>
   </div>
 
-  <div v-show="filteredWithoutFunctions.length > 0">
-    <div class="text-uppercase pb-2">{{ t('withoutFunctions') }}</div>
-    <v-card flat>
-      <v-card-text>
-        <v-row class="pa-1">
-          <transition-group name="custom">
-            <v-col
-              v-for="(personne, index) in filteredWithoutFunctions"
-              :key="index"
-              :cols="12"
-              :sm="6"
-              :md="3"
-              :lg="2"
-              class="d-flex align-center pa-2"
-            >
-              <personne-card variant="tonal" :personne="personne" />
-            </v-col>
-          </transition-group>
-        </v-row>
-      </v-card-text>
-    </v-card>
-  </div>
-
-  <div
-    v-if="filteredFilieres.length == 0 && filteredWithoutFunctions.length == 0"
-    class="d-flex flex-column align-center justify-center pa-10"
-  >
+  <div v-if="filteredFilieres.length == 0" class="d-flex flex-column align-center justify-center pa-10">
     <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
     <div class="pt-2">{{ t('search.noResults') }}</div>
   </div>

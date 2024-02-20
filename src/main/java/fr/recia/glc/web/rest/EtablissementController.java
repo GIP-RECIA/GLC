@@ -185,18 +185,7 @@ public class EtablissementController {
     List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);
     List<TypeFonctionFiliereDto> typesFonctionFiliere = fonctionService.getTypesFonctionFiliere(etablissement.getSource());
     List<DisciplineDto> disciplines = fonctionService.getDisciplines(etablissement.getSource());
-
-    log.debug(
-      "<==\n\t- structure : {}\n\t- filieres : {}\n\t- disciplines : {}\n\t- personnes : {}\n\t- source : {}\n\t- filieres of source : {}\n\t- disciplines of source : {}\n==>",
-      id,
-      fonctions.stream().map(FonctionDto::getFiliere).collect(Collectors.toSet()),
-      fonctions.stream().map(FonctionDto::getDisciplinePoste).collect(Collectors.toSet()),
-      fonctions.stream().map(FonctionDto::getPersonne).collect(Collectors.toSet()),
-      etablissement.getSource().startsWith(SARAPISUI_) ? etablissement.getSource() : etablissement.getSource() + " AND " + SARAPISUI_ + etablissement.getSource(),
-      typesFonctionFiliere.stream().map(TypeFonctionFiliereDto::getId).collect(Collectors.toSet()),
-      disciplines.stream().map(DisciplineDto::getId).collect(Collectors.toSet())
-    );
-    etablissement.setFilieres(id, etablissement.getSource(), etabPersonnes, fonctions, typesFonctionFiliere, disciplines);
+    etablissement.setFilieres(fonctions, typesFonctionFiliere, disciplines);
 
     return new ResponseEntity<>(etablissement, HttpStatus.OK);
   }
