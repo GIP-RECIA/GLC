@@ -2,8 +2,8 @@
 import PersonneDialogAdditional from '@/components/dialogs/personne/PersonneDialogAdditional.vue';
 import PersonneDialogInfo from '@/components/dialogs/personne/PersonneDialogInfo.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
+import { useStructureStore } from '@/stores/structureStore.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import debounce from 'lodash.debounce';
@@ -15,8 +15,8 @@ const configurationStore = useConfigurationStore();
 const { isEditAllowed } = configurationStore;
 const { structureTab, personneDialogState } = storeToRefs(configurationStore);
 
-const fonctionStore = useFonctionStore();
-const { customMapping, isCustomMapping } = storeToRefs(fonctionStore);
+const stcuctureStore = useStructureStore();
+const { fonction } = storeToRefs(stcuctureStore);
 
 const personneStore = usePersonneStore();
 const { currentPersonne, isCurrentPersonne } = storeToRefs(personneStore);
@@ -70,11 +70,11 @@ watch(isCurrentPersonne, (newValue) => {
         v-if="
           personneDialogState == PersonneDialogState.ManageAdditional &&
           structureTab == Tabs.SchoolStaff &&
-          isCustomMapping &&
+          fonction?.customMapping &&
           isEditAllowed(currentPersonne ? currentPersonne.etat : '')
         "
         :personne="currentPersonne"
-        :filieres="customMapping?.filieres"
+        :filieres="fonction?.customMapping?.filieres"
       />
     </v-card>
   </v-dialog>

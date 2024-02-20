@@ -62,10 +62,6 @@ public class EtablissementDto {
   private String modeleLogin;
   private String logo;
   private List<TypeFonctionFiliereDto> filieres;
-  private List<TypeFonctionFiliereDto> teachingStaff;
-  private List<TypeFonctionFiliereDto> schoolStaff;
-  private List<TypeFonctionFiliereDto> collectivityStaff;
-  private List<TypeFonctionFiliereDto> academicStaff;
   private List<SimplePersonneDto> personnes;
   @Setter(AccessLevel.NONE)
   private List<SimplePersonneDto> withoutFunctions;
@@ -163,39 +159,6 @@ public class EtablissementDto {
       .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty() && !Objects.equals(typeFonctionFiliere.getLibelleFiliere(), SANS_OBJET))
       .collect(Collectors.toList())
     );
-
-    setTeachingStaff(getFiliereByCategoriePersonne(CategoriePersonne.Enseignant));
-    setSchoolStaff(getFiliereByCategoriePersonne(CategoriePersonne.Non_enseignant_etablissement));
-    setCollectivityStaff(getFiliereByCategoriePersonne(CategoriePersonne.Non_enseignant_collectivite_locale));
-    setAcademicStaff(getFiliereByCategoriePersonne(CategoriePersonne.Non_enseignant_service_academique));
-  }
-
-  private List<TypeFonctionFiliereDto> getFiliereByCategoriePersonne(CategoriePersonne categoriePersonne) {
-    final List<TypeFonctionFiliereDto> tmpFilieres = filieres.stream()
-      .map(TypeFonctionFiliereDto::new)
-      .collect(Collectors.toList());
-
-    return tmpFilieres.stream()
-      .map(typeFonctionFiliere -> {
-        typeFonctionFiliere.setDisciplines(
-          typeFonctionFiliere.getDisciplines().stream()
-            .map(discipline -> {
-              discipline.setPersonnes(
-                discipline.getPersonnes().stream()
-                  .filter(personne -> personne.getCategorie() == categoriePersonne)
-                  .collect(Collectors.toList())
-              );
-
-              return discipline;
-            })
-            .filter(discipline -> !discipline.getPersonnes().isEmpty())
-            .collect(Collectors.toList())
-        );
-
-        return typeFonctionFiliere;
-      })
-      .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
-      .collect(Collectors.toList());
   }
 
   public void setWithoutFunctions(List<SimplePersonneDto> personnes) {

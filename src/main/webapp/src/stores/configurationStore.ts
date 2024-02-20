@@ -1,8 +1,11 @@
 import { getConfiguration } from '@/services/configurationService.ts';
+import { getFonctions } from '@/services/fonctionService.ts';
 import type { Configuration } from '@/types/configurationType.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
+import type { Filiere } from '@/types/filiereType.ts';
+import type { SourceFonction } from '@/types/fonctionType.ts';
 import type { Identity } from '@/types/identityType.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import type { StructureConfiguration } from '@/types/structureConfigurationType.ts';
@@ -15,6 +18,7 @@ import { computed, ref } from 'vue';
 
 export const useConfigurationStore = defineStore('configuration', () => {
   const configuration = ref<Configuration | undefined>();
+  const fonctions = ref<Array<SourceFonction> | undefined>();
 
   /**
    * Initialise `configuration`
@@ -30,7 +34,23 @@ export const useConfigurationStore = defineStore('configuration', () => {
     }
   };
 
+  const initFonctions = async (): Promise<void> => {
+    if (!isInitFonctions.value) {
+      try {
+        const response = await getFonctions();
+        fonctions.value = response.data;
+      } catch (e) {
+        errorHandler(e, 'initFonctionStore');
+      }
+    }
+  };
+
   const isInit = computed<boolean>(() => configuration.value != undefined);
+  const isInitFonctions = computed<boolean>(() => fonctions.value != undefined);
+
+  const allFilieres = computed<Array<Filiere> | undefined>(() => {
+    return fonctions.value ? fonctions.value.find((fonction) => fonction.source === 'ALL')?.filieres : undefined;
+  });
 
   /**
    * Retourne la liste des types de personnel administratif
@@ -140,8 +160,12 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   return {
     configuration,
+    fonctions,
     init,
+    initFonctions,
     isInit,
+    isInitFonctions,
+    allFilieres,
     administrativeStaff,
     isEditAllowed,
     getLoginOffice,

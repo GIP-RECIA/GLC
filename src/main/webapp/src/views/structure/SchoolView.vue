@@ -3,7 +3,6 @@ import SelectFilter from '@/components/filter/SelectFilter.vue';
 import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
 import { Etat } from '@/types/enums/Etat.ts';
@@ -15,15 +14,12 @@ import { useI18n } from 'vue-i18n';
 const configurationStore = useConfigurationStore();
 const { filterAccountStates, currentStructureConfig, isAttach } = storeToRefs(configurationStore);
 
-const fonctionStore = useFonctionStore();
-const { isCustomMapping } = storeToRefs(fonctionStore);
-
 const structureStore = useStructureStore();
-const { currentEtab } = storeToRefs(structureStore);
+const { currentEtab, staff, fonction, filieresByStaff } = storeToRefs(structureStore);
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
-const { currentPersonne, schoolStaffList } = storeToRefs(personneStore);
+const { currentPersonne } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -53,7 +49,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
   <v-container fluid>
     <div class="d-flex align-center justify-end mb-4 mb-sm-0">
       <v-btn
-        v-if="isCustomMapping"
+        v-if="fonction?.customMapping"
         variant="tonal"
         prepend-icon="fas fa-link"
         class="d-none d-sm-flex me-2 custom-height"
@@ -63,7 +59,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
       </v-btn>
       <personne-search
         v-model="selectedUser"
-        :search-list="schoolStaffList"
+        :search-list="staff.school"
         search-type="IN"
         variant="solo"
         class="w-100 staff-search me-2"
@@ -76,13 +72,19 @@ const selectedUser = computed<SimplePersonne | undefined>({
       />
     </div>
     <filieres-layout
-      :filieres="currentEtab?.schoolStaff"
+      :filieres="filieresByStaff.school"
       :without-functions="currentEtab?.withoutFunctionsSchool"
       :account-states="accountStates"
     />
 
     <div class="fab ma-4 d-sm-none">
-      <v-btn v-if="isCustomMapping" variant="tonal" size="x-large" icon="fas fa-link" @click="isAttach = true" />
+      <v-btn
+        v-if="fonction?.customMapping"
+        variant="tonal"
+        size="x-large"
+        icon="fas fa-link"
+        @click="isAttach = true"
+      />
     </div>
   </v-container>
 </template>

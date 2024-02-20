@@ -14,11 +14,11 @@ const configurationStore = useConfigurationStore();
 const { filterAccountStates, currentStructureConfig } = storeToRefs(configurationStore);
 
 const structureStore = useStructureStore();
-const { currentEtab } = storeToRefs(structureStore);
+const { currentEtab, staff, filieresByStaff } = storeToRefs(structureStore);
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
-const { currentPersonne, academicStaffList } = storeToRefs(personneStore);
+const { currentPersonne } = storeToRefs(personneStore);
 
 const accountStates = computed<Array<Etat>>({
   get() {
@@ -47,7 +47,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
     <div class="d-flex justify-end mb-4 mb-sm-0">
       <personne-search
         v-model="selectedUser"
-        :search-list="academicStaffList"
+        :search-list="staff.academic"
         search-type="IN"
         variant="solo"
         class="w-100 staff-search me-2"
@@ -60,7 +60,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
       />
     </div>
     <filieres-layout
-      :filieres="currentEtab?.academicStaff"
+      :filieres="filieresByStaff.academic"
       :without-functions="currentEtab?.withoutFunctionsAcademic"
       :account-states="accountStates"
     />

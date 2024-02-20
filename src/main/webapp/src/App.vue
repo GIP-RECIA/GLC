@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { useFonctionStore } from './stores/fonctionStore.ts';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { watchOnce } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { onBeforeMount, watch } from 'vue';
+import { onBeforeMount } from 'vue';
 
 const configurationStore = useConfigurationStore();
-configurationStore.init();
+const { init, initFonctions } = configurationStore;
 const { configuration, isInit, isLoading, isAuthenticated } = storeToRefs(configurationStore);
 
-const fonctionStore = useFonctionStore();
-isAuthenticated.value && fonctionStore.init();
+init();
 
 watchOnce(isInit, (newValue) => {
   if (!newValue) return;
@@ -24,14 +22,12 @@ watchOnce(isInit, (newValue) => {
   let extendedUportalFooterScript = document.createElement('script');
   extendedUportalFooterScript.setAttribute('src', configuration.value!.front.extendedUportalFooter.componentPath);
   document.head.appendChild(extendedUportalFooterScript);
+
+  initFonctions();
 });
 
 onBeforeMount(() => {
   document.title = __APP_NAME__;
-});
-
-watch(isAuthenticated, (newValue) => {
-  newValue && fonctionStore.init();
 });
 
 const appName = __APP_NAME__;

@@ -1,12 +1,10 @@
 import { getPersonne } from '@/services/personneService.ts';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
-import { Etat } from '@/types/enums/Etat.ts';
 import type { PersonneFonction } from '@/types/fonctionType.ts';
-import type { Personne, SimplePersonne } from '@/types/personneType.ts';
+import type { Personne } from '@/types/personneType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
-import isEmpty from 'lodash.isempty';
-import { defineStore, storeToRefs } from 'pinia';
+import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 export const usePersonneStore = defineStore('personne', () => {
@@ -71,69 +69,6 @@ export const usePersonneStore = defineStore('personne', () => {
     return structureAdditionalFonctions.value ? structureAdditionalFonctions.value.length > 0 : false;
   });
 
-  /* -- Pour la structure courante -- */
-
-  /**
-   * Retourne la liste des personnes de la structure
-   */
-  const personnes = computed<Array<SimplePersonne> | undefined>(() => {
-    const { currentEtab } = structureStore;
-
-    return currentEtab?.personnes;
-  });
-
-  const deletingPersonnes = computed<Array<SimplePersonne>>(() => {
-    const { currentEtab } = structureStore;
-
-    const result = currentEtab?.personnes?.filter((personne) => personne.etat == Etat.Deleting);
-
-    return isEmpty(result) ? [] : result!;
-  });
-
-  const deletedPersonnes = computed<Array<SimplePersonne>>(() => {
-    const { currentEtab } = structureStore;
-
-    const result = currentEtab?.personnes?.filter((personne) => personne.etat == Etat.Delete);
-
-    return isEmpty(result) ? [] : result!;
-  });
-
-  const teachingStaffList = computed<Array<SimplePersonne> | undefined>(() => {
-    const { currentEtab } = storeToRefs(structureStore);
-    const { configuration } = storeToRefs(configurationStore);
-
-    return currentEtab.value?.personnes.filter(
-      (personne) => personne.categorie == configuration.value?.front.staff.teaching,
-    );
-  });
-
-  const schoolStaffList = computed<Array<SimplePersonne> | undefined>(() => {
-    const { currentEtab } = storeToRefs(structureStore);
-    const { configuration } = storeToRefs(configurationStore);
-
-    return currentEtab.value?.personnes.filter(
-      (personne) => personne.categorie == configuration.value?.front.staff.school,
-    );
-  });
-
-  const collectivityStaffList = computed<Array<SimplePersonne> | undefined>(() => {
-    const { currentEtab } = storeToRefs(structureStore);
-    const { configuration } = storeToRefs(configurationStore);
-
-    return currentEtab.value?.personnes.filter(
-      (personne) => personne.categorie == configuration.value?.front.staff.collectivity,
-    );
-  });
-
-  const academicStaffList = computed<Array<SimplePersonne> | undefined>(() => {
-    const { currentEtab } = storeToRefs(structureStore);
-    const { configuration } = storeToRefs(configurationStore);
-
-    return currentEtab.value?.personnes.filter(
-      (personne) => personne.categorie == configuration.value?.front.staff.academic,
-    );
-  });
-
   return {
     currentPersonne,
     initCurrentPersonne,
@@ -143,12 +78,5 @@ export const usePersonneStore = defineStore('personne', () => {
     hasStructureFonctions,
     structureAdditionalFonctions,
     hasStructureAdditionalFonctions,
-    personnes,
-    deletingPersonnes,
-    deletedPersonnes,
-    teachingStaffList,
-    schoolStaffList,
-    collectivityStaffList,
-    academicStaffList,
   };
 });

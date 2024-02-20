@@ -2,20 +2,17 @@
 import AlertManager from '@/components/AlertManager.vue';
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
-import { usePersonneStore } from '@/stores/personneStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
 import { DashboardPanel } from '@/types/enums/DashboardPanel.ts';
+import { Etat } from '@/types/enums/Etat.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
-const personneStore = usePersonneStore();
-const { deletingPersonnes, deletedPersonnes } = storeToRefs(personneStore);
-
 const structureStore = useStructureStore();
-const { currentEtab } = storeToRefs(structureStore);
+const { currentEtab, personnesByEtat } = storeToRefs(structureStore);
 
 const { t } = useI18n();
 
@@ -56,7 +53,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
       <v-expansion-panel :value="DashboardPanel.DeletingAccounts" :elevation="0" rounded="lg">
         <v-expansion-panel-title>
           <div class="expansion-title">
-            {{ `${t('deletingAccounts')} (${deletingPersonnes.length})` }}
+            {{ `${t('deletingAccounts')} (${personnesByEtat.get(Etat.Deleting)?.length ?? 0})` }}
           </div>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
@@ -77,7 +74,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
             </transition-group>
           </v-row>
           <custom-pagination
-            :items="deletingPersonnes"
+            :items="personnesByEtat.get(Etat.Deleting)"
             :items-per-page="itemsPerPage"
             hide-single-page
             class="mt-4"
@@ -89,7 +86,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
       <v-expansion-panel :value="DashboardPanel.DeletedAccounts" :elevation="0" rounded="lg">
         <v-expansion-panel-title>
           <div class="expansion-title">
-            {{ `${t('deletedAccounts')} (${deletedPersonnes.length})` }}
+            {{ `${t('deletedAccounts')} (${personnesByEtat.get(Etat.Delete)?.length ?? 0})` }}
           </div>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
@@ -110,7 +107,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
             </transition-group>
           </v-row>
           <custom-pagination
-            :items="deletedPersonnes"
+            :items="personnesByEtat.get(Etat.Delete)"
             :items-per-page="itemsPerPage"
             hide-single-page
             class="mt-4"

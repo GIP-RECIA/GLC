@@ -2,8 +2,8 @@
 import ReadonlyData from '@/components/ReadonlyData.vue';
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue';
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { useFonctionStore } from '@/stores/fonctionStore.ts';
 import { usePersonneStore } from '@/stores/personneStore.ts';
+import { useStructureStore } from '@/stores/structureStore.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
 import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
@@ -18,10 +18,10 @@ import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
 const { isEditAllowed, getLoginOffice } = configurationStore;
-const { structureTab, personneDialogState } = storeToRefs(configurationStore);
+const { allFilieres, structureTab, personneDialogState } = storeToRefs(configurationStore);
 
-const fonctionStore = useFonctionStore();
-const { allFilieres, isCustomMapping } = storeToRefs(fonctionStore);
+const stcuctureStore = useStructureStore();
+const { fonction } = storeToRefs(stcuctureStore);
 
 const personneStore = usePersonneStore();
 const { structureFonctions, hasStructureFonctions, structureAdditionalFonctions, hasStructureAdditionalFonctions } =
@@ -141,7 +141,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
         <div class="d-flex align-center">
           <b>{{ t('person.information.additionalFunction', 2) }}</b>
           <v-btn
-            v-if="structureTab == Tabs.SchoolStaff && isCustomMapping && isEditAllowed(personne.etat)"
+            v-if="structureTab == Tabs.SchoolStaff && fonction?.customMapping && isEditAllowed(personne.etat)"
             color="primary"
             variant="tonal"
             density="compact"

@@ -3,8 +3,11 @@ import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { Etat } from '@/types/enums/Etat.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType.ts';
+import type { Filiere } from '@/types/filiereType.ts';
+import type { SourceFonction } from '@/types/fonctionType';
+import type { SimplePersonne } from '@/types/personneType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -95,11 +98,75 @@ export const useStructureStore = defineStore('structure', () => {
     }
   };
 
+  const personnes = computed<Array<SimplePersonne> | undefined>(() => currentEtab.value?.personnes);
+
+  const staff = computed(() => {
+    const { configuration } = storeToRefs(configurationStore);
+
+    const getStaff = (categorie?: string): Array<SimplePersonne> | undefined => {
+      return personnes.value?.filter((personne) => personne.categorie == categorie);
+    };
+
+    return {
+      teaching: getStaff(configuration.value?.front.staff.teaching),
+      school: getStaff(configuration.value?.front.staff.school),
+      collectivity: getStaff(configuration.value?.front.staff.collectivity),
+      academic: getStaff(configuration.value?.front.staff.academic),
+    };
+  });
+
+  const personnesByEtat = computed<Map<Etat, Array<SimplePersonne> | undefined>>(() => {
+    const map = new Map();
+
+    Object.keys(Etat).forEach((etat) => {
+      map.set(
+        etat,
+        personnes.value?.filter((personne) => personne.etat == etat),
+      );
+    });
+
+    return map;
+  });
+
+  const fonction = computed<SourceFonction | undefined>(() => {
+    const { fonctions } = storeToRefs(configurationStore);
+
+    return fonctions.value?.find((fonction) => fonction.source === currentEtab.value?.source);
+  });
+
+  const filieresByStaff = computed(() => {
+    const { configuration } = storeToRefs(configurationStore);
+
+    const getFiliere = (categorie?: string): Array<Filiere> | undefined => {
+      return currentEtab.value?.filieres
+        .map((filiere) => {
+          const disciplines = filiere.disciplines.filter((discipline) => {
+            return discipline.personnes.filter((personne) => personne.categorie == categorie).length > 0;
+          });
+
+          return { ...filiere, disciplines };
+        })
+        .filter((filiere) => filiere.disciplines.length > 0);
+    };
+
+    return {
+      teaching: getFiliere(configuration.value?.front.staff.teaching),
+      school: getFiliere(configuration.value?.front.staff.school),
+      collectivity: getFiliere(configuration.value?.front.staff.collectivity),
+      academic: getFiliere(configuration.value?.front.staff.academic),
+    };
+  });
+
   return {
     etabs,
     currentEtab,
     init,
     initCurrentEtab,
     refreshCurrentStructure,
+    personnes,
+    staff,
+    personnesByEtat,
+    fonction,
+    filieresByStaff,
   };
 });

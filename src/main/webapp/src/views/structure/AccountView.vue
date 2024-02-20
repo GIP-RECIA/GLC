@@ -2,15 +2,15 @@
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
 import AccountFilter from '@/components/filter/AccountFilter.vue';
-import { usePersonneStore } from '@/stores/personneStore.ts';
+import { useStructureStore } from '@/stores/structureStore.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
-const personneStore = usePersonneStore();
-const { personnes } = storeToRefs(personneStore);
+const structureStore = useStructureStore();
+const { personnes } = storeToRefs(structureStore);
 
 const { t } = useI18n();
 
