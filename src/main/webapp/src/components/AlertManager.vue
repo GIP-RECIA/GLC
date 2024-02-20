@@ -10,7 +10,7 @@ const configurationStore = useConfigurationStore();
 const { isQuickAdd, requestAdd } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
-const { administrativeList } = storeToRefs(personneStore);
+const { schoolStaffList } = storeToRefs(personneStore);
 
 const structureStore = useStructureStore();
 const { currentEtab } = storeToRefs(structureStore);
@@ -24,7 +24,7 @@ const doAlert = (alert: Alert): void => {
         i18n: `additional.add.${alert.title}`,
         function: alert.title.replace('.', '-'),
         type: 'code',
-        searchList: administrativeList.value,
+        searchList: schoolStaffList.value,
       };
       isQuickAdd.value = true;
     }

@@ -134,17 +134,6 @@ export const usePersonneStore = defineStore('personne', () => {
     );
   });
 
-  /**
-   * Retourne la liste des personnels administratifs de la structure courante
-   * pour la recherche
-   */
-  const administrativeList = computed<Array<SimplePersonne> | undefined>(() => {
-    const { currentEtab } = structureStore;
-    const { administrativeStaff } = configurationStore;
-
-    return currentEtab?.personnes.filter((personne) => personne.categorie == administrativeStaff);
-  });
-
   return {
     currentPersonne,
     initCurrentPersonne,
@@ -161,6 +150,5 @@ export const usePersonneStore = defineStore('personne', () => {
     schoolStaffList,
     collectivityStaffList,
     academicStaffList,
-    administrativeList,
   };
 });
