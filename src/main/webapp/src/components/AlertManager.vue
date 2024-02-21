@@ -35,6 +35,7 @@ const doAlert = (alert: Alert): void => {
     :title="alert.title && t(`alert.title.${alert.title}`)"
     :text="alert.text && t(`alert.text.${alert.text}`)"
     :type="alert.type"
+    variant="tonal"
     rounded="lg"
     :class="[alert.action && fonction?.customMapping ? 'clicable' : '', 'mb-4']"
     @click="doAlert(alert)"

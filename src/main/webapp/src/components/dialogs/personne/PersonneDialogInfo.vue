@@ -154,7 +154,15 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
             </template>
           </v-btn>
         </div>
-        <v-alert v-if="structureTab != Tabs.SchoolStaff" v-model="isInfo2" type="info" class="my-2" closable>
+        <v-alert
+          v-if="structureTab != Tabs.SchoolStaff"
+          v-model="isInfo2"
+          type="info"
+          variant="tonal"
+          rounded="lg"
+          class="my-2"
+          closable
+        >
           Pour gérer les fonctions complémentaires de ce profil, veuillez utiliser
           <a href="/GLC" target="_self">GLC</a>.
         </v-alert>

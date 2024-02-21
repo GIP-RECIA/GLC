@@ -68,7 +68,7 @@ const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true);
 
 <template>
   <v-container>
-    <v-alert v-model="isInfo" type="info" class="mb-8" closable>
+    <v-alert v-model="isInfo" type="info" variant="tonal" rounded="lg" class="mb-8" closable>
       Cette application vient compléter l'application de gestion des comptes en permettant de gérer plus finement les
       fonctions des personnels administratifs. Elle remplacera progressivement l'application historique de gestion des
       comptes de l'ENT.
