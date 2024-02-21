@@ -4,9 +4,10 @@ import { Etat } from '@/types/enums/Etat.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType.ts';
 import type { Filiere } from '@/types/filiereType.ts';
-import type { SourceFonction } from '@/types/fonctionType';
+import type { CustomMapping, SourceFonction } from '@/types/fonctionType.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
+import isEmpty from 'lodash.isempty';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -131,7 +132,14 @@ export const useStructureStore = defineStore('structure', () => {
   const fonction = computed<SourceFonction | undefined>(() => {
     const { fonctions } = storeToRefs(configurationStore);
 
-    return fonctions.value?.find((fonction) => fonction.source === currentEtab.value?.source);
+    const fonction: SourceFonction | undefined = fonctions.value?.find(
+      (fonction) => fonction.source === currentEtab.value?.source,
+    );
+    const customMapping: CustomMapping | undefined = isEmpty(fonction?.customMapping)
+      ? undefined
+      : fonction.customMapping;
+
+    return fonction ? { ...fonction, customMapping } : undefined;
   });
 
   const filieresByStaff = computed(() => {
