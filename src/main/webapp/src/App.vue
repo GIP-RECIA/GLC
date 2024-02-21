@@ -22,8 +22,10 @@ watchOnce(isInit, (newValue) => {
   let extendedUportalFooterScript = document.createElement('script');
   extendedUportalFooterScript.setAttribute('src', configuration.value!.front.extendedUportalFooter.componentPath);
   document.head.appendChild(extendedUportalFooterScript);
+});
 
-  initFonctions();
+watchOnce(isAuthenticated, (newValue) => {
+  if (newValue) initFonctions();
 });
 
 onBeforeMount(() => {
