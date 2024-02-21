@@ -22,6 +22,7 @@ export type Etablissement = {
   logo: string;
   personnes: Array<SimplePersonne>;
   filieres: Array<Filiere>;
+  withoutFunctions?: Array<SimplePersonne>;
   alerts: Array<Alert>;
   permission?: string;
 };
