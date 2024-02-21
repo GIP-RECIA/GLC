@@ -8,7 +8,7 @@ defineProps<{
   selected: boolean;
 }>();
 
-defineEmits<(event: 'close', payload: number) => void>();
+defineEmits<(event: 'close', payload: { id: number; selected: boolean }) => void>();
 </script>
 
 <template>
@@ -20,7 +20,7 @@ defineEmits<(event: 'close', payload: number) => void>();
     <router-link class="d-flex align-center text-decoration-none ms-2 h-100" :to="link">
       {{ title }}
     </router-link>
-    <v-btn variant="text" density="comfortable" icon @click="$emit('close', id)">
+    <v-btn variant="text" density="comfortable" icon @click="$emit('close', { id, selected })">
       <v-icon icon="fas fa-xmark" size="x-small" color="secondary" />
     </v-btn>
   </v-card>

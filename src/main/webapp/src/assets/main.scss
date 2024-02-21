@@ -61,7 +61,8 @@
 }
 
 .custom-enter-active,
-.custom-leave-active {
+.custom-leave-active,
+.tab-bar-active {
   transition: all 0.5s ease;
 }
 
@@ -69,4 +70,9 @@
 .custom-leave-to {
   opacity: 0;
   transform: translateY(-20px);
+}
+
+.tab-bar-enter-from,
+.tab-bar-leave-to {
+  opacity: 0;
 }

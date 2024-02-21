@@ -10,8 +10,9 @@ const { structures, appTab } = storeToRefs(configurationStore);
 
 const router = useRouter();
 
-const close = (i: number) => {
-  structures.value.splice(i, 1);
+const close = (event: { id: number; selected: boolean }): void => {
+  structures.value.splice(event.id, 1);
+  if (!event.selected) return;
 
   // Definition du nouvel onglet
   const newCurrentStructure = appTab.value! - 1;
@@ -23,7 +24,7 @@ const close = (i: number) => {
   else newTab();
 };
 
-const newTab = () => {
+const newTab = (): void => {
   router.push({ name: 'home' });
   appTab.value = undefined;
 };
@@ -40,7 +41,7 @@ onMounted(() => {
 <template>
   <div id="tab-bar" class="scrollable-x">
     <div class="d-flex my-2">
-      <transition-group name="custom">
+      <transition-group name="tab-bar">
         <custom-tab-item
           v-for="(structure, index) in structures"
           :key="index"
