@@ -55,6 +55,7 @@ public interface TypeFonctionFiliereRepository<T extends TypeFonctionFiliere> ex
     "FROM TypeFonctionFiliere tff " +
     "WHERE tff.source = :source " +
     "OR tff.source = CONCAT('SarapisUi_', :source) " +
+    "OR tff.source LIKE 'COLL-%' " +
     "ORDER BY tff.libelleFiliere")
   List<TypeFonctionFiliereDto> findBySourceSarapis(String source);
 

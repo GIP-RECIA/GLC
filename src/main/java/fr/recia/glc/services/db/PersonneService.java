@@ -41,6 +41,7 @@ public class PersonneService {
 
   public List<SimplePersonneDto> getPersonnes(Long structureId) {
     final List<Long> personnesIds = aPersonneAStructureRepository.findPersonneByStructureId(structureId);
+    if (personnesIds.isEmpty()) return List.of();
     return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
   }
 

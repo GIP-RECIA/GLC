@@ -21,11 +21,9 @@ import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
-import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -113,7 +111,10 @@ public class EtablissementDto {
     List<TypeFonctionFiliereDto> typesFonctionFiliere,
     List<DisciplineDto> disciplines
   ) {
-    if (fonctions.isEmpty()) return;
+    if (fonctions.isEmpty()) {
+      setFilieres(List.of());
+      return;
+    }
 
     final List<TypeFonctionFiliereDto> filieresWithDisciplines = typesFonctionFiliere.stream()
       .map(tff -> {
@@ -161,6 +162,5 @@ public class EtablissementDto {
       .collect(Collectors.toList());
     setFilieres(filieresWithDisciplines);
   }
-
 
 }

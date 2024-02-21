@@ -51,6 +51,7 @@ public interface DisciplineRepository<T extends Discipline> extends AbstractRepo
     "FROM Discipline d " +
     "WHERE d.source = :source " +
     "OR d.source = CONCAT('SarapisUi_', :source) " +
+    "OR d.source LIKE 'COLL-%' " +
     "ORDER BY d.disciplinePoste")
   List<DisciplineDto> findBySourceSarapis(String source);
 
