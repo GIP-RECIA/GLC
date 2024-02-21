@@ -2,6 +2,7 @@
 import AlertManager from '@/components/AlertManager.vue';
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
+import InfoGrid from '@/components/info/InfoGrid.vue';
 import { useStructureStore } from '@/stores/structureStore.ts';
 import { DashboardPanel } from '@/types/enums/DashboardPanel.ts';
 import { Etat } from '@/types/enums/Etat.ts';
@@ -10,6 +11,8 @@ import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
+
+const isDev = import.meta.env.DEV;
 
 const structureStore = useStructureStore();
 const { currentEtab, personnesByEtat } = storeToRefs(structureStore);
@@ -48,6 +51,8 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
 <template>
   <v-container fluid>
     <alert-manager />
+
+    <info-grid v-if="isDev" class="mb-4" />
 
     <v-expansion-panels v-model="panel">
       <v-expansion-panel :value="DashboardPanel.DeletingAccounts" :elevation="0" rounded="lg">
