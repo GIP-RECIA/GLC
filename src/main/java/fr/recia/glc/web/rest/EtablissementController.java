@@ -45,6 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -176,10 +177,12 @@ public class EtablissementController {
     etablissement.setWithoutFunctions(withoutFunction);
 
     List<AlertDto> alerts = new ArrayList<>();
-    if (!fonctionService.isDiscipline(id, "GEST"))
-      alerts.add(AlertDto.builder().title("ADF.GEST").type(AlertType.error).action(true).build());
-    if (!fonctionService.isDiscipline(id, "D0010"))
-      alerts.add(AlertDto.builder().title("DIR.D0010").type(AlertType.error).action(true).build());
+    if (Objects.equals(etablissement.getSource(), "AC-ORLEANS-TOURS")) {
+      if (!fonctionService.isDiscipline(id, "GEST"))
+        alerts.add(AlertDto.builder().title("ADF.GEST").type(AlertType.error).action(true).build());
+      if (!fonctionService.isDiscipline(id, "D0010"))
+        alerts.add(AlertDto.builder().title("DIR.D0010").type(AlertType.error).action(true).build());
+    }
     etablissement.setAlerts(alerts);
 
     List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);

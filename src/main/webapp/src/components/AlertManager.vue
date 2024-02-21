@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { usePersonneStore } from '@/stores/personneStore.ts';
 import { useStructureStore } from '@/stores/structureStore.ts';
 import type { Alert } from '@/types/alertType.ts';
 import { storeToRefs } from 'pinia';
@@ -9,22 +8,19 @@ import { useI18n } from 'vue-i18n';
 const configurationStore = useConfigurationStore();
 const { isQuickAdd, requestAdd } = storeToRefs(configurationStore);
 
-const personneStore = usePersonneStore();
-const { schoolStaffList } = storeToRefs(personneStore);
-
 const structureStore = useStructureStore();
-const { currentEtab } = storeToRefs(structureStore);
+const { currentEtab, staff, fonction } = storeToRefs(structureStore);
 
 const { t } = useI18n();
 
 const doAlert = (alert: Alert): void => {
-  if (alert.action) {
+  if (alert.action && fonction.value?.customMapping) {
     if (alert.title) {
       requestAdd.value = {
         i18n: `additional.add.${alert.title}`,
         function: alert.title.replace('.', '-'),
         type: 'code',
-        searchList: schoolStaffList.value,
+        searchList: staff.value.school,
       };
       isQuickAdd.value = true;
     }
@@ -40,7 +36,7 @@ const doAlert = (alert: Alert): void => {
     :text="alert.text && t(`alert.text.${alert.text}`)"
     :type="alert.type"
     rounded="lg"
-    :class="[alert.action ? 'clicable' : '', 'mb-4']"
+    :class="[alert.action && fonction?.customMapping ? 'clicable' : '', 'mb-4']"
     @click="doAlert(alert)"
   />
 </template>
