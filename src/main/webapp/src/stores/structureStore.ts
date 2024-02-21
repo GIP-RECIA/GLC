@@ -148,9 +148,13 @@ export const useStructureStore = defineStore('structure', () => {
     const getFiliere = (categorie?: string): Array<Filiere> | undefined => {
       return currentEtab.value?.filieres
         .map((filiere) => {
-          const disciplines = filiere.disciplines.filter((discipline) => {
-            return discipline.personnes.filter((personne) => personne.categorie == categorie).length > 0;
-          });
+          const disciplines = filiere.disciplines
+            .map((discipline) => {
+              const personnes = discipline.personnes.filter((personne) => personne.categorie == categorie);
+
+              return { ...discipline, personnes };
+            })
+            .filter((discipline) => discipline.personnes.length > 0);
 
           return { ...filiere, disciplines };
         })
