@@ -45,6 +45,7 @@ export const useStructureStore = defineStore('structure', () => {
   const initCurrentEtab = async (id: number): Promise<void> => {
     const { structures, setAppTab, setStructureTab, setCurrentStructureId } = configurationStore;
     configurationStore.isLoading = true;
+    currentEtab.value = undefined;
     try {
       const response = await getEtablissement(id);
       const etab = response.data;
@@ -146,7 +147,7 @@ export const useStructureStore = defineStore('structure', () => {
     const { configuration } = storeToRefs(configurationStore);
 
     const getFiliere = (categorie?: string): Array<Filiere> | undefined => {
-      return currentEtab.value?.filieres
+      const filieres: Array<Filiere> | undefined = currentEtab.value?.filieres
         .map((filiere) => {
           const disciplines = filiere.disciplines
             .map((discipline) => {
@@ -159,6 +160,8 @@ export const useStructureStore = defineStore('structure', () => {
           return { ...filiere, disciplines };
         })
         .filter((filiere) => filiere.disciplines.length > 0);
+
+      return filieres && filieres.length > 0 ? filieres : undefined;
     };
 
     return {

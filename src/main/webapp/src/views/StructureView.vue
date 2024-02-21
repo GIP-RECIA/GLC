@@ -12,6 +12,7 @@ import DashboardView from '@/views/structure/DashboardView.vue';
 import InfoView from '@/views/structure/InfoView.vue';
 import SchoolView from '@/views/structure/SchoolView.vue';
 import TeachingView from '@/views/structure/TeachingView.vue';
+import type isEmpty from 'lodash.isempty';
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -21,6 +22,7 @@ const isDev = import.meta.env.DEV;
 
 const structureStore = useStructureStore();
 const { initCurrentEtab } = structureStore;
+const { filieresByStaff } = storeToRefs(structureStore);
 
 const configurationStore = useConfigurationStore();
 const { structureTab } = storeToRefs(configurationStore);
@@ -48,32 +50,32 @@ watch(
   >
     <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tab.dashboard') }}</v-tab>
     <v-tab v-if="isDev" :value="Tabs.Info">{{ t('tab.information') }}</v-tab>
-    <v-tab :value="Tabs.TeachingStaff">{{ t('tab.teachingStaff') }}</v-tab>
-    <v-tab :value="Tabs.SchoolStaff">{{ t('tab.schoolStaff') }}</v-tab>
-    <v-tab :value="Tabs.CollectivityStaff">{{ t('tab.collectivityStaff') }}</v-tab>
-    <v-tab :value="Tabs.AcademicStaff">{{ t('tab.academicStaff') }}</v-tab>
+    <v-tab v-if="filieresByStaff.teaching" :value="Tabs.TeachingStaff">{{ t('tab.teachingStaff') }}</v-tab>
+    <v-tab v-if="filieresByStaff.school" :value="Tabs.SchoolStaff">{{ t('tab.schoolStaff') }}</v-tab>
+    <v-tab v-if="filieresByStaff.collectivity" :value="Tabs.CollectivityStaff">{{ t('tab.collectivityStaff') }}</v-tab>
+    <v-tab v-if="filieresByStaff.academic" :value="Tabs.AcademicStaff">{{ t('tab.academicStaff') }}</v-tab>
     <v-tab v-if="isDev" :value="Tabs.Accounts">{{ t('tab.accounts') }}</v-tab>
   </v-tabs>
   <v-window v-model="structureTab">
-    <v-window-item :value="Tabs.Dashboard" eager>
+    <v-window-item :value="Tabs.Dashboard">
       <dashboard-view />
     </v-window-item>
-    <v-window-item v-if="isDev" :value="Tabs.Info" eager>
+    <v-window-item v-if="isDev" :value="Tabs.Info">
       <info-view />
     </v-window-item>
-    <v-window-item :value="Tabs.TeachingStaff" eager>
+    <v-window-item v-if="filieresByStaff.teaching" :value="Tabs.TeachingStaff">
       <teaching-view />
     </v-window-item>
-    <v-window-item :value="Tabs.SchoolStaff" eager>
+    <v-window-item v-if="filieresByStaff.school" :value="Tabs.SchoolStaff">
       <school-view />
     </v-window-item>
-    <v-window-item :value="Tabs.CollectivityStaff" eager>
+    <v-window-item v-if="filieresByStaff.collectivity" :value="Tabs.CollectivityStaff">
       <collectivity-view />
     </v-window-item>
-    <v-window-item :value="Tabs.AcademicStaff" eager>
+    <v-window-item v-if="filieresByStaff.academic" :value="Tabs.AcademicStaff">
       <academic-view />
     </v-window-item>
-    <v-window-item v-if="isDev" :value="Tabs.Accounts" eager>
+    <v-window-item v-if="isDev" :value="Tabs.Accounts">
       <account-view />
     </v-window-item>
   </v-window>

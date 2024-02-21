@@ -86,6 +86,7 @@ const filter = () => {
 watch(
   () => props.searchList,
   () => filter(),
+  { immediate: true },
 );
 
 watch(filters, () => filter(), { deep: true });
