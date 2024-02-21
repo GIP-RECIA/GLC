@@ -17,11 +17,11 @@ structureStore.init();
 const { etabs } = storeToRefs(structureStore);
 
 const { t } = useI18n();
+const { name } = useDisplay();
 
 const pageItems = ref<Array<SimpleEtablissement> | undefined>();
 
 const itemsPerPage = computed<number>(() => {
-  const { name } = useDisplay();
   const defaultItemsPerPage = 10;
 
   switch (name.value) {

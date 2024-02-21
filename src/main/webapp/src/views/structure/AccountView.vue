@@ -13,12 +13,12 @@ const structureStore = useStructureStore();
 const { personnes } = storeToRefs(structureStore);
 
 const { t } = useI18n();
+const { name } = useDisplay();
 
 const items = ref<Array<SimplePersonne> | undefined>();
 const pageItems = ref<Array<SimplePersonne> | undefined>();
 
 const itemsPerPage = computed<number>(() => {
-  const { name } = useDisplay();
   const defaultItemsPerPage = 10;
 
   switch (name.value) {
