@@ -19,7 +19,7 @@
     "predev": "dotenv-checker --schema .env.example --env .env.local"
   },
   "dependencies": {
-    "@vueuse/core": "^10.7.2",
+    "@vueuse/core": "^10.8.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.19",
     "vue-i18n": "9.9.1",
