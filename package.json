@@ -50,7 +50,7 @@
     "date-fns": "^3.3.1",
     "dotenv": "^16.4.4",
     "dotenv-checker": "^1.1.5",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.21.1",
     "husky": "^8.0.3",
     "jsdom": "^24.0.0",
