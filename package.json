@@ -69,5 +69,5 @@
     "vue3-toastify": "^0.2.1",
     "xml2js": "^0.6.2"
   },
-  "packageManager": "yarn@4.1.0"
+  "packageManager": "yarn@4.1.1"
 }
