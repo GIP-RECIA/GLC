@@ -59,12 +59,25 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
     "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
     "FROM APersonne ap " +
-    "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.uid LIKE concat(:name, '%')) " +
+    "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
     "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
     "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
     "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
     "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
     "ORDER BY ap.cn, ap.sn")
   List<SimplePersonneDto> findByNameLike(String name);
+
+  @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
+    "FROM APersonne ap " +
+    "WHERE (ap.cn LIKE concat('%', :name, '%') " +
+    "OR ap.email LIKE concat(:name, '%') " +
+    "OR ap.uid LIKE concat(:name, '%')) " +
+    "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
+    "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
+    "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
+    "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
+    "ORDER BY ap.cn, ap.sn")
+  List<SimplePersonneDto> findByNameLikeAdmin(String name);
 
 }

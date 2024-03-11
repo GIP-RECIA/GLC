@@ -35,8 +35,8 @@ public class PersonneService {
   @Autowired
   private APersonneRepository<APersonne> aPersonneRepository;
 
-  public List<SimplePersonneDto> searchPersoonne(String name) {
-    return aPersonneRepository.findByNameLike(name);
+  public List<SimplePersonneDto> searchPersoonne(String name, boolean admin) {
+    return admin ? aPersonneRepository.findByNameLikeAdmin(name) :  aPersonneRepository.findByNameLike(name);
   }
 
   public List<SimplePersonneDto> getPersonnes(Long structureId) {

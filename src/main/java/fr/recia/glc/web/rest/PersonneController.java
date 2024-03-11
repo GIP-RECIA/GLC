@@ -57,7 +57,7 @@ public class PersonneController {
       throw new AccessDeniedException("Access is denied to anonymous !");
     }
 
-    List<SimplePersonneDto> personnes = personneService.searchPersoonne(name);
+    List<SimplePersonneDto> personnes = personneService.searchPersoonne(name, user.getRoles().contains(AuthoritiesConstants.ADMIN));
     if (personnes.isEmpty()) return new ResponseEntity<>(HttpStatus.OK);
     if (!user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
       personnes = personnes.stream()
