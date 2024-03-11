@@ -23,7 +23,7 @@ const isHideNoData = ref<boolean>(true);
 const isSearchingOut = ref<boolean>(props.searchType == 'OUT');
 const items = ref<Array<SimplePersonne>>([]);
 
-const filterItems = (newSearch: string | undefined) => {
+const filterItems = (newSearch: string | undefined): void => {
   if (newSearch && newSearch.length > 3 && !newSearch.includes('(')) {
     newSearch = newSearch
       .toLowerCase()
@@ -49,7 +49,7 @@ let out: { request?: string; response: Array<SimplePersonne> } = {
   response: [],
 };
 
-const findOutOfStructure = async (searchValue: string) => {
+const findOutOfStructure = async (searchValue: string): Promise<void> => {
   if (out.request && searchValue.startsWith(out.request)) filterFromSource(out.response, searchValue);
   else {
     out.request = searchValue;

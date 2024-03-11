@@ -52,7 +52,7 @@ const tags = {
   ],
 };
 
-const filter = () => {
+const filter = (): void => {
   let result: Array<SimplePersonne> = !isEmpty(props.searchList) ? props.searchList! : [];
 
   const searchValue = filters.value.search ? filters.value.search.toLowerCase() : undefined;

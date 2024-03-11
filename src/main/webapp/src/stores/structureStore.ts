@@ -143,7 +143,12 @@ export const useStructureStore = defineStore('structure', () => {
     return fonction ? { ...fonction, customMapping } : undefined;
   });
 
-  const filieresByStaff = computed(() => {
+  const filieresByStaff = computed<{
+    teaching: Array<Filiere> | undefined;
+    school: Array<Filiere> | undefined;
+    collectivity: Array<Filiere> | undefined;
+    academic: Array<Filiere> | undefined;
+  }>(() => {
     const { configuration } = storeToRefs(configurationStore);
 
     const getFiliere = (categorie?: string): Array<Filiere> | undefined => {

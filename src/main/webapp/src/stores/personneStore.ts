@@ -49,23 +49,23 @@ export const usePersonneStore = defineStore('personne', () => {
     }
   };
 
-  const structureFonctions = computed((): Array<PersonneFonction> | undefined => {
+  const structureFonctions = computed<Array<PersonneFonction> | undefined>(() => {
     const { currentStructureId } = configurationStore;
 
     return currentPersonne.value?.fonctions?.filter((fonction) => fonction.structure == currentStructureId);
   });
 
-  const hasStructureFonctions = computed(() => {
+  const hasStructureFonctions = computed<boolean>(() => {
     return structureFonctions.value ? structureFonctions.value.length > 0 : false;
   });
 
-  const structureAdditionalFonctions = computed((): Array<PersonneFonction> | undefined => {
+  const structureAdditionalFonctions = computed<Array<PersonneFonction> | undefined>(() => {
     const { currentStructureId } = configurationStore;
 
     return currentPersonne.value?.additionalFonctions?.filter((fonction) => fonction.structure == currentStructureId);
   });
 
-  const hasStructureAdditionalFonctions = computed(() => {
+  const hasStructureAdditionalFonctions = computed<boolean>(() => {
     return structureAdditionalFonctions.value ? structureAdditionalFonctions.value.length > 0 : false;
   });
 

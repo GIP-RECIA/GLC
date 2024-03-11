@@ -10,7 +10,7 @@ watch(isDark, (newValue) => {
   theme.global.name.value = !newValue ? 'light' : 'dark';
 });
 
-const toggleTheme = () => {
+const toggleTheme = (): void => {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
 };
 </script>

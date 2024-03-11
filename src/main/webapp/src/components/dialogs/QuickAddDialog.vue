@@ -77,7 +77,7 @@ const saveButton = computed<{ i18n: string; icon: string; color: string }>(() =>
   };
 });
 
-const save = async () => {
+const save = async (): Promise<void> => {
   if (requestAdd.value?.function) {
     try {
       if (requestAdd.value.type == 'id') {
@@ -103,7 +103,7 @@ const save = async () => {
   }
 };
 
-const closeAndResetModal = (success?: boolean) => {
+const closeAndResetModal = (success?: boolean): void => {
   if (success) {
     refreshCurrentStructure();
     toast.success(t('toast.additional.success.save'));

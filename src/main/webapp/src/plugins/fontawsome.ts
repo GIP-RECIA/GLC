@@ -39,7 +39,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import type { App } from 'vue';
 
-const register = (app: App) => {
+const register = (app: App): void => {
   library.add(farSquare, farUser);
   library.add(
     faCaretDown,

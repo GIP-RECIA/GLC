@@ -25,7 +25,7 @@ const nbPages = computed<number>(() => {
   return pages > 0 ? pages : 1;
 });
 
-const showPage = (page: number) => {
+const showPage = (page: number): void => {
   if (typeof props.items !== 'undefined' && props.items !== null) {
     const items: Array<any> = props.items.filter((_, index) => {
       return page == 1

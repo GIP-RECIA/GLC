@@ -12,7 +12,6 @@ import DashboardView from '@/views/structure/DashboardView.vue';
 import InfoView from '@/views/structure/InfoView.vue';
 import SchoolView from '@/views/structure/SchoolView.vue';
 import TeachingView from '@/views/structure/TeachingView.vue';
-import type isEmpty from 'lodash.isempty';
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';

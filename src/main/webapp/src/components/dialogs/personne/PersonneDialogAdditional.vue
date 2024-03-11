@@ -63,7 +63,7 @@ const saveButton = computed<{ i18n: string; icon: string; color: string }>(() =>
   };
 });
 
-const save = async () => {
+const save = async (): Promise<void> => {
   try {
     const existFunctions = toIdentifier(structureAdditionalFonctions.value);
     await setPersonneAdditional(
@@ -80,14 +80,14 @@ const save = async () => {
   }
 };
 
-const cancel = () => {
+const cancel = (): void => {
   if (attachMode.value) {
     isCurrentPersonne.value = false;
     attachMode.value = false;
   } else personneDialogState.value = PersonneDialogState.Info;
 };
 
-const resetAddMode = (success?: boolean) => {
+const resetAddMode = (success?: boolean): void => {
   const title = saveButton.value.i18n.replace('button.', '');
   if (success) {
     refreshCurrentPersonne();

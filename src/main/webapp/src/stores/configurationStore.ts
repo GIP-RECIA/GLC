@@ -90,8 +90,9 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   /* --- Gestion des onglets de structure --- */
 
-  const structures = ref(
-    useSessionStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>(`${__APP_SLUG__}.tabs`, []),
+  const structures = useSessionStorage<Array<{ id: number; name: string; config: StructureConfiguration }>>(
+    `${__APP_SLUG__}.tabs`,
+    [],
   );
   const appTab = ref<number | undefined>();
 
