@@ -44,7 +44,7 @@
     "function": {
       "hourglass": {
         "start": "Will expire in {months} month ({date}) | Will expire in {months} months ({date}) ",
-        "half": "Expires in {months} month ({date}) | Expires in {months} months ({date})",
+        "half": "Expires in less than one month ({date}) | Expires in less than {months} months ({date})",
         "end": "Expired on {date}"
       }
     }
