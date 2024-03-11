@@ -9,9 +9,15 @@ const router = createRouter({
       component: () => import('@/views/HomeView.vue'),
     },
     {
-      path: '/:structureId',
+      path: '/:structureId(\\d+)',
       name: 'structure',
       component: () => import('@/views/StructureView.vue'),
+    },
+    {
+      path: '/:pathName(.*)',
+      redirect: () => {
+        return { name: 'home' };
+      },
     },
   ],
 });
