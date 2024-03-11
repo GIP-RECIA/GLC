@@ -6,6 +6,7 @@ import type { Etablissement, SimpleEtablissement } from '@/types/etablissementTy
 import type { Filiere } from '@/types/filiereType.ts';
 import type { CustomMapping, SourceFonction } from '@/types/fonctionType.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
+import type { StructureConfiguration } from '@/types/structureConfigurationType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
 import isEmpty from 'lodash.isempty';
 import { defineStore, storeToRefs } from 'pinia';
@@ -54,26 +55,27 @@ export const useStructureStore = defineStore('structure', () => {
       const index = structures.findIndex((structures) => structures.id == id);
       if (index == -1) {
         setStructureTab(Tabs.Dashboard);
-        structures.push({
-          id: id,
-          name: etab.type ? `${etab.type} ${etab.nom}` : etab.nom ?? '',
-          config: {
-            dashboard: {},
-            info: {},
-            teachingStaff: {
-              accountStates: [],
-            },
-            schoolStaff: {
-              accountStates: [],
-            },
-            academicStaff: {
-              accountStates: [],
-            },
-            collectivityStaff: {
-              accountStates: [],
-            },
-            accounts: {},
+        const config: StructureConfiguration = {
+          dashboard: {},
+          info: {},
+          teachingStaff: {
+            accountStates: [],
           },
+          schoolStaff: {
+            accountStates: [],
+          },
+          academicStaff: {
+            accountStates: [],
+          },
+          collectivityStaff: {
+            accountStates: [],
+          },
+          accounts: {},
+        };
+        structures.push({
+          id,
+          name: etab.type ? `${etab.type} ${etab.nom}` : etab.nom ?? '',
+          config,
         });
         setAppTab(structures.length - 1);
       } else setAppTab(index);
