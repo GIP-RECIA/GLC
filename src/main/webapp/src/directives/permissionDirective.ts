@@ -6,7 +6,7 @@ const permission: Directive<HTMLElement, Array<string>> = (el, binding) => {
   const structureStore = useStructureStore();
   const { currentEtab } = storeToRefs(structureStore);
 
-  const checkPermissions = () => {
+  const checkPermissions = (): void => {
     let hasPermission: boolean = false;
     binding.value.forEach((permission) => {
       if (currentEtab.value?.permission?.includes(permission)) hasPermission = true;
@@ -15,11 +15,10 @@ const permission: Directive<HTMLElement, Array<string>> = (el, binding) => {
     el.hidden = !hasPermission;
   };
 
-  checkPermissions();
-
   watch(
     () => currentEtab.value?.permission,
     () => checkPermissions(),
+    { immediate: true },
   );
 };
 

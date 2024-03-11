@@ -6,19 +6,17 @@ const admin: Directive<HTMLElement, null> = (el) => {
   const configurationStore = useConfigurationStore();
   const { identity } = storeToRefs(configurationStore);
 
-  const checkAdmin = () => {
+  const checkAdmin = (): void => {
     let isAdmin: boolean = false;
     if (identity.value?.roles.includes('ROLE_ADMIN')) isAdmin = true;
 
     el.hidden = !isAdmin;
   };
 
-  checkAdmin();
-
   watch(
     () => identity.value?.roles,
     () => checkAdmin(),
-    { deep: true },
+    { immediate: true, deep: true },
   );
 };
 
@@ -26,7 +24,7 @@ const role: Directive<HTMLElement, Array<string>> = (el, binding) => {
   const configurationStore = useConfigurationStore();
   const { identity } = storeToRefs(configurationStore);
 
-  const checkRoles = () => {
+  const checkRoles = (): void => {
     let hasRole: boolean = false;
     binding.value.forEach((role) => {
       if (identity.value?.roles.includes(role)) hasRole = true;
@@ -35,12 +33,10 @@ const role: Directive<HTMLElement, Array<string>> = (el, binding) => {
     el.hidden = !hasRole;
   };
 
-  checkRoles();
-
   watch(
     () => identity.value?.roles,
     () => checkRoles(),
-    { deep: true },
+    { immediate: true, deep: true },
   );
 };
 

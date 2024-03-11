@@ -6,15 +6,11 @@ const authenticated: Directive<HTMLElement, null> = (el) => {
   const configurationStore = useConfigurationStore();
   const { isAuthenticated } = storeToRefs(configurationStore);
 
-  const checkAuthentication = () => {
+  const checkAuthentication = (): void => {
     el.hidden = !isAuthenticated.value;
   };
 
-  checkAuthentication();
-
-  watch(isAuthenticated, (oldValue, newValue) => {
-    if (oldValue != newValue) checkAuthentication();
-  });
+  watch(isAuthenticated, () => checkAuthentication(), { immediate: true });
 };
 
 export { authenticated };
