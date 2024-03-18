@@ -469,7 +469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/message-compiler@npm:9.10.2":
+"@intlify/message-compiler@npm:9.10.2, @intlify/message-compiler@npm:^9.4.0":
   version: 9.10.2
   resolution: "@intlify/message-compiler@npm:9.10.2"
   dependencies:
@@ -479,24 +479,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/message-compiler@npm:^9.4.0":
-  version: 9.10.1
-  resolution: "@intlify/message-compiler@npm:9.10.1"
-  dependencies:
-    "@intlify/shared": "npm:9.10.1"
-    source-map-js: "npm:^1.0.2"
-  checksum: 10/176a6872c35ebfbcc65a2b4757b5697001a44e5c1084f2adb8db085ae5730efe1b64a89498380b561f43e5bd4c55a089ec97363d7da51985ccd3cbd83541c2c9
-  languageName: node
-  linkType: hard
-
-"@intlify/shared@npm:9.10.1, @intlify/shared@npm:^9.4.0":
-  version: 9.10.1
-  resolution: "@intlify/shared@npm:9.10.1"
-  checksum: 10/d675a93fa913a12b9ee283d32b42ff1c7cc62cc56f7611a68973d8da599d76671992de3698df74b2d3f6363f4c5eb82d9458f24a89c36ce79238e1b2c147792b
-  languageName: node
-  linkType: hard
-
-"@intlify/shared@npm:9.10.2":
+"@intlify/shared@npm:9.10.2, @intlify/shared@npm:^9.4.0":
   version: 9.10.2
   resolution: "@intlify/shared@npm:9.10.2"
   checksum: 10/e74b528269d8ea2031451545cd3e9c46d0380eaab5bbbc88e3fde7410cb76251df1bed3bd8074c39086a25512437a15e0bf112812046abf8d40f2b0041add3a1
@@ -5823,47 +5806,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0":
-  version: 5.1.5
-  resolution: "vite@npm:5.1.5"
-  dependencies:
-    esbuild: "npm:^0.19.3"
-    fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.4.35"
-    rollup: "npm:^4.2.0"
-  peerDependencies:
-    "@types/node": ^18.0.0 || >=20.0.0
-    less: "*"
-    lightningcss: ^1.21.0
-    sass: "*"
-    stylus: "*"
-    sugarss: "*"
-    terser: ^5.4.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@types/node":
-      optional: true
-    less:
-      optional: true
-    lightningcss:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-    sugarss:
-      optional: true
-    terser:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 10/ada0a9138ca541723008ee261d80a97f6b70173508ded0f87834e2142660f45dff9801d143551aa3a8979ed446f0aec71ae114ab3ae978b3fbd5cf1f8c4bc331
-  languageName: node
-  linkType: hard
-
-"vite@npm:^5.1.6":
+"vite@npm:^5.0.0, vite@npm:^5.1.6":
   version: 5.1.6
   resolution: "vite@npm:5.1.6"
   dependencies:
