@@ -3,7 +3,7 @@ import { usePersonneStore } from '@/stores/personneStore.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { getEtat, getIcon } from '@/utils/accountUtils.ts';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -20,7 +20,7 @@ const props = defineProps<{
 const data = computed<{ etat: enumValues; icon: string; tooltip: string }>(() => {
   const etat = getEtat(props.personne.etat);
   const icon = etat.icon ? etat.icon : getIcon(props.personne.source);
-  const suppressDate = props.personne.dateSuppression && format(parseISO(props.personne.dateSuppression), 'P');
+  const suppressDate = props.personne.dateSuppression && format(props.personne.dateSuppression, 'P');
   const supressString = suppressDate ? ` (${t('person.status.deletingDate', { suppressDate })})` : '';
   const tooltip = t(etat.i18n) + supressString;
 

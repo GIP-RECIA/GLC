@@ -11,7 +11,7 @@ import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Personne } from '@/types/personneType.ts';
 import { getCategoriePersonne, getEtat, getIcon } from '@/utils/accountUtils.ts';
 import { useSessionStorage } from '@vueuse/core';
-import { format, getYear, parseISO } from 'date-fns';
+import { format, getYear } from 'date-fns';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -44,7 +44,7 @@ const etat = computed<enumValues>(() => {
 
 const schoolYear = computed<string | undefined>(() => {
   if (props.personne?.anneeScolaire) {
-    const year = getYear(parseISO(props.personne.anneeScolaire));
+    const year = getYear(props.personne.anneeScolaire);
     return `${year}/${year + 1}`;
   }
   return undefined;
@@ -61,7 +61,7 @@ const login = computed<{ i18n: string; info?: string }>(() => {
 });
 
 const suppressDate = computed<string | undefined>(() => {
-  return props.personne?.dateSuppression ? format(parseISO(props.personne.dateSuppression), 'P') : undefined;
+  return props.personne?.dateSuppression ? format(props.personne.dateSuppression, 'P') : undefined;
 });
 
 const hasFunctions = computed<boolean>(() => {
@@ -90,7 +90,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
       <readonly-data :label="t('person.information.firstName')" :value="personne.givenName" class="modal-flex-item" />
       <readonly-data
         :label="t('person.information.birthDate')"
-        :value="personne.dateNaissance ? format(parseISO(personne.dateNaissance), 'P') : undefined"
+        :value="personne.dateNaissance ? format(personne.dateNaissance, 'P') : undefined"
         class="modal-flex-item"
       />
       <readonly-data :label="t('person.information.email')" :value="personne.email" class="modal-flex-item" />
@@ -128,7 +128,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
       </readonly-data>
       <readonly-data
         :label="t('person.information.sourceModificationDate')"
-        :value="personne.dateSourceModification ? format(parseISO(personne.dateSourceModification), 'P') : undefined"
+        :value="personne.dateSourceModification ? format(personne.dateSourceModification, 'P') : undefined"
         class="modal-flex-item"
       />
     </div>
