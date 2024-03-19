@@ -11,6 +11,7 @@ import type { SimplePersonne } from '@/types/personneType.ts';
 import type { StructureConfiguration } from '@/types/structureConfigurationType.ts';
 import { getEtat } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
+import { useEntTheme } from '@/utils/entUtils.ts';
 import { useSessionStorage } from '@vueuse/core';
 import isEmpty from 'lodash.isempty';
 import { defineStore } from 'pinia';
@@ -28,6 +29,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
       try {
         const response = await getConfiguration();
         configuration.value = response.data;
+        await useEntTheme(configuration.value!.front.extendedUportalHeader.templateApiPath);
       } catch (e) {
         errorHandler(e, 'initConfigurationStore');
       }
