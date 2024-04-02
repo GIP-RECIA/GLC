@@ -770,10 +770,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rushstack/eslint-patch@npm:^1.7.2":
-  version: 1.7.2
-  resolution: "@rushstack/eslint-patch@npm:1.7.2"
-  checksum: 10/9a2da86b47bba118ad386417291d3960bc7470f78302be6b38c6b03f28a087e789e875c56a25eb1854779d55cadc167880739b36a540b1824bdb7c71283fd7a1
+"@rushstack/eslint-patch@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@rushstack/eslint-patch@npm:1.10.1"
+  checksum: 10/fdb29ab19f9106eada23d9f46fca7ccc4d15996d2c25ad3a9b8df03d4d105d9a746c3f7d3c7a4a41d89b5de554c3d617ea68205499852426c8fc0f3fd03ebcfa
   languageName: node
   linkType: hard
 
@@ -2888,7 +2888,7 @@ __metadata:
     "@fortawesome/vue-fontawesome": "npm:3.0.6"
     "@intlify/unplugin-vue-i18n": "npm:^3.0.1"
     "@playwright/test": "npm:^1.42.1"
-    "@rushstack/eslint-patch": "npm:^1.7.2"
+    "@rushstack/eslint-patch": "npm:^1.10.1"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
     "@tsconfig/node20": "npm:^20.1.4"
     "@types/jsdom": "npm:^21.1.6"
