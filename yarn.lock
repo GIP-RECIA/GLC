@@ -597,17 +597,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/bundle-utils@npm:^7.4.0":
-  version: 7.5.0
-  resolution: "@intlify/bundle-utils@npm:7.5.0"
+"@intlify/bundle-utils@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@intlify/bundle-utils@npm:8.0.0"
   dependencies:
     "@intlify/message-compiler": "npm:^9.4.0"
     "@intlify/shared": "npm:^9.4.0"
     acorn: "npm:^8.8.2"
-    escodegen: "npm:^2.0.0"
+    escodegen: "npm:^2.1.0"
     estree-walker: "npm:^2.0.2"
     jsonc-eslint-parser: "npm:^2.3.0"
-    magic-string: "npm:^0.30.0"
     mlly: "npm:^1.2.0"
     source-map-js: "npm:^1.0.1"
     yaml-eslint-parser: "npm:^1.2.2"
@@ -616,7 +615,7 @@ __metadata:
       optional: true
     vue-i18n:
       optional: true
-  checksum: 10/bb881933d6a2c622c96e6d91ad2051f93f64c346e910198e6eadfffecede7e512270717a14e1992f44905c5ff8c5b5985bce5897cbe00d6b70c2d92c7d662208
+  checksum: 10/b8a140728157fb632c8af3741d4ff324d778ecff92ad74c64b988dc9a1324cb1592d984ef03d1add238fb3437662170de526010ba137dfcee824a01e5c63a1be
   languageName: node
   linkType: hard
 
@@ -647,11 +646,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/unplugin-vue-i18n@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "@intlify/unplugin-vue-i18n@npm:3.0.1"
+"@intlify/unplugin-vue-i18n@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@intlify/unplugin-vue-i18n@npm:4.0.0"
   dependencies:
-    "@intlify/bundle-utils": "npm:^7.4.0"
+    "@intlify/bundle-utils": "npm:^8.0.0"
     "@intlify/shared": "npm:^9.4.0"
     "@rollup/pluginutils": "npm:^5.1.0"
     "@vue/compiler-sfc": "npm:^3.2.47"
@@ -674,7 +673,7 @@ __metadata:
       optional: true
     vue-i18n-bridge:
       optional: true
-  checksum: 10/58d75c5b8173ee8183eef471a9ad23f98463a0dd02aa1e48b1d8438353067149570c0a49ce47c403a50bfe7c36c9f492dcca63ccb964c4228ed03b9664498e25
+  checksum: 10/f8978c10dae8b39aa7d1b2899ae0002a098471b0643329827b8679728ce26fc2ec526a5a532de29026d13c5296dbb81b637c4056b61167a9a6863b4a15a1049d
   languageName: node
   linkType: hard
 
@@ -2705,7 +2704,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escodegen@npm:^2.0.0":
+"escodegen@npm:^2.1.0":
   version: 2.1.0
   resolution: "escodegen@npm:2.1.0"
   dependencies:
@@ -3232,7 +3231,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^6.5.1"
     "@fortawesome/free-solid-svg-icons": "npm:^6.5.1"
     "@fortawesome/vue-fontawesome": "npm:3.0.6"
-    "@intlify/unplugin-vue-i18n": "npm:^3.0.1"
+    "@intlify/unplugin-vue-i18n": "npm:^4.0.0"
     "@playwright/test": "npm:^1.42.1"
     "@rushstack/eslint-patch": "npm:^1.10.1"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
@@ -4232,7 +4231,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.30.0, magic-string@npm:^0.30.5, magic-string@npm:^0.30.7":
+"magic-string@npm:^0.30.5, magic-string@npm:^0.30.7":
   version: 0.30.7
   resolution: "magic-string@npm:0.30.7"
   dependencies:
