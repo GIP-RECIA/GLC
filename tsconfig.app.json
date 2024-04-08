@@ -10,6 +10,8 @@
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/main/webapp/src/*"]
