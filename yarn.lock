@@ -2418,9 +2418,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-playwright@npm:^1.5.4":
-  version: 1.5.4
-  resolution: "eslint-plugin-playwright@npm:1.5.4"
+"eslint-plugin-playwright@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "eslint-plugin-playwright@npm:1.6.0"
   dependencies:
     globals: "npm:^13.23.0"
   peerDependencies:
@@ -2429,7 +2429,7 @@ __metadata:
   peerDependenciesMeta:
     eslint-plugin-jest:
       optional: true
-  checksum: 10/d7f2727bbab619da8681772c4831713448c833bce728884ebdb237129782bea7b55743a6d6ed2059c41018d7381acf4b4762e4e5cabc738abb376a1cf0a37e7c
+  checksum: 10/3f6581ae1dd1f9f9f164502c0a07aebe95627333f6cc43804a83b57855a830f97437157627fb6e8639bb1961c38e2203e3f6b929a883fe7b35dbc620910edc80
   languageName: node
   linkType: hard
 
@@ -2953,7 +2953,7 @@ __metadata:
     dotenv: "npm:^16.4.5"
     dotenv-checker: "npm:^1.1.5"
     eslint: "npm:^8.57.0"
-    eslint-plugin-playwright: "npm:^1.5.4"
+    eslint-plugin-playwright: "npm:^1.6.0"
     eslint-plugin-vue: "npm:^9.25.0"
     husky: "npm:^8.0.3"
     jsdom: "npm:^24.0.0"
