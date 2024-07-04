@@ -2,35 +2,89 @@
 
 Gestion locale des comptes.
 
-## Requirements
+- [GLC](#glc)
+  - [Prérequis 🚨](#prérequis-)
+  - [Setup 🧰](#setup-)
+    - [Initialisation 🛠️](#initialisation-️)
+    - [License 📔](#license-)
+    - [Changelog 🆕](#changelog-)
+  - [Run ▶️](#run-️)
+  - [Tests 🧪](#tests-)
+  - [Build 📦](#build-)
 
-- [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) or node 20
-- [sdkman](https://sdkman.io/install) or java 11 temurin
+[![Coverage](https://raw.githubusercontent.com/GIP-RECIA/GLC/badges/jacoco.svg)](https://github.com/GIP-RECIA/GLC/actions/workflows/project.yml)
+[![Branches](https://raw.githubusercontent.com/GIP-RECIA/GLC/badges/branches.svg)](https://github.com/GIP-RECIA/GLC/actions/workflows/project.yml)
 
-## Prepare environment
+## Prérequis 🚨
 
-```bash
-./scripts/init.sh
+- [nvm](https://github.com/nvm-sh/nvm)
+- [sdkman](https://sdkman.io)
+- [docker](https://www.docker.com)
+- mysql-client-core-8.0
+
+## Setup 🧰
+
+### Initialisation 🛠️
+
+```sh
+make init
 ```
 
-Complete the `.env.local` (located at root) file and the `application-dev.yml` file (located in `src/main/resources/config`).
+Personnalisez les fichiers :
 
-## Dev
+- `.env.local`
+- `src/main/resources/config/application-dev.yml`
 
-**Frontend**
+### License 📔
 
-```bash
-yarn dev
+> ⚠️ docker doit être lancé
+
+```sh
+make license-check
+make license-generate
 ```
 
-**Backend**
+### Changelog 🆕
 
-```bash
-./mvnw clean spring-boot:run -P dev
+```sh
+yarn changelog:generate
 ```
 
-## Build
+## Run ▶️
 
-```bash
-./scripts/build.sh
+**frontend** :
+
+```sh
+make frontend
 ```
+
+**backend** :
+
+```sh
+make backend
+```
+
+## Tests 🧪
+
+**frontend** :
+
+```sh
+yarn test:unit
+yarn test:e2e
+```
+
+**backend** :
+
+> ⚠️ docker doit être lancé et `mysql-client-core-8.0` installé
+
+```sh
+make backend-tests
+```
+
+## Build 📦
+
+```sh
+make snapshot
+make release
+```
+
