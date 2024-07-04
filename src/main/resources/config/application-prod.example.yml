@@ -6,7 +6,7 @@ server:
 spring:
   config:
     activate:
-      on-profile: "prod"
+      on-profile: 'prod'
 
   datasource:
     url: jdbc:mariadb://HOST:3306/DB_NAME?useUnicode=true&characterEncoding=UTF-8&autoreconnect=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris
@@ -21,7 +21,7 @@ app:
     authorized-domain-names:
       - http://localhost:5173
     protocol: http://
-    id-key-provider: esco_cas_glc
+    id-key-provider:
 
   cas:
     url-prefix:

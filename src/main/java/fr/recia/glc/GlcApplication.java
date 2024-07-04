@@ -15,6 +15,7 @@
  */
 package fr.recia.glc;
 
+import fr.recia.glc.annotation.ExcludeFromJacocoGeneratedReport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -25,6 +26,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Slf4j
+@ExcludeFromJacocoGeneratedReport
 @SpringBootApplication
 public class GlcApplication {
 

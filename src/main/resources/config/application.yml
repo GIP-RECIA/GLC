@@ -6,7 +6,7 @@ spring:
 ---
 
 logging:
-  config: "classpath:logback.xml"
+  config: 'classpath:logback.xml'
 
 spring:
   application:
@@ -18,7 +18,6 @@ spring:
       dev: dev
       test: test
       prod: prod
-      ci: test
 
   jpa:
     show-sql: false
@@ -78,6 +77,34 @@ app:
       - 'Delete'
       - 'Deleting'
       - 'Incertain'
+
+    extended-uportal-header:
+      component-path: ''
+      context-api-url: ''
+      sign-out-url: ''
+      default-org-logo-path: ''
+      default-avatar-path: ''
+      default-org-icon-path: ''
+      favorite-api-url: ''
+      layout-api-url: ''
+      organization-api-url: ''
+      portlet-api-url: ''
+      user-info-api-url: ''
+      user-info-portlet-url: ''
+      session-api-url: ''
+      template-api-path: ''
+      switch-org-portlet-url: ''
+      favorites-portlet-card-size: ''
+      grid-portlet-card-size: ''
+      hide-action-mode: ''
+      show-favorites-in-slider: ''
+      return-home-title: ''
+      return-home-target: ''
+      icon-type: ''
+
+    extended-uportal-footer:
+      component-path: ''
+      template-api-path: ''
 
   custom-config:
     suppress-days: 20

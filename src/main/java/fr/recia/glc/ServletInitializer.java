@@ -15,6 +15,7 @@
  */
 package fr.recia.glc;
 
+import fr.recia.glc.annotation.ExcludeFromJacocoGeneratedReport;
 import fr.recia.glc.configuration.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
@@ -22,6 +23,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @Slf4j
+@ExcludeFromJacocoGeneratedReport
 public class ServletInitializer extends SpringBootServletInitializer {
 
   @Override

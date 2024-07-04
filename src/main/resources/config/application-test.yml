@@ -1,0 +1,36 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /glc2
+
+logging:
+  config: 'classpath:logback-test.xml'
+
+spring:
+  config:
+    activate:
+      on-profile: 'test'
+
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/glc?useUnicode=true&characterEncoding=UTF-8&autoreconnect=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: Hikari-glc
+      auto-commit: false
+      minimum-idle: 10
+      maximum-pool-size: 50
+      #max-life-time: 30000
+      #idle-timeout: 30000
+      connection-test-query: SELECT 1
+      register-mbeans: true
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+
+app:
+  cors:
+    enable: false
