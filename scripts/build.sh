@@ -1,45 +1,37 @@
-#!/usr/bin/env bash
+profile_prod=prod
+build_arguments='-Dmaven.test.skip=true -Darguments="-DskipTests"'
 
 package () {
   echo "--- Package ---"
-  ./mvnw clean package -P prod -Dmaven.test.skip=true -Darguments="-DskipTests"
+  ./mvnw clean package -P${profile_prod} ${build_arguments}
 }
 
 snapshot () {
   echo "--- Snapshot ---"
-  ./mvnw clean package deploy -P prod -Dmaven.test.skip=true -Darguments="-DskipTests"
+  ./mvnw clean package deploy -P${profile_prod} ${build_arguments}
 }
 
 release () {
   echo "--- Release ---"
-  ./mvnw clean release:prepare release:perform -P prod -Dmaven.test.skip=true -Darguments="-DskipTests"
+  ./mvnw clean package release:prepare release:perform -P${profile_prod} ${build_arguments}
 }
 
-echo "GLC Building Tool"
-echo ""
-echo "0 -> package"
-echo "1 -> snapshot"
-echo "2 -> release"
-echo ""
+if [[ $1 != "" ]]; then
+  choice="$1"
+else
+  echo "0 -> package"
+  echo "1 -> snapshot"
+  echo "2 -> release"
+  echo ""
 
-read -r -p "Build type: " choice
+  read -r -p "Action: " choice
+fi
 
-case $choice in
+case ${choice} in
 
-  0)
-    package
-  ;;
-
-  1)
-    snapshot
-  ;;
-
-  2)
-    release
-  ;;
-
-  *)
-    echo "Unknown choice"
-  ;;
+  0) package;;
+  1) snapshot;;
+  2) release;;
+  *) echo "Unknown choice";;
 
 esac
