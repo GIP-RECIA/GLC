@@ -30,24 +30,30 @@ const intercept = () => {
 };
 
 const errorHandler = (e: any, toastOrI18n?: boolean | string): void => {
-  const showToast: boolean = typeof toastOrI18n == 'boolean' && toastOrI18n;
-  const toastOptions: ToastContainerOptions = { clearOnUrlChange: false };
+  let showToast: boolean = typeof toastOrI18n == 'boolean' && toastOrI18n;
+  const i18nHandled: Array<number> = [401, 404, 500];
+  let message: string, error: any;
 
   if (axios.isAxiosError(e)) {
-    if (typeof toastOrI18n == 'string') toast.error(t(`toast.${toastOrI18n}`), toastOptions);
-    else if (showToast) {
-      if ([401, 404, 500].includes(e.response ? e.response.status : 0))
-        toast.error(t(`toast.error.${e.response!.status}`), toastOptions);
-      else toast.error(t('toast.error.unmanaged'), toastOptions);
+    if (typeof toastOrI18n == 'string' && toastOrI18n.trim().length > 0) {
+      message = `toast.${toastOrI18n}`;
+      showToast = true;
+    } else {
+      message = i18nHandled.includes(e.response?.status ?? -1)
+        ? `toast.error.${e.response!.status}`
+        : 'toast.error.unmanaged';
     }
-    console.error(e.message);
+    error = e.message;
   } else if (e instanceof Error) {
-    if (showToast) toast.error(t('toast.error.stock') + e.message, toastOptions);
-    console.error(e.message);
+    message = 'toast.error.stock';
+    error = e.message;
   } else {
-    if (showToast) toast.error(t('toast.error.unknown'), toastOptions);
-    console.error(e);
+    message = 'toast.error.unknown';
+    error = e;
   }
+
+  if (showToast) toast.error(t(message), { clearOnUrlChange: false } as ToastContainerOptions);
+  console.error(error);
 };
 
 export { instance, errorHandler, intercept };
