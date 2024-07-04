@@ -415,6 +415,7 @@
           <localCheckout>true</localCheckout>
           <tagNameFormat>@{project.version}</tagNameFormat>
           <pushChanges>true</pushChanges>
+          <scmCommentPrefix>build(release): [maven-release-plugin]</scmCommentPrefix>
         </configuration>
       </plugin>
       <plugin>
