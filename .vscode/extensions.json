@@ -1,7 +1,14 @@
 {
   "recommendations": [
     "Vue.volar",
-    "Vue.vscode-typescript-vue-plugin",
-    "ms-playwright.playwright"
+    "ms-playwright.playwright",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "EditorConfig.EditorConfig",
+    "github.vscode-github-actions",
+    "DavidAnson.vscode-markdownlint",
+    "YoavBls.pretty-ts-errors",
+    "SonarSource.sonarlint-vscode",
+    "pflannery.vscode-versionlens"
   ]
 }
