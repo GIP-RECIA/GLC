@@ -6,11 +6,11 @@ import { type ToastContainerOptions, toast } from 'vue3-toastify';
 
 const { t } = i18n.global;
 
-const { VITE_API_URI, VITE_REFRESH_IDENTITY_MILLISECONDS } = import.meta.env;
+const { VITE_API_URI, VITE_AXIOS_TIMEOUT, VITE_REFRESH_IDENTITY_MILLISECONDS } = import.meta.env;
 
 const instance = axios.create({
   baseURL: VITE_API_URI,
-  timeout: 10000,
+  timeout: VITE_AXIOS_TIMEOUT,
   withCredentials: true,
   xsrfCookieName: 'CSRF-TOKEN',
   xsrfHeaderName: 'X-CSRF-TOKEN',
