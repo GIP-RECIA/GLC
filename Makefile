@@ -29,7 +29,7 @@ release:
 
 clean:
 	./mvnw clean
-	find . -type d -name node_modules -type d -prune -or -name cache -type d -or -name dist -type d -or -name playwright-report -type d -or -name test-results -type d -or -name results.json -type f -or -name '*.bak' -type f -or -name '*.log' -type f -or -name '*.log.*.gz' -type f | xargs rm -rf
+	find . -name node_modules -type d -prune -or -name cache -type d -or -name dist -type d -or -name playwright-report -type d -or -name test-results -type d -or -name results.json -type f -or -name '*.bak' -type f -or -name '*.log' -type f -or -name '*.log.*.gz' -type f | xargs rm -rf
 
 dedupe:
 	./scripts/dedupe.sh
