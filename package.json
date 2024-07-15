@@ -62,7 +62,7 @@
     "lodash.debounce": "^4.0.8",
     "lodash.isempty": "^4.4.0",
     "npm-run-all2": "^6.2.2",
-    "prettier": "^3.3.2",
+    "prettier": "^3.3.3",
     "resize-observer-polyfill": "^1.5.1",
     "sass": "^1.77.6",
     "typescript": "^5.5.3",
