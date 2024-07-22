@@ -57,7 +57,7 @@
     "eslint-plugin-playwright": "^1.6.2",
     "eslint-plugin-vue": "^9.27.0",
     "husky": "^8.0.3",
-    "jsdom": "^24.1.0",
+    "jsdom": "^24.1.1",
     "lint-staged": "^15.2.7",
     "lodash.debounce": "^4.0.8",
     "lodash.isempty": "^4.4.0",
