@@ -58,7 +58,7 @@
     "eslint-plugin-vue": "^9.27.0",
     "husky": "^8.0.3",
     "jsdom": "^24.1.1",
-    "lint-staged": "^15.2.7",
+    "lint-staged": "^15.2.8",
     "lodash.debounce": "^4.0.8",
     "lodash.isempty": "^4.4.0",
     "npm-run-all2": "^6.2.2",
