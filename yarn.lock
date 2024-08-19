@@ -3666,7 +3666,7 @@ __metadata:
     vue-router: "npm:^4.4.0"
     vue-tsc: "npm:^2.0.26"
     vue3-toastify: "npm:^0.2.2"
-    vuetify: "npm:^3.6.13"
+    vuetify: "npm:^3.7.0"
     xml2js: "npm:^0.6.2"
   languageName: unknown
   linkType: soft
@@ -7054,9 +7054,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:^3.6.13":
-  version: 3.6.13
-  resolution: "vuetify@npm:3.6.13"
+"vuetify@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "vuetify@npm:3.7.0"
   peerDependencies:
     typescript: ">=4.7"
     vite-plugin-vuetify: ">=1.0.0"
@@ -7072,7 +7072,7 @@ __metadata:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: 10/4b4ca22dfe7993ee8c545eb7c4ece549db49e940381f94e3cb314db7e1342318918da623122eee0d0330ff15a699d8d9b55ad3f7ff03171f2d42fb6b3cf97375
+  checksum: 10/f4dfa5be9f374a21879a1e2e17491a3729b633e3e878b68ee3a59d87b01cf23aa4f937d15e1411157df3edeb1c22a88bdf3a775f8f4f4bb662ccae37a81fc02c
   languageName: node
   linkType: hard
 
