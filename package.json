@@ -48,7 +48,7 @@
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.5.1",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "commit-and-tag-version": "^12.4.1",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
