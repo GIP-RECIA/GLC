@@ -148,7 +148,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
         class="modal-flex-item"
       />
     </div>
-    <div v-if="hasFunctions">
+    <template v-if="hasFunctions">
       <div class="mb-3">
         <b>{{ t('person.information.function', 2) }}</b>
         <fonctions-layout :filieres="allFilieres" :fonctions="structureFonctions" class="my-0 px-1" />
@@ -184,6 +184,6 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
         </v-alert>
         <fonctions-layout :filieres="allFilieres" :fonctions="structureAdditionalFonctions" class="my-0 px-1" />
       </div>
-    </div>
+    </template>
   </v-card-text>
 </template>

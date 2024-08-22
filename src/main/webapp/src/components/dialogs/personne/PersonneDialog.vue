@@ -76,7 +76,7 @@ watch(isCurrentPersonne, (newValue) => {
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ title }}</v-toolbar-title>
         <template v-if="personneDialogState == PersonneDialogState.Info" #append>
-          <v-btn icon="fas fa-xmark" color="default" variant="plain" @click="isCurrentPersonne = false" />
+          <v-btn icon="fas fa-xmark" color="default" variant="plain" class="me-1" @click="isCurrentPersonne = false" />
         </template>
       </v-toolbar>
 

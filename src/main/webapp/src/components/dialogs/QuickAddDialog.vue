@@ -147,7 +147,7 @@ watch(currentPersonne, (newValue) => {
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ requestAdd?.i18n && t(requestAdd.i18n) }}</v-toolbar-title>
         <template #append>
-          <v-btn icon="fas fa-xmark" color="default" variant="plain" @click="closeAndResetModal()" />
+          <v-btn icon="fas fa-xmark" color="default" variant="plain" class="me-1" @click="closeAndResetModal()" />
         </template>
       </v-toolbar>
       <v-card-text class="py-0">
@@ -155,7 +155,7 @@ watch(currentPersonne, (newValue) => {
           v-model="selectedUser"
           :search-list="requestAdd?.searchList"
           variant="outlined"
-          :class="currentPersonne && isEditAllowed(currentPersonne.etat) ? 'mb-4' : 'mb-6'"
+          :class="[currentPersonne && isEditAllowed(currentPersonne.etat) ? 'mb-4' : 'mb-6']"
         />
       </v-card-text>
       <v-card-actions v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
