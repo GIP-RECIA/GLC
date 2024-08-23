@@ -13,13 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
-import { acceptHMRUpdate, createPinia } from 'pinia';
 
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useConfigurationStore, import.meta.hot));
-  import.meta.hot.accept(acceptHMRUpdate(usePersonneStore, import.meta.hot));
-  import.meta.hot.accept(acceptHMRUpdate(useStructureStore, import.meta.hot));
-}
-
-export default createPinia();
+export { useConfigurationStore } from './configurationStore.ts';
+export { usePersonneStore } from './personneStore.ts';
+export { useStructureStore } from './structureStore.ts';
