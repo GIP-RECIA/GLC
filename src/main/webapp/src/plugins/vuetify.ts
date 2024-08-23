@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 import i18n from '@/plugins/i18n.ts';
+import DateFnsAdapter from '@date-io/date-fns';
+import { enUS, fr } from 'date-fns/locale';
 import { useI18n } from 'vue-i18n';
 import { type ThemeDefinition, createVuetify } from 'vuetify';
 import { md3 } from 'vuetify/blueprints';
@@ -49,5 +51,12 @@ export default createVuetify({
   },
   locale: {
     adapter: createVueI18nAdapter({ i18n, useI18n }),
+  },
+  date: {
+    adapter: DateFnsAdapter,
+    locale: {
+      fr,
+      en: enUS,
+    },
   },
 });
