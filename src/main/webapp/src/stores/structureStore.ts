@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { useConfigurationStore } from './configurationStore.ts';
 import { getEtablissement, getEtablissements } from '@/services/structureService.ts';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
 import { Etat } from '@/types/enums/Etat.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType.ts';
@@ -89,7 +89,7 @@ export const useStructureStore = defineStore('structure', () => {
         };
         structures.push({
           id,
-          name: etab.type ? `${etab.type} ${etab.nom}` : etab.nom ?? '',
+          name: etab.type ? `${etab.type} ${etab.nom}` : (etab.nom ?? ''),
           config,
         });
         setAppTab(structures.length - 1);

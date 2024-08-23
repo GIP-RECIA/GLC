@@ -16,8 +16,7 @@
 
 <script setup lang="ts">
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { usePersonneStore } from '@/stores/personneStore.ts';
+import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { storeToRefs } from 'pinia';

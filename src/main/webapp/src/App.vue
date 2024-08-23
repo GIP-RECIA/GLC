@@ -18,7 +18,7 @@
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { useConfigurationStore } from '@/stores/index.ts';
 import { watchOnce } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { onBeforeMount } from 'vue';

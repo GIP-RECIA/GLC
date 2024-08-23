@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useStructureStore } from '@/stores/structureStore.ts';
+import { useStructureStore } from '@/stores/index.ts';
 import { storeToRefs } from 'pinia';
 import { type Directive, watch } from 'vue';
 

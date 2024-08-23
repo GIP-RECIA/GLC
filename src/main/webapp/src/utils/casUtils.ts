@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { useConfigurationStore } from '@/stores/index';
 import { storeToRefs } from 'pinia';
 
 const { VITE_API_URI } = import.meta.env;

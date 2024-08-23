@@ -16,8 +16,7 @@
 
 <script setup lang="ts">
 import CustomPagination from '@/components/CustomPagination.vue';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { useStructureStore } from '@/stores/structureStore.ts';
+import { useConfigurationStore, useStructureStore } from '@/stores/index.ts';
 import type { SimpleEtablissement } from '@/types/etablissementType.ts';
 import { useSessionStorage } from '@vueuse/core';
 import { storeToRefs } from 'pinia';

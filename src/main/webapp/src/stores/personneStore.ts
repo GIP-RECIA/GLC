@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { useConfigurationStore } from './configurationStore.ts';
+import { useStructureStore } from './structureStore.ts';
 import { getPersonne } from '@/services/personneService.ts';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { useStructureStore } from '@/stores/structureStore.ts';
 import type { PersonneFonction } from '@/types/fonctionType.ts';
 import type { Personne } from '@/types/personneType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';

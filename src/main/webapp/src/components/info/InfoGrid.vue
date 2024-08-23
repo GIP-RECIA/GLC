@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import InfoCard from '@/components/info/InfoCard.vue';
-import { useStructureStore } from '@/stores/structureStore.ts';
+import { useStructureStore } from '@/stores/index.ts';
 import { storeToRefs } from 'pinia';
 
 const structureStore = useStructureStore();

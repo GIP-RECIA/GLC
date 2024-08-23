@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { useConfigurationStore } from '@/stores/index';
 import type { endInfo } from '@/types/endInfoType.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
 import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';

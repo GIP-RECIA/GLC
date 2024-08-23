@@ -19,7 +19,7 @@ import AlertManager from '@/components/AlertManager.vue';
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
 import InfoGrid from '@/components/info/InfoGrid.vue';
-import { useStructureStore } from '@/stores/structureStore.ts';
+import { useStructureStore } from '@/stores/index.ts';
 import { DashboardPanel } from '@/types/enums/DashboardPanel.ts';
 import { Etat } from '@/types/enums/Etat.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';

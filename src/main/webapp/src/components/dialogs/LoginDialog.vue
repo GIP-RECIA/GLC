@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { useConfigurationStore } from '@/stores/index.ts';
 import { intercept } from '@/utils/axiosUtils.ts';
 import { login } from '@/utils/casUtils.ts';
 import { watchOnce } from '@vueuse/core';

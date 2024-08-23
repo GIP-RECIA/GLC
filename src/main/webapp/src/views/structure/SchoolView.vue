@@ -18,9 +18,7 @@
 import SelectFilter from '@/components/filter/SelectFilter.vue';
 import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { usePersonneStore } from '@/stores/personneStore.ts';
-import { useStructureStore } from '@/stores/structureStore.ts';
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
 import { Etat } from '@/types/enums/Etat.ts';
 import type { SimplePersonne } from '@/types/personneType';
 import { storeToRefs } from 'pinia';

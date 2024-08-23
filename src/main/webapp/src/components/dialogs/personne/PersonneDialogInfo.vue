@@ -17,9 +17,7 @@
 <script setup lang="ts">
 import ReadonlyData from '@/components/ReadonlyData.vue';
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { usePersonneStore } from '@/stores/personneStore.ts';
-import { useStructureStore } from '@/stores/structureStore.ts';
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
 import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';

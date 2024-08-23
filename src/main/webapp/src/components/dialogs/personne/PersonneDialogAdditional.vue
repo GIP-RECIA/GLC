@@ -17,8 +17,7 @@
 <script setup lang="ts">
 import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
 import { setPersonneAdditional } from '@/services/personneService.ts';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { usePersonneStore } from '@/stores/personneStore.ts';
+import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
 import type { Filiere } from '@/types/filiereType.ts';
 import type { Personne } from '@/types/personneType.ts';

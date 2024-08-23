@@ -17,9 +17,7 @@
 <script setup lang="ts">
 import PersonneDialogAdditional from '@/components/dialogs/personne/PersonneDialogAdditional.vue';
 import PersonneDialogInfo from '@/components/dialogs/personne/PersonneDialogInfo.vue';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { usePersonneStore } from '@/stores/personneStore.ts';
-import { useStructureStore } from '@/stores/structureStore.ts';
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import debounce from 'lodash.debounce';

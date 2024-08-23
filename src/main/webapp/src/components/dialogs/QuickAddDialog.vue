@@ -17,9 +17,7 @@
 <script setup lang="ts">
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
 import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/personneService.ts';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { usePersonneStore } from '@/stores/personneStore.ts';
-import { useStructureStore } from '@/stores/structureStore.ts';
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { toIdentifier } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';

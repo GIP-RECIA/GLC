@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
+import { useConfigurationStore } from '@/stores/index.ts';
 import type { Filiere } from '@/types/filiereType.ts';
 import type { PersonneFonction } from '@/types/fonctionType.ts';
 import { getDateFin } from '@/utils/accountUtils.ts';

@@ -18,8 +18,7 @@
 import AttachDialog from '@/components/dialogs/AttachDialog.vue';
 import QuickAddDialog from '@/components/dialogs/QuickAddDialog.vue';
 import PersonneDialog from '@/components/dialogs/personne/PersonneDialog.vue';
-import { useConfigurationStore } from '@/stores/configurationStore.ts';
-import { useStructureStore } from '@/stores/structureStore.ts';
+import { useConfigurationStore, useStructureStore } from '@/stores/index.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import AcademicView from '@/views/structure/AcademicView.vue';
 import AccountView from '@/views/structure/AccountView.vue';

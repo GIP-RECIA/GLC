@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import { usePersonneStore } from '@/stores/personneStore.ts';
+import { usePersonneStore } from '@/stores/index.ts';
 import type { enumValues } from '@/types/enumValuesType.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
 import { getEtat, getIcon } from '@/utils/accountUtils.ts';
