@@ -68,45 +68,59 @@ watch(
 </script>
 
 <template>
-  <v-row v-if="filteredFilieres.length > 0">
-    <v-col v-for="(filiere, index) in filteredFilieres" :key="index" :cols="12" :md="6" class="pa-2">
-      <v-card :subtitle="filiere.libelleFiliere" variant="tonal" min-height="100%">
-        <v-card-text class="pb-2 mt--3">
-          <div class="v-chip-group v-chip-group--column flex-wrap">
-            <v-chip
-              v-for="(discipline, index) in filiere.disciplines"
-              :key="index"
-              :text="discipline.disciplinePoste"
-              :color="discipline.endInfo?.color ?? 'primary'"
-              :ripple="false"
-              rounded
-            >
-              <template #append v-if="discipline.endInfo">
-                <v-tooltip
-                  :text="
-                    t(
-                      discipline.endInfo.i18n,
-                      {
-                        date: format(discipline.endInfo.date!, 'P'),
-                        months: discipline.endInfo.months,
-                      },
-                      discipline.endInfo.months ?? 1,
-                    )
-                  "
-                  location="bottom start"
-                >
-                  <template v-slot:activator="{ props }">
-                    <v-icon v-bind="props" :icon="discipline.endInfo.icon" size="x-small" class="ms-1" />
-                  </template>
-                </v-tooltip>
-              </template>
-            </v-chip>
-          </div>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
-  <div v-else>
-    <slot name="empty" />
+  <div v-if="filteredFilieres.length > 0" class="container">
+    <v-card
+      v-for="filiere in filteredFilieres"
+      :key="filiere.codeFiliere"
+      :subtitle="filiere.libelleFiliere"
+      variant="tonal"
+      min-height="100%"
+    >
+      <v-card-text class="pb-2 mt--3">
+        <div class="v-chip-group v-chip-group--column flex-wrap">
+          <v-chip
+            v-for="(discipline, index) in filiere.disciplines"
+            :key="index"
+            :text="discipline.disciplinePoste"
+            :color="discipline.endInfo?.color ?? 'primary'"
+            :ripple="false"
+            rounded
+          >
+            <template #append v-if="discipline.endInfo">
+              <v-tooltip
+                :text="
+                  t(
+                    discipline.endInfo.i18n,
+                    {
+                      date: format(discipline.endInfo.date!, 'P'),
+                      months: discipline.endInfo.months,
+                    },
+                    discipline.endInfo.months ?? 1,
+                  )
+                "
+                location="bottom start"
+              >
+                <template v-slot:activator="{ props }">
+                  <v-icon v-bind="props" :icon="discipline.endInfo.icon" size="x-small" class="ms-1" />
+                </template>
+              </v-tooltip>
+            </template>
+          </v-chip>
+        </div>
+      </v-card-text>
+    </v-card>
   </div>
+  <slot v-else name="empty" />
 </template>
+
+<style scoped lang="scss">
+.container {
+  display: grid;
+  grid-gap: 12px;
+  grid-template-columns: 1fr;
+
+  @media (width >= 900px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>

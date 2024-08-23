@@ -38,15 +38,7 @@
   width: fit-content !important;
 }
 
-.modal-flex-item {
-  width: 100%;
-}
-
-@media (min-width: 700px) {
-  .modal-flex-item {
-    width: 50%;
-  }
-
+@media (width >= 700px) {
   .account-filter {
     max-width: 30em;
   }

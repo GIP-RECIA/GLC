@@ -37,21 +37,35 @@ const checked = computed<Array<string>>({
 </script>
 
 <template>
-  <div v-for="(filiere, index) in filieres" :key="index">
-    <div>
-      <b>{{ filiere.libelleFiliere }}</b>
-    </div>
-    <div class="d-flex flex-row flex-wrap">
-      <div v-for="(discipline, index) in filiere.disciplines" :key="index" class="modal-flex-item">
-        <v-checkbox
-          v-model="checked"
-          :label="discipline.disciplinePoste"
-          :value="`${filiere.id}-${discipline.id}`"
-          :disabled="disabled?.includes(`${filiere.id}-${discipline.id}`)"
-          color="primary"
-          :hide-details="true"
-        />
-      </div>
-    </div>
+  <div class="container">
+    <template v-for="filiere in filieres" :key="filiere.codeFiliere">
+      <b class="full-width">{{ filiere.libelleFiliere }}</b>
+      <v-checkbox
+        v-for="discipline in filiere.disciplines"
+        :key="`${filiere.id}-${discipline.id}`"
+        v-model="checked"
+        :label="discipline.disciplinePoste"
+        :value="`${filiere.id}-${discipline.id}`"
+        :disabled="disabled?.includes(`${filiere.id}-${discipline.id}`)"
+        color="primary"
+        :hide-details="true"
+      />
+    </template>
   </div>
 </template>
+
+<style scoped lang="scss">
+.container {
+  display: grid;
+  column-gap: 12px;
+  grid-template-columns: 1fr;
+
+  @media (width >= 700px) {
+    grid-template-columns: 1fr 1fr;
+
+    > .full-width {
+      grid-column: span 2;
+    }
+  }
+}
+</style>

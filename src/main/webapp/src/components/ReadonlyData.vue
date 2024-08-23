@@ -22,7 +22,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="mb-3">
+  <div>
     <b>{{ label }}</b>
     <slot />
     <div v-if="!$slots.default">
