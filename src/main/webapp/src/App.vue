@@ -15,8 +15,8 @@
 -->
 
 <script setup lang="ts">
-import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
+import SettingsDialog from '@/components/dialogs/SettingsDialog.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
 import { useConfigurationStore } from '@/stores/index.ts';
 import { watchOnce } from '@vueuse/core';
@@ -25,7 +25,7 @@ import { onBeforeMount } from 'vue';
 
 const configurationStore = useConfigurationStore();
 const { init, initFonctions } = configurationStore;
-const { configuration, isInit, isLoading, isAuthenticated } = storeToRefs(configurationStore);
+const { configuration, isInit, isLoading, isSettings, isAuthenticated } = storeToRefs(configurationStore);
 
 init();
 
@@ -84,7 +84,14 @@ const appName = __APP_NAME__;
         <div class="d-flex align-center w-100 px-1">
           <custom-tab-bar />
           <v-spacer />
-          <theme-switcher />
+          <v-btn
+            icon="fas fa-gear"
+            variant="text"
+            color="default"
+            size="small"
+            class="ms-1 text-medium-emphasis"
+            @click="isSettings = true"
+          />
         </div>
       </v-toolbar>
     </header>
@@ -92,6 +99,7 @@ const appName = __APP_NAME__;
       <v-main class="flex-grow-1">
         <router-view v-if="isAuthenticated" />
         <login-dialog />
+        <settings-dialog />
       </v-main>
       <footer>
         <extended-uportal-footer

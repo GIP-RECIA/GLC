@@ -1,0 +1,11 @@
+{
+  "settings": {
+    "title": "Settings",
+    "theme": {
+      "subheader": "Theme",
+      "system": "Systeme",
+      "light": "Light",
+      "dark": "Dark"
+    }
+  }
+}

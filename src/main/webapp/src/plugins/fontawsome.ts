@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSquare as farSquare, faUser as farUser } from '@fortawesome/free-regular-svg-icons';
+import {
+  faCircle as farCircle,
+  faDotCircle as farDotCircle,
+  faSquare as farSquare,
+  faUser as farUser,
+} from '@fortawesome/free-regular-svg-icons';
 import {
   faCaretDown,
   faCaretUp,
@@ -31,6 +36,7 @@ import {
   faFilter,
   faFilterCircleXmark,
   faFloppyDisk,
+  faGear,
   faHourglassEnd,
   faHourglassHalf,
   faHourglassStart,
@@ -55,7 +61,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import type { App } from 'vue';
 
 const register = (app: App): void => {
-  library.add(farSquare, farUser);
+  library.add(farCircle, farDotCircle, farSquare, farUser);
   library.add(
     faCaretDown,
     faCaretUp,
@@ -72,6 +78,7 @@ const register = (app: App): void => {
     faFilter,
     faFilterCircleXmark,
     faFloppyDisk,
+    faGear,
     faHourglassEnd,
     faHourglassHalf,
     faHourglassStart,

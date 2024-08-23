@@ -20,6 +20,7 @@ import main from './main.json';
 import offices from './offices.json';
 import persons from './persons.json';
 import searchs from './searchs.json';
+import settings from './settings.json';
 import sources from './sources.json';
 import tabs from './tabs.json';
 import toasts from './toasts.json';
@@ -34,6 +35,7 @@ export default {
   ...persons,
   ...searchs,
   ...sources,
+  ...settings,
   ...tabs,
   ...toasts,
   $vuetify: {

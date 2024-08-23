@@ -1,0 +1,11 @@
+{
+  "settings": {
+    "title": "Paramètres",
+    "theme": {
+      "subheader": "Thème",
+      "system": "Système",
+      "light": "Clair",
+      "dark": "Sombre"
+    }
+  }
+}

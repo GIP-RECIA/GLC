@@ -13,28 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import additionals from './additionals.json';
-import alerts from './alerts.json';
-import buttons from './buttons.json';
-import main from './main.json';
-import persons from './persons.json';
-import searchs from './searchs.json';
-import settings from './settings.json';
-import tabs from './tabs.json';
-import toasts from './toasts.json';
-import { en } from 'vuetify/locale';
 
-export default {
-  ...additionals,
-  ...alerts,
-  ...buttons,
-  ...main,
-  ...persons,
-  ...searchs,
-  ...settings,
-  ...tabs,
-  ...toasts,
-  $vuetify: {
-    ...en,
-  },
-};
+export enum Theme {
+  system = 'system',
+  light = 'light',
+  dark = 'dark',
+}

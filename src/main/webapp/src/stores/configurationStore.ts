@@ -171,6 +171,10 @@ export const useConfigurationStore = defineStore('configuration', () => {
     searchList?: Array<SimplePersonne>;
   }>();
 
+  /* -- Gestion de la modale des paramètres -- */
+
+  const isSettings = ref<boolean>(false);
+
   /* -- Gestion de l'authentification -- */
 
   const identity = ref<Identity | undefined>();
@@ -203,6 +207,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
     attachMode,
     isQuickAdd,
     requestAdd,
+    isSettings,
     identity,
     isAuthenticated,
   };
