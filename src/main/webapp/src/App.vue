@@ -49,7 +49,6 @@ onBeforeMount(() => {
 });
 
 const appName = __APP_NAME__;
-const domain = window.location.hostname;
 </script>
 
 <template>
@@ -57,7 +56,6 @@ const domain = window.location.hostname;
     <header>
       <extended-uportal-header
         v-if="isInit"
-        :domain="domain"
         :service-name="appName"
         :context-api-url="configuration!.front.extendedUportalHeader.contextApiUrl"
         :sign-out-url="configuration!.front.extendedUportalHeader.signOutUrl"
@@ -98,7 +96,6 @@ const domain = window.location.hostname;
       <footer>
         <extended-uportal-footer
           v-if="isInit"
-          :domain="domain"
           :template-api-path="configuration!.front.extendedUportalFooter.templateApiPath"
         />
       </footer>
