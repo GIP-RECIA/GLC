@@ -76,6 +76,28 @@
     "disciplines": []
   },
   {
+    "source": "LA-CENTRE",
+    "filieres": [
+      {
+        "code": "ADM",
+        "disciplines": ["GEST"]
+      },
+      {
+        "code": "ASH",
+        "disciplines": ["S0078"]
+      },
+      {
+        "code": "TEC",
+        "disciplines": ["P9084", "P9085", "PIAA"]
+      },
+      {
+        "code": "ADF",
+        "disciplines": ["SECDIR", "SECPEDA", "SECCOM", "SECRH", "SECCPT", "SECAS", "ASSDOC"]
+      }
+    ],
+    "disciplines": []
+  },
+  {
     "source": "COLL-CVDL",
     "filieres": [],
     "disciplines": ["RESEQUENTLIN", "RESEQUMAI", "RESEQUPROLOC", "RESEQURES", "RESPMAG", "RESCUI"]
