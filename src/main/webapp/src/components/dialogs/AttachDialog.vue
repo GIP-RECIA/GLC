@@ -57,7 +57,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
 
 <template>
   <v-dialog v-model="modelValue" scrollable :max-width="1024 / 2">
-    <v-card>
+    <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ t('button.attach') }}</v-toolbar-title>
         <template #append>

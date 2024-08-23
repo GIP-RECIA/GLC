@@ -70,7 +70,7 @@ watch(isCurrentPersonne, (newValue) => {
 
 <template>
   <v-dialog v-model="modelValue" scrollable :max-width="1024">
-    <v-card>
+    <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">{{ title }}</v-toolbar-title>
         <template v-if="personneDialogState == PersonneDialogState.Info" #append>
