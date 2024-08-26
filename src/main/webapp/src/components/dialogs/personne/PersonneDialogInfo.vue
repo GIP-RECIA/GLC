@@ -189,7 +189,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
 <style scoped lang="scss">
 .container {
   display: grid;
-  gap: 12px;
+  gap: 0.75em;
   grid-template-columns: 1fr;
 
   @media (width >= 700px) {

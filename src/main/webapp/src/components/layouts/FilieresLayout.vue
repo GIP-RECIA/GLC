@@ -51,49 +51,82 @@ const filteredFilieres = computed<Array<Filiere>>(() => {
 </script>
 
 <template>
-  <div v-show="filteredFilieres.length > 0">
-    <transition-group name="custom">
-      <div v-for="(filiere, index) in filteredFilieres" :key="index" class="pb-4">
-        <div class="text-uppercase pb-2">
-          {{ filiere.codeFiliere != '-' ? filiere.libelleFiliere : t('withoutFunctions') }}
-        </div>
-        <v-row class="px-1">
-          <transition-group name="custom">
-            <v-col
-              v-for="(discipline, index) in filiere.disciplines"
-              :key="index"
-              :cols="12"
-              :md="6"
-              :lg="4"
-              :xxl="3"
-              class="pa-2"
-            >
-              <v-card :subtitle="discipline.code != '-' ? discipline.disciplinePoste : ''" flat min-height="100%">
-                <v-card-text>
-                  <v-row class="px-1 pb-1">
-                    <transition-group name="custom">
-                      <v-col
-                        v-for="(personne, index) in discipline.personnes"
-                        :key="index"
-                        :cols="12"
-                        :sm="6"
-                        class="d-flex align-center pa-2"
-                      >
-                        <personne-card variant="tonal" :personne="personne" />
-                      </v-col>
-                    </transition-group>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </transition-group>
-        </v-row>
+  <div v-if="filteredFilieres.length > 0" class="container">
+    <div v-for="filiere in filteredFilieres" :key="filiere.codeFiliere">
+      <div class="text-uppercase pb-2">
+        {{ filiere.codeFiliere != '-' ? filiere.libelleFiliere : t('withoutFunctions') }}
       </div>
-    </transition-group>
+      <div class="discipline-container">
+        <v-card
+          v-for="discipline in filiere.disciplines"
+          :key="discipline.code"
+          :subtitle="discipline.code != '-' ? discipline.disciplinePoste : ''"
+          flat
+          min-height="100%"
+        >
+          <v-card-text>
+            <div class="personne-container">
+              <personne-card
+                v-for="personne in discipline.personnes"
+                :key="personne.id"
+                variant="tonal"
+                :personne="personne"
+              />
+            </div>
+          </v-card-text>
+        </v-card>
+      </div>
+    </div>
   </div>
-
-  <div v-if="filteredFilieres.length == 0" class="d-flex flex-column align-center justify-center pa-10">
+  <div v-else class="d-flex flex-column align-center justify-center pa-10">
     <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
     <div class="pt-2">{{ t('search.noResults') }}</div>
   </div>
 </template>
+
+<style scoped lang="scss">
+.container {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 1fr;
+}
+
+.discipline-container {
+  display: grid;
+  gap: 0.75em;
+  grid-template-columns: 1fr;
+
+  @media (width >= 960px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (width >= 1280px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (width >= 1920px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @media (width >= 2560px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+
+.personne-container {
+  display: grid;
+  gap: 0.75em;
+  grid-template-columns: 1fr;
+  // grid-auto-rows: 1fr;
+
+  @media (width >= 960px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+
+<style lang="scss">
+.discipline-container > .v-card .v-card-subtitle {
+  padding: 0 !important;
+}
+</style>

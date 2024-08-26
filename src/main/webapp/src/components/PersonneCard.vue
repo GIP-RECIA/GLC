@@ -45,7 +45,7 @@ const data = computed<{ etat: enumValues; icon: string; tooltip: string }>(() =>
 </script>
 
 <template>
-  <v-card :variant="variant" tag="button" class="w-100" @click="initCurrentPersonne(personne.id, true)">
+  <v-card :variant="variant" tag="button" @click="initCurrentPersonne(personne.id, true)">
     <v-card-text class="d-flex align-center text-left pa-3">
       <v-tooltip :text="data.tooltip" location="bottom start">
         <template v-slot:activator="{ props }">

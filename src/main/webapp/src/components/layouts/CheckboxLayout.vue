@@ -57,7 +57,7 @@ const checked = computed<Array<string>>({
 <style scoped lang="scss">
 .container {
   display: grid;
-  column-gap: 12px;
+  column-gap: 0.75em;
   grid-template-columns: 1fr;
 
   @media (width >= 700px) {

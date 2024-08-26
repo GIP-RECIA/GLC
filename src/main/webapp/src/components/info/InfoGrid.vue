@@ -26,8 +26,8 @@ const { personnesByEtat } = storeToRefs(structureStore);
 <template>
   <div class="info-grid">
     <info-card
-      v-for="(elem, index) in personnesByEtat"
-      :key="index"
+      v-for="elem in personnesByEtat"
+      :key="elem[0]"
       :etat="elem[0]"
       :value="elem[1] ? elem[1].length : 0"
       variant="flat"
@@ -38,7 +38,7 @@ const { personnesByEtat } = storeToRefs(structureStore);
 <style scoped lang="scss">
 .info-grid {
   display: grid;
+  gap: 0.75em;
   grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
-  gap: 1em;
 }
 </style>

@@ -116,7 +116,7 @@ watch(
 <style scoped lang="scss">
 .container {
   display: grid;
-  gap: 12px;
+  gap: 0.75em;
   grid-template-columns: 1fr;
 
   @media (width >= 900px) {

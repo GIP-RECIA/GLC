@@ -78,22 +78,9 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
           </div>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <v-row v-if="pageItems && pageItems.length > 0">
-            <transition-group name="custom">
-              <v-col
-                v-for="(personne, index) in pageItems"
-                :key="index"
-                :cols="12"
-                :sm="6"
-                :md="4"
-                :lg="3"
-                :xxl="2"
-                class="d-flex align-center pa-2"
-              >
-                <personne-card variant="tonal" :personne="personne" />
-              </v-col>
-            </transition-group>
-          </v-row>
+          <div v-if="pageItems && pageItems.length > 0" class="container">
+            <personne-card v-for="personne in pageItems" :key="personne.id" variant="tonal" :personne="personne" />
+          </div>
           <custom-pagination
             :items="personnesByEtat.get(Etat.Deleting)"
             :items-per-page="itemsPerPage"
@@ -111,22 +98,9 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
           </div>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <v-row v-if="pageItems2 && pageItems2.length > 0">
-            <transition-group name="custom">
-              <v-col
-                v-for="(personne, index) in pageItems2"
-                :key="index"
-                :cols="12"
-                :sm="6"
-                :md="4"
-                :lg="3"
-                :xxl="2"
-                class="d-flex align-center pa-2"
-              >
-                <personne-card variant="tonal" :personne="personne" />
-              </v-col>
-            </transition-group>
-          </v-row>
+          <div v-if="pageItems2 && pageItems2.length > 0" class="container">
+            <personne-card v-for="personne in pageItems2" :key="personne.id" variant="tonal" :personne="personne" />
+          </div>
           <custom-pagination
             :items="personnesByEtat.get(Etat.Delete)"
             :items-per-page="itemsPerPage"
@@ -146,22 +120,9 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
           </div>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <v-row v-if="pageItems3 && pageItems3.length > 0">
-            <transition-group name="custom">
-              <v-col
-                v-for="(personne, index) in pageItems3"
-                :key="index"
-                :cols="12"
-                :sm="6"
-                :md="4"
-                :lg="3"
-                :xxl="2"
-                class="d-flex align-center pa-2"
-              >
-                <personne-card variant="tonal" :personne="personne" />
-              </v-col>
-            </transition-group>
-          </v-row>
+          <div v-if="pageItems3 && pageItems3.length > 0" class="container">
+            <personne-card v-for="personne in pageItems3" :key="personne.id" variant="tonal" :personne="personne" />
+          </div>
           <custom-pagination
             :items="currentEtab?.withoutFunctions"
             :items-per-page="itemsPerPage"
@@ -176,6 +137,29 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
 </template>
 
 <style scoped lang="scss">
+.container {
+  display: grid;
+  gap: 0.75em;
+  grid-template-columns: 1fr;
+  // grid-auto-rows: 1fr;
+
+  @media (width >= 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (width >= 960px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (width >= 1280px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @media (width >= 2560px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+
 .expansion-title {
   font-size: 0.875rem;
   font-weight: 400;
@@ -183,6 +167,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
   opacity: var(--v-medium-emphasis-opacity);
 }
 </style>
+
 <style lang="scss">
 .v-expansion-panel-title__overlay {
   opacity: 0 !important;
