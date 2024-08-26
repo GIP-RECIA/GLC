@@ -52,7 +52,7 @@ const data = computed<{ etat: enumValues; icon: string; tooltip: string }>(() =>
           <v-icon v-bind="props" :icon="data.icon" :color="data.etat.color" class="me-2" />
         </template>
       </v-tooltip>
-      {{ personne.cn }}
+      <span class="text-truncated">{{ personne.cn }}</span>
     </v-card-text>
   </v-card>
 </template>

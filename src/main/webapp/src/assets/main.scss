@@ -52,6 +52,12 @@
   --v-btn-height: 40px;
 }
 
+.text-truncated {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .custom-enter-active,
 .custom-leave-active,
 .tab-bar-active {
