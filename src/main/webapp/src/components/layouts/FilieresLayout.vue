@@ -100,16 +100,12 @@ const filteredFilieres = computed<Array<Filiere>>(() => {
     grid-template-columns: 1fr 1fr;
   }
 
-  @media (width >= 1280px) {
+  @media (width >= 1600px) {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
-  @media (width >= 1920px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-
   @media (width >= 2560px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
 
@@ -119,7 +115,7 @@ const filteredFilieres = computed<Array<Filiere>>(() => {
   grid-template-columns: 1fr;
   // grid-auto-rows: 1fr;
 
-  @media (width >= 960px) {
+  @media (width >= 600px) {
     grid-template-columns: 1fr 1fr;
   }
 }
