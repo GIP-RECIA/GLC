@@ -103,37 +103,25 @@ const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true);
       </template>
     </v-text-field>
 
-    <v-row v-if="pageItems && pageItems.length > 0">
-      <transition-group name="custom">
-        <v-col
-          v-for="(etablissement, index) in pageItems"
-          :key="index"
-          :cols="12"
-          :md="6"
-          :lg="4"
-          :xxl="3"
-          class="d-flex align-center pa-2"
-        >
-          <v-card
-            :to="{
-              name: 'structure',
-              params: { structureId: etablissement.id },
-            }"
-            class="w-100"
-            flat
-          >
-            <v-card-text class="card-info">
-              <div class="title">
-                {{ etablissement.nom }}
-              </div>
-              <div class="subtitle">
-                {{ etablissement.type ? `${etablissement.type} ${etablissement.uai}` : etablissement.uai }}
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </transition-group>
-    </v-row>
+    <div v-if="pageItems && pageItems.length > 0" class="container">
+      <v-card
+        v-for="etablissement in pageItems"
+        :key="etablissement.id"
+        :to="{
+          name: 'structure',
+          params: { structureId: etablissement.id },
+        }"
+        class="w-100"
+        flat
+      >
+        <v-card-text>
+          {{ etablissement.nom }}
+          <div class="subtitle">
+            {{ etablissement.type ? `${etablissement.type} ${etablissement.uai}` : etablissement.uai }}
+          </div>
+        </v-card-text>
+      </v-card>
+    </div>
     <div v-else class="d-flex flex-column align-center justify-center pa-10">
       <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
       <div class="pt-2">{{ t('search.noResults') }}</div>
@@ -150,18 +138,31 @@ const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true);
 </template>
 
 <style scoped lang="scss">
-.card-info {
-  display: block;
-  flex: none;
-  letter-spacing: 0.0178571429em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: none;
+.container {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
 
-  .subtitle {
-    font-size: 0.775rem;
-    font-weight: 400;
-    opacity: var(--v-medium-emphasis-opacity);
+  @media (width >= 768px) {
+    grid-template-columns: 1fr 1fr;
   }
+
+  @media (width >= 1280px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (width >= 1920px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @media (width >= 2560px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+
+.subtitle {
+  font-size: 0.775rem;
+  font-weight: 400;
+  opacity: var(--v-medium-emphasis-opacity);
 }
 </style>
