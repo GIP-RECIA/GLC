@@ -38,8 +38,7 @@ const stcuctureStore = useStructureStore();
 const { fonction } = storeToRefs(stcuctureStore);
 
 const personneStore = usePersonneStore();
-const { structureFonctions, hasStructureFonctions, structureAdditionalFonctions, hasStructureAdditionalFonctions } =
-  storeToRefs(personneStore);
+const { personneStructure } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -86,6 +85,13 @@ const hasFunctions = computed<boolean>(() => {
     CategoriePersonne.Non_enseignant_collectivite_locale.toString(),
   ].includes(props.personne.categorie);
 });
+
+const canEditAdditionals = computed<boolean>(
+  () =>
+    structureTab.value == Tabs.SchoolStaff &&
+    (fonction.value?.customMapping ?? false) &&
+    isEditAllowed(props.personne?.etat ?? ''),
+);
 
 const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
 </script>
@@ -147,22 +153,22 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
           <div class="mb-1">
             <b>{{ t('person.information.function', 2) }}</b>
           </div>
-          <fonctions-layout :filieres="allFilieres" :fonctions="structureFonctions" />
+          <fonctions-layout :filieres="allFilieres" :fonctions="personneStructure.fonctions" />
         </div>
         <div class="full-width">
           <div class="d-flex align-center mb-1">
             <b>{{ t('person.information.additionalFunction', 2) }}</b>
             <v-btn
-              v-if="structureTab == Tabs.SchoolStaff && fonction?.customMapping && isEditAllowed(personne.etat)"
+              v-if="canEditAdditionals"
               color="primary"
               variant="tonal"
               density="compact"
-              :text="t(hasStructureAdditionalFonctions ? 'button.edit' : 'button.add')"
+              :text="t(personneStructure.additionalFonctions ? 'button.edit' : 'button.add')"
               class="ms-2 mb-1"
               @click="personneDialogState = PersonneDialogState.ManageAdditional"
             >
               <template #prepend>
-                <v-icon :icon="hasStructureAdditionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
+                <v-icon :icon="personneStructure.additionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
               </template>
             </v-btn>
           </div>
@@ -178,7 +184,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
               Pour gérer les fonctions complémentaires de ce profil, veuillez utiliser
               <a href="/GLC" target="_self">GLC</a>.
             </v-alert>
-            <fonctions-layout :filieres="allFilieres" :fonctions="structureAdditionalFonctions" />
+            <fonctions-layout :filieres="allFilieres" :fonctions="personneStructure.additionalFonctions" />
           </div>
         </div>
       </template>

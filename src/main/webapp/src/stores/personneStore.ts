@@ -19,7 +19,7 @@ import { getPersonne } from '@/services/personneService.ts';
 import type { PersonneFonction } from '@/types/fonctionType.ts';
 import type { Personne } from '@/types/personneType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
 export const usePersonneStore = defineStore('personne', () => {
@@ -30,14 +30,18 @@ export const usePersonneStore = defineStore('personne', () => {
 
   const currentPersonne = ref<Personne | undefined>();
 
+  /**
+   * Etat du composant PersonneDialog
+   */
   const isCurrentPersonne = ref<boolean>(false);
 
   /**
    * Initialise `currentPersonne`
    *
-   * @param id Identifiant de la personne
+   * @param id        Identifiant de la personne
+   * @param showModal Ouvre ou non la modale un fois les données chargées
    */
-  const initCurrentPersonne = async (id: number, showModal: boolean): Promise<void> => {
+  const initCurrentPersonne = async (id: number, showModal: boolean = true): Promise<void> => {
     configurationStore.isLoading = true;
     try {
       const response = await getPersonne(id);
@@ -64,34 +68,44 @@ export const usePersonneStore = defineStore('personne', () => {
     }
   };
 
-  const structureFonctions = computed<Array<PersonneFonction> | undefined>(() => {
-    const { currentStructureId } = configurationStore;
+  /**
+   * Retourne la liste des fonctions au sein d'une structure.
+   */
+  const fonctionsByStructure = (
+    fonctions: Array<PersonneFonction> | undefined,
+    structureId: number | undefined,
+  ): Array<PersonneFonction> | undefined => {
+    if (!fonctions || !structureId) return undefined;
+    const result = fonctions.filter(({ structure }) => structure == structureId);
 
-    return currentPersonne.value?.fonctions?.filter((fonction) => fonction.structure == currentStructureId);
-  });
+    return result && result.length > 0 ? result : undefined;
+  };
 
-  const hasStructureFonctions = computed<boolean>(() => {
-    return structureFonctions.value ? structureFonctions.value.length > 0 : false;
-  });
+  /**
+   * Retourne un objet contenant la liste des fonctions et fonctions additionnelles pour la structure courrante.
+   */
+  const personneStructure = computed<{
+    fonctions: Array<PersonneFonction> | undefined;
+    additionalFonctions: Array<PersonneFonction> | undefined;
+  }>(() => {
+    const { currentStructureId } = storeToRefs(configurationStore);
+    if (!currentPersonne.value || !currentStructureId.value)
+      return {
+        fonctions: undefined,
+        additionalFonctions: undefined,
+      };
 
-  const structureAdditionalFonctions = computed<Array<PersonneFonction> | undefined>(() => {
-    const { currentStructureId } = configurationStore;
-
-    return currentPersonne.value?.additionalFonctions?.filter((fonction) => fonction.structure == currentStructureId);
-  });
-
-  const hasStructureAdditionalFonctions = computed<boolean>(() => {
-    return structureAdditionalFonctions.value ? structureAdditionalFonctions.value.length > 0 : false;
+    return {
+      fonctions: fonctionsByStructure(currentPersonne.value.fonctions, currentStructureId.value),
+      additionalFonctions: fonctionsByStructure(currentPersonne.value.additionalFonctions, currentStructureId.value),
+    };
   });
 
   return {
     currentPersonne,
+    isCurrentPersonne,
     initCurrentPersonne,
     refreshCurrentPersonne,
-    isCurrentPersonne,
-    structureFonctions,
-    hasStructureFonctions,
-    structureAdditionalFonctions,
-    hasStructureAdditionalFonctions,
+    personneStructure,
   };
 });

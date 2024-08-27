@@ -33,13 +33,7 @@ const { currentStructureId, isQuickAdd, requestAdd } = storeToRefs(configuration
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
-const {
-  currentPersonne,
-  structureFonctions,
-  hasStructureFonctions,
-  structureAdditionalFonctions,
-  hasStructureAdditionalFonctions,
-} = storeToRefs(personneStore);
+const { currentPersonne, personneStructure } = storeToRefs(personneStore);
 
 const structureStore = useStructureStore();
 const { refreshCurrentStructure } = structureStore;
@@ -69,7 +63,9 @@ const selectedUser = computed<SimplePersonne | undefined>({
 
 const canSave = computed<boolean>(() => {
   const functions: Array<string> = [
-    ...new Set(toIdentifier(structureFonctions.value).concat(toIdentifier(structureAdditionalFonctions.value))),
+    ...new Set(
+      toIdentifier(personneStructure.value.fonctions).concat(toIdentifier(personneStructure.value.additionalFonctions)),
+    ),
   ];
   const alreadyHasFunction = requestAdd.value?.function && functions.includes(requestAdd.value.function);
   if (alreadyHasFunction) toast.error(t('toast.'));
@@ -78,7 +74,7 @@ const canSave = computed<boolean>(() => {
 });
 
 const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
-  if (!hasStructureFonctions.value && !hasStructureAdditionalFonctions.value)
+  if (!personneStructure.value.fonctions && !personneStructure.value.additionalFonctions)
     return {
       i18n: 'button.attach',
       icon: 'fas fa-link',

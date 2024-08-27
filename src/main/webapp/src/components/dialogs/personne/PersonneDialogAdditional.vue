@@ -33,13 +33,7 @@ const { currentStructureId, personneDialogState, attachMode } = storeToRefs(conf
 
 const personneStore = usePersonneStore();
 const { refreshCurrentPersonne } = personneStore;
-const {
-  isCurrentPersonne,
-  structureFonctions,
-  hasStructureFonctions,
-  structureAdditionalFonctions,
-  hasStructureAdditionalFonctions,
-} = storeToRefs(personneStore);
+const { isCurrentPersonne, personneStructure } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -51,14 +45,14 @@ const props = defineProps<{
 const selected = ref<Array<string>>([]);
 
 const canSave = computed<boolean>(() => {
-  return selected.value?.length == structureAdditionalFonctions.value?.length
-    ? !selected.value.every((entry) => toIdentifier(structureAdditionalFonctions.value).includes(entry))
+  return selected.value?.length == personneStructure.value.additionalFonctions?.length
+    ? !selected.value.every((entry) => toIdentifier(personneStructure.value.additionalFonctions).includes(entry))
     : true;
 });
 
 const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
-  if (!hasStructureFonctions.value) {
-    if (!hasStructureAdditionalFonctions.value)
+  if (!personneStructure.value.fonctions) {
+    if (!personneStructure.value.additionalFonctions)
       return {
         i18n: 'button.attach',
         icon: 'fas fa-link',
@@ -80,7 +74,7 @@ const saveButton = computed<{ i18n: string; icon: string; color: string }>(() =>
 
 const save = async (): Promise<void> => {
   try {
-    const existFunctions = toIdentifier(structureAdditionalFonctions.value);
+    const existFunctions = toIdentifier(personneStructure.value.additionalFonctions);
     await setPersonneAdditional(
       props.personne!.id,
       currentStructureId.value!,
@@ -114,13 +108,17 @@ const resetAddMode = (success?: boolean): void => {
 };
 
 onMounted(() => {
-  selected.value = toIdentifier(structureAdditionalFonctions.value);
+  selected.value = toIdentifier(personneStructure.value.additionalFonctions);
 });
 </script>
 
 <template>
   <v-card-text class="py-0">
-    <checkbox-layout :filieres="filieres" v-model:selected="selected" :disabled="toIdentifier(structureFonctions)" />
+    <checkbox-layout
+      :filieres="filieres"
+      v-model:selected="selected"
+      :disabled="toIdentifier(personneStructure.fonctions)"
+    />
   </v-card-text>
 
   <v-card-actions>
