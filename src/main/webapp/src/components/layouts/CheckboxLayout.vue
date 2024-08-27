@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import type { Filiere } from '@/types/filiereType.ts';
+import { filiereDisciplineToId } from '@/utils/accountUtils.ts';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -42,11 +43,11 @@ const checked = computed<Array<string>>({
       <b class="full-width">{{ filiere.libelleFiliere }}</b>
       <v-checkbox
         v-for="discipline in filiere.disciplines"
-        :key="`${filiere.id}-${discipline.id}`"
+        :key="filiereDisciplineToId(filiere.id, discipline.id)"
         v-model="checked"
         :label="discipline.disciplinePoste"
-        :value="`${filiere.id}-${discipline.id}`"
-        :disabled="disabled?.includes(`${filiere.id}-${discipline.id}`)"
+        :value="filiereDisciplineToId(filiere.id, discipline.id)"
+        :disabled="disabled?.includes(filiereDisciplineToId(filiere.id, discipline.id))"
         color="primary"
         :hide-details="true"
       />

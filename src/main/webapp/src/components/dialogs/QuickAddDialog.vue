@@ -19,7 +19,7 @@ import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
 import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/personneService.ts';
 import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
 import type { SimplePersonne } from '@/types/personneType.ts';
-import { toIdentifier } from '@/utils/accountUtils.ts';
+import { fonctionsToId } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
@@ -64,7 +64,9 @@ const selectedUser = computed<SimplePersonne | undefined>({
 const canSave = computed<boolean>(() => {
   const functions: Array<string> = [
     ...new Set(
-      toIdentifier(personneStructure.value.fonctions).concat(toIdentifier(personneStructure.value.additionalFonctions)),
+      fonctionsToId(personneStructure.value.fonctions).concat(
+        fonctionsToId(personneStructure.value.additionalFonctions),
+      ),
     ),
   ];
   const alreadyHasFunction = requestAdd.value?.function && functions.includes(requestAdd.value.function);

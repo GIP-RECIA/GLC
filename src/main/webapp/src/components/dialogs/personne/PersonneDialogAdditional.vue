@@ -21,7 +21,7 @@ import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
 import type { Filiere } from '@/types/filiereType.ts';
 import type { Personne } from '@/types/personneType.ts';
-import { toIdentifier } from '@/utils/accountUtils.ts';
+import { fonctionsToId } from '@/utils/accountUtils.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
@@ -46,7 +46,7 @@ const selected = ref<Array<string>>([]);
 
 const canSave = computed<boolean>(() => {
   return selected.value?.length == personneStructure.value.additionalFonctions?.length
-    ? !selected.value.every((entry) => toIdentifier(personneStructure.value.additionalFonctions).includes(entry))
+    ? !selected.value.every((entry) => fonctionsToId(personneStructure.value.additionalFonctions).includes(entry))
     : true;
 });
 
@@ -74,7 +74,7 @@ const saveButton = computed<{ i18n: string; icon: string; color: string }>(() =>
 
 const save = async (): Promise<void> => {
   try {
-    const existFunctions = toIdentifier(personneStructure.value.additionalFonctions);
+    const existFunctions = fonctionsToId(personneStructure.value.additionalFonctions);
     await setPersonneAdditional(
       props.personne!.id,
       currentStructureId.value!,
@@ -108,7 +108,7 @@ const resetAddMode = (success?: boolean): void => {
 };
 
 onMounted(() => {
-  selected.value = toIdentifier(personneStructure.value.additionalFonctions);
+  selected.value = fonctionsToId(personneStructure.value.additionalFonctions);
 });
 </script>
 
@@ -117,7 +117,7 @@ onMounted(() => {
     <checkbox-layout
       :filieres="filieres"
       v-model:selected="selected"
-      :disabled="toIdentifier(personneStructure.fonctions)"
+      :disabled="fonctionsToId(personneStructure.fonctions)"
     />
   </v-card-text>
 

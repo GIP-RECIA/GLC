@@ -113,7 +113,20 @@ const getDateFin = (date: string): endInfo => {
   };
 };
 
-const toIdentifier = (fonctions: Array<PersonneFonction> | undefined): Array<string> =>
-  fonctions ? fonctions.map((fonction) => `${fonction.filiere}-${fonction.disciplinePoste}`) : [];
+const fonctionToId = (fonction: PersonneFonction): string => `${fonction.filiere}-${fonction.disciplinePoste}`;
 
-export { isLocal, getIcon, getEtat, getCategoriePersonne, getDateFin, toIdentifier };
+const filiereDisciplineToId = (filiere: number, disciplinePoste: number): string => `${filiere}-${disciplinePoste}`;
+
+const fonctionsToId = (fonctions: Array<PersonneFonction> | undefined): Array<string> =>
+  fonctions ? fonctions.map((fonction) => fonctionToId(fonction)) : [];
+
+export {
+  isLocal,
+  getIcon,
+  getEtat,
+  getCategoriePersonne,
+  getDateFin,
+  fonctionToId,
+  filiereDisciplineToId,
+  fonctionsToId,
+};
