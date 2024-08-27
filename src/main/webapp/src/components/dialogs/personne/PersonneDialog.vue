@@ -15,8 +15,9 @@
 -->
 
 <script setup lang="ts">
-import PersonneDialogAdditional from '@/components/dialogs/personne/PersonneDialogAdditional.vue';
-import PersonneDialogInfo from '@/components/dialogs/personne/PersonneDialogInfo.vue';
+import PersonneDialogAdditional from './PersonneDialogAdditional.vue';
+import PersonneDialogInfo from './PersonneDialogInfo.vue';
+import { usePersonne } from '@/composables/usePersonne.ts';
 import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState';
 import { Tabs } from '@/types/enums/Tabs.ts';
@@ -24,7 +25,6 @@ import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
 const configurationStore = useConfigurationStore();
-const { isEditAllowed } = configurationStore;
 const { structureTab } = storeToRefs(configurationStore);
 
 const stcuctureStore = useStructureStore();
@@ -32,6 +32,8 @@ const { fonction } = storeToRefs(stcuctureStore);
 
 const personneStore = usePersonneStore();
 const { currentPersonne, isCurrentPersonne, dialogState, dialogTitle } = storeToRefs(personneStore);
+
+const { canEditAdditionals } = usePersonne();
 
 const modelValue = computed<boolean>({
   get() {
@@ -55,10 +57,7 @@ const modelValue = computed<boolean>({
 
       <personne-dialog-additional
         v-if="
-          dialogState == PersonneDialogState.ManageAdditional &&
-          structureTab == Tabs.SchoolStaff &&
-          fonction?.customMapping &&
-          isEditAllowed(currentPersonne ? currentPersonne.etat : '')
+          dialogState == PersonneDialogState.ManageAdditional && structureTab == Tabs.SchoolStaff && canEditAdditionals
         "
         :personne="currentPersonne"
         :filieres="fonction?.customMapping?.filieres"

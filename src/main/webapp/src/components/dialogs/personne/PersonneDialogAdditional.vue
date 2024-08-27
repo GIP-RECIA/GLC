@@ -123,7 +123,6 @@ onMounted(() => {
 
   <v-card-actions>
     <v-spacer />
-    <v-spacer />
     <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="cancel" />
     <v-btn
       :color="saveButton.color"
