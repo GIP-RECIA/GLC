@@ -17,81 +17,30 @@
 <script setup lang="ts">
 import ReadonlyData from '@/components/ReadonlyData.vue';
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue';
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
-import type { enumValues } from '@/types/enumValuesType.ts';
-import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
+import { usePersonne } from '@/composables/usePersonne';
+import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts';
 import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
 import { Tabs } from '@/types/enums/Tabs.ts';
 import type { Personne } from '@/types/personneType.ts';
-import { getCategoriePersonne, getEtat, getIcon } from '@/utils/accountUtils.ts';
+import { getCategoriePersonne, getIcon } from '@/utils/accountUtils.ts';
 import { useSessionStorage } from '@vueuse/core';
-import { format, getYear } from 'date-fns';
+import { format } from 'date-fns';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
-const { isEditAllowed, getLoginOffice } = configurationStore;
 const { allFilieres, structureTab, personneDialogState } = storeToRefs(configurationStore);
-
-const stcuctureStore = useStructureStore();
-const { fonction } = storeToRefs(stcuctureStore);
 
 const personneStore = usePersonneStore();
 const { personneStructure } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
-const props = defineProps<{
+defineProps<{
   personne?: Personne;
 }>();
 
-const etat = computed<enumValues>(() => {
-  return props.personne
-    ? getEtat(props.personne.etat)
-    : {
-        i18n: '',
-        color: '',
-      };
-});
-
-const schoolYear = computed<string | undefined>(() => {
-  if (props.personne?.anneeScolaire) {
-    const year = getYear(props.personne.anneeScolaire);
-    return `${year}/${year + 1}`;
-  }
-  return undefined;
-});
-
-const login = computed<{ i18n: string; info?: string }>(() => {
-  if (!props.personne) return { i18n: '', info: '' };
-  const office = getLoginOffice(props.personne.categorie, props.personne.source);
-
-  return {
-    i18n: office ? t('externalLogin') : props.personne.login,
-    info: office ? t(`office.${office}`) : undefined,
-  };
-});
-
-const suppressDate = computed<string | undefined>(() => {
-  return props.personne?.dateSuppression ? format(props.personne.dateSuppression, 'P') : undefined;
-});
-
-const hasFunctions = computed<boolean>(() => {
-  if (!props.personne) return false;
-  return [
-    CategoriePersonne.Enseignant.toString(),
-    CategoriePersonne.Non_enseignant_etablissement.toString(),
-    CategoriePersonne.Non_enseignant_collectivite_locale.toString(),
-  ].includes(props.personne.categorie);
-});
-
-const canEditAdditionals = computed<boolean>(
-  () =>
-    structureTab.value == Tabs.SchoolStaff &&
-    (fonction.value?.customMapping ?? false) &&
-    isEditAllowed(props.personne?.etat ?? ''),
-);
+const { etat, schoolYear, login, suppressDate, hasFunctions, canEditAdditionals } = usePersonne();
 
 const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
 </script>
@@ -159,7 +108,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
           <div class="d-flex align-center mb-1">
             <b>{{ t('person.information.additionalFunction', 2) }}</b>
             <v-btn
-              v-if="canEditAdditionals"
+              v-if="structureTab == Tabs.SchoolStaff && canEditAdditionals"
               color="primary"
               variant="tonal"
               density="compact"
