@@ -16,17 +16,20 @@
 import { useConfigurationStore } from './configurationStore.ts';
 import { useStructureStore } from './structureStore.ts';
 import { getPersonne } from '@/services/personneService.ts';
+import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
 import type { PersonneFonction } from '@/types/fonctionType.ts';
 import type { Personne } from '@/types/personneType.ts';
 import { errorHandler } from '@/utils/axiosUtils.ts';
+import debounce from 'lodash.debounce';
 import { defineStore, storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export const usePersonneStore = defineStore('personne', () => {
   const configurationStore = useConfigurationStore();
   const structureStore = useStructureStore();
 
-  /* -- Pour la personne courante -- */
+  const { t } = useI18n();
 
   const currentPersonne = ref<Personne | undefined>();
 
@@ -101,11 +104,47 @@ export const usePersonneStore = defineStore('personne', () => {
     };
   });
 
+  const dialogState = ref<PersonneDialogState>(PersonneDialogState.Info);
+
+  const dialogTitle = computed<string>(() => {
+    if (!currentPersonne.value) return '';
+    const { cn } = currentPersonne.value;
+    switch (dialogState.value) {
+      case PersonneDialogState.ManageAdditional:
+        return `${t('person.information.additionalFunction', 2)} - ${cn}`;
+      case PersonneDialogState.Info:
+      default:
+        return cn;
+    }
+  });
+
+  /**
+   * Mode de rattachement
+   */
+  const attachMode = ref<boolean>(false);
+
+  /**
+   * Reset lors de la fermeture du dialog
+   */
+  watch(isCurrentPersonne, (newValue) => {
+    if (!newValue) {
+      const reset = debounce(() => {
+        currentPersonne.value = undefined;
+        dialogState.value = PersonneDialogState.Info;
+        attachMode.value = false;
+      }, 200);
+      reset();
+    }
+  });
+
   return {
     currentPersonne,
     isCurrentPersonne,
     initCurrentPersonne,
     refreshCurrentPersonne,
     personneStructure,
+    dialogState,
+    dialogTitle,
+    attachMode,
   };
 });

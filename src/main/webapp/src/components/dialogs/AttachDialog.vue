@@ -24,11 +24,11 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
-const { personneDialogState, isAttach, attachMode } = storeToRefs(configurationStore);
+const { isAttach } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
-const { currentPersonne } = storeToRefs(personneStore);
+const { currentPersonne, dialogState, attachMode } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -48,7 +48,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
     if (user) {
       attachMode.value = true;
       isAttach.value = false;
-      personneDialogState.value = PersonneDialogState.ManageAdditional;
+      dialogState.value = PersonneDialogState.ManageAdditional;
       initCurrentPersonne(user.id, true);
     }
   },

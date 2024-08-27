@@ -29,11 +29,11 @@ import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
-const { currentStructureId, personneDialogState, attachMode } = storeToRefs(configurationStore);
+const { currentStructureId } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
 const { refreshCurrentPersonne } = personneStore;
-const { isCurrentPersonne, personneStructure } = storeToRefs(personneStore);
+const { isCurrentPersonne, personneStructure, dialogState, attachMode } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -93,7 +93,7 @@ const cancel = (): void => {
   if (attachMode.value) {
     isCurrentPersonne.value = false;
     attachMode.value = false;
-  } else personneDialogState.value = PersonneDialogState.Info;
+  } else dialogState.value = PersonneDialogState.Info;
 };
 
 const resetAddMode = (success?: boolean): void => {

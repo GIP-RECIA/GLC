@@ -29,10 +29,10 @@ import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
-const { allFilieres, structureTab, personneDialogState } = storeToRefs(configurationStore);
+const { allFilieres, structureTab } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
-const { personneStructure } = storeToRefs(personneStore);
+const { personneStructure, dialogState } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -114,7 +114,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
               density="compact"
               :text="t(personneStructure.additionalFonctions ? 'button.edit' : 'button.add')"
               class="ms-2 mb-1"
-              @click="personneDialogState = PersonneDialogState.ManageAdditional"
+              @click="dialogState = PersonneDialogState.ManageAdditional"
             >
               <template #prepend>
                 <v-icon :icon="personneStructure.additionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
