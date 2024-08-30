@@ -16,7 +16,7 @@
     "format": "prettier --write src/main/webapp/src/",
     "prepare": "husky install",
     "predev": "dotenv-checker --schema .env.example --env .env.local",
-    "changelog:update": "commit-and-tag-version --packageFiles pom.xml --skip.bump --skip.tag --skip.commit -t ''"
+    "changelog:generate": "commit-and-tag-version --packageFiles pom.xml --skip.bump --skip.tag --skip.commit -t ''"
   },
   "dependencies": {
     "@vueuse/core": "^11.0.3",
