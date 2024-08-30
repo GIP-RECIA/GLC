@@ -13,24 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { Discipline } from './disciplineType.ts';
-import type { Filiere } from './filiereType.ts';
+import { instance as axios } from '@/utils';
 
-export type SourceFonction = {
-  source: string;
-  filieres: Array<Filiere>;
-  customMapping?: CustomMapping;
-};
+const getConfiguration = async () => await axios.get('/api/config');
 
-export type CustomMapping = {
-  filieres: Array<Filiere>;
-  disciplines: Array<Discipline>;
-};
-
-export type PersonneFonction = {
-  disciplinePoste: number;
-  filiere: number;
-  source: string;
-  structure: number;
-  dateFin?: string;
-};
+export { getConfiguration };

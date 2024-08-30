@@ -15,11 +15,10 @@
  */
 import { useConfigurationStore } from './configurationStore.ts';
 import { useStructureStore } from './structureStore.ts';
-import { getPersonne } from '@/services/personneService.ts';
-import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
-import type { PersonneFonction } from '@/types/fonctionType.ts';
-import type { Personne } from '@/types/personneType.ts';
-import { errorHandler } from '@/utils/axiosUtils.ts';
+import { getPersonne } from '@/services/api';
+import type { Personne, PersonneFonction } from '@/types';
+import { PersonneDialogState } from '@/types/enums';
+import { errorHandler } from '@/utils';
 import debounce from 'lodash.debounce';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
@@ -77,11 +76,11 @@ export const usePersonneStore = defineStore('personne', () => {
   const fonctionsByStructure = (
     fonctions: Array<PersonneFonction> | undefined,
     structureId: number | undefined,
-  ): Array<PersonneFonction> | undefined => {
-    if (!fonctions || !structureId) return undefined;
+  ): Array<PersonneFonction> => {
+    if (!fonctions || !structureId) return [];
     const result = fonctions.filter(({ structure }) => structure == structureId);
 
-    return result && result.length > 0 ? result : undefined;
+    return result && result.length > 0 ? result : [];
   };
 
   /**

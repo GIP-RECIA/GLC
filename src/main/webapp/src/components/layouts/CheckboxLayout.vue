@@ -15,8 +15,8 @@
 -->
 
 <script setup lang="ts">
-import type { Filiere } from '@/types/filiereType.ts';
-import { filiereDisciplineToId } from '@/utils/accountUtils.ts';
+import type { Filiere } from '@/types';
+import { filiereDisciplineToId } from '@/utils';
 import { computed } from 'vue';
 
 const props = defineProps<{

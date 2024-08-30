@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { enumValues } from '@/types/enumValuesType.ts';
+import type { enumValues } from './enumValuesType.ts';
 
 export type endInfo = {
   date?: string;

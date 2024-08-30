@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import i18n from '@/plugins/i18n.ts';
-import { Theme } from '@/types/enums/Theme.ts';
+import { Theme } from '@/types/enums';
 import DateFnsAdapter from '@date-io/date-fns';
 import { enUS, fr } from 'date-fns/locale';
 import { useI18n } from 'vue-i18n';

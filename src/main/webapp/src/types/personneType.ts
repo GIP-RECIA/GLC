@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { PersonneFonction } from '@/types/fonctionType.ts';
+import type { PersonneFonction } from './fonctionType.ts';
 
 export type Personne = {
   id: number;

@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-export { useConfigurationStore } from './configurationStore.ts';
-export { usePersonneStore } from './personneStore.ts';
-export { useStructureStore } from './structureStore.ts';
+export * from './configurationStore.ts';
+export * from './personneStore.ts';
+export * from './structureStore.ts';

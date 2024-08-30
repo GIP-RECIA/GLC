@@ -18,9 +18,8 @@
 import PersonneDialogAdditional from './PersonneDialogAdditional.vue';
 import PersonneDialogInfo from './PersonneDialogInfo.vue';
 import { usePersonne } from '@/composables/usePersonne.ts';
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
-import { PersonneDialogState } from '@/types/enums/PersonneDialogState';
-import { Tabs } from '@/types/enums/Tabs.ts';
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
+import { PersonneDialogState, Tabs } from '@/types/enums';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 

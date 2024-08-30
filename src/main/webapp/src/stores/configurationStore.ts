@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { getConfiguration } from '@/services/configurationService.ts';
-import { getFonctions } from '@/services/fonctionService.ts';
-import type { Configuration } from '@/types/configurationType.ts';
-import type { enumValues } from '@/types/enumValuesType.ts';
-import { Tabs } from '@/types/enums/Tabs.ts';
-import type { Filiere } from '@/types/filiereType.ts';
-import type { SourceFonction } from '@/types/fonctionType.ts';
-import type { Identity } from '@/types/identityType.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
-import type { StructureConfiguration } from '@/types/structureConfigurationType.ts';
-import { getEtat } from '@/utils/accountUtils.ts';
-import { errorHandler } from '@/utils/axiosUtils.ts';
-import { useEntTheme } from '@/utils/entUtils.ts';
+import { getConfiguration, getFonctions } from '@/services/api';
+import type {
+  Configuration,
+  Filiere,
+  Identity,
+  SimplePersonne,
+  SourceFonction,
+  StructureConfiguration,
+  enumValues,
+} from '@/types';
+import { Tabs } from '@/types/enums';
+import { errorHandler, getEtat, useEntTheme } from '@/utils';
 import { useSessionStorage } from '@vueuse/core';
 import isEmpty from 'lodash.isempty';
 import { defineStore } from 'pinia';

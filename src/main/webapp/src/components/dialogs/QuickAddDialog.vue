@@ -16,11 +16,10 @@
 
 <script setup lang="ts">
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
-import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/personneService.ts';
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
-import { fonctionsToId } from '@/utils/accountUtils.ts';
-import { errorHandler } from '@/utils/axiosUtils.ts';
+import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/api';
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
+import type { SimplePersonne } from '@/types';
+import { errorHandler, fonctionsToId, isEmpty } from '@/utils';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
@@ -76,7 +75,7 @@ const canSave = computed<boolean>(() => {
 });
 
 const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
-  if (!personneStructure.value.fonctions && !personneStructure.value.additionalFonctions)
+  if (isEmpty(personneStructure.value.fonctions) && isEmpty(personneStructure.value.additionalFonctions))
     return {
       i18n: 'button.attach',
       icon: 'fas fa-link',

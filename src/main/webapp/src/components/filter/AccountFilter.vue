@@ -16,9 +16,8 @@
 
 <script setup lang="ts">
 import ChipsFilter from '@/components/filter/ChipsFilter.vue';
-import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
-import { Etat } from '@/types/enums/Etat.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
+import type { SimplePersonne } from '@/types';
+import { CategoriePersonne, Etat } from '@/types/enums';
 import isEmpty from 'lodash.isempty';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

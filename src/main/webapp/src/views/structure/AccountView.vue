@@ -18,8 +18,8 @@
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
 import AccountFilter from '@/components/filter/AccountFilter.vue';
-import { useStructureStore } from '@/stores/index.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
+import { useStructureStore } from '@/stores';
+import type { SimplePersonne } from '@/types';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

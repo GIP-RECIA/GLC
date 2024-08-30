@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { instance as axios } from '@/utils/axiosUtils.ts';
+import { instance as axios } from '@/utils';
 
-const getFonctions = async () => await axios.get('/api/fonction');
+const getEtablissements = async () => await axios.get('/api/structure/etablissement');
 
-export { getFonctions };
+const getEtablissement = async (id: number) => await axios.get(`/api/structure/etablissement/${id}`);
+
+export { getEtablissements, getEtablissement };

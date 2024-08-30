@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { authenticated } from '@/directives/authenticationDirective.ts';
-import { permission } from '@/directives/permissionDirective.ts';
-import { admin, role } from '@/directives/roleDirective.ts';
+import { authenticated } from './authenticationDirective.ts';
+import { permission } from './permissionDirective.ts';
+import { admin, role } from './roleDirective.ts';
 import type { App } from 'vue';
 
 const register = (app: App): void => {

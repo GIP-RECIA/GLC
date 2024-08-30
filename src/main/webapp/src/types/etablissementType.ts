@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import type { Adresse } from './adresseType.ts';
+import type { Alert } from './alertType.ts';
+import type { Filiere } from './filiereType.ts';
 import type { SimplePersonne } from './personneType.ts';
-import type { Adresse } from '@/types/adresseType.ts';
-import type { Alert } from '@/types/alertType.ts';
-import type { Filiere } from '@/types/filiereType.ts';
 
 export type Etablissement = {
   id: number;

@@ -16,8 +16,7 @@
 
 <script setup lang="ts">
 import PersonneCard from '@/components/PersonneCard.vue';
-import type { Discipline } from '@/types/disciplineType.ts';
-import type { Filiere } from '@/types/filiereType.ts';
+import type { Discipline, Filiere } from '@/types';
 import isEmpty from 'lodash.isempty';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

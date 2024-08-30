@@ -15,10 +15,8 @@
 -->
 
 <script setup lang="ts">
-import type { enumValues } from '@/types/enumValuesType.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
-import { getEtat, getIcon } from '@/utils/accountUtils.ts';
-import { concatenate } from '@/utils/stringUtils.ts';
+import type { SimplePersonne, enumValues } from '@/types';
+import { concatenate, getEtat, getIcon } from '@/utils';
 import { computed } from 'vue';
 
 const props = defineProps<{

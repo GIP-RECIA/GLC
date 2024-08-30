@@ -26,4 +26,6 @@ const isArrayOf = (array: Array<any>, type: 'string' | 'number' | 'bigint' | 'bo
   return false;
 };
 
-export { isArrayOf };
+const isEmpty = (array: Array<any> | undefined): boolean => !array?.length;
+
+export { isArrayOf, isEmpty };
