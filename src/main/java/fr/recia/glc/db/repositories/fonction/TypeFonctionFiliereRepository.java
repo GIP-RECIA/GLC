@@ -65,7 +65,12 @@ public interface TypeFonctionFiliereRepository<T extends TypeFonctionFiliere> ex
     "ORDER BY tff.libelleFiliere")
   List<TypeFonctionFiliereDto> findWithoutSource();
 
-  @Query(value = "select tff.id from typefonctionfiliere tff where tff.codeFiliere = :code and (tff.source = :source OR tff.source = CONCAT('SarapisUi_', :source))", nativeQuery = true)
+  @Query(value = "SELECT tff.id " +
+    "FROM typefonctionfiliere tff " +
+    "WHERE tff.codeFiliere = :code " +
+    "AND (tff.source = :source " +
+    "OR tff.source = CONCAT('SarapisUi_', :source))",
+    nativeQuery = true)
   Long findByCode(String code, String source);
 
 }
