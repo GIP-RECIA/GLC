@@ -27,6 +27,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -83,6 +84,22 @@ public class Fonction extends AFonction {
   /**
    * Constructeur de l'objet Fonction.java.
    *
+   * @param filiere   Fonction filière, N_FONCTION_FILIERE.
+   * @param structure Structure d'exercice de la fonction.
+   * @param personne  Personne ayant cette fonction.
+   * @param source    Source d'alimentation gérant cette fonction.
+   * @param dateFin   Date de fin de la fonction.
+   */
+  public Fonction(final TypeFonctionFiliere filiere, final AStructure structure,
+                  final APersonne personne, final String source, final Date dateFin) {
+    super(CategorieFonction.Fonction, personne, source, dateFin);
+    this.filiere = filiere;
+    this.structure = structure;
+  }
+
+  /**
+   * Constructeur de l'objet Fonction.java.
+   *
    * @param disciplinePoste Discipline de poste d'un enseignant ou d'un personnel d'établissement.
    * @param filiere         Fonction filière, N_FONCTION_FILIERE.
    * @param structure       Structure d'exercice de la fonction.
@@ -92,6 +109,24 @@ public class Fonction extends AFonction {
   public Fonction(final Discipline disciplinePoste, final TypeFonctionFiliere filiere,
                   final AStructure structure, final APersonne personne, final String source) {
     super(CategorieFonction.Fonction, personne, source);
+    this.disciplinePoste = disciplinePoste;
+    this.filiere = filiere;
+    this.structure = structure;
+  }
+
+  /**
+   * Constructeur de l'objet Fonction.java.
+   *
+   * @param disciplinePoste Discipline de poste d'un enseignant ou d'un personnel d'établissement.
+   * @param filiere         Fonction filière, N_FONCTION_FILIERE.
+   * @param structure       Structure d'exercice de la fonction.
+   * @param personne        Personne ayant cette fonction.
+   * @param source          Source d'alimentation gérant cette fonction.
+   * @param dateFin         Date de fin de la fonction.
+   */
+  public Fonction(final Discipline disciplinePoste, final TypeFonctionFiliere filiere,
+                  final AStructure structure, final APersonne personne, final String source, final Date dateFin) {
+    super(CategorieFonction.Fonction, personne, source, dateFin);
     this.disciplinePoste = disciplinePoste;
     this.filiere = filiere;
     this.structure = structure;

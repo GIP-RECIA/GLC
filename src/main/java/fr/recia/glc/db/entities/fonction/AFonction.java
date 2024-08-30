@@ -85,6 +85,21 @@ public abstract class AFonction extends AbstractTracedEntity {
     this.personne = personne;
   }
 
+  /**
+   * Constructeur de l'objet AFonction.java.
+   *
+   * @param categorie Categorie de la fonction.
+   * @param personne  Personne ayant cette fonction.
+   * @param source    Source d'alimentation gérant cette fonction.
+   * @param dateFin   Date de fin de la fonction.
+   */
+  public AFonction(final CategorieFonction categorie, final APersonne personne, final String source, final Date dateFin) {
+    this.categorie = categorie;
+    this.source = source;
+    this.personne = personne;
+    this.dateFin = dateFin;
+  }
+
   @Override
   public String toString() {
     return "AFonction [" +
