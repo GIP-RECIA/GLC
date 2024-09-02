@@ -2714,9 +2714,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-checker@npm:^1.1.5":
-  version: 1.1.5
-  resolution: "dotenv-checker@npm:1.1.5"
+"dotenv-checker@npm:^1.1.7":
+  version: 1.1.7
+  resolution: "dotenv-checker@npm:1.1.7"
   dependencies:
     app-root-path: "npm:^3.0.0"
     chalk: "npm:4.1.2"
@@ -2726,7 +2726,7 @@ __metadata:
     inquirer: "npm:8.2.1"
   bin:
     dotenv-checker: src/bin/cli.js
-  checksum: 10/cedb6942256f44e99cdeb9ef9103378c6f4fd689ed994242e8c06e4546c90e306f89ad9de5b29b5f4768424baa785afb018efef6694d45e53db7ebc506f05ccf
+  checksum: 10/5d557e31c155815e07cb43c30f9d0fd56fad4918ba2eed2a7aa5a4da170a9c7bab7f7bab2f8e0c031dc4c19e5bfa5f6957dff4107b17a0aa3c0e19478a4fb5d0
   languageName: node
   linkType: hard
 
@@ -3569,7 +3569,7 @@ __metadata:
     commit-and-tag-version: "npm:^12.4.2"
     date-fns: "npm:^3.6.0"
     dotenv: "npm:^16.4.5"
-    dotenv-checker: "npm:^1.1.5"
+    dotenv-checker: "npm:^1.1.7"
     eslint: "npm:^8.57.0"
     eslint-plugin-playwright: "npm:^1.6.2"
     eslint-plugin-vue: "npm:^9.27.0"
