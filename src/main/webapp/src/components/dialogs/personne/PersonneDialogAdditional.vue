@@ -20,7 +20,7 @@ import { setPersonneAdditional } from '@/services/api';
 import { useConfigurationStore, usePersonneStore } from '@/stores';
 import type { Filiere, Personne } from '@/types';
 import { PersonneDialogState } from '@/types/enums';
-import { errorHandler, fonctionsToId } from '@/utils';
+import { errorHandler, fonctionsToId, isEmpty } from '@/utils';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
 import { toast } from 'vue3-toastify';
@@ -49,8 +49,8 @@ const canSave = computed<boolean>(() => {
 });
 
 const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
-  if (!personneStructure.value.fonctions) {
-    if (!personneStructure.value.additionalFonctions)
+  if (isEmpty(personneStructure.value.fonctions)) {
+    if (isEmpty(personneStructure.value.additionalFonctions))
       return {
         i18n: 'button.attach',
         icon: 'fas fa-link',

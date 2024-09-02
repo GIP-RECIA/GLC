@@ -76,11 +76,11 @@ export const usePersonneStore = defineStore('personne', () => {
   const fonctionsByStructure = (
     fonctions: Array<PersonneFonction> | undefined,
     structureId: number | undefined,
-  ): Array<PersonneFonction> | undefined => {
-    if (!fonctions || !structureId) return undefined;
+  ): Array<PersonneFonction> => {
+    if (!fonctions || !structureId) return [];
     const result = fonctions.filter(({ structure }) => structure == structureId);
 
-    return result && result.length > 0 ? result : undefined;
+    return result && result.length > 0 ? result : [];
   };
 
   /**
