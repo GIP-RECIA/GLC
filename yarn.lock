@@ -3591,7 +3591,7 @@ __metadata:
     vue-i18n: "npm:9.14.0"
     vue-router: "npm:^4.4.3"
     vue-tsc: "npm:^2.1.4"
-    vue3-toastify: "npm:^0.2.2"
+    vue3-toastify: "npm:^0.2.3"
     vuetify: "npm:^3.7.1"
     xml2js: "npm:^0.6.2"
   languageName: unknown
@@ -6889,15 +6889,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue3-toastify@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "vue3-toastify@npm:0.2.2"
+"vue3-toastify@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "vue3-toastify@npm:0.2.3"
   peerDependencies:
     vue: ">=3.2.0"
   peerDependenciesMeta:
     vue:
       optional: true
-  checksum: 10/3a1705cfa692942dc2fec6c6e5e6b688dac57ed744506f5fca7a343f112684156c56b677609e425ee73efd42f336eff4db8646a857ae3844e13243465f3dd11c
+  checksum: 10/2a0c8b64e73045c9b7cee98a021aee438d9373420daab6a3ff6de8306acd53795bc6c2e53e16da9289b94d7b7319c0ba03d902324fc88e4ab4b8e02336a4c324
   languageName: node
   linkType: hard
 
