@@ -16,13 +16,11 @@
 
 <script setup lang="ts">
 import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
-import { setPersonneAdditional } from '@/services/personneService.ts';
-import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts';
-import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
-import type { Filiere } from '@/types/filiereType.ts';
-import type { Personne } from '@/types/personneType.ts';
-import { fonctionsToId } from '@/utils/accountUtils.ts';
-import { errorHandler } from '@/utils/axiosUtils.ts';
+import { setPersonneAdditional } from '@/services/api';
+import { useConfigurationStore, usePersonneStore } from '@/stores';
+import type { Filiere, Personne } from '@/types';
+import { PersonneDialogState } from '@/types/enums';
+import { errorHandler, fonctionsToId } from '@/utils';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
 import { toast } from 'vue3-toastify';

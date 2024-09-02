@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { Etat } from '@/types/enums/Etat.ts';
+import type { Etat } from './enums/Etat.ts';
 
 export type StructureConfiguration = {
   dashboard: {};

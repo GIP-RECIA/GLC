@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 import { useConfigurationStore } from './configurationStore.ts';
-import { getEtablissement, getEtablissements } from '@/services/structureService.ts';
-import { Etat } from '@/types/enums/Etat.ts';
-import { Tabs } from '@/types/enums/Tabs.ts';
-import type { Etablissement, SimpleEtablissement } from '@/types/etablissementType.ts';
-import type { Filiere } from '@/types/filiereType.ts';
-import type { CustomMapping, SourceFonction } from '@/types/fonctionType.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
-import type { StructureConfiguration } from '@/types/structureConfigurationType.ts';
-import { errorHandler } from '@/utils/axiosUtils.ts';
+import { getEtablissement, getEtablissements } from '@/services/api';
+import type {
+  CustomMapping,
+  Etablissement,
+  Filiere,
+  SimpleEtablissement,
+  SimplePersonne,
+  SourceFonction,
+  StructureConfiguration,
+} from '@/types';
+import { Etat, Tabs } from '@/types/enums';
+import { errorHandler } from '@/utils';
 import isEmpty from 'lodash.isempty';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';

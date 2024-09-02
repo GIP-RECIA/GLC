@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { instance as axios } from '@/utils/axiosUtils.ts';
+import { instance as axios } from '@/utils';
 
 const getPersonne = async (id: number) => await axios.get(`/api/personne/${id}`);
 

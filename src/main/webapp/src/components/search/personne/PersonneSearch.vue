@@ -15,11 +15,11 @@
 -->
 
 <script setup lang="ts">
-import PersonneChip from '@/components/search/personne/PersonneChip.vue';
-import PersonneListItem from '@/components/search/personne/PersonneListItem.vue';
-import { searchPersonne } from '@/services/personneService.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
-import { errorHandler } from '@/utils/axiosUtils.ts';
+import PersonneChip from './PersonneChip.vue';
+import PersonneListItem from './PersonneListItem.vue';
+import { searchPersonne } from '@/services/api';
+import type { SimplePersonne } from '@/types';
+import { errorHandler } from '@/utils';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 

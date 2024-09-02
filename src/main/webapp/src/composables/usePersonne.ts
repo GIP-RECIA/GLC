@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
-import type { enumValues } from '@/types/enumValuesType.ts';
-import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
-import type { Personne } from '@/types/personneType.ts';
-import { getEtat } from '@/utils/accountUtils';
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
+import type { Personne, enumValues } from '@/types';
+import { CategoriePersonne } from '@/types/enums';
+import { getEtat } from '@/utils';
 import { format, getYear } from 'date-fns';
 import { storeToRefs } from 'pinia';
 import { type Ref, computed, ref } from 'vue';

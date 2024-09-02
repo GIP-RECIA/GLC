@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useConfigurationStore } from '@/stores/index';
-import type { endInfo } from '@/types/endInfoType.ts';
-import type { enumValues } from '@/types/enumValuesType.ts';
-import { CategoriePersonne } from '@/types/enums/CategoriePersonne.ts';
-import { Etat } from '@/types/enums/Etat.ts';
-import type { PersonneFonction } from '@/types/fonctionType.ts';
+import { useConfigurationStore } from '@/stores';
+import type { PersonneFonction, endInfo, enumValues } from '@/types';
+import { CategoriePersonne, Etat } from '@/types/enums';
 import { differenceInCalendarMonths, isPast } from 'date-fns';
 import { storeToRefs } from 'pinia';
 

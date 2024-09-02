@@ -18,7 +18,7 @@
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
 import SettingsDialog from '@/components/dialogs/SettingsDialog.vue';
 import CustomTabBar from '@/components/tab/CustomTabBar.vue';
-import { useConfigurationStore } from '@/stores/index.ts';
+import { useConfigurationStore } from '@/stores';
 import { watchOnce } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { onBeforeMount } from 'vue';

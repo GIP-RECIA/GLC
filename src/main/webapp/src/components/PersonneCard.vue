@@ -15,10 +15,9 @@
 -->
 
 <script setup lang="ts">
-import { usePersonneStore } from '@/stores/index.ts';
-import type { enumValues } from '@/types/enumValuesType.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
-import { getEtat, getIcon } from '@/utils/accountUtils.ts';
+import { usePersonneStore } from '@/stores';
+import type { SimplePersonne, enumValues } from '@/types';
+import { getEtat, getIcon } from '@/utils';
 import { format } from 'date-fns';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

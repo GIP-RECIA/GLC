@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import { useStructureStore } from '@/stores/index.ts';
+import { useStructureStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 
 const structureStore = useStructureStore();

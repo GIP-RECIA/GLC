@@ -18,11 +18,10 @@
 import ReadonlyData from '@/components/ReadonlyData.vue';
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue';
 import { usePersonne } from '@/composables/usePersonne';
-import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts';
-import { PersonneDialogState } from '@/types/enums/PersonneDialogState.ts';
-import { Tabs } from '@/types/enums/Tabs.ts';
-import type { Personne } from '@/types/personneType.ts';
-import { getCategoriePersonne, getIcon } from '@/utils/accountUtils.ts';
+import { useConfigurationStore, usePersonneStore } from '@/stores';
+import type { Personne } from '@/types';
+import { PersonneDialogState, Tabs } from '@/types/enums';
+import { getCategoriePersonne, getIcon } from '@/utils';
 import { useSessionStorage } from '@vueuse/core';
 import { format } from 'date-fns';
 import { storeToRefs } from 'pinia';

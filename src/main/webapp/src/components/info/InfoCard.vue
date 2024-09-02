@@ -15,9 +15,9 @@
 -->
 
 <script setup lang="ts">
-import type { enumValues } from '@/types/enumValuesType.ts';
-import type { Etat } from '@/types/enums/Etat.ts';
-import { getEtat } from '@/utils/accountUtils.ts';
+import type { enumValues } from '@/types';
+import type { Etat } from '@/types/enums';
+import { getEtat } from '@/utils';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

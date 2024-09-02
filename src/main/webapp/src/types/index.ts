@@ -13,10 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { instance as axios } from '@/utils/axiosUtils.ts';
 
-const getEtablissements = async () => await axios.get('/api/structure/etablissement');
-
-const getEtablissement = async (id: number) => await axios.get(`/api/structure/etablissement/${id}`);
-
-export { getEtablissements, getEtablissement };
+export * from './adresseType.ts';
+export * from './alertType.ts';
+export * from './configurationType.ts';
+export * from './disciplineType.ts';
+export * from './endInfoType.ts';
+export * from './enumValuesType.ts';
+export * from './etablissementType.ts';
+export * from './filiereType.ts';
+export * from './fonctionType.ts';
+export * from './identityType.ts';
+export * from './personneType.ts';
+export * from './portalEntryType.ts';
+export * from './structureConfigurationType.ts';

@@ -15,8 +15,8 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore, useStructureStore } from '@/stores/index.ts';
-import type { Alert } from '@/types/alertType.ts';
+import { useConfigurationStore, useStructureStore } from '@/stores';
+import type { Alert } from '@/types';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 

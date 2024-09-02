@@ -16,13 +16,13 @@
 
 import { createApp } from 'vue';
 
-import { register as registerDirectives } from '@/directives/index.ts';
+import { register as registerDirectives } from '@/directives';
 import { register as registerFontAwsome } from '@/plugins/fontawsome.ts';
 import '@/plugins/date-fns.ts';
 import i18n from '@/plugins/i18n.ts';
 import pinia from '@/plugins/pinia.ts';
 import vuetify from '@/plugins/vuetify.ts';
-import router from '@/router/index.ts';
+import router from '@/router';
 import Vue3Toasity, { type ToastContainerOptions } from 'vue3-toastify';
 
 import 'vuetify/styles';

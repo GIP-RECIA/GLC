@@ -16,11 +16,10 @@
 
 <script setup lang="ts">
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
-import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/personneService.ts';
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts';
-import type { SimplePersonne } from '@/types/personneType.ts';
-import { fonctionsToId } from '@/utils/accountUtils.ts';
-import { errorHandler } from '@/utils/axiosUtils.ts';
+import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/api';
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
+import type { SimplePersonne } from '@/types';
+import { errorHandler, fonctionsToId } from '@/utils';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';

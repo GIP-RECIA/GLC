@@ -15,8 +15,8 @@
 -->
 
 <script setup lang="ts">
-import CustomTabItem from '@/components/tab/CustomTabItem.vue';
-import { useConfigurationStore } from '@/stores/index.ts';
+import CustomTabItem from './CustomTabItem.vue';
+import { useConfigurationStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';

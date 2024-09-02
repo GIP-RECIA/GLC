@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import vuetify from '@/plugins/vuetify.ts';
-import type { PortalEntry } from '@/types/portalEntryType.ts';
+import type { PortalEntry } from '@/types';
 import axios from 'axios';
 
 const useEntTheme = async (templateApiPath: string): Promise<void> => {

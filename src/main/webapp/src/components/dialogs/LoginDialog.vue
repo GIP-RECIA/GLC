@@ -15,9 +15,8 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores/index.ts';
-import { intercept } from '@/utils/axiosUtils.ts';
-import { login } from '@/utils/casUtils.ts';
+import { useConfigurationStore } from '@/stores';
+import { intercept, login } from '@/utils';
 import { watchOnce } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';

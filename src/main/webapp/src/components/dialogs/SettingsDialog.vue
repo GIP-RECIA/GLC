@@ -15,8 +15,8 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores/index.ts';
-import { Theme } from '@/types/enums/Theme.ts';
+import { useConfigurationStore } from '@/stores';
+import { Theme } from '@/types/enums';
 import { useLocalStorage, usePreferredDark } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, watch } from 'vue';
