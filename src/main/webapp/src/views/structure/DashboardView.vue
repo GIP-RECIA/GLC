@@ -67,7 +67,7 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
   <v-container fluid>
     <alert-manager />
 
-    <info-grid v-if="isDev" class="mb-4" />
+    <info-grid class="mb-4" />
 
     <v-expansion-panels v-model="panel">
       <v-expansion-panel :value="DashboardPanel.DeletingAccounts" :elevation="0" rounded="lg">
