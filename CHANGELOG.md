@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.0](https://github.com/GIP-RECIA/GLC/compare/0.0.4...0.1.0) (2024-09-02)
+
+
+### Features
+
+* accounts info ([90f1d78](https://github.com/GIP-RECIA/GLC/commit/90f1d78354407eb91d11a07d47a499cfc79c55b3))
+* add account by state in dashboard ([802ce39](https://github.com/GIP-RECIA/GLC/commit/802ce3900540601b5e79ca6e87ab0897fe9a7cc0))
+* add axios timeout environment variable ([2ec1ccc](https://github.com/GIP-RECIA/GLC/commit/2ec1ccc765d9a17cee7f916e065118989365f3dd))
+* add constructors with end date for fonction ([97b5c15](https://github.com/GIP-RECIA/GLC/commit/97b5c159fa4997db836d554b8e976fdebe4c478f))
+* add jacoco on test profile ([f72479e](https://github.com/GIP-RECIA/GLC/commit/f72479ed4b05cc3164c4aa128c76f599ac736d29))
+* add make file ([9f468bd](https://github.com/GIP-RECIA/GLC/commit/9f468bdf3bb518a5e987c08f664d0d359c3cddf8))
+* add navigation fallback to home ([057cbc3](https://github.com/GIP-RECIA/GLC/commit/057cbc3011a63f376d44f14ea80822bb903920e1))
+* add scripts ([cf9b4f9](https://github.com/GIP-RECIA/GLC/commit/cf9b4f9cd0ab28a316d63b97ecb5d10a346b68fb))
+* **config:** add LA-CENTRE additional function mapping ([3d1970b](https://github.com/GIP-RECIA/GLC/commit/3d1970bd10e8720e5fb071d1b8a3fc68bf25e405))
+* **dialogs:** improve dialogs style ([b7d1336](https://github.com/GIP-RECIA/GLC/commit/b7d13365da1fc72beb6179a2138daf53ac45b112))
+* **i18n:** optimize ([96d50d7](https://github.com/GIP-RECIA/GLC/commit/96d50d7ae6a0b5774b94c68b185f4c48aa41fed2))
+* **i18n:** replace manager with general secretary ([ef090de](https://github.com/GIP-RECIA/GLC/commit/ef090deb492392bc8d08a52155f466bfcaaf00df))
+* **pinia:** add HMR ([75323a4](https://github.com/GIP-RECIA/GLC/commit/75323a413a80e4652166fb9489dc6b23bbaf0826))
+* separate person logic from modal ([9b22dd9](https://github.com/GIP-RECIA/GLC/commit/9b22dd9008912b6736ebd26a57fe8da2e0ac8545))
+* **settings:** choose theme easily ([8775c3d](https://github.com/GIP-RECIA/GLC/commit/8775c3d9f29122f6b85a0bb20ba6e85c5072c18e))
+* truncated person cn ([7f1e555](https://github.com/GIP-RECIA/GLC/commit/7f1e555678d1a651018359629412ce87c11ae861))
+* use ent theme ([59567d9](https://github.com/GIP-RECIA/GLC/commit/59567d92795f8be59c07c254e0a99faba6407fe7))
+* **vuetify:** use date-fns ([9623891](https://github.com/GIP-RECIA/GLC/commit/9623891a0d87f3744979cafdb8754360d39f80ac))
+
+
+### Bug Fixes
+
+* add missing types ([5f46a25](https://github.com/GIP-RECIA/GLC/commit/5f46a252eed611b1a3433d6ba11ee8ab6297a119))
+* adjust filiere grid ([33d33ec](https://github.com/GIP-RECIA/GLC/commit/33d33eca83ad60c6c449d2a3ea6b62ac8466f8d7))
+* **axios:** improve error handler ([e3c3e8e](https://github.com/GIP-RECIA/GLC/commit/e3c3e8eb713a1dcf7ccb4e57bfe830de4b1be5a5))
+* **build:** maven-release-plugin commit ([8a62701](https://github.com/GIP-RECIA/GLC/commit/8a6270172996defd33024608c2846aa1072a48c7))
+* changelog  generation ([9a6be36](https://github.com/GIP-RECIA/GLC/commit/9a6be36fc85f1f52d5339e571753be9f5b962e0d))
+* **date-fns:** remove unnecessary parse ISO since version 3.0.0 ([d36f59f](https://github.com/GIP-RECIA/GLC/commit/d36f59fe310126fdd90960f8ee4744cf52f2cbfc))
+* **i18n:** french translations ([6e796e7](https://github.com/GIP-RECIA/GLC/commit/6e796e71d9a652f05ca2d4655744ae8ae7b40467))
+* **i18n:** function hourglass half translation ([9f47103](https://github.com/GIP-RECIA/GLC/commit/9f47103e692ddb7bacceb53d931760f7553a65d0))
+* personne store refactoring introduce bug ([9e37d86](https://github.com/GIP-RECIA/GLC/commit/9e37d862230ab0c4cacd28669103f3eeb2212a08))
+* user search for admin and non admin ([36dd5e8](https://github.com/GIP-RECIA/GLC/commit/36dd5e8f73ebf24cbf47b39aa95bb570b08a0fb0))
+* **vite:** remove unnecessary hmr override ([cee17ac](https://github.com/GIP-RECIA/GLC/commit/cee17ac2ae5a23fd2b460d2dd735667f45133370))
+* **vitest:** add missing build info file link ([2887539](https://github.com/GIP-RECIA/GLC/commit/28875391aa7bc4b7cf4dc86ff9e709c55189360c))
+
 ## [0.0.4](https://github.com/GIP-RECIA/GLC/compare/0.0.3...0.0.4) (2024-02-21)
 
 
