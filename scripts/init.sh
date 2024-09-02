@@ -20,7 +20,7 @@ nvm install
 npm i -g yarn
 yarn
 yarn prepare
-yarn predev
+yarn exec dotenv-checker
 
 # Backend
 if ! sdk env; then

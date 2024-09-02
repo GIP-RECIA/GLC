@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "dotenv-checker && vite --host",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
@@ -15,7 +15,6 @@
     "format:check": "prettier --check src/main/webapp/src/",
     "format": "prettier --write src/main/webapp/src/",
     "prepare": "husky install",
-    "predev": "dotenv-checker --schema .env.example --env .env.local",
     "changelog:generate": "commit-and-tag-version --packageFiles pom.xml --skip.bump --skip.tag --skip.commit -t ''"
   },
   "dependencies": {
