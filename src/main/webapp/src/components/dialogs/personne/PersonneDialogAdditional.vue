@@ -16,13 +16,14 @@
 
 <script setup lang="ts">
 import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
+import { useSaveAttachDetach } from '@/composables';
 import { setPersonneAdditional } from '@/services/api';
 import { useConfigurationStore, usePersonneStore } from '@/stores';
 import type { Filiere, Personne } from '@/types';
 import { PersonneDialogState } from '@/types/enums';
-import { errorHandler, fonctionsToId, isEmpty } from '@/utils';
+import { errorHandler, fonctionsToId } from '@/utils';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
 
@@ -48,26 +49,10 @@ const canSave = computed<boolean>(() => {
     : true;
 });
 
-const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
-  if (isEmpty(personneStructure.value.fonctions)) {
-    if (isEmpty(personneStructure.value.additionalFonctions))
-      return {
-        i18n: 'button.attach',
-        icon: 'fas fa-link',
-        color: 'success',
-      };
-    if (selected.value.length == 0)
-      return {
-        i18n: 'button.detach',
-        icon: 'fas fa-link-slash',
-        color: 'error',
-      };
-  }
-  return {
-    i18n: 'button.save',
-    icon: 'fas fa-floppy-disk',
-    color: 'success',
-  };
+const { isDetach, saveButton } = useSaveAttachDetach();
+
+watch(selected, (newValue) => {
+  isDetach.value = newValue.length == 0;
 });
 
 const save = async (): Promise<void> => {

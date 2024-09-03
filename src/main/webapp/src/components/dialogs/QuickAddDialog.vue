@@ -16,10 +16,11 @@
 
 <script setup lang="ts">
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
+import { useSaveAttachDetach } from '@/composables';
 import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/api';
 import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
 import type { SimplePersonne } from '@/types';
-import { errorHandler, fonctionsToId, isEmpty } from '@/utils';
+import { errorHandler, fonctionsToId } from '@/utils';
 import debounce from 'lodash.debounce';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
@@ -74,19 +75,7 @@ const canSave = computed<boolean>(() => {
   return currentPersonne.value ? !alreadyHasFunction : false;
 });
 
-const saveButton = computed<{ i18n: string; icon: string; color: string }>(() => {
-  if (isEmpty(personneStructure.value.fonctions) && isEmpty(personneStructure.value.additionalFonctions))
-    return {
-      i18n: 'button.attach',
-      icon: 'fas fa-link',
-      color: 'success',
-    };
-  return {
-    i18n: 'button.save',
-    icon: 'fas fa-floppy-disk',
-    color: 'success',
-  };
-});
+const { saveButton } = useSaveAttachDetach();
 
 const save = async (): Promise<void> => {
   if (requestAdd.value?.function) {
