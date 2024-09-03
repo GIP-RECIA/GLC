@@ -23,11 +23,14 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const props = defineProps<{
-  etat: Etat;
-  value: number;
-  variant?: NonNullable<'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain'>;
-}>();
+const props = withDefaults(
+  defineProps<{
+    etat: Etat;
+    value: number;
+    variant?: 'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain';
+  }>(),
+  { variant: 'flat' },
+);
 
 const data = computed<{ etat: enumValues; icon: string }>(() => {
   const etat = getEtat(props.etat);
@@ -44,7 +47,7 @@ const data = computed<{ etat: enumValues; icon: string }>(() => {
         <div class="text-h5">{{ value }}</div>
         <div class="text-caption text-medium-emphasis">{{ t(data.etat.i18n) }}</div>
       </div>
-      <v-icon :icon="data.icon" :color="data.etat.color" class="me-2" :size="40" />
+      <v-icon :icon="data.icon" :color="data.etat.color" class="mx-2" :size="40" />
     </v-card-text>
   </v-card>
 </template>

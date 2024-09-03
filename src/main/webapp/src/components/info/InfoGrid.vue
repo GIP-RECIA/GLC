@@ -39,13 +39,7 @@ const items = computed<Map<Etat, Array<SimplePersonne> | undefined>>(() => {
 
 <template>
   <div class="info-grid">
-    <info-card
-      v-for="elem in items"
-      :key="elem[0]"
-      :etat="elem[0]"
-      :value="elem[1] ? elem[1].length : 0"
-      variant="flat"
-    />
+    <info-card v-for="elem in items" :key="elem[0]" :etat="elem[0]" :value="elem[1] ? elem[1].length : 0" />
   </div>
 </template>
 
