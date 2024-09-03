@@ -18,6 +18,7 @@
 import AlertManager from '@/components/AlertManager.vue';
 import CustomPagination from '@/components/CustomPagination.vue';
 import PersonneCard from '@/components/PersonneCard.vue';
+import ReadonlyData from '@/components/ReadonlyData.vue';
 import InfoGrid from '@/components/info/InfoGrid.vue';
 import { useStructureStore } from '@/stores';
 import type { SimplePersonne } from '@/types';
@@ -64,10 +65,33 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
 </script>
 
 <template>
-  <v-container fluid>
+  <v-container fluid class="d-flex flex-column ga-4">
     <alert-manager />
 
-    <info-grid class="mb-4" />
+    <v-card v-if="isDev && currentEtab" flat>
+      <v-card-text class="info-container">
+        <readonly-data v-admin label="uai" :value="currentEtab.uai" />
+        <readonly-data label="etat" :value="currentEtab.etat" />
+        <readonly-data label="etatAlim" :value="currentEtab.etatAlim" />
+        <readonly-data label="source" :value="currentEtab.source" />
+        <readonly-data label="anneeScolaire" :value="currentEtab.anneeScolaire" />
+        <readonly-data label="adresse" :value="currentEtab.adresse.adresse" />
+        <readonly-data label="codePostal" :value="currentEtab.adresse.codePostal" />
+        <readonly-data label="ville" :value="currentEtab.adresse.ville" />
+        <readonly-data label="boitePostale" :value="currentEtab.adresse.boitePostale" />
+        <readonly-data label="pays" :value="currentEtab.adresse.pays" />
+        <readonly-data label="categorie" :value="currentEtab.categorie" />
+        <readonly-data label="mail" :value="currentEtab.mail" />
+        <readonly-data label="nom" :value="currentEtab.nom" />
+        <readonly-data label="nomCourt" :value="currentEtab.nomCourt" />
+        <readonly-data label="siren" :value="currentEtab.siren" />
+        <readonly-data label="siteWeb" :value="currentEtab.siteWeb" />
+        <readonly-data label="modeleLogin" :value="currentEtab.modeleLogin" />
+        <readonly-data label="logo" :value="currentEtab.logo" />
+      </v-card-text>
+    </v-card>
+
+    <info-grid />
 
     <v-expansion-panels v-model="panel">
       <v-expansion-panel :value="DashboardPanel.DeletingAccounts" :elevation="0" rounded="lg">
@@ -136,6 +160,28 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
 </template>
 
 <style scoped lang="scss">
+.info-container {
+  display: grid;
+  gap: 0.75em;
+  grid-template-columns: 1fr;
+
+  @media (width >= 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (width >= 960px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (width >= 1280px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @media (width >= 2560px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+
 .container {
   display: grid;
   gap: 0.75em;

@@ -52,7 +52,7 @@ const doAlert = (alert: Alert): void => {
     :type="alert.type"
     variant="tonal"
     rounded="lg"
-    :class="[{ clicable: alert.action && fonction?.customMapping }, 'mb-4']"
+    :class="[{ clicable: alert.action && fonction?.customMapping }]"
     @click="doAlert(alert)"
   />
 </template>

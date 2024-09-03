@@ -24,7 +24,6 @@ import AcademicView from '@/views/structure/AcademicView.vue';
 import AccountView from '@/views/structure/AccountView.vue';
 import CollectivityView from '@/views/structure/CollectivityView.vue';
 import DashboardView from '@/views/structure/DashboardView.vue';
-import InfoView from '@/views/structure/InfoView.vue';
 import SchoolView from '@/views/structure/SchoolView.vue';
 import TeachingView from '@/views/structure/TeachingView.vue';
 import { storeToRefs } from 'pinia';
@@ -63,7 +62,6 @@ watch(
     class="mt-2"
   >
     <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tab.dashboard') }}</v-tab>
-    <v-tab v-if="isDev" :value="Tabs.Info">{{ t('tab.information') }}</v-tab>
     <v-tab v-if="filieresByStaff.teaching" :value="Tabs.TeachingStaff">{{ t('tab.teachingStaff') }}</v-tab>
     <v-tab v-if="filieresByStaff.school" :value="Tabs.SchoolStaff">{{ t('tab.schoolStaff') }}</v-tab>
     <v-tab v-if="filieresByStaff.collectivity" :value="Tabs.CollectivityStaff">{{ t('tab.collectivityStaff') }}</v-tab>
@@ -73,9 +71,6 @@ watch(
   <v-window v-model="structureTab">
     <v-window-item :value="Tabs.Dashboard">
       <dashboard-view />
-    </v-window-item>
-    <v-window-item v-if="isDev" :value="Tabs.Info">
-      <info-view />
     </v-window-item>
     <v-window-item v-if="filieresByStaff.teaching" :value="Tabs.TeachingStaff">
       <teaching-view />
