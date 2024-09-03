@@ -60,7 +60,7 @@ onMounted(() => {
       <transition-group name="tab-bar">
         <custom-tab-item
           v-for="(structure, index) in structures"
-          :key="index"
+          :key="structure.id"
           :id="index"
           :title="structure.name"
           :link="{ name: 'structure', params: { structureId: structure.id } }"
