@@ -117,6 +117,15 @@ const filiereDisciplineToId = (filiere: number, disciplinePoste: number): string
 const fonctionsToId = (fonctions: Array<PersonneFonction> | undefined): Array<string> =>
   fonctions ? fonctions.map((fonction) => fonctionToId(fonction)) : [];
 
+const idToFonction = (id: string): { filiere: number; discipline: number } => {
+  const fonctionIds = id.split('-').map((id) => parseInt(id));
+
+  return {
+    filiere: fonctionIds[0],
+    discipline: fonctionIds[1],
+  };
+};
+
 export {
   isLocal,
   getIcon,
@@ -126,4 +135,5 @@ export {
   fonctionToId,
   filiereDisciplineToId,
   fonctionsToId,
+  idToFonction,
 };

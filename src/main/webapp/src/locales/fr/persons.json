@@ -42,6 +42,9 @@
       "additionalTeaching": "Enseignement complémentaire | Enseignements complémentaires"
     },
     "function": {
+      "type": "Type",
+      "discipline": "Discipline",
+      "endDate": "Date de fin",
       "hourglass": {
         "start": "Expirera dans {months} mois ({date})",
         "half": "Expire dans moins d'un mois ({date}) | Expire dans moins de {months} mois ({date})",

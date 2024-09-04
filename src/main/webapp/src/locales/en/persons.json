@@ -42,6 +42,9 @@
       "additionalTeaching": "Additional teaching | Additional teachings"
     },
     "function": {
+      "type": "Type",
+      "discipline": "Discipline",
+      "endDate": "End date",
       "hourglass": {
         "start": "Will expire in {months} month ({date}) | Will expire in {months} months ({date}) ",
         "half": "Expires in less than one month ({date}) | Expires in less than {months} months ({date})",
