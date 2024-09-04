@@ -104,21 +104,24 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
           <fonctions-layout :filieres="allFilieres" :fonctions="personneStructure.fonctions" />
         </div>
         <div class="full-width">
-          <div class="d-flex align-center mb-1">
-            <b>{{ t('person.information.additionalFunction', 2) }}</b>
-            <v-btn
-              v-if="structureTab == Tabs.SchoolStaff && canEditAdditionals"
-              color="primary"
-              variant="tonal"
-              density="compact"
-              :text="t(personneStructure.additionalFonctions ? 'button.edit' : 'button.add')"
-              class="ms-2 mb-1"
-              @click="dialogState = PersonneDialogState.ManageAdditional"
-            >
-              <template #prepend>
-                <v-icon :icon="personneStructure.additionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
-              </template>
-            </v-btn>
+          <div class="title-actions">
+            <div class="mb-1">
+              <b>{{ t('person.information.additionalFunction', 2) }}</b>
+            </div>
+            <div class="d-flex align-center gc-2 mb-2">
+              <v-btn
+                v-if="structureTab == Tabs.SchoolStaff && canEditAdditionals"
+                color="primary"
+                variant="tonal"
+                density="compact"
+                :text="t(personneStructure.additionalFonctions ? 'button.edit' : 'button.add')"
+                @click="dialogState = PersonneDialogState.ManageAdditional"
+              >
+                <template #prepend>
+                  <v-icon :icon="personneStructure.additionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
+                </template>
+              </v-btn>
+            </div>
           </div>
           <div class="d-flex flex-column ga-2">
             <v-alert
@@ -152,6 +155,17 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
     > .full-width {
       grid-column: span 2;
     }
+  }
+}
+
+.title-actions {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+  column-gap: 8px;
+
+  @media (width >= 700px) {
+    flex-direction: row;
   }
 }
 </style>
