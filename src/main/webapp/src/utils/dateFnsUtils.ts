@@ -35,7 +35,7 @@ const isBetween = (
   include: boolean = true,
 ): boolean =>
   include
-    ? isAfterOrEqual(date, dateToCompareMin) || isBeforeOrEqual(date, dateToCompareMax)
+    ? isAfterOrEqual(date, dateToCompareMin) && isBeforeOrEqual(date, dateToCompareMax)
     : isAfter(date, dateToCompareMin) && isBefore(date, dateToCompareMax);
 
 export { dateToDuration, isBeforeOrEqual, isAfterOrEqual, isBetween };
