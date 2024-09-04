@@ -31,43 +31,43 @@ import java.util.Date;
 public class FonctionDto {
 
   private Long personne;
-  private Long disciplinePoste;
   private Long filiere;
+  private Long discipline;
   private String source;
   private Long structure;
   private Date dateFin;
 
-  public FonctionDto(Long disciplinePoste, Long filiere, String source) {
-    this.disciplinePoste = disciplinePoste;
+  public FonctionDto(Long filiere, Long discipline, String source) {
     this.filiere = filiere;
+    this.discipline = discipline;
     this.source = source;
   }
 
-  public FonctionDto(Long disciplinePoste, Long filiere, String source, Long structure) {
-    this.disciplinePoste = disciplinePoste;
+  public FonctionDto(Long filiere, Long discipline, String source, Long structure) {
     this.filiere = filiere;
+    this.discipline = discipline;
     this.source = source;
     this.structure = structure;
   }
 
-  public FonctionDto(Long disciplinePoste, Long filiere, String source, Long structure, Date dateFin) {
-    this.disciplinePoste = disciplinePoste;
+  public FonctionDto(Long filiere, Long discipline, String source, Long structure, Date dateFin) {
     this.filiere = filiere;
+    this.discipline = discipline;
     this.source = source;
     this.structure = structure;
     this.dateFin = dateFin;
   }
 
-  public FonctionDto(Long personne, Long disciplinePoste, Long filiere, String source) {
+  public FonctionDto(Long personne, Long filiere, Long discipline, String source) {
     this.personne = personne;
-    this.disciplinePoste = disciplinePoste;
     this.filiere = filiere;
+    this.discipline = discipline;
     this.source = source;
   }
 
   public FonctionDto(FonctionDto fonctionDto) {
     this.personne = fonctionDto.getPersonne();
-    this.disciplinePoste = fonctionDto.getDisciplinePoste();
+    this.discipline = fonctionDto.getDiscipline();
     this.filiere = fonctionDto.getFiliere();
     this.source = fonctionDto.getSource();
     this.structure = fonctionDto.getStructure();

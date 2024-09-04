@@ -276,7 +276,7 @@ public class FonctionService {
       .map(typeFonctionFiliere -> {
         Set<Long> disciplineIds = tmpFonctions.stream()
           .filter(fonction -> Objects.equals(fonction.getFiliere(), typeFonctionFiliere.getId()))
-          .map(FonctionDto::getDisciplinePoste)
+          .map(FonctionDto::getDiscipline)
           .collect(Collectors.toSet());
         List<DisciplineDto> disciplinesInFiliere = tmpDisciplines.stream()
           .filter(discipline -> disciplineIds.contains(discipline.getId()) && !disciplinesToNotInclue.contains(discipline.getDisciplinePoste()))
@@ -353,7 +353,7 @@ public class FonctionService {
       fonctionRepository.saveAll(toAddAdditional.stream()
         .map(fonction -> {
           TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
-          Discipline discipline = disciplineRepository.findById(fonction.getDisciplinePoste()).orElse(null);
+          Discipline discipline = disciplineRepository.findById(fonction.getDiscipline()).orElse(null);
 
           return new Fonction(discipline, filiere, aStructure, aPersonne, source);
         })
@@ -362,7 +362,7 @@ public class FonctionService {
 
     if (!toDeleteAdditional.isEmpty()) {
       fonctionRepository.deleteAllById(toDeleteAdditional.stream()
-        .map(fonction -> fonctionRepository.findId(fonction.getDisciplinePoste(), fonction.getFiliere(), personneId, fonction.getStructure()))
+        .map(fonction -> fonctionRepository.findId(fonction.getDiscipline(), fonction.getFiliere(), personneId, fonction.getStructure()))
         .collect(Collectors.toList()));
     }
 
@@ -406,8 +406,8 @@ public class FonctionService {
         String[] split = s.split("-");
 
         return new FonctionDto(
-          Long.parseLong(split[1]),
           Long.parseLong(split[0]),
+          Long.parseLong(split[1]),
           source,
           structureId
         );

@@ -28,8 +28,8 @@ export type CustomMapping = {
 };
 
 export type PersonneFonction = {
-  disciplinePoste: number;
   filiere: number;
+  discipline: number;
   source: string;
   structure: number;
   dateFin?: string;

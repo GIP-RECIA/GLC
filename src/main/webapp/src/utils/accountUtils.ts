@@ -110,9 +110,9 @@ const getDateFin = (date: string): endInfo => {
   };
 };
 
-const fonctionToId = (fonction: PersonneFonction): string => `${fonction.filiere}-${fonction.disciplinePoste}`;
+const fonctionToId = (fonction: PersonneFonction): string => `${fonction.filiere}-${fonction.discipline}`;
 
-const filiereDisciplineToId = (filiere: number, disciplinePoste: number): string => `${filiere}-${disciplinePoste}`;
+const filiereDisciplineToId = (filiere: number, discipline: number): string => `${filiere}-${discipline}`;
 
 const fonctionsToId = (fonctions: Array<PersonneFonction> | undefined): Array<string> =>
   fonctions ? fonctions.map((fonction) => fonctionToId(fonction)) : [];

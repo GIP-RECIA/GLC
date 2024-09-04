@@ -120,7 +120,7 @@ public class EtablissementDto {
       .map(tff -> {
         final Set<Long> disciplineIds = fonctions.stream()
           .filter(fonction -> Objects.equals(fonction.getFiliere(), tff.getId()))
-          .map(FonctionDto::getDisciplinePoste)
+          .map(FonctionDto::getDiscipline)
           .collect(Collectors.toSet());
 
         final List<DisciplineDto> disciplinesWithPersonnes = disciplines.stream()
@@ -129,7 +129,7 @@ public class EtablissementDto {
           .map(discipline -> {
             final Set<Long> personneIds = fonctions.stream()
               .filter(fonction -> Objects.equals(fonction.getFiliere(), tff.getId())
-                && Objects.equals(fonction.getDisciplinePoste(), discipline.getId())
+                && Objects.equals(fonction.getDiscipline(), discipline.getId())
               )
               .map(FonctionDto::getPersonne)
               .collect(Collectors.toSet());
@@ -139,7 +139,7 @@ public class EtablissementDto {
                 if (Objects.equals(discipline.getDisciplinePoste(), SANS_OBJET)) {
                   final List<FonctionDto> personneOtherFonctions = fonctions.stream()
                     .filter(fonction -> Objects.equals(fonction.getPersonne(), personne.getId()))
-                    .filter(fonction -> !(Objects.equals(fonction.getFiliere(), tff.getId()) && Objects.equals(fonction.getDisciplinePoste(), discipline.getId())))
+                    .filter(fonction -> !(Objects.equals(fonction.getFiliere(), tff.getId()) && Objects.equals(fonction.getDiscipline(), discipline.getId())))
                     .collect(Collectors.toList());
 
                   if (!personneOtherFonctions.isEmpty()) return false;

@@ -45,12 +45,12 @@ const filterFilieres = (): void => {
     .filter((filiere) => filiereIds.includes(filiere.id))
     .map((filiere) => {
       const filiereFonctions = etabFonctions.filter((fonction) => fonction.filiere == filiere.id);
-      const disciplineIds = filiereFonctions.map((fonction) => fonction.disciplinePoste);
+      const disciplineIds = filiereFonctions.map((fonction) => fonction.discipline);
 
       const disciplines = filiere.disciplines
         .filter((discipline) => disciplineIds.includes(discipline.id))
         .map((discipline) => {
-          const dateFin = filiereFonctions.find((fonction) => fonction.disciplinePoste == discipline.id)?.dateFin;
+          const dateFin = filiereFonctions.find((fonction) => fonction.discipline == discipline.id)?.dateFin;
 
           return { ...discipline, endInfo: dateFin ? getDateFin(dateFin) : undefined };
         });

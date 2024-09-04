@@ -26,21 +26,21 @@ import java.util.List;
 @Repository
 public interface FonctionRepository<T extends Fonction> extends AbstractRepository<T, Long> {
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.disciplinePoste.id, f.filiere.id, f.source, " +
+  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source, " +
     "f.structure.id, f.dateFin) " +
     "FROM Fonction f " +
     "WHERE f.personne.id = :id " +
     "ORDER BY f.filiere.libelleFiliere")
   List<FonctionDto> findByPersonne(Long id);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.disciplinePoste.id, f.filiere.id, f.source) " +
+  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
     "FROM Fonction f " +
     "WHERE f.personne.id = :id " +
     "AND f.personne.structRattachement.id = :structure " +
     "ORDER BY f.filiere.libelleFiliere")
   List<FonctionDto> findByPersonneIdAndStructure(Long id, Long structure);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.disciplinePoste.id, f.filiere.id, f.source) " +
+  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
     "FROM Fonction f " +
     "WHERE f.source = :source OR f.source = CONCAT('SarapisUi_', :source) " +
     "AND f.disciplinePoste IS NOT NULL " +
@@ -49,7 +49,7 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
     "ORDER BY f.filiere.libelleFiliere")
   List<FonctionDto> findBySource(String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.disciplinePoste.id, f.filiere.id, f.source) " +
+  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
     "FROM Fonction f " +
     "WHERE f.disciplinePoste IS NOT NULL " +
     "AND f.filiere IS NOT NULL " +
@@ -90,7 +90,7 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
     "WHERE f.structure.id = :id")
   List<Long> findFilieresByStructureId(Long id);
 
-  @Query("SELECT new fr.recia.glc.db.dto.fonction.FonctionDto(f.personne.id, f.disciplinePoste.id, f.filiere.id, " +
+  @Query("SELECT new fr.recia.glc.db.dto.fonction.FonctionDto(f.personne.id, f.filiere.id, f.disciplinePoste.id, " +
     "f.source) " +
     "FROM Fonction f " +
     "WHERE f.structure.id = :structureId " +
