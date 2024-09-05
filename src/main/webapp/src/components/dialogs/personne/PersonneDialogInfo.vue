@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import ReadonlyData from '@/components/ReadonlyData.vue';
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue';
-import { usePersonne } from '@/composables/usePersonne';
+import { usePersonne } from '@/composables';
 import { useConfigurationStore, usePersonneStore } from '@/stores';
 import type { Personne, PersonneFonction } from '@/types';
 import { PersonneDialogState, Tabs } from '@/types/enums';

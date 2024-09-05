@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import PersonneDialogAdditional from './PersonneDialogAdditional.vue';
 import PersonneDialogInfo from './PersonneDialogInfo.vue';
-import { usePersonne } from '@/composables/usePersonne.ts';
+import { usePersonne } from '@/composables';
 import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
 import { PersonneDialogState, Tabs } from '@/types/enums';
 import { storeToRefs } from 'pinia';

@@ -15,3 +15,4 @@
  */
 
 export * from './useSaveAttachDetach.ts';
+export * from './usePersonne.ts';
