@@ -16,11 +16,11 @@
 
 <script setup lang="ts">
 import { useConfigurationStore } from '@/stores';
-import type { Filiere, PersonneFonction } from '@/types';
+import type { Discipline, Filiere, PersonneFonction } from '@/types';
 import { getDateFin } from '@/utils';
 import { format } from 'date-fns';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
@@ -28,27 +28,39 @@ const { currentStructureId } = storeToRefs(configurationStore);
 
 const { t } = useI18n();
 
-const props = defineProps<{
-  filieres: Array<Filiere> | undefined;
-  fonctions: Array<PersonneFonction> | undefined;
-}>();
+const props = withDefaults(
+  defineProps<{
+    filieres: Array<Filiere> | undefined;
+    fonctions: Array<PersonneFonction> | undefined;
+    clickable?: boolean;
+  }>(),
+  {
+    clickable: false,
+  },
+);
 
-const filteredFilieres = ref<Array<Filiere>>([]);
+const emit = defineEmits({
+  itemClic(payload: PersonneFonction | undefined): boolean {
+    return !!payload;
+  },
+});
 
-const filterFilieres = (): void => {
-  if (!props.filieres || !props.fonctions) return;
+const etabFonctions = computed<Array<PersonneFonction>>(() => {
+  return props.fonctions ? props.fonctions.filter(({ structure }) => structure == currentStructureId.value) : [];
+});
 
-  const etabFonctions = props.fonctions.filter((fonction) => fonction.structure == currentStructureId.value);
-  const filiereIds = [...new Set(etabFonctions.map((fonction) => fonction.filiere))];
+const filteredFilieres = computed<Array<Filiere>>(() => {
+  if (!props.filieres) return [];
+  const filiereIds = [...new Set(etabFonctions.value.map(({ filiere }) => filiere))];
 
-  filteredFilieres.value = props.filieres
-    .filter((filiere) => filiereIds.includes(filiere.id))
+  return props.filieres
+    .filter(({ id }) => filiereIds.includes(id))
     .map((filiere) => {
-      const filiereFonctions = etabFonctions.filter((fonction) => fonction.filiere == filiere.id);
+      const filiereFonctions = etabFonctions.value.filter((fonction) => fonction.filiere == filiere.id);
       const disciplineIds = filiereFonctions.map((fonction) => fonction.discipline);
 
       const disciplines = filiere.disciplines
-        .filter((discipline) => disciplineIds.includes(discipline.id))
+        .filter(({ id }) => disciplineIds.includes(id))
         .map((discipline) => {
           const dateFin = filiereFonctions.find((fonction) => fonction.discipline == discipline.id)?.dateFin;
 
@@ -57,13 +69,16 @@ const filterFilieres = (): void => {
 
       return { ...filiere, disciplines };
     });
-};
+});
 
-watch(
-  () => props.fonctions,
-  () => filterFilieres(),
-  { immediate: true },
-);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const onClick = (filiere: Filiere, discipline: Discipline): void => {
+  let fonction = etabFonctions.value.find(
+    (fonction) => fonction.filiere == filiere.id && fonction.discipline == discipline.id,
+  );
+  if (fonction) fonction = { ...fonction, dateFin: discipline.endInfo?.date };
+  emit('itemClic', fonction);
+};
 </script>
 
 <template>
@@ -75,15 +90,16 @@ watch(
       variant="tonal"
       min-height="100%"
     >
-      <v-card-text class="pb-2 mt--3">
-        <div class="v-chip-group v-chip-group--column flex-wrap">
+      <v-card-text>
+        <div class="c-chip-group">
           <v-chip
-            v-for="(discipline, index) in filiere.disciplines"
-            :key="index"
+            v-for="discipline in filiere.disciplines"
+            :key="discipline.code"
             :text="discipline.disciplinePoste"
             :color="discipline.endInfo?.color ?? 'primary'"
             :ripple="false"
             rounded
+            @="clickable ? { click: () => onClick(filiere, discipline) } : {}"
           >
             <template #append v-if="discipline.endInfo">
               <v-tooltip
@@ -121,5 +137,15 @@ watch(
   @media (width >= 900px) {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+.v-card-text {
+  margin-top: -4px;
+}
+
+.c-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 </style>
