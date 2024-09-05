@@ -48,7 +48,7 @@ const addFonction = (): void => {
 };
 
 const editFonction = (payload: PersonneFonction | undefined): void => {
-  dialogState.value = PersonneDialogState.ManageAdditional;
+  dialogState.value = PersonneDialogState.ManageAdditionalMultiple;
 };
 </script>
 

@@ -110,6 +110,7 @@ export const usePersonneStore = defineStore('personne', () => {
     const { cn } = currentPersonne.value;
     switch (dialogState.value) {
       case PersonneDialogState.ManageAdditional:
+      case PersonneDialogState.ManageAdditionalMultiple:
         return `${t('person.information.additionalFunction', 2)} - ${cn}`;
       case PersonneDialogState.Info:
       default:

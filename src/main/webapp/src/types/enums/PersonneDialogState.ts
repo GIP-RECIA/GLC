@@ -17,5 +17,5 @@
 export enum PersonneDialogState {
   Info,
   ManageAdditional,
-  ManageFunctions,
+  ManageAdditionalMultiple,
 }

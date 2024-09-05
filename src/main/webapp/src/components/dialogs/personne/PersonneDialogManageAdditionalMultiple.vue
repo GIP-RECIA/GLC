@@ -69,7 +69,7 @@ watch(
   },
 );
 
-const save = async (): Promise<void> => {
+const onSave = async (): Promise<void> => {
   try {
     const { baseSelection, selected } = data.value;
     await setPersonneAdditional(
@@ -86,7 +86,7 @@ const save = async (): Promise<void> => {
   }
 };
 
-const cancel = (): void => {
+const onCancel = (): void => {
   if (attachMode.value) isCurrentPersonne.value = false;
   else dialogState.value = PersonneDialogState.Info;
 };
@@ -99,7 +99,7 @@ const resetAddMode = (success?: boolean): void => {
   } else if (!success && success != undefined) {
     toast.error(t(`toast.additional.error.${title}`));
   }
-  cancel();
+  onCancel();
 };
 
 onMounted(() => {
@@ -120,13 +120,13 @@ onMounted(() => {
 
   <v-card-actions>
     <v-spacer />
-    <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="cancel" />
+    <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="onCancel" />
     <v-btn
       :color="saveButton.color"
       :prepend-icon="saveButton.icon"
       :text="t(saveButton.i18n)"
       :disabled="!canSave"
-      @click="save"
+      @click="onSave"
     />
   </v-card-actions>
 </template>

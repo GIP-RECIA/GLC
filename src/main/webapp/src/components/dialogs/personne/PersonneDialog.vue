@@ -15,8 +15,8 @@
 -->
 
 <script setup lang="ts">
-import PersonneDialogAdditional from './PersonneDialogAdditional.vue';
 import PersonneDialogInfo from './PersonneDialogInfo.vue';
+import PersonneDialogManageAdditionalMultiple from './PersonneDialogManageAdditionalMultiple.vue';
 import { usePersonne } from '@/composables';
 import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
 import { PersonneDialogState, Tabs } from '@/types/enums';
@@ -54,13 +54,13 @@ const modelValue = computed<boolean>({
 
       <personne-dialog-info v-if="dialogState == PersonneDialogState.Info" :personne="currentPersonne" />
 
-      <personne-dialog-additional
-        v-if="
-          dialogState == PersonneDialogState.ManageAdditional && structureTab == Tabs.SchoolStaff && canEditAdditionals
-        "
-        :personne="currentPersonne"
-        :filieres="fonction?.customMapping?.filieres"
-      />
+      <template v-if="structureTab == Tabs.SchoolStaff && canEditAdditionals">
+        <personne-dialog-manage-additional-multiple
+          v-if="dialogState == PersonneDialogState.ManageAdditionalMultiple"
+          :personne="currentPersonne"
+          :filieres="fonction?.customMapping?.filieres"
+        />
+      </template>
     </v-card>
   </v-dialog>
 </template>
