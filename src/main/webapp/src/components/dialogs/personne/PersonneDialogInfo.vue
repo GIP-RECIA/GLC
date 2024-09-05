@@ -19,7 +19,7 @@ import ReadonlyData from '@/components/ReadonlyData.vue';
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue';
 import { usePersonne } from '@/composables/usePersonne';
 import { useConfigurationStore, usePersonneStore } from '@/stores';
-import type { Personne } from '@/types';
+import type { Personne, PersonneFonction } from '@/types';
 import { PersonneDialogState, Tabs } from '@/types/enums';
 import { getCategoriePersonne, getIcon } from '@/utils';
 import { useSessionStorage } from '@vueuse/core';
@@ -42,6 +42,14 @@ defineProps<{
 const { etat, schoolYear, login, suppressDate, hasFunctions, canEditAdditionals } = usePersonne();
 
 const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
+
+const addFonction = (): void => {
+  editFonction(undefined);
+};
+
+const editFonction = (payload: PersonneFonction | undefined): void => {
+  dialogState.value = PersonneDialogState.ManageAdditional;
+};
 </script>
 
 <template>
@@ -115,7 +123,7 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
                 variant="tonal"
                 density="compact"
                 :text="t(personneStructure.additionalFonctions ? 'button.edit' : 'button.add')"
-                @click="dialogState = PersonneDialogState.ManageAdditional"
+                @click="addFonction"
               >
                 <template #prepend>
                   <v-icon :icon="personneStructure.additionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
@@ -135,7 +143,12 @@ const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true);
               Pour gérer les fonctions complémentaires de ce profil, veuillez utiliser
               <a href="/GLC" target="_self">GLC</a>.
             </v-alert>
-            <fonctions-layout :filieres="allFilieres" :fonctions="personneStructure.additionalFonctions" />
+            <fonctions-layout
+              :filieres="allFilieres"
+              :fonctions="personneStructure.additionalFonctions"
+              :clickable="structureTab == Tabs.SchoolStaff && canEditAdditionals"
+              @item-clic="editFonction"
+            />
           </div>
         </div>
       </template>
