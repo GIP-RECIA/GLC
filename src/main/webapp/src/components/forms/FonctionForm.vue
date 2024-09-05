@@ -48,11 +48,13 @@ const props = withDefaults(
 
 const modelValue = defineModel<{ fonction: string; date: string }>();
 
-const form = ref<{
+type Form = {
   filiere: number | undefined;
   discipline: number | undefined;
   date: string | undefined;
-}>({
+};
+
+const form = ref<Form>({
   filiere: undefined,
   discipline: undefined,
   date: undefined,
@@ -77,22 +79,29 @@ const filteredDisciplines = computed<Array<Discipline> | undefined>(() => {
   return filteredFilieres.value?.find(({ id }) => id == form.value.filiere)?.disciplines;
 });
 
+/**
+ * Update modelValue quand toutes les données sont replies
+ */
 watch(
   form,
-  debounce((newValue): void => {
+  debounce((newValue: Form): void => {
+    if (!isReady.value) return;
     const { filiere, discipline, date } = newValue;
     if (!filiere || !discipline || !date) return;
     modelValue.value = {
       fonction: filiereDisciplineToId(filiere, discipline),
-      date: props.config.date && isBetween(date, props.config.date.min, props.config.date.max) ? date : undefined,
+      date: props.config.date && isBetween(date, props.config.date.min, props.config.date.max) ? date : '',
     };
   }, 200),
   { deep: true },
 );
 
+/**
+ * Reset la discipline quand la filière change
+ */
 watch(
   () => form.value.filiere,
-  (newValue) => {
+  (newValue): void => {
     if (newValue && isReady.value) form.value.discipline = undefined;
   },
 );
@@ -118,6 +127,7 @@ onMounted((): void => {
       variant="solo-filled"
       class="w-100"
       hide-details
+      required
       flat
     />
     <v-autocomplete
@@ -131,6 +141,7 @@ onMounted((): void => {
       variant="solo-filled"
       class="w-100"
       hide-details
+      required
       flat
     />
     <v-text-field
@@ -139,6 +150,8 @@ onMounted((): void => {
       v-model="form.date"
       v-bind="config.date"
       variant="solo-filled"
+      hide-details
+      required
       flat
     />
   </div>
