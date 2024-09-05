@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import CheckboxLayout from '@/components/layouts/CheckboxLayout.vue';
+import CheckboxForm from '@/components/forms/CheckboxForm.vue';
 import { useSaveAttachDetach } from '@/composables';
 import { setPersonneAdditional } from '@/services/api';
 import { useConfigurationStore, usePersonneStore } from '@/stores';
@@ -97,7 +97,7 @@ onMounted(() => {
 
 <template>
   <v-card-text class="py-0">
-    <checkbox-layout
+    <checkbox-form
       :filieres="filieres"
       v-model:selected="selected"
       :disabled="fonctionsToId(personneStructure.fonctions)"
