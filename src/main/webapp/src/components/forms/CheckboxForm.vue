@@ -17,24 +17,13 @@
 <script setup lang="ts">
 import type { Filiere } from '@/types';
 import { filiereDisciplineToId } from '@/utils';
-import { computed } from 'vue';
 
-const props = defineProps<{
+defineProps<{
   filieres: Array<Filiere> | undefined;
-  selected?: Array<string>;
   disabled?: Array<string>;
 }>();
 
-const emit = defineEmits<(event: 'update:selected', payload: Array<string>) => void>();
-
-const checked = computed<Array<string>>({
-  get() {
-    return props.selected ? props.selected : [];
-  },
-  set(newValue) {
-    emit('update:selected', newValue);
-  },
-});
+const modelValue = defineModel<Array<string>>();
 </script>
 
 <template>
@@ -44,7 +33,7 @@ const checked = computed<Array<string>>({
       <v-checkbox
         v-for="discipline in filiere.disciplines"
         :key="filiereDisciplineToId(filiere.id, discipline.id)"
-        v-model="checked"
+        v-model="modelValue"
         :label="discipline.disciplinePoste"
         :value="filiereDisciplineToId(filiere.id, discipline.id)"
         :disabled="disabled?.includes(filiereDisciplineToId(filiere.id, discipline.id))"

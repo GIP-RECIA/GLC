@@ -41,28 +41,42 @@ const props = defineProps<{
   filieres?: Array<Filiere>;
 }>();
 
-const selected = ref<Array<string>>([]);
+const data = ref<{
+  baseSelection: Array<string>;
+  selected: Array<string>;
+  disabled: Array<string>;
+}>({
+  baseSelection: [],
+  selected: [],
+  disabled: [],
+});
 
 const canSave = computed<boolean>(() => {
-  return selected.value?.length == personneStructure.value.additionalFonctions?.length
-    ? !selected.value.every((entry) => fonctionsToId(personneStructure.value.additionalFonctions).includes(entry))
+  const { additionalFonctions } = personneStructure.value;
+  const { baseSelection, selected } = data.value;
+
+  return selected.length == additionalFonctions?.length
+    ? !selected.every((entry) => baseSelection.includes(entry))
     : true;
 });
 
 const { isDetach, saveButton } = useSaveAttachDetach();
 
-watch(selected, (newValue) => {
-  isDetach.value = newValue.length == 0;
-});
+watch(
+  () => data.value.selected,
+  (newValue) => {
+    isDetach.value = newValue.length == 0;
+  },
+);
 
 const save = async (): Promise<void> => {
   try {
-    const existFunctions = fonctionsToId(personneStructure.value.additionalFonctions);
+    const { baseSelection, selected } = data.value;
     await setPersonneAdditional(
       props.personne!.id,
       currentStructureId.value!,
-      selected.value.filter((checked) => !existFunctions.includes(checked)),
-      existFunctions.filter((checked) => !selected.value.includes(checked)),
+      selected.filter((checked) => !baseSelection.includes(checked)),
+      baseSelection.filter((checked) => !selected.includes(checked)),
       saveButton.value.i18n.split('.')[1],
     );
     resetAddMode(true);
@@ -73,10 +87,8 @@ const save = async (): Promise<void> => {
 };
 
 const cancel = (): void => {
-  if (attachMode.value) {
-    isCurrentPersonne.value = false;
-    attachMode.value = false;
-  } else dialogState.value = PersonneDialogState.Info;
+  if (attachMode.value) isCurrentPersonne.value = false;
+  else dialogState.value = PersonneDialogState.Info;
 };
 
 const resetAddMode = (success?: boolean): void => {
@@ -91,17 +103,19 @@ const resetAddMode = (success?: boolean): void => {
 };
 
 onMounted(() => {
-  selected.value = fonctionsToId(personneStructure.value.additionalFonctions);
+  const { fonctions, additionalFonctions } = personneStructure.value;
+  const selected = fonctionsToId(additionalFonctions);
+  data.value = {
+    baseSelection: selected,
+    selected,
+    disabled: fonctionsToId(fonctions),
+  };
 });
 </script>
 
 <template>
   <v-card-text class="py-0">
-    <checkbox-form
-      :filieres="filieres"
-      v-model:selected="selected"
-      :disabled="fonctionsToId(personneStructure.fonctions)"
-    />
+    <checkbox-form v-model="data.selected" :filieres="filieres" :disabled="data.disabled" />
   </v-card-text>
 
   <v-card-actions>
