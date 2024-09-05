@@ -46,7 +46,7 @@ const props = withDefaults(
   },
 );
 
-const data = defineModel<{ fonction: string; date: string }>('data');
+const modelValue = defineModel<{ fonction: string; date: string }>();
 
 const form = ref<{
   filiere: number | undefined;
@@ -82,7 +82,7 @@ watch(
   debounce((newValue): void => {
     const { filiere, discipline, date } = newValue;
     if (!filiere || !discipline || !date) return;
-    data.value = {
+    modelValue.value = {
       fonction: filiereDisciplineToId(filiere, discipline),
       date: props.config.date && isBetween(date, props.config.date.min, props.config.date.max) ? date : undefined,
     };
@@ -99,8 +99,8 @@ watch(
 
 onMounted((): void => {
   debounce(() => (isReady.value = true), 500)();
-  if (!data.value) return;
-  const { filiere, discipline } = idToFonction(data.value.fonction);
+  if (!modelValue.value) return;
+  const { filiere, discipline } = idToFonction(modelValue.value.fonction);
   form.value = { ...form.value, filiere, discipline };
 });
 </script>
