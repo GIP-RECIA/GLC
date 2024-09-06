@@ -9,7 +9,7 @@ import { computed, onBeforeMount, ref, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
 
-const useManageAdditional = (personneDialogState: PersonneDialogState) => {
+const useManageAdditional = () => {
   const configurationStore = useConfigurationStore();
   const { currentStructureId } = storeToRefs(configurationStore);
 
@@ -32,7 +32,7 @@ const useManageAdditional = (personneDialogState: PersonneDialogState) => {
 
   const canSave = computed<boolean>(() => {
     const { baseSelection, selected } = data.value;
-    switch (personneDialogState) {
+    switch (dialogState.value) {
       case PersonneDialogState.ManageAdditional:
         if (selected[0]) {
           return baseSelection[0]
@@ -53,8 +53,7 @@ const useManageAdditional = (personneDialogState: PersonneDialogState) => {
   watch(
     () => data.value.selected,
     (newValue) => {
-      isDetach.value =
-        personneDialogState == PersonneDialogState.ManageAdditionalMultiple ? newValue.length == 0 : false;
+      isDetach.value = dialogState.value == PersonneDialogState.ManageAdditionalMultiple ? newValue.length == 0 : false;
     },
   );
 
@@ -75,7 +74,7 @@ const useManageAdditional = (personneDialogState: PersonneDialogState) => {
         baseSelection.length > 0
           ? baseSelection.map(({ fonction }) => fonction).filter((entry) => entry != undefined)
           : [];
-      switch (personneDialogState) {
+      switch (dialogState.value) {
         case PersonneDialogState.ManageAdditional:
           await setPersonneAdditionalWithId(personneId, structureId, selectedF[0], requiredAction);
           break;
@@ -99,7 +98,7 @@ const useManageAdditional = (personneDialogState: PersonneDialogState) => {
   const onCancel = (): void => {
     if (attachMode.value) isCurrentPersonne.value = false;
     else {
-      if (personneDialogState == PersonneDialogState.ManageAdditional) editFunction.value = undefined;
+      if (dialogState.value == PersonneDialogState.ManageAdditional) editFunction.value = undefined;
       dialogState.value = PersonneDialogState.Info;
     }
   };
@@ -121,7 +120,7 @@ const useManageAdditional = (personneDialogState: PersonneDialogState) => {
     const { fonctions, additionalFonctions } = personneStructure.value;
     let selected: Array<FonctionForm> = [];
     let disabled: Array<string> = fonctionsToId(fonctions);
-    switch (personneDialogState) {
+    switch (dialogState.value) {
       case PersonneDialogState.ManageAdditional:
         if (editFunction.value) {
           const { filiere, discipline, dateFin } = editFunction.value;

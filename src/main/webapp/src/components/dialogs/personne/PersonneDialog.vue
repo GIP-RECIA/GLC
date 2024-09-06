@@ -17,7 +17,6 @@
 <script setup lang="ts">
 import PersonneDialogInfo from './PersonneDialogInfo.vue';
 import PersonneDialogManageAdditional from './PersonneDialogManageAdditional.vue';
-import PersonneDialogManageAdditionalMultiple from './PersonneDialogManageAdditionalMultiple.vue';
 import { usePersonne } from '@/composables';
 import { useConfigurationStore, usePersonneStore } from '@/stores';
 import { PersonneDialogState, Tabs } from '@/types/enums';
@@ -52,13 +51,14 @@ const modelValue = computed<boolean>({
 
       <personne-dialog-info v-if="dialogState == PersonneDialogState.Info" :personne="currentPersonne" />
 
-      <template v-if="structureTab == Tabs.SchoolStaff && canEditAdditionals">
-        <personne-dialog-manage-additional v-if="dialogState == PersonneDialogState.ManageAdditional" />
-
-        <personne-dialog-manage-additional-multiple
-          v-if="dialogState == PersonneDialogState.ManageAdditionalMultiple"
-        />
-      </template>
+      <personne-dialog-manage-additional
+        v-if="
+          (dialogState == PersonneDialogState.ManageAdditional ||
+            dialogState == PersonneDialogState.ManageAdditionalMultiple) &&
+          structureTab == Tabs.SchoolStaff &&
+          canEditAdditionals
+        "
+      />
     </v-card>
   </v-dialog>
 </template>

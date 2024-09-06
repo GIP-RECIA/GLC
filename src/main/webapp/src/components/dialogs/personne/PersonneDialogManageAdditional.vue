@@ -15,35 +15,50 @@
 -->
 
 <script setup lang="ts">
+import CheckboxForm from '@/components/forms/CheckboxForm.vue';
 import FonctionForm from '@/components/forms/FonctionForm.vue';
 import { useManageAdditional } from '@/composables';
-import { useStructureStore } from '@/stores';
+import { usePersonneStore, useStructureStore } from '@/stores';
 import { PersonneDialogState } from '@/types/enums';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 
-const stcuctureStore = useStructureStore();
-const { fonction } = storeToRefs(stcuctureStore);
+const personneStore = usePersonneStore();
+const { dialogState } = storeToRefs(personneStore);
+
+const structureStore = useStructureStore();
+const { fonction } = storeToRefs(structureStore);
 
 const { t } = useI18n();
 
-const { data, canSave, saveButton, canDelete, onSave, onCancel, onDelete } = useManageAdditional(
-  PersonneDialogState.ManageAdditional,
-);
+const { data, canSave, saveButton, canDelete, onSave, onCancel, onDelete } = useManageAdditional();
 </script>
 
 <template>
   <v-card-text class="pt-0 py-3">
     <fonction-form
+      v-if="dialogState == PersonneDialogState.ManageAdditional"
       v-model="data.selected[0]"
       :filieres="fonction?.customMapping?.filieres"
       :disabled="data.disabled"
       :disable-fonction-edit="!!data.baseSelection[0]"
     />
+    <checkbox-form
+      v-if="dialogState == PersonneDialogState.ManageAdditionalMultiple"
+      v-model="data.selected"
+      :filieres="fonction?.customMapping?.filieres"
+      :disabled="data.disabled"
+    />
   </v-card-text>
 
   <v-card-actions>
-    <v-btn v-if="canDelete" color="error" prepend-icon="fas fa-trash" :text="t('button.delete')" @click="onDelete" />
+    <v-btn
+      v-if="dialogState == PersonneDialogState.ManageAdditional && canDelete"
+      color="error"
+      prepend-icon="fas fa-trash"
+      :text="t('button.delete')"
+      @click="onDelete"
+    />
     <v-spacer />
     <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="onCancel" />
     <v-btn
