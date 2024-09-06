@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { Filiere } from '@/types';
+import type { Filiere, FonctionForm } from '@/types';
 import { filiereDisciplineToId } from '@/utils';
 
 defineProps<{
@@ -23,7 +23,7 @@ defineProps<{
   disabled?: Array<string>;
 }>();
 
-const modelValue = defineModel<Array<string>>();
+const modelValue = defineModel<Array<FonctionForm>>();
 </script>
 
 <template>
@@ -35,7 +35,7 @@ const modelValue = defineModel<Array<string>>();
         :key="filiereDisciplineToId(filiere.id, discipline.id)"
         v-model="modelValue"
         :label="discipline.disciplinePoste"
-        :value="filiereDisciplineToId(filiere.id, discipline.id)"
+        :value="{ fonction: filiereDisciplineToId(filiere.id, discipline.id), date: null }"
         :disabled="disabled?.includes(filiereDisciplineToId(filiere.id, discipline.id))"
         color="primary"
         :hide-details="true"

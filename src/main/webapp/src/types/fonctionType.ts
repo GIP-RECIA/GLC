@@ -34,3 +34,8 @@ export type PersonneFonction = {
   structure: number;
   dateFin?: string;
 };
+
+export type FonctionForm = {
+  fonction?: string;
+  date?: string;
+};

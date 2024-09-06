@@ -19,16 +19,13 @@ import PersonneDialogInfo from './PersonneDialogInfo.vue';
 import PersonneDialogManageAdditional from './PersonneDialogManageAdditional.vue';
 import PersonneDialogManageAdditionalMultiple from './PersonneDialogManageAdditionalMultiple.vue';
 import { usePersonne } from '@/composables';
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
+import { useConfigurationStore, usePersonneStore } from '@/stores';
 import { PersonneDialogState, Tabs } from '@/types/enums';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
 const configurationStore = useConfigurationStore();
 const { structureTab } = storeToRefs(configurationStore);
-
-const stcuctureStore = useStructureStore();
-const { fonction } = storeToRefs(stcuctureStore);
 
 const personneStore = usePersonneStore();
 const { currentPersonne, isCurrentPersonne, dialogState, dialogTitle } = storeToRefs(personneStore);
@@ -56,16 +53,10 @@ const modelValue = computed<boolean>({
       <personne-dialog-info v-if="dialogState == PersonneDialogState.Info" :personne="currentPersonne" />
 
       <template v-if="structureTab == Tabs.SchoolStaff && canEditAdditionals">
-        <personne-dialog-manage-additional
-          v-if="dialogState == PersonneDialogState.ManageAdditional"
-          :personne="currentPersonne"
-          :filieres="fonction?.customMapping?.filieres"
-        />
+        <personne-dialog-manage-additional v-if="dialogState == PersonneDialogState.ManageAdditional" />
 
         <personne-dialog-manage-additional-multiple
           v-if="dialogState == PersonneDialogState.ManageAdditionalMultiple"
-          :personne="currentPersonne"
-          :filieres="fonction?.customMapping?.filieres"
         />
       </template>
     </v-card>

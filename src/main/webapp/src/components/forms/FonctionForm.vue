@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { Discipline, Filiere } from '@/types';
+import type { Discipline, Filiere, FonctionForm } from '@/types';
 import { filiereDisciplineToId, idToFonction, isBetween } from '@/utils';
 import debounce from 'lodash.debounce';
 import { computed, onBeforeMount, ref, watch } from 'vue';
@@ -46,7 +46,7 @@ const props = withDefaults(
   },
 );
 
-const modelValue = defineModel<{ fonction: string; date: string }>();
+const modelValue = defineModel<FonctionForm>();
 
 type Form = {
   filiere: number | undefined;
@@ -87,10 +87,14 @@ watch(
   debounce((newValue: Form): void => {
     if (!isReady.value) return;
     const { filiere, discipline, date } = newValue;
-    if (!filiere || !discipline || !date) return;
+
+    const isDateOk =
+      props.config.date?.min && props.config.date?.max
+        ? isBetween(date ?? '', props.config.date.min, props.config.date.max)
+        : date != '';
     modelValue.value = {
-      fonction: filiereDisciplineToId(filiere, discipline),
-      date: props.config.date && isBetween(date, props.config.date.min, props.config.date.max) ? date : '',
+      fonction: !!filiere && !!discipline ? filiereDisciplineToId(filiere, discipline) : undefined,
+      date: isDateOk ? date : undefined,
     };
   }, 200),
   { deep: true },
@@ -108,7 +112,7 @@ watch(
 
 onBeforeMount((): void => {
   debounce(() => (isReady.value = true), 500)();
-  if (!modelValue.value) return;
+  if (!modelValue.value?.fonction) return;
   const { filiere, discipline } = idToFonction(modelValue.value.fonction);
   form.value = { ...form.value, filiere, discipline };
 });

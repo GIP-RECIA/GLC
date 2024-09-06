@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
+export * from './useManageAdditional.ts';
 export * from './useSaveAttachDetach.ts';
 export * from './usePersonne.ts';
