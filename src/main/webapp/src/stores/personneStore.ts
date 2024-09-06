@@ -118,6 +118,8 @@ export const usePersonneStore = defineStore('personne', () => {
     }
   });
 
+  const editFunction = ref<PersonneFonction | undefined>();
+
   /**
    * Mode de rattachement
    */
@@ -131,6 +133,7 @@ export const usePersonneStore = defineStore('personne', () => {
       const reset = debounce(() => {
         currentPersonne.value = undefined;
         dialogState.value = PersonneDialogState.Info;
+        editFunction.value = undefined;
         attachMode.value = false;
       }, 200);
       reset();
@@ -145,6 +148,7 @@ export const usePersonneStore = defineStore('personne', () => {
     personneStructure,
     dialogState,
     dialogTitle,
+    editFunction,
     attachMode,
   };
 });

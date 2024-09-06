@@ -18,7 +18,7 @@
 import type { Discipline, Filiere } from '@/types';
 import { filiereDisciplineToId, idToFonction, isBetween } from '@/utils';
 import debounce from 'lodash.debounce';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -106,7 +106,7 @@ watch(
   },
 );
 
-onMounted((): void => {
+onBeforeMount((): void => {
   debounce(() => (isReady.value = true), 500)();
   if (!modelValue.value) return;
   const { filiere, discipline } = idToFonction(modelValue.value.fonction);

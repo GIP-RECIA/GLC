@@ -15,15 +15,15 @@
 -->
 
 <script setup lang="ts">
-import CheckboxForm from '@/components/forms/CheckboxForm.vue';
+import FonctionForm from '@/components/forms/FonctionForm.vue';
 import { useSaveAttachDetach } from '@/composables';
 import { setPersonneAdditional } from '@/services/api';
 import { useConfigurationStore, usePersonneStore } from '@/stores';
 import type { Filiere, Personne } from '@/types';
 import { PersonneDialogState } from '@/types/enums';
-import { errorHandler, fonctionsToId } from '@/utils';
+import { errorHandler, filiereDisciplineToId, fonctionsToId } from '@/utils';
 import { storeToRefs } from 'pinia';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useI18n } from 'vue-i18n';
 
@@ -32,7 +32,7 @@ const { currentStructureId } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
 const { refreshCurrentPersonne } = personneStore;
-const { isCurrentPersonne, personneStructure, dialogState, attachMode } = storeToRefs(personneStore);
+const { isCurrentPersonne, personneStructure, dialogState, editFunction, attachMode } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -42,43 +42,46 @@ const props = defineProps<{
 }>();
 
 const data = ref<{
-  baseSelection: Array<string>;
-  selected: Array<string>;
+  baseSelection:
+    | {
+        fonction: string;
+        date: string;
+      }
+    | undefined;
+  selected:
+    | {
+        fonction: string;
+        date: string;
+      }
+    | undefined;
   disabled: Array<string>;
 }>({
-  baseSelection: [],
-  selected: [],
+  baseSelection: undefined,
+  selected: undefined,
   disabled: [],
 });
 
 const canSave = computed<boolean>(() => {
-  const { additionalFonctions } = personneStructure.value;
-  const { baseSelection, selected } = data.value;
+  if (!data.value.selected) return false;
+  const { fonction, date } = data.value.selected;
 
-  return selected.length == additionalFonctions?.length
-    ? !selected.every((entry) => baseSelection.includes(entry))
-    : true;
+  return fonction != '' && date != '';
 });
 
-const { isDetach, saveButton } = useSaveAttachDetach();
+const canDelete = false;
 
-watch(
-  () => data.value.selected,
-  (newValue) => {
-    isDetach.value = newValue.length == 0;
-  },
-);
+const { saveButton } = useSaveAttachDetach();
 
 const onSave = async (): Promise<void> => {
   try {
     const { baseSelection, selected } = data.value;
-    await setPersonneAdditional(
-      props.personne!.id,
-      currentStructureId.value!,
-      selected.filter((checked) => !baseSelection.includes(checked)),
-      baseSelection.filter((checked) => !selected.includes(checked)),
-      saveButton.value.i18n.split('.')[1],
-    );
+    // await setPersonneAdditional(
+    //   props.personne!.id,
+    //   currentStructureId.value!,
+    //   selected.filter((checked) => !baseSelection.includes(checked)),
+    //   baseSelection.filter((checked) => !selected.includes(checked)),
+    //   saveButton.value.i18n.split('.')[1],
+    // );
     resetAddMode(true);
   } catch (e) {
     errorHandler(e);
@@ -88,8 +91,13 @@ const onSave = async (): Promise<void> => {
 
 const onCancel = (): void => {
   if (attachMode.value) isCurrentPersonne.value = false;
-  else dialogState.value = PersonneDialogState.Info;
+  else {
+    editFunction.value = undefined;
+    dialogState.value = PersonneDialogState.Info;
+  }
 };
+
+const onDelete = (): void => {};
 
 const resetAddMode = (success?: boolean): void => {
   const title = saveButton.value.i18n.replace('button.', '');
@@ -103,8 +111,16 @@ const resetAddMode = (success?: boolean): void => {
 };
 
 onBeforeMount(() => {
-  const { fonctions, additionalFonctions } = personneStructure.value;
-  const selected = fonctionsToId(additionalFonctions);
+  const { fonctions } = personneStructure.value;
+  let selected = undefined;
+
+  if (editFunction.value) {
+    const { filiere, discipline, dateFin } = editFunction.value;
+    selected = {
+      fonction: filiereDisciplineToId(filiere, discipline),
+      date: dateFin ?? '',
+    };
+  }
   data.value = {
     baseSelection: selected,
     selected,
@@ -114,11 +130,18 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <v-card-text class="py-0">
-    <checkbox-form v-model="data.selected" :filieres="filieres" :disabled="data.disabled" />
+  <v-card-text class="pt-0 py-3">
+    <fonction-form v-model="data.selected" :filieres="filieres" :disabled="data.disabled" />
   </v-card-text>
 
   <v-card-actions>
+    <v-btn
+      color="error"
+      prepend-icon="fas fa-trash"
+      :text="t('button.delete')"
+      :disabled="!canDelete"
+      @click="onDelete"
+    />
     <v-spacer />
     <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="onCancel" />
     <v-btn

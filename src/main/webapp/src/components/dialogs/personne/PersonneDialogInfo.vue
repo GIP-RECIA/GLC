@@ -31,7 +31,7 @@ const configurationStore = useConfigurationStore();
 const { allFilieres, structureTab } = storeToRefs(configurationStore);
 
 const personneStore = usePersonneStore();
-const { personneStructure, dialogState } = storeToRefs(personneStore);
+const { personneStructure, dialogState, editFunction } = storeToRefs(personneStore);
 
 const { t } = useI18n();
 
@@ -48,6 +48,7 @@ const addFonction = (): void => {
 };
 
 const editFonction = (payload: PersonneFonction | undefined): void => {
+  if (payload) editFunction.value = payload;
   dialogState.value = PersonneDialogState.ManageAdditionalMultiple;
 };
 </script>
