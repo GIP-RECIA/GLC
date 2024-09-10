@@ -99,11 +99,12 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
 
   @Query("SELECT f.id " +
     "FROM Fonction f " +
-    "WHERE f.disciplinePoste.id = :disciplineId " +
-    "AND f.filiere.id = :filiereId " +
+    "WHERE f.filiere.id = :filiereId " +
+    "AND f.disciplinePoste.id = :disciplineId " +
     "AND f.personne.id = :personneId " +
-    "AND f.structure.id = :structureId")
-  Long findId(Long disciplineId, Long filiereId, Long personneId, Long structureId);
+    "AND f.structure.id = :structureId " +
+    "AND f.source = :source")
+  Long findId(Long filiereId, Long disciplineId, Long personneId, Long structureId, String source);
 
   @Query(value = "select count(af.id) " +
     "from afonction af " +

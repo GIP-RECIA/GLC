@@ -362,7 +362,7 @@ public class FonctionService {
 
     if (!toDeleteAdditional.isEmpty()) {
       fonctionRepository.deleteAllById(toDeleteAdditional.stream()
-        .map(fonction -> fonctionRepository.findId(fonction.getDiscipline(), fonction.getFiliere(), personneId, fonction.getStructure()))
+        .map(fonction -> fonctionRepository.findId(fonction.getFiliere(), fonction.getDiscipline(), personneId, fonction.getStructure(), fonction.getSource()))
         .collect(Collectors.toList()));
     }
 
