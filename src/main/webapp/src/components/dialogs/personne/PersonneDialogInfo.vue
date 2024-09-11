@@ -56,7 +56,7 @@ const editFonction = (payload: PersonneFonction | undefined): void => {
 <template>
   <v-card-text v-if="personne" class="pt-0">
     <div class="container">
-      <readonly-data v-admin label="uid" :value="personne.uid" />
+      <readonly-data v-admin label="UID" :value="personne.uid" />
       <readonly-data
         :label="t('person.information.profile')"
         :value="t(getCategoriePersonne(personne.categorie).i18n)"
