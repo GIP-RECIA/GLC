@@ -114,7 +114,7 @@ onBeforeMount((): void => {
   debounce(() => (isReady.value = true), 500)();
   if (!modelValue.value?.fonction) return;
   const { filiere, discipline } = idToFonction(modelValue.value.fonction);
-  form.value = { ...form.value, filiere, discipline };
+  form.value = { ...form.value, filiere, discipline, date: modelValue.value.date };
 });
 </script>
 
