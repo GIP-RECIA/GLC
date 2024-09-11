@@ -110,7 +110,7 @@ const onClick = (filiere: Filiere, discipline: Discipline): void => {
                       date: format(discipline.endInfo.date!, 'P'),
                       months: discipline.endInfo.months,
                     },
-                    discipline.endInfo.months ?? 1,
+                    discipline.endInfo.months && discipline.endInfo.months > 0 ? discipline.endInfo.months : 1,
                   )
                 "
                 location="bottom start"

@@ -16,7 +16,7 @@
 import { useConfigurationStore } from '@/stores';
 import type { PersonneFonction, endInfo, enumValues } from '@/types';
 import { CategoriePersonne, Etat } from '@/types/enums';
-import { differenceInCalendarMonths, isPast } from 'date-fns';
+import { differenceInMonths, isPast } from 'date-fns';
 import { storeToRefs } from 'pinia';
 
 const isLocal = (source: string): boolean => source.startsWith('SarapisUi_');
@@ -89,11 +89,11 @@ const getDateFin = (date: string): endInfo => {
       color: '',
       icon: 'fas fa-hourglass-end',
     };
-  const months: number = differenceInCalendarMonths(date, new Date());
+  const months: number = differenceInMonths(date, new Date());
   if (months < (configuration.value?.front.endFunctionWarning ?? 2))
     return {
       date,
-      months,
+      months: months + 1,
       isPast: false,
       i18n: 'person.function.hourglass.half',
       color: 'warning',
