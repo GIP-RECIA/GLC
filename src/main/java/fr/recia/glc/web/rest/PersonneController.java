@@ -18,6 +18,7 @@ package fr.recia.glc.web.rest;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.pojo.JsonAdditionalFonctionBody;
+import fr.recia.glc.pojo.JsonAdditionalFonctionOldBody;
 import fr.recia.glc.security.AuthoritiesConstants;
 import fr.recia.glc.security.CustomUserDetails;
 import fr.recia.glc.security.SecurityUtils;
@@ -89,7 +90,7 @@ public class PersonneController {
   }
 
   @PostMapping(value = "/{id}/fonction")
-  public ResponseEntity setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) throws Exception {
+  public ResponseEntity setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) throws Exception {
     final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
     if (user == null) {
       log.trace("user is not authenticated -> throw an error to redirect on authentication");
@@ -114,6 +115,27 @@ public class PersonneController {
         body.getRequiredAction()
       );
     }
+    if (!success) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PostMapping(value = "/{id}/fonction/v2")
+  public ResponseEntity setPersonneAdditionals(@PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) throws Exception {
+    final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
+    if (user == null) {
+      log.trace("user is not authenticated -> throw an error to redirect on authentication");
+      throw new AccessDeniedException("Access is denied to anonymous !");
+    }
+    if (!body.postDataOk()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+    boolean success;
+    success = fonctionService.setAdditional(
+      id,
+      body.getStructureId(),
+      body.getToAdd(),
+      body.getToDelete()
+    );
     if (!success) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     return new ResponseEntity<>(HttpStatus.OK);

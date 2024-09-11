@@ -33,6 +33,28 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
     "ORDER BY f.filiere.libelleFiliere")
   List<FonctionDto> findByPersonne(Long id);
 
+  @Query("SELECT COUNT(f.id) " +
+    "FROM Fonction f " +
+    "WHERE f.personne.id = :id " +
+    "AND f.structure.id = :structureId " +
+    "AND f.source NOT LIKE 'SarapisUi_%'")
+  Long nbOfficialFonctionsInStructure(Long id, Long structureId);
+
+  @Query("SELECT COUNT(f.id) " +
+    "FROM Fonction f " +
+    "WHERE f.personne.id = :id " +
+    "AND f.structure.id = :structureId " +
+    "AND f.source LIKE 'SarapisUi_%'")
+  Long nbAdditionalFonctionsInStructure(Long id, Long structureId);
+
+  @Query("SELECT COUNT(f.id) " +
+    "FROM Fonction f " +
+    "WHERE f.personne.id = :id " +
+    "AND f.structure.id = :structureId " +
+    "AND f.source LIKE 'SarapisUi_%' " +
+    "AND f.id NOT IN :fonctionIds")
+  Long nbAdditionalFonctionsInStructure(Long id, Long structureId, List<Long> fonctionIds);
+
   @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
     "FROM Fonction f " +
     "WHERE f.personne.id = :id " +

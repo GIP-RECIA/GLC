@@ -18,8 +18,10 @@ package fr.recia.glc.services.db;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
+import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
+import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,9 +36,11 @@ public class PersonneService {
   private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
   @Autowired
   private APersonneRepository<APersonne> aPersonneRepository;
+  @Autowired
+  private FonctionRepository<Fonction> fonctionRepository;
 
   public List<SimplePersonneDto> searchPersoonne(String name, boolean admin) {
-    return admin ? aPersonneRepository.findByNameLikeAdmin(name) :  aPersonneRepository.findByNameLike(name);
+    return admin ? aPersonneRepository.findByNameLikeAdmin(name) : aPersonneRepository.findByNameLike(name);
   }
 
   public List<SimplePersonneDto> getPersonnes(Long structureId) {
@@ -51,6 +55,27 @@ public class PersonneService {
 
   public SimplePersonneDto getPersonneSimple(Long id) {
     return aPersonneRepository.findByPersonneIdSimple(id);
+  }
+
+  public boolean isInStructure(Long id, Long structureId) {
+    return aPersonneAStructureRepository.isInStructure(id, structureId) > 0;
+  }
+
+  public boolean hasOfficialFunctionsInStructure(Long id, Long structureId) {
+    return fonctionRepository.nbOfficialFonctionsInStructure(id, structureId) > 0;
+  }
+
+  public boolean hasAdditionalFunctionsInStructure(Long id, Long structureId) {
+    return fonctionRepository.nbAdditionalFonctionsInStructure(id, structureId) > 0;
+  }
+
+  public boolean hasAdditionalFunctionsInStructure(Long id, Long structureId, List<Long> fonctionsIds) {
+    return fonctionRepository.nbAdditionalFonctionsInStructure(id, structureId, fonctionsIds) > 0;
+  }
+
+  public boolean hasFunctionsInStructure(Long id, Long structureId, List<Long> fonctionsIds) {
+    return this.hasOfficialFunctionsInStructure(id, structureId) ||
+      this.hasAdditionalFunctionsInStructure(id, structureId, fonctionsIds);
   }
 
 }

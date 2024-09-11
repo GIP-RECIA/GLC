@@ -17,18 +17,21 @@ package fr.recia.glc.pojo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class JsonAdditionalFonctionBody {
+public class JsonAdditionalFonctionOldBody {
 
   private Long structureId;
-  private JsonFonction toAdd;
-  private String toDelete;
+  private List<String> toAddFunctions;
+  private List<String> toDeleteFunctions;
+  private String requiredAction;
+  private String additionalCode;
 
   public boolean postDataOk() {
-    final boolean add = toAdd != null && toAdd.postDataOk();
-    final boolean delete = toDelete != null && !toDelete.isEmpty();
+    final boolean standard = (toAddFunctions != null && !toAddFunctions.isEmpty()) || (toDeleteFunctions != null && !toDeleteFunctions.isEmpty());
 
-    return (structureId != null && (add || delete) && !(add && delete));
+    return (structureId != null && (standard || additionalCode != null) && requiredAction != null);
   }
 
 }

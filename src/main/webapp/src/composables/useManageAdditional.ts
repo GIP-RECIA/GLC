@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { useSaveAttachDetach } from './useSaveAttachDetach';
-import { setPersonneAdditional } from '@/services/api';
+import { addPersonneAdditionalV2, deletePersonneAdditionalV2, setPersonneAdditional } from '@/services/api';
 import { useConfigurationStore, usePersonneStore } from '@/stores';
 import type { FonctionForm } from '@/types';
 import { PersonneDialogState } from '@/types/enums';
@@ -91,7 +91,7 @@ const useManageAdditional = () => {
           : [];
       switch (dialogState.value) {
         case PersonneDialogState.ManageAdditional:
-          await setPersonneAdditional(personneId, structureId, selectedF, [], requiredAction);
+          await addPersonneAdditionalV2(personneId, structureId, selected[0]);
           break;
         case PersonneDialogState.ManageAdditionalMultiple:
           await setPersonneAdditional(
@@ -123,14 +123,8 @@ const useManageAdditional = () => {
     try {
       const personneId = currentPersonne.value!.id;
       const structureId = currentStructureId.value!;
-      const requiredAction = saveButton.value.i18n.split('.')[1];
-      // TODO: Change API => Use existing API witch not support date
       const { baseSelection } = data.value;
-      const baseF: Array<string> =
-        baseSelection.length > 0
-          ? baseSelection.map(({ fonction }) => fonction).filter((entry) => entry != undefined)
-          : [];
-      await setPersonneAdditional(personneId, structureId, [], baseF, requiredAction);
+      await deletePersonneAdditionalV2(personneId, structureId, baseSelection[0].fonction);
       resetAddMode(true);
     } catch (e) {
       errorHandler(e);

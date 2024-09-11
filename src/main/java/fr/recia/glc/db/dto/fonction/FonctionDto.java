@@ -65,6 +65,14 @@ public class FonctionDto {
     this.source = source;
   }
 
+  public FonctionDto(Long personne, Long filiere, Long discipline, String source, Long structure) {
+    this.personne = personne;
+    this.filiere = filiere;
+    this.discipline = discipline;
+    this.source = source;
+    this.structure = structure;
+  }
+
   public FonctionDto(FonctionDto fonctionDto) {
     this.personne = fonctionDto.getPersonne();
     this.discipline = fonctionDto.getDiscipline();

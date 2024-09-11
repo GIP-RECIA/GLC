@@ -25,6 +25,7 @@ import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.education.Discipline;
 import fr.recia.glc.db.entities.fonction.Fonction;
+import fr.recia.glc.db.entities.fonction.QFonction;
 import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
@@ -38,6 +39,8 @@ import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.models.mappers.AdditionalFonctionMapping;
 import fr.recia.glc.models.mappers.AdditionalFonctionMappingFiliere;
+import fr.recia.glc.pojo.JsonFonction;
+import fr.recia.glc.utils.DateUtils;
 import fr.recia.glc.utils.SourceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +49,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -346,8 +351,8 @@ public class FonctionService {
 
     final String source = Constants.SARAPISUI_ + SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
 
-    final List<FonctionDto> toAddAdditional = getFunctions(toAddFunctions, source, structureId);
-    final List<FonctionDto> toDeleteAdditional = getFunctions(toDeleteFunctions, source, structureId);
+    final List<FonctionDto> toAddAdditional = toFonctionDto(personneId, toAddFunctions.stream().map(JsonFonction::new).collect(Collectors.toList()), source, structureId);
+    final List<FonctionDto> toDeleteAdditional = toFonctionDto(personneId, toDeleteFunctions.stream().map(JsonFonction::new).collect(Collectors.toList()), source, structureId);
 
     if (!toAddAdditional.isEmpty()) {
       fonctionRepository.saveAll(toAddAdditional.stream()
@@ -400,18 +405,114 @@ public class FonctionService {
     return true;
   }
 
-  public List<FonctionDto> getFunctions(List<String> strings, String source, Long structureId) {
-    return strings.stream()
-      .map(s -> {
-        String[] split = s.split("-");
+  public boolean setAdditional(Long personneId, Long structureId, JsonFonction toAdd, String toDelete) {
+    final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
+    final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
+    if (aPersonne == null
+      || aStructure == null
+      || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())
+    ) return false;
 
-        return new FonctionDto(
-          Long.parseLong(split[0]),
-          Long.parseLong(split[1]),
-          source,
-          structureId
-        );
-      })
+    final String source = Constants.SARAPISUI_ + SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
+    final boolean isInStructure = personneService.isInStructure(personneId, structureId);
+    log.debug(
+      "setAdditional (userId : {}, structureId : {}, source : {}, isInStructure : {}, toAdd : {}, toDelete, {})",
+      aPersonne.getId(), aStructure.getId(), source, isInStructure, toAdd, toDelete
+    );
+
+    if (toAdd != null) {
+      FonctionDto fonctionDto = toFonctionDto(personneId, toAdd, source, structureId);
+      try {
+        fonctionDto.setDateFin(DateUtils.getDate(toAdd.getDate()));
+      } catch (ParseException e) {
+        log.error("Unable to set end date");
+      }
+      Fonction fonction = getFonctionOrNewFonction(fonctionDto, aStructure, aPersonne);
+      if (fonctionDto.getDateFin() != null && fonctionDto.getDateFin() != fonction.getDateFin())
+        fonction.setDateFin(fonctionDto.getDateFin());
+      fonctionRepository.save(fonction);
+      if (!isInStructure) aPersonneAStructureRepository2.insertInStructure(personneId, structureId);
+    }
+
+    if (toDelete != null) {
+      final FonctionDto fonctionDto = toFonctionDto(personneId, toDelete, source, structureId);
+      final Fonction fonction = getFonction(fonctionDto);
+      if (fonction != null) fonctionRepository.delete(fonction);
+      if (isInStructure && !personneService.hasFunctionsInStructure(personneId, structureId, List.of(fonction.getId())))
+        aPersonneAStructureRepository2.deleteFromStructure(personneId, structureId);
+    }
+
+    fonctionRepository.flush();
+
+    aPersonne.prePersist();
+    aPersonne.prePersistAPersonne();
+    aPersonneRepository.saveAndFlush(aPersonne);
+
+    return true;
+  }
+
+  private Fonction getFonction(FonctionDto fonctionDto) {
+    return fonctionRepository.findOne(
+      QFonction.fonction.filiere.id.eq(fonctionDto.getFiliere())
+        .and(QFonction.fonction.disciplinePoste.id.eq(fonctionDto.getDiscipline()))
+        .and(QFonction.fonction.personne.id.eq(fonctionDto.getPersonne()))
+        .and(QFonction.fonction.structure.id.eq(fonctionDto.getStructure()))
+        .and(QFonction.fonction.source.eq(fonctionDto.getSource()))
+    ).orElse(null);
+  }
+
+  private Fonction getFonctionOrNewFonction(FonctionDto fonctionDto, AStructure aStructure, APersonne aPersonne) {
+    Fonction fonction = getFonction(fonctionDto);
+    if (fonction == null) {
+      fonction = new Fonction(
+        disciplineRepository.findById(fonctionDto.getDiscipline()).orElse(null),
+        typeFonctionFiliereRepository.findById(fonctionDto.getFiliere()).orElse(null),
+        aStructure,
+        aPersonne,
+        fonctionDto.getSource(),
+        fonctionDto.getDateFin()
+      );
+    }
+    return fonction;
+  }
+
+  private FonctionDto toFonctionDto(Long personneId, String code, String source, Long structureId) {
+    String[] split = code.split("-");
+
+    return new FonctionDto(
+      personneId,
+      Long.parseLong(split[0]),
+      Long.parseLong(split[1]),
+      source,
+      structureId
+    );
+  }
+
+  private FonctionDto toFonctionDto(Long personneId, JsonFonction code, String source, Long structureId) {
+    String[] split = code.getFonction().split("-");
+    Date date = null;
+
+    if (code.getDate() != null && !code.getDate().isEmpty()) {
+      try {
+        date = DateUtils.getDate(code.getDate());
+      } catch (ParseException e) {
+        log.error(String.valueOf(e));
+      }
+    }
+
+    return new FonctionDto(
+      personneId,
+      Long.parseLong(split[0]),
+      Long.parseLong(split[1]),
+      source,
+      structureId,
+      date
+    );
+  }
+
+  private List<FonctionDto> toFonctionDto(Long personneId, List<JsonFonction> codes, String source, Long structureId) {
+    return codes.stream()
+      .map(code -> toFonctionDto(personneId, code, source, structureId))
       .collect(Collectors.toList());
   }
 

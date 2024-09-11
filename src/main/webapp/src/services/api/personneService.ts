@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import type { FonctionForm } from '@/types';
 import { instance as axios } from '@/utils';
 
 const getPersonne = async (id: number) => await axios.get(`/api/personne/${id}`);
@@ -42,10 +43,26 @@ const setPersonneAdditionalWithCode = async (
   requiredAction: string,
 ) => await axios.post(`/api/personne/${id}/fonction`, { structureId, additionalCode, requiredAction });
 
+const setPersonneAdditionalV2 = async (
+  id: number,
+  structureId: number,
+  toAdd: FonctionForm | null,
+  toDelete: string | null,
+) => await axios.post(`/api/personne/${id}/fonction/v2`, { structureId, toAdd, toDelete });
+
+const addPersonneAdditionalV2 = async (id: number, structureId: number, toAdd: FonctionForm | undefined) =>
+  await setPersonneAdditionalV2(id, structureId, toAdd ?? null, null);
+
+const deletePersonneAdditionalV2 = async (id: number, structureId: number, toDelete: string | undefined) =>
+  await setPersonneAdditionalV2(id, structureId, null, toDelete ?? null);
+
 export {
   getPersonne,
   searchPersonne,
   setPersonneAdditional,
   setPersonneAdditionalWithId,
   setPersonneAdditionalWithCode,
+  setPersonneAdditionalV2,
+  addPersonneAdditionalV2,
+  deletePersonneAdditionalV2,
 };

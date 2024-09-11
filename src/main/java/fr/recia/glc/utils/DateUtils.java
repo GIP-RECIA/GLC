@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.pojo;
+package fr.recia.glc.utils;
 
-import lombok.Data;
+import lombok.experimental.UtilityClass;
 
-@Data
-public class JsonAdditionalFonctionBody {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-  private Long structureId;
-  private JsonFonction toAdd;
-  private String toDelete;
+@UtilityClass
+public class DateUtils {
 
-  public boolean postDataOk() {
-    final boolean add = toAdd != null && toAdd.postDataOk();
-    final boolean delete = toDelete != null && !toDelete.isEmpty();
+  private SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
-    return (structureId != null && (add || delete) && !(add && delete));
+  public static Date getDate(String date) throws ParseException {
+    return FORMATTER.parse(date);
   }
 
 }
