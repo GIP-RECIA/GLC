@@ -132,7 +132,7 @@ jobs:
 
     strategy:
       matrix:
-        node: ['20', 'latest']
+        node: ['22', 'latest']
 
     name: Node ${{ matrix.node }}
 
