@@ -16,7 +16,7 @@
     "initFonctionStore": "Impossible de charges les fonctions",
     "initCurrentPersonne": "Impossible de charger la personne",
     "refreshCurrentPersonne": "Impossible de raffraichir la personne",
-    "initStructureStore": "Imposible de charger les structures",
+    "initStructureStore": "Impossible de charger les structures",
     "initCurrentEtab": "Impossible de charger la structure",
     "refreshCurrentStructure": "Impossible de raffraichir la structure",
     "error": {
