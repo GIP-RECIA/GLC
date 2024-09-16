@@ -14,7 +14,7 @@
     "lint": "eslint src/main/webapp/src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format:check": "prettier --check src/main/webapp/src/",
     "format": "prettier --write src/main/webapp/src/",
-    "prepare": "husky install",
+    "postinstall": "husky",
     "changelog:generate": "commit-and-tag-version --packageFiles pom.xml --skip.bump --skip.tag --skip.commit -t ''"
   },
   "dependencies": {

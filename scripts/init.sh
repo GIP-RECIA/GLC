@@ -19,7 +19,6 @@ source ~/.sdkman/bin/sdkman-init.sh
 nvm install
 npm i -g yarn
 yarn
-yarn prepare
 yarn exec dotenv-checker
 
 # Backend
