@@ -17,7 +17,7 @@
 import { createApp } from 'vue';
 
 import { register as registerDirectives } from '@/directives';
-import { register as registerFontAwsome } from '@/plugins/fontawsome.ts';
+import { register as registerFontAwsome } from '@/plugins/fontawesome.ts';
 import '@/plugins/date-fns.ts';
 import i18n from '@/plugins/i18n.ts';
 import pinia from '@/plugins/pinia.ts';
