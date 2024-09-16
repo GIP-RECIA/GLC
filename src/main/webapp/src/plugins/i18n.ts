@@ -37,7 +37,6 @@ const findLanguage = (): string => {
 
 export default createI18n({
   legacy: false,
-  allowComposition: true,
   locale: findLanguage(),
   fallbackLocale: config.fallbackLocale,
   messages,
