@@ -92,40 +92,19 @@ jobs:
 
       - name: Check license headers
         id: check
-        run: |
-          docker run --rm -t --name licence -v ${PWD}:/src \
-          ghcr.io/google/addlicense -check -f ./etc/header.template \
-          $(find ./src/ ./scripts/ -name '*.vue' -type f \
-          -or -name '*.ts' -type f \
-          -or -name '*.scss' -type f \
-          -or -name '*.java' -type f \
-          -or -name '*.xml' -type f \
-          -or -name '*.sh' -type f)
+        run: ./scripts/license.sh 1
 
       - name: Generate license headers
         if: ${{ github.event_name != 'pull_request' && (needs.changes.outputs.java == 'true' || needs.changes.outputs.node == 'true') && steps.check.conclusion == 'failure' }}
         id: generate
-        run: |
-          docker run --rm -t --name licence -v ${PWD}:/src \
-          ghcr.io/google/addlicense -f ./etc/header.template \
-          $(find ./src/ ./scripts/ -name '*.vue' -type f \
-          -or -name '*.ts' -type f \
-          -or -name '*.scss' -type f \
-          -or -name '*.java' -type f \
-          -or -name '*.xml' -type f \
-          -or -name '*.sh' -type f)
+        run: ./scripts/license.sh 2
 
       - name: Commit changes
         if: ${{ github.event_name != 'pull_request' && steps.generate.conclusion == 'success' }}
         run: |
-          if [[ `git status --porcelain *.vue *.ts *.scss *.java *.xml *.sh` ]]; then
-            git config --global user.name 'github-actions'
-            git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add ./src/
-            git add ./scripts/
-            git commit -m "docs: generate missing license headers"
-            git push
-          fi
+          git config --global user.name 'github-actions'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          ./scripts/license.sh 3
 
   frontend:
     runs-on: ubuntu-latest
