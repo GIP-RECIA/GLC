@@ -15,17 +15,17 @@
 profile_prod=prod
 build_arguments='-Dmaven.test.skip=true -Darguments="-DskipTests"'
 
-package () {
+package() {
   echo "--- Package ---"
   ./mvnw clean package -P${profile_prod} ${build_arguments}
 }
 
-snapshot () {
+snapshot() {
   echo "--- Snapshot ---"
   ./mvnw clean package deploy -P${profile_prod} ${build_arguments}
 }
 
-release () {
+release() {
   echo "--- Release ---"
   ./mvnw clean package release:prepare release:perform -P${profile_prod} ${build_arguments}
 }
@@ -43,9 +43,9 @@ fi
 
 case ${choice} in
 
-  0) package;;
-  1) snapshot;;
-  2) release;;
-  *) echo "Unknown choice";;
+0) package ;;
+1) snapshot ;;
+2) release ;;
+*) echo "Unknown choice" ;;
 
 esac

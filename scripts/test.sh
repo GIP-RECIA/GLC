@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-dockerRun () {
+dockerRun() {
   docker run --rm -t -d --name mariadb -v \
     --health-cmd="mysqladmin -uroot -proot ping" --health-interval=10s --health-timeout=10s --health-retries=10 \
     -p 3306:3306/tcp \
@@ -41,11 +41,11 @@ dockerRun () {
   mysql -h127.0.0.1 -uroot -proot < ./src/test/resources/glc.sql
 }
 
-dockerStop () {
+dockerStop() {
   docker stop mariadb
 }
 
-tests () {
+tests() {
   ./mvnw -B clean package -Ptest
   echo "Find results at: file://${PWD}/target/site/jacoco/index.html"
 }
@@ -64,14 +64,14 @@ fi
 
 case ${choice} in
 
-  1)
-    dockerRun
-    tests
-    dockerStop
+1)
+  dockerRun
+  tests
+  dockerStop
   ;;
-  2) dockerRun;;
-  3) tests;;
-  4) dockerStop;;
-  *) echo "Unknown choice";;
+2) dockerRun ;;
+3) tests ;;
+4) dockerStop ;;
+*) echo "Unknown choice" ;;
 
 esac

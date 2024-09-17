@@ -13,7 +13,7 @@
 # limitations under the License.
 
 yarn dedupe
-if [ `git status --porcelain yarn.lock` ]; then
+if [ $(git status --porcelain yarn.lock) ]; then
   git add yarn.lock
   git commit -m "build(yarn): de-duplicate entries"
   git push
