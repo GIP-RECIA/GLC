@@ -60,51 +60,23 @@ app:
     end-function-warning: 2
 
     staff:
-      teaching: 'Enseignant'
-      school: 'Non_enseignant_etablissement'
-      collectivity: 'Non_enseignant_collectivite_locale'
-      academic: 'Non_enseignant_service_academique'
+      teaching: Enseignant
+      school: Non_enseignant_etablissement
+      collectivity: Non_enseignant_collectivite_locale
+      academic: Non_enseignant_service_academique
 
     edit-allowed-states:
-      - 'Invalide'
-      - 'Valide'
-      - 'Bloque'
+      - Invalide
+      - Valide
+      - Bloque
 
     filter-account-states:
-      - 'Invalide'
-      - 'Valide'
-      - 'Bloque'
-      - 'Delete'
-      - 'Deleting'
-      - 'Incertain'
-
-    extended-uportal-header:
-      component-path: ''
-      context-api-url: ''
-      sign-out-url: ''
-      default-org-logo-path: ''
-      default-avatar-path: ''
-      default-org-icon-path: ''
-      favorite-api-url: ''
-      layout-api-url: ''
-      organization-api-url: ''
-      portlet-api-url: ''
-      user-info-api-url: ''
-      user-info-portlet-url: ''
-      session-api-url: ''
-      template-api-path: ''
-      switch-org-portlet-url: ''
-      favorites-portlet-card-size: ''
-      grid-portlet-card-size: ''
-      hide-action-mode: ''
-      show-favorites-in-slider: ''
-      return-home-title: ''
-      return-home-target: ''
-      icon-type: ''
-
-    extended-uportal-footer:
-      component-path: ''
-      template-api-path: ''
+      - Invalide
+      - Valide
+      - Bloque
+      - Delete
+      - Deleting
+      - Incertain
 
   custom-config:
     suppress-days: 20

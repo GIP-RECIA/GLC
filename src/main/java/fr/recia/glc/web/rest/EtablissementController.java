@@ -16,8 +16,8 @@
 package fr.recia.glc.web.rest;
 
 import fr.recia.glc.configuration.GLCProperties;
+import fr.recia.glc.configuration.bean.AlertProperties;
 import fr.recia.glc.db.dto.AlertDto;
-import fr.recia.glc.db.dto.AlertType;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
@@ -50,8 +50,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static fr.recia.glc.configuration.Constants.SARAPISUI_;
 
 @Slf4j
 @RestController
@@ -177,11 +175,32 @@ public class EtablissementController {
     etablissement.setWithoutFunctions(withoutFunction);
 
     List<AlertDto> alerts = new ArrayList<>();
-    if (Objects.equals(etablissement.getSource(), "AC-ORLEANS-TOURS")) {
-      if (!fonctionService.isDiscipline(id, "GEST"))
-        alerts.add(AlertDto.builder().title("ADF.GEST").type(AlertType.error).action(true).build());
-      if (!fonctionService.isDiscipline(id, "D0010"))
-        alerts.add(AlertDto.builder().title("DIR.D0010").type(AlertType.error).action(true).build());
+    final AlertProperties sourceAlerts = glcProperties.getAlerts().stream()
+      .filter(alert -> Objects.equals(etablissement.getSource(), alert.getSource()))
+      .findAny()
+      .orElse(null);
+    if (sourceAlerts != null) {
+      final String splitCharter = "_";
+      sourceAlerts.getData().forEach(data -> {
+        String[] codes = data.getCode().split("-");
+        Long nbDiscipline = fonctionService.nbDiscipline(id, codes[0], codes[1]);
+        if (data.getMin() != null && data.getMin().getValue() > 0 && nbDiscipline < data.getMin().getValue()) {
+          alerts.add(AlertDto.builder()
+            .title("min" + splitCharter + data.getCode() + splitCharter + data.getMin().getValue() + splitCharter + nbDiscipline)
+            .type(data.getMin().getType())
+            .action(data.getMin().isAction())
+            .build()
+          );
+        }
+        if (data.getMax() != null && data.getMax().getValue() > 0 && nbDiscipline > data.getMin().getValue()) {
+          alerts.add(AlertDto.builder()
+            .title("max" + splitCharter + data.getCode() + splitCharter + data.getMax().getValue() + splitCharter + nbDiscipline)
+            .type(data.getMax().getType())
+            .action(data.getMax().isAction())
+            .build()
+          );
+        }
+      });
     }
     etablissement.setAlerts(alerts);
 

@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { useConfigurationStore, useStructureStore } from '@/stores';
-import type { Alert } from '@/types';
+import type { Alert, Filiere } from '@/types';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 
@@ -28,32 +28,54 @@ const { currentEtab, staff, fonction } = storeToRefs(structureStore);
 
 const { t } = useI18n();
 
-const doAlert = (alert: Alert): void => {
+const getDiscipline = (filieres: Array<Filiere> | undefined, code: string): string | undefined => {
+  const codes = code.split('-');
+  if (!filieres) return undefined;
+  return filieres
+    .find((filiere) => filiere.codeFiliere == codes[0])
+    ?.disciplines.find((discipline) => discipline.code == codes[1])?.disciplinePoste;
+};
+
+const formatedAlert = (alert: Alert): Alert & { class?: any; actions?: any } => {
+  if (!alert.title) return alert;
+  const data = alert.title.split('_');
+  const discipline =
+    getDiscipline(fonction.value?.filieres, data[1]) ?? getDiscipline(fonction.value?.customMapping?.filieres, data[1]);
+  if (!discipline) return alert;
+  const actions: any = {};
   if (alert.action && fonction.value?.customMapping) {
     if (alert.title) {
-      requestAdd.value = {
-        i18n: `additional.add.${alert.title}`,
-        function: alert.title.replace('.', '-'),
-        type: 'code',
-        searchList: staff.value.school,
+      const doAlert = () => {
+        requestAdd.value = {
+          i18n: t('additional.add', { discipline }),
+          function: data[1],
+          type: 'code',
+          searchList: staff.value.school,
+        };
+        isQuickAdd.value = true;
       };
-      isQuickAdd.value = true;
+      actions.click = () => doAlert();
     }
   }
+
+  return {
+    ...alert,
+    title: t('alert.minMax.title', { discipline, value: data[3] }, parseInt(data[3])),
+    text: t('alert.minMax.text', { minMax: t(`alert.minMax.${data[0]}`), required: data[2] }),
+    class: [{ clicable: alert.action && fonction.value?.customMapping }],
+    actions,
+  };
 };
 </script>
 
 <template>
   <v-alert
-    v-for="(alert, index) in currentEtab?.alerts"
+    v-for="(alert, index) in currentEtab?.alerts.map(formatedAlert)"
     :key="index"
-    :title="alert.title && t(`alert.title.${alert.title}`)"
-    :text="alert.text && t(`alert.text.${alert.text}`)"
-    :type="alert.type"
+    v-bind="alert"
     variant="tonal"
     rounded="lg"
-    :class="[{ clicable: alert.action && fonction?.customMapping }]"
-    @click="doAlert(alert)"
+    @="alert.actions ?? {}"
   />
 </template>
 

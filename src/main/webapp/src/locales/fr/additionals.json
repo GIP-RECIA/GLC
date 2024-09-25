@@ -6,13 +6,6 @@
     "fonction": {
       "add": "Gestion des fonctions complémentaires"
     },
-    "add": {
-      "ADF": {
-        "GEST": "Ajouter un secrétaire général"
-      },
-      "DIR": {
-        "D0010": "Ajouter un directeur"
-      }
-    }
+    "add": "Ajouter {discipline}"
   }
 }

@@ -516,8 +516,10 @@ public class FonctionService {
       .collect(Collectors.toList());
   }
 
-  public boolean isDiscipline(Long structureId, String disciplineCode) {
-    return fonctionRepository.nbDiscipline(structureId, disciplineCode) > 0;
+  public long nbDiscipline(Long structureId, String filiereCode, String disciplineCode) {
+    return fonctionRepository.count(QFonction.fonction.structure.id.eq(structureId)
+      .and(QFonction.fonction.filiere.codeFiliere.eq(filiereCode))
+      .and(QFonction.fonction.disciplinePoste.code.eq(disciplineCode)));
   }
 
 }

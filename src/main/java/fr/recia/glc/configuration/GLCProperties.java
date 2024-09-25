@@ -16,6 +16,7 @@
 package fr.recia.glc.configuration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.recia.glc.configuration.bean.AlertProperties;
 import fr.recia.glc.configuration.bean.CASProperties;
 import fr.recia.glc.configuration.bean.CorsProperties;
 import fr.recia.glc.configuration.bean.CustomConfigProperties;
@@ -26,6 +27,7 @@ import fr.recia.glc.configuration.bean.FrontProperties;
 import fr.recia.glc.configuration.bean.IpRangeProperties;
 import fr.recia.glc.configuration.bean.RoleMappingProperties;
 import fr.recia.glc.configuration.bean.SecurityProperties;
+import fr.recia.glc.utils.ListUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -33,6 +35,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Configuration
 @ConfigurationProperties(
@@ -44,18 +47,19 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class GLCProperties {
 
-  private CASProperties cas = new CASProperties();
-  private CorsProperties cors = new CorsProperties();
-  private CustomConfigProperties customConfig = new CustomConfigProperties();
-  private SecurityProperties security = new SecurityProperties();
-  private FrontProperties front = new FrontProperties();
+  private CASProperties cas;
+  private CorsProperties cors;
+  private CustomConfigProperties customConfig;
+  private SecurityProperties security;
+  private FrontProperties front;
+  private List<AlertProperties> alerts;
 
-  private RoleMappingProperties admins = new RoleMappingProperties();
-  private RoleMappingProperties users = new RoleMappingProperties();
-  private CustomMailProperties mail = new CustomMailProperties();
-  private IpRangeProperties authorizedServices = new IpRangeProperties();
-  private CustomMetricsProperties metrics = new CustomMetricsProperties();
-  private CustomLdapProperties ldap = new CustomLdapProperties();
+  private RoleMappingProperties admins;
+  private RoleMappingProperties users;
+  private CustomMailProperties mail;
+  private IpRangeProperties authorizedServices;
+  private CustomMetricsProperties metrics;
+  private CustomLdapProperties ldap;
 
   @PostConstruct
   private void init() throws JsonProcessingException {
@@ -70,6 +74,7 @@ public class GLCProperties {
       "\n\"customConfig\" : " + customConfig + "," +
       "\n\"security\" : " + security + "," +
       "\n\"front\" : " + front + "," +
+      "\n\"alerts\" : " + ListUtils.toStringList(alerts, ",\n", "[\n", "\n]") + "," +
       "\n\"admins\" : " + admins + "," +
       "\n\"users\" : " + users + "," +
       "\n\"mail\" : " + mail + "," +

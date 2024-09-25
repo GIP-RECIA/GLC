@@ -129,7 +129,7 @@ watch(currentPersonne, (newValue) => {
   <v-dialog v-model="modelValue" scrollable :max-width="1024 / 2">
     <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
-        <v-toolbar-title class="text-h6">{{ requestAdd?.i18n && t(requestAdd.i18n) }}</v-toolbar-title>
+        <v-toolbar-title class="text-h6">{{ requestAdd?.i18n }}</v-toolbar-title>
         <template #append>
           <v-btn icon="fas fa-xmark" color="default" variant="plain" class="me-1" @click="closeAndResetModal()" />
         </template>

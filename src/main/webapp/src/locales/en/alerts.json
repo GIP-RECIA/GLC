@@ -1,13 +1,10 @@
 {
   "alert": {
-    "title": {
-      "ADF": {
-        "GEST": "No general secretary"
-      },
-      "DIR": {
-        "D0010": "No director"
-      }
-    },
-    "text": {}
+    "minMax": {
+      "title": "Function {discipline} assigned to no one | Function {discipline} assigned to {value} person | Function {discipline} assigned to {value} persons",
+      "text": "The {minMax} number must be {required}.",
+      "min": "minimum",
+      "max": "maximum"
+    }
   }
 }

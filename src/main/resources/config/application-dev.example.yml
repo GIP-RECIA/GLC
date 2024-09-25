@@ -45,13 +45,6 @@ app:
     allowed-origins:
       - http://localhost:5173
 
-  front:
-    login-offices:
-      - source: ''
-        guichets:
-          - nom: ''
-            categories-personne:
-
   admins:
     user-name:
     group-name: ''
@@ -142,3 +135,69 @@ app:
           Collectivite_locale: ''
           Service_academique: ''
         uai-pattern: ''
+
+  alerts:
+    - source: ''
+      data:
+        - code: ''
+          min:
+            value:
+            type: error
+            action: true
+          max:
+            value:
+            type: error
+            action: false
+
+  front:
+    end-function-warning:
+
+    staff:
+      teaching:
+      school:
+      collectivity:
+      academic:
+
+    edit-allowed-states:
+      -
+
+    filter-account-states:
+      -
+
+    extended-uportal-header:
+      component-path: ''
+      context-api-url: ''
+      sign-out-url: ''
+      default-org-logo-path: ''
+      default-avatar-path: ''
+      default-org-icon-path: ''
+      favorite-api-url: ''
+      layout-api-url: ''
+      organization-api-url: ''
+      portlet-api-url: ''
+      user-info-api-url: ''
+      user-info-portlet-url: ''
+      session-api-url: ''
+      template-api-path: ''
+      switch-org-portlet-url: ''
+      favorites-portlet-card-size: ''
+      grid-portlet-card-size: ''
+      hide-action-mode: ''
+      show-favorites-in-slider: ''
+      return-home-title: ''
+      return-home-target: ''
+      icon-type: ''
+
+    extended-uportal-footer:
+      component-path: ''
+      template-api-path: ''
+
+    login-offices:
+      - source: ''
+        guichets:
+          - nom: ''
+            categories-personne:
+              -
+
+  custom-config:
+    suppress-days:

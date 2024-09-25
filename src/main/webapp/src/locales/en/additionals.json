@@ -6,13 +6,6 @@
     "fonction": {
       "add": "Manage additional functions"
     },
-    "add": {
-      "ADF": {
-        "GEST": "Add a general secretary"
-      },
-      "DIR": {
-        "D0010": "Add a director"
-      }
-    }
+    "add": "Add {discipline}"
   }
 }
