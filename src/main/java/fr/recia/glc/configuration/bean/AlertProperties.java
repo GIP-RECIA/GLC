@@ -24,11 +24,11 @@ import java.util.List;
 public class AlertProperties {
 
   private String source;
-  private List<DataProperties> data;
+  private List<FonctionAlertProperties> fonctionAlerts;
 
 
   @Data
-  public static class DataProperties {
+  public static class FonctionAlertProperties {
 
     private String code;
     private ValueProperties min;
@@ -66,7 +66,7 @@ public class AlertProperties {
   public String toString() {
     return "{" +
       "\n\t\"source\": \"" + source + "\"," +
-      "\n\t\"data\": " + data +
+      "\n\t\"fonctionAlerts\": " + fonctionAlerts +
       "\n}";
   }
 
