@@ -15,9 +15,9 @@
  */
 package fr.recia.glc.services.db;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.recia.glc.configuration.Constants;
+import fr.recia.glc.configuration.GLCProperties;
+import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
@@ -37,18 +37,13 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
-import fr.recia.glc.models.mappers.AdditionalFonctionMapping;
-import fr.recia.glc.models.mappers.AdditionalFonctionMappingFiliere;
 import fr.recia.glc.pojo.JsonFonction;
 import fr.recia.glc.utils.DateUtils;
 import fr.recia.glc.utils.SourceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,6 +88,12 @@ public class FonctionService {
   public static final String FILIERE = "filieres";
   public static final String DISCIPLINE = "disciplines";
 
+  private final List<CustomConfigProperties.FonctionsProperties> fonctionsProperties;
+
+  public FonctionService(GLCProperties glcProperties) {
+    this.fonctionsProperties = glcProperties.getCustomConfig().getFonctions();
+  }
+
   public List<Object> getFonctions() {
     final List<String> sources = disciplineRepository.findAllNonSarapisSources();
     if (sources.isEmpty()) return Collections.emptyList();
@@ -131,36 +132,23 @@ public class FonctionService {
     List<DisciplineDto> disciplines
   ) {
     List<FonctionDto> data = new ArrayList<>();
-    ObjectMapper objectMapper = new ObjectMapper();
 
-    // Lecture du fichier JSON
-    List<AdditionalFonctionMapping> jsonFile;
-    try {
-      File resource = new ClassPathResource("mapping/additionalFonctionMapping.json").getFile();
-      jsonFile = objectMapper.readValue(resource, new TypeReference<>() {
-      });
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    fonctionsProperties.forEach(file -> file.getFilieres().forEach(filiere -> {
+      TypeFonctionFiliereDto filiereDto = typesFonctionFiliere.stream()
+        .filter(tffdto -> Objects.equals(tffdto.getCodeFiliere(), filiere.getCode()) && areSourcesEquals(tffdto.getSource(), file.getSource(), false))
+        .findAny()
+        .orElse(null);
 
-    jsonFile.forEach(file -> {
-      file.getFilieres().forEach(filiere -> {
-        TypeFonctionFiliereDto filiereDto = typesFonctionFiliere.stream()
-          .filter(tffdto -> Objects.equals(tffdto.getCodeFiliere(), filiere.getCode()) && areSourcesEquals(tffdto.getSource(), file.getSource(), false))
+      filiere.getDisciplines().forEach(discipline -> {
+        DisciplineDto disciplineDto = disciplines.stream()
+          .filter(ddto -> Objects.equals(ddto.getCode(), discipline) && areSourcesEquals(ddto.getSource(), file.getSource(), false))
           .findAny()
           .orElse(null);
 
-        filiere.getDisciplines().forEach(discipline -> {
-          DisciplineDto disciplineDto = disciplines.stream()
-            .filter(ddto -> Objects.equals(ddto.getCode(), discipline) && areSourcesEquals(ddto.getSource(), file.getSource(), false))
-            .findAny()
-            .orElse(null);
-
-          if (disciplineDto != null && filiereDto != null)
-            data.add(new FonctionDto(disciplineDto.getId(), filiereDto.getId(), file.getSource()));
-        });
+        if (disciplineDto != null && filiereDto != null)
+          data.add(new FonctionDto(disciplineDto.getId(), filiereDto.getId(), file.getSource()));
       });
-    });
+    }));
 
     return data;
   }
@@ -193,28 +181,17 @@ public class FonctionService {
 
   private Map<String, Object> getCustomMapping(String source) {
     Map<String, Object> data = new HashMap<>();
-    ObjectMapper objectMapper = new ObjectMapper();
-
-    // Lecture du fichier JSON
-    List<AdditionalFonctionMapping> jsonFile;
-    try {
-      File resource = new ClassPathResource("mapping/additionalFonctionMapping.json").getFile();
-      jsonFile = objectMapper.readValue(resource, new TypeReference<>() {
-      });
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
 
     // Recherche du mapping
-    AdditionalFonctionMapping mappingEntry = jsonFile.stream()
-      .filter(af -> Objects.equals(af.getSource(), source))
+    CustomConfigProperties.FonctionsProperties fonction = fonctionsProperties.stream()
+      .filter(f -> Objects.equals(f.getSource(), source))
       .findAny()
       .orElse(null);
-    if (mappingEntry == null) return data;
+    if (fonction == null) return data;
 
     // Recherche des filières
-    List<String> typeFonctionFiliereCodes = mappingEntry.getFilieres().stream()
-      .map(AdditionalFonctionMappingFiliere::getCode)
+    List<String> typeFonctionFiliereCodes = fonction.getFilieres().stream()
+      .map(CustomConfigProperties.FonctionsProperties.FiliereProperties::getCode)
       .collect(Collectors.toList());
     List<TypeFonctionFiliereDto> typesFonctionFiliere =
       typeFonctionFiliereRepository.findByCodeAndSourceSarapis(typeFonctionFiliereCodes, source);
@@ -224,10 +201,10 @@ public class FonctionService {
     if (!typesFonctionFiliere.isEmpty()) {
       typesFonctionFiliere = typesFonctionFiliere.stream()
         .map(typeFonctionFiliere -> {
-          List<String> disciplineCodes = mappingEntry.getFilieres().stream()
+          List<String> disciplineCodes = fonction.getFilieres().stream()
             .filter(af -> Objects.equals(af.getCode(), typeFonctionFiliere.getCodeFiliere()))
             .findAny()
-            .map(AdditionalFonctionMappingFiliere::getDisciplines)
+            .map(CustomConfigProperties.FonctionsProperties.FiliereProperties::getDisciplines)
             .orElse(new ArrayList<>());
 
           List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(disciplineCodes, source);
@@ -241,7 +218,7 @@ public class FonctionService {
     }
 
     // Recherche des disciplines sans filières
-    List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(mappingEntry.getDisciplines(), source);
+    List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(fonction.getDisciplines(), source);
     if (!disciplines.isEmpty()) data.put(DISCIPLINE, disciplines);
 
     return data;
