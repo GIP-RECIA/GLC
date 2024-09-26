@@ -24,19 +24,16 @@ import fr.recia.glc.db.dto.structure.EtablissementDto;
 import fr.recia.glc.db.dto.structure.SimpleEtablissementDto;
 import fr.recia.glc.ldap.StructureKey;
 import fr.recia.glc.ldap.enums.PermissionType;
-import fr.recia.glc.security.AuthoritiesConstants;
-import fr.recia.glc.security.CustomUserDetails;
-import fr.recia.glc.security.SecurityUtils;
 import fr.recia.glc.services.alert.AlertService;
 import fr.recia.glc.services.beans.UserContextRole;
 import fr.recia.glc.services.db.EtablissementService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
+import fr.recia.glc.web.interceptor.bean.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,20 +64,17 @@ public class EtablissementController {
   @Autowired
   private UserContextRole userContextRole;
 
+  @Autowired
+  private UserHolder userHolder;
+
   public EtablissementController(GLCProperties glcProperties) {
     this.glcProperties = glcProperties;
   }
 
   @GetMapping()
   public ResponseEntity<List<SimpleEtablissementDto>> getEtablissements() {
-    final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
-    if (user == null) {
-      log.trace("user is not authenticated -> throw an error to redirect on authentication");
-      throw new AccessDeniedException("Access is denied to anonymous !");
-    }
-
     List<SimpleEtablissementDto> etablissements;
-    if (user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+    if (userHolder.isAdmin()) {
       etablissements = etablissementService.getEtablissements();
     } else {
       Pattern permissionPattern = glcProperties.getLdap().getGroupBranch().getStructureProperties().getUaiPattern();
@@ -115,15 +109,9 @@ public class EtablissementController {
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<EtablissementDto> getEtablissement(@PathVariable Long id) {
-    final CustomUserDetails user = SecurityUtils.getCurrentUserDetails();
-    if (user == null) {
-      log.trace("user is not authenticated -> throw an error to redirect on authentication");
-      throw new AccessDeniedException("Access is denied to anonymous !");
-    }
-
     EtablissementDto etablissement = etablissementService.getEtablissement(id);
     if (etablissement == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    if (!user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+    if (!userHolder.isAdmin()) {
       Pattern permissionPattern = glcProperties.getLdap().getGroupBranch().getStructureProperties().getUaiPattern();
       Set<String> allowedUAI = userContextRole.allowedStructures().stream()
         .map(structureKey -> {
@@ -151,7 +139,7 @@ public class EtablissementController {
       etablissement.setNom(split[1]);
     }
     List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id);
-    if (!user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+    if (!userHolder.isAdmin()) {
       etabPersonnes = etabPersonnes.stream()
         .map((personne) -> {
           personne.setUid("");
@@ -163,7 +151,7 @@ public class EtablissementController {
     etablissement.setPersonnes(etabPersonnes);
 
     List<SimplePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id);
-    if (!user.getRoles().contains(AuthoritiesConstants.ADMIN)) {
+    if (!userHolder.isAdmin()) {
       withoutFunction = withoutFunction.stream()
         .map((personne) -> {
           personne.setUid("");
