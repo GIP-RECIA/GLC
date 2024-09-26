@@ -44,16 +44,14 @@ public class SecurityProperties {
 
   @Override
   public String toString() {
-    return "{" +
-      "\n\t\"SecurityProperties\": {" +
-      "\n\t\t\"authUriFilterPath\": \"" + authUriFilterPath + "\"," +
-      "\n\t\t\"redirectParamName\": \"" + redirectParamName + "\"," +
-      "\n\t\t\"authorizedDomainNames\": " + authorizedDomainNames.stream()
+    return "SecurityProperties\": {" +
+      "\n\t\"authUriFilterPath\": \"" + authUriFilterPath + "\"," +
+      "\n\t\"redirectParamName\": \"" + redirectParamName + "\"," +
+      "\n\t\"authorizedDomainNames\": " + authorizedDomainNames.stream()
       .map(String::valueOf)
       .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\t\"protocol\": \"" + protocol + "\"," +
-      "\n\t\t\"idKeyProvider\": \"" + idKeyProvider + "\"" +
-      "\n\t}" +
+      "\n\t\"protocol\": \"" + protocol + "\"," +
+      "\n\t\"idKeyProvider\": \"" + idKeyProvider + "\"" +
       "\n}";
   }
 

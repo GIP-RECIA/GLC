@@ -42,7 +42,9 @@ export const useConfigurationStore = defineStore('configuration', () => {
       try {
         const response = await getConfiguration();
         configuration.value = response.data;
-        await useEntTheme(configuration.value!.front.extendedUportalHeader.templateApiPath);
+        if (!configuration.value) return;
+        const { templateApiPath } = configuration.value.front;
+        await useEntTheme(templateApiPath);
       } catch (e) {
         errorHandler(e, 'initConfigurationStore');
       }

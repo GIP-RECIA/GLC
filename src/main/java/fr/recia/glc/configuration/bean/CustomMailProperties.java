@@ -30,11 +30,9 @@ public class CustomMailProperties {
 
   @Override
   public String toString() {
-    return "{" +
-      "\n\t\"CustomMailProperties\": {" +
-      "\n\t\t\"baseUrl\": \"" + baseUrl + "\"," +
-      "\n\t\t\"from\": \"" + from + "\"" +
-      "\n\t}" +
+    return "CustomMailProperties\": {" +
+      "\n\t\"baseUrl\": \"" + baseUrl + "\"," +
+      "\n\t\"from\": \"" + from + "\"" +
       "\n}";
   }
 

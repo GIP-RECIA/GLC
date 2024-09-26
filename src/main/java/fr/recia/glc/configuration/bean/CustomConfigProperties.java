@@ -24,10 +24,8 @@ public class CustomConfigProperties {
 
   @Override
   public String toString() {
-    return "{" +
-      "\n\t\"CustomConfigProperties\": {" +
-      "\n\t\t\"suppressDays\": " + suppressDays +
-      "\n\t}" +
+    return "CustomConfigProperties\": {" +
+      "\n\t\"suppressDays\": " + suppressDays +
       "\n}";
   }
 

@@ -17,7 +17,8 @@ import vuetify from '@/plugins/vuetify.ts';
 import type { PortalEntry } from '@/types';
 import axios from 'axios';
 
-const useEntTheme = async (templateApiPath: string): Promise<void> => {
+const useEntTheme = async (templateApiPath: string | undefined): Promise<void> => {
+  if (!templateApiPath || templateApiPath.trim().length < 1) return;
   const response = await axios.get(templateApiPath);
   const domainInfo: PortalEntry = response.data.data.find((domain: PortalEntry) =>
     domain.identity.domains?.includes(window.location.hostname),

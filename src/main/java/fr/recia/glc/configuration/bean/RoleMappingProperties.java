@@ -27,11 +27,9 @@ public class RoleMappingProperties {
 
   @Override
   public String toString() {
-    return "{" +
-      "\n\t\"RoleMappingProperties\": {" +
-      "\n\t\t\"userName\": \"" + userName + "\"," +
-      "\n\t\t\"groupName\": \"" + groupName + "\"" +
-      "\n\t} " +
+    return "RoleMappingProperties\": {" +
+      "\n\t\"userName\": \"" + userName + "\"," +
+      "\n\t\"groupName\": \"" + groupName + "\"" +
       "\n}";
   }
 

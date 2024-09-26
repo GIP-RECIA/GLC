@@ -21,6 +21,7 @@ import fr.recia.glc.utils.ListUtils;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class FrontProperties {
@@ -29,8 +30,8 @@ public class FrontProperties {
   private StaffProperties staff;
   private List<Etat> editAllowedStates;
   private List<Etat> filterAccountStates;
-  private ExtendedUportalHeaderProperties extendedUportalHeader;
-  private ExtendedUportalFooterProperties extendedUportalFooter;
+  private String templateApiPath;
+  private ExtendedUportalProperties extendedUportal;
   private List<LoginOfficeProperties> loginOffices;
 
   @Data
@@ -54,73 +55,33 @@ public class FrontProperties {
   }
 
   @Data
-  public static class ExtendedUportalHeaderProperties {
+  public static class ExtendedUportalProperties {
 
-    private String componentPath;
-    private String contextApiUrl;
-    private String signOutUrl;
-    private String defaultOrgLogoPath;
-    private String defaultAvatarPath;
-    private String defaultOrgIconPath;
-    private String favoriteApiUrl;
-    private String layoutApiUrl;
-    private String organizationApiUrl;
-    private String portletApiUrl;
-    private String userInfoApiUrl;
-    private String userInfoPortletUrl;
-    private String sessionApiUrl;
-    private String templateApiPath;
-    private String switchOrgPortletUrl;
-    private String favoritesPortletCardSize;
-    private String gridPortletCardSize;
-    private String hideActionMode;
-    private String showFavoritesInSlider;
-    private String returnHomeTitle;
-    private String returnHomeTarget;
-    private String iconType;
+    private ComponentProperties header;
+    private ComponentProperties footer;
 
     @Override
     public String toString() {
       return "{" +
-        "\n\t\t\"componentPath\": \"" + componentPath + "\"," +
-        "\n\t\t\"contextApiUrl\": \"" + contextApiUrl + "\"," +
-        "\n\t\t\"signOutUrl\": \"" + signOutUrl + "\"," +
-        "\n\t\t\"defaultOrgLogoPath\": \"" + defaultOrgLogoPath + "\"," +
-        "\n\t\t\"defaultAvatarPath\": \"" + defaultAvatarPath + "\"," +
-        "\n\t\t\"defaultOrgIconPath\": \"" + defaultOrgIconPath + "\"," +
-        "\n\t\t\"favoriteApiUrl\": \"" + favoriteApiUrl + "\"," +
-        "\n\t\t\"layoutApiUrl\": \"" + layoutApiUrl + "\"," +
-        "\n\t\t\"organizationApiUrl\": \"" + organizationApiUrl + "\"," +
-        "\n\t\t\"portletApiUrl\": \"" + portletApiUrl + "\"," +
-        "\n\t\t\"userInfoApiUrl\": \"" + userInfoApiUrl + "\"," +
-        "\n\t\t\"userInfoPortletUrl\": \"" + userInfoPortletUrl + "\"," +
-        "\n\t\t\"sessionApiUrl\": \"" + sessionApiUrl + "\"," +
-        "\n\t\t\"templateApiPath\": \"" + templateApiPath + "\"," +
-        "\n\t\t\"switchOrgPortletUrl\": \"" + switchOrgPortletUrl + "\"," +
-        "\n\t\t\"favoritesPortletCardSize\": \"" + favoritesPortletCardSize + "\"," +
-        "\n\t\t\"gridPortletCardSize\": \"" + gridPortletCardSize + "\"," +
-        "\n\t\t\"hideActionMode\": \"" + hideActionMode + "\"," +
-        "\n\t\t\"showFavoritesInSlider\": \"" + showFavoritesInSlider + "\"," +
-        "\n\t\t\"returnHomeTitle\": \"" + returnHomeTitle + "\"," +
-        "\n\t\t\"returnHomeTarget\": \"" + returnHomeTarget + "\"," +
-        "\n\t\t\"iconType\": \"" + iconType + "\"" +
+        "\n\t\t\"header\": " + header + "," +
+        "\n\t\t\"footer\": " + footer +
         "\n\t}";
     }
 
-  }
+    @Data
+    public static class ComponentProperties {
 
-  @Data
-  public static class ExtendedUportalFooterProperties {
+      private String componentPath;
+      private Map<String, String> props;
 
-    private String componentPath;
-    private String templateApiPath;
+      @Override
+      public String toString() {
+        return "{" +
+          "\n\t\t\t\"componentPath\": \"" + componentPath + "\"," +
+          "\n\t\t\t\"props\": " + props +
+          "\n\t\t}";
+      }
 
-    @Override
-    public String toString() {
-      return "{" +
-        "\n\t\t\"componentPath\": \"" + componentPath + "\"," +
-        "\n\t\t\"templateApiPath\": \"" + templateApiPath + "\"" +
-        "\n\t}";
     }
 
   }
@@ -164,8 +125,8 @@ public class FrontProperties {
       "\n\t\"staff\": " + staff + "," +
       "\n\t\"editAllowedStates\": " + ListUtils.toStringList(editAllowedStates) + "," +
       "\n\t\"filterAccountStates\": " + ListUtils.toStringList(filterAccountStates) + "," +
-      "\n\t\"extendedUportalHeader\": " + extendedUportalHeader +
-      "\n\t\"extendedUportalFooter\": " + extendedUportalFooter +
+      "\n\t\"templateApiPath\": \"" + templateApiPath + "\"," +
+      "\n\t\"extendedUportal\": " + extendedUportal +
       "\n\t\"loginOffices\": " + ListUtils.toStringList(loginOffices, ",\n", "[\n", "\n\t]") +
       "\n}";
   }

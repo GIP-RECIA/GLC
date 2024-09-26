@@ -32,12 +32,10 @@ public class CASProperties {
 
   @Override
   public String toString() {
-    return "{" +
-      "\n\t\"CASProperties\": {" +
-      "\n\t\t\"urlPrefix\": \"" + urlPrefix + "\"," +
-      "\n\t\t\"urlLogin\": \"" + urlLogin + "\"," +
-      "\n\t\t\"urlLogout\": \"" + urlLogout + "\"" +
-      "\n\t}" +
+    return "CASProperties\": {" +
+      "\n\t\"urlPrefix\": \"" + urlPrefix + "\"," +
+      "\n\t\"urlLogin\": \"" + urlLogin + "\"," +
+      "\n\t\"urlLogout\": \"" + urlLogout + "\"" +
       "\n}";
   }
 

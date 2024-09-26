@@ -41,14 +41,12 @@ public class GroupDesignerProperties {
   @Override
   public String toString() {
     return "{" +
-      "\n\t\t\t\t\t\"GroupDesignerProperties\": {" +
-      "\n\t\t\t\t\t\t\"groupRootPattern\": \"" + groupRootPattern + "\"," +
-      "\n\t\t\t\t\t\t\"groupAttachEndMatch\": \"" + groupAttachEndMatch + "\"," +
-      "\n\t\t\t\t\t\t\"groupToAttachEndPattern\": " + groupToAttachEndPattern.stream()
+      "\n\t\t\t\t\"groupRootPattern\": \"" + groupRootPattern + "\"," +
+      "\n\t\t\t\t\"groupAttachEndMatch\": \"" + groupAttachEndMatch + "\"," +
+      "\n\t\t\t\t\"groupToAttachEndPattern\": " + groupToAttachEndPattern.stream()
       .map(String::valueOf)
       .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
-      "\n\t\t\t\t\t}" +
-      "\n\t\t\t\t}";
+      "\n\t\t\t}";
   }
 
 }

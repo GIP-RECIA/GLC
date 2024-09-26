@@ -40,12 +40,10 @@ public class IpRangeProperties {
 
   @Override
   public String toString() {
-    return "{" +
-      "\n\t\"IpRangeProperties\": {" +
-      "\n\t\t\"ipRanges\": " + ipRanges.stream()
+    return "IpRangeProperties\": {" +
+      "\n\t\"ipRanges\": " + ipRanges.stream()
       .map(String::valueOf)
       .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
-      "\n\t}" +
       "\n}";
   }
 

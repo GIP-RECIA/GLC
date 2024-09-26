@@ -164,33 +164,38 @@ app:
     filter-account-states:
       -
 
-    extended-uportal-header:
-      component-path: ''
-      context-api-url: ''
-      sign-out-url: ''
-      default-org-logo-path: ''
-      default-avatar-path: ''
-      default-org-icon-path: ''
-      favorite-api-url: ''
-      layout-api-url: ''
-      organization-api-url: ''
-      portlet-api-url: ''
-      user-info-api-url: ''
-      user-info-portlet-url: ''
-      session-api-url: ''
-      template-api-path: ''
-      switch-org-portlet-url: ''
-      favorites-portlet-card-size: ''
-      grid-portlet-card-size: ''
-      hide-action-mode: ''
-      show-favorites-in-slider: ''
-      return-home-title: ''
-      return-home-target: ''
-      icon-type: ''
+    template-api-path: ''
 
-    extended-uportal-footer:
-      component-path: ''
-      template-api-path: ''
+    extended-uportal:
+      header:
+        component-path: ''
+        props:
+          context-api-url: ''
+          sign-out-url: ''
+          default-org-logo-path: ''
+          default-avatar-path: ''
+          default-org-icon-path: ''
+          favorite-api-url: ''
+          layout-api-url: ''
+          organization-api-url: ''
+          portlet-api-url: ''
+          user-info-api-url: ''
+          user-info-portlet-url: ''
+          session-api-url: ''
+          template-api-path: ''
+          switch-org-portlet-url: ''
+          favorites-portlet-card-size: ''
+          grid-portlet-card-size: ''
+          hide-action-mode: ''
+          show-favorites-in-slider: ''
+          return-home-title: ''
+          return-home-target: ''
+          icon-type: ''
+
+      footer:
+        component-path: ''
+        props:
+          template-api-path: ''
 
     login-offices:
       - source: ''

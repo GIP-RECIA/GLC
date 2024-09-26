@@ -30,14 +30,18 @@ const { configuration, isInit, isLoading, isSettings, isAuthenticated } = storeT
 init();
 
 watchOnce(isInit, (newValue) => {
-  if (!newValue) return;
-
-  let extendedUportalHeaderScript = document.createElement('script');
-  extendedUportalHeaderScript.setAttribute('src', configuration.value!.front.extendedUportalHeader.componentPath);
-  document.head.appendChild(extendedUportalHeaderScript);
-  let extendedUportalFooterScript = document.createElement('script');
-  extendedUportalFooterScript.setAttribute('src', configuration.value!.front.extendedUportalFooter.componentPath);
-  document.head.appendChild(extendedUportalFooterScript);
+  if (!newValue || !configuration.value?.front.extendedUportal) return;
+  const { header, footer } = configuration.value.front.extendedUportal;
+  if (header) {
+    let extendedUportalHeaderScript = document.createElement('script');
+    extendedUportalHeaderScript.setAttribute('src', header.componentPath);
+    document.head.appendChild(extendedUportalHeaderScript);
+  }
+  if (footer) {
+    let extendedUportalFooterScript = document.createElement('script');
+    extendedUportalFooterScript.setAttribute('src', footer.componentPath);
+    document.head.appendChild(extendedUportalFooterScript);
+  }
 });
 
 watchOnce(isAuthenticated, (newValue) => {
@@ -57,27 +61,7 @@ const appName = __APP_NAME__;
       <extended-uportal-header
         v-if="isInit"
         :service-name="appName"
-        :context-api-url="configuration!.front.extendedUportalHeader.contextApiUrl"
-        :sign-out-url="configuration!.front.extendedUportalHeader.signOutUrl"
-        :default-org-logo-path="configuration!.front.extendedUportalHeader.defaultOrgLogoPath"
-        :default-avatar-path="configuration!.front.extendedUportalHeader.defaultAvatarPath"
-        :default-org-icon-path="configuration!.front.extendedUportalHeader.defaultOrgIconPath"
-        :favorite-api-url="configuration!.front.extendedUportalHeader.favoriteApiUrl"
-        :layout-api-url="configuration!.front.extendedUportalHeader.layoutApiUrl"
-        :organization-api-url="configuration!.front.extendedUportalHeader.organizationApiUrl"
-        :portlet-api-url="configuration!.front.extendedUportalHeader.portletApiUrl"
-        :user-info-api-url="configuration!.front.extendedUportalHeader.userInfoApiUrl"
-        :user-info-portlet-url="configuration!.front.extendedUportalHeader.userInfoPortletUrl"
-        :session-api-url="configuration!.front.extendedUportalHeader.sessionApiUrl"
-        :template-api-path="configuration!.front.extendedUportalHeader.templateApiPath"
-        :switch-org-portlet-url="configuration!.front.extendedUportalHeader.switchOrgPortletUrl"
-        :favorites-portlet-card-size="configuration!.front.extendedUportalHeader.favoritesPortletCardSize"
-        :grid-portlet-card-size="configuration!.front.extendedUportalHeader.gridPortletCardSize"
-        :hide-action-mode="configuration!.front.extendedUportalHeader.hideActionMode"
-        :show-favorites-in-slider="configuration!.front.extendedUportalHeader.showFavoritesInSlider"
-        :return-home-title="configuration!.front.extendedUportalHeader.returnHomeTitle"
-        :return-home-target="configuration!.front.extendedUportalHeader.returnHomeTarget"
-        :icon-type="configuration!.front.extendedUportalHeader.iconType"
+        v-bind="configuration!.front.extendedUportal?.header?.props"
       />
       <v-toolbar v-if="isAuthenticated" density="compact" color="rgba(255, 255, 255, 0)">
         <v-progress-linear :active="isLoading" :indeterminate="isLoading" absolute bottom color="primary" />
@@ -102,10 +86,7 @@ const appName = __APP_NAME__;
         <settings-dialog />
       </v-main>
       <footer>
-        <extended-uportal-footer
-          v-if="isInit"
-          :template-api-path="configuration!.front.extendedUportalFooter.templateApiPath"
-        />
+        <extended-uportal-footer v-if="isInit" v-bind="configuration!.front.extendedUportal?.footer?.props" />
       </footer>
     </div>
   </v-app>

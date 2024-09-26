@@ -36,23 +36,21 @@ public class CorsProperties {
 
   @Override
   public String toString() {
-    return "{" +
-      "\n\t\"CorsProperties\": {" +
-      "\n\t\t\"enable\": " + enable + "," +
-      "\n\t\t\"allowCredentials\": " + allowCredentials + "," +
-      "\n\t\t\"allowedOrigins\": " + allowedOrigins.stream()
+    return "CorsProperties\": {" +
+      "\n\t\"enable\": " + enable + "," +
+      "\n\t\"allowCredentials\": " + allowCredentials + "," +
+      "\n\t\"allowedOrigins\": " + allowedOrigins.stream()
       .map(String::valueOf)
       .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\t\"exposedHeaders\": " + exposedHeaders.stream()
+      "\n\t\"exposedHeaders\": " + exposedHeaders.stream()
       .map(String::valueOf)
       .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\t\"allowedHeaders\": " + allowedHeaders.stream()
+      "\n\t\"allowedHeaders\": " + allowedHeaders.stream()
       .map(String::valueOf)
       .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\t\"allowedMethods\": " + allowedMethods.stream()
+      "\n\t\"allowedMethods\": " + allowedMethods.stream()
       .map(String::valueOf)
       .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
-      "\n\t}" +
       "\n}";
   }
 

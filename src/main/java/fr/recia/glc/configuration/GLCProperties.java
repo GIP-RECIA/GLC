@@ -47,19 +47,19 @@ import java.util.List;
 @Slf4j
 public class GLCProperties {
 
+  private List<AlertProperties> alerts;
   private CASProperties cas;
   private CorsProperties cors;
   private CustomConfigProperties customConfig;
-  private SecurityProperties security;
+  private CustomLdapProperties ldap;
+  private CustomMailProperties mail;
+  private CustomMetricsProperties metrics;
   private FrontProperties front;
-  private List<AlertProperties> alerts;
-
+  private IpRangeProperties authorizedServices;
   private RoleMappingProperties admins;
   private RoleMappingProperties users;
-  private CustomMailProperties mail;
-  private IpRangeProperties authorizedServices;
-  private CustomMetricsProperties metrics;
-  private CustomLdapProperties ldap;
+  private SecurityProperties security;
+
 
   @PostConstruct
   private void init() throws JsonProcessingException {
@@ -69,18 +69,18 @@ public class GLCProperties {
   @Override
   public String toString() {
     return "{\n" +
-      "\"cas\" : " + cas + "," +
-      "\n\"cors\" : " + cors + "," +
-      "\n\"customConfig\" : " + customConfig + "," +
-      "\n\"security\" : " + security + "," +
-      "\n\"front\" : " + front + "," +
-      "\n\"alerts\" : " + ListUtils.toStringList(alerts, ",\n", "[\n", "\n]") + "," +
-      "\n\"admins\" : " + admins + "," +
-      "\n\"users\" : " + users + "," +
-      "\n\"mail\" : " + mail + "," +
-      "\n\"authorizedServices\" : " + authorizedServices + "," +
-      "\n\"metrics\" : " + metrics + "," +
-      "\n\"ldap\" : " + ldap +
+      ListUtils.toStringList(alerts, ",\n", "[\n", "\n]") + ",\n" +
+      cas + ",\n" +
+      cors + ",\n" +
+      customConfig + ",\n" +
+      ldap + ",\n" +
+      mail + ",\n" +
+      metrics + ",\n" +
+      front + ",\n" +
+      authorizedServices + ",\n" +
+      admins + ",\n" +
+      users + ",\n" +
+      security +
       "\n}";
   }
 
