@@ -15,17 +15,75 @@
  */
 package fr.recia.glc.configuration.bean;
 
+import fr.recia.glc.db.dto.AlertType;
+import fr.recia.glc.utils.ListUtils;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class CustomConfigProperties {
 
   private Integer suppressDays;
+  private List<AlertProperties> alerts;
+
+  @Data
+  public static class AlertProperties {
+
+    private String source;
+    private List<FonctionAlertProperties> fonctionAlerts;
+
+
+    @Data
+    public static class FonctionAlertProperties {
+
+      private String code;
+      private ValueProperties min;
+      private ValueProperties max;
+
+      @Data
+      public static class ValueProperties {
+
+        private int value;
+        private AlertType type;
+        private boolean action;
+
+        @Override
+        public String toString() {
+          return "{ " +
+            "\"value\": " + value + ", " +
+            "\"type\": \"" + type + "\", " +
+            "\"action\": \"" + action +
+            "\" }";
+        }
+      }
+
+      @Override
+      public String toString() {
+        return "{" +
+          "\n\t\t\t\t\t\"code\": \"" + code + "\"," +
+          "\n\t\t\t\t\t\"min\": " + min + "," +
+          "\n\t\t\t\t\t\"max\": " + max +
+          "\n\t\t\t\t}";
+      }
+
+    }
+
+    @Override
+    public String toString() {
+      return "{" +
+        "\n\t\t\t\"source\": \"" + source + "\"," +
+        "\n\t\t\t\"fonctionAlerts\": " + ListUtils.toStringList(fonctionAlerts, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") +
+        "\n\t\t}";
+    }
+
+  }
 
   @Override
   public String toString() {
     return "CustomConfigProperties\": {" +
-      "\n\t\"suppressDays\": " + suppressDays +
+      "\n\t\"suppressDays\": " + suppressDays + "," +
+      "\n\t\"alerts\": " + ListUtils.toStringList(alerts, ",\n\t", "[\n\t\t", "\n\t]") +
       "\n}";
   }
 

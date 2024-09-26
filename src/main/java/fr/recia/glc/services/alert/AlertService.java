@@ -16,7 +16,7 @@
 package fr.recia.glc.services.alert;
 
 import fr.recia.glc.configuration.GLCProperties;
-import fr.recia.glc.configuration.bean.AlertProperties;
+import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.db.dto.AlertDto;
 import fr.recia.glc.services.db.FonctionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,23 +34,23 @@ public class AlertService {
   @Autowired
   private FonctionService fonctionService;
 
-  private final List<AlertProperties> alertProperties;
+  private final List<CustomConfigProperties.AlertProperties> alertProperties;
 
   public AlertService(GLCProperties glcProperties) {
-    this.alertProperties = glcProperties.getAlerts();
+    this.alertProperties = glcProperties.getCustomConfig().getAlerts();
   }
 
-  private AlertDto buildMinFonctionAlert(AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
+  private AlertDto buildMinFonctionAlert(CustomConfigProperties.AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
     return buildFonctionAlert(FonctionAlertType.min, data.getCode(), data.getMin(), nbDiscipline);
   }
 
-  private AlertDto buildMaxFonctionAlert(AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
+  private AlertDto buildMaxFonctionAlert(CustomConfigProperties.AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
     return buildFonctionAlert(FonctionAlertType.max, data.getCode(), data.getMax(), nbDiscipline);
   }
 
   private AlertDto buildFonctionAlert(
     FonctionAlertType type, String code,
-    AlertProperties.FonctionAlertProperties.ValueProperties value, long nbDiscipline
+    CustomConfigProperties.AlertProperties.FonctionAlertProperties.ValueProperties value, long nbDiscipline
   ) {
     return AlertDto.builder()
       .title(type + SPLIT_CHARTER + code + SPLIT_CHARTER + value.getValue() + SPLIT_CHARTER + nbDiscipline)

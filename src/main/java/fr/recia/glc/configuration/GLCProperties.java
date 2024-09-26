@@ -16,7 +16,6 @@
 package fr.recia.glc.configuration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.recia.glc.configuration.bean.AlertProperties;
 import fr.recia.glc.configuration.bean.CASProperties;
 import fr.recia.glc.configuration.bean.CorsProperties;
 import fr.recia.glc.configuration.bean.CustomConfigProperties;
@@ -27,7 +26,6 @@ import fr.recia.glc.configuration.bean.FrontProperties;
 import fr.recia.glc.configuration.bean.IpRangeProperties;
 import fr.recia.glc.configuration.bean.RoleMappingProperties;
 import fr.recia.glc.configuration.bean.SecurityProperties;
-import fr.recia.glc.utils.ListUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -35,7 +33,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 @Configuration
 @ConfigurationProperties(
@@ -47,7 +44,6 @@ import java.util.List;
 @Slf4j
 public class GLCProperties {
 
-  private List<AlertProperties> alerts;
   private CASProperties cas;
   private CorsProperties cors;
   private CustomConfigProperties customConfig;
@@ -69,7 +65,6 @@ public class GLCProperties {
   @Override
   public String toString() {
     return "{\n" +
-      ListUtils.toStringList(alerts, ",\n", "[\n", "\n]") + ",\n" +
       cas + ",\n" +
       cors + ",\n" +
       customConfig + ",\n" +

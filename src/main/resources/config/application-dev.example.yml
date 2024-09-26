@@ -136,19 +136,6 @@ app:
           Service_academique: ''
         uai-pattern: ''
 
-  alerts:
-    - source: ''
-      fonction-alerts:
-        - code: ''
-          min:
-            value:
-            type: error
-            action: true
-          max:
-            value:
-            type: error
-            action: false
-
   front:
     end-function-warning:
 
@@ -206,3 +193,16 @@ app:
 
   custom-config:
     suppress-days:
+
+    alerts:
+      - source: ''
+        fonction-alerts:
+          - code: ''
+            min:
+              value:
+              type: error
+              action: true
+            max:
+              value:
+              type: error
+              action: false
