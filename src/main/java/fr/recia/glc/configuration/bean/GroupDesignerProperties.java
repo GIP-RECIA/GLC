@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.configuration.bean;
 
+import fr.recia.glc.util.ListUtil;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -43,9 +44,7 @@ public class GroupDesignerProperties {
     return "{" +
       "\n\t\t\t\t\"groupRootPattern\": \"" + groupRootPattern + "\"," +
       "\n\t\t\t\t\"groupAttachEndMatch\": \"" + groupAttachEndMatch + "\"," +
-      "\n\t\t\t\t\"groupToAttachEndPattern\": " + groupToAttachEndPattern.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
+      "\n\t\t\t\t\"groupToAttachEndPattern\": " + ListUtil.toStringList(groupToAttachEndPattern, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
       "\n\t\t\t}";
   }
 

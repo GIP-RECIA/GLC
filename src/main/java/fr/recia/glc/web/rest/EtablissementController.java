@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,7 +85,7 @@ public class EtablissementController {
           log.debug("structureKey : {}", structureKey.getKeyId());
           return matcher.find() ? matcher.group(1) : null;
         })
-        .filter(s -> s != null)
+        .filter(Objects::nonNull)
         .collect(Collectors.toSet());
 
       etablissements = etablissementService.getEtablissements(allowedUAI);
@@ -119,7 +120,7 @@ public class EtablissementController {
           log.debug("structureKey : {}", structureKey.getKeyId());
           return matcher.find() ? matcher.group(1) : null;
         })
-        .filter(s -> s != null)
+        .filter(Objects::nonNull)
         .collect(Collectors.toSet());
 
       StructureKey structureKey = userContextRole.allowedStructures().stream()

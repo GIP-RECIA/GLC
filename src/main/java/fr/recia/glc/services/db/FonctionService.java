@@ -38,8 +38,8 @@ import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.pojo.JsonFonction;
-import fr.recia.glc.utils.DateUtils;
-import fr.recia.glc.utils.SourceUtils;
+import fr.recia.glc.util.DateUtils;
+import fr.recia.glc.util.SourceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +60,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static fr.recia.glc.configuration.Constants.SANS_OBJET;
-import static fr.recia.glc.utils.SourceUtils.areSourcesEquals;
+import static fr.recia.glc.util.SourceUtils.areSourcesEquals;
 
 @Slf4j
 @Service

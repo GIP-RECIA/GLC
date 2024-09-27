@@ -16,12 +16,12 @@
 package fr.recia.glc.configuration.bean;
 
 import fr.recia.glc.configuration.bean.validator.IpAddress;
+import fr.recia.glc.util.ListUtil;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;
@@ -41,9 +41,7 @@ public class IpRangeProperties {
   @Override
   public String toString() {
     return "IpRangeProperties\": {" +
-      "\n\t\"ipRanges\": " + ipRanges.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
+      "\n\t\"ipRanges\": " + ListUtil.toStringList(ipRanges, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
       "\n}";
   }
 

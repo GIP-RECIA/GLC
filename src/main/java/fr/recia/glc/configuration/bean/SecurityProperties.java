@@ -15,13 +15,13 @@
  */
 package fr.recia.glc.configuration.bean;
 
+import fr.recia.glc.util.ListUtil;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;
@@ -47,9 +47,7 @@ public class SecurityProperties {
     return "SecurityProperties\": {" +
       "\n\t\"authUriFilterPath\": \"" + authUriFilterPath + "\"," +
       "\n\t\"redirectParamName\": \"" + redirectParamName + "\"," +
-      "\n\t\"authorizedDomainNames\": " + authorizedDomainNames.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
+      "\n\t\"authorizedDomainNames\": " + ListUtil.toStringList(authorizedDomainNames, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
       "\n\t\"protocol\": \"" + protocol + "\"," +
       "\n\t\"idKeyProvider\": \"" + idKeyProvider + "\"" +
       "\n}";

@@ -16,7 +16,7 @@
 package fr.recia.glc.configuration.bean;
 
 import fr.recia.glc.db.dto.AlertType;
-import fr.recia.glc.utils.ListUtils;
+import fr.recia.glc.util.ListUtil;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class CustomConfigProperties {
     public String toString() {
       return "{" +
         "\n\t\t\t\"source\": \"" + source + "\"," +
-        "\n\t\t\t\"fonctionAlerts\": " + ListUtils.toStringList(fonctionAlerts, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") +
+        "\n\t\t\t\"fonctionAlerts\": " + ListUtil.toStringList(fonctionAlerts, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") +
         "\n\t\t}";
     }
 
@@ -102,7 +102,7 @@ public class CustomConfigProperties {
       public String toString() {
         return "{" +
           "\n\t\t\t\t\t\"code\": \"" + code + "\"," +
-          "\n\t\t\t\t\t\"disciplines\": " + ListUtils.toStringList(disciplines, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
+          "\n\t\t\t\t\t\"disciplines\": " + ListUtil.toStringList(disciplines, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
           "\n\t\t\t\t}";
       }
 
@@ -112,8 +112,8 @@ public class CustomConfigProperties {
     public String toString() {
       return "{" +
         "\n\t\t\t\"source\": \"" + source + "\"," +
-        "\n\t\t\t\"filieres\": " + ListUtils.toStringList(filieres, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") + "," +
-        "\n\t\t\t\"disciplines\": " + ListUtils.toStringList(disciplines, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
+        "\n\t\t\t\"filieres\": " + ListUtil.toStringList(filieres, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") + "," +
+        "\n\t\t\t\"disciplines\": " + ListUtil.toStringList(disciplines, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
         "\n\t\t}";
     }
 
@@ -123,8 +123,8 @@ public class CustomConfigProperties {
   public String toString() {
     return "CustomConfigProperties\": {" +
       "\n\t\"suppressDays\": " + suppressDays + "," +
-      "\n\t\"alerts\": " + ListUtils.toStringList(alerts, ",\n\t\t", "[\n\t\t", "\n\t]") +
-      "\n\t\"fonctions\": " + ListUtils.toStringList(fonctions, ",\n\t\t", "[\n\t\t", "\n\t]") +
+      "\n\t\"alerts\": " + ListUtil.toStringList(alerts, ",\n\t\t", "[\n\t\t", "\n\t]") +
+      "\n\t\"fonctions\": " + ListUtil.toStringList(fonctions, ",\n\t\t", "[\n\t\t", "\n\t]") +
       "\n}";
   }
 

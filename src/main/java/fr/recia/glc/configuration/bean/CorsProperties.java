@@ -15,10 +15,10 @@
  */
 package fr.recia.glc.configuration.bean;
 
+import fr.recia.glc.util.ListUtil;
 import lombok.Data;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;
@@ -39,18 +39,10 @@ public class CorsProperties {
     return "CorsProperties\": {" +
       "\n\t\"enable\": " + enable + "," +
       "\n\t\"allowCredentials\": " + allowCredentials + "," +
-      "\n\t\"allowedOrigins\": " + allowedOrigins.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\"exposedHeaders\": " + exposedHeaders.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\"allowedHeaders\": " + allowedHeaders.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
-      "\n\t\"allowedMethods\": " + allowedMethods.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) +
+      "\n\t\"allowedOrigins\": " + ListUtil.toStringList(allowedOrigins, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
+      "\n\t\"exposedHeaders\": " + ListUtil.toStringList(exposedHeaders, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
+      "\n\t\"allowedHeaders\": " + ListUtil.toStringList(allowedHeaders, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
+      "\n\t\"allowedMethods\": " + ListUtil.toStringList(allowedMethods, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
       "\n}";
   }
 

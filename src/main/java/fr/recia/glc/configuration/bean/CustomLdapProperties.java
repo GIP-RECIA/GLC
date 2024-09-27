@@ -16,6 +16,7 @@
 package fr.recia.glc.configuration.bean;
 
 import fr.recia.glc.db.enums.CategorieStructure;
+import fr.recia.glc.util.ListUtil;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -68,9 +69,7 @@ public class CustomLdapProperties {
     @Override
     public String toString() {
       return "{" +
-        "\n\t\t\"urls\": " + Arrays.stream(urls)
-        .map(String::valueOf)
-        .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) + "," +
+        "\n\t\t\"urls\": " + ListUtil.toStringList(Arrays.asList(urls), JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
         "\n\t\t\"base\": \"" + base + "\"," +
         "\n\t\t\"username\": \"" + username + "\"," +
         "\n\t\t\"password\": \"*******\"," +
@@ -131,12 +130,8 @@ public class CustomLdapProperties {
         "\n\t\t\"mailAttribute\": \"" + mailAttribute + "\"," +
         "\n\t\t\"searchAttribute\": \"" + searchAttribute + "\"," +
         "\n\t\t\"groupAttribute\": \"" + groupAttribute + "\"," +
-        "\n\t\t\"otherDisplayedAttributes\": " + (otherDisplayedAttributes != null ? otherDisplayedAttributes.stream()
-        .map(String::valueOf)
-        .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) : null) + "," +
-        "\n\t\t\"otherBackendAttributes\": " + (otherBackendAttributes != null ? otherBackendAttributes.stream()
-        .map(String::valueOf)
-        .collect(Collectors.joining(JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX)) : null) +
+        "\n\t\t\"otherDisplayedAttributes\": " + (otherDisplayedAttributes != null ? ListUtil.toStringList(otherDisplayedAttributes, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) : null) + "," +
+        "\n\t\t\"otherBackendAttributes\": " + (otherBackendAttributes != null ? ListUtil.toStringList(otherBackendAttributes, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) : null) +
         "\n\t}";
     }
   }
@@ -203,12 +198,8 @@ public class CustomLdapProperties {
         "\n\t\t\"DNContainsDisplayName\": \"" + DNContainsDisplayName + "\"," +
         "\n\t\t\"resolveUserMembers\": \"" + resolveUserMembers + "\"," +
         "\n\t\t\"resolveUserMembersByUserAttributes\": \"" + resolveUserMembersByUserAttributes + "\"," +
-        "\n\t\t\"designers\": " + designers.stream()
-        .map(String::valueOf)
-        .collect(Collectors.joining(",\n\t\t\t", "[\n\t\t\t", "\n\t\t]")) + "," +
-        "\n\t\t\"nameFormatters\": " + nameFormatters.stream()
-        .map(String::valueOf)
-        .collect(Collectors.joining(",\n\t\t\t", "[\n\t\t\t", "\n\t\t]")) + "," +
+        "\n\t\t\"designers\": " + ListUtil.toStringList(designers, ",\n\t\t\t", "[\n\t\t\t", "\n\t\t]") + "," +
+        "\n\t\t\"nameFormatters\": " + ListUtil.toStringList(nameFormatters, ",\n\t\t\t", "[\n\t\t\t", "\n\t\t]") + "," +
         "\n\t\t\"dontResolveMembersWithGroupPattern\": \"" + dontResolveMembersWithGroupPattern + "\"," +
         "\n\t\t\"structureProperties\": " + structureProperties +
         "\n\t}";

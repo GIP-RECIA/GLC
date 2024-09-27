@@ -17,7 +17,7 @@ package fr.recia.glc.configuration.bean;
 
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
-import fr.recia.glc.utils.ListUtils;
+import fr.recia.glc.util.ListUtil;
 import lombok.Data;
 
 import java.util.List;
@@ -102,7 +102,7 @@ public class FrontProperties {
       public String toString() {
         return "\t\t\t\t{" +
           "\n\t\t\t\t\t\"nom\": \"" + nom + "\"," +
-          "\n\t\t\t\t\t\"categoriesPersonne\": " + ListUtils.toStringList(categoriesPersonne) +
+          "\n\t\t\t\t\t\"categoriesPersonne\": " + ListUtil.toStringList(categoriesPersonne) +
           "\n\t\t\t\t}";
       }
 
@@ -112,7 +112,7 @@ public class FrontProperties {
     public String toString() {
       return "\t\t{" +
         "\n\t\t\t\"source\": \"" + source + "\"," +
-        "\n\t\t\t\"guichets\": " + ListUtils.toStringList(guichets, ",\n", "[\n", "\n\t\t\t]") +
+        "\n\t\t\t\"guichets\": " + ListUtil.toStringList(guichets, ",\n", "[\n", "\n\t\t\t]") +
         "\n\t\t}";
     }
 
@@ -123,11 +123,11 @@ public class FrontProperties {
     return "\"FrontProperties\": {" +
       "\n\t\"endFunctionWarning\": " + endFunctionWarning + "," +
       "\n\t\"staff\": " + staff + "," +
-      "\n\t\"editAllowedStates\": " + ListUtils.toStringList(editAllowedStates) + "," +
-      "\n\t\"filterAccountStates\": " + ListUtils.toStringList(filterAccountStates) + "," +
+      "\n\t\"editAllowedStates\": " + ListUtil.toStringList(editAllowedStates) + "," +
+      "\n\t\"filterAccountStates\": " + ListUtil.toStringList(filterAccountStates) + "," +
       "\n\t\"templateApiPath\": \"" + templateApiPath + "\"," +
       "\n\t\"extendedUportal\": " + extendedUportal +
-      "\n\t\"loginOffices\": " + ListUtils.toStringList(loginOffices, ",\n", "[\n", "\n\t]") +
+      "\n\t\"loginOffices\": " + ListUtil.toStringList(loginOffices, ",\n", "[\n", "\n\t]") +
       "\n}";
   }
 

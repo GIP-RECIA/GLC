@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.utils;
+package fr.recia.glc.util;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ListUtils {
+public class ListUtil {
 
-  private ListUtils() {
+  private ListUtil() {
     throw new IllegalStateException("Utility class");
   }
 
@@ -29,14 +30,24 @@ public class ListUtils {
   }
 
   public static <T> String toStringList(List<T> list, String delimiter) {
-    return toStringList(list, delimiter, "[ ");
-  }
-
-  public static <T> String toStringList(List<T> list, String delimiter, String prefix) {
-    return toStringList(list, delimiter, prefix, " ]");
+    return toStringList(list, delimiter, "[ ", " ]");
   }
 
   public static <T> String toStringList(List<T> list, String delimiter, String prefix, String suffix) {
+    return list.stream()
+      .map(String::valueOf)
+      .collect(Collectors.joining(delimiter, prefix, suffix));
+  }
+
+  public static <T> String toStringList(Set<T> list) {
+    return toStringList(list, ", ");
+  }
+
+  public static <T> String toStringList(Set<T> list, String delimiter) {
+    return toStringList(list, delimiter, "[ ", " ]");
+  }
+
+  public static <T> String toStringList(Set<T> list, String delimiter, String prefix, String suffix) {
     return list.stream()
       .map(String::valueOf)
       .collect(Collectors.joining(delimiter, prefix, suffix));

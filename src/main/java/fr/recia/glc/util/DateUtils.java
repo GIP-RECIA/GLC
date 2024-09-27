@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.utils;
+package fr.recia.glc.util;
 
 import lombok.experimental.UtilityClass;
 
@@ -24,7 +24,7 @@ import java.util.Date;
 @UtilityClass
 public class DateUtils {
 
-  private SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+  private final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
   public static Date getDate(String date) throws ParseException {
     return FORMATTER.parse(date);
