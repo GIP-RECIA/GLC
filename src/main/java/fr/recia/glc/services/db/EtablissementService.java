@@ -18,12 +18,16 @@ package fr.recia.glc.services.db;
 import fr.recia.glc.db.dto.structure.EtablissementDto;
 import fr.recia.glc.db.dto.structure.SimpleEtablissementDto;
 import fr.recia.glc.db.entities.structure.Etablissement;
+import fr.recia.glc.db.entities.structure.QEtablissement;
 import fr.recia.glc.db.repositories.structure.EtablissementRepository;
+import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class EtablissementService {
@@ -32,15 +36,30 @@ public class EtablissementService {
   private EtablissementRepository<Etablissement> etablissementRepository;
 
   public List<SimpleEtablissementDto> getEtablissements() {
-    return etablissementRepository.findAllEtablissements();
+    return IteratorUtils.toList(
+        etablissementRepository
+          .findAll(QEtablissement.etablissement.uai.isNotNull(), Sort.by("nom"))
+          .iterator()
+      ).stream()
+      .map(SimpleEtablissementDto::new)
+      .collect(Collectors.toList());
   }
 
   public List<SimpleEtablissementDto> getEtablissements(Set<String> allowedUAI) {
-    return etablissementRepository.findAllowedEtablissements(allowedUAI);
+    return IteratorUtils.toList(
+        etablissementRepository
+          .findAll(QEtablissement.etablissement.uai.isNotNull().and(QEtablissement.etablissement.uai.in(allowedUAI)),
+            Sort.by("nom")
+          ).iterator()
+      ).stream()
+      .map(SimpleEtablissementDto::new)
+      .collect(Collectors.toList());
   }
 
   public EtablissementDto getEtablissement(Long id) {
-    return etablissementRepository.findByEtablissementId(id);
+    Etablissement etablissement = etablissementRepository.findOne(QEtablissement.etablissement.id.eq(id)).orElse(null);
+    if (etablissement == null) return null;
+    return new EtablissementDto(etablissement);
   }
 
 }

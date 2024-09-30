@@ -15,14 +15,11 @@
  */
 package fr.recia.glc.db.dto.structure;
 
+import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.enums.CategorieStructure;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 public class SimpleEtablissementDto {
 
   private Long id;
@@ -34,14 +31,23 @@ public class SimpleEtablissementDto {
   private String ville;
   private String siren;
 
-  public SimpleEtablissementDto(Long id, String uai, CategorieStructure categorie,
-                                String nom, String nomCourt, String siren) {
-    this.id = id;
-    this.uai = uai;
-    this.categorie = categorie;
-    this.nom = nom;
-    this.nomCourt = nomCourt;
-    this.siren = siren;
+  public SimpleEtablissementDto(Etablissement etablissement) {
+    String[] split = etablissement.getNom().split("\\$");
+    if (split.length > 2) {
+      this.type = split[0];
+      this.nom = split[1];
+      this.ville = split[2];
+    } else {
+//      this.type = etablissement.getType().getLibelle();
+      this.nom = etablissement.getNom();
+      this.ville = etablissement.getAdresse().getVille();
+    }
+
+    this.id = etablissement.getId();
+    this.uai = etablissement.getUai();
+    this.categorie = etablissement.getCategorie();
+    this.nomCourt = etablissement.getNomCourt();
+    this.siren = etablissement.getSiren();
   }
 
 }

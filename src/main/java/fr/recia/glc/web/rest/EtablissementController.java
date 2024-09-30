@@ -91,18 +91,6 @@ public class EtablissementController {
       etablissements = etablissementService.getEtablissements(allowedUAI);
     }
 
-    etablissements = etablissements.stream()
-      .map(etablissement -> {
-        String[] split = etablissement.getNom().split("\\$");
-        if (split.length > 1) {
-          etablissement.setType(split[0]);
-          etablissement.setVille(split[2]);
-          etablissement.setNom(split[1]);
-        }
-
-        return etablissement;
-      })
-      .collect(Collectors.toList());
     if (etablissements.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     return new ResponseEntity<>(etablissements, HttpStatus.OK);
@@ -134,11 +122,6 @@ public class EtablissementController {
 
       if (!allowedUAI.contains(etablissement.getUai())) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     } else etablissement.setPermission(PermissionType.ADMIN.getName());
-    String[] split = etablissement.getNom().split("\\$");
-    if (split.length > 1) {
-      etablissement.setType(split[0]);
-      etablissement.setNom(split[1]);
-    }
     List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id);
     if (!userHolder.isAdmin()) {
       etabPersonnes = etabPersonnes.stream()

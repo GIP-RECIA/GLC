@@ -15,15 +15,12 @@
  */
 package fr.recia.glc.db.dto.common;
 
+import fr.recia.glc.db.entities.common.Adresse;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-@EqualsAndHashCode
 public class AdresseDto {
 
   private String adresse;
@@ -31,5 +28,13 @@ public class AdresseDto {
   private String ville;
   private String boitePostale;
   private String pays;
+
+  public AdresseDto(Adresse adresse) {
+    this.adresse = adresse.getAdresse();
+    this.codePostal = adresse.getCodePostal();
+    this.ville = adresse.getVille();
+    this.boitePostale = adresse.getBoitePostale();
+    this.pays = adresse.getPays();
+  }
 
 }

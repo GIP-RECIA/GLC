@@ -21,13 +21,11 @@ import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
@@ -37,10 +35,7 @@ import java.util.stream.Collectors;
 
 import static fr.recia.glc.configuration.Constants.SANS_OBJET;
 
-@Slf4j
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 public class EtablissementDto {
 
   private Long id;
@@ -59,51 +54,37 @@ public class EtablissementDto {
   private String siteWeb;
   private String modeleLogin;
   private String logo;
+
   private List<TypeFonctionFiliereDto> filieres;
   private List<SimplePersonneDto> personnes;
   private List<SimplePersonneDto> withoutFunctions;
   private List<AlertDto> alerts;
   private String permission;
 
-  public EtablissementDto(Long id, String uai, Etat etat, EtatAlim etatAlim, String source, Date anneeScolaire,
-                          String adresse, String codePostal, String ville, String boitePostale, String pays,
-                          CategorieStructure categorie, String mail, String nom, String nomCourt, String siren,
-                          String siteWeb, String modeleLogin, String logo) {
-    this.id = id;
-    this.uai = uai;
-    this.etat = etat;
-    this.etatAlim = etatAlim;
-    this.source = source;
-    this.anneeScolaire = anneeScolaire;
-    this.adresse = new AdresseDto(adresse, codePostal, ville, boitePostale, pays);
-    this.categorie = categorie;
-    this.mail = mail;
-    this.nom = nom;
-    this.nomCourt = nomCourt;
-    this.siren = siren;
-    this.siteWeb = siteWeb;
-    this.modeleLogin = modeleLogin;
-    this.logo = logo;
-  }
+  public EtablissementDto(Etablissement etablissement) {
+    this.id = etablissement.getId();
+    this.uai = etablissement.getUai();
+    this.etat = etablissement.getEtat();
+    this.etatAlim = etablissement.getEtatAlim();
+    this.source = etablissement.getCleJointure().getSource();
+    this.anneeScolaire = etablissement.getAnneeScolaire();
+    this.adresse = new AdresseDto(etablissement.getAdresse());
+    this.categorie = etablissement.getCategorie();
+    this.mail = etablissement.getMail();
+    this.nomCourt = etablissement.getNomCourt();
+    this.siren = etablissement.getSiren();
+    this.siteWeb = etablissement.getSiteWeb();
+    this.modeleLogin = etablissement.getModeleLogin();
+    this.logo = etablissement.getLogo();
 
-  public EtablissementDto(Long id, String uai, Etat etat, EtatAlim etatAlim, String source, Date anneeScolaire,
-                          AdresseDto adresse, CategorieStructure categorie, String mail, String nom,
-                          String nomCourt, String siren, String siteWeb, String modeleLogin, String logo) {
-    this.id = id;
-    this.uai = uai;
-    this.etat = etat;
-    this.etatAlim = etatAlim;
-    this.source = source;
-    this.anneeScolaire = anneeScolaire;
-    this.adresse = adresse;
-    this.categorie = categorie;
-    this.mail = mail;
-    this.nom = nom;
-    this.nomCourt = nomCourt;
-    this.siren = siren;
-    this.siteWeb = siteWeb;
-    this.modeleLogin = modeleLogin;
-    this.logo = logo;
+    String[] split = etablissement.getNom().split("\\$");
+    if (split.length > 1) {
+      this.type = split[0];
+      this.nom = split[1];
+    } else {
+//      this.type = etablissement.getType().getLibelle();
+      this.nom = etablissement.getNom();
+    }
   }
 
   public void setFilieres(
