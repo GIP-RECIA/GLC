@@ -16,8 +16,12 @@
 package fr.recia.glc.db.entities.groupe;
 
 import fr.recia.glc.db.entities.personne.APersonne;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
@@ -28,6 +32,10 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class MappingAGroupeAPersonneId implements Serializable {
 
   /**
@@ -43,60 +51,5 @@ public class MappingAGroupeAPersonneId implements Serializable {
   @ManyToOne
   @JoinColumn(name = "AGROUPEOFAPERS_ID", nullable = false)
   private AGroupeOfAPersonne groupe;
-
-  /**
-   * Contructor of the object MappingAGroupeAPersonneId.java.
-   */
-  public MappingAGroupeAPersonneId() {
-    super();
-  }
-
-  /**
-   * Contructor of the object MappingAGroupeAPersonne.java.
-   *
-   * @param groupe
-   * @param personne
-   */
-  public MappingAGroupeAPersonneId(final APersonne personne, final AGroupeOfAPersonne groupe) {
-    super();
-    this.groupe = groupe;
-    this.personne = personne;
-  }
-
-  @Override
-  public String toString() {
-    return "MappingAGroupeAPersonneId [personne=" +
-      this.personne.getId() + ", groupe=" +
-      this.groupe.getId() +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((groupe == null) ? 0 : groupe.hashCode());
-    result = prime * result + ((personne == null) ? 0 : personne.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MappingAGroupeAPersonneId other = (MappingAGroupeAPersonneId) obj;
-    if (groupe == null) {
-      if (other.groupe != null)
-        return false;
-    } else if (!groupe.equals(other.groupe))
-      return false;
-    if (personne == null) {
-      return other.personne == null;
-    } else return personne.equals(other.personne);
-  }
 
 }

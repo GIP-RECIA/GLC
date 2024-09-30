@@ -18,8 +18,11 @@ package fr.recia.glc.db.entities.groupe;
 import fr.recia.glc.db.entities.fonction.FonctionClasseGroupe;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.enums.CategorieGroupe;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -33,6 +36,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class AGroupeOfFoncClasseGroupe extends AGroupeOfAPersonne {
 
   /**
@@ -58,13 +64,6 @@ public abstract class AGroupeOfFoncClasseGroupe extends AGroupeOfAPersonne {
 
   /**
    * Constructeur de l'objet AGroupeOfFoncClasseGroupe.java.
-   */
-  public AGroupeOfFoncClasseGroupe() {
-    super();
-  }
-
-  /**
-   * Constructeur de l'objet AGroupeOfFoncClasseGroupe.java.
    *
    * @param cn           Nom unique de groupe, peut servir comme identifiant.
    * @param categorie    Type de groupe.
@@ -76,50 +75,6 @@ public abstract class AGroupeOfFoncClasseGroupe extends AGroupeOfAPersonne {
                                    final Set<MappingAGroupeAPersonne> membres, final Etablissement proprietaire, final String source) {
     super(cn, categorie, membres, source);
     this.proprietaire = proprietaire;
-  }
-
-  @Override
-  public String toString() {
-    return "AGroupeOfFoncClasseGroupe [" +
-      super.toString() + ", " +
-      this.proprietaire +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    if (this.proprietaire == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.proprietaire.hashCode();
-    }
-    return result;
-  }
-
-  /**
-   * Teste si un objet est égal à cette instance.
-   *
-   * @param obj l'instance le l'object à comparer.
-   * @return <code>boolean</code> : vrai si l'instance est identique, faux sinon
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (!(obj instanceof AGroupeOfFoncClasseGroupe)) {
-      return false;
-    }
-    final AGroupeOfFoncClasseGroupe other = (AGroupeOfFoncClasseGroupe) obj;
-    if (this.proprietaire == null) {
-      return other.proprietaire == null;
-    } else return this.proprietaire.equals(other.proprietaire);
   }
 
 }

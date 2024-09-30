@@ -17,8 +17,10 @@ package fr.recia.glc.db.entities.personne;
 
 import fr.recia.glc.db.entities.common.CleJointure;
 import fr.recia.glc.db.enums.CategoriePersonne;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import java.util.Date;
@@ -26,6 +28,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Enseignant extends APersonnel {
 
   /**
@@ -49,27 +53,6 @@ public class Enseignant extends APersonnel {
   public Enseignant(final Date anneeScolaire, final CleJointure cleJointure,
                     final String cn, final String givenName, final String sn) {
     super(anneeScolaire, CategoriePersonne.Enseignant, cleJointure, cn, givenName, sn);
-  }
-
-  /**
-   * Transforme cette instance en chaine de caractères.
-   *
-   * @return <code>String</code> La chaine.
-   * @see fr.recia.glc.db.entities.personne.APersonne#toString()
-   */
-  @Override
-  public String toString() {
-    return "Enseignant [" + super.toString() + "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

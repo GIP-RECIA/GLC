@@ -17,8 +17,10 @@ package fr.recia.glc.db.entities.groupe;
 
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.enums.CategorieGroupe;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,6 +34,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class GroupementEtablissements extends AGroupe {
 
   /**
@@ -63,40 +67,6 @@ public class GroupementEtablissements extends AGroupe {
   public GroupementEtablissements(final String cn, final Set<Etablissement> membres, final String source) {
     super(cn, CategorieGroupe.Groupement_etablissement, source);
     this.membres = membres;
-  }
-
-  @Override
-  public String toString() {
-    return "GroupementEtablissement [" + super.toString() + "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    if (this.membres == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.membres.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (!(obj instanceof GroupementEtablissements)) {
-      return false;
-    }
-    final GroupementEtablissements other = (GroupementEtablissements) obj;
-    if (this.membres == null) {
-      return other.membres == null;
-    } else return this.membres.equals(other.membres);
   }
 
 }

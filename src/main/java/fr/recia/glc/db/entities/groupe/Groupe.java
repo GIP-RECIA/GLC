@@ -17,8 +17,10 @@ package fr.recia.glc.db.entities.groupe;
 
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.enums.CategorieGroupe;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,6 +34,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Groupe extends AGroupeOfFoncClasseGroupe {
 
   /**
@@ -64,33 +68,6 @@ public class Groupe extends AGroupeOfFoncClasseGroupe {
   public Groupe(final String cn, final Set<MappingAGroupeAPersonne> membres,
                 final Etablissement proprietaire, final String source) {
     super(cn, CategorieGroupe.Groupe, membres, proprietaire, source);
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder sb = new StringBuilder("Groupe [");
-    sb.append(super.toString());
-    if (this.relationsClasses != null && !this.relationsClasses.isEmpty()) {
-      sb.append(", Liste de classes liées : [");
-      for (Classe classe : this.relationsClasses) {
-        sb.append(classe.getCn());
-        sb.append(", ");
-      }
-      sb.delete(sb.length() - 2, sb.length());
-      sb.append("]");
-    }
-    sb.append("]");
-    return sb.toString();
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

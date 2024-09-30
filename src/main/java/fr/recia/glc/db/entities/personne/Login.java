@@ -17,8 +17,11 @@ package fr.recia.glc.db.entities.personne;
 
 import fr.recia.glc.db.entities.common.AbstractTracedEntity;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,6 +39,9 @@ import javax.persistence.UniqueConstraint;
 })
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Login extends AbstractTracedEntity {
 
   /**
@@ -68,62 +74,12 @@ public class Login extends AbstractTracedEntity {
 
   /**
    * Constructeur de l'objet Login.java.
-   */
-  public Login() {
-    super();
-  }
-
-  /**
-   * Constructeur de l'objet Login.java.
    *
    * @param nom Nom de login.
    */
   public Login(final String nom) {
     super();
     this.nom = nom;
-  }
-
-  /**
-   * Transforme cette instance en chaine de caractères.
-   *
-   * @return <code>String</code> La chaine.
-   * @see fr.recia.glc.db.entities.common.AbstractEntity#toString()
-   */
-  @Override
-  public String toString() {
-    return "Login [" +
-      super.toString() + ", " +
-      this.nom +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    if (this.nom == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.nom.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof Login)) {
-      return false;
-    }
-    final Login other = (Login) obj;
-    if (this.nom == null) {
-      return other.nom == null;
-    } else return this.nom.equals(other.nom);
   }
 
 }

@@ -16,8 +16,10 @@
 package fr.recia.glc.db.entities.groupe;
 
 import fr.recia.glc.db.enums.CategorieGroupe;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import java.util.Set;
@@ -25,6 +27,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class FusionPersonne extends AGroupeOfAPersonne {
 
   /**
@@ -44,21 +48,6 @@ public class FusionPersonne extends AGroupeOfAPersonne {
    */
   public FusionPersonne(final String cn, final Set<MappingAGroupeAPersonne> membres, final String source) {
     super(cn, CategorieGroupe.Fusion, membres, source);
-  }
-
-  @Override
-  public String toString() {
-    return "FusionPersonne [" + super.toString() + "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

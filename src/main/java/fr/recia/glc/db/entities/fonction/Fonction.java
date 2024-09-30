@@ -19,8 +19,10 @@ import fr.recia.glc.db.entities.education.Discipline;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.enums.CategorieFonction;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,6 +34,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Fonction extends AFonction {
 
   /**
@@ -130,78 +134,6 @@ public class Fonction extends AFonction {
     this.disciplinePoste = disciplinePoste;
     this.filiere = filiere;
     this.structure = structure;
-  }
-
-  /**
-   * Transforme cette instance en chaine de caractères.
-   *
-   * @return <code>String</code> La chaine.
-   * @see fr.recia.glc.db.entities.fonction.AFonction#toString()
-   */
-  @Override
-  public String toString() {
-    return "Fonction [" +
-      super.toString() + ", " +
-      this.disciplinePoste + ", " +
-      this.filiere + ", " +
-      this.structure +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    if (this.filiere == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.filiere.hashCode();
-    }
-    if (this.disciplinePoste == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.disciplinePoste.hashCode();
-    }
-    if (this.structure == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.structure.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (!(obj instanceof Fonction)) {
-      return false;
-    }
-    final Fonction other = (Fonction) obj;
-    if (this.filiere == null) {
-      if (other.filiere != null) {
-        return false;
-      }
-    } else if (!this.filiere.equals(other.filiere)) {
-      return false;
-    }
-    if (this.disciplinePoste == null) {
-      if (other.disciplinePoste != null) {
-        return false;
-      }
-    } else if (!this.disciplinePoste.equals(other.disciplinePoste)) {
-      return false;
-    }
-    if (this.structure == null) {
-      return other.structure == null;
-    } else return this.structure.equals(other.structure);
   }
 
 }

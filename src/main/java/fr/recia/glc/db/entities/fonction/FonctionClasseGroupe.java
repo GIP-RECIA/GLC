@@ -20,8 +20,10 @@ import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategorieFonction;
 import fr.recia.glc.db.enums.TypeClasse;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,6 +37,8 @@ import javax.persistence.ManyToOne;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class FonctionClasseGroupe extends AFonction {
 
   /**
@@ -73,59 +77,6 @@ public class FonctionClasseGroupe extends AFonction {
     super(CategorieFonction.Classe, personne, source);
     this.type = type;
     this.classeGroupe = classeGroupe;
-  }
-
-  @Override
-  public String toString() {
-    return "FonctionClasseGroupe [" +
-      super.toString() + ", " +
-      this.type + ", " +
-      this.classeGroupe +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    if (this.classeGroupe == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.classeGroupe.hashCode();
-    }
-    if (this.type == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.type.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (!(obj instanceof FonctionClasseGroupe)) {
-      return false;
-    }
-    final FonctionClasseGroupe other = (FonctionClasseGroupe) obj;
-    if (this.classeGroupe == null) {
-      if (other.classeGroupe != null) {
-        return false;
-      }
-    } else if (!this.classeGroupe.equals(other.classeGroupe)) {
-      return false;
-    }
-    if (this.type == null) {
-      return other.type == null;
-    } else return this.type.equals(other.type);
   }
 
 }

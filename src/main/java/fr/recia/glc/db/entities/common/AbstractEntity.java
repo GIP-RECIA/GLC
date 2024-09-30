@@ -16,13 +16,12 @@
 package fr.recia.glc.db.entities.common;
 
 import fr.recia.glc.db.entities.IEntity;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
 
+@NoArgsConstructor
 @ToString
 public abstract class AbstractEntity<ID extends Serializable> implements Serializable, IEntity<ID> {
-  public AbstractEntity() {
-    super();
-  }
 }

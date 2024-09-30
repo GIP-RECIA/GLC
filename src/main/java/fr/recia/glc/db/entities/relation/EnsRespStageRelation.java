@@ -19,8 +19,11 @@ import fr.recia.glc.db.entities.personne.Eleve;
 import fr.recia.glc.db.entities.personne.Enseignant;
 import fr.recia.glc.db.enums.CategorieRelation;
 import fr.recia.glc.db.enums.TypeStage;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -29,14 +32,10 @@ import javax.persistence.Entity;
 @DiscriminatorValue(value = "ENSRESPSTAGE")
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class EnsRespStageRelation extends AStageRelation {
-
-  /**
-   * Empty Constructor, must not be used.
-   */
-  public EnsRespStageRelation() {
-    super();
-  }
 
   /**
    * @param source
@@ -45,21 +44,6 @@ public class EnsRespStageRelation extends AStageRelation {
    */
   public EnsRespStageRelation(final String source, final Enseignant tuteurStage, final Eleve eleve) {
     super(source, tuteurStage, eleve, TypeStage.Enseignant_responsable, CategorieRelation.EnsRespStage);
-  }
-
-  @Override
-  public String toString() {
-    return "EnsRespStageRelation [" + super.toString() + "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

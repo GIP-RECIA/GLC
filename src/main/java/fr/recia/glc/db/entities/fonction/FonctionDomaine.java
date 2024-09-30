@@ -18,8 +18,10 @@ package fr.recia.glc.db.entities.fonction;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.enums.CategorieFonction;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -34,6 +36,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class FonctionDomaine extends AFonction {
 
   /**
@@ -76,59 +80,6 @@ public class FonctionDomaine extends AFonction {
     super(CategorieFonction.Domaine, personne, source);
     this.domaines = domaines;
     this.structure = structure;
-  }
-
-  @Override
-  public String toString() {
-    return "FonctionDomaine [" +
-      super.toString() + ", " +
-      this.structure + ", " +
-      this.domaines +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    if (this.domaines == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.domaines.hashCode();
-    }
-    if (this.structure == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.structure.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (!(obj instanceof FonctionDomaine)) {
-      return false;
-    }
-    final FonctionDomaine other = (FonctionDomaine) obj;
-    if (this.domaines == null) {
-      if (other.domaines != null) {
-        return false;
-      }
-    } else if (!this.domaines.equals(other.domaines)) {
-      return false;
-    }
-    if (this.structure == null) {
-      return other.structure == null;
-    } else return this.structure.equals(other.structure);
   }
 
 }

@@ -20,8 +20,10 @@ import fr.recia.glc.db.entities.groupe.GroupementEtablissements;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Contrat;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,6 +41,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Etablissement extends AStructure {
 
   /**
@@ -120,47 +124,6 @@ public class Etablissement extends AStructure {
     this.uai = uai;
     this.ministereTutelle = ministereTutelle;
     this.contrat = contrat;
-  }
-
-  @Override
-  public String toString() {
-    return "Etablissement [" +
-      super.toString() + ", " +
-      this.uai + ", " +
-      this.contrat + ", " +
-      this.bassinFormation + ", " +
-      this.ministereTutelle + ", " +
-      this.groupements +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    if (this.uai == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.uai.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (!(obj instanceof Etablissement)) {
-      return false;
-    }
-    final Etablissement other = (Etablissement) obj;
-    if (this.uai == null) {
-      return other.uai == null;
-    } else return this.uai.equals(other.uai);
   }
 
 }

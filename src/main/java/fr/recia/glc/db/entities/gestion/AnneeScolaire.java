@@ -16,8 +16,11 @@
 package fr.recia.glc.db.entities.gestion;
 
 import fr.recia.glc.db.entities.common.AbstractTracedEntity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +31,9 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class AnneeScolaire extends AbstractTracedEntity {
 
   /**
@@ -58,13 +64,6 @@ public class AnneeScolaire extends AbstractTracedEntity {
 
   /**
    * Constructeur de l'objet AnneeScolaire.java.
-   */
-  public AnneeScolaire() {
-    super();
-  }
-
-  /**
-   * Constructeur de l'objet AnneeScolaire.java.
    *
    * @param anneeEnCours         Année scolaire en cours, année à la rentrée (de septembre).
    * @param passageAnneeSuivante Date de passage des insertions à l'année suivante.
@@ -76,70 +75,6 @@ public class AnneeScolaire extends AbstractTracedEntity {
     this.anneeEnCours = anneeEnCours;
     this.passageAnneeSuivante = passageAnneeSuivante;
     this.finAutorisation = finAutorisation;
-  }
-
-  @Override
-  public String toString() {
-    return "AnneeScolaire [" +
-      super.toString() + ", " +
-      this.anneeEnCours + ", " +
-      this.passageAnneeSuivante + ", " +
-      this.finAutorisation + ", " +
-      this.etabMAJ +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    if (this.anneeEnCours == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.anneeEnCours.hashCode();
-    }
-    if (this.finAutorisation == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.finAutorisation.hashCode();
-    }
-    if (this.passageAnneeSuivante == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.passageAnneeSuivante.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof AnneeScolaire)) {
-      return false;
-    }
-    final AnneeScolaire other = (AnneeScolaire) obj;
-    if (this.anneeEnCours == null) {
-      if (other.anneeEnCours != null) {
-        return false;
-      }
-    } else if (!this.anneeEnCours.equals(other.anneeEnCours)) {
-      return false;
-    }
-    if (this.finAutorisation == null) {
-      if (other.finAutorisation != null) {
-        return false;
-      }
-    } else if (!this.finAutorisation.equals(other.finAutorisation)) {
-      return false;
-    }
-    if (this.passageAnneeSuivante == null) {
-      return other.passageAnneeSuivante == null;
-    } else return this.passageAnneeSuivante.equals(other.passageAnneeSuivante);
   }
 
 }

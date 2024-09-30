@@ -17,8 +17,10 @@ package fr.recia.glc.db.entities.structure;
 
 import fr.recia.glc.db.entities.common.CleJointure;
 import fr.recia.glc.db.enums.CategorieStructure;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,6 +34,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Entreprise extends AStructure {
 
   /**
@@ -63,24 +67,6 @@ public class Entreprise extends AStructure {
    */
   public Entreprise(final String nom, final String siren, final CleJointure cleJointure) {
     super(CategorieStructure.Entreprise, nom, siren, cleJointure);
-  }
-
-  @Override
-  public String toString() {
-    return "Entreprise [" +
-      super.toString() + ", " +
-      this.partenariat +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

@@ -18,8 +18,11 @@ package fr.recia.glc.db.entities.groupe;
 import fr.recia.glc.db.entities.education.Enseignement;
 import fr.recia.glc.db.entities.personne.Enseignant;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -40,6 +43,9 @@ import java.io.Serializable;
 })
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class MappingAGroupeAPersonneEnseignement implements Serializable {
 
   /**
@@ -57,13 +63,6 @@ public class MappingAGroupeAPersonneEnseignement implements Serializable {
 
   /**
    * Contructor of the object MappingAGroupeAPersonneEnseignement.java.
-   */
-  public MappingAGroupeAPersonneEnseignement() {
-    super();
-  }
-
-  /**
-   * Contructor of the object MappingAGroupeAPersonneEnseignement.java.
    *
    * @param source
    * @param groupe
@@ -72,47 +71,8 @@ public class MappingAGroupeAPersonneEnseignement implements Serializable {
    */
   public MappingAGroupeAPersonneEnseignement(final String source, final Enseignant enseignant,
                                              final AGroupeOfFoncClasseGroupe groupe, final Enseignement enseignement) {
-    super();
     this.source = source;
     this.pk = new MappingAGroupeAPersonneEnseignementId(enseignant, groupe, enseignement);
-  }
-
-  @Override
-  public String toString() {
-    return "MappingAGroupeAPersonneEnseignement [source=" +
-      source + ", division=" +
-      this.pk.getGroupe().getId() + ", enseignant=" +
-      this.pk.getEnseignant().getId() + ", enseignement=" +
-      this.pk.getEnseignement().getId() +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((pk == null) ? 0 : pk.hashCode());
-    result = prime * result + ((source == null) ? 0 : source.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MappingAGroupeAPersonneEnseignement other = (MappingAGroupeAPersonneEnseignement) obj;
-    if (pk == null) {
-      if (other.pk != null)
-        return false;
-    } else if (!pk.equals(other.pk))
-      return false;
-    if (source == null) {
-      return other.source == null;
-    } else return source.equals(other.source);
   }
 
 }

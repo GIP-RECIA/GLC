@@ -17,8 +17,12 @@ package fr.recia.glc.db.entities.groupe;
 
 import fr.recia.glc.db.entities.education.Enseignement;
 import fr.recia.glc.db.entities.personne.Enseignant;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -28,6 +32,10 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class MappingAGroupeAPersonneEnseignementId implements Serializable {
 
   /**
@@ -48,73 +56,5 @@ public class MappingAGroupeAPersonneEnseignementId implements Serializable {
   @ManyToOne
   @JoinColumn(name = "ENSEIGNEMENT_ID", nullable = false)
   private Enseignement enseignement;
-
-  /**
-   * Contructor of the object MappingAGroupeAPersonneEnseignementId.java.
-   */
-  public MappingAGroupeAPersonneEnseignementId() {
-    super();
-  }
-
-  /**
-   * Contructor of the object MappingAGroupeAPersonneEnseignementId.java.
-   *
-   * @param enseignant
-   * @param groupe       Une classe ou un groupe.
-   * @param enseignement
-   */
-  public MappingAGroupeAPersonneEnseignementId(final Enseignant enseignant,
-                                               final AGroupeOfFoncClasseGroupe groupe,
-                                               final Enseignement enseignement) {
-    super();
-    this.enseignant = enseignant;
-    this.groupe = groupe;
-    this.enseignement = enseignement;
-  }
-
-  @Override
-  public String toString() {
-    return "MappingAGroupeAPersonneEnseignementId [enseignant=" +
-      this.enseignant + ", groupe=" +
-      this.groupe + ", enseignement=" +
-      this.enseignement +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result
-      + ((enseignement == null) ? 0 : enseignement.hashCode());
-    result = prime * result + ((groupe == null) ? 0 : groupe.hashCode());
-    result = prime * result
-      + ((enseignant == null) ? 0 : enseignant.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MappingAGroupeAPersonneEnseignementId other = (MappingAGroupeAPersonneEnseignementId) obj;
-    if (enseignement == null) {
-      if (other.enseignement != null)
-        return false;
-    } else if (!enseignement.equals(other.enseignement))
-      return false;
-    if (groupe == null) {
-      if (other.groupe != null)
-        return false;
-    } else if (!groupe.equals(other.groupe))
-      return false;
-    if (enseignant == null) {
-      return other.enseignant == null;
-    } else return enseignant.equals(other.enseignant);
-  }
 
 }

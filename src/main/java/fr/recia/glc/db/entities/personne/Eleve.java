@@ -20,8 +20,10 @@ import fr.recia.glc.db.entities.education.MEF;
 import fr.recia.glc.db.entities.education.MappingEleveEnseignement;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -44,6 +46,8 @@ import java.util.Set;
 })
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Eleve extends APersonne {
 
   /**
@@ -123,39 +127,6 @@ public class Eleve extends APersonne {
   public Eleve(final Date anneeScolaire, final CleJointure cleJointure,
                final String cn, final String givenName, final String sn) {
     super(anneeScolaire, CategoriePersonne.Eleve, cleJointure, cn, givenName, sn);
-  }
-
-  /**
-   * Transforme cette instance en chaine de caractères.
-   *
-   * @return <code>String</code> La chaine.
-   * @see fr.recia.glc.db.entities.personne.APersonne#toString()
-   */
-  @Override
-  public String toString() {
-    return "Eleve [" +
-      super.toString() + ", " +
-      this.siecleId + ", " +
-      this.INE + ", " +
-      this.boursier + ", " +
-      this.majeur + ", " +
-      this.majeurAnticipe + ", " +
-      this.regime + ", " +
-      this.statut + ", " +
-      this.transport + ", " +
-      this.mef + ", " +
-      this.enseignements +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

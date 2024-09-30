@@ -19,8 +19,11 @@ import fr.recia.glc.db.entities.common.CleJointure;
 import fr.recia.glc.db.entities.common.TypeService;
 import fr.recia.glc.db.entities.education.CategorieDiscipline;
 import fr.recia.glc.db.enums.CategoriePersonne;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -38,6 +41,9 @@ import java.util.Set;
 @MappedSuperclass
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class APersonnel extends APersonne {
 
   /**
@@ -66,38 +72,9 @@ public abstract class APersonnel extends APersonne {
   )
   private Set<TypeService> services = new HashSet<>();
 
-  public APersonnel() {
-    super();
-  }
-
   public APersonnel(final Date anneeScolaire, final CategoriePersonne categorie, final CleJointure cleJointure,
                     final String cn, final String givenName, final String sn) {
     super(anneeScolaire, categorie, cleJointure, cn, givenName, sn);
-  }
-
-  /**
-   * Transforme cette instance en chaine de caractères.
-   *
-   * @return <code>String</code> La chaine.
-   * @see fr.recia.glc.db.entities.personne.APersonne#toString()
-   */
-  @Override
-  public String toString() {
-    return "APersonnel [" +
-      super.toString() + ", " +
-      this.categorieDisciplines + ", " +
-      this.services +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

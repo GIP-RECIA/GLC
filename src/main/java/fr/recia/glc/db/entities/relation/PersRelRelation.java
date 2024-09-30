@@ -21,8 +21,11 @@ import fr.recia.glc.db.enums.CategorieRelation;
 import fr.recia.glc.db.enums.LienParente;
 import fr.recia.glc.db.enums.ResponsableLegal;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -34,6 +37,9 @@ import javax.persistence.Enumerated;
 @DiscriminatorValue(value = "PERSREL")
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class PersRelRelation extends AMappingRelation {
 
   /**
@@ -59,13 +65,6 @@ public class PersRelRelation extends AMappingRelation {
   private boolean adresse;
 
   /**
-   * Empty Constructor, must not be used.
-   */
-  public PersRelRelation() {
-    super();
-  }
-
-  /**
    * @param source
    * @param persRelEleve
    * @param eleve
@@ -87,52 +86,6 @@ public class PersRelRelation extends AMappingRelation {
     this.contact = contact;
     this.paiement = paiement;
     this.adresse = adresse;
-  }
-
-  @Override
-  public String toString() {
-    return "PersRelRelation [lienParente=" +
-      this.lienParente + ", responsableFinancier=" +
-      this.responsableFinancier + ", responsableLegal=" +
-      this.responsableLegal + ", contact=" +
-      this.contact + ", paiement=" +
-      this.paiement + ", adresse=" +
-      this.adresse + ", toString()=" +
-      super.toString() +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + (adresse ? 1231 : 1237);
-    result = prime * result + (contact ? 1231 : 1237);
-    result = prime * result + ((lienParente == null) ? 0 : lienParente.hashCode());
-    result = prime * result + (paiement ? 1231 : 1237);
-    result = prime * result + (responsableFinancier ? 1231 : 1237);
-    result = prime * result + ((responsableLegal == null) ? 0 : responsableLegal.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (!super.equals(obj))
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    PersRelRelation other = (PersRelRelation) obj;
-    if (contact != other.contact)
-      return false;
-    if (lienParente != other.lienParente)
-      return false;
-    if (paiement != other.paiement)
-      return false;
-    if (responsableFinancier != other.responsableFinancier)
-      return false;
-    return responsableLegal == other.responsableLegal;
   }
 
 }

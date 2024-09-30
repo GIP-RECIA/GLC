@@ -20,8 +20,11 @@ import fr.recia.glc.db.entities.personne.Eleve;
 import fr.recia.glc.db.enums.CategorieRelation;
 import fr.recia.glc.db.enums.TypeStage;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +34,9 @@ import javax.persistence.Enumerated;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class AStageRelation extends AMappingRelation {
 
   /**
@@ -39,13 +45,6 @@ public abstract class AStageRelation extends AMappingRelation {
   @Enumerated(EnumType.STRING)
   @Column(length = IntConst.I30)
   private TypeStage type;
-
-  /**
-   * Empty Constructor, must not be used.
-   */
-  public AStageRelation() {
-    super();
-  }
 
   /**
    * @param source
@@ -58,34 +57,6 @@ public abstract class AStageRelation extends AMappingRelation {
                         final TypeStage type, final CategorieRelation typeStage) {
     super(source, tuteurStage, eleve, typeStage);
     this.type = type;
-  }
-
-  @Override
-  public String toString() {
-    return "StageRelation [" +
-      type + ", " +
-      super.toString() +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((type == null) ? 0 : type.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (!super.equals(obj))
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    AStageRelation other = (AStageRelation) obj;
-    return type == other.type;
   }
 
 }

@@ -18,8 +18,12 @@ package fr.recia.glc.db.entities.relation;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategorieRelation;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,6 +37,10 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class MappingAPersonneAPersonneId implements Serializable {
 
   /**
@@ -51,66 +59,5 @@ public class MappingAPersonneAPersonneId implements Serializable {
   @Enumerated(EnumType.STRING)
   @Column(length = IntConst.I20)
   private CategorieRelation categorie;
-
-  /**
-   * Contructor of the object MappingAPersonneAPersonneId.java.
-   */
-  public MappingAPersonneAPersonneId() {
-    super();
-  }
-
-  /**
-   * Contructor of the object MappingAPersonneAPersonne.java.
-   *
-   * @param personne1
-   * @param personne2
-   */
-  public MappingAPersonneAPersonneId(final APersonne personne1, final APersonne personne2,
-                                     final CategorieRelation categoryRelation) {
-    super();
-    this.personne1 = personne1;
-    this.personne2 = personne2;
-    this.categorie = categoryRelation;
-  }
-
-  @Override
-  public String toString() {
-    return "MappingAPersonneAPersonneId [personne1=" +
-      this.personne1 + ", personne2=" +
-      this.personne2 + ", categoryRelation=" +
-      this.categorie +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((categorie == null) ? 0 : categorie.hashCode());
-    result = prime * result + ((personne1 == null) ? 0 : personne1.hashCode());
-    result = prime * result + ((personne2 == null) ? 0 : personne2.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MappingAPersonneAPersonneId other = (MappingAPersonneAPersonneId) obj;
-    if (categorie != other.categorie)
-      return false;
-    if (personne1 == null) {
-      if (other.personne1 != null)
-        return false;
-    } else if (!personne1.equals(other.personne1))
-      return false;
-    if (personne2 == null) {
-      return other.personne2 == null;
-    } else return personne2.equals(other.personne2);
-  }
 
 }

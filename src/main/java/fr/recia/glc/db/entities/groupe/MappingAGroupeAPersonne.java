@@ -17,8 +17,11 @@ package fr.recia.glc.db.entities.groupe;
 
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -42,6 +45,9 @@ import java.io.Serializable;
 })
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class MappingAGroupeAPersonne implements Serializable {
 
   /**
@@ -58,59 +64,14 @@ public class MappingAGroupeAPersonne implements Serializable {
 
   /**
    * Contructor of the object MappingAGroupeAPersonne.java.
-   */
-  public MappingAGroupeAPersonne() {
-    super();
-  }
-
-  /**
-   * Contructor of the object MappingAGroupeAPersonne.java.
    *
    * @param source
    * @param groupe
    * @param personne
    */
   public MappingAGroupeAPersonne(final String source, final APersonne personne, final AGroupeOfAPersonne groupe) {
-    super();
     this.source = source;
     this.pk = new MappingAGroupeAPersonneId(personne, groupe);
-  }
-
-  @Override
-  public String toString() {
-    return "MappingAGroupeAPersonne [source=" +
-      this.source + ", groupe=" +
-      this.pk.getGroupe().getId() + ", personne=" +
-      this.pk.getPersonne().getId() +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((pk == null) ? 0 : pk.hashCode());
-    result = prime * result + ((source == null) ? 0 : source.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MappingAGroupeAPersonne other = (MappingAGroupeAPersonne) obj;
-    if (pk == null) {
-      if (other.pk != null)
-        return false;
-    } else if (!pk.equals(other.pk))
-      return false;
-    if (source == null) {
-      return other.source == null;
-    } else return source.equals(other.source);
   }
 
 }

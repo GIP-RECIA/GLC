@@ -18,8 +18,11 @@ package fr.recia.glc.db.entities.groupe;
 import fr.recia.glc.db.entities.common.AbstractTracedEntity;
 import fr.recia.glc.db.enums.CategorieGroupe;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +35,9 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class AGroupe extends AbstractTracedEntity {
 
   /**
@@ -62,13 +68,6 @@ public abstract class AGroupe extends AbstractTracedEntity {
 
   /**
    * Constructeur de l'objet AGroupe.java.
-   */
-  public AGroupe() {
-    super();
-  }
-
-  /**
-   * Constructeur de l'objet AGroupe.java.
    *
    * @param cn        Nom unique de groupe, peut servir comme identifiant.
    * @param categorie Type de groupe.
@@ -79,71 +78,6 @@ public abstract class AGroupe extends AbstractTracedEntity {
     this.cn = cn;
     this.categorie = categorie;
     this.source = source;
-  }
-
-  @Override
-  public String toString() {
-    return "AGroupe [" +
-      super.toString() + ", " +
-      this.categorie + ", " +
-      this.cn + ", " +
-      this.source + ", " +
-      this.anneeScolaire + ", " +
-      this.description +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    if (this.categorie == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.categorie.hashCode();
-    }
-    if (this.cn == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.cn.hashCode();
-    }
-    if (this.source == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.source.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof AGroupe)) {
-      return false;
-    }
-    final AGroupe other = (AGroupe) obj;
-    if (this.categorie == null) {
-      if (other.categorie != null) {
-        return false;
-      }
-    } else if (!this.categorie.equals(other.categorie)) {
-      return false;
-    }
-    if (this.cn == null) {
-      if (other.cn != null) {
-        return false;
-      }
-    } else if (!this.cn.equalsIgnoreCase(other.cn)) {
-      return false;
-    }
-    if (this.source == null) {
-      return other.source == null;
-    } else return this.source.equals(other.source);
   }
 
 }

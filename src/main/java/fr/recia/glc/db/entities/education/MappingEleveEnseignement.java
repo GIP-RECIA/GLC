@@ -18,8 +18,11 @@ package fr.recia.glc.db.entities.education;
 import fr.recia.glc.db.entities.personne.Eleve;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.utils.IntConst;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Parent;
 
 import javax.persistence.Basic;
@@ -32,6 +35,9 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class MappingEleveEnseignement implements Serializable {
 
   /**
@@ -61,19 +67,11 @@ public class MappingEleveEnseignement implements Serializable {
 
   /**
    * Contructor of the object MappingEleveEnseignement.java.
-   */
-  public MappingEleveEnseignement() {
-    super();
-  }
-
-  /**
-   * Contructor of the object MappingEleveEnseignement.java.
    *
    * @param source
    * @param enseignement
    */
   public MappingEleveEnseignement(final String source, final Enseignement enseignement) {
-    super();
     this.source = source;
     this.enseignement = enseignement;
   }
@@ -86,48 +84,9 @@ public class MappingEleveEnseignement implements Serializable {
    * @param etablissement
    */
   public MappingEleveEnseignement(final String source, final Enseignement enseignement, final Etablissement etablissement) {
-    super();
     this.source = source;
     this.enseignement = enseignement;
     this.etablissement = etablissement;
-  }
-
-  @Override
-  public String toString() {
-    return "MappingEleveEnseignement [source=" +
-      this.source + ", enseignement=" +
-      this.enseignement + ", etablissement=" +
-      (etablissement != null ? etablissement.getId() : "default") +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((eleve == null) ? 0 : eleve.hashCode());
-    result = prime * result + ((enseignement == null) ? 0 : enseignement.hashCode());
-    result = prime * result + ((source == null) ? 0 : source.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MappingEleveEnseignement other = (MappingEleveEnseignement) obj;
-    if (enseignement == null) {
-      if (other.enseignement != null)
-        return false;
-    } else if (!enseignement.equals(other.enseignement))
-      return false;
-    if (source == null) {
-      return other.source == null;
-    } else return source.equals(other.source);
   }
 
 }

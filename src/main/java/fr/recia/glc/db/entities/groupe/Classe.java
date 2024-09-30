@@ -18,8 +18,10 @@ package fr.recia.glc.db.entities.groupe;
 import fr.recia.glc.db.entities.education.MEF;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.enums.CategorieGroupe;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,6 +34,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Classe extends AGroupeOfFoncClasseGroupe {
 
   /**
@@ -63,33 +67,6 @@ public class Classe extends AGroupeOfFoncClasseGroupe {
   public Classe(final String cn, final Set<MappingAGroupeAPersonne> membres,
                 final Etablissement proprietaire, final String source) {
     super(cn, CategorieGroupe.Classe, membres, proprietaire, source);
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder sb = new StringBuilder("Classe [");
-    sb.append(super.toString());
-    if (this.mefs != null && !this.mefs.isEmpty()) {
-      sb.append(", MEFs : [");
-      for (MEF mef : this.mefs) {
-        sb.append(mef.getCode());
-        sb.append(", ");
-      }
-      sb.delete(sb.length() - 2, sb.length());
-      sb.append("]");
-    }
-    sb.append("]");
-    return sb.toString();
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

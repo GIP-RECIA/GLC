@@ -18,8 +18,10 @@ package fr.recia.glc.db.entities.fonction;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.enums.CategorieFonction;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -33,6 +35,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class FonctionMEF extends AFonction {
 
   /**
@@ -73,47 +77,6 @@ public class FonctionMEF extends AFonction {
     super(CategorieFonction.MEF, personne, source);
     this.mefs = mefs;
     this.etablissement = etablissement;
-  }
-
-  @Override
-  public String toString() {
-    return "FonctionMEF [" +
-      super.toString() + ", " +
-      this.etablissement + ", " +
-      this.mefs +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    if (this.etablissement == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + this.etablissement.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (!(obj instanceof FonctionMEF)) {
-      return false;
-    }
-    final FonctionMEF other = (FonctionMEF) obj;
-    if (this.etablissement == null) {
-      return other.etablissement == null;
-    } else return this.etablissement.equals(other.etablissement);
   }
 
 }

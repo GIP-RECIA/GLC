@@ -18,8 +18,10 @@ package fr.recia.glc.db.entities.personne;
 import fr.recia.glc.db.entities.common.CleJointure;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.enums.CategoriePersonne;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import java.io.Serializable;
@@ -28,6 +30,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class ResponsableEntreprise extends APersonne implements Serializable {
 
   /**
@@ -53,27 +57,6 @@ public class ResponsableEntreprise extends APersonne implements Serializable {
                                final String cn, final String givenName, final String sn, final AStructure societe) {
     super(anneeScolaire, CategoriePersonne.Responsable_Entreprise, cleJointure, cn, givenName, sn);
     this.setStructRattachement(societe);
-  }
-
-  /**
-   * Transforme cette instance en chaine de caractères.
-   *
-   * @return <code>String</code> La chaine.
-   * @see fr.recia.glc.db.entities.personne.APersonne#toString()
-   */
-  @Override
-  public String toString() {
-    return "ResponsableEntreprise [" + super.toString() + "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

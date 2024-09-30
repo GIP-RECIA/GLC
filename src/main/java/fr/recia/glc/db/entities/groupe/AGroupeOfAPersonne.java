@@ -16,8 +16,11 @@
 package fr.recia.glc.db.entities.groupe;
 
 import fr.recia.glc.db.enums.CategorieGroupe;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,6 +31,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class AGroupeOfAPersonne extends AGroupe {
 
   /**
@@ -35,13 +41,6 @@ public abstract class AGroupeOfAPersonne extends AGroupe {
    */
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.groupe")
   private Set<MappingAGroupeAPersonne> membres = new HashSet<>();
-
-  /**
-   * Constructeur de l'objet AGroupeOfAPersonne.java.
-   */
-  public AGroupeOfAPersonne() {
-    super();
-  }
 
   /**
    * Constructeur de l'objet AGroupeOfAPersonne.java.
@@ -55,21 +54,6 @@ public abstract class AGroupeOfAPersonne extends AGroupe {
                             final Set<MappingAGroupeAPersonne> membres, final String source) {
     super(cn, categorie, source);
     this.membres = membres;
-  }
-
-  @Override
-  public String toString() {
-    return "AGroupeOfAPersonne [" + super.toString() + "]";
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
   }
 
 }

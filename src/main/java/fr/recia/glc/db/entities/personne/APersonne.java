@@ -34,8 +34,10 @@ import fr.recia.glc.db.utils.IntConst;
 import fr.recia.glc.ldap.Subject;
 import fr.recia.glc.ldap.SubjectKey;
 import fr.recia.glc.ldap.enums.SubjectType;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -80,6 +82,8 @@ import static fr.recia.glc.configuration.Constants.SARAPISUI_;
 })
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class APersonne extends AbstractTracedEntity implements Subject {
 
   /**
@@ -356,84 +360,6 @@ public abstract class APersonne extends AbstractTracedEntity implements Subject 
 
   public SubjectKey getSubject() {
     return new SubjectKey(this.getUid(), SubjectType.PERSON);
-  }
-
-  /**
-   * Transforme cette instance en chaine de caractères.
-   *
-   * @return <code>String</code> La chaine.
-   * @see fr.recia.glc.db.entities.common.AbstractEntity#toString()
-   */
-  @Override
-  public String toString() {
-    return "APersonne [" +
-      super.toString() + ", " +
-      this.categorie + ", " +
-      this.etat + ", " +
-      this.forceEtat + ", " +
-      this.cleJointure + ", " +
-      this.uid + ", " +
-      this.uuid + ", " +
-      this.idEduConnect + ", " +
-      this.login + ", " +
-      this.alias + ", " +
-      this.externalIds + ", " +
-      this.cn + ", " +
-      this.listeRouge + ", " +
-      this.displayName + ", " +
-      this.givenName + ", " +
-      this.sn + ", " +
-      this.patronyme + ", " +
-      this.prenoms + ", " +
-      this.password + ", " +
-      this.adresse + ", " +
-      this.civilite + ", " +
-      this.sexe + ", " +
-      this.titre + ", " +
-      this.dateNaissance + ", " +
-      this.email + ", " +
-      this.numBureau + ", " +
-      this.photo + ", " +
-      this.fonctions + ", " +
-      this.telephones + ", " +
-      this.anneeScolaire + ", " +
-      this.emailPersonnel + ", " +
-      this.autresMails + ", " +
-      this.doForward + ", " +
-      this.validationCharte + ", " +
-      this.groupes + ", " +
-      this.incertains + ", " +
-      this.structRattachement +
-      "]";
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    if (cleJointure == null) {
-      result = prime * result;
-    } else {
-      result = prime * result + cleJointure.hashCode();
-    }
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof APersonne)) {
-      return false;
-    }
-    final APersonne other = (APersonne) obj;
-    if (cleJointure == null) {
-      return other.cleJointure == null;
-    } else return cleJointure.equals(other.cleJointure);
   }
 
 }
