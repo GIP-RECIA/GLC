@@ -200,13 +200,8 @@ public class Fonction extends AFonction {
       return false;
     }
     if (this.structure == null) {
-      if (other.structure != null) {
-        return false;
-      }
-    } else if (!this.structure.equals(other.structure)) {
-      return false;
-    }
-    return true;
+      return other.structure == null;
+    } else return this.structure.equals(other.structure);
   }
 
 }

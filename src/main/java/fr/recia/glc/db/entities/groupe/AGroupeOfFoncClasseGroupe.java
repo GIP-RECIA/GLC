@@ -118,13 +118,8 @@ public abstract class AGroupeOfFoncClasseGroupe extends AGroupeOfAPersonne {
     }
     final AGroupeOfFoncClasseGroupe other = (AGroupeOfFoncClasseGroupe) obj;
     if (this.proprietaire == null) {
-      if (other.proprietaire != null) {
-        return false;
-      }
-    } else if (!this.proprietaire.equals(other.proprietaire)) {
-      return false;
-    }
-    return true;
+      return other.proprietaire == null;
+    } else return this.proprietaire.equals(other.proprietaire);
   }
 
 }

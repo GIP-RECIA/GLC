@@ -95,13 +95,8 @@ public class GroupementEtablissements extends AGroupe {
     }
     final GroupementEtablissements other = (GroupementEtablissements) obj;
     if (this.membres == null) {
-      if (other.membres != null) {
-        return false;
-      }
-    } else if (!this.membres.equals(other.membres)) {
-      return false;
-    }
-    return true;
+      return other.membres == null;
+    } else return this.membres.equals(other.membres);
   }
 
 }

@@ -49,7 +49,7 @@ public class UserContextLoaderServiceImpl implements UserContextLoaderService {
   @Autowired
   public IStructureLoader structureLoader;
 
-  private GLCProperties glcProperties;
+  private final GLCProperties glcProperties;
 
   public UserContextLoaderServiceImpl(GLCProperties glcProperties, TypeStructureRepository typeStructureRepository) {
     this.glcProperties = glcProperties;

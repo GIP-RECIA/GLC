@@ -58,7 +58,7 @@ public class LdapGroupAttachMemberDesignerImpl implements IGroupMemberDesigner {
     if (group == null) return null;
 
     Matcher profMatcher = patternGroupIntoAttach.matcher(group.getId());
-    log.debug("Design for group id {} with matcher {}, and is matching {}", group.getId(), profMatcher.toString(), profMatcher.matches());
+    log.debug("Design for group id {} with matcher {}, and is matching {}", group.getId(), profMatcher, profMatcher.matches());
     if (profMatcher.matches()) {
       StringBuilder filter = new StringBuilder("(|");
       for (String endPattern : groupToAttachEndPattern) {

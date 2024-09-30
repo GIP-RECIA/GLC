@@ -48,7 +48,7 @@ import java.util.Set;
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
-  private ApplicationContext applicationContext;
+  private final ApplicationContext applicationContext;
   private final GLCProperties glcProperties;
 
   public MethodSecurityConfig(ApplicationContext applicationContext, GLCProperties glcProperties) {

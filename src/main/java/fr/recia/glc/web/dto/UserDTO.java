@@ -26,20 +26,16 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 @ToString
 public class UserDTO extends SubjectDTO {
 
-  @Getter
-  private String userId;
-  @Getter
+  private final String userId;
   private String email;
-  @Getter
   @Setter
   @Size(min = 2, max = CstPropertiesLength.LANG)
   private String langKey;
-  @Getter
   private Map<String, List<String>> attributes;
-  @Getter
   private boolean foundOnInternalSource;
 
   // private List<String> roles;
@@ -73,4 +69,5 @@ public class UserDTO extends SubjectDTO {
     this.attributes = attributes;
     this.foundOnInternalSource = true;
   }
+
 }

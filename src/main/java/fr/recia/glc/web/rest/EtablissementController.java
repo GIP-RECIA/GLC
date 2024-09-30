@@ -61,7 +61,7 @@ public class EtablissementController {
   @Autowired
   private AlertService alertService;
 
-  private GLCProperties glcProperties;
+  private final GLCProperties glcProperties;
   @Autowired
   private UserContextRole userContextRole;
 

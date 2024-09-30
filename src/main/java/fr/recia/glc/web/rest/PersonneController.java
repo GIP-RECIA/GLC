@@ -78,7 +78,7 @@ public class PersonneController {
   }
 
   @PostMapping(value = "/{id}/fonction")
-  public ResponseEntity setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) throws Exception {
+  public ResponseEntity setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) {
     if (!body.postDataOk()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     boolean success;
@@ -104,7 +104,7 @@ public class PersonneController {
   }
 
   @PostMapping(value = "/{id}/fonction/v2")
-  public ResponseEntity setPersonneAdditionals(@PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) throws Exception {
+  public ResponseEntity setPersonneAdditionals(@PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) {
     if (!body.postDataOk()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     boolean success;

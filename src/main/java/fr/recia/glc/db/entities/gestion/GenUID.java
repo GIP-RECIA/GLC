@@ -136,13 +136,8 @@ public class GenUID extends AbstractTracedEntity {
       return false;
     }
     if (this.xx == null) {
-      if (other.xx != null) {
-        return false;
-      }
-    } else if (!this.xx.equals(other.xx)) {
-      return false;
-    }
-    return true;
+      return other.xx == null;
+    } else return this.xx.equals(other.xx);
   }
 
 }

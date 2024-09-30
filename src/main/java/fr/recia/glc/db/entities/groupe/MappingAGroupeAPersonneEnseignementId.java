@@ -113,11 +113,8 @@ public class MappingAGroupeAPersonneEnseignementId implements Serializable {
     } else if (!groupe.equals(other.groupe))
       return false;
     if (enseignant == null) {
-      if (other.enseignant != null)
-        return false;
-    } else if (!enseignant.equals(other.enseignant))
-      return false;
-    return true;
+      return other.enseignant == null;
+    } else return enseignant.equals(other.enseignant);
   }
 
 }

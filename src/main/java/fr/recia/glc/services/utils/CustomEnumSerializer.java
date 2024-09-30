@@ -16,7 +16,6 @@
 package fr.recia.glc.services.utils;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
@@ -28,7 +27,7 @@ import java.io.IOException;
 public class CustomEnumSerializer extends JsonSerializer<Enum<?>> {
 
   @Override
-  public void serialize(Enum<?> value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+  public void serialize(Enum<?> value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
     jgen.writeString(value.toString());
   }
 

@@ -159,13 +159,8 @@ public class Etablissement extends AStructure {
     }
     final Etablissement other = (Etablissement) obj;
     if (this.uai == null) {
-      if (other.uai != null) {
-        return false;
-      }
-    } else if (!this.uai.equals(other.uai)) {
-      return false;
-    }
-    return true;
+      return other.uai == null;
+    } else return this.uai.equals(other.uai);
   }
 
 }

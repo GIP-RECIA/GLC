@@ -171,13 +171,8 @@ public abstract class AFonction extends AbstractTracedEntity {
       return false;
     }
     if (dateFin == null) {
-      if (other.dateFin != null) {
-        return false;
-      }
-    } else if (!dateFin.equals(other.dateFin)) {
-      return false;
-    }
-    return true;
+      return other.dateFin == null;
+    } else return dateFin.equals(other.dateFin);
   }
 
 }

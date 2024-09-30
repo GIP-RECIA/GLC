@@ -132,9 +132,7 @@ public class PersRelRelation extends AMappingRelation {
       return false;
     if (responsableFinancier != other.responsableFinancier)
       return false;
-    if (responsableLegal != other.responsableLegal)
-      return false;
-    return true;
+    return responsableLegal == other.responsableLegal;
   }
 
 }

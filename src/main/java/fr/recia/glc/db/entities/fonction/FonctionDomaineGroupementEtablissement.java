@@ -128,13 +128,8 @@ public class FonctionDomaineGroupementEtablissement extends AFonction {
       return false;
     }
     if (this.groupeEtablissements == null) {
-      if (other.groupeEtablissements != null) {
-        return false;
-      }
-    } else if (!this.groupeEtablissements.equals(other.groupeEtablissements)) {
-      return false;
-    }
-    return true;
+      return other.groupeEtablissements == null;
+    } else return this.groupeEtablissements.equals(other.groupeEtablissements);
   }
 
 }

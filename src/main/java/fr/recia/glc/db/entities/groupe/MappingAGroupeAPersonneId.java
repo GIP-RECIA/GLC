@@ -95,11 +95,8 @@ public class MappingAGroupeAPersonneId implements Serializable {
     } else if (!groupe.equals(other.groupe))
       return false;
     if (personne == null) {
-      if (other.personne != null)
-        return false;
-    } else if (!personne.equals(other.personne))
-      return false;
-    return true;
+      return other.personne == null;
+    } else return personne.equals(other.personne);
   }
 
 }

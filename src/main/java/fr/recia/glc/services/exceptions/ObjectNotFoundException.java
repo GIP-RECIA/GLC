@@ -76,7 +76,7 @@ public class ObjectNotFoundException extends Exception implements Serializable {
    */
   private static String message(final Serializable objectId, @NotNull final String name) {
     return "Unable to load {" + name + "} with ID {"
-      + (objectId == null ? "null" : objectId.toString() + "}");
+      + (objectId == null ? "null" : objectId + "}");
   }
 
   public Serializable getObjectId() {

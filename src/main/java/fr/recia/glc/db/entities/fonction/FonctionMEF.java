@@ -112,13 +112,8 @@ public class FonctionMEF extends AFonction {
     }
     final FonctionMEF other = (FonctionMEF) obj;
     if (this.etablissement == null) {
-      if (other.etablissement != null) {
-        return false;
-      }
-    } else if (!this.etablissement.equals(other.etablissement)) {
-      return false;
-    }
-    return true;
+      return other.etablissement == null;
+    } else return this.etablissement.equals(other.etablissement);
   }
 
 }

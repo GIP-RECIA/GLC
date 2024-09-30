@@ -156,13 +156,8 @@ public class Adresse implements Serializable {
       return false;
     }
     if (this.ville == null) {
-      if (other.ville != null) {
-        return false;
-      }
-    } else if (!this.ville.equals(other.ville)) {
-      return false;
-    }
-    return true;
+      return other.ville == null;
+    } else return this.ville.equals(other.ville);
   }
 
 }

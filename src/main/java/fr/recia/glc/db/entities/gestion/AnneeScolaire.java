@@ -138,13 +138,8 @@ public class AnneeScolaire extends AbstractTracedEntity {
       return false;
     }
     if (this.passageAnneeSuivante == null) {
-      if (other.passageAnneeSuivante != null) {
-        return false;
-      }
-    } else if (!this.passageAnneeSuivante.equals(other.passageAnneeSuivante)) {
-      return false;
-    }
-    return true;
+      return other.passageAnneeSuivante == null;
+    } else return this.passageAnneeSuivante.equals(other.passageAnneeSuivante);
   }
 
 }

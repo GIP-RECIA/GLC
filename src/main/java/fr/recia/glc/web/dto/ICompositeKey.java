@@ -23,7 +23,7 @@ public interface ICompositeKey<ID extends Serializable, TYPE> extends Serializab
   /**
    * @return the keyId
    */
-  public ID getKeyId();
+  ID getKeyId();
 
   /**
    * @param keyId the keyId to set
@@ -33,12 +33,11 @@ public interface ICompositeKey<ID extends Serializable, TYPE> extends Serializab
   /**
    * @return the keyType
    */
-  public TYPE getKeyType();
+  TYPE getKeyType();
 
   /**
    * @param keyType the keyType to set
    */
   //public void setKeyType(final TYPE keyType);
-
 
 }

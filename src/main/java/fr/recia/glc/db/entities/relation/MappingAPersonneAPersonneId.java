@@ -109,11 +109,8 @@ public class MappingAPersonneAPersonneId implements Serializable {
     } else if (!personne1.equals(other.personne1))
       return false;
     if (personne2 == null) {
-      if (other.personne2 != null)
-        return false;
-    } else if (!personne2.equals(other.personne2))
-      return false;
-    return true;
+      return other.personne2 == null;
+    } else return personne2.equals(other.personne2);
   }
 
 }

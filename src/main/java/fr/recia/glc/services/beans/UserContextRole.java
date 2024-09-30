@@ -40,7 +40,7 @@ import java.util.Set;
 @Slf4j
 public class UserContextRole {
 
-  private Map<StructureKey, PermissionType> contexts = Maps.newConcurrentMap();
+  private final Map<StructureKey, PermissionType> contexts = Maps.newConcurrentMap();
 
   @Setter
   private Boolean superAdmin;
@@ -53,7 +53,7 @@ public class UserContextRole {
    * More several reload are made when the user connect to several async call
    * requesting user permissions and contexts
    */
-  private Duration duration = Duration.ofSeconds(10);
+  private final Duration duration = Duration.ofSeconds(10);
   @Setter
   private volatile Instant expiringInstant;
   private volatile boolean loadingInProgress = false;

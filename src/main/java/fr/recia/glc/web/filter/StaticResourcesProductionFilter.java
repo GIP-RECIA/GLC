@@ -42,7 +42,7 @@ public class StaticResourcesProductionFilter implements Filter {
   /**
    * Pattern pour les ressources statiques
    */
-  private Pattern staticResourcesPattern = Pattern.compile("^/ui/(assets/.*)$");
+  private final Pattern staticResourcesPattern = Pattern.compile("^/ui/(assets/.*)$");
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

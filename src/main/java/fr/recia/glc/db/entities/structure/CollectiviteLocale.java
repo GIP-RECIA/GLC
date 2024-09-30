@@ -89,13 +89,8 @@ public class CollectiviteLocale extends AStructure {
     }
     final CollectiviteLocale other = (CollectiviteLocale) obj;
     if (lieuGeographique == null) {
-      if (other.lieuGeographique != null) {
-        return false;
-      }
-    } else if (!lieuGeographique.equals(other.lieuGeographique)) {
-      return false;
-    }
-    return true;
+      return other.lieuGeographique == null;
+    } else return lieuGeographique.equals(other.lieuGeographique);
   }
 
 }

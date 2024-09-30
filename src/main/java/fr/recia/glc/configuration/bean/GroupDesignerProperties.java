@@ -22,7 +22,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;

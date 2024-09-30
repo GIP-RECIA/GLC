@@ -23,6 +23,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -111,27 +112,25 @@ public class ExternalGroup implements IExternalGroup {
     if (o == this) return true;
     if (!(o instanceof ExternalGroup)) return false;
     final ExternalGroup other = (ExternalGroup) o;
-    if (!other.canEqual((Object) this)) return false;
+    if (!other.canEqual(this)) return false;
     final Object this$id = this.id;
     final Object other$id = other.id;
-    if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+    if (!Objects.equals(this$id, other$id)) return false;
     final Object this$displayName = this.displayName;
     final Object other$displayName = other.displayName;
-    if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName))
+    if (!Objects.equals(this$displayName, other$displayName))
       return false;
     final Object this$attributes = this.attributes;
     final Object other$attributes = other.attributes;
-    if (this$attributes == null ? other$attributes != null : !this$attributes.equals(other$attributes))
+    if (!Objects.equals(this$attributes, other$attributes))
       return false;
     final Object this$groupMembers = this.groupMembers;
     final Object other$groupMembers = other.groupMembers;
-    if (this$groupMembers == null ? other$groupMembers != null : !this$groupMembers.equals(other$groupMembers))
+    if (!Objects.equals(this$groupMembers, other$groupMembers))
       return false;
     final Object this$userMembers = this.userMembers;
     final Object other$userMembers = other.userMembers;
-    if (this$userMembers == null ? other$userMembers != null : !this$userMembers.equals(other$userMembers))
-      return false;
-    return true;
+    return Objects.equals(this$userMembers, other$userMembers);
   }
 
   public int hashCode() {

@@ -22,7 +22,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -32,7 +31,6 @@ import java.io.Serializable;
  * 15 oct. 2014
  */
 @Data
-@ToString
 @NoArgsConstructor
 @EqualsAndHashCode
 public class SubjectKeyDTO implements ICompositeKey<String, SubjectType>, Serializable {

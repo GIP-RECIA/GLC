@@ -21,6 +21,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author GIP RECIA - Julien Gribonvald 11 juil. 2014
@@ -81,22 +82,20 @@ public class ExternalUser implements IExternalUser {
     if (o == this) return true;
     if (!(o instanceof ExternalUser)) return false;
     final ExternalUser other = (ExternalUser) o;
-    if (!other.canEqual((Object) this)) return false;
+    if (!other.canEqual(this)) return false;
     final Object this$id = this.id;
     final Object other$id = other.id;
-    if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+    if (!Objects.equals(this$id, other$id)) return false;
     final Object this$displayName = this.displayName;
     final Object other$displayName = other.displayName;
-    if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName))
+    if (!Objects.equals(this$displayName, other$displayName))
       return false;
     final Object this$email = this.email;
     final Object other$email = other.email;
-    if (this$email == null ? other$email != null : !this$email.equals(other$email)) return false;
+    if (!Objects.equals(this$email, other$email)) return false;
     final Object this$attributes = this.attributes;
     final Object other$attributes = other.attributes;
-    if (this$attributes == null ? other$attributes != null : !this$attributes.equals(other$attributes))
-      return false;
-    return true;
+    return Objects.equals(this$attributes, other$attributes);
   }
 
   public int hashCode() {

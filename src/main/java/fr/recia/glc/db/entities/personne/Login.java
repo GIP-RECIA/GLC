@@ -122,13 +122,8 @@ public class Login extends AbstractTracedEntity {
     }
     final Login other = (Login) obj;
     if (this.nom == null) {
-      if (other.nom != null) {
-        return false;
-      }
-    } else if (!this.nom.equals(other.nom)) {
-      return false;
-    }
-    return true;
+      return other.nom == null;
+    } else return this.nom.equals(other.nom);
   }
 
 }

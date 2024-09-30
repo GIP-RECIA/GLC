@@ -432,13 +432,8 @@ public abstract class APersonne extends AbstractTracedEntity implements Subject 
     }
     final APersonne other = (APersonne) obj;
     if (cleJointure == null) {
-      if (other.cleJointure != null) {
-        return false;
-      }
-    } else if (!cleJointure.equals(other.cleJointure)) {
-      return false;
-    }
-    return true;
+      return other.cleJointure == null;
+    } else return cleJointure.equals(other.cleJointure);
   }
 
 }

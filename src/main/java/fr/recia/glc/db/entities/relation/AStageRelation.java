@@ -85,9 +85,7 @@ public abstract class AStageRelation extends AMappingRelation {
     if (getClass() != obj.getClass())
       return false;
     AStageRelation other = (AStageRelation) obj;
-    if (type != other.type)
-      return false;
-    return true;
+    return type == other.type;
   }
 
 }

@@ -80,7 +80,7 @@ public class LdapUserDaoImpl implements IExternalUserDao {
     // constraints.setReturningAttributes((String[])
     // ldapUserHelper.getAttributes().toArray());
     LdapQuery query = LdapQueryBuilder.query()
-      .attributes((String[]) externalUserHelper.getAttributes().toArray(new String[externalUserHelper.getAttributes().size()]))
+      .attributes(externalUserHelper.getAttributes().toArray(new String[externalUserHelper.getAttributes().size()]))
       .base(externalUserHelper.getUserDNSubPath())
       .filter(filter);
     IExternalUser user;

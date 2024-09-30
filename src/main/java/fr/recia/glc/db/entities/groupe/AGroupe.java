@@ -142,13 +142,8 @@ public abstract class AGroupe extends AbstractTracedEntity {
       return false;
     }
     if (this.source == null) {
-      if (other.source != null) {
-        return false;
-      }
-    } else if (!this.source.equals(other.source)) {
-      return false;
-    }
-    return true;
+      return other.source == null;
+    } else return this.source.equals(other.source);
   }
 
 }

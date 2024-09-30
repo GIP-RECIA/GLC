@@ -142,7 +142,7 @@ public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
   /**
    * True if cache is loading.
    */
-  private volatile boolean loadingInProgress = false;
+  private final boolean loadingInProgress = false;
 
 //  protected synchronized void reload() {
 //    // Test if another concurrent thread just didn't already load the cache
