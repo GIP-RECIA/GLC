@@ -16,11 +16,11 @@
 package fr.recia.glc.db.dto.structure;
 
 import fr.recia.glc.db.dto.AlertDto;
-import fr.recia.glc.db.dto.common.AdresseDto;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.entities.common.Adresse;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
@@ -44,7 +44,7 @@ public class EtablissementDto {
   private EtatAlim etatAlim;
   private String source;
   private Date anneeScolaire;
-  private AdresseDto adresse;
+  private Adresse adresse;
   private CategorieStructure categorie;
   private String type;
   private String mail;
@@ -68,7 +68,7 @@ public class EtablissementDto {
     this.etatAlim = etablissement.getEtatAlim();
     this.source = etablissement.getCleJointure().getSource();
     this.anneeScolaire = etablissement.getAnneeScolaire();
-    this.adresse = new AdresseDto(etablissement.getAdresse());
+    this.adresse = etablissement.getAdresse();
     this.categorie = etablissement.getCategorie();
     this.mail = etablissement.getMail();
     this.nomCourt = etablissement.getNomCourt();
