@@ -57,9 +57,8 @@ public class EtablissementService {
   }
 
   public EtablissementDto getEtablissement(Long id) {
-    Etablissement etablissement = etablissementRepository.findOne(QEtablissement.etablissement.id.eq(id)).orElse(null);
-    if (etablissement == null) return null;
-    return new EtablissementDto(etablissement);
+    Etablissement etablissement = etablissementRepository.findById(id).orElse(null);
+    return etablissement != null ? new EtablissementDto(etablissement) : null;
   }
 
 }
