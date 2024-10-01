@@ -18,6 +18,7 @@ package fr.recia.glc.services.beans;
 import com.google.common.collect.Sets;
 import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.ldap.repository.IExternalGroupDao;
+import fr.recia.glc.util.ListUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -70,20 +71,20 @@ public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
       loadedStructuresByBranch.keySet().stream()
         .map(key -> {
           List<String> values = loadedStructuresByBranch.get(key).stream()
-            .map(structure -> "\n\t\t\t{" +
-              "\n\t\t\t\t\"keyId\": \"" + structure.getStructureKey().getKeyId() + "\"" +
-              ",\n\t\t\t\t\"keyType\": \"" + structure.getStructureKey().getKeyType() + "\"" +
-              ",\n\t\t\t\t\"UAI\": \"" + structure.getUAI() + "\"" +
-              ",\n\t\t\t\t\"displayName\": \"" + structure.getDisplayName() + "\"" +
-              ",\n\t\t\t\t\"groupBranch\": \"" + structure.getGroupBranch() + "\"" +
-              ",\n\t\t\t\t\"groupNameEtab\": \"" + structure.getGroupNameEtab() + "\"" +
-              "\n\t\t\t}"
+            .map(structure -> "{" +
+              "\n\t\t\t\"keyId\": \"" + structure.getStructureKey().getKeyId() + "\"" +
+              ",\n\t\t\t\"keyType\": \"" + structure.getStructureKey().getKeyType() + "\"" +
+              ",\n\t\t\t\"UAI\": \"" + structure.getUAI() + "\"" +
+              ",\n\t\t\t\"displayName\": \"" + structure.getDisplayName() + "\"" +
+              ",\n\t\t\t\"groupBranch\": \"" + structure.getGroupBranch() + "\"" +
+              ",\n\t\t\t\"groupNameEtab\": \"" + structure.getGroupNameEtab() + "\"" +
+              "\n\t\t}"
             )
             .collect(Collectors.toList());
 
-          return "\t{" +
-            "\n\t\t\"" + key + "\": " + values +
-            "\n\t}";
+          return "{" +
+            "\n\t\"" + key + "\": " + ListUtil.toStringList(values, ",\n\t\t", "[\n\t\t", "\n\t]") +
+            "\n}";
         })
         .collect(Collectors.joining(",\n", "[\n", "\n]"))
     );
