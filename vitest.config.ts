@@ -1,5 +1,4 @@
 import viteConfig from './vite.config';
-import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { configDefaults, defineConfig, mergeConfig } from 'vitest/config';
 
@@ -14,8 +13,7 @@ export default mergeConfig(
         deps: {
           inline: ['vuetify'],
         },
-      },
-      cache: { dir: resolve(dirname(fileURLToPath(import.meta.url)), './') },
+      }
     },
   }),
 );
