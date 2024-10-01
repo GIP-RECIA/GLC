@@ -48,7 +48,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
     if (user) {
       attachMode.value = true;
       isAttach.value = false;
-      dialogState.value = PersonneDialogState.ManageAdditional;
+      dialogState.value = PersonneDialogState.ManageAdditionalMultiple;
       initCurrentPersonne(user.id, true);
     }
   },
