@@ -110,7 +110,7 @@ const filterFromSource = (source: Array<SimplePersonne>, searchValue: string): v
       :custom-filter="() => true"
       :hide-no-data="isHideNoData || isLoading"
       no-data-text="search.noResults"
-      :item-title="['cn']"
+      item-title="id"
       :placeholder="t('search.personne.placeholder')"
       density="compact"
       :variant="variant"
