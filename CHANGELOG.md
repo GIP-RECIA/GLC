@@ -2,6 +2,59 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.0](https://github.com/GIP-RECIA/GLC/compare/0.1.0...1.0.0) (2024-10-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* use properties for custom mapping
+* move alert properties
+* use generic extended uportal properties
+* split alert function in service
+* replace disciplinePoste with discipline
+
+* replace disciplinePoste with discipline ([f2509df](https://github.com/GIP-RECIA/GLC/commit/f2509df9cd99520ebadf3b854188a173f05eecdf))
+
+
+### Features
+
+* [WIP] add manage additional ([cbbab2b](https://github.com/GIP-RECIA/GLC/commit/cbbab2b982f9c99cc1b4d0c5cb35028c87331953))
+* add clickable items to fonctions layout ([41c0829](https://github.com/GIP-RECIA/GLC/commit/41c08291139cff6b46eb03e5e995b95423b5d009))
+* add confirmation dialog ([b941b09](https://github.com/GIP-RECIA/GLC/commit/b941b09f8a41345d81592778b8317d1d4e46318e))
+* add date-fns utils ([7a2bf24](https://github.com/GIP-RECIA/GLC/commit/7a2bf240bc52ac7c00a5fbf5c1877494bbcbf1b2))
+* add delete logic ([7314cf0](https://github.com/GIP-RECIA/GLC/commit/7314cf00882ba53615846548b9d7e823fbc92b4f))
+* add function form ([d5c710c](https://github.com/GIP-RECIA/GLC/commit/d5c710c4d7d3e52dd3251925394fdc4214f22ad2))
+* add UserInterceptor ([81e53a1](https://github.com/GIP-RECIA/GLC/commit/81e53a1ed777f1e24914f0aa7e3cfa5d3afa6a8e))
+* integrate function click to open edition ([93f95f4](https://github.com/GIP-RECIA/GLC/commit/93f95f4a59020a17d4bdf35cb3deab8d1e5bcc9d))
+* merge manage additional and manage additional ([ce4ad9e](https://github.com/GIP-RECIA/GLC/commit/ce4ad9e20049c27550573942bb879eb70412f487))
+* merge manage additional and manage additional multiple logic ([f5a77a5](https://github.com/GIP-RECIA/GLC/commit/f5a77a589d4198cf7967b5240b0fe8e1cb4cc407))
+* move alert properties ([fd0cd0e](https://github.com/GIP-RECIA/GLC/commit/fd0cd0e0545a2d64021240d46e8536cf27202dde))
+* new alert system with properties ([9a796cd](https://github.com/GIP-RECIA/GLC/commit/9a796cd7193398708c2883c616d9a65d81522d06))
+* prepare ManageAdditional for mono fonction management ([828bc1a](https://github.com/GIP-RECIA/GLC/commit/828bc1a5b12933ae25610d8290d034d8a1c46e46))
+* save end date in database ([9c85551](https://github.com/GIP-RECIA/GLC/commit/9c85551297db2dd6fdd605f3b12ce8b79560b001))
+* split alert function in service ([710f7b8](https://github.com/GIP-RECIA/GLC/commit/710f7b8df6d4800474c91a5e658f99ecc6ed2fe0))
+* use generic extended uportal properties ([19e3259](https://github.com/GIP-RECIA/GLC/commit/19e32591401fad738bf73b2d74ab28ae2dab5d4f))
+* use properties for custom mapping ([a31ae97](https://github.com/GIP-RECIA/GLC/commit/a31ae97474b620d4802927a7b4c0d968b24b90bc))
+* use same tab component for teaching, school, collectivity and academic ([49ebdf7](https://github.com/GIP-RECIA/GLC/commit/49ebdf78275bb122160835a4f003eb72278ef19c))
+
+
+### Bug Fixes
+
+* find right function ([f843286](https://github.com/GIP-RECIA/GLC/commit/f8432863ee2cb082bbe4c306d2bd4b61afffbf2c))
+* fonction form ([d811a73](https://github.com/GIP-RECIA/GLC/commit/d811a73db7e6809364ea259044ab46829598f37f))
+* function ending message ([b56bad9](https://github.com/GIP-RECIA/GLC/commit/b56bad99991f5ef5ef0eb7d2b9071dda04b5a890))
+* **i18n:** missing 's' in french translation ([529753c](https://github.com/GIP-RECIA/GLC/commit/529753c148e6e987d8ad99307293e406ae0b64c8))
+* person dialog info style ([9c87293](https://github.com/GIP-RECIA/GLC/commit/9c872934c4db3287ab43081737700b84fd4383e8))
+* personne dialog uid style ([eb5f52d](https://github.com/GIP-RECIA/GLC/commit/eb5f52d43b2069f3e33bd467dfbec154cf50886a))
+* prefill function date ([e078658](https://github.com/GIP-RECIA/GLC/commit/e0786580604bc83ed8bada0387337a4c5570d294))
+* structure log ([c5aa3d0](https://github.com/GIP-RECIA/GLC/commit/c5aa3d0dcac759e1fa10dcda4918032488f92194))
+* **types:** use any instead of type for SelectFilter ([e42f7c6](https://github.com/GIP-RECIA/GLC/commit/e42f7c6a3f52802073d1ca47e9265c22ec33418a))
+* typing error ([dc1f50a](https://github.com/GIP-RECIA/GLC/commit/dc1f50ac5fc26e6be2b20ddd643f4c277e73012a))
+* use old management on attach mode ([8ed6ab5](https://github.com/GIP-RECIA/GLC/commit/8ed6ab56b8be546f434005879f9fc5534dec1a4b))
+* **vite:** scss warning ([7621b5f](https://github.com/GIP-RECIA/GLC/commit/7621b5f1e6e7b78422cd76f0f542e6d6ef9dee5e))
+* **vue-i18n:** remove vue-i18n deprecated feature ([07e57cc](https://github.com/GIP-RECIA/GLC/commit/07e57ccb008e0b5de1878d193ef168d9bf9976e9))
+* warn duplicated key ([61ce6de](https://github.com/GIP-RECIA/GLC/commit/61ce6dee930bbce0376a49898a2790a5fceeb24d))
+
 ## [0.1.0](https://github.com/GIP-RECIA/GLC/compare/0.0.4...0.1.0) (2024-09-02)
 
 
