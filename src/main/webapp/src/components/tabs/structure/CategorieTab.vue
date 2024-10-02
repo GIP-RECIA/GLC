@@ -38,26 +38,20 @@ const props = defineProps<{
   categorie: Exclude<Tabs, Tabs.Dashboard | Tabs.Accounts>;
 }>();
 
-const accountStates = computed<Array<Etat>>({
-  get() {
-    return currentStructureConfig.value ? currentStructureConfig.value[props.categorie].accountStates : [];
-  },
-  set(states) {
-    let config = currentStructureConfig.value!;
-    config[props.categorie].accountStates = states;
-    currentStructureConfig.value = config;
-  },
-});
+const accountFilters = computed<Array<Etat>>(() =>
+  currentStructureConfig.value ? currentStructureConfig.value[props.categorie].accountStates : [],
+);
 
-const selectedUser = computed<SimplePersonne | undefined>({
-  get() {
-    return undefined;
-  },
-  set(user) {
-    currentPersonne.value = undefined;
-    if (user) initCurrentPersonne(user.id, true);
-  },
-});
+const setAccountFilters = (states: Array<Etat>): void => {
+  if (!currentStructureConfig.value) return;
+  currentStructureConfig.value[props.categorie].accountStates = states;
+};
+
+const loadUser = (user: SimplePersonne | undefined): void => {
+  if (!user) return;
+  currentPersonne.value = undefined;
+  initCurrentPersonne(user.id, true);
+};
 </script>
 
 <template>
@@ -65,20 +59,22 @@ const selectedUser = computed<SimplePersonne | undefined>({
     <div class="d-flex align-center justify-end mb-4 mb-sm-0">
       <slot name="actions" />
       <personne-search
-        v-model="selectedUser"
         :search-list="staff[categorie]"
+        :model-value="undefined"
         search-type="IN"
         variant="solo"
         class="w-100 staff-search me-2"
+        @update:model-value="loadUser"
       />
       <select-filter
         v-if="filterAccountStates"
-        v-model="accountStates"
+        :model-value="accountFilters"
         :items="filterAccountStates"
         class="account-filter"
+        @update:model-value="setAccountFilters"
       />
     </div>
-    <filieres-layout :filieres="filieresByStaff[categorie]" :account-states="accountStates" />
+    <filieres-layout :filieres="filieresByStaff[categorie]" :account-states="accountFilters" />
     <slot name="footer" />
   </v-container>
 </template>
