@@ -18,12 +18,9 @@
 import AttachDialog from '@/components/dialogs/AttachDialog.vue';
 import QuickAddDialog from '@/components/dialogs/QuickAddDialog.vue';
 import PersonneDialog from '@/components/dialogs/personne/PersonneDialog.vue';
-import AcademicTab from '@/components/tabs/structure/AcademicTab.vue';
 import AccountTab from '@/components/tabs/structure/AccountTab.vue';
-import CollectivityTab from '@/components/tabs/structure/CollectivityTab.vue';
+import CategorieTab from '@/components/tabs/structure/CategorieTab.vue';
 import DashboardTab from '@/components/tabs/structure/DashboardTab.vue';
-import SchoolTab from '@/components/tabs/structure/SchoolTab.vue';
-import TeachingTab from '@/components/tabs/structure/TeachingTab.vue';
 import { useConfigurationStore, useStructureStore } from '@/stores';
 import { Tabs } from '@/types/enums';
 import { storeToRefs } from 'pinia';
@@ -33,12 +30,12 @@ import { useRoute } from 'vue-router';
 
 const isDev = import.meta.env.DEV;
 
+const configurationStore = useConfigurationStore();
+const { structureTab, isAttach } = storeToRefs(configurationStore);
+
 const structureStore = useStructureStore();
 const { initCurrentEtab } = structureStore;
-const { filieresByStaff } = storeToRefs(structureStore);
-
-const configurationStore = useConfigurationStore();
-const { structureTab } = storeToRefs(configurationStore);
+const { fonction, filieresByStaff } = storeToRefs(structureStore);
 
 const { t } = useI18n();
 const route = useRoute();
@@ -62,27 +59,50 @@ watch(
     class="mt-2"
   >
     <v-tab :value="Tabs.Dashboard" tabindex="0">{{ t('tab.dashboard') }}</v-tab>
-    <v-tab v-if="filieresByStaff.teaching" :value="Tabs.TeachingStaff">{{ t('tab.teachingStaff') }}</v-tab>
-    <v-tab v-if="filieresByStaff.school" :value="Tabs.SchoolStaff">{{ t('tab.schoolStaff') }}</v-tab>
-    <v-tab v-if="filieresByStaff.collectivity" :value="Tabs.CollectivityStaff">{{ t('tab.collectivityStaff') }}</v-tab>
-    <v-tab v-if="filieresByStaff.academic" :value="Tabs.AcademicStaff">{{ t('tab.academicStaff') }}</v-tab>
+    <v-tab v-if="filieresByStaff.teaching" :value="Tabs.Teaching">{{ t('tab.teaching') }}</v-tab>
+    <v-tab v-if="filieresByStaff.school" :value="Tabs.School">{{ t('tab.school') }}</v-tab>
+    <v-tab v-if="filieresByStaff.collectivity" :value="Tabs.Collectivity">{{ t('tab.collectivity') }}</v-tab>
+    <v-tab v-if="filieresByStaff.academic" :value="Tabs.Academic">{{ t('tab.academic') }}</v-tab>
     <v-tab v-if="isDev" :value="Tabs.Accounts">{{ t('tab.accounts') }}</v-tab>
   </v-tabs>
   <v-window v-model="structureTab">
     <v-window-item :value="Tabs.Dashboard">
       <dashboard-tab />
     </v-window-item>
-    <v-window-item v-if="filieresByStaff.teaching" :value="Tabs.TeachingStaff">
-      <teaching-tab />
+    <v-window-item v-if="filieresByStaff.teaching" :value="Tabs.Teaching">
+      <categorie-tab :categorie="Tabs.Teaching" />
     </v-window-item>
-    <v-window-item v-if="filieresByStaff.school" :value="Tabs.SchoolStaff">
-      <school-tab />
+    <v-window-item v-if="filieresByStaff.school" :value="Tabs.School">
+      <categorie-tab :categorie="Tabs.School">
+        <template #actions>
+          <v-btn
+            v-if="fonction?.customMapping"
+            variant="tonal"
+            prepend-icon="fas fa-link"
+            class="d-none d-sm-flex me-2 custom-height"
+            @click="isAttach = true"
+          >
+            {{ t('button.attach') }}
+          </v-btn>
+        </template>
+        <template #footer>
+          <div class="fab ma-4 d-sm-none">
+            <v-btn
+              v-if="fonction?.customMapping"
+              variant="tonal"
+              size="x-large"
+              icon="fas fa-link"
+              @click="isAttach = true"
+            />
+          </div>
+        </template>
+      </categorie-tab>
     </v-window-item>
-    <v-window-item v-if="filieresByStaff.collectivity" :value="Tabs.CollectivityStaff">
-      <collectivity-tab />
+    <v-window-item v-if="filieresByStaff.collectivity" :value="Tabs.Collectivity">
+      <categorie-tab :categorie="Tabs.Collectivity" />
     </v-window-item>
-    <v-window-item v-if="filieresByStaff.academic" :value="Tabs.AcademicStaff">
-      <academic-tab />
+    <v-window-item v-if="filieresByStaff.academic" :value="Tabs.Academic">
+      <categorie-tab :categorie="Tabs.Academic" />
     </v-window-item>
     <v-window-item v-if="isDev" :value="Tabs.Accounts">
       <account-tab />

@@ -22,8 +22,8 @@ import type {
   SimpleEtablissement,
   SimplePersonne,
   SourceFonction,
-  StructureConfiguration,
 } from '@/types';
+import { emptyStructureConfiguration } from '@/types';
 import { Etat, Tabs } from '@/types/enums';
 import { errorHandler } from '@/utils';
 import isEmpty from 'lodash.isempty';
@@ -73,27 +73,10 @@ export const useStructureStore = defineStore('structure', () => {
       const index = structures.findIndex((structures) => structures.id == id);
       if (index == -1) {
         setStructureTab(Tabs.Dashboard);
-        const config: StructureConfiguration = {
-          dashboard: {},
-          info: {},
-          teachingStaff: {
-            accountStates: [],
-          },
-          schoolStaff: {
-            accountStates: [],
-          },
-          academicStaff: {
-            accountStates: [],
-          },
-          collectivityStaff: {
-            accountStates: [],
-          },
-          accounts: {},
-        };
         structures.push({
           id,
           name: etab.type ? `${etab.type} ${etab.nom}` : (etab.nom ?? ''),
-          config,
+          config: emptyStructureConfiguration,
         });
         setAppTab(structures.length - 1);
       } else setAppTab(index);

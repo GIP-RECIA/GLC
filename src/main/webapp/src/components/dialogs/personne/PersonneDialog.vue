@@ -55,7 +55,7 @@ const modelValue = computed<boolean>({
         v-if="
           (dialogState == PersonneDialogState.ManageAdditional ||
             dialogState == PersonneDialogState.ManageAdditionalMultiple) &&
-          structureTab == Tabs.SchoolStaff &&
+          structureTab == Tabs.School &&
           canEditAdditionals
         "
       />

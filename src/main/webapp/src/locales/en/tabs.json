@@ -1,10 +1,10 @@
 {
   "tab": {
     "dashboard": "Dashboard",
-    "teachingStaff": "Teaching staff",
-    "schoolStaff": "School staff",
-    "collectivityStaff": "Collectivity staff",
-    "academicStaff": "Academic staff",
+    "teaching": "Teaching staff",
+    "school": "School staff",
+    "collectivity": "Collectivity staff",
+    "academic": "Academic staff",
     "accounts": "Accounts",
     "exports": "Exports"
   }

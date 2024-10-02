@@ -15,10 +15,10 @@
  */
 
 export enum Tabs {
-  Dashboard,
-  TeachingStaff,
-  SchoolStaff,
-  CollectivityStaff,
-  AcademicStaff,
-  Accounts,
+  Dashboard = 'dashboard',
+  Teaching = 'teaching',
+  School = 'school',
+  Collectivity = 'collectivity',
+  Academic = 'academic',
+  Accounts = 'accounts',
 }

@@ -140,9 +140,9 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   /* --- Gestion de la structure courrante --- */
 
-  const structureTab = ref<number>(Tabs.Dashboard);
+  const structureTab = ref<string>(Tabs.Dashboard);
 
-  const setStructureTab = (value: number): void => {
+  const setStructureTab = (value: string): void => {
     structureTab.value = value;
   };
 

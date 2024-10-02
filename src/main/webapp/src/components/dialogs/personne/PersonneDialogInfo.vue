@@ -119,7 +119,7 @@ const editFonction = (payload: PersonneFonction | undefined): void => {
             </div>
             <div class="d-flex align-center gc-2 mb-2">
               <v-btn
-                v-if="structureTab == Tabs.SchoolStaff && canEditAdditionals"
+                v-if="structureTab == Tabs.School && canEditAdditionals"
                 color="primary"
                 variant="tonal"
                 density="compact"
@@ -134,7 +134,7 @@ const editFonction = (payload: PersonneFonction | undefined): void => {
           </div>
           <div class="d-flex flex-column ga-2">
             <v-alert
-              v-if="structureTab != Tabs.SchoolStaff"
+              v-if="structureTab != Tabs.School"
               v-model="isInfo2"
               type="info"
               variant="tonal"
@@ -147,7 +147,7 @@ const editFonction = (payload: PersonneFonction | undefined): void => {
             <fonctions-layout
               :filieres="allFilieres"
               :fonctions="personneStructure.additionalFonctions"
-              :clickable="structureTab == Tabs.SchoolStaff && canEditAdditionals"
+              :clickable="structureTab == Tabs.School && canEditAdditionals"
               @item-clic="editFonction"
             />
           </div>

@@ -20,7 +20,7 @@ import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
 import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
 import type { SimplePersonne } from '@/types';
-import type { Etat } from '@/types/enums';
+import type { Etat, Tabs } from '@/types/enums';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
@@ -34,13 +34,17 @@ const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
 const { currentPersonne } = storeToRefs(personneStore);
 
+const props = defineProps<{
+  categorie: Exclude<Tabs, Tabs.Dashboard | Tabs.Accounts>;
+}>();
+
 const accountStates = computed<Array<Etat>>({
   get() {
-    return currentStructureConfig.value ? currentStructureConfig.value.collectivityStaff.accountStates : [];
+    return currentStructureConfig.value ? currentStructureConfig.value[props.categorie].accountStates : [];
   },
   set(states) {
     let config = currentStructureConfig.value!;
-    config.collectivityStaff.accountStates = states;
+    config[props.categorie].accountStates = states;
     currentStructureConfig.value = config;
   },
 });
@@ -58,10 +62,11 @@ const selectedUser = computed<SimplePersonne | undefined>({
 
 <template>
   <v-container fluid>
-    <div class="d-flex justify-end mb-4 mb-sm-0">
+    <div class="d-flex align-center justify-end mb-4 mb-sm-0">
+      <slot name="actions" />
       <personne-search
         v-model="selectedUser"
-        :search-list="staff.collectivity"
+        :search-list="staff[categorie]"
         search-type="IN"
         variant="solo"
         class="w-100 staff-search me-2"
@@ -73,6 +78,13 @@ const selectedUser = computed<SimplePersonne | undefined>({
         class="account-filter"
       />
     </div>
-    <filieres-layout :filieres="filieresByStaff.collectivity" :account-states="accountStates" />
+    <filieres-layout :filieres="filieresByStaff[categorie]" :account-states="accountStates" />
+    <slot name="footer" />
   </v-container>
 </template>
+
+<style scoped lang="scss">
+.staff-search {
+  max-width: 20em;
+}
+</style>

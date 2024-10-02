@@ -14,21 +14,40 @@
  * limitations under the License.
  */
 import type { Etat } from './enums/Etat.ts';
+import { Tabs } from './enums/Tabs.ts';
 
 export type StructureConfiguration = {
-  dashboard: {};
-  info: {};
-  teachingStaff: {
+  [Tabs.Dashboard]: {};
+  [Tabs.Teaching]: {
     accountStates: Array<Etat>;
   };
-  schoolStaff: {
+  [Tabs.School]: {
     accountStates: Array<Etat>;
   };
-  academicStaff: {
+  [Tabs.Collectivity]: {
     accountStates: Array<Etat>;
   };
-  collectivityStaff: {
+  [Tabs.Academic]: {
     accountStates: Array<Etat>;
   };
-  accounts: {};
+  [Tabs.Accounts]: {};
 };
+
+const emptyStructureConfiguration: StructureConfiguration = {
+  dashboard: {},
+  teaching: {
+    accountStates: [],
+  },
+  school: {
+    accountStates: [],
+  },
+  academic: {
+    accountStates: [],
+  },
+  collectivity: {
+    accountStates: [],
+  },
+  accounts: {},
+};
+
+export { emptyStructureConfiguration };
