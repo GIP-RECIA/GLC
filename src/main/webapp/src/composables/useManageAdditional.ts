@@ -149,17 +149,14 @@ const useManageAdditional = () => {
     let disabled: Array<string> = fonctionsToId(fonctions);
     switch (dialogState.value) {
       case PersonneDialogState.ManageAdditional:
+        disabled = disabled.concat(fonctionsToId(additionalFonctions));
         if (editFunction.value) {
           const { filiere, discipline, dateFin } = editFunction.value;
           selected.push({
             fonction: filiereDisciplineToId(filiere, discipline),
             date: dateFin,
           });
-          disabled = disabled
-            .concat(fonctionsToId(additionalFonctions))
-            .filter((fonction) => fonction != selected[0].fonction);
-        } else {
-          disabled = disabled.concat(fonctionsToId(additionalFonctions));
+          disabled = disabled.filter((fonction) => fonction != selected[0].fonction);
         }
         break;
       case PersonneDialogState.ManageAdditionalMultiple:
