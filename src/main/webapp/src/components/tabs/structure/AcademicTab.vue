@@ -28,7 +28,7 @@ const configurationStore = useConfigurationStore();
 const { filterAccountStates, currentStructureConfig } = storeToRefs(configurationStore);
 
 const structureStore = useStructureStore();
-const { currentEtab, staff, filieresByStaff } = storeToRefs(structureStore);
+const { staff, filieresByStaff } = storeToRefs(structureStore);
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
@@ -36,11 +36,11 @@ const { currentPersonne } = storeToRefs(personneStore);
 
 const accountStates = computed<Array<Etat>>({
   get() {
-    return currentStructureConfig.value ? currentStructureConfig.value.collectivityStaff.accountStates : [];
+    return currentStructureConfig.value ? currentStructureConfig.value.academicStaff.accountStates : [];
   },
   set(states) {
     let config = currentStructureConfig.value!;
-    config.collectivityStaff.accountStates = states;
+    config.academicStaff.accountStates = states;
     currentStructureConfig.value = config;
   },
 });
@@ -61,7 +61,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
     <div class="d-flex justify-end mb-4 mb-sm-0">
       <personne-search
         v-model="selectedUser"
-        :search-list="staff.collectivity"
+        :search-list="staff.academic"
         search-type="IN"
         variant="solo"
         class="w-100 staff-search me-2"
@@ -73,6 +73,6 @@ const selectedUser = computed<SimplePersonne | undefined>({
         class="account-filter"
       />
     </div>
-    <filieres-layout :filieres="filieresByStaff.collectivity" :account-states="accountStates" />
+    <filieres-layout :filieres="filieresByStaff.academic" :account-states="accountStates" />
   </v-container>
 </template>

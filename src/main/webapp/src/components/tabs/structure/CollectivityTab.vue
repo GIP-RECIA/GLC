@@ -20,30 +20,27 @@ import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
 import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
 import type { SimplePersonne } from '@/types';
-import { Etat } from '@/types/enums';
+import type { Etat } from '@/types/enums';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 const configurationStore = useConfigurationStore();
-const { filterAccountStates, currentStructureConfig, isAttach } = storeToRefs(configurationStore);
+const { filterAccountStates, currentStructureConfig } = storeToRefs(configurationStore);
 
 const structureStore = useStructureStore();
-const { currentEtab, staff, fonction, filieresByStaff } = storeToRefs(structureStore);
+const { staff, filieresByStaff } = storeToRefs(structureStore);
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;
 const { currentPersonne } = storeToRefs(personneStore);
 
-const { t } = useI18n();
-
 const accountStates = computed<Array<Etat>>({
   get() {
-    return currentStructureConfig.value ? currentStructureConfig.value.schoolStaff.accountStates : [];
+    return currentStructureConfig.value ? currentStructureConfig.value.collectivityStaff.accountStates : [];
   },
   set(states) {
     let config = currentStructureConfig.value!;
-    config.schoolStaff.accountStates = states;
+    config.collectivityStaff.accountStates = states;
     currentStructureConfig.value = config;
   },
 });
@@ -61,19 +58,10 @@ const selectedUser = computed<SimplePersonne | undefined>({
 
 <template>
   <v-container fluid>
-    <div class="d-flex align-center justify-end mb-4 mb-sm-0">
-      <v-btn
-        v-if="fonction?.customMapping"
-        variant="tonal"
-        prepend-icon="fas fa-link"
-        class="d-none d-sm-flex me-2 custom-height"
-        @click="isAttach = true"
-      >
-        {{ t('button.attach') }}
-      </v-btn>
+    <div class="d-flex justify-end mb-4 mb-sm-0">
       <personne-search
         v-model="selectedUser"
-        :search-list="staff.school"
+        :search-list="staff.collectivity"
         search-type="IN"
         variant="solo"
         class="w-100 staff-search me-2"
@@ -85,16 +73,6 @@ const selectedUser = computed<SimplePersonne | undefined>({
         class="account-filter"
       />
     </div>
-    <filieres-layout :filieres="filieresByStaff.school" :account-states="accountStates" />
-
-    <div class="fab ma-4 d-sm-none">
-      <v-btn
-        v-if="fonction?.customMapping"
-        variant="tonal"
-        size="x-large"
-        icon="fas fa-link"
-        @click="isAttach = true"
-      />
-    </div>
+    <filieres-layout :filieres="filieresByStaff.collectivity" :account-states="accountStates" />
   </v-container>
 </template>

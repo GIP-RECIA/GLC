@@ -18,14 +18,14 @@
 import AttachDialog from '@/components/dialogs/AttachDialog.vue';
 import QuickAddDialog from '@/components/dialogs/QuickAddDialog.vue';
 import PersonneDialog from '@/components/dialogs/personne/PersonneDialog.vue';
+import AcademicTab from '@/components/tabs/structure/AcademicTab.vue';
+import AccountTab from '@/components/tabs/structure/AccountTab.vue';
+import CollectivityTab from '@/components/tabs/structure/CollectivityTab.vue';
+import DashboardTab from '@/components/tabs/structure/DashboardTab.vue';
+import SchoolTab from '@/components/tabs/structure/SchoolTab.vue';
+import TeachingTab from '@/components/tabs/structure/TeachingTab.vue';
 import { useConfigurationStore, useStructureStore } from '@/stores';
 import { Tabs } from '@/types/enums';
-import AcademicView from '@/views/structure/AcademicView.vue';
-import AccountView from '@/views/structure/AccountView.vue';
-import CollectivityView from '@/views/structure/CollectivityView.vue';
-import DashboardView from '@/views/structure/DashboardView.vue';
-import SchoolView from '@/views/structure/SchoolView.vue';
-import TeachingView from '@/views/structure/TeachingView.vue';
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -70,22 +70,22 @@ watch(
   </v-tabs>
   <v-window v-model="structureTab">
     <v-window-item :value="Tabs.Dashboard">
-      <dashboard-view />
+      <dashboard-tab />
     </v-window-item>
     <v-window-item v-if="filieresByStaff.teaching" :value="Tabs.TeachingStaff">
-      <teaching-view />
+      <teaching-tab />
     </v-window-item>
     <v-window-item v-if="filieresByStaff.school" :value="Tabs.SchoolStaff">
-      <school-view />
+      <school-tab />
     </v-window-item>
     <v-window-item v-if="filieresByStaff.collectivity" :value="Tabs.CollectivityStaff">
-      <collectivity-view />
+      <collectivity-tab />
     </v-window-item>
     <v-window-item v-if="filieresByStaff.academic" :value="Tabs.AcademicStaff">
-      <academic-view />
+      <academic-tab />
     </v-window-item>
     <v-window-item v-if="isDev" :value="Tabs.Accounts">
-      <account-view />
+      <account-tab />
     </v-window-item>
   </v-window>
   <personne-dialog />

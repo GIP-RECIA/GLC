@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import CustomTabItem from './CustomTabItem.vue';
+import TabItem from './TabItem.vue';
 import { useConfigurationStore } from '@/stores';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
@@ -58,7 +58,7 @@ onMounted(() => {
   <div id="tab-bar" class="scrollable-x">
     <div class="d-flex my-2">
       <transition-group name="tab-bar">
-        <custom-tab-item
+        <tab-item
           v-for="(structure, index) in structures"
           :key="structure.id"
           :id="index"

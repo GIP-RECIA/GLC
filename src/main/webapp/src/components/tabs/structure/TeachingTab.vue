@@ -28,7 +28,7 @@ const configurationStore = useConfigurationStore();
 const { filterAccountStates, currentStructureConfig } = storeToRefs(configurationStore);
 
 const structureStore = useStructureStore();
-const { currentEtab, staff, filieresByStaff } = storeToRefs(structureStore);
+const { staff, filieresByStaff } = storeToRefs(structureStore);
 
 const personneStore = usePersonneStore();
 const { initCurrentPersonne } = personneStore;

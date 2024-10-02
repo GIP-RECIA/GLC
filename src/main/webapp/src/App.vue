@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
 import SettingsDialog from '@/components/dialogs/SettingsDialog.vue';
-import CustomTabBar from '@/components/tab/CustomTabBar.vue';
+import TabBar from '@/components/tabbar/TabBar.vue';
 import { useConfigurationStore } from '@/stores';
 import { watchOnce } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
@@ -66,7 +66,7 @@ const appName = __APP_NAME__;
       <v-toolbar v-if="isAuthenticated" density="compact" color="rgba(255, 255, 255, 0)">
         <v-progress-linear :active="isLoading" :indeterminate="isLoading" absolute bottom color="primary" />
         <div class="d-flex align-center w-100 px-1">
-          <custom-tab-bar />
+          <tab-bar />
           <v-spacer />
           <v-btn
             icon="fas fa-gear"
