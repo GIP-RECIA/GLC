@@ -20,10 +20,10 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 defineProps<{
-  items: Array<{ i18n: string; value: number | string; color?: string }>;
+  items: Array<{ i18n: string; value: any; color?: string }>;
 }>();
 
-const modelValue = defineModel<Array<number | string>>();
+const modelValue = defineModel<Array<any>>();
 </script>
 
 <template>
