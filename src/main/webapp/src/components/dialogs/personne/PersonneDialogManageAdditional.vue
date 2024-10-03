@@ -31,7 +31,7 @@ const { fonction } = storeToRefs(structureStore);
 
 const { t } = useI18n();
 
-const { data, canSave, saveButton, canDelete, onSave, onCancel, onDelete } = useManageAdditional();
+const { data, canSave, saveButton, deleteButton, canDelete, onSave, onCancel, onDelete } = useManageAdditional();
 </script>
 
 <template>
@@ -55,8 +55,8 @@ const { data, canSave, saveButton, canDelete, onSave, onCancel, onDelete } = use
     <v-btn
       v-if="dialogState == PersonneDialogState.ManageAdditional && canDelete"
       color="error"
-      prepend-icon="fas fa-trash"
-      :text="t('button.delete')"
+      :prepend-icon="deleteButton.icon"
+      :text="t(deleteButton.i18n)"
       @click="onDelete"
     />
     <v-spacer />

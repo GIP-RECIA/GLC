@@ -4,12 +4,14 @@
       "success": {
         "save": "Changes applied",
         "attach": "Attach done successfully",
-        "detach": "Detach done successfully"
+        "detach": "Detach done successfully",
+        "delete": "Delete done successfully"
       },
       "error": {
         "save": "Unable to apply changes",
         "attach": "Unable to attach people",
-        "detach": "Unable to detach people"
+        "detach": "Unable to detach people",
+        "delete": "Unable to delete function"
       }
     },
     "initConfigurationStore": "Unable to load configuration",

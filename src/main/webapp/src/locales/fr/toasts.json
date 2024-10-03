@@ -4,12 +4,14 @@
       "success": {
         "save": "Modifications appliqués avec succès",
         "attach": "Rattachement effectué avec succès",
-        "detach": "Détachement effectué avec succès"
+        "detach": "Détachement effectué avec succès",
+        "delete": "Suppression effectué avec succès"
       },
       "error": {
         "save": "Impossible d'appliquer les modifications",
         "attach": "Impossible de rattacher la personne",
-        "detach": "Impossible de détacher la personne"
+        "detach": "Impossible de détacher la personne",
+        "delete": "Impossible de supprimer la fonction"
       }
     },
     "initConfigurationStore": "Impossible de charger la configuration",
