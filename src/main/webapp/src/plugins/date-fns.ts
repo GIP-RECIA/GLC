@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { setDefaultOptions } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { setDefaultOptions } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
-if (window.navigator.language == 'fr' || window.navigator.language == 'fr-FR') {
-  setDefaultOptions({ locale: fr });
+if (window.navigator.language === 'fr' || window.navigator.language === 'fr-FR') {
+  setDefaultOptions({ locale: fr })
 }

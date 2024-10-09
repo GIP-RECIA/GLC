@@ -13,84 +13,85 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useConfigurationStore } from '@/stores';
-import type { PersonneFonction, endInfo, enumValues } from '@/types';
-import { CategoriePersonne, Etat } from '@/types/enums';
-import { differenceInMonths, isPast } from 'date-fns';
-import { storeToRefs } from 'pinia';
+import type { endInfo, enumValues, PersonneFonction } from '@/types'
+import { useConfigurationStore } from '@/stores'
+import { CategoriePersonne, Etat } from '@/types/enums'
+import { differenceInMonths, isPast } from 'date-fns'
+import { storeToRefs } from 'pinia'
 
-const isLocal = (source: string): boolean => source.startsWith('SarapisUi_');
+const isLocal = (source: string): boolean => source.startsWith('SarapisUi_')
 
-const getIcon = (source: string): string => `${isLocal(source) ? 'far' : 'fas'} fa-user`;
+const getIcon = (source: string): string => `${isLocal(source) ? 'far' : 'fas'} fa-user`
 
-const getEtat = (etat: string): enumValues => {
+function getEtat(etat: string): enumValues {
   switch (etat) {
     case Etat.Inconnu.toString():
-      return { i18n: 'person.status.inconnu', color: '#9E9E9E', icon: 'fas fa-user-secret' };
+      return { i18n: 'person.status.inconnu', color: '#9E9E9E', icon: 'fas fa-user-secret' }
     case Etat.Invalide.toString():
-      return { i18n: 'person.status.invalid', color: '#A5D6A7' };
+      return { i18n: 'person.status.invalid', color: '#A5D6A7' }
     case Etat.Valide.toString():
-      return { i18n: 'person.status.valid', color: '#4CAF50' };
+      return { i18n: 'person.status.valid', color: '#4CAF50' }
     case Etat.Unpublished.toString():
-      return { i18n: 'person.status.unpublished', color: '#607D8B' };
+      return { i18n: 'person.status.unpublished', color: '#607D8B' }
     case Etat.Bloque.toString():
-      return { i18n: 'person.status.locked', color: '#795548', icon: 'fas fa-user-lock' };
+      return { i18n: 'person.status.locked', color: '#795548', icon: 'fas fa-user-lock' }
     case Etat.Delete.toString():
-      return { i18n: 'person.status.deleted', color: '#EF9A9A' };
+      return { i18n: 'person.status.deleted', color: '#EF9A9A' }
     case Etat.Deleting.toString():
-      return { i18n: 'person.status.deleting', color: '#FF5722', icon: 'fas fa-user-clock' };
+      return { i18n: 'person.status.deleting', color: '#FF5722', icon: 'fas fa-user-clock' }
     case Etat.Incertain.toString():
-      return { i18n: 'person.status.uncertain', color: '#FFEB3B' };
+      return { i18n: 'person.status.uncertain', color: '#FFEB3B' }
     case Etat.Incertain_Export_Add.toString():
-      return { i18n: 'person.status.uncertainExportAdd', color: '#FFEB3B' };
+      return { i18n: 'person.status.uncertainExportAdd', color: '#FFEB3B' }
     case Etat.Incertain_Export_Delete.toString():
-      return { i18n: 'person.status.uncertainExportDelete', color: '#FFEB3B' };
+      return { i18n: 'person.status.uncertainExportDelete', color: '#FFEB3B' }
     case Etat.Incertain_Export_Modify.toString():
-      return { i18n: 'person.status.uncertainExportModify', color: '#FFEB3B' };
+      return { i18n: 'person.status.uncertainExportModify', color: '#FFEB3B' }
     default:
-      throw new Error(`Non-existent etat in switch: ${etat}`);
+      throw new Error(`Non-existent etat in switch: ${etat}`)
   }
-};
+}
 
-const getCategoriePersonne = (categorie: string): enumValues => {
+function getCategoriePersonne(categorie: string): enumValues {
   switch (categorie) {
     case CategoriePersonne.Eleve.toString():
-      return { i18n: 'person.category.student' };
+      return { i18n: 'person.category.student' }
     case CategoriePersonne.Enseignant.toString():
-      return { i18n: 'person.category.teacher' };
+      return { i18n: 'person.category.teacher' }
     case CategoriePersonne.Non_enseignant_collectivite_locale.toString():
-      return { i18n: 'person.category.nonTeacherLocalCommunity' };
+      return { i18n: 'person.category.nonTeacherLocalCommunity' }
     case CategoriePersonne.Non_enseignant_etablissement.toString():
-      return { i18n: 'person.category.nonTeacherSchool' };
+      return { i18n: 'person.category.nonTeacherSchool' }
     case CategoriePersonne.Non_enseignant_service_academique.toString():
-      return { i18n: 'person.category.nonTeacherAcademicService' };
+      return { i18n: 'person.category.nonTeacherAcademicService' }
     case CategoriePersonne.Personne_relation_eleve.toString():
-      return { i18n: 'person.category.personRelationshipStudent' };
+      return { i18n: 'person.category.personRelationshipStudent' }
     case CategoriePersonne.Personnel_exterieur.toString():
-      return { i18n: 'person.category.externalStaff' };
+      return { i18n: 'person.category.externalStaff' }
     case CategoriePersonne.Responsable_Entreprise.toString():
-      return { i18n: 'person.category.companyManager' };
+      return { i18n: 'person.category.companyManager' }
     case CategoriePersonne.Tuteur_stage.toString():
-      return { i18n: 'person.category.internshipTutor' };
+      return { i18n: 'person.category.internshipTutor' }
     default:
-      throw new Error(`Non-existent categorie personne in switch: ${categorie}`);
+      throw new Error(`Non-existent categorie personne in switch: ${categorie}`)
   }
-};
+}
 
-const getDateFin = (date: string): endInfo => {
-  const configurationStore = useConfigurationStore();
-  const { configuration } = storeToRefs(configurationStore);
+function getDateFin(date: string): endInfo {
+  const configurationStore = useConfigurationStore()
+  const { configuration } = storeToRefs(configurationStore)
 
-  if (isPast(date))
+  if (isPast(date)) {
     return {
       date,
       isPast: true,
       i18n: 'person.function.hourglass.end',
       color: '',
       icon: 'fas fa-hourglass-end',
-    };
-  const months: number = differenceInMonths(date, new Date());
-  if (months < (configuration.value?.front.endFunctionWarning ?? 2))
+    }
+  }
+  const months: number = differenceInMonths(date, new Date())
+  if (months < (configuration.value?.front.endFunctionWarning ?? 2)) {
     return {
       date,
       months: months + 1,
@@ -98,7 +99,8 @@ const getDateFin = (date: string): endInfo => {
       i18n: 'person.function.hourglass.half',
       color: 'warning',
       icon: 'fas fa-hourglass-half',
-    };
+    }
+  }
 
   return {
     date,
@@ -107,33 +109,34 @@ const getDateFin = (date: string): endInfo => {
     i18n: 'person.function.hourglass.start',
     color: 'primary',
     icon: 'fas fa-hourglass-start',
-  };
-};
+  }
+}
 
-const fonctionToId = (fonction: PersonneFonction): string => `${fonction.filiere}-${fonction.discipline}`;
+const fonctionToId = (fonction: PersonneFonction): string => `${fonction.filiere}-${fonction.discipline}`
 
-const filiereDisciplineToId = (filiere: number, discipline: number): string => `${filiere}-${discipline}`;
+const filiereDisciplineToId = (filiere: number, discipline: number): string => `${filiere}-${discipline}`
 
-const fonctionsToId = (fonctions: Array<PersonneFonction> | undefined): Array<string> =>
-  fonctions ? fonctions.map((fonction) => fonctionToId(fonction)) : [];
+function fonctionsToId(fonctions: Array<PersonneFonction> | undefined): Array<string> {
+  return fonctions ? fonctions.map(fonction => fonctionToId(fonction)) : []
+}
 
-const idToFonction = (id: string): { filiere: number; discipline: number } => {
-  const fonctionIds = id.split('-').map((id) => parseInt(id));
+function idToFonction(id: string): { filiere: number, discipline: number } {
+  const fonctionIds = id.split('-').map(id => Number.parseInt(id))
 
   return {
     filiere: fonctionIds[0],
     discipline: fonctionIds[1],
-  };
-};
+  }
+}
 
 export {
-  isLocal,
-  getIcon,
-  getEtat,
-  getCategoriePersonne,
-  getDateFin,
-  fonctionToId,
   filiereDisciplineToId,
   fonctionsToId,
+  fonctionToId,
+  getCategoriePersonne,
+  getDateFin,
+  getEtat,
+  getIcon,
   idToFonction,
-};
+  isLocal,
+}

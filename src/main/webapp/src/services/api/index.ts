@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export * from './configurationService.ts';
-export * from './fonctionService.ts';
-export * from './personneService.ts';
-export * from './structureService.ts';
+export * from './configurationService.ts'
+export * from './fonctionService.ts'
+export * from './personneService.ts'
+export * from './structureService.ts'

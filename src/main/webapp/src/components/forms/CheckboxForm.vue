@@ -15,15 +15,15 @@
 -->
 
 <script setup lang="ts">
-import type { Filiere, FonctionForm } from '@/types';
-import { filiereDisciplineToId } from '@/utils';
+import type { Filiere, FonctionForm } from '@/types'
+import { filiereDisciplineToId } from '@/utils'
 
 defineProps<{
-  filieres: Array<Filiere> | undefined;
-  disabled?: Array<string>;
-}>();
+  filieres: Array<Filiere> | undefined
+  disabled?: Array<string>
+}>()
 
-const modelValue = defineModel<Array<FonctionForm>>();
+const modelValue = defineModel<Array<FonctionForm>>()
 </script>
 
 <template>

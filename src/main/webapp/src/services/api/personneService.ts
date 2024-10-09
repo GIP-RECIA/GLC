@@ -13,56 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { FonctionForm } from '@/types';
-import { instance as axios } from '@/utils';
+import type { FonctionForm } from '@/types'
+import { instance as axios } from '@/utils'
 
-const getPersonne = async (id: number) => await axios.get(`/api/personne/${id}`);
+const getPersonne = async (id: number) => await axios.get(`/api/personne/${id}`)
 
-const searchPersonne = async (name: string) => await axios.get(`/api/personne?name=${name}`);
+const searchPersonne = async (name: string) => await axios.get(`/api/personne?name=${name}`)
 
-const setPersonneAdditional = async (
+async function setPersonneAdditional(
   id: number,
   structureId: number,
   toAddFunctions: Array<string>,
   toDeleteFunctions: Array<string>,
   requiredAction: string,
-) =>
-  await axios.post(`/api/personne/${id}/fonction`, { structureId, toAddFunctions, toDeleteFunctions, requiredAction });
+) {
+  return await axios.post(
+    `/api/personne/${id}/fonction`,
+    { structureId, toAddFunctions, toDeleteFunctions, requiredAction },
+  )
+}
 
-const setPersonneAdditionalWithId = async (
+async function setPersonneAdditionalWithId(
   id: number,
   structureId: number,
   toAddFunction: string,
   requiredAction: string,
-) => await setPersonneAdditional(id, structureId, [toAddFunction], [], requiredAction);
+) {
+  return await setPersonneAdditional(id, structureId, [toAddFunction], [], requiredAction)
+}
 
-const setPersonneAdditionalWithCode = async (
+async function setPersonneAdditionalWithCode(
   id: number,
   structureId: number,
   additionalCode: string,
   requiredAction: string,
-) => await axios.post(`/api/personne/${id}/fonction`, { structureId, additionalCode, requiredAction });
+) {
+  return await axios.post(`/api/personne/${id}/fonction`, { structureId, additionalCode, requiredAction })
+}
 
-const setPersonneAdditionalV2 = async (
+async function setPersonneAdditionalV2(
   id: number,
   structureId: number,
   toAdd: FonctionForm | null,
   toDelete: string | null,
-) => await axios.post(`/api/personne/${id}/fonction/v2`, { structureId, toAdd, toDelete });
+) {
+  return await axios.post(`/api/personne/${id}/fonction/v2`, { structureId, toAdd, toDelete })
+}
 
-const addPersonneAdditionalV2 = async (id: number, structureId: number, toAdd: FonctionForm | undefined) =>
-  await setPersonneAdditionalV2(id, structureId, toAdd ?? null, null);
+async function addPersonneAdditionalV2(id: number, structureId: number, toAdd: FonctionForm | undefined) {
+  return await setPersonneAdditionalV2(id, structureId, toAdd ?? null, null)
+}
 
-const deletePersonneAdditionalV2 = async (id: number, structureId: number, toDelete: string | undefined) =>
-  await setPersonneAdditionalV2(id, structureId, null, toDelete ?? null);
+async function deletePersonneAdditionalV2(id: number, structureId: number, toDelete: string | undefined) {
+  return await setPersonneAdditionalV2(id, structureId, null, toDelete ?? null)
+}
 
 export {
+  addPersonneAdditionalV2,
+  deletePersonneAdditionalV2,
   getPersonne,
   searchPersonne,
   setPersonneAdditional,
-  setPersonneAdditionalWithId,
-  setPersonneAdditionalWithCode,
   setPersonneAdditionalV2,
-  addPersonneAdditionalV2,
-  deletePersonneAdditionalV2,
-};
+  setPersonneAdditionalWithCode,
+  setPersonneAdditionalWithId,
+}

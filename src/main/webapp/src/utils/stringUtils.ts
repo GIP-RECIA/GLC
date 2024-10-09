@@ -13,33 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import isEmpty from 'lodash.isempty';
+import isEmpty from 'lodash.isempty'
 
-const capitalize = (value: string): string => {
-  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-};
+function capitalize(value: string): string {
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+}
 
-const concatenate = (values: Array<string | undefined>, separator?: string): string => {
-  let result: string = '';
+function concatenate(values: Array<string | undefined>, separator?: string): string {
+  let result: string = ''
   values.forEach((value, index) => {
     if (!isEmpty(value)) {
-      result += value;
-      if (!isEmpty(separator) && !isEmpty(values[index + 1])) result += separator;
+      result += value
+      if (!isEmpty(separator) && !isEmpty(values[index + 1]))
+        result += separator
     }
-  });
+  })
 
-  return result;
-};
+  return result
+}
 
-const slugify = (value: string): string => {
+function slugify(value: string): string {
   return String(value)
     .normalize('NFKD') // split accented characters into their base characters and diacritical marks
-    .replace(/[\u0300-\u036f]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
+    .replace(/[\u0300-\u036F]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
     .trim() // trim leading or trailing whitespace
     .toLowerCase() // convert to lowercase
     .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
     .replace(/\s+/g, '-') // replace spaces with hyphens
-    .replace(/-+/g, '-'); // remove consecutive hyphens
-};
+    .replace(/-+/g, '-') // remove consecutive hyphens
+}
 
-export { capitalize, concatenate, slugify };
+export { capitalize, concatenate, slugify }

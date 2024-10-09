@@ -1,8 +1,9 @@
 {
   "name": "glc",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
+  "packageManager": "yarn@4.5.0",
   "scripts": {
     "dev": "dotenv-checker && vite --host",
     "build": "run-p type-check \"build-only {@}\" --",
@@ -11,9 +12,7 @@
     "test:e2e": "npx playwright install && playwright test",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint src/main/webapp/src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format:check": "prettier --check src/main/webapp/src/",
-    "format": "prettier --write src/main/webapp/src/",
+    "lint": "eslint src/main/webapp/src/",
     "postinstall": "husky",
     "changelog:generate": "commit-and-tag-version --packageFiles pom.xml --skip.bump --skip.tag --skip.commit -t ''"
   },
@@ -26,6 +25,7 @@
     "vuetify": "^3.7.2"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^3.7.3",
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
     "@date-io/date-fns": "^3.0.0",
@@ -34,9 +34,8 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/vue-fontawesome": "3.0.8",
     "@intlify/unplugin-vue-i18n": "^4.0.0",
+    "@juggle/resize-observer": "^3.4.0",
     "@playwright/test": "^1.47.2",
-    "@rushstack/eslint-patch": "^1.10.4",
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21",
     "@types/lodash.debounce": "^4",
@@ -44,7 +43,6 @@
     "@types/node": "^22",
     "@types/xml2js": "^0",
     "@vitejs/plugin-vue": "^5.1.4",
-    "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.5.1",
@@ -53,17 +51,14 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "dotenv-checker": "^1.1.7",
-    "eslint": "^8.57.0",
-    "eslint-plugin-playwright": "^1.6.2",
-    "eslint-plugin-vue": "^9.28.0",
+    "eslint": "^9.12.0",
+    "eslint-plugin-format": "^0.1.2",
     "husky": "^9.1.6",
     "jsdom": "^25.0.1",
     "lint-staged": "^15.2.10",
     "lodash.debounce": "^4.0.8",
     "lodash.isempty": "^4.4.0",
     "npm-run-all2": "^6.2.3",
-    "prettier": "^3.3.3",
-    "resize-observer-polyfill": "^1.5.1",
     "sass": "^1.79.4",
     "typescript": "^5.6.2",
     "vite": "^5.4.8",
@@ -72,6 +67,5 @@
     "vue-tsc": "^2.1.6",
     "vue3-toastify": "^0.2.3",
     "xml2js": "^0.6.2"
-  },
-  "packageManager": "yarn@4.5.0"
+  }
 }

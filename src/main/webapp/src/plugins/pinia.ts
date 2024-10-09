@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
-import { acceptHMRUpdate, createPinia } from 'pinia';
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
+import { acceptHMRUpdate, createPinia } from 'pinia'
 
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useConfigurationStore, import.meta.hot));
-  import.meta.hot.accept(acceptHMRUpdate(usePersonneStore, import.meta.hot));
-  import.meta.hot.accept(acceptHMRUpdate(useStructureStore, import.meta.hot));
+const { hot } = import.meta
+
+if (hot) {
+  hot.accept(acceptHMRUpdate(useConfigurationStore, hot))
+  hot.accept(acceptHMRUpdate(usePersonneStore, hot))
+  hot.accept(acceptHMRUpdate(useStructureStore, hot))
 }
 
-export default createPinia();
+export default createPinia()

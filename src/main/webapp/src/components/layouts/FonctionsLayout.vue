@@ -15,70 +15,70 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores';
-import type { Discipline, Filiere, PersonneFonction } from '@/types';
-import { getDateFin } from '@/utils';
-import { format } from 'date-fns';
-import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-const configurationStore = useConfigurationStore();
-const { currentStructureId } = storeToRefs(configurationStore);
-
-const { t } = useI18n();
+import type { Discipline, Filiere, PersonneFonction } from '@/types'
+import { useConfigurationStore } from '@/stores'
+import { getDateFin } from '@/utils'
+import { format } from 'date-fns'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const props = withDefaults(
   defineProps<{
-    filieres: Array<Filiere> | undefined;
-    fonctions: Array<PersonneFonction> | undefined;
-    clickable?: boolean;
+    filieres: Array<Filiere> | undefined
+    fonctions: Array<PersonneFonction> | undefined
+    clickable?: boolean
   }>(),
   {
     clickable: false,
   },
-);
-
+)
 const emit = defineEmits({
   itemClic(payload: PersonneFonction | undefined): boolean {
-    return !!payload;
+    return !!payload
   },
-});
+})
+const configurationStore = useConfigurationStore()
+const { currentStructureId } = storeToRefs(configurationStore)
+
+const { t } = useI18n()
 
 const etabFonctions = computed<Array<PersonneFonction>>(() => {
-  return props.fonctions ? props.fonctions.filter(({ structure }) => structure == currentStructureId.value) : [];
-});
+  return props.fonctions ? props.fonctions.filter(({ structure }) => structure === currentStructureId.value) : []
+})
 
 const filteredFilieres = computed<Array<Filiere>>(() => {
-  if (!props.filieres) return [];
-  const filiereIds = [...new Set(etabFonctions.value.map(({ filiere }) => filiere))];
+  if (!props.filieres)
+    return []
+  const filiereIds = [...new Set(etabFonctions.value.map(({ filiere }) => filiere))]
 
   return props.filieres
     .filter(({ id }) => filiereIds.includes(id))
     .map((filiere) => {
-      const filiereFonctions = etabFonctions.value.filter((fonction) => fonction.filiere == filiere.id);
-      const disciplineIds = filiereFonctions.map((fonction) => fonction.discipline);
+      const filiereFonctions = etabFonctions.value.filter(fonction => fonction.filiere === filiere.id)
+      const disciplineIds = filiereFonctions.map(fonction => fonction.discipline)
 
       const disciplines = filiere.disciplines
         .filter(({ id }) => disciplineIds.includes(id))
         .map((discipline) => {
-          const dateFin = filiereFonctions.find((fonction) => fonction.discipline == discipline.id)?.dateFin;
+          const dateFin = filiereFonctions.find(fonction => fonction.discipline === discipline.id)?.dateFin
 
-          return { ...discipline, endInfo: dateFin ? getDateFin(dateFin) : undefined };
-        });
+          return { ...discipline, endInfo: dateFin ? getDateFin(dateFin) : undefined }
+        })
 
-      return { ...filiere, disciplines };
-    });
-});
+      return { ...filiere, disciplines }
+    })
+})
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const onClick = (filiere: Filiere, discipline: Discipline): void => {
+// eslint-disable-next-line unused-imports/no-unused-vars
+function onClick(filiere: Filiere, discipline: Discipline): void {
   let fonction = etabFonctions.value.find(
-    (fonction) => fonction.filiere == filiere.id && fonction.discipline == discipline.id,
-  );
-  if (fonction) fonction = { ...fonction, dateFin: discipline.endInfo?.date };
-  emit('itemClic', fonction);
-};
+    fonction => fonction.filiere === filiere.id && fonction.discipline === discipline.id,
+  )
+  if (fonction)
+    fonction = { ...fonction, dateFin: discipline.endInfo?.date }
+  emit('itemClic', fonction)
+}
 </script>
 
 <template>
@@ -101,22 +101,20 @@ const onClick = (filiere: Filiere, discipline: Discipline): void => {
             rounded
             @="clickable ? { click: () => onClick(filiere, discipline) } : {}"
           >
-            <template #append v-if="discipline.endInfo">
+            <template v-if="discipline.endInfo" #append>
               <v-tooltip
-                :text="
-                  t(
-                    discipline.endInfo.i18n,
-                    {
-                      date: format(discipline.endInfo.date!, 'P'),
-                      months: discipline.endInfo.months,
-                    },
-                    discipline.endInfo.months && discipline.endInfo.months > 0 ? discipline.endInfo.months : 1,
-                  )
-                "
+                :text="t(
+                  discipline.endInfo.i18n,
+                  {
+                    date: format(discipline.endInfo.date!, 'P'),
+                    months: discipline.endInfo.months,
+                  },
+                  discipline.endInfo.months && discipline.endInfo.months > 0 ? discipline.endInfo.months : 1,
+                )"
                 location="bottom start"
               >
-                <template v-slot:activator="{ props }">
-                  <v-icon v-bind="props" :icon="discipline.endInfo.icon" size="x-small" class="ms-1" />
+                <template #activator="{ props: activatorProps }">
+                  <v-icon v-bind="activatorProps" :icon="discipline.endInfo.icon" size="x-small" class="ms-1" />
                 </template>
               </v-tooltip>
             </template>

@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useConfigurationStore } from '@/stores';
-import { storeToRefs } from 'pinia';
-import { type Directive, watch } from 'vue';
+import { useConfigurationStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import { type Directive, watch } from 'vue'
 
 const authenticated: Directive<HTMLElement, null> = (el) => {
-  const configurationStore = useConfigurationStore();
-  const { isAuthenticated } = storeToRefs(configurationStore);
+  const configurationStore = useConfigurationStore()
+  const { isAuthenticated } = storeToRefs(configurationStore)
 
   const checkAuthentication = (): void => {
-    el.hidden = !isAuthenticated.value;
-  };
+    el.hidden = !isAuthenticated.value
+  }
 
-  watch(isAuthenticated, () => checkAuthentication(), { immediate: true });
-};
+  watch(isAuthenticated, () => checkAuthentication(), { immediate: true })
+}
 
-export { authenticated };
+export { authenticated }

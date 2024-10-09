@@ -15,36 +15,36 @@
 -->
 
 <script setup lang="ts">
-import CheckboxForm from '@/components/forms/CheckboxForm.vue';
-import FonctionForm from '@/components/forms/FonctionForm.vue';
-import { useManageAdditional } from '@/composables';
-import { usePersonneStore, useStructureStore } from '@/stores';
-import { PersonneDialogState } from '@/types/enums';
-import { storeToRefs } from 'pinia';
-import { useI18n } from 'vue-i18n';
+import CheckboxForm from '@/components/forms/CheckboxForm.vue'
+import FonctionForm from '@/components/forms/FonctionForm.vue'
+import { useManageAdditional } from '@/composables'
+import { usePersonneStore, useStructureStore } from '@/stores'
+import { PersonneDialogState } from '@/types/enums'
+import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
-const personneStore = usePersonneStore();
-const { dialogState } = storeToRefs(personneStore);
+const personneStore = usePersonneStore()
+const { dialogState } = storeToRefs(personneStore)
 
-const structureStore = useStructureStore();
-const { fonction } = storeToRefs(structureStore);
+const structureStore = useStructureStore()
+const { fonction } = storeToRefs(structureStore)
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const { data, canSave, saveButton, deleteButton, canDelete, onSave, onCancel, onDelete } = useManageAdditional();
+const { data, canSave, saveButton, deleteButton, canDelete, onSave, onCancel, onDelete } = useManageAdditional()
 </script>
 
 <template>
   <v-card-text class="pt-0 py-3">
-    <fonction-form
-      v-if="dialogState == PersonneDialogState.ManageAdditional"
+    <FonctionForm
+      v-if="dialogState === PersonneDialogState.ManageAdditional"
       v-model="data.selected[0]"
       :filieres="fonction?.customMapping?.filieres"
       :disabled="data.disabled"
       :disable-fonction-edit="!!data.baseSelection[0]"
     />
-    <checkbox-form
-      v-if="dialogState == PersonneDialogState.ManageAdditionalMultiple"
+    <CheckboxForm
+      v-if="dialogState === PersonneDialogState.ManageAdditionalMultiple"
       v-model="data.selected"
       :filieres="fonction?.customMapping?.filieres"
       :disabled="data.disabled"
@@ -53,7 +53,7 @@ const { data, canSave, saveButton, deleteButton, canDelete, onSave, onCancel, on
 
   <v-card-actions>
     <v-btn
-      v-if="dialogState == PersonneDialogState.ManageAdditional && canDelete"
+      v-if="dialogState === PersonneDialogState.ManageAdditional && canDelete"
       color="error"
       :prepend-icon="deleteButton.icon"
       :text="t(deleteButton.i18n)"

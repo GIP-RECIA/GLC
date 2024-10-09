@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import i18n from '@/plugins/i18n.ts';
-import { Theme } from '@/types/enums';
-import DateFnsAdapter from '@date-io/date-fns';
-import { enUS, fr } from 'date-fns/locale';
-import { useI18n } from 'vue-i18n';
-import { type ThemeDefinition, createVuetify } from 'vuetify';
-import { md3 } from 'vuetify/blueprints';
-import { aliases, fa } from 'vuetify/iconsets/fa-svg';
-import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
+import i18n from '@/plugins/i18n.ts'
+import { Theme } from '@/types/enums'
+import DateFnsAdapter from '@date-io/date-fns'
+import { enUS, fr } from 'date-fns/locale'
+import { useI18n } from 'vue-i18n'
+import { createVuetify, type ThemeDefinition } from 'vuetify'
+import { md3 } from 'vuetify/blueprints'
+import { aliases, fa } from 'vuetify/iconsets/fa-svg'
+import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n'
 
 const themes: Record<string, ThemeDefinition> = {
   [Theme.light]: {
@@ -33,7 +33,7 @@ const themes: Record<string, ThemeDefinition> = {
   [Theme.dark]: {
     dark: true,
   },
-};
+}
 
 export default createVuetify({
   blueprint: md3,
@@ -58,4 +58,4 @@ export default createVuetify({
       en: enUS,
     },
   },
-});
+})

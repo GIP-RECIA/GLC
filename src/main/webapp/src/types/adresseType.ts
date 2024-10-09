@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-export type Adresse = {
-  adresse: string;
-  codePostal: string;
-  ville: string;
-  boitePostale: string;
-  pays: string;
-};
+export interface Adresse {
+  adresse: string
+  codePostal: string
+  ville: string
+  boitePostale: string
+  pays: string
+}

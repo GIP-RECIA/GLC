@@ -15,62 +15,64 @@
 -->
 
 <script setup lang="ts">
-import CustomPagination from '@/components/CustomPagination.vue';
-import PersonneCard from '@/components/PersonneCard.vue';
-import AccountFilter from '@/components/filter/AccountFilter.vue';
-import { useStructureStore } from '@/stores';
-import type { SimplePersonne } from '@/types';
-import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useDisplay } from 'vuetify';
+import type { SimplePersonne } from '@/types'
+import CustomPagination from '@/components/CustomPagination.vue'
+import AccountFilter from '@/components/filter/AccountFilter.vue'
+import PersonneCard from '@/components/PersonneCard.vue'
+import { useStructureStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useDisplay } from 'vuetify'
 
-const structureStore = useStructureStore();
-const { personnes } = storeToRefs(structureStore);
+const structureStore = useStructureStore()
+const { personnes } = storeToRefs(structureStore)
 
-const { t } = useI18n();
-const { name } = useDisplay();
+const { t } = useI18n()
+const { name } = useDisplay()
 
-const items = ref<Array<SimplePersonne> | undefined>();
-const pageItems = ref<Array<SimplePersonne> | undefined>();
+const items = ref<Array<SimplePersonne> | undefined>()
+const pageItems = ref<Array<SimplePersonne> | undefined>()
 
 const itemsPerPage = computed<number>(() => {
-  const defaultItemsPerPage = 10;
+  const defaultItemsPerPage = 10
 
   switch (name.value) {
     case 'xs':
-      return defaultItemsPerPage;
+      return defaultItemsPerPage
     case 'sm':
-      return 2 * defaultItemsPerPage;
+      return 2 * defaultItemsPerPage
     case 'md':
-      return 3 * defaultItemsPerPage;
+      return 3 * defaultItemsPerPage
     case 'lg':
-      return 4 * defaultItemsPerPage;
+      return 4 * defaultItemsPerPage
     case 'xl':
-      return 4 * defaultItemsPerPage;
+      return 4 * defaultItemsPerPage
     case 'xxl':
-      return 6 * defaultItemsPerPage;
+      return 6 * defaultItemsPerPage
     default:
-      return defaultItemsPerPage;
+      return defaultItemsPerPage
   }
-});
+})
 </script>
 
 <template>
   <v-container fluid>
-    <account-filter
+    <AccountFilter
       class="mb-8"
       :search-list="personnes"
       @update:result="(result: Array<SimplePersonne>) => (items = result)"
     />
     <div v-if="pageItems && pageItems.length > 0" class="container">
-      <personne-card v-for="personne in pageItems" :key="personne.id" variant="flat" :personne="personne" />
+      <PersonneCard v-for="personne in pageItems" :key="personne.id" variant="flat" :personne="personne" />
     </div>
     <div v-else class="d-flex flex-column align-center justify-center pa-10">
       <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
-      <div class="pt-2">{{ t('search.noResults') }}</div>
+      <div class="pt-2">
+        {{ t('search.noResults') }}
+      </div>
     </div>
-    <custom-pagination
+    <CustomPagination
       :items="items"
       :items-per-page="itemsPerPage"
       hide-single-page

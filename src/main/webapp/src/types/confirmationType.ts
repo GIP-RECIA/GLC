@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export type Confirmation = 'yes' | 'no' | 'cancel';
+export type Confirmation = 'yes' | 'no' | 'cancel'

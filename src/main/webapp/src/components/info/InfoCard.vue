@@ -15,37 +15,41 @@
 -->
 
 <script setup lang="ts">
-import type { enumValues } from '@/types';
-import type { Etat } from '@/types/enums';
-import { getEtat } from '@/utils';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+import type { enumValues } from '@/types'
+import type { Etat } from '@/types/enums'
+import { getEtat } from '@/utils'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const props = withDefaults(
   defineProps<{
-    etat: Etat;
-    value: number;
-    variant?: 'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain';
+    etat: Etat
+    value: number
+    variant?: 'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain'
   }>(),
   { variant: 'flat' },
-);
+)
 
-const data = computed<{ etat: enumValues; icon: string }>(() => {
-  const etat = getEtat(props.etat);
-  const icon = etat.icon ? etat.icon : 'fas fa-user';
+const { t } = useI18n()
 
-  return { etat, icon };
-});
+const data = computed<{ etat: enumValues, icon: string }>(() => {
+  const etat = getEtat(props.etat)
+  const icon = etat.icon ? etat.icon : 'fas fa-user'
+
+  return { etat, icon }
+})
 </script>
 
 <template>
   <v-card :variant="variant">
     <v-card-text class="d-flex align-center justify-space-between text-center pa-3">
       <div class="w-100">
-        <div class="text-h5">{{ value }}</div>
-        <div class="text-caption text-medium-emphasis">{{ t(data.etat.i18n) }}</div>
+        <div class="text-h5">
+          {{ value }}
+        </div>
+        <div class="text-caption text-medium-emphasis">
+          {{ t(data.etat.i18n) }}
+        </div>
       </div>
       <v-icon :icon="data.icon" :color="data.etat.color" class="mx-2" :size="40" />
     </v-card-text>

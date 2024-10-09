@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
-import { register as registerFontAwsome } from '@/plugins/fontawesome.ts';
-// @ts-ignore
-import i18n from '@/plugins/i18n.ts';
-// @ts-ignore
-import vuetify from '@/plugins/vuetify.ts';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+// @ts-expect-error project location
+import { register as registerFontAwsome } from '@/plugins/fontawesome.ts'
+// @ts-expect-error project location
+import i18n from '@/plugins/i18n.ts'
+// @ts-expect-error project location
+import vuetify from '@/plugins/vuetify.ts'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-const plugins = [i18n, vuetify];
+const plugins = [i18n, vuetify]
 
-export { FontAwesomeIcon, registerFontAwsome, plugins };
+export { FontAwesomeIcon, plugins, registerFontAwsome }

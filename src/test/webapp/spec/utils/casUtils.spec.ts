@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
-import { login } from '@/utils/casUtils';
-import { describe, expect, it } from 'vitest';
+// // @ts-expect-error project location
+// import { login } from '@/utils/casUtils'
+import { describe, expect, it } from 'vitest'
 
 describe('casUtils', () => {
   it('test 1 - ', () => {
     // TODO
-    expect(true).toBe(true);
-  });
-});
+    expect(true).toBe(true)
+  })
+})

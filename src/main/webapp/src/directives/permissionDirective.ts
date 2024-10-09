@@ -13,28 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useStructureStore } from '@/stores';
-import { storeToRefs } from 'pinia';
-import { type Directive, watch } from 'vue';
+import { useStructureStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import { type Directive, watch } from 'vue'
 
 const permission: Directive<HTMLElement, Array<string>> = (el, binding) => {
-  const structureStore = useStructureStore();
-  const { currentEtab } = storeToRefs(structureStore);
+  const structureStore = useStructureStore()
+  const { currentEtab } = storeToRefs(structureStore)
 
   const checkPermissions = (): void => {
-    let hasPermission: boolean = false;
+    let hasPermission: boolean = false
     binding.value.forEach((permission) => {
-      if (currentEtab.value?.permission?.includes(permission)) hasPermission = true;
-    });
+      if (currentEtab.value?.permission?.includes(permission))
+        hasPermission = true
+    })
 
-    el.hidden = !hasPermission;
-  };
+    el.hidden = !hasPermission
+  }
 
   watch(
     () => currentEtab.value?.permission,
     () => checkPermissions(),
     { immediate: true },
-  );
-};
+  )
+}
 
-export { permission };
+export { permission }

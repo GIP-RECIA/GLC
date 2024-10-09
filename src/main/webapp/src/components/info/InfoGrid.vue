@@ -15,31 +15,32 @@
 -->
 
 <script setup lang="ts">
-import InfoCard from './InfoCard.vue';
-import { useStructureStore } from '@/stores';
-import type { SimplePersonne } from '@/types';
-import { Etat } from '@/types/enums';
-import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import type { SimplePersonne } from '@/types'
+import { useStructureStore } from '@/stores'
+import { Etat } from '@/types/enums'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import InfoCard from './InfoCard.vue'
 
-const isDev = import.meta.env.DEV;
+const isDev = import.meta.env.DEV
 
-const structureStore = useStructureStore();
-const { personnesByEtat } = storeToRefs(structureStore);
+const structureStore = useStructureStore()
+const { personnesByEtat } = storeToRefs(structureStore)
 
 const items = computed<Map<Etat, Array<SimplePersonne> | undefined>>(() => {
-  if (isDev) return personnesByEtat.value;
+  if (isDev)
+    return personnesByEtat.value
   return new Map(
     [...personnesByEtat.value]?.filter(([key]) =>
       [Etat.Invalide, Etat.Valide, Etat.Bloque, Etat.Delete, Etat.Deleting, Etat.Incertain].includes(key),
     ),
-  );
-});
+  )
+})
 </script>
 
 <template>
   <div class="info-grid">
-    <info-card v-for="elem in items" :key="elem[0]" :etat="elem[0]" :value="elem[1] ? elem[1].length : 0" />
+    <InfoCard v-for="elem in items" :key="elem[0]" :etat="elem[0]" :value="elem[1] ? elem[1].length : 0" />
   </div>
 </template>
 

@@ -15,57 +15,61 @@
 -->
 
 <script setup lang="ts">
-import type { Confirmation } from '@/types';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+import type { Confirmation } from '@/types'
+import { useI18n } from 'vue-i18n'
 
 withDefaults(
   defineProps<{
-    title: string;
-    description?: string;
-    yesValue: string;
-    noValue: string;
-    cancelable?: boolean;
-    noColor?: string;
-    yesColor?: string;
-    maxWidth?: string | number;
+    title: string
+    description?: string
+    yesValue: string
+    noValue: string
+    cancelable?: boolean
+    noColor?: string
+    yesColor?: string
+    maxWidth?: string | number
   }>(),
   {
     cancelable: false,
     maxWidth: 500,
   },
-);
-
-const modelValue = defineModel<boolean>();
+)
 
 const emit = defineEmits({
   close(payload: Confirmation): boolean {
-    return !!payload;
+    return !!payload
   },
-});
+})
 
-const onCancel = (): void => {
-  modelValue.value = false;
-  emit('close', 'cancel');
-};
+const { t } = useI18n()
 
-const onNo = (): void => {
-  modelValue.value = false;
-  emit('close', 'no');
-};
+const modelValue = defineModel<boolean>()
 
-const onYes = (): void => {
-  modelValue.value = false;
-  emit('close', 'yes');
-};
+function onCancel(): void {
+  modelValue.value = false
+  emit('close', 'cancel')
+}
+
+function onNo(): void {
+  modelValue.value = false
+  emit('close', 'no')
+}
+
+function onYes(): void {
+  modelValue.value = false
+  emit('close', 'yes')
+}
 </script>
 
 <template>
   <v-dialog v-model="modelValue" persistent :max-width="maxWidth">
     <v-card :title="title" rounded="xl">
-      <v-card-text v-if="description">{{ description }}</v-card-text>
-      <v-card-text v-else-if="$slots.description"><slot name="description" /></v-card-text>
+      <v-card-text v-if="description">
+        {{ description }}
+      </v-card-text>
+      <v-card-text v-else-if="$slots.description">
+        <slot name="description" />
+      </v-card-text>
 
       <v-card-actions>
         <v-btn v-if="cancelable" :text="t('button.cancel')" @click="onCancel" />

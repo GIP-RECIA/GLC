@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-export type Configuration = {
-  permissionTypes: Array<string>;
+export interface Configuration {
+  permissionTypes: Array<string>
   front: {
-    endFunctionWarning: number;
+    endFunctionWarning: number
     staff: {
-      teaching: string;
-      school: string;
-      collectivity: string;
-      academic: string;
-    };
-    editAllowedStates: Array<string>;
-    filterAccountStates: Array<string>;
-    templateApiPath: string;
+      teaching: string
+      school: string
+      collectivity: string
+      academic: string
+    }
+    editAllowedStates: Array<string>
+    filterAccountStates: Array<string>
+    templateApiPath: string
     extendedUportal: {
       header: {
-        componentPath: string;
+        componentPath: string
         props: {
-          [key: string]: string | number;
-        };
-      };
+          [key: string]: string | number
+        }
+      }
       footer: {
-        componentPath: string;
+        componentPath: string
         props: {
-          [key: string]: string | number;
-        };
-      };
-    };
+          [key: string]: string | number
+        }
+      }
+    }
     loginOffices: Array<{
-      source: string;
+      source: string
       guichets: Array<{
-        nom: string;
-        categoriesPersonne: Array<string>;
-      }>;
-    }>;
-  };
-};
+        nom: string
+        categoriesPersonne: Array<string>
+      }>
+    }>
+  }
+}

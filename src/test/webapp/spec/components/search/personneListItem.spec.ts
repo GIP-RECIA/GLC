@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { plugins } from '../../config';
-// @ts-ignore
-import PersonneListItem from '@/components/search/PersonneListItem.vue';
-import { flushPromises, shallowMount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { ResizeObserver } from '@juggle/resize-observer'
+// import { plugins } from '../../config'
+// // @ts-expect-error project location
+// import PersonneListItem from '@/components/search/PersonneListItem.vue'
+import { flushPromises } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
 
-global.ResizeObserver = require('resize-observer-polyfill');
+globalThis.ResizeObserver = ResizeObserver
 
-describe('PersonneListItem', () => {
+describe('personneListItem', () => {
   it('test 1 - init', async () => {
     // const wrapper = shallowMount(PersonneListItem, {
     //   global: {
@@ -38,9 +39,9 @@ describe('PersonneListItem', () => {
     //   },
     // });
 
-    await flushPromises();
+    await flushPromises()
 
     // TODO
-    expect(true).toBe(true);
-  });
-});
+    expect(true).toBe(true)
+  })
+})

@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { authenticated } from './authenticationDirective.ts';
-import { permission } from './permissionDirective.ts';
-import { admin, role } from './roleDirective.ts';
-import type { App } from 'vue';
+import type { App } from 'vue'
+import { authenticated } from './authenticationDirective.ts'
+import { permission } from './permissionDirective.ts'
+import { admin, role } from './roleDirective.ts'
 
-const register = (app: App): void => {
-  app.directive('authenticated', authenticated);
-  app.directive('permission', permission);
-  app.directive('admin', admin);
-  app.directive('role', role);
-};
+function register(app: App): void {
+  app.directive('authenticated', authenticated)
+  app.directive('permission', permission)
+  app.directive('admin', admin)
+  app.directive('role', role)
+}
 
-export { register };
+export { register }

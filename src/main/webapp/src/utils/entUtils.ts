@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import vuetify from '@/plugins/vuetify.ts';
-import type { PortalEntry } from '@/types';
-import axios from 'axios';
+import type { PortalEntry } from '@/types'
+import vuetify from '@/plugins/vuetify.ts'
+import axios from 'axios'
 
-const useEntTheme = async (templateApiPath: string | undefined): Promise<void> => {
-  if (!templateApiPath || templateApiPath.trim().length < 1) return;
-  const response = await axios.get(templateApiPath);
+async function useEntTheme(templateApiPath: string | undefined): Promise<void> {
+  if (!templateApiPath || templateApiPath.trim().length < 1)
+    return
+  const response = await axios.get(templateApiPath)
   const domainInfo: PortalEntry = response.data.data.find((domain: PortalEntry) =>
     domain.identity.domains?.includes(window.location.hostname),
-  );
+  )
 
-  const primary: string | undefined = domainInfo?.colors.find((color) => color.Id == 'primary')?.hexa;
-  if (!primary) return;
+  const primary: string | undefined = domainInfo?.colors.find(color => color.Id === 'primary')?.hexa
+  if (!primary)
+    return
   for (const prop in vuetify.theme.themes.value) {
-    vuetify.theme.themes.value[prop].colors.primary = primary;
+    vuetify.theme.themes.value[prop].colors.primary = primary
   }
-};
+}
 
-export { useEntTheme };
+export { useEntTheme }

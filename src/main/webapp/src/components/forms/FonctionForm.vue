@@ -15,24 +15,22 @@
 -->
 
 <script setup lang="ts">
-import type { Discipline, Filiere, FonctionForm } from '@/types';
-import { filiereDisciplineToId, idToFonction, isBetween } from '@/utils';
-import debounce from 'lodash.debounce';
-import { computed, onBeforeMount, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+import type { Discipline, Filiere, FonctionForm } from '@/types'
+import { filiereDisciplineToId, idToFonction, isBetween } from '@/utils'
+import debounce from 'lodash.debounce'
+import { computed, onBeforeMount, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const props = withDefaults(
   defineProps<{
-    filieres: Array<Filiere> | undefined;
-    disabled?: Array<string>;
-    disableFonctionEdit?: boolean;
+    filieres: Array<Filiere> | undefined
+    disabled?: Array<string>
+    disableFonctionEdit?: boolean
     config?: {
-      filiere?: Record<string, any>;
-      discipline?: Record<string, any>;
-      date?: Record<string, any>;
-    };
+      filiere?: Record<string, any>
+      discipline?: Record<string, any>
+      date?: Record<string, any>
+    }
   }>(),
   {
     filieres: undefined,
@@ -44,40 +42,43 @@ const props = withDefaults(
       date: {},
     }),
   },
-);
+)
 
-const modelValue = defineModel<FonctionForm>();
+const { t } = useI18n()
 
-type Form = {
-  filiere: number | undefined;
-  discipline: number | undefined;
-  date: string | undefined;
-};
+const modelValue = defineModel<FonctionForm>()
+
+interface Form {
+  filiere: number | undefined
+  discipline: number | undefined
+  date: string | undefined
+}
 
 const form = ref<Form>({
   filiere: undefined,
   discipline: undefined,
   date: undefined,
-});
+})
 
-const isReady = ref<boolean>(false);
+const isReady = ref<boolean>(false)
 
 const filteredFilieres = computed<Array<Filiere> | undefined>(() => {
-  if (!props.disabled) return props.filieres;
+  if (!props.disabled)
+    return props.filieres
   return props.filieres
     ?.map((filiere) => {
       const disciplines: Array<Discipline> = filiere.disciplines.filter(
-        (discipline) => !props.disabled?.includes(filiereDisciplineToId(filiere.id, discipline.id)),
-      );
+        discipline => !props.disabled?.includes(filiereDisciplineToId(filiere.id, discipline.id)),
+      )
 
-      return { ...filiere, disciplines };
+      return { ...filiere, disciplines }
     })
-    .filter(({ disciplines }) => disciplines.length > 0);
-});
+    .filter(({ disciplines }) => disciplines.length > 0)
+})
 
 const filteredDisciplines = computed<Array<Discipline> | undefined>(() => {
-  return filteredFilieres.value?.find(({ id }) => id == form.value.filiere)?.disciplines;
-});
+  return filteredFilieres.value?.find(({ id }) => id === form.value.filiere)?.disciplines
+})
 
 /**
  * Update modelValue quand toutes les données sont replies
@@ -85,20 +86,20 @@ const filteredDisciplines = computed<Array<Discipline> | undefined>(() => {
 watch(
   form,
   debounce((newValue: Form): void => {
-    if (!isReady.value) return;
-    const { filiere, discipline, date } = newValue;
+    if (!isReady.value)
+      return
+    const { filiere, discipline, date } = newValue
 
-    const isDateOk =
-      props.config.date?.min && props.config.date?.max
-        ? isBetween(date ?? '', props.config.date.min, props.config.date.max)
-        : date != '';
+    const isDateOk = props.config.date?.min && props.config.date?.max
+      ? isBetween(date ?? '', props.config.date.min, props.config.date.max)
+      : date !== ''
     modelValue.value = {
       fonction: !!filiere && !!discipline ? filiereDisciplineToId(filiere, discipline) : undefined,
       date: isDateOk ? date : undefined,
-    };
+    }
   }, 200),
   { deep: true },
-);
+)
 
 /**
  * Reset la discipline quand la filière change
@@ -106,23 +107,25 @@ watch(
 watch(
   () => form.value.filiere,
   (newValue): void => {
-    if (newValue && isReady.value) form.value.discipline = undefined;
+    if (newValue && isReady.value)
+      form.value.discipline = undefined
   },
-);
+)
 
 onBeforeMount((): void => {
-  debounce(() => (isReady.value = true), 500)();
-  if (!modelValue.value?.fonction) return;
-  const { filiere, discipline } = idToFonction(modelValue.value.fonction);
-  form.value = { ...form.value, filiere, discipline, date: modelValue.value.date };
-});
+  debounce(() => (isReady.value = true), 500)()
+  if (!modelValue.value?.fonction)
+    return
+  const { filiere, discipline } = idToFonction(modelValue.value.fonction)
+  form.value = { ...form.value, filiere, discipline, date: modelValue.value.date }
+})
 </script>
 
 <template>
   <div class="container">
     <v-autocomplete
-      :label="t('person.function.type')"
       v-model="form.filiere"
+      :label="t('person.function.type')"
       v-bind="config.filiere"
       :items="filteredFilieres"
       item-title="libelleFiliere"
@@ -135,8 +138,8 @@ onBeforeMount((): void => {
       flat
     />
     <v-autocomplete
-      :label="t('person.function.discipline')"
       v-model="form.discipline"
+      :label="t('person.function.discipline')"
       v-bind="config.discipline"
       :items="filteredDisciplines"
       item-title="disciplinePoste"
@@ -149,9 +152,9 @@ onBeforeMount((): void => {
       flat
     />
     <v-text-field
+      v-model="form.date"
       :label="t('person.function.endDate')"
       type="date"
-      v-model="form.date"
       v-bind="config.date"
       variant="solo-filled"
       hide-details

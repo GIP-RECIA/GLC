@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import additionals from './additionals.json';
-import alerts from './alerts.json';
-import buttons from './buttons.json';
-import main from './main.json';
-import offices from './offices.json';
-import persons from './persons.json';
-import searchs from './searchs.json';
-import settings from './settings.json';
-import sources from './sources.json';
-import tabs from './tabs.json';
-import toasts from './toasts.json';
-import { fr } from 'vuetify/locale';
+import { fr } from 'vuetify/locale'
+import additionals from './additionals.json'
+import alerts from './alerts.json'
+import buttons from './buttons.json'
+import main from './main.json'
+import offices from './offices.json'
+import persons from './persons.json'
+import searchs from './searchs.json'
+import settings from './settings.json'
+import sources from './sources.json'
+import tabs from './tabs.json'
+import toasts from './toasts.json'
 
 export default {
   ...additionals,
@@ -41,4 +41,4 @@ export default {
   $vuetify: {
     ...fr,
   },
-};
+}

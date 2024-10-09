@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { Etat } from './enums/Etat.ts';
-import { Tabs } from './enums/Tabs.ts';
+import type { Etat } from './enums/Etat.ts'
+import type { Tabs } from './enums/Tabs.ts'
 
-export type StructureConfiguration = {
-  [Tabs.Dashboard]: {};
+export interface StructureConfiguration {
+  [Tabs.Dashboard]: object
   [Tabs.Teaching]: {
-    accountStates: Array<Etat>;
-  };
+    accountStates: Array<Etat>
+  }
   [Tabs.School]: {
-    accountStates: Array<Etat>;
-  };
+    accountStates: Array<Etat>
+  }
   [Tabs.Collectivity]: {
-    accountStates: Array<Etat>;
-  };
+    accountStates: Array<Etat>
+  }
   [Tabs.Academic]: {
-    accountStates: Array<Etat>;
-  };
-  [Tabs.Accounts]: {};
-};
+    accountStates: Array<Etat>
+  }
+  [Tabs.Accounts]: object
+}
 
 const emptyStructureConfiguration: StructureConfiguration = {
   dashboard: {},
@@ -48,6 +48,6 @@ const emptyStructureConfiguration: StructureConfiguration = {
     accountStates: [],
   },
   accounts: {},
-};
+}
 
-export { emptyStructureConfiguration };
+export { emptyStructureConfiguration }

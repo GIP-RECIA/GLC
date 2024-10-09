@@ -15,31 +15,31 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores';
-import { intercept, login } from '@/utils';
-import { watchOnce } from '@vueuse/core';
-import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useConfigurationStore } from '@/stores'
+import { intercept, login } from '@/utils'
+import { watchOnce } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const configurationStore = useConfigurationStore();
-const { isInit, isAuthenticated } = storeToRefs(configurationStore);
+const configurationStore = useConfigurationStore()
+const { isInit, isAuthenticated } = storeToRefs(configurationStore)
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const modelValue = computed<boolean>({
   get() {
-    return !isAuthenticated.value;
+    return !isAuthenticated.value
   },
   set() {},
-});
+})
 
 watchOnce(isInit, (newValue) => {
   if (newValue && !isAuthenticated.value) {
-    login();
-    intercept();
+    login()
+    intercept()
   }
-});
+})
 </script>
 
 <template>

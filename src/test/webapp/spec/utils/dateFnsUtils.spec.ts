@@ -13,31 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
-import { dateToDuration, isAfterOrEqual, isBeforeOrEqual, isBetween } from '@/utils';
-import { describe, expect, it } from 'vitest';
+// @ts-expect-error project location
+import { isAfterOrEqual, isBeforeOrEqual, isBetween } from '@/utils'
+import { describe, expect, it } from 'vitest'
 
 describe('dateFnsUtils', () => {
-  const date = '2024-08-01';
+  const date = '2024-08-01'
 
   it('test 1 - isBeforeOrEqual', () => {
-    expect(isBeforeOrEqual(date, date)).toBe(true);
-    expect(isBeforeOrEqual(date, '2024-09-01')).toBe(true);
-    expect(isBeforeOrEqual(date, '2024-07-30')).toBe(false);
-  });
+    expect(isBeforeOrEqual(date, date)).toBe(true)
+    expect(isBeforeOrEqual(date, '2024-09-01')).toBe(true)
+    expect(isBeforeOrEqual(date, '2024-07-30')).toBe(false)
+  })
 
   it('test 1 - isAfterOrEqual', () => {
-    expect(isAfterOrEqual(date, date)).toBe(true);
-    expect(isAfterOrEqual(date, '2024-07-30')).toBe(true);
-    expect(isAfterOrEqual(date, '2024-08-02')).toBe(false);
-  });
+    expect(isAfterOrEqual(date, date)).toBe(true)
+    expect(isAfterOrEqual(date, '2024-07-30')).toBe(true)
+    expect(isAfterOrEqual(date, '2024-08-02')).toBe(false)
+  })
 
   it('test 1 - isBetween', () => {
-    expect(isBetween(date, '2024-07-30', date)).toBe(true);
-    expect(isBetween(date, date, '2024-08-02')).toBe(true);
-    expect(isBetween(date, '2024-07-01', '2024-07-30')).toBe(false);
-    expect(isBetween(date, '2024-07-30', date, false)).toBe(false);
-    expect(isBetween(date, date, '2024-08-02', false)).toBe(false);
-    expect(isBetween(date, '2024-07-30', '2024-08-02', false)).toBe(true);
-  });
-});
+    expect(isBetween(date, '2024-07-30', date)).toBe(true)
+    expect(isBetween(date, date, '2024-08-02')).toBe(true)
+    expect(isBetween(date, '2024-07-01', '2024-07-30')).toBe(false)
+    expect(isBetween(date, '2024-07-30', date, false)).toBe(false)
+    expect(isBetween(date, date, '2024-08-02', false)).toBe(false)
+    expect(isBetween(date, '2024-07-30', '2024-08-02', false)).toBe(true)
+  })
+})

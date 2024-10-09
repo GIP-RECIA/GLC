@@ -14,40 +14,40 @@
  * limitations under the License.
  */
 
-export type PortalEntry = {
+export interface PortalEntry {
   identity: {
-    Id: string;
-    name: string;
-    domains?: Array<string>;
-    uai?: Array<string>;
-  };
+    Id: string
+    name: string
+    domains?: Array<string>
+    uai?: Array<string>
+  }
   images: Array<{
-    Id: string;
-    name: string;
-    path?: string;
-    url?: string;
-    opacity?: number;
-  }>;
+    Id: string
+    name: string
+    path?: string
+    url?: string
+    opacity?: number
+  }>
   colors: Array<{
-    Id: string;
-    hexa: string;
+    Id: string
+    hexa: string
     rgb: {
-      r: number;
-      g: number;
-      b: number;
-    };
-  }>;
+      r: number
+      g: number
+      b: number
+    }
+  }>
   sponsors: Array<{
-    Id: string;
-    name: string;
-    url?: string;
+    Id: string
+    name: string
+    url?: string
     logo: {
-      path?: string;
-      url?: string;
+      path?: string
+      url?: string
       parameters?: Array<{
-        propertie: string;
-        value: string;
-      }>;
-    };
-  }>;
-};
+        propertie: string
+        value: string
+      }>
+    }
+  }>
+}

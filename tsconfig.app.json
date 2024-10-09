@@ -1,20 +1,20 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": [
-    "src/main/webapp/src/types/d/*.d.ts",
-    "src/main/webapp/src/**/*",
-    "src/main/webapp/src/locales/**/*.json",
-    "src/main/webapp/src/**/*.vue"
-  ],
-  "exclude": ["src/test/**/*"],
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/main/webapp/src/*"]
-    }
-  }
+    },
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "src/main/webapp/src/types/d/*.d.ts",
+    "src/main/webapp/src/**/*",
+    "src/main/webapp/src/locales/**/*.json",
+    "src/main/webapp/src/**/*.vue"
+  ],
+  "exclude": ["src/test/**/*"]
 }

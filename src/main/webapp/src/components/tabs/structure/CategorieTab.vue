@@ -15,50 +15,51 @@
 -->
 
 <script setup lang="ts">
-import SelectFilter from '@/components/filter/SelectFilter.vue';
-import FilieresLayout from '@/components/layouts/FilieresLayout.vue';
-import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
-import type { SimplePersonne } from '@/types';
-import type { Etat, Tabs } from '@/types/enums';
-import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
-
-const configurationStore = useConfigurationStore();
-const { filterAccountStates, currentStructureConfig } = storeToRefs(configurationStore);
-
-const structureStore = useStructureStore();
-const { staff, filieresByStaff } = storeToRefs(structureStore);
-
-const personneStore = usePersonneStore();
-const { initCurrentPersonne } = personneStore;
-const { currentPersonne } = storeToRefs(personneStore);
+import type { SimplePersonne } from '@/types'
+import type { Etat, Tabs } from '@/types/enums'
+import SelectFilter from '@/components/filter/SelectFilter.vue'
+import FilieresLayout from '@/components/layouts/FilieresLayout.vue'
+import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 
 const props = defineProps<{
-  categorie: Exclude<Tabs, Tabs.Dashboard | Tabs.Accounts>;
-}>();
+  categorie: Exclude<Tabs, Tabs.Dashboard | Tabs.Accounts>
+}>()
+const configurationStore = useConfigurationStore()
+const { filterAccountStates, currentStructureConfig } = storeToRefs(configurationStore)
+
+const structureStore = useStructureStore()
+const { staff, filieresByStaff } = storeToRefs(structureStore)
+
+const personneStore = usePersonneStore()
+const { initCurrentPersonne } = personneStore
+const { currentPersonne } = storeToRefs(personneStore)
 
 const accountFilters = computed<Array<Etat>>(() =>
   currentStructureConfig.value ? currentStructureConfig.value[props.categorie].accountStates : [],
-);
+)
 
-const setAccountFilters = (states: Array<Etat>): void => {
-  if (!currentStructureConfig.value) return;
-  currentStructureConfig.value[props.categorie].accountStates = states;
-};
+function setAccountFilters(states: Array<Etat>): void {
+  if (!currentStructureConfig.value)
+    return
+  currentStructureConfig.value[props.categorie].accountStates = states
+}
 
-const loadUser = (user: SimplePersonne | undefined): void => {
-  if (!user) return;
-  currentPersonne.value = undefined;
-  initCurrentPersonne(user.id, true);
-};
+function loadUser(user: SimplePersonne | undefined): void {
+  if (!user)
+    return
+  currentPersonne.value = undefined
+  initCurrentPersonne(user.id, true)
+}
 </script>
 
 <template>
   <v-container fluid>
     <div class="d-flex align-center justify-end mb-4 mb-sm-0">
       <slot name="actions" />
-      <personne-search
+      <PersonneSearch
         :search-list="staff[categorie]"
         :model-value="undefined"
         search-type="IN"
@@ -66,7 +67,7 @@ const loadUser = (user: SimplePersonne | undefined): void => {
         class="w-100 staff-search me-2"
         @update:model-value="loadUser"
       />
-      <select-filter
+      <SelectFilter
         v-if="filterAccountStates"
         :model-value="accountFilters"
         :items="filterAccountStates"
@@ -74,7 +75,7 @@ const loadUser = (user: SimplePersonne | undefined): void => {
         @update:model-value="setAccountFilters"
       />
     </div>
-    <filieres-layout :filieres="filieresByStaff[categorie]" :account-states="accountFilters" />
+    <FilieresLayout :filieres="filieresByStaff[categorie]" :account-states="accountFilters" />
     <slot name="footer" />
   </v-container>
 </template>

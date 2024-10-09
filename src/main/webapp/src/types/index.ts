@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-export * from './adresseType.ts';
-export * from './alertType.ts';
-export * from './configurationType.ts';
-export * from './confirmationType.ts';
-export * from './disciplineType.ts';
-export * from './endInfoType.ts';
-export * from './enumValuesType.ts';
-export * from './etablissementType.ts';
-export * from './filiereType.ts';
-export * from './fonctionType.ts';
-export * from './identityType.ts';
-export * from './personneType.ts';
-export * from './portalEntryType.ts';
-export * from './structureConfigurationType.ts';
+export * from './adresseType.ts'
+export * from './alertType.ts'
+export * from './configurationType.ts'
+export * from './confirmationType.ts'
+export * from './disciplineType.ts'
+export * from './endInfoType.ts'
+export * from './enumValuesType.ts'
+export * from './etablissementType.ts'
+export * from './filiereType.ts'
+export * from './fonctionType.ts'
+export * from './identityType.ts'
+export * from './personneType.ts'
+export * from './portalEntryType.ts'
+export * from './structureConfigurationType.ts'

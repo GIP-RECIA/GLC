@@ -15,50 +15,50 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores';
-import { Theme } from '@/types/enums';
-import { useLocalStorage, usePreferredDark } from '@vueuse/core';
-import { storeToRefs } from 'pinia';
-import { computed, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useTheme } from 'vuetify';
+import { useConfigurationStore } from '@/stores'
+import { Theme } from '@/types/enums'
+import { useLocalStorage, usePreferredDark } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useTheme } from 'vuetify'
 
-const configurationStore = useConfigurationStore();
-const { isSettings } = storeToRefs(configurationStore);
+const configurationStore = useConfigurationStore()
+const { isSettings } = storeToRefs(configurationStore)
 
-const { t } = useI18n();
-const isDark = usePreferredDark();
-const theme = useTheme();
+const { t } = useI18n()
+const isDark = usePreferredDark()
+const theme = useTheme()
 
 const modelValue = computed<boolean>({
   get() {
-    return isSettings.value;
+    return isSettings.value
   },
   set() {},
-});
+})
 
-const selectedTheme = useLocalStorage<Array<Theme>>(`${__APP_SLUG__}.theme`, [Theme.system]);
+const selectedTheme = useLocalStorage<Array<Theme>>(`${__APP_SLUG__}.theme`, [Theme.system])
 
 watch(
   [selectedTheme, isDark],
   ([newAppearanceTheme, newIsDark]) => {
-    let selected = newIsDark ? Theme.dark : Theme.light;
+    let selected = newIsDark ? Theme.dark : Theme.light
     switch (newAppearanceTheme[0]) {
       case Theme.light:
-        selected = Theme.light;
-        break;
+        selected = Theme.light
+        break
       case Theme.dark:
-        selected = Theme.dark;
-        break;
+        selected = Theme.dark
+        break
     }
-    theme.global.name.value = selected;
+    theme.global.name.value = selected
   },
   { immediate: true },
-);
+)
 
-const onClose = (): void => {
-  isSettings.value = false;
-};
+function onClose(): void {
+  isSettings.value = false
+}
 </script>
 
 <template>

@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { Discipline } from './disciplineType.ts';
-import type { Filiere } from './filiereType.ts';
+import type { Discipline } from './disciplineType.ts'
+import type { Filiere } from './filiereType.ts'
 
-export type SourceFonction = {
-  source: string;
-  filieres: Array<Filiere>;
-  customMapping?: CustomMapping;
-};
+export interface SourceFonction {
+  source: string
+  filieres: Array<Filiere>
+  customMapping?: CustomMapping
+}
 
-export type CustomMapping = {
-  filieres: Array<Filiere>;
-  disciplines: Array<Discipline>;
-};
+export interface CustomMapping {
+  filieres: Array<Filiere>
+  disciplines: Array<Discipline>
+}
 
-export type PersonneFonction = {
-  filiere: number;
-  discipline: number;
-  source: string;
-  structure: number;
-  dateFin?: string;
-};
+export interface PersonneFonction {
+  filiere: number
+  discipline: number
+  source: string
+  structure: number
+  dateFin?: string
+}
 
-export type FonctionForm = {
-  fonction?: string;
-  date?: string;
-};
+export interface FonctionForm {
+  fonction?: string
+  date?: string
+}

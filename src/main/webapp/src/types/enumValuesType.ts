@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-export type enumValues = {
-  i18n: string;
-  color?: string;
-  icon?: string;
-};
+export interface enumValues {
+  i18n: string
+  color?: string
+  icon?: string
+}

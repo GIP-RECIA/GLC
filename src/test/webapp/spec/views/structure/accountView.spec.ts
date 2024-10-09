@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { plugins } from '../../config';
-// @ts-ignore
-import AccountView from '@/views/AccountView.vue';
-import { flushPromises, shallowMount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { ResizeObserver } from '@juggle/resize-observer'
+// import { plugins } from '../../config'
+// // @ts-expect-error project location
+// import AccountView from '@/views/AccountView.vue'
+import { flushPromises } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
 
-global.ResizeObserver = require('resize-observer-polyfill');
+globalThis.ResizeObserver = ResizeObserver
 
-describe('AccountView', () => {
+describe('accountView', () => {
   it('test 1 - init', async () => {
     // const wrapper = shallowMount(AccountView, {
     //   global: {
@@ -30,9 +31,9 @@ describe('AccountView', () => {
     //   props: {},
     // });
 
-    await flushPromises();
+    await flushPromises()
 
     // TODO
-    expect(true).toBe(true);
-  });
-});
+    expect(true).toBe(true)
+  })
+})

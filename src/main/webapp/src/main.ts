@@ -14,34 +14,32 @@
  * limitations under the License.
  */
 
-import { createApp } from 'vue';
+import App from '@/App.vue'
+import { register as registerDirectives } from '@/directives'
+import { register as registerFontAwsome } from '@/plugins/fontawesome.ts'
+import i18n from '@/plugins/i18n.ts'
+import pinia from '@/plugins/pinia.ts'
+import vuetify from '@/plugins/vuetify.ts'
+import router from '@/router'
+import { createApp } from 'vue'
+import Vue3Toasity, { type ToastContainerOptions } from 'vue3-toastify'
+import '@/plugins/date-fns.ts'
+import 'vuetify/styles'
+import 'vue3-toastify/dist/index.css'
+import '@/assets/main.scss'
 
-import { register as registerDirectives } from '@/directives';
-import { register as registerFontAwsome } from '@/plugins/fontawesome.ts';
-import '@/plugins/date-fns.ts';
-import i18n from '@/plugins/i18n.ts';
-import pinia from '@/plugins/pinia.ts';
-import vuetify from '@/plugins/vuetify.ts';
-import router from '@/router';
-import Vue3Toasity, { type ToastContainerOptions } from 'vue3-toastify';
+const app = createApp(App)
 
-import 'vuetify/styles';
-import 'vue3-toastify/dist/index.css';
-import '@/assets/main.scss';
+registerDirectives(app)
+registerFontAwsome(app)
 
-import App from '@/App.vue';
+app.use(i18n)
+app.use(pinia)
+app.use(vuetify)
+app.use(router)
+app.use(Vue3Toasity, { limit: 0, newestOnTop: true, theme: 'colored' } as ToastContainerOptions)
 
-const app = createApp(App);
+app.mount('#app')
 
-registerDirectives(app);
-registerFontAwsome(app);
-
-app.use(i18n);
-app.use(pinia);
-app.use(vuetify);
-app.use(router);
-app.use(Vue3Toasity, { limit: 0, newestOnTop: true, theme: 'colored' } as ToastContainerOptions);
-
-app.mount('#app');
-
-console.log("Version", __BACK_VERSION__);
+// eslint-disable-next-line no-console
+console.log('Version', __BACK_VERSION__)

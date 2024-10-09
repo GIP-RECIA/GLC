@@ -15,70 +15,72 @@
 -->
 
 <script setup lang="ts">
-import CustomPagination from '@/components/CustomPagination.vue';
-import { useConfigurationStore, useStructureStore } from '@/stores';
-import type { SimpleEtablissement } from '@/types';
-import { useSessionStorage } from '@vueuse/core';
-import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useDisplay } from 'vuetify';
+import type { SimpleEtablissement } from '@/types'
+import CustomPagination from '@/components/CustomPagination.vue'
+import { useConfigurationStore, useStructureStore } from '@/stores'
+import { useSessionStorage } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useDisplay } from 'vuetify'
 
-const configurationStore = useConfigurationStore();
-const { search } = storeToRefs(configurationStore);
+const configurationStore = useConfigurationStore()
+const { search } = storeToRefs(configurationStore)
 
-const structureStore = useStructureStore();
-structureStore.init();
-const { etabs } = storeToRefs(structureStore);
+const structureStore = useStructureStore()
+structureStore.init()
+const { etabs } = storeToRefs(structureStore)
 
-const { t } = useI18n();
-const { name } = useDisplay();
+const { t } = useI18n()
+const { name } = useDisplay()
 
-const pageItems = ref<Array<SimpleEtablissement> | undefined>();
+const pageItems = ref<Array<SimpleEtablissement> | undefined>()
 
 const itemsPerPage = computed<number>(() => {
-  const defaultItemsPerPage = 10;
+  const defaultItemsPerPage = 10
 
   switch (name.value) {
     case 'xs':
-      return defaultItemsPerPage;
+      return defaultItemsPerPage
     case 'sm':
-      return defaultItemsPerPage;
+      return defaultItemsPerPage
     case 'md':
-      return 2 * defaultItemsPerPage;
+      return 2 * defaultItemsPerPage
     case 'lg':
-      return 3 * defaultItemsPerPage;
+      return 3 * defaultItemsPerPage
     case 'xl':
-      return 3 * defaultItemsPerPage;
+      return 3 * defaultItemsPerPage
     case 'xxl':
-      return 4 * defaultItemsPerPage;
+      return 4 * defaultItemsPerPage
     default:
-      return defaultItemsPerPage;
+      return defaultItemsPerPage
   }
-});
+})
 
 const items = computed<Array<SimpleEtablissement> | undefined>(() => {
-  if (search.value != undefined && search.value != null) {
+  if (search.value !== undefined && search.value != null) {
     const searchValue = search.value
       .toLowerCase()
       .normalize('NFD')
-      .replace(/\p{Diacritic}/gu, '');
+      .replace(/\p{Diacritic}/gu, '')
 
     return etabs.value?.filter((etablissement) => {
-      let filters =
-        etablissement.nom.toLowerCase().indexOf(searchValue) > -1 ||
-        etablissement.uai.toLowerCase().indexOf(searchValue) > -1 ||
-        etablissement.siren.toString().indexOf(searchValue) > -1;
+      let filters = etablissement.nom.toLowerCase().includes(searchValue)
+        || etablissement.uai.toLowerCase().includes(searchValue)
+        || etablissement.siren.toString().includes(searchValue)
       if (etablissement.ville) {
-        filters = filters || etablissement.ville.toLowerCase().indexOf(searchValue) > -1;
+        filters = filters || etablissement.ville.toLowerCase().includes(searchValue)
       }
 
-      return filters;
-    });
-  } else return etabs.value;
-});
+      return filters
+    })
+  }
+  else {
+    return etabs.value
+  }
+})
 
-const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true);
+const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true)
 </script>
 
 <template>
@@ -124,10 +126,12 @@ const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true);
     </div>
     <div v-else class="d-flex flex-column align-center justify-center pa-10">
       <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
-      <div class="pt-2">{{ t('search.noResults') }}</div>
+      <div class="pt-2">
+        {{ t('search.noResults') }}
+      </div>
     </div>
 
-    <custom-pagination
+    <CustomPagination
       :items="items"
       :items-per-page="itemsPerPage"
       hide-single-page

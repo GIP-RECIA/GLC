@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,10 +31,10 @@ const router = createRouter({
     {
       path: '/:pathName(.*)',
       redirect: () => {
-        return { name: 'home' };
+        return { name: 'home' }
       },
     },
   ],
-});
+})
 
-export default router;
+export default router

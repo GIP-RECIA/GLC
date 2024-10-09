@@ -13,31 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as messages from '@/locales';
-import { createI18n } from 'vue-i18n';
+import * as messages from '@/locales'
+import { createI18n } from 'vue-i18n'
 
 const config: {
-  fallbackLocale: string;
-  supportLocales: Array<string>;
+  fallbackLocale: string
+  supportLocales: Array<string>
 } = {
   fallbackLocale: 'fr',
   supportLocales: ['en', 'fr'],
-};
+}
 
-const findLanguage = (): string => {
-  if (config.supportLocales.includes(window.navigator.language)) return window.navigator.language;
+function findLanguage(): string {
+  if (config.supportLocales.includes(window.navigator.language))
+    return window.navigator.language
 
-  const matchLanguages = window.navigator.languages.filter((lang) =>
-    config.supportLocales.find((available) => lang == available),
-  );
-  if (matchLanguages.length > 0) return matchLanguages[0];
+  const matchLanguages = window.navigator.languages
+    .filter(lang => config.supportLocales.find(available => lang === available))
+  if (matchLanguages.length > 0)
+    return matchLanguages[0]
 
-  return config.fallbackLocale;
-};
+  return config.fallbackLocale
+}
 
 export default createI18n({
   legacy: false,
   locale: findLanguage(),
   fallbackLocale: config.fallbackLocale,
   messages,
-});
+})

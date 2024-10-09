@@ -15,49 +15,49 @@
 -->
 
 <script setup lang="ts">
-import PersonneDialogInfo from './PersonneDialogInfo.vue';
-import PersonneDialogManageAdditional from './PersonneDialogManageAdditional.vue';
-import { usePersonne } from '@/composables';
-import { useConfigurationStore, usePersonneStore } from '@/stores';
-import { PersonneDialogState, Tabs } from '@/types/enums';
-import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { usePersonne } from '@/composables'
+import { useConfigurationStore, usePersonneStore } from '@/stores'
+import { PersonneDialogState, Tabs } from '@/types/enums'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import PersonneDialogInfo from './PersonneDialogInfo.vue'
+import PersonneDialogManageAdditional from './PersonneDialogManageAdditional.vue'
 
-const configurationStore = useConfigurationStore();
-const { structureTab } = storeToRefs(configurationStore);
+const configurationStore = useConfigurationStore()
+const { structureTab } = storeToRefs(configurationStore)
 
-const personneStore = usePersonneStore();
-const { currentPersonne, isCurrentPersonne, dialogState, dialogTitle } = storeToRefs(personneStore);
+const personneStore = usePersonneStore()
+const { currentPersonne, isCurrentPersonne, dialogState, dialogTitle } = storeToRefs(personneStore)
 
-const { canEditAdditionals } = usePersonne();
+const { canEditAdditionals } = usePersonne()
 
 const modelValue = computed<boolean>({
   get() {
-    return isCurrentPersonne.value;
+    return isCurrentPersonne.value
   },
   set() {},
-});
+})
 </script>
 
 <template>
   <v-dialog v-model="modelValue" scrollable :max-width="1024">
     <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
-        <v-toolbar-title class="text-h6">{{ dialogTitle }}</v-toolbar-title>
-        <template v-if="dialogState == PersonneDialogState.Info" #append>
+        <v-toolbar-title class="text-h6">
+          {{ dialogTitle }}
+        </v-toolbar-title>
+        <template v-if="dialogState === PersonneDialogState.Info" #append>
           <v-btn icon="fas fa-xmark" color="default" variant="plain" class="me-1" @click="isCurrentPersonne = false" />
         </template>
       </v-toolbar>
 
-      <personne-dialog-info v-if="dialogState == PersonneDialogState.Info" :personne="currentPersonne" />
+      <PersonneDialogInfo v-if="dialogState === PersonneDialogState.Info" :personne="currentPersonne" />
 
-      <personne-dialog-manage-additional
-        v-if="
-          (dialogState == PersonneDialogState.ManageAdditional ||
-            dialogState == PersonneDialogState.ManageAdditionalMultiple) &&
-          structureTab == Tabs.School &&
-          canEditAdditionals
-        "
+      <PersonneDialogManageAdditional
+        v-if="(dialogState === PersonneDialogState.ManageAdditional
+          || dialogState === PersonneDialogState.ManageAdditionalMultiple)
+          && structureTab === Tabs.School
+          && canEditAdditionals"
       />
     </v-card>
   </v-dialog>

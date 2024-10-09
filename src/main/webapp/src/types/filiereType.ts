@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { Discipline } from './disciplineType.ts';
+import type { Discipline } from './disciplineType.ts'
 
-export type Filiere = {
-  id: number;
-  codeFiliere: string;
-  libelleFiliere: string;
-  source: string;
-  disciplines: Array<Discipline>;
-};
+export interface Filiere {
+  id: number
+  codeFiliere: string
+  libelleFiliere: string
+  source: string
+  disciplines: Array<Discipline>
+}

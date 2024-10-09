@@ -15,57 +15,59 @@
 -->
 
 <script setup lang="ts">
-import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
-import { useConfigurationStore, usePersonneStore } from '@/stores';
-import type { SimplePersonne } from '@/types';
-import { PersonneDialogState } from '@/types/enums';
-import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import type { SimplePersonne } from '@/types'
+import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
+import { useConfigurationStore, usePersonneStore } from '@/stores'
+import { PersonneDialogState } from '@/types/enums'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const configurationStore = useConfigurationStore();
-const { isAttach } = storeToRefs(configurationStore);
+const configurationStore = useConfigurationStore()
+const { isAttach } = storeToRefs(configurationStore)
 
-const personneStore = usePersonneStore();
-const { initCurrentPersonne } = personneStore;
-const { currentPersonne, dialogState, attachMode } = storeToRefs(personneStore);
+const personneStore = usePersonneStore()
+const { initCurrentPersonne } = personneStore
+const { currentPersonne, dialogState, attachMode } = storeToRefs(personneStore)
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const modelValue = computed<boolean>({
   get() {
-    return isAttach.value;
+    return isAttach.value
   },
   set() {},
-});
+})
 
 const selectedUser = computed<SimplePersonne | undefined>({
   get() {
-    return undefined;
+    return undefined
   },
   set(user) {
-    currentPersonne.value = undefined;
+    currentPersonne.value = undefined
     if (user) {
-      attachMode.value = true;
-      isAttach.value = false;
-      dialogState.value = PersonneDialogState.ManageAdditionalMultiple;
-      initCurrentPersonne(user.id, true);
+      attachMode.value = true
+      isAttach.value = false
+      dialogState.value = PersonneDialogState.ManageAdditionalMultiple
+      initCurrentPersonne(user.id, true)
     }
   },
-});
+})
 </script>
 
 <template>
   <v-dialog v-model="modelValue" scrollable :max-width="1024 / 2">
     <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
-        <v-toolbar-title class="text-h6">{{ t('button.attach') }}</v-toolbar-title>
+        <v-toolbar-title class="text-h6">
+          {{ t('button.attach') }}
+        </v-toolbar-title>
         <template #append>
           <v-btn icon="fas fa-xmark" color="default" variant="plain" class="me-1" @click="isAttach = false" />
         </template>
       </v-toolbar>
       <v-card-text class="pt-0 pb-6">
-        <personne-search v-model="selectedUser" search-type="OUT" variant="outlined" />
+        <PersonneSearch v-model="selectedUser" search-type="OUT" variant="outlined" />
       </v-card-text>
     </v-card>
   </v-dialog>

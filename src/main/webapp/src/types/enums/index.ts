@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-export * from './CategoriePersonne.ts';
-export * from './DashboardPanel.ts';
-export * from './Etat.ts';
-export * from './PersonneDialogState.ts';
-export * from './Tabs.ts';
-export * from './Theme.ts';
+export * from './CategoriePersonne.ts'
+export * from './DashboardPanel.ts'
+export * from './Etat.ts'
+export * from './PersonneDialogState.ts'
+export * from './Tabs.ts'
+export * from './Theme.ts'

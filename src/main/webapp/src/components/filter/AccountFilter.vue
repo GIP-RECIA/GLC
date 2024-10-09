@@ -15,34 +15,34 @@
 -->
 
 <script setup lang="ts">
-import ChipsFilter from '@/components/filter/ChipsFilter.vue';
-import type { SimplePersonne } from '@/types';
-import { CategoriePersonne, Etat } from '@/types/enums';
-import isEmpty from 'lodash.isempty';
-import { ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+import type { SimplePersonne } from '@/types'
+import ChipsFilter from '@/components/filter/ChipsFilter.vue'
+import { CategoriePersonne, Etat } from '@/types/enums'
+import isEmpty from 'lodash.isempty'
+import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
-  searchList: Array<SimplePersonne> | undefined;
-}>();
+  searchList: Array<SimplePersonne> | undefined
+}>()
 
-const emit = defineEmits<(event: 'update:result', payload: Array<SimplePersonne>) => void>();
+const emit = defineEmits<(event: 'update:result', payload: Array<SimplePersonne>) => void>()
 
-const nbResults = ref<number>(props.searchList ? props.searchList.length : 0);
+const { t } = useI18n()
+
+const nbResults = ref<number>(props.searchList ? props.searchList.length : 0)
 
 const filters = ref<{
-  search: string | undefined;
-  categories: Array<string>;
-  status: Array<string>;
-  types: Array<string>;
+  search: string | undefined
+  categories: Array<string>
+  status: Array<string>
+  types: Array<string>
 }>({
   search: undefined,
   categories: [],
   status: [],
   types: [],
-});
+})
 
 const tags = {
   category: [
@@ -65,46 +65,47 @@ const tags = {
     { id: '', i18n: 'source.official' },
     { id: 'SarapisUi_', i18n: 'source.SarapisUi_' },
   ],
-};
+}
 
-const filter = (): void => {
-  let result: Array<SimplePersonne> = !isEmpty(props.searchList) ? props.searchList! : [];
+function filter(): void {
+  let result: Array<SimplePersonne> = !isEmpty(props.searchList) ? props.searchList! : []
 
-  const searchValue = filters.value.search ? filters.value.search.toLowerCase() : undefined;
-  if (searchValue != undefined && searchValue !== '') {
+  const searchValue = filters.value.search ? filters.value.search.toLowerCase() : undefined
+  if (searchValue !== undefined && searchValue !== '') {
     result = result.filter((personne) => {
-      let filter = personne.cn.toLowerCase().indexOf(searchValue) > -1;
-      if (personne.uid) filter = filter || personne.uid.toLowerCase().indexOf(searchValue) > -1;
+      let filter = personne.cn.toLowerCase().includes(searchValue)
+      if (personne.uid)
+        filter = filter || personne.uid.toLowerCase().includes(searchValue)
 
-      return filter;
-    });
+      return filter
+    })
   }
 
   if (!isEmpty(filters.value.categories)) {
-    result = result.filter((personne) => filters.value.categories.includes(personne.categorie));
+    result = result.filter(personne => filters.value.categories.includes(personne.categorie))
   }
 
   if (!isEmpty(filters.value.status)) {
-    result = result.filter((personne) => filters.value.status.includes(personne.etat));
+    result = result.filter(personne => filters.value.status.includes(personne.etat))
   }
 
   if (!isEmpty(filters.value.types)) {
-    result = result.filter((personne) =>
+    result = result.filter(personne =>
       filters.value.types.includes(personne.source.startsWith('SarapisUi_') ? 'SarapisUi_' : ''),
-    );
+    )
   }
 
-  nbResults.value = result.length;
-  emit('update:result', result);
-};
+  nbResults.value = result.length
+  emit('update:result', result)
+}
 
 watch(
   () => props.searchList,
   () => filter(),
   { immediate: true },
-);
+)
 
-watch(filters, () => filter(), { deep: true });
+watch(filters, () => filter(), { deep: true })
 </script>
 
 <template>
@@ -125,16 +126,22 @@ watch(filters, () => filter(), { deep: true });
         </template>
       </v-text-field>
       <div class="mb-2">
-        <h2 class="text-h6">{{ t('person.information.profile') }}</h2>
-        <chips-filter v-model="filters.categories" :items="tags.category" />
+        <h2 class="text-h6">
+          {{ t('person.information.profile') }}
+        </h2>
+        <ChipsFilter v-model="filters.categories" :items="tags.category" />
       </div>
       <div class="mb-2">
-        <h2 class="text-h6">{{ t('person.information.status') }}</h2>
-        <chips-filter v-model="filters.status" :items="tags.status" />
+        <h2 class="text-h6">
+          {{ t('person.information.status') }}
+        </h2>
+        <ChipsFilter v-model="filters.status" :items="tags.status" />
       </div>
       <div class="mb-2">
-        <h2 class="text-h6">{{ t('person.information.source') }}</h2>
-        <chips-filter v-model="filters.types" :items="tags.type" />
+        <h2 class="text-h6">
+          {{ t('person.information.source') }}
+        </h2>
+        <ChipsFilter v-model="filters.types" :items="tags.type" />
       </div>
       <div class="d-flex">
         <v-spacer />

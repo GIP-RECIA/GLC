@@ -15,15 +15,15 @@
 -->
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+import { useI18n } from 'vue-i18n'
 
 defineProps<{
-  items: Array<{ i18n: string; value: any; color?: string }>;
-}>();
+  items: Array<{ i18n: string, value: any, color?: string }>
+}>()
 
-const modelValue = defineModel<Array<any>>();
+const { t } = useI18n()
+
+const modelValue = defineModel<Array<any>>()
 </script>
 
 <template>

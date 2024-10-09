@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { library } from '@fortawesome/fontawesome-svg-core';
+import type { App } from 'vue'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faCircle as farCircle,
   faDotCircle as farDotCircle,
   faSquare as farSquare,
   faUser as farUser,
-} from '@fortawesome/free-regular-svg-icons';
+} from '@fortawesome/free-regular-svg-icons'
 import {
   faCaretDown,
   faCaretUp,
@@ -57,12 +58,11 @@ import {
   faUserPen,
   faUserSecret,
   faXmark,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import type { App } from 'vue';
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-const register = (app: App): void => {
-  library.add(farCircle, farDotCircle, farSquare, farUser);
+function register(app: App): void {
+  library.add(farCircle, farDotCircle, farSquare, farUser)
   library.add(
     faCaretDown,
     faCaretUp,
@@ -100,8 +100,8 @@ const register = (app: App): void => {
     faUserPen,
     faUserSecret,
     faXmark,
-  );
-  app.component('font-awesome-icon', FontAwesomeIcon);
-};
+  )
+  app.component('font-awesome-icon', FontAwesomeIcon)
+}
 
-export { register };
+export { register }

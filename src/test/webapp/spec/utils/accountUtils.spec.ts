@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
-import { getCategoriePersonne, getEtat, getIcon, isLocal, toIdentifier } from '@/utils/accountUtils';
-import { describe, expect, it } from 'vitest';
+// // @ts-expect-error project location
+// import { getCategoriePersonne, getEtat, getIcon, isLocal, toIdentifier } from '@/utils/accountUtils'
+import { describe, expect, it } from 'vitest'
 
 describe('accountUtils', () => {
   it('test 1 - ', () => {
     // TODO
-    expect(true).toBe(true);
-  });
-});
+    expect(true).toBe(true)
+  })
+})

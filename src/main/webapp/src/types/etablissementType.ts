@@ -13,42 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { Adresse } from './adresseType.ts';
-import type { Alert } from './alertType.ts';
-import type { Filiere } from './filiereType.ts';
-import type { SimplePersonne } from './personneType.ts';
+import type { Adresse } from './adresseType.ts'
+import type { Alert } from './alertType.ts'
+import type { Filiere } from './filiereType.ts'
+import type { SimplePersonne } from './personneType.ts'
 
-export type Etablissement = {
-  id: number;
-  uai: string;
-  etat: string;
-  etatAlim: string;
-  source: string;
-  anneeScolaire: string;
-  adresse: Adresse;
-  categorie: string;
-  type?: string;
-  mail: string;
-  nom: string;
-  nomCourt: string;
-  siren: string;
-  siteWeb: string;
-  modeleLogin: string;
-  logo: string;
-  personnes: Array<SimplePersonne>;
-  filieres: Array<Filiere>;
-  withoutFunctions?: Array<SimplePersonne>;
-  alerts: Array<Alert>;
-  permission?: string;
-};
+export interface Etablissement {
+  id: number
+  uai: string
+  etat: string
+  etatAlim: string
+  source: string
+  anneeScolaire: string
+  adresse: Adresse
+  categorie: string
+  type?: string
+  mail: string
+  nom: string
+  nomCourt: string
+  siren: string
+  siteWeb: string
+  modeleLogin: string
+  logo: string
+  personnes: Array<SimplePersonne>
+  filieres: Array<Filiere>
+  withoutFunctions?: Array<SimplePersonne>
+  alerts: Array<Alert>
+  permission?: string
+}
 
-export type SimpleEtablissement = {
-  id: number;
-  uai: string;
-  categorie: string;
-  type?: string;
-  nom: string;
-  nomCourt: string;
-  ville?: string;
-  siren: string;
-};
+export interface SimpleEtablissement {
+  id: number
+  uai: string
+  categorie: string
+  type?: string
+  nom: string
+  nomCourt: string
+  ville?: string
+  siren: string
+}

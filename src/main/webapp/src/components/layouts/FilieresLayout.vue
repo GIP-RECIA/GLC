@@ -15,57 +15,57 @@
 -->
 
 <script setup lang="ts">
-import PersonneCard from '@/components/PersonneCard.vue';
-import type { Discipline, Filiere } from '@/types';
-import isEmpty from 'lodash.isempty';
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+import type { Discipline, Filiere } from '@/types'
+import PersonneCard from '@/components/PersonneCard.vue'
+import isEmpty from 'lodash.isempty'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
-  filieres: Array<Filiere> | undefined;
-  accountStates?: Array<string>;
-}>();
+  filieres: Array<Filiere> | undefined
+  accountStates?: Array<string>
+}>()
+
+const { t } = useI18n()
 
 const filteredFilieres = computed<Array<Filiere>>(() => {
-  let filieres = props.filieres ? props.filieres : [];
+  let filieres = props.filieres ? props.filieres : []
   if (!isEmpty(props.accountStates)) {
     filieres = filieres.map((filiere) => {
       const disciplines: Array<Discipline> = filiere.disciplines
         .map((discipline) => {
-          const personnes = discipline.personnes.filter((personne) => props.accountStates!.includes(personne.etat));
+          const personnes = discipline.personnes.filter(personne => props.accountStates!.includes(personne.etat))
 
-          return { ...discipline, personnes };
+          return { ...discipline, personnes }
         })
-        .filter((discipline) => discipline.personnes.length > 0);
+        .filter(discipline => discipline.personnes.length > 0)
 
-      return { ...filiere, disciplines };
-    });
+      return { ...filiere, disciplines }
+    })
   }
-  filieres = filieres.filter((filiere) => filiere.disciplines.length > 0);
+  filieres = filieres.filter(filiere => filiere.disciplines.length > 0)
 
-  return filieres;
-});
+  return filieres
+})
 </script>
 
 <template>
   <div v-if="filteredFilieres.length > 0" class="container">
     <div v-for="filiere in filteredFilieres" :key="filiere.codeFiliere">
       <div class="text-uppercase pb-2">
-        {{ filiere.codeFiliere != '-' ? filiere.libelleFiliere : t('withoutFunctions') }}
+        {{ filiere.codeFiliere !== '-' ? filiere.libelleFiliere : t('withoutFunctions') }}
       </div>
       <div class="discipline-container">
         <v-card
           v-for="discipline in filiere.disciplines"
           :key="discipline.code"
-          :subtitle="discipline.code != '-' ? discipline.disciplinePoste : ''"
+          :subtitle="discipline.code !== '-' ? discipline.disciplinePoste : ''"
           flat
           min-height="100%"
         >
           <v-card-text>
             <div class="personne-container">
-              <personne-card
+              <PersonneCard
                 v-for="personne in discipline.personnes"
                 :key="personne.id"
                 variant="tonal"
@@ -79,7 +79,9 @@ const filteredFilieres = computed<Array<Filiere>>(() => {
   </div>
   <div v-else class="d-flex flex-column align-center justify-center pa-10">
     <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
-    <div class="pt-2">{{ t('search.noResults') }}</div>
+    <div class="pt-2">
+      {{ t('search.noResults') }}
+    </div>
   </div>
 </template>
 

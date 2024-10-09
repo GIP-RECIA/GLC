@@ -15,20 +15,22 @@
 -->
 
 <script setup lang="ts">
-import type { SimplePersonne, enumValues } from '@/types';
-import { concatenate, getEtat, getIcon } from '@/utils';
-import { computed } from 'vue';
+import type { enumValues, SimplePersonne } from '@/types'
+import { concatenate, getEtat, getIcon } from '@/utils'
+import { computed } from 'vue'
 
 const props = defineProps<{
-  personne: SimplePersonne;
-}>();
+  personne: SimplePersonne
+}>()
 
-const etat = computed<enumValues>(() => getEtat(props.personne.etat));
+const etat = computed<enumValues>(() => getEtat(props.personne.etat))
 </script>
 
 <template>
   <v-list-item :subtitle="concatenate([personne.email, personne.uid], ' - ')">
-    <template #title>{{ personne.cn }}</template>
+    <template #title>
+      {{ personne.cn }}
+    </template>
     <template #prepend>
       <v-icon :icon="getIcon(personne.source)" :color="etat.color" />
     </template>

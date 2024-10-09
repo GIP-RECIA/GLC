@@ -15,51 +15,54 @@
 -->
 
 <script setup lang="ts">
-import PersonneSearch from '@/components/search/personne/PersonneSearch.vue';
-import { useSaveAttachDetach } from '@/composables';
-import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/api';
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
-import type { SimplePersonne } from '@/types';
-import { errorHandler, fonctionsToId } from '@/utils';
-import debounce from 'lodash.debounce';
-import { storeToRefs } from 'pinia';
-import { computed, ref, watch } from 'vue';
-import { toast } from 'vue3-toastify';
-import { useI18n } from 'vue-i18n';
+import type { SimplePersonne } from '@/types'
+import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
+import { useSaveAttachDetach } from '@/composables'
+import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/api'
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
+import { errorHandler, fonctionsToId } from '@/utils'
+import debounce from 'lodash.debounce'
+import { storeToRefs } from 'pinia'
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { toast } from 'vue3-toastify'
 
-const configurationStore = useConfigurationStore();
-const { isEditAllowed } = configurationStore;
-const { currentStructureId, isQuickAdd, requestAdd } = storeToRefs(configurationStore);
+const configurationStore = useConfigurationStore()
+const { isEditAllowed } = configurationStore
+const { currentStructureId, isQuickAdd, requestAdd } = storeToRefs(configurationStore)
 
-const personneStore = usePersonneStore();
-const { initCurrentPersonne } = personneStore;
-const { currentPersonne, personneStructure } = storeToRefs(personneStore);
+const personneStore = usePersonneStore()
+const { initCurrentPersonne } = personneStore
+const { currentPersonne, personneStructure } = storeToRefs(personneStore)
 
-const structureStore = useStructureStore();
-const { refreshCurrentStructure } = structureStore;
+const structureStore = useStructureStore()
+const { refreshCurrentStructure } = structureStore
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const modelValue = computed<boolean>({
   get() {
-    return isQuickAdd.value;
+    return isQuickAdd.value
   },
   set() {},
-});
+})
 
-const user = ref<SimplePersonne | undefined>();
+const user = ref<SimplePersonne | undefined>()
 const selectedUser = computed<SimplePersonne | undefined>({
   get() {
-    return user.value;
+    return user.value
   },
   set(selected) {
-    currentPersonne.value = undefined;
+    currentPersonne.value = undefined
     if (selected) {
-      user.value = selected;
-      initCurrentPersonne(selected.id, false);
-    } else user.value = undefined;
+      user.value = selected
+      initCurrentPersonne(selected.id, false)
+    }
+    else {
+      user.value = undefined
+    }
   },
-});
+})
 
 const canSave = computed<boolean>(() => {
   const functions: Array<string> = [
@@ -68,74 +71,82 @@ const canSave = computed<boolean>(() => {
         fonctionsToId(personneStructure.value.additionalFonctions),
       ),
     ),
-  ];
-  const alreadyHasFunction = requestAdd.value?.function && functions.includes(requestAdd.value.function);
-  if (alreadyHasFunction) toast.error(t('toast.'));
+  ]
+  const alreadyHasFunction = requestAdd.value?.function && functions.includes(requestAdd.value.function)
+  if (alreadyHasFunction)
+    toast.error(t('toast.'))
 
-  return currentPersonne.value ? !alreadyHasFunction : false;
-});
+  return currentPersonne.value ? !alreadyHasFunction : false
+})
 
-const { saveButton } = useSaveAttachDetach();
+const { saveButton } = useSaveAttachDetach()
 
-const save = async (): Promise<void> => {
+async function save(): Promise<void> {
   if (requestAdd.value?.function) {
     try {
-      if (requestAdd.value.type == 'id') {
+      if (requestAdd.value.type === 'id') {
         await setPersonneAdditionalWithId(
           currentPersonne.value!.id,
           currentStructureId.value!,
           requestAdd.value.function,
           saveButton.value.i18n.split('.')[1],
-        );
-      } else {
+        )
+      }
+      else {
         await setPersonneAdditionalWithCode(
           currentPersonne.value!.id,
           currentStructureId.value!,
           requestAdd.value.function,
           saveButton.value.i18n.split('.')[1],
-        );
+        )
       }
-      closeAndResetModal(true);
-    } catch (e) {
-      errorHandler(e);
-      closeAndResetModal(false);
+      closeAndResetModal(true)
+    }
+    catch (e) {
+      errorHandler(e)
+      closeAndResetModal(false)
     }
   }
-};
+}
 
-const closeAndResetModal = (success?: boolean): void => {
+function closeAndResetModal(success?: boolean): void {
   if (success) {
-    refreshCurrentStructure();
-    toast.success(t('toast.additional.success.save'));
-  } else if (!success && success != undefined) {
-    toast.error(t('toast.additional.error.save'));
+    refreshCurrentStructure()
+    toast.success(t('toast.additional.success.save'))
+  }
+  else if (!success && success !== undefined) {
+    toast.error(t('toast.additional.error.save'))
   }
 
-  if (isQuickAdd.value) isQuickAdd.value = false;
+  if (isQuickAdd.value)
+    isQuickAdd.value = false
   const reset = debounce(() => {
-    currentPersonne.value = undefined;
-  }, 200);
-  reset();
-};
+    currentPersonne.value = undefined
+  }, 200)
+  reset()
+}
 
 watch(currentPersonne, (newValue) => {
   if (isQuickAdd.value && newValue) {
-    if (!isEditAllowed(newValue.etat)) toast.error(t('toast.editStatusDenied'));
+    if (!isEditAllowed(newValue.etat))
+      toast.error(t('toast.editStatusDenied'))
   }
-});
+})
 </script>
 
 <template>
   <v-dialog v-model="modelValue" scrollable :max-width="1024 / 2">
     <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
-        <v-toolbar-title class="text-h6">{{ requestAdd?.i18n }}</v-toolbar-title>
+        <v-toolbar-title class="text-h6">
+          {{ requestAdd?.i18n }}
+        </v-toolbar-title>
         <template #append>
           <v-btn icon="fas fa-xmark" color="default" variant="plain" class="me-1" @click="closeAndResetModal()" />
         </template>
       </v-toolbar>
       <v-card-text class="py-0">
-        <personne-search
+        <PersonneSearch
           v-model="selectedUser"
           :search-list="requestAdd?.searchList"
           variant="outlined"

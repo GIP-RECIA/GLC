@@ -15,44 +15,46 @@
 -->
 
 <script setup lang="ts">
-import LoginDialog from '@/components/dialogs/LoginDialog.vue';
-import SettingsDialog from '@/components/dialogs/SettingsDialog.vue';
-import TabBar from '@/components/tabbar/TabBar.vue';
-import { useConfigurationStore } from '@/stores';
-import { watchOnce } from '@vueuse/core';
-import { storeToRefs } from 'pinia';
-import { onBeforeMount } from 'vue';
+import LoginDialog from '@/components/dialogs/LoginDialog.vue'
+import SettingsDialog from '@/components/dialogs/SettingsDialog.vue'
+import TabBar from '@/components/tabbar/TabBar.vue'
+import { useConfigurationStore } from '@/stores'
+import { watchOnce } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { onBeforeMount } from 'vue'
 
-const configurationStore = useConfigurationStore();
-const { init, initFonctions } = configurationStore;
-const { configuration, isInit, isLoading, isSettings, isAuthenticated } = storeToRefs(configurationStore);
+const configurationStore = useConfigurationStore()
+const { init, initFonctions } = configurationStore
+const { configuration, isInit, isLoading, isSettings, isAuthenticated } = storeToRefs(configurationStore)
 
-init();
+init()
 
 watchOnce(isInit, (newValue) => {
-  if (!newValue || !configuration.value?.front.extendedUportal) return;
-  const { header, footer } = configuration.value.front.extendedUportal;
+  if (!newValue || !configuration.value?.front.extendedUportal)
+    return
+  const { header, footer } = configuration.value.front.extendedUportal
   if (header) {
-    let extendedUportalHeaderScript = document.createElement('script');
-    extendedUportalHeaderScript.setAttribute('src', header.componentPath);
-    document.head.appendChild(extendedUportalHeaderScript);
+    const extendedUportalHeaderScript = document.createElement('script')
+    extendedUportalHeaderScript.setAttribute('src', header.componentPath)
+    document.head.appendChild(extendedUportalHeaderScript)
   }
   if (footer) {
-    let extendedUportalFooterScript = document.createElement('script');
-    extendedUportalFooterScript.setAttribute('src', footer.componentPath);
-    document.head.appendChild(extendedUportalFooterScript);
+    const extendedUportalFooterScript = document.createElement('script')
+    extendedUportalFooterScript.setAttribute('src', footer.componentPath)
+    document.head.appendChild(extendedUportalFooterScript)
   }
-});
+})
 
 watchOnce(isAuthenticated, (newValue) => {
-  if (newValue) initFonctions();
-});
+  if (newValue)
+    initFonctions()
+})
 
 onBeforeMount(() => {
-  document.title = __APP_NAME__;
-});
+  document.title = __APP_NAME__
+})
 
-const appName = __APP_NAME__;
+const appName = __APP_NAME__
 </script>
 
 <template>
@@ -66,7 +68,7 @@ const appName = __APP_NAME__;
       <v-toolbar v-if="isAuthenticated" density="compact" color="rgba(255, 255, 255, 0)">
         <v-progress-linear :active="isLoading" :indeterminate="isLoading" absolute bottom color="primary" />
         <div class="d-flex align-center w-100 px-1">
-          <tab-bar />
+          <TabBar />
           <v-spacer />
           <v-btn
             icon="fas fa-gear"
@@ -82,8 +84,8 @@ const appName = __APP_NAME__;
     <div class="d-flex flex-column h-100 overflow-y-auto">
       <v-main class="flex-grow-1">
         <router-view v-if="isAuthenticated" />
-        <login-dialog />
-        <settings-dialog />
+        <LoginDialog />
+        <SettingsDialog />
       </v-main>
       <footer>
         <extended-uportal-footer v-if="isInit" v-bind="configuration!.front.extendedUportal?.footer?.props" />

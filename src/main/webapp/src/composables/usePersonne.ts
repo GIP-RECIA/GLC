@@ -13,69 +13,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores';
-import type { Personne, enumValues } from '@/types';
-import { CategoriePersonne } from '@/types/enums';
-import { getEtat } from '@/utils';
-import { format, getYear } from 'date-fns';
-import { storeToRefs } from 'pinia';
-import { type Ref, computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import type { enumValues, Personne } from '@/types'
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
+import { CategoriePersonne } from '@/types/enums'
+import { getEtat } from '@/utils'
+import { format, getYear } from 'date-fns'
+import { storeToRefs } from 'pinia'
+import { computed, type Ref, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const usePersonne = (personne: Ref<Personne | undefined> = ref(undefined)) => {
-  const configurationStore = useConfigurationStore();
-  const { isEditAllowed, getLoginOffice } = configurationStore;
+function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
+  const configurationStore = useConfigurationStore()
+  const { isEditAllowed, getLoginOffice } = configurationStore
 
-  const stcuctureStore = useStructureStore();
-  const { fonction } = storeToRefs(stcuctureStore);
+  const stcuctureStore = useStructureStore()
+  const { fonction } = storeToRefs(stcuctureStore)
 
-  const personneStore = usePersonneStore();
-  const { currentPersonne } = storeToRefs(personneStore);
+  const personneStore = usePersonneStore()
+  const { currentPersonne } = storeToRefs(personneStore)
 
-  const thisPersonne = computed<Personne | undefined>(() => personne.value ?? currentPersonne.value);
+  const thisPersonne = computed<Personne | undefined>(() => personne.value ?? currentPersonne.value)
 
-  const { t } = useI18n();
+  const { t } = useI18n()
 
   const etat = computed<enumValues>(() => {
-    if (!thisPersonne.value) return { i18n: '', color: '' };
-    return getEtat(thisPersonne.value.etat);
-  });
+    if (!thisPersonne.value)
+      return { i18n: '', color: '' }
+    return getEtat(thisPersonne.value.etat)
+  })
 
   const schoolYear = computed<string | undefined>(() => {
-    if (!thisPersonne.value) return undefined;
-    const year = getYear(thisPersonne.value.anneeScolaire);
+    if (!thisPersonne.value)
+      return undefined
+    const year = getYear(thisPersonne.value.anneeScolaire)
 
-    return `${year}/${year + 1}`;
-  });
+    return `${year}/${year + 1}`
+  })
 
-  const login = computed<{ i18n: string; info?: string }>(() => {
-    if (!thisPersonne.value) return { i18n: '', info: '' };
-    const office = getLoginOffice(thisPersonne.value.categorie, thisPersonne.value.source);
+  const login = computed<{ i18n: string, info?: string }>(() => {
+    if (!thisPersonne.value)
+      return { i18n: '', info: '' }
+    const office = getLoginOffice(thisPersonne.value.categorie, thisPersonne.value.source)
 
     return {
       i18n: office ? t('externalLogin') : thisPersonne.value.login,
       info: office ? t(`office.${office}`) : undefined,
-    };
-  });
+    }
+  })
 
   const suppressDate = computed<string | undefined>(() => {
-    return thisPersonne.value?.dateSuppression ? format(thisPersonne.value.dateSuppression, 'P') : undefined;
-  });
+    return thisPersonne.value?.dateSuppression ? format(thisPersonne.value.dateSuppression, 'P') : undefined
+  })
 
   const hasFunctions = computed<boolean>(() => {
-    if (!thisPersonne.value) return false;
+    if (!thisPersonne.value)
+      return false
     return [
       CategoriePersonne.Enseignant.toString(),
       CategoriePersonne.Non_enseignant_etablissement.toString(),
       CategoriePersonne.Non_enseignant_collectivite_locale.toString(),
-    ].includes(thisPersonne.value.categorie);
-  });
+    ].includes(thisPersonne.value.categorie)
+  })
 
   const canEditAdditionals = computed<boolean>(
     () => (fonction.value?.customMapping ?? false) && isEditAllowed(thisPersonne.value?.etat ?? ''),
-  );
+  )
 
-  return { etat, schoolYear, login, suppressDate, hasFunctions, canEditAdditionals };
-};
+  return { etat, schoolYear, login, suppressDate, hasFunctions, canEditAdditionals }
+}
 
-export { usePersonne };
+export { usePersonne }

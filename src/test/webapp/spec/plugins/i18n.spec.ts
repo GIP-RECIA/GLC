@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { plugins } from '../config/index.ts';
-import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
-import { defineComponent, h } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { ResizeObserver } from '@juggle/resize-observer'
+import { mount } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
+import { defineComponent, h } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { plugins } from '../config/index.ts'
 
-global.ResizeObserver = require('resize-observer-polyfill');
+globalThis.ResizeObserver = ResizeObserver
 
 describe('i18n', () => {
   it('does it woks?', async () => {
     const wrapper = mount(
       defineComponent(() => {
-        const { t } = useI18n();
+        const { t } = useI18n()
 
         return () => {
-          return h('div', t('toast.error.unknown'));
-        };
+          return h('div', t('toast.error.unknown'))
+        }
       }),
       {
         global: {
           plugins: [...plugins],
         },
       },
-    );
-    expect(wrapper.text()).toBe('An unknown error has occurred');
-  });
-});
+    )
+    expect(wrapper.text()).toBe('An unknown error has occurred')
+  })
+})

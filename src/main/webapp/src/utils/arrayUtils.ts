@@ -14,18 +14,6 @@
  * limitations under the License.
  */
 
-const isArrayOf = (array: Array<any>, type: 'string' | 'number' | 'bigint' | 'boolean' | 'object') => {
-  if (Array.isArray(array)) {
-    let hasNotRightType: boolean = false;
-    array.forEach((item) => {
-      if (typeof item !== type) hasNotRightType = true;
-    });
+const isEmpty = (array: Array<any> | undefined): boolean => !array?.length
 
-    return !hasNotRightType;
-  }
-  return false;
-};
-
-const isEmpty = (array: Array<any> | undefined): boolean => !array?.length;
-
-export { isArrayOf, isEmpty };
+export { isEmpty }

@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { type Duration, intervalToDuration, isAfter, isBefore } from 'date-fns';
+import { type Duration, intervalToDuration, isAfter, isBefore } from 'date-fns'
 
-type dateType = string | number | Date;
+type dateType = string | number | Date
 
-const dateToDuration = (date: dateType): Duration => {
+function dateToDuration(date: dateType): Duration {
   return intervalToDuration({
     start: date,
     end: Date.now(),
-  });
-};
+  })
+}
 
-const isBeforeOrEqual = (date: dateType, dateToCompare: dateType): boolean => !isAfter(date, dateToCompare);
+const isBeforeOrEqual = (date: dateType, dateToCompare: dateType): boolean => !isAfter(date, dateToCompare)
 
-const isAfterOrEqual = (date: dateType, dateToCompare: dateType): boolean => !isBefore(date, dateToCompare);
+const isAfterOrEqual = (date: dateType, dateToCompare: dateType): boolean => !isBefore(date, dateToCompare)
 
-const isBetween = (
+function isBetween(
   date: dateType,
   dateToCompareMin: dateType,
   dateToCompareMax: dateType,
   include: boolean = true,
-): boolean =>
-  include
+): boolean {
+  return include
     ? isAfterOrEqual(date, dateToCompareMin) && isBeforeOrEqual(date, dateToCompareMax)
-    : isAfter(date, dateToCompareMin) && isBefore(date, dateToCompareMax);
+    : isAfter(date, dateToCompareMin) && isBefore(date, dateToCompareMax)
+}
 
-export { dateToDuration, isBeforeOrEqual, isAfterOrEqual, isBetween };
+export { dateToDuration, isAfterOrEqual, isBeforeOrEqual, isBetween }

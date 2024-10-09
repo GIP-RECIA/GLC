@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
-import { errorHandler, instance, intercept } from '@/utils/axiosUtils';
-import { describe, expect, it } from 'vitest';
+// // @ts-expect-error project location
+// import { errorHandler, instance, intercept } from '@/utils/axiosUtils'
+import { describe, expect, it } from 'vitest'
 
 describe('axiosUtils', () => {
   it('test 1 - ', () => {
     // TODO
-    expect(true).toBe(true);
-  });
-});
+    expect(true).toBe(true)
+  })
+})

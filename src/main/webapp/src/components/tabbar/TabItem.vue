@@ -15,16 +15,16 @@
 -->
 
 <script setup lang="ts">
-import type { RouteLocationNamedRaw } from 'vue-router';
+import type { RouteLocationNamedRaw } from 'vue-router'
 
 defineProps<{
-  id: number;
-  title: string;
-  link: RouteLocationNamedRaw;
-  selected: boolean;
-}>();
+  id: number
+  title: string
+  link: RouteLocationNamedRaw
+  selected: boolean
+}>()
 
-defineEmits<(event: 'close', payload: { id: number; selected: boolean }) => void>();
+defineEmits<(event: 'close', payload: { id: number, selected: boolean }) => void>()
 </script>
 
 <template>

@@ -15,34 +15,39 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore, useStructureStore } from '@/stores';
-import type { Alert, Filiere } from '@/types';
-import { storeToRefs } from 'pinia';
-import { useI18n } from 'vue-i18n';
+import type { Alert, Filiere } from '@/types'
+import { useConfigurationStore, useStructureStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
-const configurationStore = useConfigurationStore();
-const { isQuickAdd, requestAdd } = storeToRefs(configurationStore);
+const configurationStore = useConfigurationStore()
+const { isQuickAdd, requestAdd } = storeToRefs(configurationStore)
 
-const structureStore = useStructureStore();
-const { currentEtab, staff, fonction } = storeToRefs(structureStore);
+const structureStore = useStructureStore()
+const { currentEtab, staff, fonction } = storeToRefs(structureStore)
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const getDiscipline = (filieres: Array<Filiere> | undefined, code: string): string | undefined => {
-  const codes = code.split('-');
-  if (!filieres) return undefined;
+function getDiscipline(filieres: Array<Filiere> | undefined, code: string): string | undefined {
+  const codes = code.split('-')
+  if (!filieres)
+    return undefined
   return filieres
-    .find((filiere) => filiere.codeFiliere == codes[0])
-    ?.disciplines.find((discipline) => discipline.code == codes[1])?.disciplinePoste;
-};
+    .find(filiere => filiere.codeFiliere === codes[0])
+    ?.disciplines
+    .find(discipline => discipline.code === codes[1])
+    ?.disciplinePoste
+}
 
-const formatedAlert = (alert: Alert): Alert & { class?: any; actions?: any } => {
-  if (!alert.title) return alert;
-  const data = alert.title.split('_');
-  const discipline =
-    getDiscipline(fonction.value?.filieres, data[1]) ?? getDiscipline(fonction.value?.customMapping?.filieres, data[1]);
-  if (!discipline) return alert;
-  const actions: any = {};
+function formatedAlert(alert: Alert): Alert & { class?: any, actions?: any } {
+  if (!alert.title)
+    return alert
+  const data = alert.title.split('_')
+  const discipline = getDiscipline(fonction.value?.filieres, data[1])
+    ?? getDiscipline(fonction.value?.customMapping?.filieres, data[1])
+  if (!discipline)
+    return alert
+  const actions: any = {}
   if (alert.action && fonction.value?.customMapping) {
     if (alert.title) {
       const doAlert = () => {
@@ -51,21 +56,21 @@ const formatedAlert = (alert: Alert): Alert & { class?: any; actions?: any } => 
           function: data[1],
           type: 'code',
           searchList: staff.value.school,
-        };
-        isQuickAdd.value = true;
-      };
-      actions.click = () => doAlert();
+        }
+        isQuickAdd.value = true
+      }
+      actions.click = () => doAlert()
     }
   }
 
   return {
     ...alert,
-    title: t('alert.minMax.title', { discipline, value: data[3] }, parseInt(data[3])),
+    title: t('alert.minMax.title', { discipline, value: data[3] }, Number.parseInt(data[3])),
     text: t('alert.minMax.text', { minMax: t(`alert.minMax.${data[0]}`), required: data[2] }),
     class: [{ clicable: alert.action && fonction.value?.customMapping }],
     actions,
-  };
-};
+  }
+}
 </script>
 
 <template>

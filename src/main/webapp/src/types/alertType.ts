@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-export type Alert = {
-  title?: string;
-  text?: string;
-  type: 'success' | 'info' | 'warning' | 'error';
-  action: boolean;
-};
+export interface Alert {
+  title?: string
+  text?: string
+  type: 'success' | 'info' | 'warning' | 'error'
+  action: boolean
+}

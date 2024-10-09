@@ -15,56 +15,58 @@
 -->
 
 <script setup lang="ts">
-import TabItem from './TabItem.vue';
-import { useConfigurationStore } from '@/stores';
-import { storeToRefs } from 'pinia';
-import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useConfigurationStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import TabItem from './TabItem.vue'
 
-const configurationStore = useConfigurationStore();
-const { structures, appTab } = storeToRefs(configurationStore);
+const configurationStore = useConfigurationStore()
+const { structures, appTab } = storeToRefs(configurationStore)
 
-const router = useRouter();
+const router = useRouter()
 
-const close = (event: { id: number; selected: boolean }): void => {
-  structures.value.splice(event.id, 1);
-  if (!event.selected) return;
+function close(event: { id: number, selected: boolean }): void {
+  structures.value.splice(event.id, 1)
+  if (!event.selected)
+    return
 
   // Definition du nouvel onglet
-  const newCurrentStructure = appTab.value! - 1;
-  appTab.value = newCurrentStructure >= 0 ? newCurrentStructure : 0;
+  const newCurrentStructure = appTab.value! - 1
+  appTab.value = newCurrentStructure >= 0 ? newCurrentStructure : 0
 
   // Changement de page
-  const structureId = structures.value.find((structure, index) => index == appTab.value)?.id;
-  if (structureId) router.push({ name: 'structure', params: { structureId: structureId } });
-  else newTab();
-};
+  const structureId = structures.value.find((structure, index) => index === appTab.value)?.id
+  if (structureId)
+    router.push({ name: 'structure', params: { structureId } })
+  else newTab()
+}
 
-const newTab = (): void => {
-  router.push({ name: 'home' });
-  appTab.value = undefined;
-};
+function newTab(): void {
+  router.push({ name: 'home' })
+  appTab.value = undefined
+}
 
 onMounted(() => {
-  const tabBar = document.querySelector('#tab-bar.scrollable-x');
+  const tabBar = document.querySelector('#tab-bar.scrollable-x')
   tabBar?.addEventListener('wheel', (event) => {
-    event.preventDefault();
-    tabBar.scrollLeft += (event as WheelEvent).deltaY;
-  });
-});
+    event.preventDefault()
+    tabBar.scrollLeft += (event as WheelEvent).deltaY
+  })
+})
 </script>
 
 <template>
   <div id="tab-bar" class="scrollable-x">
     <div class="d-flex my-2">
       <transition-group name="tab-bar">
-        <tab-item
+        <TabItem
           v-for="(structure, index) in structures"
-          :key="structure.id"
           :id="index"
+          :key="structure.id"
           :title="structure.name"
           :link="{ name: 'structure', params: { structureId: structure.id } }"
-          :selected="appTab == index"
+          :selected="appTab === index"
           @close="close"
         />
       </transition-group>

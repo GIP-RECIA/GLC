@@ -15,83 +15,83 @@
 -->
 
 <script setup lang="ts">
-import AlertManager from '@/components/AlertManager.vue';
-import CustomPagination from '@/components/CustomPagination.vue';
-import PersonneCard from '@/components/PersonneCard.vue';
-import ReadonlyData from '@/components/ReadonlyData.vue';
-import InfoGrid from '@/components/info/InfoGrid.vue';
-import { useStructureStore } from '@/stores';
-import type { SimplePersonne } from '@/types';
-import { DashboardPanel, Etat } from '@/types/enums';
-import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useDisplay } from 'vuetify';
+import type { SimplePersonne } from '@/types'
+import AlertManager from '@/components/AlertManager.vue'
+import CustomPagination from '@/components/CustomPagination.vue'
+import InfoGrid from '@/components/info/InfoGrid.vue'
+import PersonneCard from '@/components/PersonneCard.vue'
+import ReadonlyData from '@/components/ReadonlyData.vue'
+import { useStructureStore } from '@/stores'
+import { DashboardPanel, Etat } from '@/types/enums'
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useDisplay } from 'vuetify'
 
-const isDev = import.meta.env.DEV;
+const isDev = import.meta.env.DEV
 
-const structureStore = useStructureStore();
-const { currentEtab, personnesByEtat } = storeToRefs(structureStore);
+const structureStore = useStructureStore()
+const { currentEtab, personnesByEtat } = storeToRefs(structureStore)
 
-const { t } = useI18n();
-const { name } = useDisplay();
+const { t } = useI18n()
+const { name } = useDisplay()
 
-const pageItems = ref<Array<SimplePersonne> | undefined>();
-const pageItems2 = ref<Array<SimplePersonne> | undefined>();
-const pageItems3 = ref<Array<SimplePersonne> | undefined>();
+const pageItems = ref<Array<SimplePersonne> | undefined>()
+const pageItems2 = ref<Array<SimplePersonne> | undefined>()
+const pageItems3 = ref<Array<SimplePersonne> | undefined>()
 
 const itemsPerPage = computed<number>(() => {
-  const defaultItemsPerPage = 10;
+  const defaultItemsPerPage = 10
 
   switch (name.value) {
     case 'xs':
-      return defaultItemsPerPage;
+      return defaultItemsPerPage
     case 'sm':
-      return 2 * defaultItemsPerPage;
+      return 2 * defaultItemsPerPage
     case 'md':
-      return 3 * defaultItemsPerPage;
+      return 3 * defaultItemsPerPage
     case 'lg':
-      return 4 * defaultItemsPerPage;
+      return 4 * defaultItemsPerPage
     case 'xl':
-      return 4 * defaultItemsPerPage;
+      return 4 * defaultItemsPerPage
     case 'xxl':
-      return 6 * defaultItemsPerPage;
+      return 6 * defaultItemsPerPage
     default:
-      return defaultItemsPerPage;
+      return defaultItemsPerPage
   }
-});
+})
 
-const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
+const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts])
 </script>
 
 <template>
   <v-container fluid class="d-flex flex-column ga-4">
-    <alert-manager />
+    <AlertManager />
 
     <v-card v-if="isDev && currentEtab" flat>
       <v-card-text class="info-container">
-        <readonly-data v-admin label="uai" :value="currentEtab.uai" />
-        <readonly-data label="etat" :value="currentEtab.etat" />
-        <readonly-data label="etatAlim" :value="currentEtab.etatAlim" />
-        <readonly-data label="source" :value="currentEtab.source" />
-        <readonly-data label="anneeScolaire" :value="currentEtab.anneeScolaire" />
-        <readonly-data label="adresse" :value="currentEtab.adresse.adresse" />
-        <readonly-data label="codePostal" :value="currentEtab.adresse.codePostal" />
-        <readonly-data label="ville" :value="currentEtab.adresse.ville" />
-        <readonly-data label="boitePostale" :value="currentEtab.adresse.boitePostale" />
-        <readonly-data label="pays" :value="currentEtab.adresse.pays" />
-        <readonly-data label="categorie" :value="currentEtab.categorie" />
-        <readonly-data label="mail" :value="currentEtab.mail" />
-        <readonly-data label="nom" :value="currentEtab.nom" />
-        <readonly-data label="nomCourt" :value="currentEtab.nomCourt" />
-        <readonly-data label="siren" :value="currentEtab.siren" />
-        <readonly-data label="siteWeb" :value="currentEtab.siteWeb" />
-        <readonly-data label="modeleLogin" :value="currentEtab.modeleLogin" />
-        <readonly-data label="logo" :value="currentEtab.logo" />
+        <ReadonlyData v-admin label="uai" :value="currentEtab.uai" />
+        <ReadonlyData label="etat" :value="currentEtab.etat" />
+        <ReadonlyData label="etatAlim" :value="currentEtab.etatAlim" />
+        <ReadonlyData label="source" :value="currentEtab.source" />
+        <ReadonlyData label="anneeScolaire" :value="currentEtab.anneeScolaire" />
+        <ReadonlyData label="adresse" :value="currentEtab.adresse.adresse" />
+        <ReadonlyData label="codePostal" :value="currentEtab.adresse.codePostal" />
+        <ReadonlyData label="ville" :value="currentEtab.adresse.ville" />
+        <ReadonlyData label="boitePostale" :value="currentEtab.adresse.boitePostale" />
+        <ReadonlyData label="pays" :value="currentEtab.adresse.pays" />
+        <ReadonlyData label="categorie" :value="currentEtab.categorie" />
+        <ReadonlyData label="mail" :value="currentEtab.mail" />
+        <ReadonlyData label="nom" :value="currentEtab.nom" />
+        <ReadonlyData label="nomCourt" :value="currentEtab.nomCourt" />
+        <ReadonlyData label="siren" :value="currentEtab.siren" />
+        <ReadonlyData label="siteWeb" :value="currentEtab.siteWeb" />
+        <ReadonlyData label="modeleLogin" :value="currentEtab.modeleLogin" />
+        <ReadonlyData label="logo" :value="currentEtab.logo" />
       </v-card-text>
     </v-card>
 
-    <info-grid />
+    <InfoGrid />
 
     <v-expansion-panels v-model="panel">
       <v-expansion-panel :value="DashboardPanel.DeletingAccounts" :elevation="0" rounded="lg">
@@ -102,9 +102,9 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <div v-if="pageItems && pageItems.length > 0" class="container">
-            <personne-card v-for="personne in pageItems" :key="personne.id" variant="tonal" :personne="personne" />
+            <PersonneCard v-for="personne in pageItems" :key="personne.id" variant="tonal" :personne="personne" />
           </div>
-          <custom-pagination
+          <CustomPagination
             :items="personnesByEtat.get(Etat.Deleting)"
             :items-per-page="itemsPerPage"
             hide-single-page
@@ -122,9 +122,9 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <div v-if="pageItems2 && pageItems2.length > 0" class="container">
-            <personne-card v-for="personne in pageItems2" :key="personne.id" variant="tonal" :personne="personne" />
+            <PersonneCard v-for="personne in pageItems2" :key="personne.id" variant="tonal" :personne="personne" />
           </div>
-          <custom-pagination
+          <CustomPagination
             :items="personnesByEtat.get(Etat.Delete)"
             :items-per-page="itemsPerPage"
             hide-single-page
@@ -144,9 +144,9 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts]);
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <div v-if="pageItems3 && pageItems3.length > 0" class="container">
-            <personne-card v-for="personne in pageItems3" :key="personne.id" variant="tonal" :personne="personne" />
+            <PersonneCard v-for="personne in pageItems3" :key="personne.id" variant="tonal" :personne="personne" />
           </div>
-          <custom-pagination
+          <CustomPagination
             :items="currentEtab?.withoutFunctions"
             :items-per-page="itemsPerPage"
             hide-single-page

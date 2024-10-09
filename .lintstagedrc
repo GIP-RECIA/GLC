@@ -1,4 +1,3 @@
 {
-  "(src/main/webapp|src/test/webapp)/**/*.{js,ts,vue}": ["prettier --write", "eslint --fix"],
-  "*.json": ["prettier --write"]
+  "(src/main/webapp|src/test/webapp)/**/*.{js,ts,vue}": ["eslint --fix"]
 }

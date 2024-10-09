@@ -1,5 +1,15 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["node"],
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
   "include": [
     "vite.config.*",
     "vitest.config.*",
@@ -7,15 +17,5 @@
     "nightwatch.conf.*",
     "playwright.config.*",
     "src/main/webapp/src/utils/*"
-  ],
-  "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "composite": true,
-    "noEmit": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "types": ["node"]
-  }
+  ]
 }
