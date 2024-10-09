@@ -16,15 +16,15 @@
 import { ResizeObserver } from '@juggle/resize-observer'
 // import { plugins } from '../../config'
 // // @ts-expect-error project location
-// import ExportView from '@/views/structure/ExportView.vue'
+// import DashboardTab from '@/components/tabs/structure/DashboardTab.vue'
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
 globalThis.ResizeObserver = ResizeObserver
 
-describe('exportView', () => {
+describe('dashboardView', () => {
   it('test 1 - init', async () => {
-    // const wrapper = shallowMount(ExportView, {
+    // const wrapper = shallowMount(DashboardTab, {
     //   global: {
     //     plugins: [...plugins],
     //   },

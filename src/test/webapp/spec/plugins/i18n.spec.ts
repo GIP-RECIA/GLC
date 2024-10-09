@@ -18,7 +18,7 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { defineComponent, h } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { plugins } from '../config/index.ts'
+import { plugins } from '../config'
 
 globalThis.ResizeObserver = ResizeObserver
 
