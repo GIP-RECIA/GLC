@@ -1362,10 +1362,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node20@npm:^20.1.4":
-  version: 20.1.4
-  resolution: "@tsconfig/node20@npm:20.1.4"
-  checksum: 10/345dba8074647f6c11b8d78afa76d9c16e3436cb56a8e78fe2060014d33a09f3f4fd6ed81dc90e955d3509f926cd7fd61c6ddfd3d5a1d80758d7844f7cc3a99e
+"@tsconfig/node22@npm:^22.0.0":
+  version: 22.0.0
+  resolution: "@tsconfig/node22@npm:22.0.0"
+  checksum: 10/9fc45789304640e1e37e1f1e04c02dca593c290d4f1cb55af7e9cab799fb2c6356e1cc15ee9f140185591a81f491a4c7f2d6c08c1e5a3d758658ba69f1afee6d
   languageName: node
   linkType: hard
 
@@ -1596,14 +1596,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:8.10.0, @typescript-eslint/types@npm:^8.9.0":
+"@typescript-eslint/types@npm:8.10.0":
   version: 8.10.0
   resolution: "@typescript-eslint/types@npm:8.10.0"
   checksum: 10/2701711c87181553b68cdeba9d8ea55e0ae8ac441b5fe9667ee8be1dbac20386698930239a0e210b73d14961110ab128559a162abaed6e890a851543b6617c97
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:8.13.0":
+"@typescript-eslint/types@npm:8.13.0, @typescript-eslint/types@npm:^8.9.0":
   version: 8.13.0
   resolution: "@typescript-eslint/types@npm:8.13.0"
   checksum: 10/0051c4a798b8f328451290581f0c8c95acfcb988192647edcb9179013793b8ccc7110b5fee74207394340aca8919d9ca039de2bbd36f41c7693a99d1345092c3
@@ -4419,7 +4419,7 @@ __metadata:
     "@juggle/resize-observer": "npm:^3.4.0"
     "@pinia/testing": "npm:^0.1.7"
     "@playwright/test": "npm:^1.48.2"
-    "@tsconfig/node20": "npm:^20.1.4"
+    "@tsconfig/node22": "npm:^22.0.0"
     "@types/jsdom": "npm:^21"
     "@types/lodash.debounce": "npm:^4"
     "@types/lodash.isempty": "npm:^4"
