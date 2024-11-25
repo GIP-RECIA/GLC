@@ -27,7 +27,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^3.9.1",
     "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.5.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@date-io/date-fns": "^3.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
