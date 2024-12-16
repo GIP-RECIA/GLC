@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
-export { default as en } from './en'
-export { default as fr } from './fr'
+import en from './en'
+import fr from './fr'
+
+const messages = {
+  en,
+  fr,
+}
+
+export { en, fr, messages }
