@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { usePersonneStore } from '@/stores'
 import { isEmpty } from '@/utils'
 import { storeToRefs } from 'pinia'

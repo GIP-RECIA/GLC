@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import type { endInfo, enumValues, PersonneFonction } from '@/types'
 import { useConfigurationStore } from '@/stores'
 import { CategoriePersonne, Etat } from '@/types/enums'

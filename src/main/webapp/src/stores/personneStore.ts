@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import type { Personne, PersonneFonction } from '@/types'
 import { getPersonne } from '@/services/api'
 import { PersonneDialogState } from '@/types/enums'

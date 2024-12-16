@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // // @ts-expect-error project location
 // import { getCategoriePersonne, getEtat, getIcon, isLocal, toIdentifier } from '@/utils/accountUtils'
 import { describe, expect, it } from 'vitest'

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // @ts-expect-error project location
 import { register as registerFontAwsome } from '@/plugins/fontawesome.ts'
 // @ts-expect-error project location

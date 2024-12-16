@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // @ts-expect-error project location
 import { capitalize, concatenate } from '@/utils/stringUtils'
 import { describe, expect, it } from 'vitest'
