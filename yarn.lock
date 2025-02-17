@@ -1432,14 +1432,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pinia/testing@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "@pinia/testing@npm:0.1.7"
-  dependencies:
-    vue-demi: "npm:^0.14.10"
+"@pinia/testing@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@pinia/testing@npm:1.0.0"
   peerDependencies:
-    pinia: ">=2.2.6"
-  checksum: 10/ec864a46aa6df171ba3e23974006a56049bd933c289bc2c5563290f09f10a28a5a415b843eb42e06907063d092e24cd67a51dde525fbd1fe7c6d03199f8c21a3
+    pinia: ">=3.0.0"
+  checksum: 10/4d5fca3da97dd51b93b7a722cbf64eb68afcbc75dd3f064c0b14bee62303491a7f4baeb5b63d274e75061970547bee780653114fe72a2dcb29df0bc3ac8ac20a
   languageName: node
   linkType: hard
 
@@ -4745,7 +4743,7 @@ __metadata:
     "@fortawesome/vue-fontawesome": "npm:^3.0.8"
     "@intlify/unplugin-vue-i18n": "npm:^6.0.3"
     "@juggle/resize-observer": "npm:^3.4.0"
-    "@pinia/testing": "npm:^0.1.7"
+    "@pinia/testing": "npm:^1.0.0"
     "@playwright/test": "npm:^1.50.1"
     "@tsconfig/node22": "npm:^22.0.0"
     "@types/jsdom": "npm:^21"
