@@ -1629,10 +1629,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node22@npm:^22.0.0":
-  version: 22.0.0
-  resolution: "@tsconfig/node22@npm:22.0.0"
-  checksum: 10/9fc45789304640e1e37e1f1e04c02dca593c290d4f1cb55af7e9cab799fb2c6356e1cc15ee9f140185591a81f491a4c7f2d6c08c1e5a3d758658ba69f1afee6d
+"@tsconfig/node22@npm:^22.0.1":
+  version: 22.0.1
+  resolution: "@tsconfig/node22@npm:22.0.1"
+  checksum: 10/da42f21f1b1f8e88d584fae44bca19514ea5b8eca9a60e8b10ecbabc8db5f4067259979ceea3798c16ae443b9c564268c00215093a7230948f29f950f33dd585
   languageName: node
   linkType: hard
 
@@ -4791,7 +4791,7 @@ __metadata:
     "@juggle/resize-observer": "npm:^3.4.0"
     "@pinia/testing": "npm:^0.1.7"
     "@playwright/test": "npm:^1.51.0"
-    "@tsconfig/node22": "npm:^22.0.0"
+    "@tsconfig/node22": "npm:^22.0.1"
     "@types/jsdom": "npm:^21"
     "@types/lodash.debounce": "npm:^4"
     "@types/lodash.isempty": "npm:^4"
