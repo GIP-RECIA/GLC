@@ -41,7 +41,7 @@ This project includes:
   Evo Inflector under Apache License, Version 2.0
   Faux Pas under MIT License
   FindBugs-jsr305 under The Apache Software License, Version 2.0
-  Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
+  Guava InternalFutureFailureAccess and InternalFutures under Apache License, Version 2.0
   Guava ListenableFuture only under The Apache Software License, Version 2.0
   Guava: Google Core Libraries for Java under Apache License, Version 2.0
   H2 Database Engine under MPL 2.0 or EPL 1.0
@@ -81,6 +81,7 @@ This project includes:
   JSON Small and Fast Parser under The Apache Software License, Version 2.0
   JSONassert under The Apache Software License, Version 2.0
   JsonNullable Jackson module under Apache License 2.0
+  JSpecify annotations under The Apache License, Version 2.0
   JUL to SLF4J bridge under MIT License
   JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
   JUnit Jupiter API under Eclipse Public License v2.0
