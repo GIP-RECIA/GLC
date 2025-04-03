@@ -1,4 +1,5 @@
 /* eslint-disable node/prefer-global/process */
+import type { ConfigEnv, ProxyOptions } from 'vite'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
@@ -9,7 +10,7 @@ import { parseString } from 'xml2js'
 import { slugify } from './src/main/webapp/src/utils/stringUtils.ts'
 
 // https://vitejs.dev/config/
-export default ({ mode }: { mode: string }) => {
+export default ({ mode }: ConfigEnv) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
   const appName = JSON.stringify(process.env.VITE_APP_NAME)
