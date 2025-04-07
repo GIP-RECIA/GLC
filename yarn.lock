@@ -4923,7 +4923,7 @@ __metadata:
     sass: "npm:^1.86.0"
     typescript: "npm:^5.8.2"
     vite: "npm:^6.2.5"
-    vite-plugin-vuetify: "npm:^2.1.0"
+    vite-plugin-vuetify: "npm:^2.1.1"
     vitest: "npm:^2.1.9"
     vue: "npm:^3.5.13"
     vue-i18n: "npm:^11.1.2"
@@ -8873,9 +8873,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vuetify@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "vite-plugin-vuetify@npm:2.1.0"
+"vite-plugin-vuetify@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "vite-plugin-vuetify@npm:2.1.1"
   dependencies:
     "@vuetify/loader-shared": "npm:^2.1.0"
     debug: "npm:^4.3.3"
@@ -8884,7 +8884,7 @@ __metadata:
     vite: ">=5"
     vue: ^3.0.0
     vuetify: ^3.0.0
-  checksum: 10/8dd7b007ea7ab48c692789ff2f794f319ff076e52b6be9eb10be0dbcfa7224182c9ff1858b728382323c4fa78049fa7b5112807fe5c59a78f46c48ae79698f29
+  checksum: 10/3d5708b28be2eeabd37ba22178e7d61cfb70dee4c660137fbcac7c5ff4ecf9bcb6670773848bdad7d1a6d1d2473ccda32b67888f001d8fc38302b1d0a3da66fd
   languageName: node
   linkType: hard
 
