@@ -59,7 +59,7 @@
     "lodash.debounce": "^4.0.8",
     "lodash.isempty": "^4.4.0",
     "npm-run-all2": "^8.0.1",
-    "sass": "^1.86.3",
+    "sass": "^1.87.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.4",
     "vite-plugin-vuetify": "^2.1.1",
