@@ -4717,7 +4717,7 @@ __metadata:
     lint-staged: "npm:^16.0.0"
     lodash.debounce: "npm:^4.0.8"
     lodash.isempty: "npm:^4.4.0"
-    npm-run-all2: "npm:^8.0.2"
+    npm-run-all2: "npm:^8.0.4"
     pinia: "npm:^2.3.1"
     sass: "npm:^1.89.0"
     typescript: "npm:^5.8.3"
@@ -6721,9 +6721,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-run-all2@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "npm-run-all2@npm:8.0.2"
+"npm-run-all2@npm:^8.0.4":
+  version: 8.0.4
+  resolution: "npm-run-all2@npm:8.0.4"
   dependencies:
     ansi-styles: "npm:^6.2.1"
     cross-spawn: "npm:^7.0.6"
@@ -6738,7 +6738,7 @@ __metadata:
     npm-run-all2: bin/npm-run-all/index.js
     run-p: bin/run-p/index.js
     run-s: bin/run-s/index.js
-  checksum: 10/71f83e26ed1522553e6191ab4ae630a78b13d66efcf0ba48fde82aac81506c1067de6cc53f8c7d87c4d2576a664e561eed033fdc56bf4ffa75a0648081ec9e52
+  checksum: 10/6e485f0d71fdfcf5bd872e5bbb8440ea5816ebeed88e6e39ff6e758d76adefa516b3101ed7ddc8de117d61b499f176417c87b0c595394e15733738834ad6ef0a
   languageName: node
   linkType: hard
 
