@@ -49,7 +49,7 @@
     "axios": "^1.10.0",
     "commit-and-tag-version": "^12.5.1",
     "date-fns": "^4.1.0",
-    "dotenv": "^17.0.0",
+    "dotenv": "^17.2.0",
     "dotenv-checker": "^1.1.7",
     "eslint": "^9.30.0",
     "eslint-plugin-format": "^1.0.1",
