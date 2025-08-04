@@ -62,7 +62,7 @@
     "sass": "^1.89.2",
     "typescript": "^5.8.3",
     "vite": "^7.0.2",
-    "vite-plugin-vuetify": "^2.1.1",
+    "vite-plugin-vuetify": "^2.1.2",
     "vitest": "^3.2.4",
     "vue-tsc": "^2.2.10",
     "vue3-toastify": "^0.2.8",
