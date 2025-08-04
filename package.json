@@ -17,7 +17,7 @@
     "changelog:generate": "commit-and-tag-version --packageFiles pom.xml --skip.bump --skip.tag --skip.commit -t ''"
   },
   "dependencies": {
-    "@vueuse/core": "^13.5.0",
+    "@vueuse/core": "^13.6.0",
     "pinia": "^2.3.1",
     "vue": "^3.5.17",
     "vue-i18n": "^11.1.9",
