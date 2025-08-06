@@ -30,7 +30,7 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@date-io/date-fns": "^3.2.1",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
-    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^7.0.0",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.1.1",
     "@intlify/unplugin-vue-i18n": "^6.0.8",
