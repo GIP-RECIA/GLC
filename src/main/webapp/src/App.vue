@@ -93,3 +93,10 @@ const appName = __APP_NAME__
     </div>
   </v-app>
 </template>
+
+<style lang="scss">
+extended-uportal-header {
+  display: block;
+  height: var(--recia-header-height);
+}
+</style>
