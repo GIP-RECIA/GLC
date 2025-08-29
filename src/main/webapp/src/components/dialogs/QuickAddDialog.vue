@@ -16,16 +16,16 @@
 
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types'
-import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
-import { useSaveAttachDetach } from '@/composables'
-import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/api'
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
-import { errorHandler, fonctionsToId } from '@/utils'
 import debounce from 'lodash.debounce'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
+import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
+import { useSaveAttachDetach } from '@/composables'
+import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/api'
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
+import { errorHandler, fonctionsToId } from '@/utils'
 
 const configurationStore = useConfigurationStore()
 const { isEditAllowed } = configurationStore

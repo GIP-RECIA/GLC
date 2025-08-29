@@ -15,14 +15,14 @@
  */
 
 import type { FonctionForm } from '@/types'
-import { addPersonneAdditionalV2, deletePersonneAdditionalV2, setPersonneAdditional } from '@/services/api'
-import { useConfigurationStore, usePersonneStore } from '@/stores'
-import { PersonneDialogState } from '@/types/enums'
-import { errorHandler, filiereDisciplineToId, fonctionsToId, fonctionToId, isEmpty } from '@/utils'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
+import { addPersonneAdditionalV2, deletePersonneAdditionalV2, setPersonneAdditional } from '@/services/api'
+import { useConfigurationStore, usePersonneStore } from '@/stores'
+import { PersonneDialogState } from '@/types/enums'
+import { errorHandler, filiereDisciplineToId, fonctionsToId, fonctionToId, isEmpty } from '@/utils'
 import { useSaveAttachDetach } from './useSaveAttachDetach'
 
 function useManageAdditional() {

@@ -17,8 +17,8 @@
 /* eslint-disable ts/no-use-before-define */
 /* eslint-disable ts/ban-ts-comment */
 import type { Identity } from '@/types'
-import { useConfigurationStore } from '@/stores'
 import { storeToRefs } from 'pinia'
+import { useConfigurationStore } from '@/stores'
 
 const { VITE_API_URI } = import.meta.env
 

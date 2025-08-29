@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
+import type { Ref } from 'vue'
 import type { enumValues, Personne } from '@/types'
+import { format, getYear } from 'date-fns'
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
 import { CategoriePersonne } from '@/types/enums'
 import { getEtat } from '@/utils'
-import { format, getYear } from 'date-fns'
-import { storeToRefs } from 'pinia'
-import { computed, type Ref, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
   const configurationStore = useConfigurationStore()

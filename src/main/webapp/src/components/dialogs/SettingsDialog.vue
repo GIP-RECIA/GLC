@@ -15,13 +15,13 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores'
-import { Theme } from '@/types/enums'
 import { useLocalStorage, usePreferredDark } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useTheme } from 'vuetify'
+import { useConfigurationStore } from '@/stores'
+import { Theme } from '@/types/enums'
 
 const configurationStore = useConfigurationStore()
 const { isSettings } = storeToRefs(configurationStore)

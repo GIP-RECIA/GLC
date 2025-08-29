@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import i18n from '@/plugins/i18n.ts'
-import { login } from '@/utils'
+import type { ToastContainerOptions } from 'vue3-toastify'
 import axios from 'axios'
 import { differenceInMilliseconds } from 'date-fns'
-import { toast, type ToastContainerOptions } from 'vue3-toastify'
+import { toast } from 'vue3-toastify'
+import i18n from '@/plugins/i18n.ts'
+import { login } from '@/utils'
 
 const { t } = i18n.global
 

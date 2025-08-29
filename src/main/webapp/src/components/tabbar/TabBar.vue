@@ -15,10 +15,10 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useConfigurationStore } from '@/stores'
 import TabItem from './TabItem.vue'
 
 const configurationStore = useConfigurationStore()

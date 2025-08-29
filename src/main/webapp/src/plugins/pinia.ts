@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
 import { acceptHMRUpdate, createPinia } from 'pinia'
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
 
 const { hot } = import.meta
 

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { useStructureStore } from '@/stores'
+import type { Directive } from 'vue'
 import { storeToRefs } from 'pinia'
-import { type Directive, watch } from 'vue'
+import { watch } from 'vue'
+import { useStructureStore } from '@/stores'
 
 const permission: Directive<HTMLElement, Array<string>> = (el, binding) => {
   const structureStore = useStructureStore()

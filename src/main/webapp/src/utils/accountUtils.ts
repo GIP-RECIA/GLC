@@ -15,10 +15,10 @@
  */
 
 import type { endInfo, enumValues, PersonneFonction } from '@/types'
-import { useConfigurationStore } from '@/stores'
-import { CategoriePersonne, Etat } from '@/types/enums'
 import { differenceInMonths, isPast } from 'date-fns'
 import { storeToRefs } from 'pinia'
+import { useConfigurationStore } from '@/stores'
+import { CategoriePersonne, Etat } from '@/types/enums'
 
 const isLocal = (source: string): boolean => source.startsWith('SarapisUi_')
 

@@ -16,10 +16,10 @@
 
 <script setup lang="ts">
 import type { Discipline, Filiere } from '@/types'
-import PersonneCard from '@/components/PersonneCard.vue'
 import isEmpty from 'lodash.isempty'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import PersonneCard from '@/components/PersonneCard.vue'
 
 const props = defineProps<{
   filieres: Array<Filiere> | undefined

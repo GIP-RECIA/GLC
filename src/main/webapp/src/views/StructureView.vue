@@ -15,6 +15,10 @@
 -->
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import AttachDialog from '@/components/dialogs/AttachDialog.vue'
 import PersonneDialog from '@/components/dialogs/personne/PersonneDialog.vue'
 import QuickAddDialog from '@/components/dialogs/QuickAddDialog.vue'
@@ -23,10 +27,6 @@ import CategorieTab from '@/components/tabs/structure/CategorieTab.vue'
 import DashboardTab from '@/components/tabs/structure/DashboardTab.vue'
 import { useConfigurationStore, useStructureStore } from '@/stores'
 import { Tabs } from '@/types/enums'
-import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
 
 const isDev = import.meta.env.DEV
 

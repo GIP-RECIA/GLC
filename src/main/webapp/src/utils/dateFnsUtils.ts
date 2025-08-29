@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { type Duration, intervalToDuration, isAfter, isBefore } from 'date-fns'
+import type { Duration } from 'date-fns'
+import { intervalToDuration, isAfter, isBefore } from 'date-fns'
 
 type dateType = string | number | Date
 

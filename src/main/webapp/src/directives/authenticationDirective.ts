@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { useConfigurationStore } from '@/stores'
+import type { Directive } from 'vue'
 import { storeToRefs } from 'pinia'
-import { type Directive, watch } from 'vue'
+import { watch } from 'vue'
+import { useConfigurationStore } from '@/stores'
 
 const authenticated: Directive<HTMLElement, null> = (el) => {
   const configurationStore = useConfigurationStore()

@@ -15,11 +15,11 @@
 -->
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 import { usePersonne } from '@/composables'
 import { useConfigurationStore, usePersonneStore } from '@/stores'
 import { PersonneDialogState, Tabs } from '@/types/enums'
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
 import PersonneDialogInfo from './PersonneDialogInfo.vue'
 import PersonneDialogManageAdditional from './PersonneDialogManageAdditional.vue'
 

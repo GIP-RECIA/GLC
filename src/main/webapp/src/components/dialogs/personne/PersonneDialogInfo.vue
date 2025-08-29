@@ -16,16 +16,16 @@
 
 <script setup lang="ts">
 import type { Personne, PersonneFonction } from '@/types'
+import { useSessionStorage } from '@vueuse/core'
+import { format } from 'date-fns'
+import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue'
 import ReadonlyData from '@/components/ReadonlyData.vue'
 import { usePersonne } from '@/composables'
 import { useConfigurationStore, usePersonneStore } from '@/stores'
 import { PersonneDialogState, Tabs } from '@/types/enums'
 import { getCategoriePersonne, getIcon } from '@/utils'
-import { useSessionStorage } from '@vueuse/core'
-import { format } from 'date-fns'
-import { storeToRefs } from 'pinia'
-import { useI18n } from 'vue-i18n'
 
 defineProps<{
   personne?: Personne

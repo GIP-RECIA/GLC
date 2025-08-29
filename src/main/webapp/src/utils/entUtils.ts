@@ -15,8 +15,8 @@
  */
 
 import type { PortalEntry } from '@/types'
-import vuetify from '@/plugins/vuetify.ts'
 import axios from 'axios'
+import vuetify from '@/plugins/vuetify.ts'
 
 async function useEntTheme(templateApiPath: string | undefined): Promise<void> {
   if (!templateApiPath || templateApiPath.trim().length < 1)

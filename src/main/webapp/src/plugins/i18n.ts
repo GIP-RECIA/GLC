@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { messages } from '@/locales'
 import { createI18n } from 'vue-i18n'
+import { messages } from '@/locales'
 
 const config: {
   fallbackLocale: string

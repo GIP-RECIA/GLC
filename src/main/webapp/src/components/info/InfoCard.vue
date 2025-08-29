@@ -17,9 +17,9 @@
 <script setup lang="ts">
 import type { enumValues } from '@/types'
 import type { Etat } from '@/types/enums'
-import { getEtat } from '@/utils'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { getEtat } from '@/utils'
 
 const props = withDefaults(
   defineProps<{

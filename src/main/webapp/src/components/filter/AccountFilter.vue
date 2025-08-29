@@ -16,11 +16,11 @@
 
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types'
-import ChipsFilter from '@/components/filter/ChipsFilter.vue'
-import { CategoriePersonne, Etat } from '@/types/enums'
 import isEmpty from 'lodash.isempty'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ChipsFilter from '@/components/filter/ChipsFilter.vue'
+import { CategoriePersonne, Etat } from '@/types/enums'
 
 const props = defineProps<{
   searchList: Array<SimplePersonne> | undefined

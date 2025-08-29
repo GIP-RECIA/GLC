@@ -24,13 +24,13 @@ import type {
   SourceFonction,
   StructureConfiguration,
 } from '@/types'
-import { getConfiguration, getFonctions } from '@/services/api'
-import { Tabs } from '@/types/enums'
-import { errorHandler, getEtat, useEntTheme } from '@/utils'
 import { useSessionStorage } from '@vueuse/core'
 import isEmpty from 'lodash.isempty'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import { getConfiguration, getFonctions } from '@/services/api'
+import { Tabs } from '@/types/enums'
+import { errorHandler, getEtat, useEntTheme } from '@/utils'
 
 export const useConfigurationStore = defineStore('configuration', () => {
   const configuration = ref<Configuration | undefined>()

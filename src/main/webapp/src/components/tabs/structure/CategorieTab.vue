@@ -17,12 +17,12 @@
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types'
 import type { Etat, Tabs } from '@/types/enums'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 import SelectFilter from '@/components/filter/SelectFilter.vue'
 import FilieresLayout from '@/components/layouts/FilieresLayout.vue'
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
 import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
 
 const props = defineProps<{
   categorie: Exclude<Tabs, Tabs.Dashboard | Tabs.Accounts>

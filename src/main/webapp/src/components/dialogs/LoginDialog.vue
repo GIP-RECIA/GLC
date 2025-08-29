@@ -15,12 +15,12 @@
 -->
 
 <script setup lang="ts">
-import { useConfigurationStore } from '@/stores'
-import { intercept, login } from '@/utils'
 import { watchOnce } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useConfigurationStore } from '@/stores'
+import { intercept, login } from '@/utils'
 
 const configurationStore = useConfigurationStore()
 const { isInit, isAuthenticated } = storeToRefs(configurationStore)

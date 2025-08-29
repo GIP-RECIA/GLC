@@ -16,10 +16,10 @@
 
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types'
-import { searchPersonne } from '@/services/api'
-import { errorHandler } from '@/utils'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { searchPersonne } from '@/services/api'
+import { errorHandler } from '@/utils'
 import PersonneChip from './PersonneChip.vue'
 import PersonneListItem from './PersonneListItem.vue'
 

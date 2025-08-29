@@ -16,14 +16,14 @@
 
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types'
-import CustomPagination from '@/components/CustomPagination.vue'
-import AccountFilter from '@/components/filter/AccountFilter.vue'
-import PersonneCard from '@/components/PersonneCard.vue'
-import { useStructureStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDisplay } from 'vuetify'
+import CustomPagination from '@/components/CustomPagination.vue'
+import AccountFilter from '@/components/filter/AccountFilter.vue'
+import PersonneCard from '@/components/PersonneCard.vue'
+import { useStructureStore } from '@/stores'
 
 const structureStore = useStructureStore()
 const { personnes } = storeToRefs(structureStore)

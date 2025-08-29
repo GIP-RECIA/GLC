@@ -16,9 +16,9 @@
 
 <script setup lang="ts">
 import type { Alert, Filiere } from '@/types'
-import { useConfigurationStore, useStructureStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import { useConfigurationStore, useStructureStore } from '@/stores'
 
 const configurationStore = useConfigurationStore()
 const { isQuickAdd, requestAdd } = storeToRefs(configurationStore)

@@ -16,10 +16,10 @@
 
 <script setup lang="ts">
 import type { Discipline, Filiere, FonctionForm } from '@/types'
-import { filiereDisciplineToId, idToFonction, isBetween } from '@/utils'
 import debounce from 'lodash.debounce'
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { filiereDisciplineToId, idToFonction, isBetween } from '@/utils'
 
 const props = withDefaults(
   defineProps<{

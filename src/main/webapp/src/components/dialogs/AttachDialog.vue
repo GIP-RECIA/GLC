@@ -16,12 +16,12 @@
 
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types'
-import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
-import { useConfigurationStore, usePersonneStore } from '@/stores'
-import { PersonneDialogState } from '@/types/enums'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
+import { useConfigurationStore, usePersonneStore } from '@/stores'
+import { PersonneDialogState } from '@/types/enums'
 
 const configurationStore = useConfigurationStore()
 const { isAttach } = storeToRefs(configurationStore)

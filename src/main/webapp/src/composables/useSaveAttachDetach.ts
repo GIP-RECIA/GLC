@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { usePersonneStore } from '@/stores'
-import { isEmpty } from '@/utils'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
+import { usePersonneStore } from '@/stores'
+import { isEmpty } from '@/utils'
 
 function useSaveAttachDetach() {
   const personneStore = usePersonneStore()

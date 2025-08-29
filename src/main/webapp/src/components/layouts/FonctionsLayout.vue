@@ -16,12 +16,12 @@
 
 <script setup lang="ts">
 import type { Discipline, Filiere, PersonneFonction } from '@/types'
-import { useConfigurationStore } from '@/stores'
-import { getDateFin } from '@/utils'
 import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useConfigurationStore } from '@/stores'
+import { getDateFin } from '@/utils'
 
 const props = withDefaults(
   defineProps<{

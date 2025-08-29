@@ -16,10 +16,10 @@
 
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types'
-import { useStructureStore } from '@/stores'
-import { Etat } from '@/types/enums'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
+import { useStructureStore } from '@/stores'
+import { Etat } from '@/types/enums'
 import InfoCard from './InfoCard.vue'
 
 const isDev = import.meta.env.DEV

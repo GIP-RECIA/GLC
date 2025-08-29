@@ -16,11 +16,11 @@
 
 <script setup lang="ts">
 import type { enumValues, SimplePersonne } from '@/types'
-import { usePersonneStore } from '@/stores'
-import { getEtat, getIcon } from '@/utils'
 import { format } from 'date-fns'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { usePersonneStore } from '@/stores'
+import { getEtat, getIcon } from '@/utils'
 
 const props = defineProps<{
   personne: SimplePersonne

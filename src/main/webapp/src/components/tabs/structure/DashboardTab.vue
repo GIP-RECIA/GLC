@@ -16,6 +16,10 @@
 
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types'
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useDisplay } from 'vuetify'
 import AlertManager from '@/components/AlertManager.vue'
 import CustomPagination from '@/components/CustomPagination.vue'
 import InfoGrid from '@/components/info/InfoGrid.vue'
@@ -23,10 +27,6 @@ import PersonneCard from '@/components/PersonneCard.vue'
 import ReadonlyData from '@/components/ReadonlyData.vue'
 import { useStructureStore } from '@/stores'
 import { DashboardPanel, Etat } from '@/types/enums'
-import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useDisplay } from 'vuetify'
 
 const isDev = import.meta.env.DEV
 
