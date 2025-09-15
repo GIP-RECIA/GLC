@@ -847,13 +847,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/vue-fontawesome@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "@fortawesome/vue-fontawesome@npm:3.1.1"
+"@fortawesome/vue-fontawesome@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "@fortawesome/vue-fontawesome@npm:3.1.2"
   peerDependencies:
     "@fortawesome/fontawesome-svg-core": ~1 || ~6 || ~7
     vue: ">= 3.0.0 < 4"
-  checksum: 10/72a676ebb33e471befc25bc31e2227c9992562a4f8b5f7e2959cebf0c77a0e8e76b5dd85213835d068885672ec440cf969cf11d4df0c55e483bb3a214e31bbfd
+  checksum: 10/0d2d22bf272fc3ccaba98532c2bbbc034e9adfb894502e4f37c05707e4e711940b0b7f6920e1edf1f5abdc8522c1a077eb21bafecadb86e0fac3a9dba70a6d1d
   languageName: node
   linkType: hard
 
@@ -4654,7 +4654,7 @@ __metadata:
     "@fortawesome/fontawesome-svg-core": "npm:^6.7.2"
     "@fortawesome/free-regular-svg-icons": "npm:^6.7.2"
     "@fortawesome/free-solid-svg-icons": "npm:^6.7.2"
-    "@fortawesome/vue-fontawesome": "npm:^3.1.1"
+    "@fortawesome/vue-fontawesome": "npm:^3.1.2"
     "@intlify/unplugin-vue-i18n": "npm:^11.0.0"
     "@juggle/resize-observer": "npm:^3.4.0"
     "@pinia/testing": "npm:^0.1.7"
