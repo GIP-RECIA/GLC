@@ -51,7 +51,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "dotenv-checker": "^1.1.7",
-    "eslint": "^9.36.0",
+    "eslint": "^9.37.0",
     "eslint-plugin-format": "^1.0.2",
     "husky": "^9.1.7",
     "jsdom": "^27.0.0",
