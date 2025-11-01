@@ -63,7 +63,7 @@
     "typescript": "^5.9.3",
     "vite": "^7.1.11",
     "vite-plugin-vuetify": "^2.1.2",
-    "vitest": "^3.2.4",
+    "vitest": "^4.0.6",
     "vue-tsc": "^2.2.10",
     "vue3-toastify": "^0.2.8",
     "xml2js": "^0.6.2"
