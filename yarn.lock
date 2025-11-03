@@ -3367,14 +3367,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"decimal.js@npm:^10.4.3":
-  version: 10.5.0
-  resolution: "decimal.js@npm:10.5.0"
-  checksum: 10/714d49cf2f2207b268221795ede330e51452b7c451a0c02a770837d2d4faed47d603a729c2aa1d952eb6c4102d999e91c9b952c1aa016db3c5cba9fc8bf4cda2
-  languageName: node
-  linkType: hard
-
-"decimal.js@npm:^10.6.0":
+"decimal.js@npm:^10.4.3, decimal.js@npm:^10.6.0":
   version: 10.6.0
   resolution: "decimal.js@npm:10.6.0"
   checksum: 10/c0d45842d47c311d11b38ce7ccc911121953d4df3ebb1465d92b31970eb4f6738a065426a06094af59bee4b0d64e42e7c8984abd57b6767c64ea90cf90bb4a69
@@ -5861,14 +5854,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^11.0.2, lru-cache@npm:^11.1.0":
-  version: 11.2.1
-  resolution: "lru-cache@npm:11.2.1"
-  checksum: 10/cd1cc7a8d7617ede28702f80449d9c3f851bb6671d5ec37b34ca10ffb18d5aa068d798ed057e73092f25e563202d33ab6562c356b0c1ff4a6065525dbe577b1c
-  languageName: node
-  linkType: hard
-
-"lru-cache@npm:^11.2.2":
+"lru-cache@npm:^11.0.2, lru-cache@npm:^11.1.0, lru-cache@npm:^11.2.2":
   version: 11.2.2
   resolution: "lru-cache@npm:11.2.2"
   checksum: 10/fa7919fbf068a739f79a1ad461eb273514da7246cebb9dca68e3cd7ba19e3839e7e2aaecd9b72867e08038561eeb96941189e89b3d4091c75ced4f56c71c80db
@@ -8450,7 +8436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tr46@npm:^5.1.0, tr46@npm:^5.1.1":
+"tr46@npm:^5.1.0":
   version: 5.1.1
   resolution: "tr46@npm:5.1.1"
   dependencies:
@@ -9064,17 +9050,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatwg-url@npm:^15.0.0":
-  version: 15.0.0
-  resolution: "whatwg-url@npm:15.0.0"
-  dependencies:
-    tr46: "npm:^5.1.1"
-    webidl-conversions: "npm:^8.0.0"
-  checksum: 10/236f88f36c17573ae604305bc63f6405a5d86f593baed8ca7814aa88226e1ffa64cc707ba3a86666ff852f4a431f220303ff63c6affcbdcf48c60394066bc7cd
-  languageName: node
-  linkType: hard
-
-"whatwg-url@npm:^15.1.0":
+"whatwg-url@npm:^15.0.0, whatwg-url@npm:^15.1.0":
   version: 15.1.0
   resolution: "whatwg-url@npm:15.1.0"
   dependencies:
