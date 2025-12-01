@@ -36,7 +36,7 @@
     "@intlify/unplugin-vue-i18n": "^11.0.1",
     "@juggle/resize-observer": "^3.4.0",
     "@pinia/testing": "^0.1.7",
-    "@playwright/test": "^1.56.1",
+    "@playwright/test": "^1.57.0",
     "@tsconfig/node22": "^22.0.2",
     "@types/jsdom": "^27",
     "@types/lodash.debounce": "^4",
