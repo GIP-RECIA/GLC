@@ -41,7 +41,7 @@
     "@types/jsdom": "^27",
     "@types/lodash.debounce": "^4",
     "@types/lodash.isempty": "^4",
-    "@types/node": "^24",
+    "@types/node": "^25",
     "@types/xml2js": "^0",
     "@vitejs/plugin-vue": "^6.0.2",
     "@vue/test-utils": "^2.4.6",
