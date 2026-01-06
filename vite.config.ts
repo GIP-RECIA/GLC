@@ -13,9 +13,17 @@ import { slugify } from './src/main/webapp/src/utils/stringUtils.ts'
 export default ({ mode }: ConfigEnv) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
-  const appName = JSON.stringify(process.env.VITE_APP_NAME)
+  const {
+    VITE_APP_NAME,
+    VITE_APP_SLUG,
+    VITE_BASE_URI,
+    VITE_ALLOWED_HOSTS,
+    VITE_PROXY_API_URL,
+  } = process.env
 
-  const appSlug = JSON.stringify(process.env.VITE_APP_SLUG ? process.env.VITE_APP_SLUG : slugify(appName))
+  const appName = JSON.stringify(VITE_APP_NAME)
+
+  const appSlug = JSON.stringify(VITE_APP_SLUG || slugify(appName))
 
   const backVersion = (): string => {
     let version
@@ -30,7 +38,7 @@ export default ({ mode }: ConfigEnv) => {
   }
 
   return defineConfig({
-    base: `${process.env.VITE_BASE_URI}/ui`,
+    base: `${VITE_BASE_URI}/ui`,
     root: './src/main/webapp',
     envDir: '../../../',
     plugins: [
@@ -53,13 +61,10 @@ export default ({ mode }: ConfigEnv) => {
       },
     },
     server: {
+      allowedHosts: JSON.parse(VITE_ALLOWED_HOSTS ?? '[]'),
       proxy: {
-        '^(?:/[^/]*)?/api': {
-          target: process.env.VITE_PROXY_API_URL,
-          changeOrigin: true,
-        },
-        '^(?:/[^/]*)?/app': {
-          target: process.env.VITE_PROXY_API_URL,
+        '^(?:/[^/]*)?/(?=api|app)': {
+          target: VITE_PROXY_API_URL,
           changeOrigin: true,
         },
       },
