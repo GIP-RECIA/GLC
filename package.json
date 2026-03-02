@@ -37,7 +37,7 @@
     "@juggle/resize-observer": "^3.4.0",
     "@pinia/testing": "^0.1.7",
     "@playwright/test": "^1.58.1",
-    "@tsconfig/node22": "^22.0.5",
+    "@tsconfig/node24": "^24.0.4",
     "@types/jsdom": "^28",
     "@types/lodash.debounce": "^4",
     "@types/lodash.isempty": "^4",
