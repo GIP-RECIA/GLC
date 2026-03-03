@@ -111,7 +111,7 @@ jobs:
 
     strategy:
       matrix:
-        node: ['22', 'latest']
+        node: ['24', 'latest']
 
     name: Node ${{ matrix.node }}
 
