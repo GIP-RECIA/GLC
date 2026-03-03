@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import { ResizeObserver } from '@juggle/resize-observer'
-// import { plugins } from '../../config'
 // // @ts-expect-error project location
 // import CustomTabBar from '@/components/tab/CustomTabBar.vue'
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-globalThis.ResizeObserver = ResizeObserver
-
 describe('customTabBar', () => {
   it('test 1 - init', async () => {
     // const wrapper = shallowMount(CustomTabBar, {
-    //   global: {
-    //     plugins: [...plugins],
-    //   },
     //   props: {},
     // });
 

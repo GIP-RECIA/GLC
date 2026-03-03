@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import { ResizeObserver } from '@juggle/resize-observer'
 import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 // @ts-expect-error project location
 import ChipsFilter from '@/components/filter/ChipsFilter.vue'
-import { plugins } from '../../config'
-
-globalThis.ResizeObserver = ResizeObserver
 
 describe('chipsFilter', () => {
   it('test 1 - init', async () => {
     const wrapper = mount(ChipsFilter, {
-      global: {
-        plugins: [...plugins],
-      },
       props: {
         items: [
           { id: 1, i18n: 'foo' },

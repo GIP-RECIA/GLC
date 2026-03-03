@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import { ResizeObserver } from '@juggle/resize-observer'
-// import { plugins } from '../../config'
 // // @ts-expect-error project location
 // import AdditionalModal from '@/components/modals/AdditionalModal.vue'
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-globalThis.ResizeObserver = ResizeObserver
-
 describe('additionalModal', () => {
   it('test 1 - init', async () => {
     // const wrapper = shallowMount(AdditionalModal, {
-    //   global: {
-    //     plugins: [...plugins],
-    //   },
     //   props: {},
     // });
 

@@ -15,6 +15,9 @@
  */
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { ResizeObserver } from '@juggle/resize-observer'
+import { config } from '@vue/test-utils'
+import { beforeAll } from 'vitest'
 // @ts-expect-error project location
 import { register as registerFontAwsome } from '@/plugins/fontawesome.ts'
 // @ts-expect-error project location
@@ -22,6 +25,31 @@ import i18n from '@/plugins/i18n.ts'
 // @ts-expect-error project location
 import vuetify from '@/plugins/vuetify.ts'
 
-const plugins = [i18n, vuetify]
+globalThis.ResizeObserver = ResizeObserver
 
-export { FontAwesomeIcon, plugins, registerFontAwsome }
+config.global.plugins = [
+  vuetify,
+  i18n,
+]
+
+config.global.stubs = {
+  FontAwesomeIcon,
+}
+
+if (!window.visualViewport) {
+  Object.defineProperty(window, 'visualViewport', {
+    value: {
+      width: 1024,
+      height: 768,
+      offsetTop: 0,
+      offsetLeft: 0,
+      scale: 1,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    },
+  })
+}
+
+beforeAll(() => {
+  registerFontAwsome()
+})

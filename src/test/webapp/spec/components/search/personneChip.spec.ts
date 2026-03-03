@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import { ResizeObserver } from '@juggle/resize-observer'
-// import { plugins } from '../../config'
 // // @ts-expect-error project location
 // import PersonneChip from '@/components/search/PersonneChip.vue'
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-globalThis.ResizeObserver = ResizeObserver
-
 describe('personneChip', () => {
   it('test 1 - init', async () => {
     // const wrapper = shallowMount(PersonneChip, {
-    //   global: {
-    //     plugins: [...plugins],
-    //   },
     //   props: {
     //     personne: {
     //       id: 1,

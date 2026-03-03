@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import { ResizeObserver } from '@juggle/resize-observer'
-// import { plugins } from '../../config'
 // // @ts-expect-error project location
 // import PersonneSearch from '@/components/search/PersonneSearch.vue'
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-globalThis.ResizeObserver = ResizeObserver
-
 describe('personneSearch', () => {
   it('test 1 - init', async () => {
     // const wrapper = shallowMount(PersonneSearch, {
-    //   global: {
-    //     plugins: [...plugins],
-    //   },
     //   props: {
     //     searchList: [
     //       {

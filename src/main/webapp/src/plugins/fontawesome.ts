@@ -62,7 +62,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-function register(app: App): void {
+function register(app: App | undefined): void {
   library.add(farCircle, farDotCircle, farSquare, farUser)
   library.add(
     faCaretDown,
@@ -102,7 +102,7 @@ function register(app: App): void {
     faUserSecret,
     faXmark,
   )
-  app.component('font-awesome-icon', FontAwesomeIcon)
+  app?.component('font-awesome-icon', FontAwesomeIcon)
 }
 
 export { register }

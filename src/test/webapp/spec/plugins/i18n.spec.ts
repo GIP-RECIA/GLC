@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-import { ResizeObserver } from '@juggle/resize-observer'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { defineComponent, h } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { plugins } from '../config'
-
-globalThis.ResizeObserver = ResizeObserver
 
 describe('i18n', () => {
   it('does it woks?', async () => {
@@ -33,11 +29,6 @@ describe('i18n', () => {
           return h('div', t('toast.error.unknown'))
         }
       }),
-      {
-        global: {
-          plugins: [...plugins],
-        },
-      },
     )
     expect(wrapper.text()).toBe('An unknown error has occurred')
   })

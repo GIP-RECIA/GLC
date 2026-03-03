@@ -51,7 +51,7 @@ watch(
         selected = Theme.dark
         break
     }
-    theme.global.name.value = selected
+    theme.change(selected)
   },
   { immediate: true },
 )

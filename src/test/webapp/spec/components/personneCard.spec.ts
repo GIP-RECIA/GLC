@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import { ResizeObserver } from '@juggle/resize-observer'
-// import { plugins } from '../config'
 // // @ts-expect-error project location
 // import PersonneCard from '@/components/PersonneCard.vue'
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-globalThis.ResizeObserver = ResizeObserver
-
 describe('personneCard', () => {
   it('test 1 - init', async () => {
     // const wrapper = shallowMount(PersonneCard, {
-    //   global: {
-    //     plugins: [...plugins],
-    //   },
     //   props: {
     //     personne: { id: 1, etat: 'Valide', categorie: 'Enseignant', source: 'AC-DEMO', cn: 'foo bar' },
     //   },
