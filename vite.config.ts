@@ -5,6 +5,7 @@ import { fileURLToPath, URL } from 'node:url'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig, loadEnv } from 'vite'
+import vueDevTools from 'vite-plugin-vue-devtools'
 import vuetify from 'vite-plugin-vuetify'
 import { parseString } from 'xml2js'
 import { slugify } from './src/main/webapp/src/utils/stringUtils.ts'
@@ -52,8 +53,9 @@ export default ({ mode }: ConfigEnv) => {
           },
         },
       }),
+      vueDevTools(),
+      VueI18nPlugin(),
       vuetify({ styles: 'sass' }),
-      VueI18nPlugin({}),
     ],
     resolve: {
       alias: {
