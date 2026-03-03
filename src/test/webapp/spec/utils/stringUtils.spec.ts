@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+import { describe, expect, it } from 'vitest'
 // @ts-expect-error project location
 import { capitalize, concatenate } from '@/utils/stringUtils'
-import { describe, expect, it } from 'vitest'
 
 describe('stringUtils', () => {
   it('test 1 - capitalize', () => {

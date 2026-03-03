@@ -1,8 +1,8 @@
 # API-first development with OpenAPI
 # This file will be used at compile time to generate Spring-MVC endpoint stubs using openapi-generator
-openapi: '3.0.1'
+openapi: 3.0.1
 info:
-  title: 'GLC'
+  title: GLC
   version: 0.0.1
 servers:
   - url: http://localhost:8090/api
@@ -24,4 +24,4 @@ components:
       type: http
       scheme: basic
 security:
-  - BasicAuth: [ jhipster, email, profile ]
+  - BasicAuth: [jhipster, email, profile]

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-// @ts-expect-error project location
-import ReadonlyData from '@/components/ReadonlyData.vue'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
+// @ts-expect-error project location
+import ReadonlyData from '@/components/ReadonlyData.vue'
 
 describe('readonlyData', () => {
   it('test 1 - label only', async () => {

@@ -13,7 +13,7 @@
 
 ## In dev process when changing the entities
 
-`./mvnw clean generate-sources` will generates new or modified Q__ classes or to update evaluator's entities when updating evaluator lib
+`./mvnw clean generate-sources` will generates new or modified Q\_\_ classes or to update evaluator's entities when updating evaluator lib
 
 ## To see deprecated code and warnings
 

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+import { describe, expect, it } from 'vitest'
 // @ts-expect-error project location
 import { isAfterOrEqual, isBeforeOrEqual, isBetween } from '@/utils'
-import { describe, expect, it } from 'vitest'
 
 describe('dateFnsUtils', () => {
   const date = '2024-08-01'

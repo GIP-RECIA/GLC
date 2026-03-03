@@ -23,7 +23,7 @@ import { filiereDisciplineToId, idToFonction, isBetween } from '@/utils'
 
 const props = withDefaults(
   defineProps<{
-    filieres: Array<Filiere> | undefined
+    filieres?: Array<Filiere>
     disabled?: Array<string>
     disableFonctionEdit?: boolean
     config?: {

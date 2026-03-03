@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // @ts-expect-error project location
 import { register as registerFontAwsome } from '@/plugins/fontawesome.ts'
 // @ts-expect-error project location
 import i18n from '@/plugins/i18n.ts'
 // @ts-expect-error project location
 import vuetify from '@/plugins/vuetify.ts'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 const plugins = [i18n, vuetify]
 

@@ -6,7 +6,7 @@ server:
 spring:
   config:
     activate:
-      on-profile: 'prod'
+      on-profile: prod
 
   datasource:
     url: jdbc:mariadb://HOST:3306/DB_NAME?useUnicode=true&characterEncoding=UTF-8&autoreconnect=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris
@@ -15,9 +15,9 @@ spring:
 
 app:
   security:
-    #auth-uri-filter-path: j_spring_cas_security_check
-    #redirect-param-name: spring-security-redirect
-    #security: http://URL:PORT/j_spring_cas_security_check
+    # auth-uri-filter-path: j_spring_cas_security_check
+    # redirect-param-name: spring-security-redirect
+    # security: http://URL:PORT/j_spring_cas_security_check
     authorized-domain-names:
       - http://localhost:5173
     protocol: http://

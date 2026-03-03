@@ -16,7 +16,7 @@ logging:
 spring:
   config:
     activate:
-      on-profile: 'dev'
+      on-profile: dev
 
   jpa:
     show-sql: true
@@ -28,9 +28,9 @@ spring:
 
 app:
   security:
-    #auth-uri-filter-path: j_spring_cas_security_check
-    #redirect-param-name: spring-security-redirect
-    #security: http://URL:PORT/j_spring_cas_security_check
+    # auth-uri-filter-path: j_spring_cas_security_check
+    # redirect-param-name: spring-security-redirect
+    # security: http://URL:PORT/j_spring_cas_security_check
     authorized-domain-names:
       - http://localhost:8090
     protocol: http://

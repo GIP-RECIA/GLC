@@ -1,5 +1,5 @@
 /* eslint-disable node/prefer-global/process */
-import type { ConfigEnv, ProxyOptions } from 'vite'
+import type { ConfigEnv } from 'vite'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
