@@ -43,10 +43,16 @@ watchOnce(isInit, (newValue) => {
 </script>
 
 <template>
-  <v-dialog v-model="modelValue" :max-width="300">
+  <v-dialog
+    v-model="modelValue"
+    :max-width="300"
+  >
     <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
-        <v-toolbar-title :text="t('casSignIn')" class="text-h6" />
+        <v-toolbar-title
+          :text="t('casSignIn')"
+          class="text-h6"
+        />
       </v-toolbar>
       <v-card-text />
       <v-card-actions>

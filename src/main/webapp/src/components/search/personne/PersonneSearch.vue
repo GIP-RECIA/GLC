@@ -39,8 +39,14 @@ const isHideNoData = ref<boolean>(true)
 const isSearchingOut = ref<boolean>(props.searchType === 'OUT')
 const items = ref<Array<SimplePersonne>>([])
 
-function filterItems(newSearch: string | undefined): void {
-  if (newSearch && newSearch.length > 3 && !newSearch.includes('(')) {
+function filterItems(
+  newSearch: string | undefined,
+): void {
+  if (
+    newSearch
+    && newSearch.length > 3
+    && !newSearch.includes('(')
+  ) {
     newSearch = newSearch
       .toLowerCase()
       .normalize('NFD')
@@ -48,7 +54,9 @@ function filterItems(newSearch: string | undefined): void {
 
     isLoading.value = true
     isHideNoData.value = false
-    isSearchingOut.value ? findOutOfStructure(newSearch) : findInStructure(newSearch)
+    isSearchingOut.value
+      ? findOutOfStructure(newSearch)
+      : findInStructure(newSearch)
   }
   else {
     items.value = []
@@ -57,7 +65,9 @@ function filterItems(newSearch: string | undefined): void {
   }
 }
 
-function findInStructure(searchValue: string): void {
+function findInStructure(
+  searchValue: string,
+): void {
   if (props.searchList)
     filterFromSource(props.searchList, searchValue)
 }
@@ -67,7 +77,9 @@ const out: { request?: string, response: Array<SimplePersonne> } = {
   response: [],
 }
 
-async function findOutOfStructure(searchValue: string): Promise<void> {
+async function findOutOfStructure(
+  searchValue: string,
+): Promise<void> {
   if (out.request && searchValue.startsWith(out.request)) {
     filterFromSource(out.response, searchValue)
   }
@@ -85,7 +97,10 @@ async function findOutOfStructure(searchValue: string): Promise<void> {
   }
 }
 
-function filterFromSource(source: Array<SimplePersonne>, searchValue: string): void {
+function filterFromSource(
+  source: Array<SimplePersonne>,
+  searchValue: string,
+): void {
   items.value = source.filter((personne) => {
     let filter = personne.cn.toLowerCase().includes(searchValue)
     if (personne.email)
@@ -132,13 +147,23 @@ function filterFromSource(source: Array<SimplePersonne>, searchValue: string): v
       @update:search="filterItems"
     >
       <template #chip="{ props: chipProps, item }">
-        <PersonneChip v-bind="chipProps" :personne="item?.raw" />
+        <PersonneChip
+          v-bind="chipProps"
+          :personne="item?.raw"
+        />
       </template>
       <template #item="{ props: itemProps, item }">
-        <PersonneListItem v-bind="itemProps" :personne="item?.raw" />
+        <PersonneListItem
+          v-bind="itemProps"
+          :personne="item?.raw"
+        />
       </template>
       <template #append-inner>
-        <v-progress-circular v-show="isLoading" indeterminate size="small" />
+        <v-progress-circular
+          v-show="isLoading"
+          indeterminate
+          size="small"
+        />
       </template>
     </v-autocomplete>
   </div>

@@ -27,7 +27,9 @@ const props = withDefaults(
     value: number
     variant?: 'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain'
   }>(),
-  { variant: 'flat' },
+  {
+    variant: 'flat',
+  },
 )
 
 const { t } = useI18n()
@@ -51,7 +53,12 @@ const data = computed<{ etat: enumValues, icon: string }>(() => {
           {{ t(data.etat.i18n) }}
         </div>
       </div>
-      <v-icon :icon="data.icon" :color="data.etat.color" class="mx-2" :size="40" />
+      <v-icon
+        :icon="data.icon"
+        :color="data.etat.color"
+        class="mx-2"
+        :size="40"
+      />
     </v-card-text>
   </v-card>
 </template>

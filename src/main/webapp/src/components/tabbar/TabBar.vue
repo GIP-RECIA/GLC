@@ -26,17 +26,23 @@ const { structures, appTab } = storeToRefs(configurationStore)
 
 const router = useRouter()
 
-function close(event: { id: number, selected: boolean }): void {
+function close(
+  event: { id: number, selected: boolean },
+): void {
   structures.value.splice(event.id, 1)
   if (!event.selected)
     return
 
   // Definition du nouvel onglet
   const newCurrentStructure = appTab.value! - 1
-  appTab.value = newCurrentStructure >= 0 ? newCurrentStructure : 0
+  appTab.value = newCurrentStructure >= 0
+    ? newCurrentStructure
+    : 0
 
   // Changement de page
-  const structureId = structures.value.find((structure, index) => index === appTab.value)?.id
+  const structureId = structures.value
+    .find((structure, index) => index === appTab.value)
+    ?.id
   if (structureId)
     router.push({ name: 'structure', params: { structureId } })
   else newTab()
@@ -57,7 +63,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="tab-bar" class="scrollable-x">
+  <div
+    id="tab-bar"
+    class="scrollable-x"
+  >
     <div class="d-flex my-2">
       <transition-group name="tab-bar">
         <TabItem
@@ -65,7 +74,10 @@ onMounted(() => {
           :id="index"
           :key="structure.id"
           :title="structure.name"
-          :link="{ name: 'structure', params: { structureId: structure.id } }"
+          :link="{
+            name: 'structure',
+            params: { structureId: structure.id },
+          }"
           :selected="appTab === index"
           @close="close"
         />
@@ -78,7 +90,10 @@ onMounted(() => {
         icon
         @click="newTab"
       >
-        <v-icon icon="fas fa-plus" size="x-small" />
+        <v-icon
+          icon="fas fa-plus"
+          size="x-small"
+        />
       </v-btn>
     </div>
   </div>

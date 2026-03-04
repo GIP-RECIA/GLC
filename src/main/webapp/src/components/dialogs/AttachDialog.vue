@@ -56,18 +56,32 @@ const selectedUser = computed<SimplePersonne | undefined>({
 </script>
 
 <template>
-  <v-dialog v-model="modelValue" scrollable :max-width="1024 / 2">
+  <v-dialog
+    v-model="modelValue"
+    scrollable
+    :max-width="1024 / 2"
+  >
     <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">
           {{ t('button.attach') }}
         </v-toolbar-title>
         <template #append>
-          <v-btn icon="fas fa-xmark" color="default" variant="plain" class="me-1" @click="isAttach = false" />
+          <v-btn
+            icon="fas fa-xmark"
+            color="default"
+            variant="plain"
+            class="me-1"
+            @click="isAttach = false"
+          />
         </template>
       </v-toolbar>
       <v-card-text class="pt-0 pb-6">
-        <PersonneSearch v-model="selectedUser" search-type="OUT" variant="outlined" />
+        <PersonneSearch
+          v-model="selectedUser"
+          search-type="OUT"
+          variant="outlined"
+        />
       </v-card-text>
     </v-card>
   </v-dialog>

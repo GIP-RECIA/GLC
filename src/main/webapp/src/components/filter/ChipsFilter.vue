@@ -27,7 +27,18 @@ const modelValue = defineModel<Array<number | string>>()
 </script>
 
 <template>
-  <v-chip-group v-model="modelValue" column multiple selected-class="text-primary">
-    <v-chip v-for="(tag, index) in items" :key="index" :value="tag.id" :text="t(tag.i18n)" rounded />
+  <v-chip-group
+    v-model="modelValue"
+    column
+    multiple
+    selected-class="text-primary"
+  >
+    <v-chip
+      v-for="(tag, index) in items"
+      :key="index"
+      :value="tag.id"
+      :text="t(tag.i18n)"
+      rounded
+    />
   </v-chip-group>
 </template>

@@ -22,4 +22,8 @@ const messages = {
   fr,
 }
 
-export { en, fr, messages }
+export {
+  en,
+  fr,
+  messages,
+}

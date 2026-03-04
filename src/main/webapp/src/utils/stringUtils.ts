@@ -16,11 +16,16 @@
 
 import isEmpty from 'lodash.isempty'
 
-function capitalize(value: string): string {
+function capitalize(
+  value: string,
+): string {
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
 }
 
-function concatenate(values: Array<string | undefined>, separator?: string): string {
+function concatenate(
+  values: Array<string | undefined>,
+  separator?: string,
+): string {
   let result: string = ''
   values.forEach((value, index) => {
     if (!isEmpty(value)) {
@@ -33,7 +38,9 @@ function concatenate(values: Array<string | undefined>, separator?: string): str
   return result
 }
 
-function slugify(value: string): string {
+function slugify(
+  value: string,
+): string {
   return String(value)
     .normalize('NFKD') // split accented characters into their base characters and diacritical marks
     .replace(/[\u0300-\u036F]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
@@ -44,4 +51,8 @@ function slugify(value: string): string {
     .replace(/-+/g, '-') // remove consecutive hyphens
 }
 
-export { capitalize, concatenate, slugify }
+export {
+  capitalize,
+  concatenate,
+  slugify,
+}

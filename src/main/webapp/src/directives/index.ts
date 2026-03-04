@@ -26,4 +26,6 @@ function register(app: App): void {
   app.directive('role', role)
 }
 
-export { register }
+export {
+  register,
+}

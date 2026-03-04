@@ -44,26 +44,39 @@ const { currentStructureId } = storeToRefs(configurationStore)
 const { t } = useI18n()
 
 const etabFonctions = computed<Array<PersonneFonction>>(() => {
-  return props.fonctions ? props.fonctions.filter(({ structure }) => structure === currentStructureId.value) : []
+  return props.fonctions
+    ? props.fonctions.filter(({ structure }) => structure === currentStructureId.value)
+    : []
 })
 
 const filteredFilieres = computed<Array<Filiere>>(() => {
   if (!props.filieres)
     return []
-  const filiereIds = [...new Set(etabFonctions.value.map(({ filiere }) => filiere))]
+  const filiereIds = [
+    ...new Set(etabFonctions.value.map(({ filiere }) => filiere)),
+  ]
 
   return props.filieres
     .filter(({ id }) => filiereIds.includes(id))
     .map((filiere) => {
-      const filiereFonctions = etabFonctions.value.filter(fonction => fonction.filiere === filiere.id)
-      const disciplineIds = filiereFonctions.map(fonction => fonction.discipline)
+      const filiereFonctions = etabFonctions.value
+        .filter(fonction => fonction.filiere === filiere.id)
+      const disciplineIds = filiereFonctions
+        .map(fonction => fonction.discipline)
 
       const disciplines = filiere.disciplines
         .filter(({ id }) => disciplineIds.includes(id))
         .map((discipline) => {
-          const dateFin = filiereFonctions.find(fonction => fonction.discipline === discipline.id)?.dateFin
+          const dateFin = filiereFonctions
+            .find(fonction => fonction.discipline === discipline.id)
+            ?.dateFin
 
-          return { ...discipline, endInfo: dateFin ? getDateFin(dateFin) : undefined }
+          return {
+            ...discipline,
+            endInfo: dateFin
+              ? getDateFin(dateFin)
+              : undefined,
+          }
         })
 
       return { ...filiere, disciplines }
@@ -71,9 +84,15 @@ const filteredFilieres = computed<Array<Filiere>>(() => {
 })
 
 // eslint-disable-next-line unused-imports/no-unused-vars
-function onClick(filiere: Filiere, discipline: Discipline): void {
+function onClick(
+  filiere: Filiere,
+  discipline: Discipline,
+): void {
   let fonction = etabFonctions.value.find(
-    fonction => fonction.filiere === filiere.id && fonction.discipline === discipline.id,
+    fonction => (
+      fonction.filiere === filiere.id
+      && fonction.discipline === discipline.id
+    ),
   )
   if (fonction)
     fonction = { ...fonction, dateFin: discipline.endInfo?.date }
@@ -82,7 +101,10 @@ function onClick(filiere: Filiere, discipline: Discipline): void {
 </script>
 
 <template>
-  <div v-if="filteredFilieres.length > 0" class="container">
+  <div
+    v-if="filteredFilieres.length > 0"
+    class="container"
+  >
     <v-card
       v-for="filiere in filteredFilieres"
       :key="filiere.codeFiliere"
@@ -99,7 +121,11 @@ function onClick(filiere: Filiere, discipline: Discipline): void {
             :color="discipline.endInfo?.color ?? 'primary'"
             :ripple="false"
             rounded
-            @="clickable ? { click: () => onClick(filiere, discipline) } : {}"
+            @="
+              clickable
+                ? { click: () => onClick(filiere, discipline) }
+                : {}
+            "
           >
             <template v-if="discipline.endInfo" #append>
               <v-tooltip
@@ -109,12 +135,19 @@ function onClick(filiere: Filiere, discipline: Discipline): void {
                     date: format(discipline.endInfo.date!, 'P'),
                     months: discipline.endInfo.months,
                   },
-                  discipline.endInfo.months && discipline.endInfo.months > 0 ? discipline.endInfo.months : 1,
+                  (discipline.endInfo.months && discipline.endInfo.months > 0)
+                    ? discipline.endInfo.months
+                    : 1,
                 )"
                 location="bottom start"
               >
                 <template #activator="{ props: activatorProps }">
-                  <v-icon v-bind="activatorProps" :icon="discipline.endInfo.icon" size="x-small" class="ms-1" />
+                  <v-icon
+                    v-bind="activatorProps"
+                    :icon="discipline.endInfo.icon"
+                    size="x-small"
+                    class="ms-1"
+                  />
                 </template>
               </v-tooltip>
             </template>

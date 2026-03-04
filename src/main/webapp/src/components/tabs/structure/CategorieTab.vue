@@ -22,13 +22,20 @@ import { computed } from 'vue'
 import SelectFilter from '@/components/filter/SelectFilter.vue'
 import FilieresLayout from '@/components/layouts/FilieresLayout.vue'
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
+import {
+  useConfigurationStore,
+  usePersonneStore,
+  useStructureStore,
+} from '@/stores'
 
 const props = defineProps<{
   categorie: Exclude<Tabs, Tabs.Dashboard | Tabs.Accounts>
 }>()
 const configurationStore = useConfigurationStore()
-const { filterAccountStates, currentStructureConfig } = storeToRefs(configurationStore)
+const {
+  filterAccountStates,
+  currentStructureConfig,
+} = storeToRefs(configurationStore)
 
 const structureStore = useStructureStore()
 const { staff, filieresByStaff } = storeToRefs(structureStore)
@@ -38,7 +45,9 @@ const { initCurrentPersonne } = personneStore
 const { currentPersonne } = storeToRefs(personneStore)
 
 const accountFilters = computed<Array<Etat>>(() =>
-  currentStructureConfig.value ? currentStructureConfig.value[props.categorie].accountStates : [],
+  currentStructureConfig.value
+    ? currentStructureConfig.value[props.categorie].accountStates
+    : [],
 )
 
 function setAccountFilters(states: Array<Etat>): void {
@@ -75,7 +84,10 @@ function loadUser(user: SimplePersonne | undefined): void {
         @update:model-value="setAccountFilters"
       />
     </div>
-    <FilieresLayout :filieres="filieresByStaff[categorie]" :account-states="accountFilters" />
+    <FilieresLayout
+      :filieres="filieresByStaff[categorie]"
+      :account-states="accountFilters"
+    />
     <slot name="footer" />
   </v-container>
 </template>

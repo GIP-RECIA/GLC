@@ -34,11 +34,22 @@ const configurationStore = useConfigurationStore()
 const { allFilieres, structureTab } = storeToRefs(configurationStore)
 
 const personneStore = usePersonneStore()
-const { personneStructure, dialogState, editFunction } = storeToRefs(personneStore)
+const {
+  personneStructure,
+  dialogState,
+  editFunction,
+} = storeToRefs(personneStore)
 
 const { t } = useI18n()
 
-const { etat, schoolYear, login, suppressDate, hasFunctions, canEditAdditionals } = usePersonne()
+const {
+  etat,
+  schoolYear,
+  login,
+  suppressDate,
+  hasFunctions,
+  canEditAdditionals,
+} = usePersonne()
 
 const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true)
 
@@ -46,7 +57,9 @@ function addFonction(): void {
   editFonction(undefined)
 }
 
-function editFonction(payload: PersonneFonction | undefined): void {
+function editFonction(
+  payload: PersonneFonction | undefined,
+): void {
   if (payload)
     editFunction.value = payload
   dialogState.value = PersonneDialogState.ManageAdditionalMultiple
@@ -56,33 +69,76 @@ function editFonction(payload: PersonneFonction | undefined): void {
 <template>
   <v-card-text v-if="personne" class="pt-0">
     <div class="container">
-      <ReadonlyData v-admin label="UID" :value="personne.uid" />
+      <ReadonlyData
+        v-admin
+        label="UID"
+        :value="personne.uid"
+      />
       <ReadonlyData
         :label="t('person.information.profile')"
         :value="t(getCategoriePersonne(personne.categorie).i18n)"
       />
-      <ReadonlyData :label="t('person.information.civility')" :value="personne.civilite" />
-      <ReadonlyData :label="t('person.information.lastName')" :value="personne.patronyme" />
-      <ReadonlyData :label="t('person.information.firstName')" :value="personne.givenName" />
+      <ReadonlyData
+        :label="t('person.information.civility')"
+        :value="personne.civilite"
+      />
+      <ReadonlyData
+        :label="t('person.information.lastName')"
+        :value="personne.patronyme"
+      />
+      <ReadonlyData
+        :label="t('person.information.firstName')"
+        :value="personne.givenName"
+      />
       <ReadonlyData
         :label="t('person.information.birthDate')"
-        :value="personne.dateNaissance ? format(personne.dateNaissance, 'P') : undefined"
+        :value="
+          personne.dateNaissance
+            ? format(personne.dateNaissance, 'P')
+            : undefined
+        "
       />
-      <ReadonlyData :label="t('person.information.email')" :value="personne.email" />
-      <ReadonlyData :label="t('person.information.schoolYear')" :value="schoolYear" />
-      <ReadonlyData :label="t('person.information.login')">
+      <ReadonlyData
+        :label="t('person.information.email')"
+        :value="personne.email"
+      />
+      <ReadonlyData
+        :label="t('person.information.schoolYear')"
+        :value="schoolYear"
+      />
+      <ReadonlyData
+        :label="t('person.information.login')"
+      >
         <div class="d-flex flex-row align-center w-fit">
           <div>{{ login.i18n }}</div>
-          <v-tooltip v-if="login.info !== undefined" :text="login.info" location="bottom start">
+          <v-tooltip
+            v-if="login.info !== undefined"
+            :text="login.info"
+            location="bottom start"
+          >
             <template #activator="{ props }">
-              <v-icon v-bind="props" icon="fas fa-circle-info" color="info" size="small" class="ms-2" />
+              <v-icon
+                v-bind="props"
+                icon="fas fa-circle-info"
+                color="info"
+                size="small"
+                class="ms-2"
+              />
             </template>
           </v-tooltip>
         </div>
       </ReadonlyData>
-      <ReadonlyData :label="t('person.information.status')">
+      <ReadonlyData
+        :label="t('person.information.status')"
+      >
         <div class="d-flex flex-row align-center w-fit">
-          <v-icon v-if="etat.color" icon="fas fa-circle" :color="etat.color" size="small" class="me-2" />
+          <v-icon
+            v-if="etat.color"
+            icon="fas fa-circle"
+            :color="etat.color"
+            size="small"
+            class="me-2"
+          />
           <div>{{ t(etat.i18n) }}</div>
           <v-tooltip
             v-if="suppressDate !== undefined"
@@ -90,27 +146,47 @@ function editFonction(payload: PersonneFonction | undefined): void {
             location="bottom start"
           >
             <template #activator="{ props }">
-              <v-icon v-bind="props" icon="fas fa-circle-info" color="info" size="small" class="ms-2" />
+              <v-icon
+                v-bind="props"
+                icon="fas fa-circle-info"
+                color="info"
+                size="small"
+                class="ms-2"
+              />
             </template>
           </v-tooltip>
         </div>
       </ReadonlyData>
-      <ReadonlyData label="Source">
+      <ReadonlyData
+        label="Source"
+      >
         <div class="d-flex flex-row align-center w-fit">
-          <v-icon :icon="getIcon(personne.source)" size="small" class="me-2 text-medium-emphasis" />
+          <v-icon
+            :icon="getIcon(personne.source)"
+            size="small"
+            class="me-2 text-medium-emphasis"
+          />
           <div>{{ t(`source.${personne.source}`) }}</div>
         </div>
       </ReadonlyData>
       <ReadonlyData
         :label="t('person.information.sourceModificationDate')"
-        :value="personne.dateSourceModification ? format(personne.dateSourceModification, 'P') : undefined"
+        :value="
+          personne.dateSourceModification
+            ? format(personne.dateSourceModification, 'P')
+            : undefined
+        "
       />
+
       <template v-if="hasFunctions">
         <div class="full-width">
           <div class="mb-1">
             <b>{{ t('person.information.function', 2) }}</b>
           </div>
-          <FonctionsLayout :filieres="allFilieres" :fonctions="personneStructure.fonctions" />
+          <FonctionsLayout
+            :filieres="allFilieres"
+            :fonctions="personneStructure.fonctions"
+          />
         </div>
         <div class="full-width">
           <div class="title-actions">
@@ -123,15 +199,27 @@ function editFonction(payload: PersonneFonction | undefined): void {
                 color="primary"
                 variant="tonal"
                 density="compact"
-                :text="t(personneStructure.additionalFonctions ? 'button.edit' : 'button.add')"
+                :text="
+                  t(personneStructure.additionalFonctions
+                    ? 'button.edit'
+                    : 'button.add')
+                "
                 @click="addFonction"
               >
                 <template #prepend>
-                  <v-icon :icon="personneStructure.additionalFonctions ? 'fas fa-pen' : 'fas fa-plus'" size="sm" />
+                  <v-icon
+                    :icon="
+                      personneStructure.additionalFonctions
+                        ? 'fas fa-pen'
+                        : 'fas fa-plus'
+                    "
+                    size="sm"
+                  />
                 </template>
               </v-btn>
             </div>
           </div>
+
           <div class="d-flex flex-column ga-2">
             <v-alert
               v-if="structureTab !== Tabs.School"

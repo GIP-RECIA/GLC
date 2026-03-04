@@ -16,8 +16,19 @@
 
 import { instance as axios } from '@/utils'
 
-const getEtablissements = async () => await axios.get('/api/structure/etablissement')
+async function getEtablissements() {
+  return await axios.get(
+    '/api/structure/etablissement',
+  )
+}
 
-const getEtablissement = async (id: number) => await axios.get(`/api/structure/etablissement/${id}`)
+async function getEtablissement(id: number) {
+  return await axios.get(
+    `/api/structure/etablissement/${id}`,
+  )
+}
 
-export { getEtablissement, getEtablissements }
+export {
+  getEtablissement,
+  getEtablissements,
+}

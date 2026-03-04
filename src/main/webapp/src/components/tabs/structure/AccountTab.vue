@@ -63,11 +63,25 @@ const itemsPerPage = computed<number>(() => {
       :search-list="personnes"
       @update:result="(result: Array<SimplePersonne>) => (items = result)"
     />
-    <div v-if="pageItems && pageItems.length > 0" class="container">
-      <PersonneCard v-for="personne in pageItems" :key="personne.id" variant="flat" :personne="personne" />
+    <div
+      v-if="pageItems && pageItems.length > 0"
+      class="container"
+    >
+      <PersonneCard
+        v-for="personne in pageItems"
+        :key="personne.id"
+        variant="flat"
+        :personne="personne"
+      />
     </div>
-    <div v-else class="d-flex flex-column align-center justify-center pa-10">
-      <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
+    <div
+      v-else
+      class="d-flex flex-column align-center justify-center pa-10"
+    >
+      <v-icon
+        icon="fas fa-filter-circle-xmark"
+        size="x-large"
+      />
       <div class="pt-2">
         {{ t('search.noResults') }}
       </div>

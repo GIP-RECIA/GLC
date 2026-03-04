@@ -53,7 +53,12 @@ function useSaveAttachDetach() {
     }
   })
 
-  return { isDetach, saveButton }
+  return {
+    isDetach,
+    saveButton,
+  }
 }
 
-export { useSaveAttachDetach }
+export {
+  useSaveAttachDetach,
+}

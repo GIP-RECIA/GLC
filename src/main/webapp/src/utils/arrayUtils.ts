@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
-const isEmpty = (array: Array<any> | undefined): boolean => !array?.length
+function isEmpty(
+  array: Array<any> | undefined,
+): boolean {
+  return !array?.length
+}
 
-export { isEmpty }
+export {
+  isEmpty,
+}

@@ -16,6 +16,12 @@
 
 import { instance as axios } from '@/utils'
 
-const getFonctions = async () => await axios.get('/api/fonction')
+async function getFonctions() {
+  return await axios.get(
+    '/api/fonction',
+  )
+}
 
-export { getFonctions }
+export {
+  getFonctions,
+}

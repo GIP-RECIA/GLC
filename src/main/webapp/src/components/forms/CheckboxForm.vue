@@ -28,15 +28,25 @@ const modelValue = defineModel<Array<FonctionForm>>()
 
 <template>
   <div class="container">
-    <template v-for="filiere in filieres" :key="filiere.codeFiliere">
+    <template
+      v-for="filiere in filieres"
+      :key="filiere.codeFiliere"
+    >
       <b class="full-width">{{ filiere.libelleFiliere }}</b>
       <v-checkbox
         v-for="discipline in filiere.disciplines"
         :key="filiereDisciplineToId(filiere.id, discipline.id)"
         v-model="modelValue"
         :label="discipline.disciplinePoste"
-        :value="{ fonction: filiereDisciplineToId(filiere.id, discipline.id), date: null }"
-        :disabled="disabled?.includes(filiereDisciplineToId(filiere.id, discipline.id))"
+        :value="{
+          fonction: filiereDisciplineToId(filiere.id, discipline.id),
+          date: null,
+        }"
+        :disabled="
+          disabled?.includes(
+            filiereDisciplineToId(filiere.id, discipline.id),
+          )
+        "
         color="primary"
         :hide-details="true"
       />

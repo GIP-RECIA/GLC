@@ -32,7 +32,14 @@ const items = computed<Map<Etat, Array<SimplePersonne> | undefined>>(() => {
     return personnesByEtat.value
   return new Map(
     [...personnesByEtat.value]?.filter(([key]) =>
-      [Etat.Invalide, Etat.Valide, Etat.Bloque, Etat.Delete, Etat.Deleting, Etat.Incertain].includes(key),
+      [
+        Etat.Invalide,
+        Etat.Valide,
+        Etat.Bloque,
+        Etat.Delete,
+        Etat.Deleting,
+        Etat.Incertain,
+      ].includes(key),
     ),
   )
 })
@@ -40,7 +47,12 @@ const items = computed<Map<Etat, Array<SimplePersonne> | undefined>>(() => {
 
 <template>
   <div class="info-grid">
-    <InfoCard v-for="elem in items" :key="elem[0]" :etat="elem[0]" :value="elem[1] ? elem[1].length : 0" />
+    <InfoCard
+      v-for="elem in items"
+      :key="elem[0]"
+      :etat="elem[0]"
+      :value="elem[1] ? elem[1].length : 0"
+    />
   </div>
 </template>
 

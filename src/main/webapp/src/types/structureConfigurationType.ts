@@ -51,4 +51,6 @@ const emptyStructureConfiguration: StructureConfiguration = {
   accounts: {},
 }
 
-export { emptyStructureConfiguration }
+export {
+  emptyStructureConfiguration,
+}

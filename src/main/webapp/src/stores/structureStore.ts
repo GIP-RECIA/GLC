@@ -40,7 +40,11 @@ export const useStructureStore = defineStore('structure', () => {
   const etabs = ref<Array<SimpleEtablissement> | undefined>()
   const currentEtab = ref<Etablissement | undefined>()
 
-  const isInit = computed<boolean>(() => (etabs.value ? etabs.value.length > 0 : false))
+  const isInit = computed<boolean>(() => (
+    etabs.value
+      ? etabs.value.length > 0
+      : false
+  ))
 
   /**
    * Initialise `etabs`
@@ -63,8 +67,15 @@ export const useStructureStore = defineStore('structure', () => {
    * Initialise `currentEtab`
    * @param id Identifiant de la structure
    */
-  const initCurrentEtab = async (id: number): Promise<void> => {
-    const { structures, setAppTab, setStructureTab, setCurrentStructureId } = configurationStore
+  const initCurrentEtab = async (
+    id: number,
+  ): Promise<void> => {
+    const {
+      structures,
+      setAppTab,
+      setStructureTab,
+      setCurrentStructureId,
+    } = configurationStore
     configurationStore.isLoading = true
     currentEtab.value = undefined
     try {
@@ -77,7 +88,9 @@ export const useStructureStore = defineStore('structure', () => {
         setStructureTab(Tabs.Dashboard)
         structures.push({
           id,
-          name: etab.type ? `${etab.type} ${etab.nom}` : (etab.nom ?? ''),
+          name: etab.type
+            ? `${etab.type} ${etab.nom}`
+            : (etab.nom ?? ''),
           config: emptyStructureConfiguration,
         })
         setAppTab(structures.length - 1)
@@ -110,13 +123,16 @@ export const useStructureStore = defineStore('structure', () => {
     }
   }
 
-  const personnes = computed<Array<SimplePersonne> | undefined>(() => currentEtab.value?.personnes)
+  const personnes = computed<Array<SimplePersonne> | undefined>(
+    () => currentEtab.value?.personnes,
+  )
 
   const staff = computed(() => {
     const { configuration } = storeToRefs(configurationStore)
 
     const getStaff = (categorie?: string): Array<SimplePersonne> | undefined => {
-      return personnes.value?.filter(personne => personne.categorie === categorie)
+      return personnes.value
+        ?.filter(personne => personne.categorie === categorie)
     }
 
     return {
@@ -127,7 +143,9 @@ export const useStructureStore = defineStore('structure', () => {
     }
   })
 
-  const personnesByEtat = computed<Map<Etat, Array<SimplePersonne> | undefined>>(() => {
+  const personnesByEtat = computed<
+    Map<Etat, Array<SimplePersonne> | undefined>
+  >(() => {
     const map = new Map()
 
     Object.keys(Etat).forEach((etat) => {
@@ -150,7 +168,9 @@ export const useStructureStore = defineStore('structure', () => {
       ? undefined
       : fonction.customMapping
 
-    return fonction ? { ...fonction, customMapping } : undefined
+    return fonction
+      ? { ...fonction, customMapping }
+      : undefined
   })
 
   const filieresByStaff = computed<{
@@ -166,7 +186,8 @@ export const useStructureStore = defineStore('structure', () => {
         .map((filiere) => {
           const disciplines = filiere.disciplines
             .map((discipline) => {
-              const personnes = discipline.personnes.filter(personne => personne.categorie === categorie)
+              const personnes = discipline.personnes
+                .filter(personne => personne.categorie === categorie)
 
               return { ...discipline, personnes }
             })

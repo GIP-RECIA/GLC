@@ -34,7 +34,9 @@ function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
   const personneStore = usePersonneStore()
   const { currentPersonne } = storeToRefs(personneStore)
 
-  const thisPersonne = computed<Personne | undefined>(() => personne.value ?? currentPersonne.value)
+  const thisPersonne = computed<Personne | undefined>(
+    () => personne.value ?? currentPersonne.value,
+  )
 
   const { t } = useI18n()
 
@@ -55,7 +57,10 @@ function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
   const login = computed<{ i18n: string, info?: string }>(() => {
     if (!thisPersonne.value)
       return { i18n: '', info: '' }
-    const office = getLoginOffice(thisPersonne.value.categorie, thisPersonne.value.source)
+    const office = getLoginOffice(
+      thisPersonne.value.categorie,
+      thisPersonne.value.source,
+    )
 
     return {
       i18n: office ? t('externalLogin') : thisPersonne.value.login,
@@ -64,7 +69,9 @@ function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
   })
 
   const suppressDate = computed<string | undefined>(() => {
-    return thisPersonne.value?.dateSuppression ? format(thisPersonne.value.dateSuppression, 'P') : undefined
+    return thisPersonne.value?.dateSuppression
+      ? format(thisPersonne.value.dateSuppression, 'P')
+      : undefined
   })
 
   const hasFunctions = computed<boolean>(() => {
@@ -78,10 +85,22 @@ function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
   })
 
   const canEditAdditionals = computed<boolean>(
-    () => (fonction.value?.customMapping ?? false) && isEditAllowed(thisPersonne.value?.etat ?? ''),
+    () => (
+      (fonction.value?.customMapping ?? false)
+      && isEditAllowed(thisPersonne.value?.etat ?? '')
+    ),
   )
 
-  return { etat, schoolYear, login, suppressDate, hasFunctions, canEditAdditionals }
+  return {
+    etat,
+    schoolYear,
+    login,
+    suppressDate,
+    hasFunctions,
+    canEditAdditionals,
+  }
 }
 
-export { usePersonne }
+export {
+  usePersonne,
+}

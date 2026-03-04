@@ -27,7 +27,12 @@ const configurationStore = useConfigurationStore()
 const { structureTab } = storeToRefs(configurationStore)
 
 const personneStore = usePersonneStore()
-const { currentPersonne, isCurrentPersonne, dialogState, dialogTitle } = storeToRefs(personneStore)
+const {
+  currentPersonne,
+  isCurrentPersonne,
+  dialogState,
+  dialogTitle,
+} = storeToRefs(personneStore)
 
 const { canEditAdditionals } = usePersonne()
 
@@ -40,18 +45,31 @@ const modelValue = computed<boolean>({
 </script>
 
 <template>
-  <v-dialog v-model="modelValue" scrollable :max-width="1024">
+  <v-dialog
+    v-model="modelValue"
+    scrollable
+    :max-width="1024"
+  >
     <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">
           {{ dialogTitle }}
         </v-toolbar-title>
         <template v-if="dialogState === PersonneDialogState.Info" #append>
-          <v-btn icon="fas fa-xmark" color="default" variant="plain" class="me-1" @click="isCurrentPersonne = false" />
+          <v-btn
+            icon="fas fa-xmark"
+            color="default"
+            variant="plain"
+            class="me-1"
+            @click="isCurrentPersonne = false"
+          />
         </template>
       </v-toolbar>
 
-      <PersonneDialogInfo v-if="dialogState === PersonneDialogState.Info" :personne="currentPersonne" />
+      <PersonneDialogInfo
+        v-if="dialogState === PersonneDialogState.Info"
+        :personne="currentPersonne"
+      />
 
       <PersonneDialogManageAdditional
         v-if="(dialogState === PersonneDialogState.ManageAdditional

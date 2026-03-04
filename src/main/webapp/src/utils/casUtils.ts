@@ -23,8 +23,14 @@ import { useConfigurationStore } from '@/stores'
 const { VITE_API_URI } = import.meta.env
 
 // Fonction permettant d'exécutant une requête de type JSONP
-function jsonp(uri: string, callbackName: string, timeout: number): Promise<Identity> {
-  let url = VITE_API_URI.endsWith('/') ? VITE_API_URI.slice(0, -1) : VITE_API_URI
+function jsonp(
+  uri: string,
+  callbackName: string,
+  timeout: number,
+): Promise<Identity> {
+  let url = VITE_API_URI.endsWith('/')
+    ? VITE_API_URI.slice(0, -1)
+    : VITE_API_URI
   url += uri
 
   return new Promise((resolve, reject) => {
@@ -106,7 +112,11 @@ async function login(): Promise<void> {
   const { identity } = storeToRefs(configurationStore)
 
   try {
-    const response = await jsonp('/app/login', 'JSON_CALLBACK', 1000)
+    const response = await jsonp(
+      '/app/login',
+      'JSON_CALLBACK',
+      1000,
+    )
     identity.value = response
   }
   // eslint-disable-next-line unused-imports/no-unused-vars

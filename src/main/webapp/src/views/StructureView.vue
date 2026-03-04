@@ -59,22 +59,40 @@ watch(
     selected-class="slide-group-item--activate"
     class="mt-2"
   >
-    <v-tab :value="Tabs.Dashboard" tabindex="0">
+    <v-tab
+      :value="Tabs.Dashboard"
+      tabindex="0"
+    >
       {{ t('tab.dashboard') }}
     </v-tab>
-    <v-tab v-if="filieresByStaff.teaching" :value="Tabs.Teaching">
+    <v-tab
+      v-if="filieresByStaff.teaching"
+      :value="Tabs.Teaching"
+    >
       {{ t('tab.teaching') }}
     </v-tab>
-    <v-tab v-if="filieresByStaff.school" :value="Tabs.School">
+    <v-tab
+      v-if="filieresByStaff.school"
+      :value="Tabs.School"
+    >
       {{ t('tab.school') }}
     </v-tab>
-    <v-tab v-if="filieresByStaff.collectivity" :value="Tabs.Collectivity">
+    <v-tab
+      v-if="filieresByStaff.collectivity"
+      :value="Tabs.Collectivity"
+    >
       {{ t('tab.collectivity') }}
     </v-tab>
-    <v-tab v-if="filieresByStaff.academic" :value="Tabs.Academic">
+    <v-tab
+      v-if="filieresByStaff.academic"
+      :value="Tabs.Academic"
+    >
       {{ t('tab.academic') }}
     </v-tab>
-    <v-tab v-if="isDev" :value="Tabs.Accounts">
+    <v-tab
+      v-if="isDev"
+      :value="Tabs.Accounts"
+    >
       {{ t('tab.accounts') }}
     </v-tab>
   </v-tabs>
@@ -82,10 +100,16 @@ watch(
     <v-window-item :value="Tabs.Dashboard">
       <DashboardTab />
     </v-window-item>
-    <v-window-item v-if="filieresByStaff.teaching" :value="Tabs.Teaching">
+    <v-window-item
+      v-if="filieresByStaff.teaching"
+      :value="Tabs.Teaching"
+    >
       <CategorieTab :categorie="Tabs.Teaching" />
     </v-window-item>
-    <v-window-item v-if="filieresByStaff.school" :value="Tabs.School">
+    <v-window-item
+      v-if="filieresByStaff.school"
+      :value="Tabs.School"
+    >
       <CategorieTab :categorie="Tabs.School">
         <template #actions>
           <v-btn
@@ -111,13 +135,22 @@ watch(
         </template>
       </CategorieTab>
     </v-window-item>
-    <v-window-item v-if="filieresByStaff.collectivity" :value="Tabs.Collectivity">
+    <v-window-item
+      v-if="filieresByStaff.collectivity"
+      :value="Tabs.Collectivity"
+    >
       <CategorieTab :categorie="Tabs.Collectivity" />
     </v-window-item>
-    <v-window-item v-if="filieresByStaff.academic" :value="Tabs.Academic">
+    <v-window-item
+      v-if="filieresByStaff.academic"
+      :value="Tabs.Academic"
+    >
       <CategorieTab :categorie="Tabs.Academic" />
     </v-window-item>
-    <v-window-item v-if="isDev" :value="Tabs.Accounts">
+    <v-window-item
+      v-if="isDev"
+      :value="Tabs.Accounts"
+    >
       <AccountTab />
     </v-window-item>
   </v-window>

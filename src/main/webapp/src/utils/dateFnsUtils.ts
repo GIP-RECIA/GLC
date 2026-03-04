@@ -26,9 +26,19 @@ function dateToDuration(date: dateType): Duration {
   })
 }
 
-const isBeforeOrEqual = (date: dateType, dateToCompare: dateType): boolean => !isAfter(date, dateToCompare)
+function isBeforeOrEqual(
+  date: dateType,
+  dateToCompare: dateType,
+): boolean {
+  return !isAfter(date, dateToCompare)
+}
 
-const isAfterOrEqual = (date: dateType, dateToCompare: dateType): boolean => !isBefore(date, dateToCompare)
+function isAfterOrEqual(
+  date: dateType,
+  dateToCompare: dateType,
+): boolean {
+  return !isBefore(date, dateToCompare)
+}
 
 function isBetween(
   date: dateType,
@@ -37,8 +47,19 @@ function isBetween(
   include: boolean = true,
 ): boolean {
   return include
-    ? isAfterOrEqual(date, dateToCompareMin) && isBeforeOrEqual(date, dateToCompareMax)
-    : isAfter(date, dateToCompareMin) && isBefore(date, dateToCompareMax)
+    ? (
+        isAfterOrEqual(date, dateToCompareMin)
+        && isBeforeOrEqual(date, dateToCompareMax)
+      )
+    : (
+        isAfter(date, dateToCompareMin)
+        && isBefore(date, dateToCompareMax)
+      )
 }
 
-export { dateToDuration, isAfterOrEqual, isBeforeOrEqual, isBetween }
+export {
+  dateToDuration,
+  isAfterOrEqual,
+  isBeforeOrEqual,
+  isBetween,
+}

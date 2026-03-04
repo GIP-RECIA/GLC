@@ -68,7 +68,9 @@ const filteredFilieres = computed<Array<Filiere> | undefined>(() => {
   return props.filieres
     ?.map((filiere) => {
       const disciplines: Array<Discipline> = filiere.disciplines.filter(
-        discipline => !props.disabled?.includes(filiereDisciplineToId(filiere.id, discipline.id)),
+        discipline => !props.disabled?.includes(
+          filiereDisciplineToId(filiere.id, discipline.id),
+        ),
       )
 
       return { ...filiere, disciplines }
@@ -77,7 +79,9 @@ const filteredFilieres = computed<Array<Filiere> | undefined>(() => {
 })
 
 const filteredDisciplines = computed<Array<Discipline> | undefined>(() => {
-  return filteredFilieres.value?.find(({ id }) => id === form.value.filiere)?.disciplines
+  return filteredFilieres.value
+    ?.find(({ id }) => id === form.value.filiere)
+    ?.disciplines
 })
 
 /**
@@ -94,8 +98,12 @@ watch(
       ? isBetween(date ?? '', props.config.date.min, props.config.date.max)
       : date !== ''
     modelValue.value = {
-      fonction: !!filiere && !!discipline ? filiereDisciplineToId(filiere, discipline) : undefined,
-      date: isDateOk ? date : undefined,
+      fonction: !!filiere && !!discipline
+        ? filiereDisciplineToId(filiere, discipline)
+        : undefined,
+      date: isDateOk
+        ? date
+        : undefined,
     }
   }, 200),
   { deep: true },
@@ -117,7 +125,12 @@ onBeforeMount((): void => {
   if (!modelValue.value?.fonction)
     return
   const { filiere, discipline } = idToFonction(modelValue.value.fonction)
-  form.value = { ...form.value, filiere, discipline, date: modelValue.value.date }
+  form.value = {
+    ...form.value,
+    filiere,
+    discipline,
+    date: modelValue.value.date,
+  }
 })
 </script>
 

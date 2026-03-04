@@ -17,9 +17,17 @@
 import type { FonctionForm } from '@/types'
 import { instance as axios } from '@/utils'
 
-const getPersonne = async (id: number) => await axios.get(`/api/personne/${id}`)
+async function getPersonne(id: number) {
+  return await axios.get(
+    `/api/personne/${id}`,
+  )
+}
 
-const searchPersonne = async (name: string) => await axios.get(`/api/personne?name=${name}`)
+async function searchPersonne(name: string) {
+  return await axios.get(
+    `/api/personne?name=${name}`,
+  )
+}
 
 async function setPersonneAdditional(
   id: number,
@@ -30,7 +38,12 @@ async function setPersonneAdditional(
 ) {
   return await axios.post(
     `/api/personne/${id}/fonction`,
-    { structureId, toAddFunctions, toDeleteFunctions, requiredAction },
+    {
+      structureId,
+      toAddFunctions,
+      toDeleteFunctions,
+      requiredAction,
+    },
   )
 }
 
@@ -40,7 +53,13 @@ async function setPersonneAdditionalWithId(
   toAddFunction: string,
   requiredAction: string,
 ) {
-  return await setPersonneAdditional(id, structureId, [toAddFunction], [], requiredAction)
+  return await setPersonneAdditional(
+    id,
+    structureId,
+    [toAddFunction],
+    [],
+    requiredAction,
+  )
 }
 
 async function setPersonneAdditionalWithCode(
@@ -49,7 +68,14 @@ async function setPersonneAdditionalWithCode(
   additionalCode: string,
   requiredAction: string,
 ) {
-  return await axios.post(`/api/personne/${id}/fonction`, { structureId, additionalCode, requiredAction })
+  return await axios.post(
+    `/api/personne/${id}/fonction`,
+    {
+      structureId,
+      additionalCode,
+      requiredAction,
+    },
+  )
 }
 
 async function setPersonneAdditionalV2(
@@ -58,15 +84,40 @@ async function setPersonneAdditionalV2(
   toAdd: FonctionForm | null,
   toDelete: string | null,
 ) {
-  return await axios.post(`/api/personne/${id}/fonction/v2`, { structureId, toAdd, toDelete })
+  return await axios.post(
+    `/api/personne/${id}/fonction/v2`,
+    {
+      structureId,
+      toAdd,
+      toDelete,
+    },
+  )
 }
 
-async function addPersonneAdditionalV2(id: number, structureId: number, toAdd: FonctionForm | undefined) {
-  return await setPersonneAdditionalV2(id, structureId, toAdd ?? null, null)
+async function addPersonneAdditionalV2(
+  id: number,
+  structureId: number,
+  toAdd: FonctionForm | undefined,
+) {
+  return await setPersonneAdditionalV2(
+    id,
+    structureId,
+    toAdd ?? null,
+    null,
+  )
 }
 
-async function deletePersonneAdditionalV2(id: number, structureId: number, toDelete: string | undefined) {
-  return await setPersonneAdditionalV2(id, structureId, null, toDelete ?? null)
+async function deletePersonneAdditionalV2(
+  id: number,
+  structureId: number,
+  toDelete: string | undefined,
+) {
+  return await setPersonneAdditionalV2(
+    id,
+    structureId,
+    null,
+    toDelete ?? null,
+  )
 }
 
 export {

@@ -23,7 +23,11 @@ import { login } from '@/utils'
 
 const { t } = i18n.global
 
-const { VITE_API_URI, VITE_AXIOS_TIMEOUT, VITE_REFRESH_IDENTITY_MILLISECONDS } = import.meta.env
+const {
+  VITE_API_URI,
+  VITE_AXIOS_TIMEOUT,
+  VITE_REFRESH_IDENTITY_MILLISECONDS,
+} = import.meta.env
 
 const instance = axios.create({
   baseURL: VITE_API_URI,
@@ -37,7 +41,10 @@ function intercept() {
   let lastUpdated = new Date()
 
   instance.interceptors.request.use(async (config) => {
-    if (differenceInMilliseconds(new Date(), lastUpdated) > VITE_REFRESH_IDENTITY_MILLISECONDS) {
+    if (
+      differenceInMilliseconds(new Date(), lastUpdated)
+      > VITE_REFRESH_IDENTITY_MILLISECONDS
+    ) {
       await login()
       lastUpdated = new Date()
     }
@@ -46,13 +53,19 @@ function intercept() {
   })
 }
 
-function errorHandler(e: any, toastOrI18n?: boolean | string): void {
+function errorHandler(
+  e: any,
+  toastOrI18n?: boolean | string,
+): void {
   let showToast: boolean = typeof toastOrI18n == 'boolean' && toastOrI18n
   const i18nHandled: Array<number> = [401, 404, 500]
   let message: string, error: any
 
   if (axios.isAxiosError(e)) {
-    if (typeof toastOrI18n == 'string' && toastOrI18n.trim().length > 0) {
+    if (
+      typeof toastOrI18n == 'string'
+      && toastOrI18n.trim().length > 0
+    ) {
       message = `toast.${toastOrI18n}`
       showToast = true
     }
@@ -72,9 +85,19 @@ function errorHandler(e: any, toastOrI18n?: boolean | string): void {
     error = e
   }
 
-  if (showToast)
-    toast.error(t(message), { clearOnUrlChange: false } as ToastContainerOptions)
+  if (showToast) {
+    toast.error(
+      t(message),
+      {
+        clearOnUrlChange: false,
+      } as ToastContainerOptions,
+    )
+  }
   console.error(error)
 }
 
-export { errorHandler, instance, intercept }
+export {
+  errorHandler,
+  instance,
+  intercept,
+}

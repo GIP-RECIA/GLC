@@ -40,4 +40,6 @@ const permission: Directive<HTMLElement, Array<string>> = (el, binding) => {
   )
 }
 
-export { permission }
+export {
+  permission,
+}

@@ -34,7 +34,8 @@ const filteredFilieres = computed<Array<Filiere>>(() => {
     filieres = filieres.map((filiere) => {
       const disciplines: Array<Discipline> = filiere.disciplines
         .map((discipline) => {
-          const personnes = discipline.personnes.filter(personne => props.accountStates!.includes(personne.etat))
+          const personnes = discipline.personnes
+            .filter(personne => props.accountStates!.includes(personne.etat))
 
           return { ...discipline, personnes }
         })
@@ -50,16 +51,30 @@ const filteredFilieres = computed<Array<Filiere>>(() => {
 </script>
 
 <template>
-  <div v-if="filteredFilieres.length > 0" class="container">
-    <div v-for="filiere in filteredFilieres" :key="filiere.codeFiliere">
+  <div
+    v-if="filteredFilieres.length > 0"
+    class="container"
+  >
+    <div
+      v-for="filiere in filteredFilieres"
+      :key="filiere.codeFiliere"
+    >
       <div class="text-uppercase pb-2">
-        {{ filiere.codeFiliere !== '-' ? filiere.libelleFiliere : t('withoutFunctions') }}
+        {{
+          filiere.codeFiliere !== '-'
+            ? filiere.libelleFiliere
+            : t('withoutFunctions')
+        }}
       </div>
       <div class="discipline-container">
         <v-card
           v-for="discipline in filiere.disciplines"
           :key="discipline.code"
-          :subtitle="discipline.code !== '-' ? discipline.disciplinePoste : ''"
+          :subtitle="
+            discipline.code !== '-'
+              ? discipline.disciplinePoste
+              : ''
+          "
           flat
           min-height="100%"
         >
@@ -77,8 +92,14 @@ const filteredFilieres = computed<Array<Filiere>>(() => {
       </div>
     </div>
   </div>
-  <div v-else class="d-flex flex-column align-center justify-center pa-10">
-    <v-icon icon="fas fa-filter-circle-xmark" size="x-large" />
+  <div
+    v-else
+    class="d-flex flex-column align-center justify-center pa-10"
+  >
+    <v-icon
+      icon="fas fa-filter-circle-xmark"
+      size="x-large"
+    />
     <div class="pt-2">
       {{ t('search.noResults') }}
     </div>

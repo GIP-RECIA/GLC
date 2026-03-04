@@ -27,7 +27,13 @@ const authenticated: Directive<HTMLElement, null> = (el) => {
     el.hidden = !isAuthenticated.value
   }
 
-  watch(isAuthenticated, () => checkAuthentication(), { immediate: true })
+  watch(
+    isAuthenticated,
+    () => checkAuthentication(),
+    { immediate: true },
+  )
 }
 
-export { authenticated }
+export {
+  authenticated,
+}

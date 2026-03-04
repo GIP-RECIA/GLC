@@ -59,4 +59,7 @@ const role: Directive<HTMLElement, Array<string>> = (el, binding) => {
   )
 }
 
-export { admin, role }
+export {
+  admin,
+  role,
+}

@@ -41,17 +41,35 @@ const modelValue = defineModel<Array<any>>()
     class="select-filter"
   >
     <template #chip="{ props, item }">
-      <v-chip v-bind="props" rounded>
+      <v-chip
+        v-bind="props"
+        rounded
+      >
         <div class="d-flex flex-row align-center">
-          <v-icon v-if="item.raw.color" icon="fas fa-circle" :color="item.raw.color" size="md" class="me-2" />
+          <v-icon
+            v-if="item.raw.color"
+            icon="fas fa-circle"
+            :color="item.raw.color"
+            size="md"
+            class="me-2"
+          />
           <div>{{ t(item.raw.i18n) }}</div>
         </div>
       </v-chip>
     </template>
     <template #item="{ props, item }">
-      <v-list-item v-bind="props" title="">
+      <v-list-item
+        v-bind="props"
+        title=""
+      >
         <div class="d-flex flex-row align-center">
-          <v-icon v-if="item.raw.color" icon="fas fa-circle" :color="item.raw.color" size="md" class="me-2" />
+          <v-icon
+            v-if="item.raw.color"
+            icon="fas fa-circle"
+            :color="item.raw.color"
+            size="md"
+            class="me-2"
+          />
           <div>{{ t(item.raw.i18n) }}</div>
         </div>
       </v-list-item>

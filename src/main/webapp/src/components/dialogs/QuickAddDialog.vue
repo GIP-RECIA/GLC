@@ -23,13 +23,24 @@ import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
 import { useSaveAttachDetach } from '@/composables'
-import { setPersonneAdditionalWithCode, setPersonneAdditionalWithId } from '@/services/api'
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
+import {
+  setPersonneAdditionalWithCode,
+  setPersonneAdditionalWithId,
+} from '@/services/api'
+import {
+  useConfigurationStore,
+  usePersonneStore,
+  useStructureStore,
+} from '@/stores'
 import { errorHandler, fonctionsToId } from '@/utils'
 
 const configurationStore = useConfigurationStore()
 const { isEditAllowed } = configurationStore
-const { currentStructureId, isQuickAdd, requestAdd } = storeToRefs(configurationStore)
+const {
+  currentStructureId,
+  isQuickAdd,
+  requestAdd,
+} = storeToRefs(configurationStore)
 
 const personneStore = usePersonneStore()
 const { initCurrentPersonne } = personneStore
@@ -72,7 +83,10 @@ const canSave = computed<boolean>(() => {
       ),
     ),
   ]
-  const alreadyHasFunction = requestAdd.value?.function && functions.includes(requestAdd.value.function)
+  const alreadyHasFunction = !!(
+    requestAdd.value?.function
+    && functions.includes(requestAdd.value.function)
+  )
   if (alreadyHasFunction)
     toast.error(t('toast.'))
 
@@ -109,7 +123,9 @@ async function save(): Promise<void> {
   }
 }
 
-function closeAndResetModal(success?: boolean): void {
+function closeAndResetModal(
+  success?: boolean,
+): void {
   if (success) {
     refreshCurrentStructure()
     toast.success(t('toast.additional.success.save'))
@@ -135,14 +151,24 @@ watch(currentPersonne, (newValue) => {
 </script>
 
 <template>
-  <v-dialog v-model="modelValue" scrollable :max-width="1024 / 2">
+  <v-dialog
+    v-model="modelValue"
+    scrollable
+    :max-width="1024 / 2"
+  >
     <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title class="text-h6">
           {{ requestAdd?.i18n }}
         </v-toolbar-title>
         <template #append>
-          <v-btn icon="fas fa-xmark" color="default" variant="plain" class="me-1" @click="closeAndResetModal()" />
+          <v-btn
+            icon="fas fa-xmark"
+            color="default"
+            variant="plain"
+            class="me-1"
+            @click="closeAndResetModal()"
+          />
         </template>
       </v-toolbar>
       <v-card-text class="py-0">
@@ -150,10 +176,16 @@ watch(currentPersonne, (newValue) => {
           v-model="selectedUser"
           :search-list="requestAdd?.searchList"
           variant="outlined"
-          :class="[currentPersonne && isEditAllowed(currentPersonne.etat) ? 'mb-4' : 'mb-6']"
+          :class="[
+            currentPersonne && isEditAllowed(currentPersonne.etat)
+              ? 'mb-4'
+              : 'mb-6',
+          ]"
         />
       </v-card-text>
-      <v-card-actions v-if="currentPersonne && isEditAllowed(currentPersonne.etat)">
+      <v-card-actions
+        v-if="currentPersonne && isEditAllowed(currentPersonne.etat)"
+      >
         <v-spacer />
         <v-btn
           :color="saveButton.color"

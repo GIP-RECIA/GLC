@@ -70,39 +70,106 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts])
 
     <v-card v-if="isDev && currentEtab" flat>
       <v-card-text class="info-container">
-        <ReadonlyData v-admin label="uai" :value="currentEtab.uai" />
-        <ReadonlyData label="etat" :value="currentEtab.etat" />
-        <ReadonlyData label="etatAlim" :value="currentEtab.etatAlim" />
-        <ReadonlyData label="source" :value="currentEtab.source" />
-        <ReadonlyData label="anneeScolaire" :value="currentEtab.anneeScolaire" />
-        <ReadonlyData label="adresse" :value="currentEtab.adresse.adresse" />
-        <ReadonlyData label="codePostal" :value="currentEtab.adresse.codePostal" />
-        <ReadonlyData label="ville" :value="currentEtab.adresse.ville" />
-        <ReadonlyData label="boitePostale" :value="currentEtab.adresse.boitePostale" />
-        <ReadonlyData label="pays" :value="currentEtab.adresse.pays" />
-        <ReadonlyData label="categorie" :value="currentEtab.categorie" />
-        <ReadonlyData label="mail" :value="currentEtab.mail" />
-        <ReadonlyData label="nom" :value="currentEtab.nom" />
-        <ReadonlyData label="nomCourt" :value="currentEtab.nomCourt" />
-        <ReadonlyData label="siren" :value="currentEtab.siren" />
-        <ReadonlyData label="siteWeb" :value="currentEtab.siteWeb" />
-        <ReadonlyData label="modeleLogin" :value="currentEtab.modeleLogin" />
-        <ReadonlyData label="logo" :value="currentEtab.logo" />
+        <ReadonlyData
+          v-admin
+          label="uai"
+          :value="currentEtab.uai"
+        />
+        <ReadonlyData
+          label="etat"
+          :value="currentEtab.etat"
+        />
+        <ReadonlyData
+          label="etatAlim"
+          :value="currentEtab.etatAlim"
+        />
+        <ReadonlyData
+          label="source"
+          :value="currentEtab.source"
+        />
+        <ReadonlyData
+          label="anneeScolaire"
+          :value="currentEtab.anneeScolaire"
+        />
+        <ReadonlyData
+          label="adresse"
+          :value="currentEtab.adresse.adresse"
+        />
+        <ReadonlyData
+          label="codePostal"
+          :value="currentEtab.adresse.codePostal"
+        />
+        <ReadonlyData
+          label="ville"
+          :value="currentEtab.adresse.ville"
+        />
+        <ReadonlyData
+          label="boitePostale"
+          :value="currentEtab.adresse.boitePostale"
+        />
+        <ReadonlyData
+          label="pays"
+          :value="currentEtab.adresse.pays"
+        />
+        <ReadonlyData
+          label="categorie"
+          :value="currentEtab.categorie"
+        />
+        <ReadonlyData
+          label="mail"
+          :value="currentEtab.mail"
+        />
+        <ReadonlyData
+          label="nom"
+          :value="currentEtab.nom"
+        />
+        <ReadonlyData
+          label="nomCourt"
+          :value="currentEtab.nomCourt"
+        />
+        <ReadonlyData
+          label="siren"
+          :value="currentEtab.siren"
+        />
+        <ReadonlyData
+          label="siteWeb"
+          :value="currentEtab.siteWeb"
+        />
+        <ReadonlyData
+          label="modeleLogin"
+          :value="currentEtab.modeleLogin"
+        />
+        <ReadonlyData
+          label="logo"
+          :value="currentEtab.logo"
+        />
       </v-card-text>
     </v-card>
 
     <InfoGrid />
 
     <v-expansion-panels v-model="panel">
-      <v-expansion-panel :value="DashboardPanel.DeletingAccounts" :elevation="0" rounded="lg">
+      <v-expansion-panel
+        :value="DashboardPanel.DeletingAccounts"
+        :elevation="0"
+        rounded="lg"
+      >
         <v-expansion-panel-title>
           <div class="expansion-title">
             {{ `${t('deletingAccounts')} (${personnesByEtat.get(Etat.Deleting)?.length ?? 0})` }}
           </div>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <div v-if="pageItems && pageItems.length > 0" class="container">
-            <PersonneCard v-for="personne in pageItems" :key="personne.id" variant="tonal" :personne="personne" />
+          <div
+            v-if="pageItems && pageItems.length > 0"
+            class="container"
+          >
+            <PersonneCard
+              v-for="personne in pageItems"
+              :key="personne.id"
+              variant="tonal"
+              :personne="personne"
+            />
           </div>
           <CustomPagination
             :items="personnesByEtat.get(Etat.Deleting)"
@@ -114,15 +181,27 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts])
         </v-expansion-panel-text>
       </v-expansion-panel>
 
-      <v-expansion-panel :value="DashboardPanel.DeletedAccounts" :elevation="0" rounded="lg">
+      <v-expansion-panel
+        :value="DashboardPanel.DeletedAccounts"
+        :elevation="0"
+        rounded="lg"
+      >
         <v-expansion-panel-title>
           <div class="expansion-title">
             {{ `${t('deletedAccounts')} (${personnesByEtat.get(Etat.Delete)?.length ?? 0})` }}
           </div>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <div v-if="pageItems2 && pageItems2.length > 0" class="container">
-            <PersonneCard v-for="personne in pageItems2" :key="personne.id" variant="tonal" :personne="personne" />
+          <div
+            v-if="pageItems2 && pageItems2.length > 0"
+            class="container"
+          >
+            <PersonneCard
+              v-for="personne in pageItems2"
+              :key="personne.id"
+              variant="tonal"
+              :personne="personne"
+            />
           </div>
           <CustomPagination
             :items="personnesByEtat.get(Etat.Delete)"
@@ -134,7 +213,11 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts])
         </v-expansion-panel-text>
       </v-expansion-panel>
 
-      <v-expansion-panel :value="DashboardPanel.WithoutFunctions" :elevation="0" rounded="lg">
+      <v-expansion-panel
+        :value="DashboardPanel.WithoutFunctions"
+        :elevation="0"
+        rounded="lg"
+      >
         <v-expansion-panel-title>
           <div class="expansion-title">
             {{
@@ -143,8 +226,16 @@ const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts])
           </div>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <div v-if="pageItems3 && pageItems3.length > 0" class="container">
-            <PersonneCard v-for="personne in pageItems3" :key="personne.id" variant="tonal" :personne="personne" />
+          <div
+            v-if="pageItems3 && pageItems3.length > 0"
+            class="container"
+          >
+            <PersonneCard
+              v-for="personne in pageItems3"
+              :key="personne.id"
+              variant="tonal"
+              :personne="personne"
+            />
           </div>
           <CustomPagination
             :items="currentEtab?.withoutFunctions"

@@ -105,4 +105,6 @@ function register(app: App | undefined): void {
   app?.component('font-awesome-icon', FontAwesomeIcon)
 }
 
-export { register }
+export {
+  register,
+}

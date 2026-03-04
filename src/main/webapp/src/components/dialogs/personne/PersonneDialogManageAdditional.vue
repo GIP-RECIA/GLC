@@ -31,7 +31,16 @@ const { fonction } = storeToRefs(structureStore)
 
 const { t } = useI18n()
 
-const { data, canSave, saveButton, deleteButton, canDelete, onSave, onCancel, onDelete } = useManageAdditional()
+const {
+  data,
+  canSave,
+  saveButton,
+  deleteButton,
+  canDelete,
+  onSave,
+  onCancel,
+  onDelete,
+} = useManageAdditional()
 </script>
 
 <template>
@@ -60,7 +69,12 @@ const { data, canSave, saveButton, deleteButton, canDelete, onSave, onCancel, on
       @click="onDelete"
     />
     <v-spacer />
-    <v-btn color="secondary" prepend-icon="fas fa-xmark" :text="t('button.cancel')" @click="onCancel" />
+    <v-btn
+      color="secondary"
+      prepend-icon="fas fa-xmark"
+      :text="t('button.cancel')"
+      @click="onCancel"
+    />
     <v-btn
       :color="saveButton.color"
       :prepend-icon="saveButton.icon"

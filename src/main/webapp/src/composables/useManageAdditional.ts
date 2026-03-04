@@ -19,10 +19,20 @@ import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
-import { addPersonneAdditionalV2, deletePersonneAdditionalV2, setPersonneAdditional } from '@/services/api'
+import {
+  addPersonneAdditionalV2,
+  deletePersonneAdditionalV2,
+  setPersonneAdditional,
+} from '@/services/api'
 import { useConfigurationStore, usePersonneStore } from '@/stores'
 import { PersonneDialogState } from '@/types/enums'
-import { errorHandler, filiereDisciplineToId, fonctionsToId, fonctionToId, isEmpty } from '@/utils'
+import {
+  errorHandler,
+  filiereDisciplineToId,
+  fonctionsToId,
+  fonctionToId,
+  isEmpty,
+} from '@/utils'
 import { useSaveAttachDetach } from './useSaveAttachDetach'
 
 function useManageAdditional() {
@@ -31,8 +41,14 @@ function useManageAdditional() {
 
   const personneStore = usePersonneStore()
   const { refreshCurrentPersonne } = personneStore
-  const { currentPersonne, isCurrentPersonne, personneStructure, dialogState, editFunction, attachMode }
-    = storeToRefs(personneStore)
+  const {
+    currentPersonne,
+    isCurrentPersonne,
+    personneStructure,
+    dialogState,
+    editFunction,
+    attachMode,
+  } = storeToRefs(personneStore)
 
   const { t } = useI18n()
 
@@ -67,7 +83,10 @@ function useManageAdditional() {
   const { isDetach, saveButton } = useSaveAttachDetach()
 
   const deleteButton = computed<{ i18n: string, icon: string }>(() => {
-    if (isEmpty(personneStructure.value.fonctions) && personneStructure.value.additionalFonctions?.length === 1) {
+    if (
+      isEmpty(personneStructure.value.fonctions)
+      && personneStructure.value.additionalFonctions?.length === 1
+    ) {
       return {
         i18n: 'button.detach',
         icon: 'fas fa-link-slash',
@@ -123,9 +142,13 @@ function useManageAdditional() {
       const structureId = currentStructureId.value!
       // TODO: Change API => Use existing API witch not support date
       const { baseSelection, selected } = data.value
-      const selectedF: Array<string> = selected.map(({ fonction }) => fonction).filter(entry => entry !== undefined)
+      const selectedF: Array<string> = selected
+        .map(({ fonction }) => fonction)
+        .filter(entry => entry !== undefined)
       const baseF: Array<string> = baseSelection.length > 0
-        ? baseSelection.map(({ fonction }) => fonction).filter(entry => entry !== undefined)
+        ? baseSelection
+            .map(({ fonction }) => fonction)
+            .filter(entry => entry !== undefined)
         : []
       switch (dialogState.value) {
         case PersonneDialogState.ManageAdditional:
@@ -157,7 +180,11 @@ function useManageAdditional() {
       const personneId = currentPersonne.value!.id
       const structureId = currentStructureId.value!
       const { baseSelection } = data.value
-      await deletePersonneAdditionalV2(personneId, structureId, baseSelection[0].fonction)
+      await deletePersonneAdditionalV2(
+        personneId,
+        structureId,
+        baseSelection[0].fonction,
+      )
       resetAddMode(true, action)
     }
     catch (e) {
@@ -184,7 +211,10 @@ function useManageAdditional() {
         break
       case PersonneDialogState.ManageAdditionalMultiple:
         selected = additionalFonctions?.map((fonction) => {
-          return { fonction: fonctionToId(fonction), date: fonction.dateFin }
+          return {
+            fonction: fonctionToId(fonction),
+            date: fonction.dateFin,
+          }
         }) ?? []
         break
     }
@@ -195,7 +225,18 @@ function useManageAdditional() {
     }
   })
 
-  return { data, canSave, saveButton, deleteButton, canDelete, onSave, onCancel, onDelete }
+  return {
+    data,
+    canSave,
+    saveButton,
+    deleteButton,
+    canDelete,
+    onSave,
+    onCancel,
+    onDelete,
+  }
 }
 
-export { useManageAdditional }
+export {
+  useManageAdditional,
+}

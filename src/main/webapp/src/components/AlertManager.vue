@@ -28,7 +28,10 @@ const { currentEtab, staff, fonction } = storeToRefs(structureStore)
 
 const { t } = useI18n()
 
-function getDiscipline(filieres: Array<Filiere> | undefined, code: string): string | undefined {
+function getDiscipline(
+  filieres: Array<Filiere> | undefined,
+  code: string,
+): string | undefined {
   const codes = code.split('-')
   if (!filieres)
     return undefined
@@ -39,7 +42,9 @@ function getDiscipline(filieres: Array<Filiere> | undefined, code: string): stri
     ?.disciplinePoste
 }
 
-function formatedAlert(alert: Alert): Alert & { class?: any, actions?: any } {
+function formatedAlert(
+  alert: Alert,
+): Alert & { class?: any, actions?: any } {
   if (!alert.title)
     return alert
   const data = alert.title.split('_')
@@ -65,9 +70,24 @@ function formatedAlert(alert: Alert): Alert & { class?: any, actions?: any } {
 
   return {
     ...alert,
-    title: t('alert.minMax.title', { discipline, value: data[3] }, Number.parseInt(data[3])),
-    text: t('alert.minMax.text', { minMax: t(`alert.minMax.${data[0]}`), required: data[2] }),
-    class: [{ clicable: alert.action && fonction.value?.customMapping }],
+    title: t(
+      'alert.minMax.title',
+      {
+        discipline,
+        value: data[3],
+      },
+      Number.parseInt(data[3]),
+    ),
+    text: t(
+      'alert.minMax.text',
+      {
+        minMax: t(`alert.minMax.${data[0]}`),
+        required: data[2],
+      },
+    ),
+    class: [{
+      clicable: alert.action && fonction.value?.customMapping,
+    }],
     actions,
   }
 }

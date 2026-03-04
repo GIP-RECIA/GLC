@@ -18,15 +18,23 @@ import type { PortalEntry } from '@/types'
 import axios from 'axios'
 import vuetify from '@/plugins/vuetify.ts'
 
-async function useEntTheme(templateApiPath: string | undefined): Promise<void> {
-  if (!templateApiPath || templateApiPath.trim().length < 1)
+async function useEntTheme(
+  templateApiPath: string | undefined,
+): Promise<void> {
+  if (
+    !templateApiPath
+    || templateApiPath.trim().length < 1
+  ) {
     return
+  }
   const response = await axios.get(templateApiPath)
-  const domainInfo: PortalEntry = response.data.data.find((domain: PortalEntry) =>
-    domain.identity.domains?.includes(window.location.hostname),
+  const domainInfo: PortalEntry = response.data.data.find(
+    (domain: PortalEntry) => domain.identity.domains?.includes(window.location.hostname),
   )
 
-  const primary: string | undefined = domainInfo?.colors.find(color => color.Id === 'primary')?.hexa
+  const primary: string | undefined = domainInfo?.colors
+    .find(color => color.Id === 'primary')
+    ?.hexa
   if (!primary)
     return
   for (const prop in vuetify.theme.themes.value) {
@@ -34,4 +42,6 @@ async function useEntTheme(templateApiPath: string | undefined): Promise<void> {
   }
 }
 
-export { useEntTheme }
+export {
+  useEntTheme,
+}

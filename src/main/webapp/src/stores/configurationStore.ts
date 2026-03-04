@@ -71,15 +71,21 @@ export const useConfigurationStore = defineStore('configuration', () => {
   const isInitFonctions = computed<boolean>(() => fonctions.value !== undefined)
 
   const allFilieres = computed<Array<Filiere> | undefined>(() => {
-    return fonctions.value ? fonctions.value.find(fonction => fonction.source === 'ALL')?.filieres : undefined
+    return fonctions.value
+      ? fonctions.value.find(fonction => fonction.source === 'ALL')?.filieres
+      : undefined
   })
 
   /**
    * Retourne la liste des types de personnel administratif
    */
-  const administrativeStaff = computed<string | undefined>(() => configuration.value?.front.staff.school)
+  const administrativeStaff = computed<string | undefined>(
+    () => configuration.value?.front.staff.school,
+  )
 
-  const isEditAllowed = (etat: string): boolean => {
+  const isEditAllowed = (
+    etat: string,
+  ): boolean => {
     if (configuration.value) {
       return configuration.value.front.editAllowedStates.includes(etat)
     }
@@ -88,9 +94,13 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   const loginOffices = computed(() => configuration.value?.front.loginOffices)
 
-  const getLoginOffice = (categorie: string, source: string): string | undefined => {
+  const getLoginOffice = (
+    categorie: string,
+    source: string,
+  ): string | undefined => {
     if (loginOffices.value) {
-      const sources = loginOffices.value.filter(office => office.source === source)
+      const sources = loginOffices.value
+        .filter(office => office.source === source)
       if (sources.length <= 0)
         return undefined
       else if (sources.length > 1)
@@ -107,7 +117,9 @@ export const useConfigurationStore = defineStore('configuration', () => {
     return undefined
   }
 
-  const filterAccountStates = computed<Array<enumValues & { value: string }> | undefined>(() =>
+  const filterAccountStates = computed<
+    Array<enumValues & { value: string }> | undefined
+  >(() =>
     configuration.value?.front.filterAccountStates?.map((state) => {
       return { ...getEtat(state), value: state }
     }),
@@ -115,7 +127,9 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   /* --- Gestion des onglets de structure --- */
 
-  const structures = useSessionStorage<Array<{ id: number, name: string, config: StructureConfiguration }>>(
+  const structures = useSessionStorage<
+    Array<{ id: number, name: string, config: StructureConfiguration }>
+  >(
     `${__APP_SLUG__}.tabs`,
     [],
   )
@@ -127,18 +141,24 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   const currentStructureId = ref<number | undefined>()
 
-  const setCurrentStructureId = (id: number): void => {
+  const setCurrentStructureId = (
+    id: number,
+  ): void => {
     currentStructureId.value = id
   }
 
   const currentStructureConfig = computed<StructureConfiguration | undefined>({
     get() {
-      const index = structures.value.findIndex(structure => structure.id === currentStructureId.value)
-      return index >= 0 ? structures.value[index].config : undefined
+      const index = structures.value
+        .findIndex(structure => structure.id === currentStructureId.value)
+      return index >= 0
+        ? structures.value[index].config
+        : undefined
     },
     set(configuration) {
       if (configuration !== undefined) {
-        const index = structures.value.findIndex(structure => structure.id === currentStructureId.value)
+        const index = structures.value
+          .findIndex(structure => structure.id === currentStructureId.value)
         if (index >= 0) {
           structures.value[index].config = configuration
         }
@@ -150,7 +170,9 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   const structureTab = ref<string>(Tabs.Dashboard)
 
-  const setStructureTab = (value: string): void => {
+  const setStructureTab = (
+    value: string,
+  ): void => {
     structureTab.value = value
   }
 

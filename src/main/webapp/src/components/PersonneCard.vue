@@ -31,11 +31,22 @@ const { initCurrentPersonne } = personneStore
 
 const { t } = useI18n()
 
-const data = computed<{ etat: enumValues, icon: string, tooltip: string }>(() => {
+const data = computed<{
+  etat: enumValues
+  icon: string
+  tooltip: string
+}>(() => {
   const etat = getEtat(props.personne.etat)
-  const icon = etat.icon ? etat.icon : getIcon(props.personne.source)
-  const suppressDate = props.personne.dateSuppression && format(props.personne.dateSuppression, 'P')
-  const supressString = suppressDate ? ` (${t('person.status.deletingDate', { suppressDate })})` : ''
+  const icon = etat.icon
+    ? etat.icon
+    : getIcon(props.personne.source)
+  const suppressDate = (
+    props.personne.dateSuppression
+    && format(props.personne.dateSuppression, 'P')
+  )
+  const supressString = suppressDate
+    ? ` (${t('person.status.deletingDate', { suppressDate })})`
+    : ''
   const tooltip = t(etat.i18n) + supressString
 
   return { etat, icon, tooltip }
@@ -43,11 +54,22 @@ const data = computed<{ etat: enumValues, icon: string, tooltip: string }>(() =>
 </script>
 
 <template>
-  <v-card :variant="variant" tag="button" @click="initCurrentPersonne(personne.id, true)">
+  <v-card
+    :variant="variant"
+    tag="button"
+    @click="initCurrentPersonne(personne.id, true)"
+  >
     <v-card-text class="d-flex align-center text-left pa-3">
-      <v-tooltip :text="data.tooltip" location="bottom start">
+      <v-tooltip
+        :text="data.tooltip"
+        location="bottom start"
+      >
         <template #activator="{ props: activatorProps }">
-          <v-icon v-bind="activatorProps" :icon="data.icon" :color="data.etat.color" class="me-2" />
+          <v-icon
+            v-bind="activatorProps"
+            :icon="data.icon"
+            :color="data.etat.color" class="me-2"
+          />
         </template>
       </v-tooltip>
       <span class="text-truncated">{{ personne.cn }}</span>

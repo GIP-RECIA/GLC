@@ -44,7 +44,10 @@ export const usePersonneStore = defineStore('personne', () => {
    * @param id        Identifiant de la personne
    * @param showModal Ouvre ou non la modale un fois les données chargées
    */
-  const initCurrentPersonne = async (id: number, showModal: boolean = true): Promise<void> => {
+  const initCurrentPersonne = async (
+    id: number,
+    showModal: boolean = true,
+  ): Promise<void> => {
     configurationStore.isLoading = true
     try {
       const response = await getPersonne(id)
@@ -103,8 +106,14 @@ export const usePersonneStore = defineStore('personne', () => {
     }
 
     return {
-      fonctions: fonctionsByStructure(currentPersonne.value.fonctions, currentStructureId.value),
-      additionalFonctions: fonctionsByStructure(currentPersonne.value.additionalFonctions, currentStructureId.value),
+      fonctions: fonctionsByStructure(
+        currentPersonne.value.fonctions,
+        currentStructureId.value,
+      ),
+      additionalFonctions: fonctionsByStructure(
+        currentPersonne.value.additionalFonctions,
+        currentStructureId.value,
+      ),
     }
   })
 
@@ -134,17 +143,20 @@ export const usePersonneStore = defineStore('personne', () => {
   /**
    * Reset lors de la fermeture du dialog
    */
-  watch(isCurrentPersonne, (newValue) => {
-    if (!newValue) {
-      const reset = debounce(() => {
-        currentPersonne.value = undefined
-        dialogState.value = PersonneDialogState.Info
-        editFunction.value = undefined
-        attachMode.value = false
-      }, 200)
-      reset()
-    }
-  })
+  watch(
+    isCurrentPersonne,
+    (newValue) => {
+      if (!newValue) {
+        const reset = debounce(() => {
+          currentPersonne.value = undefined
+          dialogState.value = PersonneDialogState.Info
+          editFunction.value = undefined
+          attachMode.value = false
+        }, 200)
+        reset()
+      }
+    },
+  )
 
   return {
     currentPersonne,

@@ -37,7 +37,10 @@ const modelValue = computed<boolean>({
   set() {},
 })
 
-const selectedTheme = useLocalStorage<Array<Theme>>(`${__APP_SLUG__}.theme`, [Theme.system])
+const selectedTheme = useLocalStorage<Array<Theme>>(
+  `${__APP_SLUG__}.theme`,
+  [Theme.system],
+)
 
 watch(
   [selectedTheme, isDark],
@@ -62,9 +65,15 @@ function onClose(): void {
 </script>
 
 <template>
-  <v-dialog v-model="modelValue" :max-width="1024">
+  <v-dialog
+    v-model="modelValue"
+    :max-width="1024"
+  >
     <v-card rounded="xl">
-      <v-toolbar :title="t('settings.title')" color="rgba(255, 255, 255, 0)">
+      <v-toolbar
+        :title="t('settings.title')"
+        color="rgba(255, 255, 255, 0)"
+      >
         <template #append>
           <v-btn
             icon="fas fa-xmark"
@@ -76,9 +85,20 @@ function onClose(): void {
           />
         </template>
       </v-toolbar>
-      <v-list v-model:selected="selectedTheme" mandatory class="py-0">
-        <v-list-subheader>{{ t('settings.theme.subheader') }}</v-list-subheader>
-        <v-list-item v-for="th in Theme" :key="th" :title="t(`settings.theme.${th}`)" :value="th">
+      <v-list
+        v-model:selected="selectedTheme"
+        mandatory
+        class="py-0"
+      >
+        <v-list-subheader>
+          {{ t('settings.theme.subheader') }}
+        </v-list-subheader>
+        <v-list-item
+          v-for="th in Theme"
+          :key="th"
+          :title="t(`settings.theme.${th}`)"
+          :value="th"
+        >
           <template #prepend="{ isActive }">
             <v-list-item-action start>
               <v-radio :model-value="isActive" />
