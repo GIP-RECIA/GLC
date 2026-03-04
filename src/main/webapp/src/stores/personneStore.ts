@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import type { Personne, PersonneFonction } from '@/types'
+import type { Personne, PersonneFonction } from '@/types/index.ts'
 import debounce from 'lodash.debounce'
 import { defineStore, storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getPersonne } from '@/services/api'
-import { PersonneDialogState } from '@/types/enums'
-import { errorHandler } from '@/utils'
+import { getPersonne } from '@/services/api/index.ts'
+import { PersonneDialogState } from '@/types/enums/index.ts'
+import { errorHandler } from '@/utils/index.ts'
 import { useConfigurationStore } from './configurationStore.ts'
 import { useStructureStore } from './structureStore.ts'
 

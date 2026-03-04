@@ -17,7 +17,7 @@
 import type { Directive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { watch } from 'vue'
-import { useConfigurationStore } from '@/stores'
+import { useConfigurationStore } from '@/stores/index.ts'
 
 const admin: Directive<HTMLElement, null> = (el) => {
   const configurationStore = useConfigurationStore()

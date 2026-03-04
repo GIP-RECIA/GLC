@@ -15,12 +15,12 @@
 -->
 
 <script setup lang="ts">
-import type { enumValues, SimplePersonne } from '@/types'
+import type { enumValues, SimplePersonne } from '@/types/index.ts'
 import { format } from 'date-fns'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { usePersonneStore } from '@/stores'
-import { getEtat, getIcon } from '@/utils'
+import { usePersonneStore } from '@/stores/index.ts'
+import { getEtat, getIcon } from '@/utils/index.ts'
 
 const props = defineProps<{
   personne: SimplePersonne

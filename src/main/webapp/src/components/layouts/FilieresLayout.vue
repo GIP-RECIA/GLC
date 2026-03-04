@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { Discipline, Filiere } from '@/types'
+import type { Discipline, Filiere } from '@/types/index.ts'
 import isEmpty from 'lodash.isempty'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

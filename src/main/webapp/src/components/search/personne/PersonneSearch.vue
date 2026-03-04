@@ -15,11 +15,11 @@
 -->
 
 <script setup lang="ts">
-import type { SimplePersonne } from '@/types'
+import type { SimplePersonne } from '@/types/index.ts'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { searchPersonne } from '@/services/api'
-import { errorHandler } from '@/utils'
+import { searchPersonne } from '@/services/api/index.ts'
+import { errorHandler } from '@/utils/index.ts'
 import PersonneChip from './PersonneChip.vue'
 import PersonneListItem from './PersonneListItem.vue'
 

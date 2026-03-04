@@ -23,14 +23,14 @@ import type {
   SimplePersonne,
   SourceFonction,
   StructureConfiguration,
-} from '@/types'
+} from '@/types/index.ts'
 import { useSessionStorage } from '@vueuse/core'
 import isEmpty from 'lodash.isempty'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { getConfiguration, getFonctions } from '@/services/api'
-import { Tabs } from '@/types/enums'
-import { errorHandler, getEtat, useEntTheme } from '@/utils'
+import { getConfiguration, getFonctions } from '@/services/api/index.ts'
+import { Tabs } from '@/types/enums/index.ts'
+import { errorHandler, getEtat, useEntTheme } from '@/utils/index.ts'
 
 export const useConfigurationStore = defineStore('configuration', () => {
   const configuration = ref<Configuration | undefined>()

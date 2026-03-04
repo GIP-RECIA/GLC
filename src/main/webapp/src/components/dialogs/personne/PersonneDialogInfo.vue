@@ -15,17 +15,17 @@
 -->
 
 <script setup lang="ts">
-import type { Personne, PersonneFonction } from '@/types'
+import type { Personne, PersonneFonction } from '@/types/index.ts'
 import { useSessionStorage } from '@vueuse/core'
 import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue'
 import ReadonlyData from '@/components/ReadonlyData.vue'
-import { usePersonne } from '@/composables'
-import { useConfigurationStore, usePersonneStore } from '@/stores'
-import { PersonneDialogState, Tabs } from '@/types/enums'
-import { getCategoriePersonne, getIcon } from '@/utils'
+import { usePersonne } from '@/composables/index.ts'
+import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts'
+import { PersonneDialogState, Tabs } from '@/types/enums/index.ts'
+import { getCategoriePersonne, getIcon } from '@/utils/index.ts'
 
 defineProps<{
   personne?: Personne

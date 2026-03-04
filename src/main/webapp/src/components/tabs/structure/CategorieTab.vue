@@ -15,8 +15,8 @@
 -->
 
 <script setup lang="ts">
-import type { SimplePersonne } from '@/types'
-import type { Etat, Tabs } from '@/types/enums'
+import type { Etat, Tabs } from '@/types/enums/index.ts'
+import type { SimplePersonne } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import SelectFilter from '@/components/filter/SelectFilter.vue'
@@ -26,7 +26,7 @@ import {
   useConfigurationStore,
   usePersonneStore,
   useStructureStore,
-} from '@/stores'
+} from '@/stores/index.ts'
 
 const props = defineProps<{
   categorie: Exclude<Tabs, Tabs.Dashboard | Tabs.Accounts>

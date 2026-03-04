@@ -17,9 +17,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { usePersonne } from '@/composables'
-import { useConfigurationStore, usePersonneStore } from '@/stores'
-import { PersonneDialogState, Tabs } from '@/types/enums'
+import { usePersonne } from '@/composables/index.ts'
+import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts'
+import { PersonneDialogState, Tabs } from '@/types/enums/index.ts'
 import PersonneDialogInfo from './PersonneDialogInfo.vue'
 import PersonneDialogManageAdditional from './PersonneDialogManageAdditional.vue'
 

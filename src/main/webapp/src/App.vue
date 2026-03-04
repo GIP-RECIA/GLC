@@ -21,7 +21,7 @@ import { onBeforeMount } from 'vue'
 import LoginDialog from '@/components/dialogs/LoginDialog.vue'
 import SettingsDialog from '@/components/dialogs/SettingsDialog.vue'
 import TabBar from '@/components/tabbar/TabBar.vue'
-import { useConfigurationStore } from '@/stores'
+import { useConfigurationStore } from '@/stores/index.ts'
 
 const configurationStore = useConfigurationStore()
 const { init, initFonctions } = configurationStore

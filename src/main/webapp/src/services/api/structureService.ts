@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { instance as axios } from '@/utils'
+import { instance as axios } from '@/utils/index.ts'
 
 async function getEtablissements() {
   return await axios.get(

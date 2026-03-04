@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { FonctionForm } from '@/types'
+import type { FonctionForm } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { toast } from 'vue3-toastify'
@@ -23,17 +23,17 @@ import {
   addPersonneAdditionalV2,
   deletePersonneAdditionalV2,
   setPersonneAdditional,
-} from '@/services/api'
-import { useConfigurationStore, usePersonneStore } from '@/stores'
-import { PersonneDialogState } from '@/types/enums'
+} from '@/services/api/index.ts'
+import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts'
+import { PersonneDialogState } from '@/types/enums/index.ts'
 import {
   errorHandler,
   filiereDisciplineToId,
   fonctionsToId,
   fonctionToId,
   isEmpty,
-} from '@/utils'
-import { useSaveAttachDetach } from './useSaveAttachDetach'
+} from '@/utils/index.ts'
+import { useSaveAttachDetach } from './useSaveAttachDetach.ts'
 
 function useManageAdditional() {
   const configurationStore = useConfigurationStore()

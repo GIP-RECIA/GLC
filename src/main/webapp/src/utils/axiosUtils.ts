@@ -19,7 +19,7 @@ import axios from 'axios'
 import { differenceInMilliseconds } from 'date-fns'
 import { toast } from 'vue3-toastify'
 import i18n from '@/plugins/i18n.ts'
-import { login } from '@/utils'
+import { login } from '@/utils/index.ts'
 
 const { t } = i18n.global
 

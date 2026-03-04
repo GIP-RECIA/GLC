@@ -19,7 +19,7 @@ import {
   useConfigurationStore,
   usePersonneStore,
   useStructureStore,
-} from '@/stores'
+} from '@/stores/index.ts'
 
 const { hot } = import.meta
 

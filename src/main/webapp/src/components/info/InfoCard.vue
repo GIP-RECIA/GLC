@@ -15,11 +15,11 @@
 -->
 
 <script setup lang="ts">
-import type { enumValues } from '@/types'
-import type { Etat } from '@/types/enums'
+import type { Etat } from '@/types/enums/index.ts'
+import type { enumValues } from '@/types/index.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getEtat } from '@/utils'
+import { getEtat } from '@/utils/index.ts'
 
 const props = withDefaults(
   defineProps<{

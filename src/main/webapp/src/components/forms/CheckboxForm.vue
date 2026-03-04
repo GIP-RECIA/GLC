@@ -15,8 +15,8 @@
 -->
 
 <script setup lang="ts">
-import type { Filiere, FonctionForm } from '@/types'
-import { filiereDisciplineToId } from '@/utils'
+import type { Filiere, FonctionForm } from '@/types/index.ts'
+import { filiereDisciplineToId } from '@/utils/index.ts'
 
 defineProps<{
   filieres: Filiere[] | undefined

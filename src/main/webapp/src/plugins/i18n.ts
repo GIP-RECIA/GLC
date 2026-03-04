@@ -15,7 +15,7 @@
  */
 
 import { createI18n } from 'vue-i18n'
-import { messages } from '@/locales'
+import { messages } from '@/locales/index.ts'
 
 const config: {
   fallbackLocale: string

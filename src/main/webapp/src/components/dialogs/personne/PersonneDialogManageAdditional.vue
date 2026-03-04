@@ -19,9 +19,9 @@ import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import CheckboxForm from '@/components/forms/CheckboxForm.vue'
 import FonctionForm from '@/components/forms/FonctionForm.vue'
-import { useManageAdditional } from '@/composables'
-import { usePersonneStore, useStructureStore } from '@/stores'
-import { PersonneDialogState } from '@/types/enums'
+import { useManageAdditional } from '@/composables/index.ts'
+import { usePersonneStore, useStructureStore } from '@/stores/index.ts'
+import { PersonneDialogState } from '@/types/enums/index.ts'
 
 const personneStore = usePersonneStore()
 const { dialogState } = storeToRefs(personneStore)

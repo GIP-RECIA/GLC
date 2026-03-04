@@ -22,7 +22,7 @@ import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
 import { aliases, fa } from 'vuetify/iconsets/fa-svg'
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n'
-import { Theme } from '@/types/enums'
+import { Theme } from '@/types/enums/index.ts'
 import i18n from './i18n.ts'
 
 const themes: Record<string, ThemeDefinition> = {

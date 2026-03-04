@@ -21,15 +21,15 @@ import type {
   SimpleEtablissement,
   SimplePersonne,
   SourceFonction,
-} from '@/types'
+} from '@/types/index.ts'
 import isEmpty from 'lodash.isempty'
 import { defineStore, storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getEtablissement, getEtablissements } from '@/services/api'
-import { emptyStructureConfiguration } from '@/types'
-import { Etat, Tabs } from '@/types/enums'
-import { errorHandler } from '@/utils'
+import { getEtablissement, getEtablissements } from '@/services/api/index.ts'
+import { Etat, Tabs } from '@/types/enums/index.ts'
+import { emptyStructureConfiguration } from '@/types/index.ts'
+import { errorHandler } from '@/utils/index.ts'
 import { useConfigurationStore } from './configurationStore.ts'
 
 export const useStructureStore = defineStore('structure', () => {

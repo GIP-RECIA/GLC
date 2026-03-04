@@ -15,14 +15,14 @@
  */
 
 import type { Ref } from 'vue'
-import type { enumValues, Personne } from '@/types'
+import type { enumValues, Personne } from '@/types/index.ts'
 import { format, getYear } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores'
-import { CategoriePersonne } from '@/types/enums'
-import { getEtat } from '@/utils'
+import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts'
+import { CategoriePersonne } from '@/types/enums/index.ts'
+import { getEtat } from '@/utils/index.ts'
 
 function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
   const configurationStore = useConfigurationStore()

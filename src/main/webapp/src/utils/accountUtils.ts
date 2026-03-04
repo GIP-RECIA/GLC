@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import type { endInfo, enumValues, PersonneFonction } from '@/types'
+import type { endInfo, enumValues, PersonneFonction } from '@/types/index.ts'
 import { differenceInMonths, isPast } from 'date-fns'
 import { storeToRefs } from 'pinia'
-import { useConfigurationStore } from '@/stores'
-import { CategoriePersonne, Etat } from '@/types/enums'
+import { useConfigurationStore } from '@/stores/index.ts'
+import { CategoriePersonne, Etat } from '@/types/enums/index.ts'
 
 function isLocal(
   source: string,

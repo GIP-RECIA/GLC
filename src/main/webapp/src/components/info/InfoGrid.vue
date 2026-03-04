@@ -15,11 +15,11 @@
 -->
 
 <script setup lang="ts">
-import type { SimplePersonne } from '@/types'
+import type { SimplePersonne } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { useStructureStore } from '@/stores'
-import { Etat } from '@/types/enums'
+import { useStructureStore } from '@/stores/index.ts'
+import { Etat } from '@/types/enums/index.ts'
 import InfoCard from './InfoCard.vue'
 
 const isDev = import.meta.env.DEV

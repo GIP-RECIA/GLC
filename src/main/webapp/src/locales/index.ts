@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import en from './en'
-import fr from './fr'
+import en from './en/index.ts'
+import fr from './fr/index.ts'
 
 const messages = {
   en,

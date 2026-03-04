@@ -15,14 +15,14 @@
 -->
 
 <script setup lang="ts">
-import type { SimpleEtablissement } from '@/types'
+import type { SimpleEtablissement } from '@/types/index.ts'
 import { useSessionStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDisplay } from 'vuetify'
 import CustomPagination from '@/components/CustomPagination.vue'
-import { useConfigurationStore, useStructureStore } from '@/stores'
+import { useConfigurationStore, useStructureStore } from '@/stores/index.ts'
 
 const configurationStore = useConfigurationStore()
 const { search } = storeToRefs(configurationStore)

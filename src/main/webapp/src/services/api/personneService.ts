@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import type { FonctionForm } from '@/types'
-import { instance as axios } from '@/utils'
+import type { FonctionForm } from '@/types/index.ts'
+import { instance as axios } from '@/utils/index.ts'
 
 async function getPersonne(id: number) {
   return await axios.get(

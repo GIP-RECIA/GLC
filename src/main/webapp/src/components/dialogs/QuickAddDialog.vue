@@ -15,24 +15,24 @@
 -->
 
 <script setup lang="ts">
-import type { SimplePersonne } from '@/types'
+import type { SimplePersonne } from '@/types/index.ts'
 import debounce from 'lodash.debounce'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
 import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
-import { useSaveAttachDetach } from '@/composables'
+import { useSaveAttachDetach } from '@/composables/index.ts'
 import {
   setPersonneAdditionalWithCode,
   setPersonneAdditionalWithId,
-} from '@/services/api'
+} from '@/services/api/index.ts'
 import {
   useConfigurationStore,
   usePersonneStore,
   useStructureStore,
-} from '@/stores'
-import { errorHandler, fonctionsToId } from '@/utils'
+} from '@/stores/index.ts'
+import { errorHandler, fonctionsToId } from '@/utils/index.ts'
 
 const configurationStore = useConfigurationStore()
 const { isEditAllowed } = configurationStore

@@ -18,7 +18,7 @@
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useConfigurationStore } from '@/stores'
+import { useConfigurationStore } from '@/stores/index.ts'
 import TabItem from './TabItem.vue'
 
 const configurationStore = useConfigurationStore()

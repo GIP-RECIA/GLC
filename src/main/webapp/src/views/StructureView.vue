@@ -25,8 +25,8 @@ import QuickAddDialog from '@/components/dialogs/QuickAddDialog.vue'
 import AccountTab from '@/components/tabs/structure/AccountTab.vue'
 import CategorieTab from '@/components/tabs/structure/CategorieTab.vue'
 import DashboardTab from '@/components/tabs/structure/DashboardTab.vue'
-import { useConfigurationStore, useStructureStore } from '@/stores'
-import { Tabs } from '@/types/enums'
+import { useConfigurationStore, useStructureStore } from '@/stores/index.ts'
+import { Tabs } from '@/types/enums/index.ts'
 
 const isDev = import.meta.env.DEV
 

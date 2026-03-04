@@ -16,8 +16,8 @@
 
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
-import { usePersonneStore } from '@/stores'
-import { isEmpty } from '@/utils'
+import { usePersonneStore } from '@/stores/index.ts'
+import { isEmpty } from '@/utils/index.ts'
 
 function useSaveAttachDetach() {
   const personneStore = usePersonneStore()

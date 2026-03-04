@@ -17,7 +17,7 @@
 import type { Directive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { watch } from 'vue'
-import { useStructureStore } from '@/stores'
+import { useStructureStore } from '@/stores/index.ts'
 
 const permission: Directive<HTMLElement, string[]> = (el, binding) => {
   const structureStore = useStructureStore()

@@ -19,8 +19,8 @@ import { watchOnce } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useConfigurationStore } from '@/stores'
-import { intercept, login } from '@/utils'
+import { useConfigurationStore } from '@/stores/index.ts'
+import { intercept, login } from '@/utils/index.ts'
 
 const configurationStore = useConfigurationStore()
 const { isInit, isAuthenticated } = storeToRefs(configurationStore)

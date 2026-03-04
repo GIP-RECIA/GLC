@@ -15,10 +15,10 @@
 -->
 
 <script setup lang="ts">
-import type { Alert, Filiere } from '@/types'
+import type { Alert, Filiere } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { useConfigurationStore, useStructureStore } from '@/stores'
+import { useConfigurationStore, useStructureStore } from '@/stores/index.ts'
 
 const configurationStore = useConfigurationStore()
 const { isQuickAdd, requestAdd } = storeToRefs(configurationStore)

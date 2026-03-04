@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { PortalEntry } from '@/types'
+import type { PortalEntry } from '@/types/index.ts'
 import axios from 'axios'
 import vuetify from '@/plugins/vuetify.ts'
 
