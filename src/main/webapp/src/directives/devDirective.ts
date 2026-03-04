@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-import type { App } from 'vue'
-import { authenticated } from './authenticationDirective.ts'
-import { dev } from './devDirective.ts'
-import { permission } from './permissionDirective.ts'
-import { admin, role } from './roleDirective.ts'
+import type { Directive } from 'vue'
 
-function register(app: App): void {
-  app.directive('authenticated', authenticated)
-  app.directive('permission', permission)
-  app.directive('admin', admin)
-  app.directive('role', role)
-  app.directive('dev', dev)
+const dev: Directive<HTMLElement, null> = (el) => {
+  const isDev = import.meta.env.DEV
+
+  if (!isDev)
+    el.remove()
 }
 
 export {
-  register,
+  dev,
 }

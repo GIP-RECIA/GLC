@@ -22,14 +22,10 @@ import { useStructureStore } from '@/stores/index.ts'
 import { Etat } from '@/types/enums/index.ts'
 import InfoCard from './InfoCard.vue'
 
-const isDev = import.meta.env.DEV
-
 const structureStore = useStructureStore()
 const { personnesByEtat } = storeToRefs(structureStore)
 
 const items = computed<Map<Etat, SimplePersonne[] | undefined>>(() => {
-  if (isDev)
-    return personnesByEtat.value
   return new Map(
     [...personnesByEtat.value]?.filter(([key]) =>
       [

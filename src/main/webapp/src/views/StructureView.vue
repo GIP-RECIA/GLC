@@ -28,8 +28,6 @@ import DashboardTab from '@/components/tabs/structure/DashboardTab.vue'
 import { useConfigurationStore, useStructureStore } from '@/stores/index.ts'
 import { Tabs } from '@/types/enums/index.ts'
 
-const isDev = import.meta.env.DEV
-
 const configurationStore = useConfigurationStore()
 const { structureTab, isAttach } = storeToRefs(configurationStore)
 
@@ -90,7 +88,7 @@ watch(
       {{ t('tab.academic') }}
     </v-tab>
     <v-tab
-      v-if="isDev"
+      v-dev
       :value="Tabs.Accounts"
     >
       {{ t('tab.accounts') }}
@@ -148,7 +146,7 @@ watch(
       <CategorieTab :categorie="Tabs.Academic" />
     </v-window-item>
     <v-window-item
-      v-if="isDev"
+      v-dev
       :value="Tabs.Accounts"
     >
       <AccountTab />
