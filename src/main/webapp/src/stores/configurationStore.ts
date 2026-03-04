@@ -25,7 +25,7 @@ import type {
   StructureConfiguration,
 } from '@/types/index.ts'
 import { useSessionStorage } from '@vueuse/core'
-import isEmpty from 'lodash.isempty'
+import { isEmpty } from 'lodash-es'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { getConfiguration, getFonctions } from '@/services/api/index.ts'

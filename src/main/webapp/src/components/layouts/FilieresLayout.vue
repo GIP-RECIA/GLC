@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { Discipline, Filiere } from '@/types/index.ts'
-import isEmpty from 'lodash.isempty'
+import { isEmpty } from 'lodash-es'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PersonneCard from '@/components/PersonneCard.vue'

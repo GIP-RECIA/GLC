@@ -22,7 +22,7 @@ import type {
   SimplePersonne,
   SourceFonction,
 } from '@/types/index.ts'
-import isEmpty from 'lodash.isempty'
+import { isEmpty } from 'lodash-es'
 import { defineStore, storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'

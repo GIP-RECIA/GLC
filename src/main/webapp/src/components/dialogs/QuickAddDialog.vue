@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types/index.ts'
-import debounce from 'lodash.debounce'
+import { debounce } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { toast } from 'vue3-toastify'

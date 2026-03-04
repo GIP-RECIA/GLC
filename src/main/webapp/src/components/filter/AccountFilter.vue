@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types/index.ts'
-import isEmpty from 'lodash.isempty'
+import { isEmpty } from 'lodash-es'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ChipsFilter from '@/components/filter/ChipsFilter.vue'
