@@ -39,7 +39,7 @@ function jsonp(
       : `jsonp_${(Math.floor(Math.random() * 100000) * Date.now()).toString(16)}`
     timeout = typeof timeout === 'number' ? timeout : 5000
 
-    let timeoutTimer: NodeJS.Timeout | null = null
+    let timeoutTimer: number | null = null
     if (timeout > -1) {
       timeoutTimer = setTimeout(() => {
         console.warn('Timeout JSONP')
