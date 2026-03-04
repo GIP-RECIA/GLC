@@ -37,7 +37,7 @@ const modelValue = computed<boolean>({
   set() {},
 })
 
-const selectedTheme = useLocalStorage<Array<Theme>>(
+const selectedTheme = useLocalStorage<Theme[]>(
   `${__APP_SLUG__}.theme`,
   [Theme.system],
 )

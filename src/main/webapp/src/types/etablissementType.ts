@@ -36,10 +36,10 @@ export interface Etablissement {
   siteWeb: string
   modeleLogin: string
   logo: string
-  personnes: Array<SimplePersonne>
-  filieres: Array<Filiere>
-  withoutFunctions?: Array<SimplePersonne>
-  alerts: Array<Alert>
+  personnes: SimplePersonne[]
+  filieres: Filiere[]
+  withoutFunctions?: SimplePersonne[]
+  alerts: Alert[]
   permission?: string
 }
 

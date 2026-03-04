@@ -23,8 +23,8 @@ import { filiereDisciplineToId, idToFonction, isBetween } from '@/utils'
 
 const props = withDefaults(
   defineProps<{
-    filieres?: Array<Filiere>
-    disabled?: Array<string>
+    filieres?: Filiere[]
+    disabled?: string[]
     disableFonctionEdit?: boolean
     config?: {
       filiere?: Record<string, any>
@@ -62,12 +62,12 @@ const form = ref<Form>({
 
 const isReady = ref<boolean>(false)
 
-const filteredFilieres = computed<Array<Filiere> | undefined>(() => {
+const filteredFilieres = computed<Filiere[] | undefined>(() => {
   if (!props.disabled)
     return props.filieres
   return props.filieres
     ?.map((filiere) => {
-      const disciplines: Array<Discipline> = filiere.disciplines.filter(
+      const disciplines: Discipline[] = filiere.disciplines.filter(
         discipline => !props.disabled?.includes(
           filiereDisciplineToId(filiere.id, discipline.id),
         ),
@@ -78,7 +78,7 @@ const filteredFilieres = computed<Array<Filiere> | undefined>(() => {
     .filter(({ disciplines }) => disciplines.length > 0)
 })
 
-const filteredDisciplines = computed<Array<Discipline> | undefined>(() => {
+const filteredDisciplines = computed<Discipline[] | undefined>(() => {
   return filteredFilieres.value
     ?.find(({ id }) => id === form.value.filiere)
     ?.disciplines

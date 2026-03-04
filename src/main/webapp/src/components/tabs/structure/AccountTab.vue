@@ -31,8 +31,8 @@ const { personnes } = storeToRefs(structureStore)
 const { t } = useI18n()
 const { name } = useDisplay()
 
-const items = ref<Array<SimplePersonne> | undefined>()
-const pageItems = ref<Array<SimplePersonne> | undefined>()
+const items = ref<SimplePersonne[] | undefined>()
+const pageItems = ref<SimplePersonne[] | undefined>()
 
 const itemsPerPage = computed<number>(() => {
   const defaultItemsPerPage = 10
@@ -61,7 +61,7 @@ const itemsPerPage = computed<number>(() => {
     <AccountFilter
       class="mb-8"
       :search-list="personnes"
-      @update:result="(result: Array<SimplePersonne>) => (items = result)"
+      @update:result="(result: SimplePersonne[]) => (items = result)"
     />
     <div
       v-if="pageItems && pageItems.length > 0"

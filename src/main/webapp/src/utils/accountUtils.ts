@@ -193,8 +193,8 @@ function filiereDisciplineToId(
 }
 
 function fonctionsToId(
-  fonctions: Array<PersonneFonction> | undefined,
-): Array<string> {
+  fonctions: PersonneFonction[] | undefined,
+): string[] {
   return fonctions
     ? fonctions.map(fonction => fonctionToId(fonction))
     : []

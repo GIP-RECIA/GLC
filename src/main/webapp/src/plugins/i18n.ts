@@ -19,7 +19,7 @@ import { messages } from '@/locales'
 
 const config: {
   fallbackLocale: string
-  supportLocales: Array<string>
+  supportLocales: string[]
 } = {
   fallbackLocale: 'fr',
   supportLocales: ['en', 'fr'],

@@ -29,7 +29,7 @@ const { currentEtab, staff, fonction } = storeToRefs(structureStore)
 const { t } = useI18n()
 
 function getDiscipline(
-  filieres: Array<Filiere> | undefined,
+  filieres: Filiere[] | undefined,
   code: string,
 ): string | undefined {
   const codes = code.split('-')

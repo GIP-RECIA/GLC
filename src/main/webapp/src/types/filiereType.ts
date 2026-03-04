@@ -21,5 +21,5 @@ export interface Filiere {
   codeFiliere: string
   libelleFiliere: string
   source: string
-  disciplines: Array<Discipline>
+  disciplines: Discipline[]
 }

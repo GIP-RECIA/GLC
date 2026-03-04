@@ -19,11 +19,11 @@ import type { Filiere, FonctionForm } from '@/types'
 import { filiereDisciplineToId } from '@/utils'
 
 defineProps<{
-  filieres: Array<Filiere> | undefined
-  disabled?: Array<string>
+  filieres: Filiere[] | undefined
+  disabled?: string[]
 }>()
 
-const modelValue = defineModel<Array<FonctionForm>>()
+const modelValue = defineModel<FonctionForm[]>()
 </script>
 
 <template>

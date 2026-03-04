@@ -23,12 +23,12 @@ import ChipsFilter from '@/components/filter/ChipsFilter.vue'
 import { CategoriePersonne, Etat } from '@/types/enums'
 
 const props = defineProps<{
-  searchList: Array<SimplePersonne> | undefined
+  searchList: SimplePersonne[] | undefined
 }>()
 
 const emit = defineEmits<(
   event: 'update:result',
-  payload: Array<SimplePersonne>,
+  payload: SimplePersonne[],
 ) => void>()
 
 const { t } = useI18n()
@@ -41,9 +41,9 @@ const nbResults = ref<number>(
 
 const filters = ref<{
   search: string | undefined
-  categories: Array<string>
-  status: Array<string>
-  types: Array<string>
+  categories: string[]
+  status: string[]
+  types: string[]
 }>({
   search: undefined,
   categories: [],
@@ -117,7 +117,7 @@ const tags = {
 }
 
 function filter(): void {
-  let result: Array<SimplePersonne> = !isEmpty(props.searchList)
+  let result: SimplePersonne[] = !isEmpty(props.searchList)
     ? props.searchList!
     : []
 

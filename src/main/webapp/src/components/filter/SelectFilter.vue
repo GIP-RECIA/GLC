@@ -18,12 +18,12 @@
 import { useI18n } from 'vue-i18n'
 
 defineProps<{
-  items: Array<{ i18n: string, value: any, color?: string }>
+  items: { i18n: string, value: any, color?: string }[]
 }>()
 
 const { t } = useI18n()
 
-const modelValue = defineModel<Array<any>>()
+const modelValue = defineModel<any[]>()
 </script>
 
 <template>

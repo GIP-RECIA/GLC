@@ -37,7 +37,7 @@ export const useStructureStore = defineStore('structure', () => {
 
   const router = useRouter()
 
-  const etabs = ref<Array<SimpleEtablissement> | undefined>()
+  const etabs = ref<SimpleEtablissement[] | undefined>()
   const currentEtab = ref<Etablissement | undefined>()
 
   const isInit = computed<boolean>(() => (
@@ -123,14 +123,14 @@ export const useStructureStore = defineStore('structure', () => {
     }
   }
 
-  const personnes = computed<Array<SimplePersonne> | undefined>(
+  const personnes = computed<SimplePersonne[] | undefined>(
     () => currentEtab.value?.personnes,
   )
 
   const staff = computed(() => {
     const { configuration } = storeToRefs(configurationStore)
 
-    const getStaff = (categorie?: string): Array<SimplePersonne> | undefined => {
+    const getStaff = (categorie?: string): SimplePersonne[] | undefined => {
       return personnes.value
         ?.filter(personne => personne.categorie === categorie)
     }
@@ -144,7 +144,7 @@ export const useStructureStore = defineStore('structure', () => {
   })
 
   const personnesByEtat = computed<
-    Map<Etat, Array<SimplePersonne> | undefined>
+    Map<Etat, SimplePersonne[] | undefined>
   >(() => {
     const map = new Map()
 
@@ -174,15 +174,15 @@ export const useStructureStore = defineStore('structure', () => {
   })
 
   const filieresByStaff = computed<{
-    teaching: Array<Filiere> | undefined
-    school: Array<Filiere> | undefined
-    collectivity: Array<Filiere> | undefined
-    academic: Array<Filiere> | undefined
+    teaching: Filiere[] | undefined
+    school: Filiere[] | undefined
+    collectivity: Filiere[] | undefined
+    academic: Filiere[] | undefined
   }>(() => {
     const { configuration } = storeToRefs(configurationStore)
 
-    const getFiliere = (categorie?: string): Array<Filiere> | undefined => {
-      const filieres: Array<Filiere> | undefined = currentEtab.value?.filieres
+    const getFiliere = (categorie?: string): Filiere[] | undefined => {
+      const filieres: Filiere[] | undefined = currentEtab.value?.filieres
         .map((filiere) => {
           const disciplines = filiere.disciplines
             .map((discipline) => {

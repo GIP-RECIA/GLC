@@ -38,7 +38,7 @@ const admin: Directive<HTMLElement, null> = (el) => {
   )
 }
 
-const role: Directive<HTMLElement, Array<string>> = (el, binding) => {
+const role: Directive<HTMLElement, string[]> = (el, binding) => {
   const configurationStore = useConfigurationStore()
   const { identity } = storeToRefs(configurationStore)
 

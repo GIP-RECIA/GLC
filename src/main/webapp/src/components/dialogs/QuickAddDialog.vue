@@ -76,7 +76,7 @@ const selectedUser = computed<SimplePersonne | undefined>({
 })
 
 const canSave = computed<boolean>(() => {
-  const functions: Array<string> = [
+  const functions: string[] = [
     ...new Set(
       fonctionsToId(personneStructure.value.fonctions).concat(
         fonctionsToId(personneStructure.value.additionalFonctions),

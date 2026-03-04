@@ -20,16 +20,16 @@ import type { Tabs } from './enums/Tabs.ts'
 export interface StructureConfiguration {
   [Tabs.Dashboard]: object
   [Tabs.Teaching]: {
-    accountStates: Array<Etat>
+    accountStates: Etat[]
   }
   [Tabs.School]: {
-    accountStates: Array<Etat>
+    accountStates: Etat[]
   }
   [Tabs.Collectivity]: {
-    accountStates: Array<Etat>
+    accountStates: Etat[]
   }
   [Tabs.Academic]: {
-    accountStates: Array<Etat>
+    accountStates: Etat[]
   }
   [Tabs.Accounts]: object
 }

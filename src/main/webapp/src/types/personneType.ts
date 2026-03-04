@@ -33,8 +33,8 @@ export interface Personne {
   login: string
   dateFin?: string
   dateSourceModification: string
-  fonctions?: Array<PersonneFonction>
-  additionalFonctions?: Array<PersonneFonction>
+  fonctions?: PersonneFonction[]
+  additionalFonctions?: PersonneFonction[]
   dateSuppression?: string
 }
 

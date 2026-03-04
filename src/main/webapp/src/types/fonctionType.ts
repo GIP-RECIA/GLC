@@ -19,13 +19,13 @@ import type { Filiere } from './filiereType.ts'
 
 export interface SourceFonction {
   source: string
-  filieres: Array<Filiere>
+  filieres: Filiere[]
   customMapping?: CustomMapping
 }
 
 export interface CustomMapping {
-  filieres: Array<Filiere>
-  disciplines: Array<Discipline>
+  filieres: Filiere[]
+  disciplines: Discipline[]
 }
 
 export interface PersonneFonction {

@@ -18,17 +18,17 @@ export interface PortalEntry {
   identity: {
     Id: string
     name: string
-    domains?: Array<string>
-    uai?: Array<string>
+    domains?: string[]
+    uai?: string[]
   }
-  images: Array<{
+  images: {
     Id: string
     name: string
     path?: string
     url?: string
     opacity?: number
-  }>
-  colors: Array<{
+  }[]
+  colors: {
     Id: string
     hexa: string
     rgb: {
@@ -36,18 +36,18 @@ export interface PortalEntry {
       g: number
       b: number
     }
-  }>
-  sponsors: Array<{
+  }[]
+  sponsors: {
     Id: string
     name: string
     url?: string
     logo: {
       path?: string
       url?: string
-      parameters?: Array<{
+      parameters?: {
         propertie: string
         value: string
-      }>
+      }[]
     }
-  }>
+  }[]
 }

@@ -16,7 +16,7 @@
 
 export interface Identity {
   user: any
-  roles: Array<string>
+  roles: string[]
   sessionId?: string
   username: string
   accountNonExpired: boolean

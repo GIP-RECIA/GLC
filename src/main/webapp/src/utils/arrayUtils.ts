@@ -15,7 +15,7 @@
  */
 
 function isEmpty(
-  array: Array<any> | undefined,
+  array: any[] | undefined,
 ): boolean {
   return !array?.length
 }

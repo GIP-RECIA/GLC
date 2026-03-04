@@ -19,7 +19,7 @@ import { storeToRefs } from 'pinia'
 import { watch } from 'vue'
 import { useStructureStore } from '@/stores'
 
-const permission: Directive<HTMLElement, Array<string>> = (el, binding) => {
+const permission: Directive<HTMLElement, string[]> = (el, binding) => {
   const structureStore = useStructureStore()
   const { currentEtab } = storeToRefs(structureStore)
 

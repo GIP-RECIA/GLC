@@ -18,14 +18,14 @@
 import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{
-  items: Array<any> | undefined
+  items: any[] | undefined
   itemsPerPage: number
   hideSinglePage?: boolean
 }>()
 
 const emit = defineEmits<(
   event: 'update:page',
-  payload: Array<any>,
+  payload: any[],
 ) => void>()
 
 const page = ref<number>(1)
@@ -54,7 +54,7 @@ function showPage(
     typeof props.items !== 'undefined'
     && props.items !== null
   ) {
-    const items: Array<any> = props.items.filter((_, index) => {
+    const items: any[] = props.items.filter((_, index) => {
       return page === 1
         ? index < props.itemsPerPage
         : (

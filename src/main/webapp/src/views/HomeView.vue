@@ -34,7 +34,7 @@ const { etabs } = storeToRefs(structureStore)
 const { t } = useI18n()
 const { name } = useDisplay()
 
-const pageItems = ref<Array<SimpleEtablissement> | undefined>()
+const pageItems = ref<SimpleEtablissement[] | undefined>()
 
 const itemsPerPage = computed<number>(() => {
   const defaultItemsPerPage = 10
@@ -57,7 +57,7 @@ const itemsPerPage = computed<number>(() => {
   }
 })
 
-const items = computed<Array<SimpleEtablissement> | undefined>(() => {
+const items = computed<SimpleEtablissement[] | undefined>(() => {
   if (search.value !== undefined && search.value != null) {
     const searchValue = search.value
       .toLowerCase()

@@ -23,7 +23,7 @@ function capitalize(
 }
 
 function concatenate(
-  values: Array<string | undefined>,
+  values: (string | undefined)[],
   separator?: string,
 ): string {
   let result: string = ''

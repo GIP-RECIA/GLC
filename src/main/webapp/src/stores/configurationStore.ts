@@ -34,7 +34,7 @@ import { errorHandler, getEtat, useEntTheme } from '@/utils'
 
 export const useConfigurationStore = defineStore('configuration', () => {
   const configuration = ref<Configuration | undefined>()
-  const fonctions = ref<Array<SourceFonction> | undefined>()
+  const fonctions = ref<SourceFonction[] | undefined>()
 
   /**
    * Initialise `configuration`
@@ -70,7 +70,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
   const isInit = computed<boolean>(() => configuration.value !== undefined)
   const isInitFonctions = computed<boolean>(() => fonctions.value !== undefined)
 
-  const allFilieres = computed<Array<Filiere> | undefined>(() => {
+  const allFilieres = computed<Filiere[] | undefined>(() => {
     return fonctions.value
       ? fonctions.value.find(fonction => fonction.source === 'ALL')?.filieres
       : undefined
@@ -106,7 +106,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
       else if (sources.length > 1)
         throw new Error(`Can not resolve guichet for source ${source}`)
 
-      const offices: Array<string> = sources[0].guichets
+      const offices: string[] = sources[0].guichets
         .filter(guichet => guichet.categoriesPersonne.includes(categorie))
         .map(guichet => guichet.nom)
       if (offices.length > 1)
@@ -118,7 +118,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
   }
 
   const filterAccountStates = computed<
-    Array<enumValues & { value: string }> | undefined
+    (enumValues & { value: string })[] | undefined
   >(() =>
     configuration.value?.front.filterAccountStates?.map((state) => {
       return { ...getEtat(state), value: state }
@@ -128,7 +128,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
   /* --- Gestion des onglets de structure --- */
 
   const structures = useSessionStorage<
-    Array<{ id: number, name: string, config: StructureConfiguration }>
+    { id: number, name: string, config: StructureConfiguration }[]
   >(
     `${__APP_SLUG__}.tabs`,
     [],
@@ -195,7 +195,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
     i18n?: string
     function?: string
     type: 'id' | 'code'
-    searchList?: Array<SimplePersonne>
+    searchList?: SimplePersonne[]
   }>()
 
   /* -- Gestion de la modale des paramètres -- */

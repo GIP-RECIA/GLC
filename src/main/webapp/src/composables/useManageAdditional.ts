@@ -53,9 +53,9 @@ function useManageAdditional() {
   const { t } = useI18n()
 
   const data = ref<{
-    baseSelection: Array<FonctionForm>
-    selected: Array<FonctionForm>
-    disabled: Array<string>
+    baseSelection: FonctionForm[]
+    selected: FonctionForm[]
+    disabled: string[]
   }>({
     baseSelection: [],
     selected: [],
@@ -142,10 +142,10 @@ function useManageAdditional() {
       const structureId = currentStructureId.value!
       // TODO: Change API => Use existing API witch not support date
       const { baseSelection, selected } = data.value
-      const selectedF: Array<string> = selected
+      const selectedF: string[] = selected
         .map(({ fonction }) => fonction)
         .filter(entry => entry !== undefined)
-      const baseF: Array<string> = baseSelection.length > 0
+      const baseF: string[] = baseSelection.length > 0
         ? baseSelection
             .map(({ fonction }) => fonction)
             .filter(entry => entry !== undefined)
@@ -195,8 +195,8 @@ function useManageAdditional() {
 
   onBeforeMount(() => {
     const { fonctions, additionalFonctions } = personneStructure.value
-    let selected: Array<FonctionForm> = []
-    let disabled: Array<string> = fonctionsToId(fonctions)
+    let selected: FonctionForm[] = []
+    let disabled: string[] = fonctionsToId(fonctions)
     switch (dialogState.value) {
       case PersonneDialogState.ManageAdditional:
         disabled = disabled.concat(fonctionsToId(additionalFonctions))

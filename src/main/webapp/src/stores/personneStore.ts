@@ -80,9 +80,9 @@ export const usePersonneStore = defineStore('personne', () => {
    * Retourne la liste des fonctions au sein d'une structure.
    */
   const fonctionsByStructure = (
-    fonctions: Array<PersonneFonction> | undefined,
+    fonctions: PersonneFonction[] | undefined,
     structureId: number | undefined,
-  ): Array<PersonneFonction> => {
+  ): PersonneFonction[] => {
     if (!fonctions || !structureId)
       return []
     const result = fonctions.filter(({ structure }) => structure === structureId)
@@ -94,8 +94,8 @@ export const usePersonneStore = defineStore('personne', () => {
    * Retourne un objet contenant la liste des fonctions et fonctions additionnelles pour la structure courrante.
    */
   const personneStructure = computed<{
-    fonctions: Array<PersonneFonction> | undefined
-    additionalFonctions: Array<PersonneFonction> | undefined
+    fonctions: PersonneFonction[] | undefined
+    additionalFonctions: PersonneFonction[] | undefined
   }>(() => {
     const { currentStructureId } = storeToRefs(configurationStore)
     if (!currentPersonne.value || !currentStructureId.value) {

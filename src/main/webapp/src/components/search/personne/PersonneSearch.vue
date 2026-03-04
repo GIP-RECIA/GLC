@@ -24,7 +24,7 @@ import PersonneChip from './PersonneChip.vue'
 import PersonneListItem from './PersonneListItem.vue'
 
 const props = defineProps<{
-  searchList?: Array<SimplePersonne>
+  searchList?: SimplePersonne[]
   searchType?: 'IN' | 'OUT'
   variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
   chips?: boolean
@@ -37,7 +37,7 @@ const modelValue = defineModel<SimplePersonne | undefined>()
 const isLoading = ref<boolean>(false)
 const isHideNoData = ref<boolean>(true)
 const isSearchingOut = ref<boolean>(props.searchType === 'OUT')
-const items = ref<Array<SimplePersonne>>([])
+const items = ref<SimplePersonne[]>([])
 
 function filterItems(
   newSearch: string | undefined,
@@ -72,7 +72,7 @@ function findInStructure(
     filterFromSource(props.searchList, searchValue)
 }
 
-const out: { request?: string, response: Array<SimplePersonne> } = {
+const out: { request?: string, response: SimplePersonne[] } = {
   request: undefined,
   response: [],
 }
@@ -98,7 +98,7 @@ async function findOutOfStructure(
 }
 
 function filterFromSource(
-  source: Array<SimplePersonne>,
+  source: SimplePersonne[],
   searchValue: string,
 ): void {
   items.value = source.filter((personne) => {

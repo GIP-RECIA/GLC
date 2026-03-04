@@ -32,8 +32,8 @@ async function searchPersonne(name: string) {
 async function setPersonneAdditional(
   id: number,
   structureId: number,
-  toAddFunctions: Array<string>,
-  toDeleteFunctions: Array<string>,
+  toAddFunctions: string[],
+  toDeleteFunctions: string[],
   requiredAction: string,
 ) {
   return await axios.post(

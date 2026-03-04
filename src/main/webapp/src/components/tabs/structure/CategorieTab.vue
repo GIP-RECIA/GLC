@@ -44,13 +44,13 @@ const personneStore = usePersonneStore()
 const { initCurrentPersonne } = personneStore
 const { currentPersonne } = storeToRefs(personneStore)
 
-const accountFilters = computed<Array<Etat>>(() =>
+const accountFilters = computed<Etat[]>(() =>
   currentStructureConfig.value
     ? currentStructureConfig.value[props.categorie].accountStates
     : [],
 )
 
-function setAccountFilters(states: Array<Etat>): void {
+function setAccountFilters(states: Etat[]): void {
   if (!currentStructureConfig.value)
     return
   currentStructureConfig.value[props.categorie].accountStates = states

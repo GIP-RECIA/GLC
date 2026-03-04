@@ -27,7 +27,7 @@ const isDev = import.meta.env.DEV
 const structureStore = useStructureStore()
 const { personnesByEtat } = storeToRefs(structureStore)
 
-const items = computed<Map<Etat, Array<SimplePersonne> | undefined>>(() => {
+const items = computed<Map<Etat, SimplePersonne[] | undefined>>(() => {
   if (isDev)
     return personnesByEtat.value
   return new Map(

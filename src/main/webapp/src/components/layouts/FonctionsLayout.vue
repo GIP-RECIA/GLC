@@ -25,8 +25,8 @@ import { getDateFin } from '@/utils'
 
 const props = withDefaults(
   defineProps<{
-    filieres: Array<Filiere> | undefined
-    fonctions: Array<PersonneFonction> | undefined
+    filieres: Filiere[] | undefined
+    fonctions: PersonneFonction[] | undefined
     clickable?: boolean
   }>(),
   {
@@ -43,13 +43,13 @@ const { currentStructureId } = storeToRefs(configurationStore)
 
 const { t } = useI18n()
 
-const etabFonctions = computed<Array<PersonneFonction>>(() => {
+const etabFonctions = computed<PersonneFonction[]>(() => {
   return props.fonctions
     ? props.fonctions.filter(({ structure }) => structure === currentStructureId.value)
     : []
 })
 
-const filteredFilieres = computed<Array<Filiere>>(() => {
+const filteredFilieres = computed<Filiere[]>(() => {
   if (!props.filieres)
     return []
   const filiereIds = [

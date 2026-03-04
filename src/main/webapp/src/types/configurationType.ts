@@ -15,7 +15,7 @@
  */
 
 export interface Configuration {
-  permissionTypes: Array<string>
+  permissionTypes: string[]
   front: {
     endFunctionWarning: number
     staff: {
@@ -24,8 +24,8 @@ export interface Configuration {
       collectivity: string
       academic: string
     }
-    editAllowedStates: Array<string>
-    filterAccountStates: Array<string>
+    editAllowedStates: string[]
+    filterAccountStates: string[]
     templateApiPath: string
     extendedUportal: {
       header: {
@@ -41,12 +41,12 @@ export interface Configuration {
         }
       }
     }
-    loginOffices: Array<{
+    loginOffices: {
       source: string
-      guichets: Array<{
+      guichets: {
         nom: string
-        categoriesPersonne: Array<string>
-      }>
-    }>
+        categoriesPersonne: string[]
+      }[]
+    }[]
   }
 }

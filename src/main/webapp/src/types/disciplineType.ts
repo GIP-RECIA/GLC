@@ -22,6 +22,6 @@ export interface Discipline {
   code: string
   disciplinePoste: string
   source: string
-  personnes: Array<SimplePersonne>
+  personnes: SimplePersonne[]
   endInfo?: endInfo
 }

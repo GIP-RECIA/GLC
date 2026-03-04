@@ -22,17 +22,17 @@ import { useI18n } from 'vue-i18n'
 import PersonneCard from '@/components/PersonneCard.vue'
 
 const props = defineProps<{
-  filieres: Array<Filiere> | undefined
-  accountStates?: Array<string>
+  filieres: Filiere[] | undefined
+  accountStates?: string[]
 }>()
 
 const { t } = useI18n()
 
-const filteredFilieres = computed<Array<Filiere>>(() => {
+const filteredFilieres = computed<Filiere[]>(() => {
   let filieres = props.filieres ? props.filieres : []
   if (!isEmpty(props.accountStates)) {
     filieres = filieres.map((filiere) => {
-      const disciplines: Array<Discipline> = filiere.disciplines
+      const disciplines: Discipline[] = filiere.disciplines
         .map((discipline) => {
           const personnes = discipline.personnes
             .filter(personne => props.accountStates!.includes(personne.etat))

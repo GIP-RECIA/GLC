@@ -36,9 +36,9 @@ const { currentEtab, personnesByEtat } = storeToRefs(structureStore)
 const { t } = useI18n()
 const { name } = useDisplay()
 
-const pageItems = ref<Array<SimplePersonne> | undefined>()
-const pageItems2 = ref<Array<SimplePersonne> | undefined>()
-const pageItems3 = ref<Array<SimplePersonne> | undefined>()
+const pageItems = ref<SimplePersonne[] | undefined>()
+const pageItems2 = ref<SimplePersonne[] | undefined>()
+const pageItems3 = ref<SimplePersonne[] | undefined>()
 
 const itemsPerPage = computed<number>(() => {
   const defaultItemsPerPage = 10
@@ -61,7 +61,7 @@ const itemsPerPage = computed<number>(() => {
   }
 })
 
-const panel = ref<Array<DashboardPanel>>([DashboardPanel.DeletingAccounts])
+const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
 </script>
 
 <template>
