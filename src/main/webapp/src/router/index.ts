@@ -16,23 +16,81 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 
+const isDev = import.meta.env.DEV
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    ...(
+      isDev
+        ? [
+            {
+              path: '/',
+              name: 'index',
+              component: () => import('@/views/IndexView.vue'),
+            },
+            {
+              path: '/access',
+              name: 'access',
+              component: () => import('@/views/AccessView.vue'),
+            },
+            {
+              path: '/admin',
+              name: 'admin',
+              component: () => import('@/views/AdminView.vue'),
+            },
+            {
+              path: '/settings',
+              name: 'settings',
+              component: () => import('@/views/SettingsView.vue'),
+            },
+          ]
+        : [{
+            path: '/',
+            redirect: () => {
+              return { name: 'account' }
+            },
+          }]
+    ),
     {
-      path: '/',
-      name: 'home',
-      component: () => import('@/views/HomeView.vue'),
-    },
-    {
-      path: '/:structureId(\\d+)',
-      name: 'structure',
-      component: () => import('@/views/StructureView.vue'),
+      path: '/account',
+      children: [
+        {
+          path: '',
+          name: 'account',
+          components: {
+            default: () => import('@/views/AccountView.vue'),
+            header: () => import('@/components/tabbar/TabBar.vue'),
+          },
+        },
+        {
+          path: 'etab/:structureId(\\d+)',
+          name: 'structure',
+          components: {
+            default: () => import('@/views/StructureView.vue'),
+            header: () => import('@/components/tabbar/TabBar.vue'),
+          },
+        },
+        {
+          path: 'user/:userId(\\d+)',
+          name: 'user',
+          components: {
+            default: () => import('@/views/UserView.vue'),
+            header: () => import('@/components/tabbar/TabBar.vue'),
+          },
+        },
+        {
+          path: ':pathName(.*)',
+          redirect: () => {
+            return { name: 'account' }
+          },
+        },
+      ],
     },
     {
       path: '/:pathName(.*)',
       redirect: () => {
-        return { name: 'home' }
+        return { name: isDev ? 'index' : 'account' }
       },
     },
   ],
