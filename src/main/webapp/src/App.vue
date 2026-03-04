@@ -20,7 +20,6 @@ import { storeToRefs } from 'pinia'
 import { onBeforeMount } from 'vue'
 import LoginDialog from '@/components/dialogs/LoginDialog.vue'
 import SettingsDialog from '@/components/dialogs/SettingsDialog.vue'
-import TabBar from '@/components/tabbar/TabBar.vue'
 import { useConfigurationStore } from '@/stores/index.ts'
 
 const configurationStore = useConfigurationStore()
@@ -68,7 +67,15 @@ const appName = __APP_NAME__
       <v-toolbar v-if="isAuthenticated" density="compact" color="rgba(255, 255, 255, 0)">
         <v-progress-linear :active="isLoading" :indeterminate="isLoading" absolute bottom color="primary" />
         <div class="d-flex align-center w-100 px-1">
-          <TabBar />
+          <router-link
+            v-dev
+            :to="{ name: 'index' }"
+          >
+            <v-icon
+              icon="fas fa-home"
+            />
+          </router-link>
+          <router-view name="header" />
           <v-spacer />
           <v-btn
             icon="fas fa-gear"
@@ -88,7 +95,10 @@ const appName = __APP_NAME__
         <SettingsDialog />
       </v-main>
       <footer>
-        <extended-uportal-footer v-if="isInit" v-bind="configuration!.front.extendedUportal?.footer?.props" />
+        <extended-uportal-footer
+          v-if="isInit"
+          v-bind="configuration!.front.extendedUportal?.footer?.props"
+        />
       </footer>
     </div>
   </v-app>

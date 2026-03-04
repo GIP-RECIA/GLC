@@ -103,7 +103,7 @@ export const useStructureStore = defineStore('structure', () => {
     }
     catch (e) {
       errorHandler(e, 'initCurrentEtab')
-      router.replace({ name: 'home' })
+      router.replace({ name: 'account' })
     }
     configurationStore.isLoading = false
   }

@@ -49,7 +49,7 @@ function close(
 }
 
 function newTab(): void {
-  router.push({ name: 'home' })
+  router.push({ name: 'account' })
   appTab.value = undefined
 }
 
@@ -84,7 +84,7 @@ onMounted(() => {
       </transition-group>
       <v-btn
         v-if="structures.length > 0"
-        :to="{ name: 'home' }"
+        :to="{ name: 'account' }"
         variant="text"
         density="comfortable"
         icon
