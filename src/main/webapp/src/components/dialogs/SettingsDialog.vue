@@ -98,13 +98,7 @@ function onClose(): void {
           :key="th"
           :title="t(`settings.theme.${th}`)"
           :value="th"
-        >
-          <template #prepend="{ isActive }">
-            <v-list-item-action start>
-              <v-radio :model-value="isActive" />
-            </v-list-item-action>
-          </template>
-        </v-list-item>
+        />
       </v-list>
     </v-card>
   </v-dialog>
