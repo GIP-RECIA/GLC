@@ -28,8 +28,6 @@ import ReadonlyData from '@/components/ReadonlyData.vue'
 import { useStructureStore } from '@/stores/index.ts'
 import { DashboardPanel, Etat } from '@/types/enums/index.ts'
 
-const isDev = import.meta.env.DEV
-
 const structureStore = useStructureStore()
 const { currentEtab, personnesByEtat } = storeToRefs(structureStore)
 
@@ -68,7 +66,11 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
   <v-container fluid class="d-flex flex-column ga-4">
     <AlertManager />
 
-    <v-card v-if="isDev && currentEtab" flat>
+    <v-card
+      v-if="currentEtab"
+      v-dev
+      flat
+    >
       <v-card-text class="info-container">
         <ReadonlyData
           v-admin
