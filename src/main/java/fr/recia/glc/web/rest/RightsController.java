@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class RightsController {
 
     private String deductBranchFromStructure(AStructure aStructure){
         final long typeStructure = aStructure.getType().getId();
-        // Collège -> 1 ranche par département
+        // Collège -> 1 branche par département
         if(typeStructure == 8){
             return "clg"+((Etablissement) aStructure).getUai().substring(1,3);
         }
@@ -61,11 +62,13 @@ public class RightsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<ServiceAccess>> listRights(@PathVariable Long id) {
+    public ResponseEntity<List<ServiceAccess>> listRights(@PathVariable Long id,
+                                                          @RequestParam(required = false, defaultValue = "true") boolean showExternal,
+                                                          @RequestParam(required = false, defaultValue = "true") boolean showAdmin) {
         final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
         final String etabGroup = deductGroupNameFromStructure(aStructure);
         final String branch = deductBranchFromStructure(aStructure);
-        return ResponseEntity.ok(rightsService.getRights(branch, etabGroup));
+        return ResponseEntity.ok(rightsService.getRights(branch, etabGroup, showExternal, showAdmin));
     }
 
     @PutMapping("/{id}/services/{service}/roles/{role}/members")
