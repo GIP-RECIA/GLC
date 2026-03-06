@@ -73,7 +73,7 @@ public class RightsService {
     /**
      * Donne la liste de tous les droits des services pour le front d'après la configuration
      */
-    public List<ServiceAccess> getRights(String branch, String etabGroup){
+    public List<ServiceAccess> getRights(String branch, String etabGroup, boolean showExternal, boolean showAdmin){
         List<ServiceAccess> serviceAccessList = new ArrayList<>();
         for(String service: rightsProperties.getServices().keySet()){
             ServiceAccess serviceAccess = new ServiceAccess();
@@ -110,12 +110,21 @@ public class RightsService {
                             member = new Member(ldapMember, ldapMember,false, external);
                         }
                     }
-                    currentMembers.add(member);
+                    if(member.isExternal() && !showExternal){
+
+                    } else {
+                        currentMembers.add(member);
+                    }
+
                 }
                 right.setCurrentMembers(currentMembers);
                 right.setAllowPeople(rolesByService.get(role).isAllowPeople());
                 right.setAdmin(rolesByService.get(role).isAdmin());
-                rights.add(right);
+                if(right.isAdmin() && !showAdmin){
+
+                } else {
+                    rights.add(right);
+                }
             }
             serviceAccess.setRights(rights);
             serviceAccessList.add(serviceAccess);
