@@ -20,11 +20,8 @@ import fr.recia.glc.configuration.bean.GrouperProperties;
 import fr.recia.glc.web.dto.access.grouper.request.add.WsRestAddMemberRequestWrapper;
 import fr.recia.glc.web.dto.access.grouper.request.delete.WsRestDeleteMemberRequestWrapper;
 import fr.recia.glc.web.dto.access.grouper.request.find.WsRestFindGroupsRequestWrapper;
-import fr.recia.glc.web.dto.access.grouper.request.memberships.WsRestGetMembershipRequestWrapper;
 import fr.recia.glc.web.dto.access.grouper.response.add.WsAddMemberResponse;
 import fr.recia.glc.web.dto.access.grouper.response.find.WsFindGroupsResponse;
-import fr.recia.glc.web.dto.access.grouper.response.members.WsGetMembersLiteResponse;
-import fr.recia.glc.web.dto.access.grouper.response.memberships.WsGetMembershipsResponse;
 import fr.recia.glc.web.dto.access.grouper.response.remove.WsDeleteMemberResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -63,11 +60,6 @@ public class GrouperService {
         headers.setAccept(Collections.singletonList(MediaType.valueOf(Constants.GROUPER_MEDIA_TYPE)));
         headers.setBasicAuth(grouperProperties.getUsername(), grouperProperties.getPassword());
         return headers;
-    }
-
-    private String encodeGroup(String groupName) {
-        //return UriUtils.encodePath(groupName, StandardCharsets.UTF_8).replace("%3A", ":");
-        return groupName;
     }
 
     /**
@@ -114,8 +106,7 @@ public class GrouperService {
      * @return
      */
     public ResponseEntity<WsAddMemberResponse> addMember(String groupName, String subjectId, boolean isGroup) {
-        String encodedGroup = encodeGroup(groupName);
-        String url = grouperProperties.getBaseUrl() + "/groups/" + encodedGroup + "/members";
+        String url = grouperProperties.getBaseUrl() + "/groups/" + groupName + "/members";
         HttpHeaders headers = createHeaders();
         String sourceId = Constants.GROUPER_SOURCEID_USER;
         if(isGroup){
@@ -136,8 +127,7 @@ public class GrouperService {
      * @return
      */
     public ResponseEntity<WsDeleteMemberResponse> removeMember(String groupName, String subjectId, boolean isGroup) {
-        String encodedGroup = encodeGroup(groupName);
-        String url = grouperProperties.getBaseUrl() + "/groups/" + encodedGroup + "/members";
+        String url = grouperProperties.getBaseUrl() + "/groups/" + groupName + "/members";
         HttpHeaders headers = createHeaders();
         String sourceId = Constants.GROUPER_SOURCEID_USER;
         if(isGroup){
