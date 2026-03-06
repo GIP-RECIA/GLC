@@ -51,8 +51,27 @@ function slugify(
     .replace(/-+/g, '-') // remove consecutive hyphens
 }
 
+function normalize(value: string): string {
+  return value.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '')
+}
+
+function alphaSort(a: string, b: string, order: 'asc' | 'desc'): 0 | 1 | -1 {
+  const normalizedA = normalize(a)
+  const normalizedB = normalize(b)
+
+  if (normalizedA === normalizedB)
+    return 0
+
+  if (order === 'asc')
+    return normalizedA > normalizedB ? 1 : -1
+  else
+    return normalizedA < normalizedB ? 1 : -1
+}
+
 export {
+  alphaSort,
   capitalize,
   concatenate,
+  normalize,
   slugify,
 }
