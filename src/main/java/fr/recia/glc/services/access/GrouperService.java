@@ -81,7 +81,6 @@ public class GrouperService {
     * @return La liste des membres ou une liste vide s'il n'y a pas de membres
     */
     public List<String> listGroupMembers(String groupName){
-        System.out.println(groupName);
         return ldapTemplate.search(query().base("ou=groups").where("cn").is(groupName),
                 (AttributesMapper<List<String>>) attrs -> {
                     List<String> members = new ArrayList<>();

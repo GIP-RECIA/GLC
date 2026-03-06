@@ -19,16 +19,13 @@ import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.services.access.RightsService;
-import fr.recia.glc.web.dto.access.grouper.response.add.WsAddMemberResponse;
-import fr.recia.glc.web.dto.access.grouper.response.remove.WsDeleteMemberResponse;
 import fr.recia.glc.web.dto.access.rights.AddOrDeleteMemberRequest;
 import fr.recia.glc.web.dto.access.rights.ServiceAccess;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/rights")
 public class RightsController {
@@ -47,28 +45,39 @@ public class RightsController {
     private AStructureRepository<AStructure> aStructureRepository;
 
     private String deductBranchFromStructure(AStructure aStructure){
+        log.debug("Retrieving branch for structure {}", aStructure.getId());
+        String branch = "";
         final long typeStructure = aStructure.getType().getId();
         // Collège -> 1 branche par département
         if(typeStructure == 8){
-            return "clg"+((Etablissement) aStructure).getUai().substring(1,3);
+            branch = "clg"+((Etablissement) aStructure).getUai().substring(1,3);
+        } else {
+            branch = "esco";
         }
-        return "esco";
+        log.debug("Branch for structure {} is {}", aStructure.getId(), branch);
+        return branch;
     }
 
     private String deductGroupNameFromStructure(AStructure aStructure){
+        log.debug("Retrieving group name for structure {}", aStructure.getId());
         final String etabGroupLeft = aStructure.getNom().split("\\$")[1];
         final String etabGroupRight = ((Etablissement) aStructure).getUai();
-        return etabGroupLeft+"_"+etabGroupRight;
+        String groupName = etabGroupLeft+"_"+etabGroupRight;
+        log.debug("Group name for structure {} is {}", aStructure.getId(), groupName);
+        return groupName;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<List<ServiceAccess>> listRights(@PathVariable Long id,
                                                           @RequestParam(required = false, defaultValue = "true") boolean showExternal,
                                                           @RequestParam(required = false, defaultValue = "true") boolean showAdmin) {
+        log.debug("Listing rights for structure {}", id);
         final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
         final String etabGroup = deductGroupNameFromStructure(aStructure);
         final String branch = deductBranchFromStructure(aStructure);
-        return ResponseEntity.ok(rightsService.getRights(branch, etabGroup, showExternal, showAdmin));
+        final List<ServiceAccess> rights = rightsService.getRights(branch, etabGroup, showExternal, showAdmin);
+        log.debug("Rights for structure {} are {}", id, rights);
+        return ResponseEntity.ok(rights);
     }
 
     @PutMapping("/{id}/services/{service}/roles/{role}/members")
@@ -76,13 +85,16 @@ public class RightsController {
                                              @PathVariable String service,
                                              @PathVariable String role,
                                              @RequestBody AddOrDeleteMemberRequest request){
+        log.debug("Updating rights for structure {}", id);
         final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
         final String etabGroup = deductGroupNameFromStructure(aStructure);
         final String branch = deductBranchFromStructure(aStructure);
         for(String memberToAdd : request.getMembersToAdd()){
+            log.debug("Adding right for member {} in structure {} for service {} for role {}", memberToAdd, id, service, role);
             rightsService.addRight(service, role, memberToAdd, branch, etabGroup);
         }
         for(String memberToRemove : request.getMembersToRemove()){
+            log.debug("Removing right for member {} in structure {} for service {} for role {}", memberToRemove, id, service, role);
             rightsService.removeRight(service, role, memberToRemove, branch, etabGroup);
         }
         return ResponseEntity.ok().build();
