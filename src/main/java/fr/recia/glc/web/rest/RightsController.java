@@ -15,11 +15,15 @@
  */
 package fr.recia.glc.web.rest;
 
+import fr.recia.glc.db.entities.structure.AStructure;
+import fr.recia.glc.db.entities.structure.Etablissement;
+import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.services.access.RightsService;
 import fr.recia.glc.web.dto.access.grouper.response.add.WsAddMemberResponse;
 import fr.recia.glc.web.dto.access.grouper.response.remove.WsDeleteMemberResponse;
 import fr.recia.glc.web.dto.access.rights.AddOrDeleteMemberRequest;
 import fr.recia.glc.web.dto.access.rights.ServiceAccess;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,28 +40,42 @@ import java.util.List;
 @RequestMapping("/api/rights")
 public class RightsController {
 
-    private final RightsService rightsService;
+    @Autowired
+    private RightsService rightsService;
+    @Autowired
+    private AStructureRepository<AStructure> aStructureRepository;
 
-    public RightsController(RightsService rightsService) {
-        this.rightsService = rightsService;
+    private String deductBranchFromStructure(AStructure aStructure){
+        final long typeStructure = aStructure.getType().getId();
+        // Collège -> 1 ranche par département
+        if(typeStructure == 8){
+            return "clg"+((Etablissement) aStructure).getUai().substring(1,3);
+        }
+        return "esco";
     }
 
-    @GetMapping("/{uai}")
-    public ResponseEntity<List<ServiceAccess>> listRights(@PathVariable String uai) {
-        // TODO : on récupère la branch et le nom de l'établissement utilisé pour les groupes grouper via un service qui requête le LDAP
-        final String branch = "clg45";
-        final String etabGroup = "FICTIF CLG 45_0450000A";
+    private String deductGroupNameFromStructure(AStructure aStructure){
+        final String etabGroupLeft = aStructure.getNom().split("\\$")[1];
+        final String etabGroupRight = ((Etablissement) aStructure).getUai();
+        return etabGroupLeft+"_"+etabGroupRight;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ServiceAccess>> listRights(@PathVariable Long id) {
+        final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
+        final String etabGroup = deductGroupNameFromStructure(aStructure);
+        final String branch = deductBranchFromStructure(aStructure);
         return ResponseEntity.ok(rightsService.getRights(branch, etabGroup));
     }
 
-    @PutMapping("/{uai}/services/{service}/roles/{role}/members")
-    public ResponseEntity<Void> updateRights(@PathVariable String uai,
+    @PutMapping("/{id}/services/{service}/roles/{role}/members")
+    public ResponseEntity<Void> updateRights(@PathVariable Long id,
                                              @PathVariable String service,
                                              @PathVariable String role,
                                              @RequestBody AddOrDeleteMemberRequest request){
-        // TODO : on récupère la branch et le nom de l'établissement utilisé pour les groupes grouper via un service qui requête le LDAP
-        final String branch = "clg45";
-        final String etabGroup = "FICTIF CLG 45_0450000A";
+        final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
+        final String etabGroup = deductGroupNameFromStructure(aStructure);
+        final String branch = deductBranchFromStructure(aStructure);
         for(String memberToAdd : request.getMembersToAdd()){
             rightsService.addRight(service, role, memberToAdd, branch, etabGroup);
         }
