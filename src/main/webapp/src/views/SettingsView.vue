@@ -19,9 +19,6 @@
 
 <template>
   <v-container>
-    <h1>Settings</h1>
+    <h1>Paramétrage de l'établissement</h1>
   </v-container>
 </template>
-
-<style scoped lang="scss">
-</style>

@@ -19,9 +19,6 @@
 
 <template>
   <v-container>
-    <h1>Access</h1>
+    <h1>Gestion des accès aux services</h1>
   </v-container>
 </template>
-
-<style scoped lang="scss">
-</style>
