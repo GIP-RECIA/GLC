@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,25 +50,21 @@ public class RightsController {
         return ResponseEntity.ok(rightsService.getRights(branch, etabGroup));
     }
 
-    @PostMapping("/{uai}/services/{service}/roles/{role}/members")
-    public ResponseEntity<WsAddMemberResponse> addRight(@PathVariable String uai,
-                                                        @PathVariable String service,
-                                                        @PathVariable String role,
-                                                        @RequestBody AddOrDeleteMemberRequest request){
+    @PutMapping("/{uai}/services/{service}/roles/{role}/members")
+    public ResponseEntity<Void> updateRights(@PathVariable String uai,
+                                             @PathVariable String service,
+                                             @PathVariable String role,
+                                             @RequestBody AddOrDeleteMemberRequest request){
         // TODO : on récupère la branch et le nom de l'établissement utilisé pour les groupes grouper via un service qui requête le LDAP
         final String branch = "clg45";
         final String etabGroup = "FICTIF CLG 45_0450000A";
-        return rightsService.addRight(service, role, request.getMember(), branch, etabGroup, request.isGroup());
+        for(String memberToAdd : request.getMembersToAdd()){
+            rightsService.addRight(service, role, memberToAdd, branch, etabGroup);
+        }
+        for(String memberToRemove : request.getMembersToRemove()){
+            rightsService.removeRight(service, role, memberToRemove, branch, etabGroup);
+        }
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{uai}/services/{service}/roles/{role}/members")
-    public ResponseEntity<WsDeleteMemberResponse> removeRight(@PathVariable String uai,
-                                                              @PathVariable String service,
-                                                              @PathVariable String role,
-                                                              @RequestBody AddOrDeleteMemberRequest request){
-        // TODO : on récupère la branch et le nom de l'établissement utilisé pour les groupes grouper via un service qui requête le LDAP
-        final String branch = "clg45";
-        final String etabGroup = "FICTIF CLG 45_0450000A";
-        return rightsService.removeRight(service, role, request.getMember(), branch, etabGroup, request.isGroup());
-    }
 }
