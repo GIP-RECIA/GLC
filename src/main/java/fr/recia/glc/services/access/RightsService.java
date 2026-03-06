@@ -96,7 +96,7 @@ public class RightsService {
                 for(String ldapMember : ldapMembers){
                     Member member;
                     // Différenciation user / groupe
-                    if(isGroup(ldapMember)){
+                    if(!isGroup(ldapMember)){
                         member = new Member(ldapMember, ldapMember,true, true);
                     } else {
                         //  Ajout des displayName pour les groupes connus
