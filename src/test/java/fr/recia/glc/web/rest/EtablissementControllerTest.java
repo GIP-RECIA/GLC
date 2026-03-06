@@ -70,7 +70,7 @@ class EtablissementControllerTest {
   @PostConstruct
   void setup() {
     GLCProperties glcProperties = new GLCProperties();
-    EtablissementController etablissementController = new EtablissementController(glcProperties);
+    EtablissementController etablissementController = new EtablissementController();
     setField(etablissementController, "etablissementRepository", etablissementRepository);
     setField(etablissementController, "fonctionRepository", fonctionRepository);
     setField(etablissementController, "aPersonneRepository", aPersonneRepository);

@@ -61,16 +61,14 @@ public class EtablissementController {
   @Autowired
   private AlertService alertService;
 
-  private final GLCProperties glcProperties;
+  @Autowired
+  private GLCProperties glcProperties;
+
   @Autowired
   private UserContextRole userContextRole;
 
   @Autowired
   private UserHolder userHolder;
-
-  public EtablissementController(GLCProperties glcProperties) {
-    this.glcProperties = glcProperties;
-  }
 
   @GetMapping()
   public ResponseEntity<List<SimpleEtablissementDto>> getEtablissements() {

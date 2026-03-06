@@ -31,4 +31,10 @@ public class Constants {
   public static final String SPRING_PROFILE_PRODUCTION = "prod";
   public static final String SPRING_PROFILE_TEST = "test";
 
+  public static final String GROUPER_SOURCEID_USER = "esco:ldap";
+  public static final String GROUPER_SOURCEID_GROUP = "g:gsa";
+  public static final String GROUPER_MEDIA_TYPE = "text/x-json";
+  public static final String GROUPER_DIRECT_MEMBERSHIP = "immediate";
+
+
 }
