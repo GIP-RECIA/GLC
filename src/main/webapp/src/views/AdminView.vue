@@ -19,9 +19,6 @@
 
 <template>
   <v-container>
-    <h1>Admin</h1>
+    <h1>Gestion des droits d'administration</h1>
   </v-container>
 </template>
-
-<style scoped lang="scss">
-</style>
