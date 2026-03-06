@@ -17,8 +17,10 @@ package fr.recia.glc.web.dto.access.rights;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AddOrDeleteMemberRequest {
-    private String member;
-    private boolean group;
+    private List<String> membersToAdd;
+    private List<String> membersToRemove;
 }

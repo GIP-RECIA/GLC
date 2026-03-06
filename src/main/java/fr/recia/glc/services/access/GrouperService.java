@@ -31,20 +31,30 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.directory.Attribute;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
+import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 @Service
 public class GrouperService {
 
     private final RestTemplate restTemplate;
     private final GrouperProperties grouperProperties;
+    private final LdapTemplate ldapTemplate;
 
-    public GrouperService(RestTemplate restTemplate, GrouperProperties grouperProperties) {
+    public GrouperService(RestTemplate restTemplate, GrouperProperties grouperProperties, LdapTemplate ldapTemplate) {
         this.restTemplate = restTemplate;
         this.grouperProperties = grouperProperties;
+        this.ldapTemplate = ldapTemplate;
     }
 
     private HttpHeaders createHeaders() {
@@ -75,33 +85,26 @@ public class GrouperService {
     }
 
     /**
-     * Lister les membres d'un groupe
-     */
-    public ResponseEntity<WsGetMembersLiteResponse> listMembers(String groupName) {
-        String encodedGroup = encodeGroup(groupName);
-        String url = grouperProperties.getBaseUrl() + "/groups/" + encodedGroup + "/members";
-        HttpEntity<Void> entity = new HttpEntity<>(createHeaders());
-        return restTemplate.exchange(url, HttpMethod.GET, entity, WsGetMembersLiteResponse.class);
+    * Lister les membres d'un groupe via une requête LDAP
+    * @return La liste des membres ou une liste vide s'il n'y a pas de membres
+    */
+    public List<String> listGroupMembers(String groupName){
+        return ldapTemplate.search(query().base("ou=groups").where("cn").is("clg45:admin:Publication_contenus:FICTIF CLG 45_0450000A:MANAGER"),
+                (AttributesMapper<List<String>>) attrs -> {
+                    List<String> members = new ArrayList<>();
+                    Attribute memberAttr = attrs.get("member");
+                    if (memberAttr != null) {
+                        NamingEnumeration<?> values = memberAttr.getAll();
+                        // Récupérer la partie intéréssante dans le cn
+                        while (values.hasMore()) {
+                            String val = values.next().toString();
+                            members.add(val.substring(val.indexOf('=')+1, val.indexOf(',')));
+                        }
+                    }
+                    return members;
+                }
+        ).stream().findFirst().orElse(List.of());
     }
-
-
-    /**
-     * Lister les membres d'un groupe en détail
-     */
-    public ResponseEntity<WsGetMembershipsResponse> listMemberships(String groupName, boolean includeSubjectNames) {
-        String encodedGroup = encodeGroup(groupName);
-        if(!includeSubjectNames){
-            String url = grouperProperties.getBaseUrl() + "/groups/" + encodedGroup + "/memberships";
-            HttpEntity<Void> entity = new HttpEntity<>(createHeaders());
-            return restTemplate.exchange(url, HttpMethod.GET, entity, WsGetMembershipsResponse.class);
-        } else {
-            String url = grouperProperties.getBaseUrl() + "/memberships";
-            WsRestGetMembershipRequestWrapper payload = new WsRestGetMembershipRequestWrapper(encodedGroup);
-            HttpEntity<?> entity = new HttpEntity<>(payload, createHeaders());
-            return restTemplate.exchange(url, HttpMethod.POST, entity, WsGetMembershipsResponse.class);
-        }
-    }
-
 
     /**
      * Ajouter un membre dans un groupe

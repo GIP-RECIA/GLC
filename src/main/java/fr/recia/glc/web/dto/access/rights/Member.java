@@ -24,4 +24,5 @@ public class Member {
     private String id;
     private String displayName;
     private boolean isUser;
+    private boolean external;
 }
