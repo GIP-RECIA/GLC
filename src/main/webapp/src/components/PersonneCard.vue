@@ -68,7 +68,8 @@ const data = computed<{
           <v-icon
             v-bind="activatorProps"
             :icon="data.icon"
-            :color="data.etat.color" class="me-2"
+            :color="data.etat.color"
+            class="me-2"
           />
         </template>
       </v-tooltip>
