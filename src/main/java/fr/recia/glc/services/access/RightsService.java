@@ -67,7 +67,7 @@ public class RightsService {
     }
 
     private boolean isGroup(String memberName){
-        return memberName.startsWith("F") && memberName.length()==8;
+        return !(memberName.startsWith("F") && memberName.length()==8);
     }
 
     /**
