@@ -18,11 +18,13 @@ package fr.recia.glc.web.dto.access.grouper.request.memberships;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class WsRestGetMembershipRequestWrapper {
     @JsonProperty("WsRestGetMembershipsRequest")
     private WsRestGetMembershipRequest wsRestGetMembershipsRequest;
-    public WsRestGetMembershipRequestWrapper(String groupName) {
-        this.wsRestGetMembershipsRequest = new WsRestGetMembershipRequest(groupName);
+    public WsRestGetMembershipRequestWrapper(String groupName, String memberFilter, String includeSubjectDetail, List<String> sourceIds) {
+        this.wsRestGetMembershipsRequest = new WsRestGetMembershipRequest(groupName, memberFilter, includeSubjectDetail, sourceIds);
     }
 }

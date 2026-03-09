@@ -34,7 +34,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class GrouperService {
@@ -82,17 +84,23 @@ public class GrouperService {
     /**
      * Lister les membres d'un groupe en détail
      */
-    public ResponseEntity<WsGetMembershipsResponse> listMemberships(String groupName, boolean includeSubjectNames) {
-        if(!includeSubjectNames){
-            String url = grouperProperties.getBaseUrl() + "/groups/" + groupName + "/memberships";
-            HttpEntity<Void> entity = new HttpEntity<>(createHeaders());
-            return restTemplate.exchange(url, HttpMethod.GET, entity, WsGetMembershipsResponse.class);
-        } else {
-            String url = grouperProperties.getBaseUrl() + "/memberships";
-            WsRestGetMembershipRequestWrapper payload = new WsRestGetMembershipRequestWrapper(groupName);
-            HttpEntity<?> entity = new HttpEntity<>(payload, createHeaders());
-            return restTemplate.exchange(url, HttpMethod.POST, entity, WsGetMembershipsResponse.class);
+    public ResponseEntity<WsGetMembershipsResponse> listMemberships(String groupName, boolean includeIndirect, boolean includeSubjectNames, boolean includeUsers) {
+        String includeSubjectDetail = "F";
+        if(includeSubjectNames){
+            includeSubjectDetail = "T";
         }
+        String memberFilter = "Immediate";
+        if(includeIndirect){
+            memberFilter = "All";
+        }
+        List<String> sourceIds = new ArrayList<>(List.of("g:gsa"));
+        if(includeUsers){
+            sourceIds.add("esco:ldap");
+        }
+        String url = grouperProperties.getBaseUrl() + "/memberships";
+        WsRestGetMembershipRequestWrapper payload = new WsRestGetMembershipRequestWrapper(groupName, memberFilter, includeSubjectDetail, sourceIds);
+        HttpEntity<?> entity = new HttpEntity<>(payload, createHeaders());
+        return restTemplate.exchange(url, HttpMethod.POST, entity, WsGetMembershipsResponse.class);
     }
 
     /**
