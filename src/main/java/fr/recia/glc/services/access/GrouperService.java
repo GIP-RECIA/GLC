@@ -23,7 +23,6 @@ import fr.recia.glc.web.dto.access.grouper.request.find.WsRestFindGroupsRequestW
 import fr.recia.glc.web.dto.access.grouper.request.memberships.WsRestGetMembershipRequestWrapper;
 import fr.recia.glc.web.dto.access.grouper.response.add.WsAddMemberResponse;
 import fr.recia.glc.web.dto.access.grouper.response.find.WsFindGroupsResponse;
-import fr.recia.glc.web.dto.access.grouper.response.members.WsGetMembersLiteResponse;
 import fr.recia.glc.web.dto.access.grouper.response.memberships.WsGetMembershipsResponse;
 import fr.recia.glc.web.dto.access.grouper.response.remove.WsDeleteMemberResponse;
 import org.springframework.http.HttpEntity;
@@ -70,16 +69,6 @@ public class GrouperService {
         }
         return null;
     }
-
-    /**
-     * Lister les membres d'un groupe
-     */
-    public ResponseEntity<WsGetMembersLiteResponse> listMembers(String groupName) {
-        String url = grouperProperties.getBaseUrl() + "/groups/" + groupName + "/members";
-        HttpEntity<Void> entity = new HttpEntity<>(createHeaders());
-        return restTemplate.exchange(url, HttpMethod.GET, entity, WsGetMembersLiteResponse.class);
-    }
-
 
     /**
      * Lister les membres d'un groupe en détail

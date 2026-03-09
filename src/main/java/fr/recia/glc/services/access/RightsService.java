@@ -29,6 +29,7 @@ import fr.recia.glc.web.dto.access.grouper.response.remove.WsDeleteMemberRespons
 import fr.recia.glc.web.dto.access.rights.Member;
 import fr.recia.glc.web.dto.access.rights.Right;
 import fr.recia.glc.web.dto.access.rights.ServiceAccess;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class RightsService {
 
     private final RightsProperties rightsProperties;
@@ -90,27 +92,20 @@ public class RightsService {
                 WsGetMembershipsResponse wsGetMembershipsResponse = grouperService.listMemberships(GroupPathGenerator.groupPathFromTemplate(
                         roleProperties.getTargetGroup(), branch, etabGroup), showExternal, true, true).getBody();
                 List<WsSubject> wsSubjectList = wsGetMembershipsResponse.getResults().getWsSubjects();
-                List<WsMembership> wsMembershipList = wsGetMembershipsResponse.getResults().getWsMemberships();
-                // TODO : améliorer les performances ? double boucle for
+                log.info("Subjets retrieved for group {} are : {}", roleProperties.getTargetGroup(), wsSubjectList);
                 for(WsSubject wsSubject : wsSubjectList){
-                    for(WsMembership wsMembership : wsMembershipList){
-                        if(wsSubject.getId().equals(wsMembership.getSubjectId())){
-                            if(wsMembership.getMembershipType().equals(Constants.GROUPER_DIRECT_MEMBERSHIP)){
-                                boolean isUser = !wsSubject.getSourceId().equals(Constants.GROUPER_SOURCEID_GROUP);
-                                Member member;
-                                if(isUser){
-                                    member = new Member(wsSubject.getId(), wsSubject.getName(), true, true);
-                                } else {
-                                    if(invertedTemplateCache.containsKey(wsSubject.getName())){
-                                        member = new Member(wsSubject.getName(), rightsProperties.getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())),false, false);
-                                    } else {
-                                        member = new Member(wsSubject.getName(), wsSubject.getName(),false, true);
-                                    }
-                                }
-                                currentMembers.add(member);
-                            }
+                    boolean isUser = !wsSubject.getSourceId().equals(Constants.GROUPER_SOURCEID_GROUP);
+                    Member member;
+                    if(isUser){
+                        member = new Member(wsSubject.getId(), wsSubject.getName(), true, true);
+                    } else {
+                        if(invertedTemplateCache.containsKey(wsSubject.getName())){
+                            member = new Member(wsSubject.getName(), rightsProperties.getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())),false, false);
+                        } else {
+                            member = new Member(wsSubject.getName(), wsSubject.getName(),false, true);
                         }
                     }
+                    currentMembers.add(member);
 
                 }
                 right.setCurrentMembers(currentMembers);
