@@ -133,7 +133,8 @@ public class RightsService {
         // Le défaut de ce sytème de vérification c'est qu'il faut les avoir chargé dans le cache d'abord (donc avec un GET) mais normalement
         // on est pas censé faire des POST directement si on passe par l'UI
         if(isGroup(memberToAdd)){
-            if(!rightsProperties.getServices().get(service).get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToAdd))){
+            if(!rightsProperties.getServices().get(service).get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToAdd))
+                    && !rightsProperties.getServices().get(service).get(role).getMandatoryGroups().contains(invertedTemplateCache.get(memberToAdd))){
                 throw new UnauthorizedGroupModificationException("Can't add member "+memberToAdd+" for role "+role+" in service "+service);
             }
 
