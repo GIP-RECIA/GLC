@@ -24,10 +24,15 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfiguration {
 
     @Bean
-    public RestTemplate restTemplate(MappingJackson2HttpMessageConverter jacksonMessageConverter) {
+    public RestTemplate restTemplateGrouper(MappingJackson2HttpMessageConverter jacksonMessageConverter) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(0, jacksonMessageConverter);
         return restTemplate;
+    }
+
+    @Bean
+    public RestTemplate restTemplateRestriction() {
+        return new RestTemplate();
     }
 
 }

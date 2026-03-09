@@ -43,8 +43,8 @@ public class GrouperService {
     private final RestTemplate restTemplate;
     private final GrouperProperties grouperProperties;
 
-    public GrouperService(RestTemplate restTemplate, GrouperProperties grouperProperties) {
-        this.restTemplate = restTemplate;
+    public GrouperService(RestTemplate restTemplateGrouper, GrouperProperties grouperProperties) {
+        this.restTemplate = restTemplateGrouper;
         this.grouperProperties = grouperProperties;
     }
 

@@ -50,7 +50,7 @@ public class RightsService {
     private final RightsProperties rightsProperties;
     private final GrouperService grouperService;
     private final Map<String, String> invertedTemplateCache;
-    private APersonneRepository<APersonne> aPersonneRepository;
+    private final APersonneRepository<APersonne> aPersonneRepository;
 
     public RightsService(RightsProperties rightsProperties, GrouperService grouperService, APersonneRepository<APersonne> aPersonneRepository){
         this.rightsProperties = rightsProperties;
