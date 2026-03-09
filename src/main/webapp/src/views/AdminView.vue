@@ -15,10 +15,24 @@
 -->
 
 <script setup lang="ts">
+import type { ServiceRights } from '@/types/index.ts'
+import { onMounted, ref } from 'vue'
+import ServicesRightsLayout from '@/components/layouts/ServicesRightsLayout.vue'
+import { getRights } from '@/services/api/index.ts'
+
+const data = ref<ServiceRights[]>()
+
+onMounted(async () => {
+  data.value = await getRights(28)
+})
 </script>
 
 <template>
   <v-container>
     <h1>Gestion des droits d'administration</h1>
+
+    <ServicesRightsLayout
+      :services-rights="data"
+    />
   </v-container>
 </template>
