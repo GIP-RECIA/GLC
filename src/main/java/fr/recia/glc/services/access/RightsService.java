@@ -88,7 +88,7 @@ public class RightsService {
                 // Ajout des membres déjà présents via grouper
                 List<Member> currentMembers = new ArrayList<>();
                 WsGetMembershipsResponse wsGetMembershipsResponse = grouperService.listMemberships(GroupPathGenerator.groupPathFromTemplate(
-                        roleProperties.getTargetGroup(), branch, etabGroup), true).getBody();
+                        roleProperties.getTargetGroup(), branch, etabGroup), showExternal, true, true).getBody();
                 List<WsSubject> wsSubjectList = wsGetMembershipsResponse.getResults().getWsSubjects();
                 List<WsMembership> wsMembershipList = wsGetMembershipsResponse.getResults().getWsMemberships();
                 // TODO : améliorer les performances ? double boucle for
@@ -116,7 +116,11 @@ public class RightsService {
                 right.setCurrentMembers(currentMembers);
                 right.setAllowPeople(rolesByService.get(role).isAllowPeople());
                 right.setAdmin(rolesByService.get(role).isAdmin());
-                rights.add(right);
+                if(right.isAdmin() && !showAdmin){
+
+                } else {
+                    rights.add(right);
+                }
             }
             serviceAccess.setRights(rights);
             serviceAccessList.add(serviceAccess);

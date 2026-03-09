@@ -25,9 +25,11 @@ public class WsRestGetMembershipRequest {
     private List<WsGroupLookup> wsGroupLookups;
     private String memberFilter;
     private String includeSubjectDetail;
-    public WsRestGetMembershipRequest(String subjectId) {
+    private List<String> sourceIds;
+    public WsRestGetMembershipRequest(String subjectId, String memberFilter, String includeSubjectDetail, List<String> sourceIds) {
         this.wsGroupLookups = List.of(new WsGroupLookup(subjectId));
-        this.memberFilter = "All";
-        this.includeSubjectDetail = "T";
+        this.memberFilter = memberFilter;
+        this.includeSubjectDetail = includeSubjectDetail;
+        this.sourceIds = sourceIds;
     }
 }
