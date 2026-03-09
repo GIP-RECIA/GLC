@@ -15,9 +15,13 @@
  */
 package fr.recia.glc.services.access;
 
+import com.querydsl.core.types.Predicate;
 import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.configuration.bean.RightsProperties;
 import fr.recia.glc.configuration.bean.RoleProperties;
+import fr.recia.glc.db.entities.personne.APersonne;
+import fr.recia.glc.db.entities.personne.QAPersonne;
+import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.services.exceptions.UnauthorizedGroupModificationException;
 import fr.recia.glc.services.exceptions.UnauthorizedPeopleModificationException;
 import fr.recia.glc.services.helpers.GroupPathGenerator;
@@ -30,6 +34,7 @@ import fr.recia.glc.web.dto.access.rights.Member;
 import fr.recia.glc.web.dto.access.rights.Right;
 import fr.recia.glc.web.dto.access.rights.ServiceAccess;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +50,12 @@ public class RightsService {
     private final RightsProperties rightsProperties;
     private final GrouperService grouperService;
     private final Map<String, String> invertedTemplateCache;
+    private APersonneRepository<APersonne> aPersonneRepository;
 
-    public RightsService(RightsProperties rightsProperties, GrouperService grouperService){
+    public RightsService(RightsProperties rightsProperties, GrouperService grouperService, APersonneRepository<APersonne> aPersonneRepository){
         this.rightsProperties = rightsProperties;
         this.grouperService = grouperService;
+        this.aPersonneRepository = aPersonneRepository;
         this.invertedTemplateCache = new HashMap<>();
     }
 
@@ -97,7 +104,9 @@ public class RightsService {
                     boolean isUser = !wsSubject.getSourceId().equals(Constants.GROUPER_SOURCEID_GROUP);
                     Member member;
                     if(isUser){
-                        member = new Member(wsSubject.getId(), wsSubject.getName(), true, true);
+                        // TODO : faire une requête pour toutes les personnes d'un coup pour des raisons de performance
+                        Predicate predicate = QAPersonne.aPersonne.uid.eq(wsSubject.getId());
+                        member = new Member(wsSubject.getId(), aPersonneRepository.findOne(predicate).get().getDisplayName(), true, true);
                     } else {
                         if(invertedTemplateCache.containsKey(wsSubject.getName())){
                             member = new Member(wsSubject.getName(), rightsProperties.getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())),false, false);
