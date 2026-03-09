@@ -15,12 +15,16 @@
  */
 package fr.recia.glc.services.access;
 
+import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.configuration.bean.RightsProperties;
 import fr.recia.glc.configuration.bean.RoleProperties;
 import fr.recia.glc.services.exceptions.UnauthorizedGroupModificationException;
 import fr.recia.glc.services.exceptions.UnauthorizedPeopleModificationException;
 import fr.recia.glc.services.helpers.GroupPathGenerator;
+import fr.recia.glc.web.dto.access.grouper.response.WsMembership;
+import fr.recia.glc.web.dto.access.grouper.response.WsSubject;
 import fr.recia.glc.web.dto.access.grouper.response.add.WsAddMemberResponse;
+import fr.recia.glc.web.dto.access.grouper.response.memberships.WsGetMembershipsResponse;
 import fr.recia.glc.web.dto.access.grouper.response.remove.WsDeleteMemberResponse;
 import fr.recia.glc.web.dto.access.rights.Member;
 import fr.recia.glc.web.dto.access.rights.Right;
@@ -57,15 +61,6 @@ public class RightsService {
         return groups;
     }
 
-    private boolean isNameInGroupOfMembers(List<Member> group, String name){
-        for(Member member: group){
-            if(member.getId().equals(name)){
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean isGroup(String memberName){
         return !(memberName.startsWith("F") && memberName.length()==8);
     }
@@ -92,39 +87,36 @@ public class RightsService {
                 right.setMandatoryGroups(mandatoryGroups);
                 // Ajout des membres déjà présents via grouper
                 List<Member> currentMembers = new ArrayList<>();
-                List<String> ldapMembers = grouperService.listGroupMembers(GroupPathGenerator.groupPathFromTemplate(roleProperties.getTargetGroup(), branch, etabGroup));
-                for(String ldapMember : ldapMembers){
-                    Member member;
-                    // Différenciation user / groupe
-                    if(!isGroup(ldapMember)){
-                        member = new Member(ldapMember, ldapMember,true, true);
-                    } else {
-                        //  Ajout des displayName pour les groupes connus
-                        boolean external = false;
-                        if(!isNameInGroupOfMembers(possibleGroups, ldapMember) && !isNameInGroupOfMembers(mandatoryGroups, ldapMember)){
-                            external = true;
+                WsGetMembershipsResponse wsGetMembershipsResponse = grouperService.listMemberships(GroupPathGenerator.groupPathFromTemplate(
+                        roleProperties.getTargetGroup(), branch, etabGroup), true).getBody();
+                List<WsSubject> wsSubjectList = wsGetMembershipsResponse.getResults().getWsSubjects();
+                List<WsMembership> wsMembershipList = wsGetMembershipsResponse.getResults().getWsMemberships();
+                // TODO : améliorer les performances ? double boucle for
+                for(WsSubject wsSubject : wsSubjectList){
+                    for(WsMembership wsMembership : wsMembershipList){
+                        if(wsSubject.getId().equals(wsMembership.getSubjectId())){
+                            if(wsMembership.getMembershipType().equals(Constants.GROUPER_DIRECT_MEMBERSHIP)){
+                                boolean isUser = !wsSubject.getSourceId().equals(Constants.GROUPER_SOURCEID_GROUP);
+                                Member member;
+                                if(isUser){
+                                    member = new Member(wsSubject.getId(), wsSubject.getName(), true, true);
+                                } else {
+                                    if(invertedTemplateCache.containsKey(wsSubject.getName())){
+                                        member = new Member(wsSubject.getName(), rightsProperties.getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())),false, false);
+                                    } else {
+                                        member = new Member(wsSubject.getName(), wsSubject.getName(),false, true);
+                                    }
+                                }
+                                currentMembers.add(member);
+                            }
                         }
-                        if(invertedTemplateCache.containsKey(ldapMember)){
-                            member = new Member(ldapMember, rightsProperties.getDeclaredGroupsMap().get(invertedTemplateCache.get(ldapMember)),false, external);
-                        } else {
-                            member = new Member(ldapMember, ldapMember,false, external);
-                        }
-                    }
-                    if(member.isExternal() && !showExternal){
-
-                    } else {
-                        currentMembers.add(member);
                     }
 
                 }
                 right.setCurrentMembers(currentMembers);
                 right.setAllowPeople(rolesByService.get(role).isAllowPeople());
                 right.setAdmin(rolesByService.get(role).isAdmin());
-                if(right.isAdmin() && !showAdmin){
-
-                } else {
-                    rights.add(right);
-                }
+                rights.add(right);
             }
             serviceAccess.setRights(rights);
             serviceAccessList.add(serviceAccess);
