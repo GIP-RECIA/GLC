@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+@use 'ress/dist/ress.min.css';
 @use '@gip-recia/ui' as *;
 @use 'vuetify/settings' with (
+  $reset: false,
   $color-pack: false,
   $utilities: false
 );
