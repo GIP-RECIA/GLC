@@ -59,7 +59,11 @@ public class RightsController {
             branch = "ef2s";
         } else {
             if(aStructure.getCleJointure().getSource().equals("LA-CENTRE")){
-                branch = "agri";
+                if(typeStructure == 39){
+                    branch = "cfa";
+                } else {
+                    branch = "agri";
+                }
             } else {
                 branch = "esco";
             }
