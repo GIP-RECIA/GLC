@@ -18,7 +18,7 @@ import type { ToastContainerOptions } from 'vue3-toastify'
 import { createApp } from 'vue'
 import Vue3Toasity from 'vue3-toastify'
 import App from '@/App.vue'
-import { register as registerDirectives } from '@/directives'
+import { register as registerDirectives } from '@/directives/index.ts'
 import { register as registerFontAwsome } from '@/plugins/fontawesome.ts'
 import i18n from '@/plugins/i18n.ts'
 import pinia from '@/plugins/pinia.ts'
@@ -38,7 +38,14 @@ app.use(i18n)
 app.use(pinia)
 app.use(vuetify)
 app.use(router)
-app.use(Vue3Toasity, { limit: 0, newestOnTop: true, theme: 'colored' } as ToastContainerOptions)
+app.use(
+  Vue3Toasity,
+  {
+    limit: 0,
+    newestOnTop: true,
+    theme: 'colored',
+  } as ToastContainerOptions,
+)
 
 app.mount('#app')
 
