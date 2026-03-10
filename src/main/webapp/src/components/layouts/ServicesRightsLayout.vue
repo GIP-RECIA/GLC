@@ -24,6 +24,7 @@ import ManageServiceRightsDialog from '../dialogs/ManageServiceRightsDialog.vue'
 
 defineProps<{
   servicesRights: ServiceRights[] | undefined
+  loadingState: NonNullable<'UNLOADED' | 'LOADING' | 'LOADED' | 'ERROR'>
 }>()
 
 const emit = defineEmits<{
@@ -77,24 +78,40 @@ async function save(
 </script>
 
 <template>
-  <div class="services-grid">
-    <div
-      v-for="serviceRights in servicesRights"
-      :key="serviceRights.service"
-    >
-      <ServiceRightsCard
-        :service-rights="serviceRights"
-        @edit="edit"
-      />
+  <template v-if="loadingState !== 'ERROR'">
+    <div class="services-grid">
+      <template v-if="loadingState === 'LOADED'">
+        <div
+          v-for="serviceRights in servicesRights"
+          :key="serviceRights.service"
+        >
+          <ServiceRightsCard
+            :service-rights="serviceRights"
+            @edit="edit"
+          />
+        </div>
+      </template>
+      <template v-else-if="loadingState === 'LOADING'">
+        <div
+          v-for="skeleton in [1, 2, 3]"
+          :key="skeleton"
+          class="skeleton"
+        />
+      </template>
     </div>
-  </div>
 
-  <ManageServiceRightsDialog
-    v-model="dialogState"
-    :service-right="serviceRight"
-    @update:model-value="dialogState = false"
-    @save="save"
-  />
+    <ManageServiceRightsDialog
+      v-model="dialogState"
+      :service-right="serviceRight"
+      @update:model-value="dialogState = false"
+      @save="save"
+    />
+  </template>
+  <div v-else class="error">
+    <p>
+      Une erreur s'est produite lors du chargement
+    </p>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -104,6 +121,32 @@ async function save(
 .services-grid {
   display: grid;
   gap: 24px;
+
+  > .skeleton {
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #e9e9e9 30%, #f6f6f6 50%, #e9e9e9 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+  }
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > svg {
+    font-size: 38px;
+    margin-bottom: 14px;
+    opacity: 0.1;
+  }
+
+  > p {
+    white-space-collapse: preserve-breaks;
+  }
 }
 
 @media (width >= map.get($grid-breakpoints, md)) {
