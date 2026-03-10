@@ -71,15 +71,6 @@ export default ({ mode }: ConfigEnv) => {
         },
       },
     },
-    build: {
-      rollupOptions: {
-        output: {
-          assetFileNames: 'assets/[name].[ext]',
-          entryFileNames: 'assets/[name].js',
-          chunkFileNames: 'assets/[name].js',
-        },
-      },
-    },
     define: {
       __APP_NAME__: appName,
       __APP_SLUG__: appSlug,
