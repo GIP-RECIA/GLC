@@ -15,9 +15,11 @@
  */
 package fr.recia.glc.web.dto.access.grouper.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WsMembership {
     private String createTime;
     private String enabled;
