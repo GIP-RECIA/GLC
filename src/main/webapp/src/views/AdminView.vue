@@ -16,14 +16,29 @@
 
 <script setup lang="ts">
 import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
-import { onMounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { ref, watchEffect } from 'vue'
 import ServicesRightsLayout from '@/components/layouts/ServicesRightsLayout.vue'
 import { getRights } from '@/services/api/index.ts'
+import { useStructureStore } from '@/stores'
+
+const structureStore = useStructureStore()
+structureStore.init()
+const { etabs } = storeToRefs(structureStore)
+
+const currentEtab = ref<number>()
 
 const data = ref<ServiceRights[]>()
+const dataState = ref<'UNLOADED' | 'LOADING' | 'LOADED' | 'ERROR'>('UNLOADED')
 
-onMounted(async () => {
-  data.value = await getRights(28)
+watchEffect(async (): Promise<void> => {
+  if (currentEtab.value === undefined)
+    return
+
+  dataState.value = 'LOADING'
+  const response = await getRights(currentEtab.value)
+  data.value = response
+  dataState.value = response !== undefined ? 'LOADED' : 'ERROR'
 })
 
 function update(
@@ -64,8 +79,23 @@ function update(
   <v-container>
     <h1>Gestion des droits d'administration</h1>
 
+    <label for="tabs">Etablissement</label>
+    <select
+      id="tabs"
+      v-model="currentEtab"
+    >
+      <option
+        v-for="etab in etabs"
+        :key="etab.id"
+        :value="etab.id"
+      >
+        {{ etab.nom }} - {{ etab.type }} {{ etab.uai }}
+      </option>
+    </select>
+
     <ServicesRightsLayout
       :services-rights="data"
+      :loading-state="dataState"
       @update="update"
     />
   </v-container>

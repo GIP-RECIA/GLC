@@ -19,6 +19,7 @@
 @use '@gip-recia/ui/core' as *;
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
+@use '@gip-recia/ui/global';
 @use '@gip-recia/ui/components/buttons';
 @use '@gip-recia/ui/components/tags';
 
@@ -88,4 +89,14 @@
 .tab-bar-enter-from,
 .tab-bar-leave-to {
   opacity: 0;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
 }
