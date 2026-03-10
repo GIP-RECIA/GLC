@@ -103,7 +103,6 @@ const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true)
       variant="solo"
       rounded
       clearable
-      flat
       hide-details
       class="mb-8"
     >
@@ -128,7 +127,6 @@ const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true)
           params: { structureId: etablissement.id },
         }"
         class="w-100"
-        flat
       >
         <v-card-text>
           {{ etablissement.nom }}

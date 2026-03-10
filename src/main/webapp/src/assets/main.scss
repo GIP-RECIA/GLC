@@ -15,12 +15,32 @@
  */
 
 @use 'ress/dist/ress.min.css';
-@use '@gip-recia/ui' as *;
+
+@use '@gip-recia/ui/core' as *;
+@use '@gip-recia/ui/functions' as *;
+@use '@gip-recia/ui/mixins' as *;
+@use '@gip-recia/ui/components/buttons';
+@use '@gip-recia/ui/components/tags';
+
 @use 'vuetify/settings' with (
   $reset: false,
   $color-pack: false,
   $utilities: false
 );
+
+.v-card--variant-elevated.v-card,
+.v-expansion-panel__shadow {
+  &.elevation-0 {
+    box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1) !important;
+  }
+}
+
+.v-field--variant-solo,
+.v-field--variant-solo-filled {
+  &:not(.v-field--flat) {
+    box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1) !important;
+  }
+}
 
 .app-container {
   height: 100vh;

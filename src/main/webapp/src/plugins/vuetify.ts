@@ -28,9 +28,6 @@ import i18n from './i18n.ts'
 const themes: Record<string, ThemeDefinition> = {
   [Theme.light]: {
     dark: false,
-    colors: {
-      background: '#eeeeee',
-    },
   },
   [Theme.dark]: {
     dark: true,
@@ -63,6 +60,7 @@ export default createVuetify({
   defaults: {
     global: {
       ripple: false,
+      elevation: 0,
     },
   },
 })

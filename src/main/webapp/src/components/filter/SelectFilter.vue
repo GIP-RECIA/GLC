@@ -34,7 +34,6 @@ const modelValue = defineModel<any[]>()
     variant="solo"
     density="compact"
     prepend-inner-icon="fas fa-filter"
-    flat
     chips
     multiple
     hide-details

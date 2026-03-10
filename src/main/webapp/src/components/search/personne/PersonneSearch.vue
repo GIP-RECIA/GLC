@@ -143,7 +143,6 @@ function filterFromSource(
       clearable
       hide-details
       return-object
-      flat
       @update:search="filterItems"
     >
       <template #chip="{ props: chipProps, item }">

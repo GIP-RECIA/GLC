@@ -69,7 +69,6 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
     <v-card
       v-if="currentEtab"
       v-dev
-      flat
     >
       <v-card-text class="info-container">
         <ReadonlyData
@@ -153,7 +152,6 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
     <v-expansion-panels v-model="panel">
       <v-expansion-panel
         :value="DashboardPanel.DeletingAccounts"
-        :elevation="0"
         rounded="lg"
       >
         <v-expansion-panel-title>
@@ -185,7 +183,6 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
 
       <v-expansion-panel
         :value="DashboardPanel.DeletedAccounts"
-        :elevation="0"
         rounded="lg"
       >
         <v-expansion-panel-title>
@@ -217,7 +214,6 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
 
       <v-expansion-panel
         :value="DashboardPanel.WithoutFunctions"
-        :elevation="0"
         rounded="lg"
       >
         <v-expansion-panel-title>
