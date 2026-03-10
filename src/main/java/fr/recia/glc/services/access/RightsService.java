@@ -85,45 +85,48 @@ public class RightsService {
             List<Right> rights = new ArrayList<>();
             final Map<String, RoleProperties> rolesByService = rightsProperties.getServices().get(service);
             for(String role : rolesByService.keySet()){
-                final RoleProperties roleProperties = rolesByService.get(role);
-                Right right = new Right();
-                right.setDescription(roleProperties.getDescription());
-                right.setRole(role);
-                // Ajout des groupes par configuration
-                List<Member> possibleGroups = new ArrayList<>(getGroupsFullPathAndCache(roleProperties.getPossibleGroups(), branch, etabGroup));
-                right.setPossibleGroups(possibleGroups);
-                List<Member> mandatoryGroups = new ArrayList<>(getGroupsFullPathAndCache(roleProperties.getMandatoryGroups(), branch, etabGroup));
-                right.setMandatoryGroups(mandatoryGroups);
-                // Ajout des membres déjà présents via grouper
-                List<Member> currentMembers = new ArrayList<>();
-                WsGetMembershipsResponse wsGetMembershipsResponse = grouperService.listMemberships(GroupPathGenerator.groupPathFromTemplate(
-                        roleProperties.getTargetGroup(), branch, etabGroup), showExternal, true, true).getBody();
-                List<WsSubject> wsSubjectList = wsGetMembershipsResponse.getResults().getWsSubjects();
-                log.info("Subjets retrieved for group {} are : {}", roleProperties.getTargetGroup(), wsSubjectList);
-                for(WsSubject wsSubject : wsSubjectList){
-                    boolean isUser = !wsSubject.getSourceId().equals(Constants.GROUPER_SOURCEID_GROUP);
-                    Member member;
-                    if(isUser){
-                        // TODO : faire une requête pour toutes les personnes d'un coup pour des raisons de performance
-                        Predicate predicate = QAPersonne.aPersonne.uid.eq(wsSubject.getId());
-                        member = new Member(wsSubject.getId(), aPersonneRepository.findOne(predicate).get().getDisplayName(), true, true);
-                    } else {
-                        if(invertedTemplateCache.containsKey(wsSubject.getName())){
-                            member = new Member(wsSubject.getName(), rightsProperties.getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())),false, false);
+                try{
+                    final RoleProperties roleProperties = rolesByService.get(role);
+                    Right right = new Right();
+                    right.setDescription(roleProperties.getDescription());
+                    right.setRole(role);
+                    // Ajout des groupes par configuration
+                    List<Member> possibleGroups = new ArrayList<>(getGroupsFullPathAndCache(roleProperties.getPossibleGroups(), branch, etabGroup));
+                    right.setPossibleGroups(possibleGroups);
+                    List<Member> mandatoryGroups = new ArrayList<>(getGroupsFullPathAndCache(roleProperties.getMandatoryGroups(), branch, etabGroup));
+                    right.setMandatoryGroups(mandatoryGroups);
+                    // Ajout des membres déjà présents via grouper
+                    List<Member> currentMembers = new ArrayList<>();
+                    WsGetMembershipsResponse wsGetMembershipsResponse = grouperService.listMemberships(GroupPathGenerator.groupPathFromTemplate(
+                            roleProperties.getTargetGroup(), branch, etabGroup), showExternal, true, true).getBody();
+                    List<WsSubject> wsSubjectList = wsGetMembershipsResponse.getResults().getWsSubjects();
+                    log.info("Subjets retrieved for group {} are : {}", roleProperties.getTargetGroup(), wsSubjectList);
+                    for(WsSubject wsSubject : wsSubjectList){
+                        boolean isUser = !wsSubject.getSourceId().equals(Constants.GROUPER_SOURCEID_GROUP);
+                        Member member;
+                        if(isUser){
+                            // TODO : faire une requête pour toutes les personnes d'un coup pour des raisons de performance
+                            Predicate predicate = QAPersonne.aPersonne.uid.eq(wsSubject.getId());
+                            member = new Member(wsSubject.getId(), aPersonneRepository.findOne(predicate).get().getDisplayName(), true, true);
                         } else {
-                            member = new Member(wsSubject.getName(), wsSubject.getName(),false, true);
+                            if(invertedTemplateCache.containsKey(wsSubject.getName())){
+                                member = new Member(wsSubject.getName(), rightsProperties.getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())),false, false);
+                            } else {
+                                member = new Member(wsSubject.getName(), wsSubject.getName(),false, true);
+                            }
                         }
+                        currentMembers.add(member);
                     }
-                    currentMembers.add(member);
+                    right.setCurrentMembers(currentMembers);
+                    right.setAllowPeople(rolesByService.get(role).isAllowPeople());
+                    right.setAdmin(rolesByService.get(role).isAdmin());
+                    if(right.isAdmin() && !showAdmin){
 
-                }
-                right.setCurrentMembers(currentMembers);
-                right.setAllowPeople(rolesByService.get(role).isAllowPeople());
-                right.setAdmin(rolesByService.get(role).isAdmin());
-                if(right.isAdmin() && !showAdmin){
-
-                } else {
-                    rights.add(right);
+                    } else {
+                        rights.add(right);
+                    }
+                } catch (Exception e){
+                    log.warn("Could not add right because grouper returned an error", e);
                 }
             }
             serviceAccess.setRights(rights);
