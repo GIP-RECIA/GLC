@@ -60,4 +60,9 @@ export default createVuetify({
       en: enUS,
     },
   },
+  defaults: {
+    global: {
+      ripple: false,
+    },
+  },
 })
