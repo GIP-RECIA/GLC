@@ -148,7 +148,6 @@ onBeforeMount((): void => {
       class="w-100"
       hide-details
       required
-      flat
     />
     <v-autocomplete
       v-model="form.discipline"
@@ -162,7 +161,6 @@ onBeforeMount((): void => {
       class="w-100"
       hide-details
       required
-      flat
     />
     <v-text-field
       v-model="form.date"
@@ -172,7 +170,6 @@ onBeforeMount((): void => {
       variant="solo-filled"
       hide-details
       required
-      flat
     />
   </div>
 </template>

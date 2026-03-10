@@ -28,7 +28,7 @@ const props = withDefaults(
     variant?: 'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain'
   }>(),
   {
-    variant: 'flat',
+    variant: 'elevated',
   },
 )
 

@@ -70,7 +70,7 @@ const itemsPerPage = computed<number>(() => {
       <PersonneCard
         v-for="personne in pageItems"
         :key="personne.id"
-        variant="flat"
+        variant="elevated"
         :personne="personne"
       />
     </div>

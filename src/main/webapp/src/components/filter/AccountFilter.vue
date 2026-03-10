@@ -172,7 +172,7 @@ watch(
 </script>
 
 <template>
-  <v-card flat>
+  <v-card>
     <v-card-text>
       <v-text-field
         v-model="filters.search"

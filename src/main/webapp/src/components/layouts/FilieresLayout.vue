@@ -75,7 +75,6 @@ const filteredFilieres = computed<Filiere[]>(() => {
               ? discipline.disciplinePoste
               : ''
           "
-          flat
           min-height="100%"
         >
           <v-card-text>
