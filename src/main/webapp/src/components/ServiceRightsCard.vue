@@ -101,10 +101,6 @@ defineEmits<{
         flex-wrap: wrap;
         gap: 7px 8px;
         padding-bottom: 16px;
-
-        > li {
-          background-color: var(--#{$prefix}primary);
-        }
       }
 
       > footer {
