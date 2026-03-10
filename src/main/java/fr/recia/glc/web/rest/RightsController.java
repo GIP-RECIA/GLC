@@ -51,10 +51,15 @@ public class RightsController {
         // Collège -> 1 branche par département
         if(typeStructure == 8){
             branch = "clg"+((Etablissement) aStructure).getUai().substring(1,3);
+        // Traitements pour le reste des structures
         } else if(typeStructure == 11) {
             branch = "cfa";
         } else {
-            branch = "esco";
+            if(aStructure.getCleJointure().getSource().equals("LA-CENTRE")){
+                branch = "agri";
+            } else {
+                branch = "esco";
+            }
         }
         log.debug("Branch for structure {} is {}", aStructure.getId(), branch);
         return branch;
