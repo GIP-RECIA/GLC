@@ -44,6 +44,7 @@ public class RightsController {
     @Autowired
     private AStructureRepository<AStructure> aStructureRepository;
 
+    // TODO : faire plus propre pour déduire la branche
     private String deductBranchFromStructure(AStructure aStructure){
         log.debug("Retrieving branch for structure {}", aStructure.getId());
         String branch = "";
@@ -54,6 +55,8 @@ public class RightsController {
         // Traitements pour le reste des structures
         } else if(typeStructure == 11) {
             branch = "cfa";
+        } else if(typeStructure == 22) {
+            branch = "ef2s";
         } else {
             if(aStructure.getCleJointure().getSource().equals("LA-CENTRE")){
                 branch = "agri";
@@ -65,6 +68,7 @@ public class RightsController {
         return branch;
     }
 
+    // TODO : faire plus propre pour déduire le nom du groupe
     private String deductGroupNameFromStructure(AStructure aStructure){
         log.debug("Retrieving group name for structure {}", aStructure.getId());
         final String etabGroupLeft;
