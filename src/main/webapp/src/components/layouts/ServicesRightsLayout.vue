@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import type { ServiceRight, ServiceRights } from '@/types/index.ts'
 import { ref } from 'vue'
+import { toast } from 'vue3-toastify'
 import ServiceRightsCard from '@/components/ServiceRightsCard.vue'
 import { updateRight } from '@/services/api/index.ts'
 import ManageServiceRightsDialog from '../dialogs/ManageServiceRightsDialog.vue'
@@ -40,19 +41,21 @@ function edit(
   dialogState.value = true
 }
 
-function save(
+async function save(
   service: string,
   serviceRight: ServiceRight,
   toAdd: string[],
   toRemove: string[],
 ) {
-  updateRight(
+  const response = await updateRight(
     28,
     service,
     serviceRight.role,
     toAdd,
     toRemove,
   )
+  if (response)
+    toast.success('OK')
 }
 </script>
 
@@ -76,3 +79,20 @@ function save(
     @save="save"
   />
 </template>
+
+<style scoped lang="scss">
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+
+.services-grid {
+  display: grid;
+  gap: 24px;
+}
+
+@media (width >= map.get($grid-breakpoints, md)) {
+  .services-grid {
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(512px, 1fr));
+  }
+}
+</style>

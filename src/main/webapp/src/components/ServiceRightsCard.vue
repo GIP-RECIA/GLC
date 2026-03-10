@@ -50,7 +50,7 @@ defineEmits<{
           <li
             v-for="member in right.currentMembers"
             :key="member.id"
-            class="tag-category"
+            class="tag-primary"
           >
             {{ member.displayName }}
           </li>
@@ -69,3 +69,51 @@ defineEmits<{
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/functions' as *;
+@use '@gip-recia/ui/mixins' as *;
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
+  padding: 16px;
+  background-color: $white;
+
+  > .body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    > .role-card {
+      display: flex;
+      flex-direction: column;
+      border-radius: 6px;
+      border: 1px solid var(--#{$prefix}stroke);
+      padding: 16px;
+
+      > ul {
+        @include unstyled-list;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px 8px;
+        padding-bottom: 16px;
+
+        > li {
+          background-color: var(--#{$prefix}primary);
+        }
+      }
+
+      > footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 24px;
+      }
+    }
+  }
+}
+</style>

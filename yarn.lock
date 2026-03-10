@@ -1383,6 +1383,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gip-recia/ui@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@gip-recia/ui@npm:1.0.1"
+  peerDependencies:
+    "@antfu/eslint-config": ^7.6.1
+    eslint: ^10.0.2
+    eslint-plugin-format: ^2.0.1
+    ress: ^5.0.2
+    sass: ^1.97.3
+  checksum: 10/21aef39a059c094e759b2b91941344f12b04433f8bd17b5e7c2013638ee0fb05223e24ca39e6d7f2f905f261eec843fc49c72436b435f37efe420e03be3f00d4
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.1":
   version: 0.19.1
   resolution: "@humanfs/core@npm:0.19.1"
@@ -5700,6 +5713,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.2.0"
     "@fortawesome/free-solid-svg-icons": "npm:^7.2.0"
     "@fortawesome/vue-fontawesome": "npm:^3.1.3"
+    "@gip-recia/ui": "npm:^1.0.1"
     "@intlify/unplugin-vue-i18n": "npm:^11.0.7"
     "@juggle/resize-observer": "npm:^3.4.0"
     "@pinia/testing": "npm:^1.0.3"
