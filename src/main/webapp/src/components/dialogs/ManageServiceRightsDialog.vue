@@ -61,7 +61,10 @@ const checkedGroups = ref<string[]>([])
 
 const currentUsers = ref<string[]>([])
 
-function save() {
+const changes = computed<{
+  toAdd: string[]
+  toRemove: string[]
+}>(() => {
   const existing = props.serviceRight?.currentMembers.map(({ id }) => id)
 
   const allChecked = [
@@ -69,18 +72,26 @@ function save() {
     ...currentUsers.value,
   ]
 
-  const changes
-    = {
-      toAdd: allChecked.filter(checked => !existing?.includes(checked)),
-      toRemove: existing?.filter(checked => !allChecked.includes(checked)) ?? [],
-    }
+  return {
+    toAdd: allChecked.filter(checked => !existing?.includes(checked)),
+    toRemove: existing?.filter(checked => !allChecked.includes(checked)) ?? [],
+  }
+})
 
+const canSave = computed<boolean>(() => {
+  const { toAdd, toRemove } = changes.value
+
+  return toAdd.length > 0 || toRemove.length > 0
+})
+
+function save() {
+  const { toAdd, toRemove } = changes.value
   emit(
     'save',
     serviceRight.value.service,
     serviceRight.value,
-    changes.toAdd,
-    changes.toRemove,
+    toAdd,
+    toRemove,
   )
   close()
 }
@@ -122,8 +133,10 @@ watchEffect(
   >
     <v-card rounded="xl">
       <v-toolbar color="rgba(255, 255, 255, 0)">
-        <v-toolbar-title class="text-h6">
-          {{ serviceRight.description }}
+        <v-toolbar-title>
+          <h1 class="mb-0">
+            {{ serviceRight.description }}
+          </h1>
         </v-toolbar-title>
         <template #append>
           <v-btn
@@ -136,62 +149,75 @@ watchEffect(
         </template>
       </v-toolbar>
 
-      <fieldset>
-        <legend class="sr-only">
-          Groupes
-        </legend>
-        <ul>
-          <li
-            v-for="item in checkboxes"
-            :key="item.id"
+      <v-card-text class="pt-0 py-3 manage-service-rights-dialog-container">
+        <div>
+          <h2>Groupes</h2>
+
+          <fieldset>
+            <legend class="sr-only">
+              Groupes
+            </legend>
+            <ul>
+              <li
+                v-for="item in checkboxes"
+                :key="item.id"
+              >
+                <input
+                  :id="item.id"
+                  v-model="checkedGroups"
+                  :value="item.id"
+                  type="checkbox"
+                  :disabled="disabled.includes(item.id)"
+                >
+                <label :for="item.id">{{ item.displayName }}</label>
+              </li>
+            </ul>
+          </fieldset>
+        </div>
+
+        <div v-if="serviceRight.allowPeople">
+          <h2>Personnes</h2>
+
+          <label for="user" class="sr-only">Ajouter un utilisateur</label>
+          <input
+            id="user"
+            type="text"
+            name=""
+            placeholder="Nom Prénom"
           >
-            <input
-              :id="item.id"
-              v-model="checkedGroups"
-              :value="item.id"
-              type="checkbox"
-              :disabled="disabled.includes(item.id)"
+
+          <ul>
+            <li
+              v-for="user in serviceRight.currentMembers.filter(({ user }) => user)"
+              :key="user.id"
             >
-            <label :for="item.id">{{ item.displayName }}</label>
-          </li>
-        </ul>
-      </fieldset>
+              <span
+                :style="{
+                  'text-decoration': !currentUsers.includes(user.id)
+                    ? 'line-through'
+                    : undefined,
+                }"
+              >
+                {{ user.displayName }}
+              </span>
 
-      <div v-if="serviceRight.allowPeople">
-        <label for="">Ajouter un utilisateur</label>
-        <input id="" type="text" name="" placeholder="Nom de l'utilisateur">
+              <button
+                class="btn-secondary small"
+                @click="
+                  currentUsers.includes(user.id)
+                    ? removeUser(user.id)
+                    : addUser(user.id)
+                "
+              >
+                {{ currentUsers.includes(user.id) ? 'Supprimer' : 'Rétablir' }}
+                <font-awesome-icon :icon="`fas fa-${currentUsers.includes(user.id) ? 'trash' : 'rotate-left'}`" />
+              </button>
+            </li>
+          </ul>
+        </div>
+      </v-card-text>
 
-        <ul>
-          <li
-            v-for="user in serviceRight.currentMembers.filter(({ user }) => user)"
-            :key="user.id"
-          >
-            <span
-              :style="{
-                'text-decoration': !currentUsers.includes(user.id)
-                  ? 'line-through'
-                  : undefined,
-              }"
-            >
-              {{ user.displayName }}
-            </span>
-
-            <button
-              class="btn-secondary small"
-              @click="
-                currentUsers.includes(user.id)
-                  ? removeUser(user.id)
-                  : addUser(user.id)
-              "
-            >
-              {{ currentUsers.includes(user.id) ? 'Supprimer' : 'Annuler' }}
-              <font-awesome-icon :icon="`fas fa-${currentUsers.includes(user.id) ? 'trash' : 'rotate-left'}`" />
-            </button>
-          </li>
-        </ul>
-      </div>
-
-      <footer>
+      <v-card-actions>
         <button
           class="btn-secondary"
           @click="close"
@@ -200,13 +226,34 @@ watchEffect(
           <font-awesome-icon icon="fas fa-xmark" />
         </button>
         <button
+          :disabled="!canSave"
           class="btn-primary"
           @click="save"
         >
           Enregistrer
           <font-awesome-icon icon="fas fa-floppy-disk" />
         </button>
-      </footer>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
+
+<style scoped lang="scss">
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/mixins' as *;
+
+.manage-service-rights-dialog-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+ul {
+  @include unstyled-list;
+}
+
+fieldset {
+  border: none;
+}
+</style>
