@@ -103,7 +103,7 @@ function onClick(
 <template>
   <div
     v-if="filteredFilieres.length > 0"
-    class="container"
+    class="fonctions-layout-container"
   >
     <v-card
       v-for="filiere in filteredFilieres"
@@ -160,7 +160,7 @@ function onClick(
 </template>
 
 <style scoped lang="scss">
-.container {
+.fonctions-layout-container {
   display: grid;
   gap: 0.75em;
   grid-template-columns: 1fr;

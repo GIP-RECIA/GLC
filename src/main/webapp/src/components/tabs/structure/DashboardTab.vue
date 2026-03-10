@@ -164,7 +164,7 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
         <v-expansion-panel-text>
           <div
             v-if="pageItems && pageItems.length > 0"
-            class="container"
+            class="personne-container"
           >
             <PersonneCard
               v-for="personne in pageItems"
@@ -196,7 +196,7 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
         <v-expansion-panel-text>
           <div
             v-if="pageItems2 && pageItems2.length > 0"
-            class="container"
+            class="personne-container"
           >
             <PersonneCard
               v-for="personne in pageItems2"
@@ -230,7 +230,7 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
         <v-expansion-panel-text>
           <div
             v-if="pageItems3 && pageItems3.length > 0"
-            class="container"
+            class="personne-container"
           >
             <PersonneCard
               v-for="personne in pageItems3"
@@ -275,7 +275,7 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
   }
 }
 
-.container {
+.personne-container {
   display: grid;
   gap: 0.75em;
   grid-template-columns: 1fr;

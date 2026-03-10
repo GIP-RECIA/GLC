@@ -65,7 +65,7 @@ const itemsPerPage = computed<number>(() => {
     />
     <div
       v-if="pageItems && pageItems.length > 0"
-      class="container"
+      class="account-tab-container"
     >
       <PersonneCard
         v-for="personne in pageItems"
@@ -97,7 +97,7 @@ const itemsPerPage = computed<number>(() => {
 </template>
 
 <style scoped lang="scss">
-.container {
+.account-tab-container {
   display: grid;
   gap: 0.75em;
   grid-template-columns: 1fr;

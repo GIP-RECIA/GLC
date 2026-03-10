@@ -27,7 +27,7 @@ const modelValue = defineModel<FonctionForm[]>()
 </script>
 
 <template>
-  <div class="container">
+  <div class="checkbox-form-container">
     <template
       v-for="filiere in filieres"
       :key="filiere.codeFiliere"
@@ -55,7 +55,7 @@ const modelValue = defineModel<FonctionForm[]>()
 </template>
 
 <style scoped lang="scss">
-.container {
+.checkbox-form-container {
   display: grid;
   column-gap: 0.75em;
   grid-template-columns: 1fr;
