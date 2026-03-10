@@ -130,7 +130,9 @@ public class RightsService {
                 }
             }
             serviceAccess.setRights(rights);
-            serviceAccessList.add(serviceAccess);
+            if(!serviceAccess.getRights().isEmpty()){
+                serviceAccessList.add(serviceAccess);
+            }
         }
         return serviceAccessList;
     }
