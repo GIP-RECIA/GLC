@@ -72,10 +72,11 @@ public class RightsController {
     private String deductGroupNameFromStructure(AStructure aStructure){
         log.debug("Retrieving group name for structure {}", aStructure.getId());
         final String etabGroupLeft;
+        final String nomEtab = aStructure.getNom().replaceAll("'"," ");
         if(aStructure.getNom().contains("$")){
-            etabGroupLeft = aStructure.getNom().split("\\$")[1];
+            etabGroupLeft = nomEtab.split("\\$")[1];
         } else {
-            etabGroupLeft = aStructure.getNom();
+            etabGroupLeft = nomEtab;
         }
         final String etabGroupRight = ((Etablissement) aStructure).getUai();
         String groupName = etabGroupLeft+"_"+etabGroupRight;
