@@ -51,6 +51,8 @@ public class RightsController {
         // Collège -> 1 branche par département
         if(typeStructure == 8){
             branch = "clg"+((Etablissement) aStructure).getUai().substring(1,3);
+        } else if(typeStructure == 11) {
+            branch = "cfa";
         } else {
             branch = "esco";
         }
@@ -60,7 +62,12 @@ public class RightsController {
 
     private String deductGroupNameFromStructure(AStructure aStructure){
         log.debug("Retrieving group name for structure {}", aStructure.getId());
-        final String etabGroupLeft = aStructure.getNom().split("\\$")[1];
+        final String etabGroupLeft;
+        if(aStructure.getNom().contains("$")){
+            etabGroupLeft = aStructure.getNom().split("\\$")[1];
+        } else {
+            etabGroupLeft = aStructure.getNom();
+        }
         final String etabGroupRight = ((Etablissement) aStructure).getUai();
         String groupName = etabGroupLeft+"_"+etabGroupRight;
         log.debug("Group name for structure {} is {}", aStructure.getId(), groupName);
