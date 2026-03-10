@@ -15,6 +15,8 @@
  */
 package fr.recia.glc.web.dto.access.grouper.response.memberships;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import fr.recia.glc.web.dto.access.grouper.response.ResponseMetadata;
 import fr.recia.glc.web.dto.access.grouper.response.ResultMetadata;
 import fr.recia.glc.web.dto.access.grouper.response.WsGroup;
@@ -22,13 +24,17 @@ import fr.recia.glc.web.dto.access.grouper.response.WsMembership;
 import fr.recia.glc.web.dto.access.grouper.response.WsSubject;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class WsGetMembershipsResults {
     private ResponseMetadata responseMetadata;
     private ResultMetadata resultMetadata;
-    private List<WsGroup> wsGroups;
-    private List<WsMembership> wsMemberships;
-    private List<WsSubject> wsSubjects;
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
+    private List<WsGroup> wsGroups = new ArrayList<>();
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
+    private List<WsMembership> wsMemberships = new ArrayList<>();
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
+    private List<WsSubject> wsSubjects = new ArrayList<>();
 }
