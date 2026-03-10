@@ -65,7 +65,12 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 function register(app: App | undefined): void {
-  library.add(farCircle, farDotCircle, farSquare, farUser)
+  library.add(
+    farCircle,
+    farDotCircle,
+    farSquare,
+    farUser,
+  )
   library.add(
     faCaretDown,
     faCaretUp,
