@@ -26,6 +26,15 @@ defineProps<{
   servicesRights: ServiceRights[] | undefined
 }>()
 
+const emit = defineEmits<{
+  update: [
+    service: string,
+    right: ServiceRight,
+    toAdd: string [],
+    toRemove: string [],
+  ]
+}>()
+
 const dialogState = ref<boolean>(false)
 
 const serviceRight = ref<Pick<ServiceRights, 'service'> & ServiceRight>()
@@ -54,8 +63,16 @@ async function save(
     toAdd,
     toRemove,
   )
-  if (response)
+  if (response) {
     toast.success('OK')
+    emit(
+      'update',
+      service,
+      serviceRight,
+      toAdd,
+      toRemove,
+    )
+  }
 }
 </script>
 

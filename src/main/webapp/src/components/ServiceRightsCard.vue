@@ -82,7 +82,6 @@ defineEmits<{
   border-radius: 10px;
   box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
   padding: 16px;
-  background-color: $white;
 
   > .body {
     display: flex;

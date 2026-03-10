@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { ServiceRights } from '@/types/index.ts'
+import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
 import { onMounted, ref } from 'vue'
 import ServicesRightsLayout from '@/components/layouts/ServicesRightsLayout.vue'
 import { getRights } from '@/services/api/index.ts'
@@ -25,6 +25,39 @@ const data = ref<ServiceRights[]>()
 onMounted(async () => {
   data.value = await getRights(28)
 })
+
+function update(
+  service: string,
+  serviceRight: ServiceRight,
+  toAdd: string[],
+  toRemove: string[],
+) {
+  data.value = data.value?.map((d) => {
+    if (d.service !== service)
+      return d
+
+    const rights = d.rights.map((right) => {
+      if (right.role !== serviceRight.role)
+        return right
+
+      let currentMembers = right.currentMembers
+      currentMembers = right.currentMembers.filter(({ id }) => !toRemove.includes(id))
+      const membersToAdd: RightMember[] = toAdd.map((add) => {
+        return {
+          id: add,
+          displayName: add,
+          user: add.startsWith('F'),
+          external: false,
+        }
+      })
+      currentMembers.push(...membersToAdd)
+
+      return { ...right, currentMembers }
+    })
+
+    return { ...d, rights }
+  })
+}
 </script>
 
 <template>
@@ -33,6 +66,7 @@ onMounted(async () => {
 
     <ServicesRightsLayout
       :services-rights="data"
+      @update="update"
     />
   </v-container>
 </template>
