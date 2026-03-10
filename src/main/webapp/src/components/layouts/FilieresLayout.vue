@@ -53,7 +53,7 @@ const filteredFilieres = computed<Filiere[]>(() => {
 <template>
   <div
     v-if="filteredFilieres.length > 0"
-    class="container"
+    class="filieres-layout-container"
   >
     <div
       v-for="filiere in filteredFilieres"
@@ -107,7 +107,7 @@ const filteredFilieres = computed<Filiere[]>(() => {
 </template>
 
 <style scoped lang="scss">
-.container {
+.filieres-layout-container {
   display: grid;
   gap: 1em;
   grid-template-columns: 1fr;

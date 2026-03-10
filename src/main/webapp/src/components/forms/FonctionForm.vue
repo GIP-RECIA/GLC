@@ -135,7 +135,7 @@ onBeforeMount((): void => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="fonction-form-container">
     <v-autocomplete
       v-model="form.filiere"
       :label="t('person.function.type')"
@@ -178,7 +178,7 @@ onBeforeMount((): void => {
 </template>
 
 <style scoped lang="scss">
-.container {
+.fonction-form-container {
   display: grid;
   gap: 0.75em;
   grid-template-columns: 1fr;

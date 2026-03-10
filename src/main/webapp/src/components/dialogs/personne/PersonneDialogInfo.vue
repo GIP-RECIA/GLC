@@ -68,7 +68,7 @@ function editFonction(
 
 <template>
   <v-card-text v-if="personne" class="pt-0">
-    <div class="container">
+    <div class="personne-dialog-info-container">
       <ReadonlyData
         v-admin
         label="UID"
@@ -246,7 +246,7 @@ function editFonction(
 </template>
 
 <style scoped lang="scss">
-.container {
+.personne-dialog-info-container {
   display: grid;
   gap: 0.75em;
   grid-template-columns: 1fr;

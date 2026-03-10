@@ -118,7 +118,7 @@ const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true)
 
     <div
       v-if="pageItems && pageItems.length > 0"
-      class="container"
+      class="structure-container"
     >
       <v-card
         v-for="etablissement in pageItems"
@@ -166,7 +166,7 @@ const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true)
 </template>
 
 <style scoped lang="scss">
-.container {
+.structure-container {
   display: grid;
   gap: 0.75em;
   grid-template-columns: 1fr;
