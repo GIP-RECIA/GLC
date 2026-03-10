@@ -53,7 +53,7 @@ public class RightsController {
         if(typeStructure == 8){
             branch = "clg"+((Etablissement) aStructure).getUai().substring(1,3);
         // Traitements pour le reste des structures
-        } else if(typeStructure == 11) {
+        } else if(typeStructure == 11 || typeStructure == 21) {
             branch = "cfa";
         } else if(typeStructure == 22) {
             branch = "ef2s";
