@@ -1,5 +1,10 @@
 package fr.recia.glc.web.rest;
 
+import fr.recia.glc.db.entities.personne.APersonne;
+import fr.recia.glc.db.entities.structure.AStructure;
+import fr.recia.glc.db.entities.structure.Etablissement;
+import fr.recia.glc.db.repositories.personne.APersonneRepository;
+import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.services.access.RestrictionService;
 import fr.recia.glc.web.dto.restriction.RestrictionEtab;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +20,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class EditRestrictionController {
 
     private final RestrictionService restrictionService;
+    private final AStructureRepository<AStructure> aStructureRepository;
 
-    public EditRestrictionController(RestrictionService restrictionService) {
+    public EditRestrictionController(RestrictionService restrictionService, AStructureRepository<AStructure> aStructureRepository) {
         this.restrictionService = restrictionService;
+        this.aStructureRepository = aStructureRepository;
     }
 
-    @PostMapping("/etab/{uai}")
-    public ResponseEntity<Void> editRestriction(@PathVariable String uai, @RequestBody RestrictionEtab request) {
-        restrictionService.setNewRestriction(uai, request);
+    @PostMapping("/etab/{id}")
+    public ResponseEntity<Void> editRestriction(@PathVariable Long id, @RequestBody RestrictionEtab request) {
+        final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
+        restrictionService.setNewRestriction(((Etablissement)aStructure).getUai(), request);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/etab/{uai}")
-    public ResponseEntity<RestrictionEtab> listRestrictions(@PathVariable String uai){
-        return restrictionService.getRestrictions(uai);
+    @GetMapping("/etab/{id}")
+    public ResponseEntity<RestrictionEtab> listRestrictions(@PathVariable Long id){
+        final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
+        return restrictionService.getRestrictions(((Etablissement)aStructure).getUai());
     }
 
 
