@@ -1,9 +1,7 @@
 package fr.recia.glc.web.rest;
 
-import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
-import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.services.access.RestrictionService;
 import fr.recia.glc.web.dto.restriction.RestrictionEtab;
@@ -37,7 +35,7 @@ public class EditRestrictionController {
     @GetMapping("/etab/{id}")
     public ResponseEntity<RestrictionEtab> listRestrictions(@PathVariable Long id){
         final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
-        return restrictionService.getRestrictions(((Etablissement)aStructure).getUai());
+        return ResponseEntity.ok(restrictionService.getRestrictions(((Etablissement)aStructure).getUai()));
     }
 
 
