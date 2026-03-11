@@ -34,8 +34,8 @@ public class RestrictionService {
         this.restrictionRentreeProperties = restrictionRentreeProperties;
     }
 
-    public ResponseEntity<RestrictionEtab> getRestrictions(String uai){
-        return restTemplate.exchange(restrictionRentreeProperties.getUrl()+"/"+uai, HttpMethod.GET, null, RestrictionEtab.class);
+    public RestrictionEtab getRestrictions(String uai){
+        return restTemplate.exchange(restrictionRentreeProperties.getUrl()+"/"+uai, HttpMethod.GET, null, RestrictionEtab.class).getBody();
     }
 
     public void setNewRestriction(String uai, RestrictionEtab restrictionEtab){
