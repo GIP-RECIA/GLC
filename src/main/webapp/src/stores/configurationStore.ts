@@ -19,13 +19,11 @@ import type {
   Configuration,
   enumValues,
   Filiere,
-  Identity,
   SimplePersonne,
   SourceFonction,
   StructureConfiguration,
 } from '@/types/index.ts'
 import { useSessionStorage } from '@vueuse/core'
-import { isEmpty } from 'lodash-es'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { getConfiguration, getFonctions } from '@/services/api/index.ts'
@@ -202,11 +200,6 @@ export const useConfigurationStore = defineStore('configuration', () => {
 
   const isSettings = ref<boolean>(false)
 
-  /* -- Gestion de l'authentification -- */
-
-  const identity = ref<Identity | undefined>()
-  const isAuthenticated = computed<boolean>(() => true)
-
   return {
     configuration,
     fonctions,
@@ -233,7 +226,5 @@ export const useConfigurationStore = defineStore('configuration', () => {
     isQuickAdd,
     requestAdd,
     isSettings,
-    identity,
-    isAuthenticated,
   }
 })

@@ -16,17 +16,14 @@
 
 import type { ToastContainerOptions } from 'vue3-toastify'
 import axios from 'axios'
-import { differenceInMilliseconds } from 'date-fns'
 import { toast } from 'vue3-toastify'
 import i18n from '@/plugins/i18n.ts'
-import { login } from '@/utils/index.ts'
 
 const { t } = i18n.global
 
 const {
   VITE_API_URI,
   VITE_AXIOS_TIMEOUT,
-  VITE_REFRESH_IDENTITY_MILLISECONDS,
 } = import.meta.env
 
 const instance = axios.create({
@@ -36,8 +33,6 @@ const instance = axios.create({
   xsrfCookieName: 'CSRF-TOKEN',
   xsrfHeaderName: 'X-CSRF-TOKEN',
 })
-
-
 
 function errorHandler(
   e: any,
@@ -85,5 +80,4 @@ function errorHandler(
 export {
   errorHandler,
   instance,
-  intercept,
 }
