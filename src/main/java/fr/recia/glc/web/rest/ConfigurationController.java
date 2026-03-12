@@ -40,17 +40,7 @@ public class ConfigurationController {
   @GetMapping()
   public ResponseEntity<Object> getConfiguration() {
     Map<String, Object> data = new HashMap<>();
-
-    data.put("permissionTypes", List.of(
-      PermissionType.ADMIN.getName(),
-      PermissionType.MANAGER.getName(),
-      PermissionType.MANAGER_BRANCH.getName(),
-      PermissionType.LOOKOVER.getName(),
-      PermissionType.LOOKOVER_BRANCH.getName()
-    ));
-
     data.put("front", glcProperties.getFront());
-
     return new ResponseEntity<>(data, HttpStatus.OK);
   }
 
