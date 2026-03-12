@@ -41,81 +41,80 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/personne")
 public class PersonneController {
 
-  @Autowired
-  private FonctionService fonctionService;
-  @Autowired
-  private PersonneService personneService;
+    @Autowired
+    private FonctionService fonctionService;
+    @Autowired
+    private PersonneService personneService;
 
-  @GetMapping
-  public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
-    // TODO : userHolder.isAdmin()
-    List<SimplePersonneDto> personnes = personneService.searchPersoonne(name, true);
-    if (personnes.isEmpty()) return new ResponseEntity<>(HttpStatus.OK);
-    // TODO : !userHolder.isAdmin()
-    if (false) {
-      personnes = personnes.stream()
-        .map(personne -> {
-          personne.setUid("");
-
-          return personne;
-        })
-        .collect(Collectors.toList());
+    @GetMapping
+    public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
+        List<SimplePersonneDto> personnes = personneService.searchPersonne(name, true);
+        if (personnes.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        personnes = personnes.stream()
+                .map(personne -> {
+                    personne.setUid("");
+                    return personne;
+                })
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(personnes, HttpStatus.OK);
     }
 
-    return new ResponseEntity<>(personnes, HttpStatus.OK);
-  }
-
-  @GetMapping(value = "/{id}")
-  public ResponseEntity<PersonneDto> getPersonne(@PathVariable Long id) {
-    PersonneDto personne = personneService.getPersonne(id);
-    if (personne == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    // TODO : !userHolder.isAdmin()
-    if (false) personne.setUid("");
-    personne.setAllFonctions(fonctionService.getPersonneFonctions(id));
-
-    return new ResponseEntity<>(personne, HttpStatus.OK);
-  }
-
-  @PostMapping(value = "/{id}/fonction")
-  public ResponseEntity setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) {
-    if (!body.postDataOk()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-    boolean success;
-    if (body.getAdditionalCode() == null) {
-      success = fonctionService.saveAdditionalFonctions(
-        id,
-        body.getStructureId(),
-        body.getToAddFunctions(),
-        body.getToDeleteFunctions(),
-        body.getRequiredAction()
-      );
-    } else {
-      success = fonctionService.saveAdditionalFonction(
-        id,
-        body.getStructureId(),
-        body.getAdditionalCode(),
-        body.getRequiredAction()
-      );
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<PersonneDto> getPersonne(@PathVariable Long id) {
+        PersonneDto personne = personneService.getPersonne(id);
+        if (personne == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        personne.setUid("");
+        personne.setAllFonctions(fonctionService.getPersonneFonctions(id));
+        return new ResponseEntity<>(personne, HttpStatus.OK);
     }
-    if (!success) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
+    @PostMapping(value = "/{id}/fonction")
+    public ResponseEntity<Void> setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) {
+        if (!body.postDataOk()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        boolean success;
+        if (body.getAdditionalCode() == null) {
+            success = fonctionService.saveAdditionalFonctions(
+                    id,
+                    body.getStructureId(),
+                    body.getToAddFunctions(),
+                    body.getToDeleteFunctions(),
+                    body.getRequiredAction()
+            );
+        } else {
+            success = fonctionService.saveAdditionalFonction(
+                    id,
+                    body.getStructureId(),
+                    body.getAdditionalCode(),
+                    body.getRequiredAction()
+            );
+        }
+        if (!success) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-  @PostMapping(value = "/{id}/fonction/v2")
-  public ResponseEntity setPersonneAdditionals(@PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) {
-    if (!body.postDataOk()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-    boolean success;
-    success = fonctionService.setAdditional(
-      id,
-      body.getStructureId(),
-      body.getToAdd(),
-      body.getToDelete()
-    );
-    if (!success) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
+    @PostMapping(value = "/{id}/fonction/v2")
+    public ResponseEntity<Void> setPersonneAdditionals(@PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) {
+        if (!body.postDataOk()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        boolean success = fonctionService.setAdditional(
+                id,
+                body.getStructureId(),
+                body.getToAdd(),
+                body.getToDelete()
+        );
+        if (!success) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

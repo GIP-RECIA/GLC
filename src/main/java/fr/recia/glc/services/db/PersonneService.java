@@ -39,7 +39,7 @@ public class PersonneService {
   @Autowired
   private FonctionRepository<Fonction> fonctionRepository;
 
-  public List<SimplePersonneDto> searchPersoonne(String name, boolean admin) {
+  public List<SimplePersonneDto> searchPersonne(String name, boolean admin) {
     return admin ? aPersonneRepository.findByNameLikeAdmin(name) : aPersonneRepository.findByNameLike(name);
   }
 
