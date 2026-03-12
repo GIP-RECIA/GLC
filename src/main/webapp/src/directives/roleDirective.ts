@@ -15,14 +15,15 @@
  */
 
 import type { Directive } from 'vue'
-import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
-import { useConfigurationStore } from '@/stores/index.ts'
+import { ref, watch } from 'vue'
+
+const identity = ref({
+  roles: [
+    'ROLE_ADMIN',
+  ],
+})
 
 const admin: Directive<HTMLElement, null> = (el) => {
-  const configurationStore = useConfigurationStore()
-  const { identity } = storeToRefs(configurationStore)
-
   const checkAdmin = (): void => {
     let isAdmin: boolean = false
     if (identity.value?.roles.includes('ROLE_ADMIN'))
@@ -39,9 +40,6 @@ const admin: Directive<HTMLElement, null> = (el) => {
 }
 
 const role: Directive<HTMLElement, string[]> = (el, binding) => {
-  const configurationStore = useConfigurationStore()
-  const { identity } = storeToRefs(configurationStore)
-
   const checkRoles = (): void => {
     let hasRole: boolean = false
     binding.value.forEach((role) => {
