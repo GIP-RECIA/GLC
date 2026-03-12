@@ -79,6 +79,47 @@ function update(
   <v-container>
     <h1>Gestion des droits d'administration</h1>
 
+    <ul
+      :style="{
+        height: '500px',
+        overflow: 'auto',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
+        gap: '16px',
+        listStyle: 'none',
+      }"
+    >
+      <li
+        v-for="etab in etabs"
+        :key="etab.id"
+        :style="{
+          'background-color': currentEtab === etab.id
+            ? 'black'
+            : undefined,
+          'color': currentEtab === etab.id
+            ? 'white'
+            : undefined,
+          'border-radius': '10px',
+          'border': '1px solid grey',
+        }"
+      >
+        <button
+          :style="{
+            width: '100%',
+            height: '100%',
+          }"
+          @click="() => { currentEtab = etab.id }"
+        >
+          <div style="display: block; text-align: start; padding: 8px;">
+            <div>id: {{ etab.id }}</div>
+            <div>nom: {{ etab.nom }}</div>
+            <div>type: {{ etab.type ?? 'unknown' }}</div>
+            <div>uai: {{ etab.uai }}</div>
+          </div>
+        </button>
+      </li>
+    </ul>
+
     <label for="tabs">Etablissement</label>
     <select
       id="tabs"

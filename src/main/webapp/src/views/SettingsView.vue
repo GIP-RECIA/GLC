@@ -15,8 +15,12 @@
 -->
 
 <script setup lang="ts">
+import type { StructureRestriction } from '@/types/index.ts'
+import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
-import { ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
+import ManageRestrictionsDialog from '@/components/dialogs/ManageRestrictionsDialog.vue'
+import { getRestrictions } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 
 const structureStore = useStructureStore()
@@ -26,12 +30,49 @@ const { etabs, currentEtab } = storeToRefs(structureStore)
 
 const selectedEtab = ref<number>()
 
+const data = ref<StructureRestriction>()
+const dataState = ref<'UNLOADED' | 'LOADING' | 'LOADED' | 'ERROR'>('UNLOADED')
+
+const dialogState = ref<boolean>(false)
+
+const dataToDisplay = computed<StructureRestriction | undefined>(() => {
+  if (!data.value)
+    return
+
+  const niveaux = data.value?.niveaux
+    .map((niveau) => {
+      const classes = niveau.classes
+        .filter(({ dateRentreeClasse }) => dateRentreeClasse !== null)
+
+      return { ...niveau, classes }
+    })
+    .filter(niveau => niveau.dateRentreeNiveau !== null || niveau.classes.length > 0)
+
+  return { ...data.value, niveaux }
+})
+
 watchEffect(async (): Promise<void> => {
   if (selectedEtab.value === undefined)
     return
 
   initCurrentEtab(selectedEtab.value)
+  dataState.value = 'LOADING'
+  const response = await getRestrictions(selectedEtab.value)
+  data.value = response
+  dataState.value = response !== undefined ? 'LOADED' : 'ERROR'
 })
+
+function toDisplayDate(
+  date: string | undefined | null,
+): string | undefined {
+  return date
+    ? format(date, 'P p')
+    : undefined
+}
+
+function save() {
+
+}
 </script>
 
 <template>
@@ -145,18 +186,6 @@ watchEffect(async (): Promise<void> => {
           </li>
         </ul>
       </div>
-    </div>
-
-    <h2>Paramètres</h2>
-
-    <div class="date-rentree-card">
-      <header>
-        <h3>Date de rentrée</h3>
-      </header>
-
-      <div class="body">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium explicabo iusto velit repellendus? Vero maxime excepturi, ad blanditiis perferendis quidem eum molestias placeat numquam aperiam nisi harum quasi voluptate quis?
-      </div>
 
       <footer>
         <button
@@ -168,6 +197,71 @@ watchEffect(async (): Promise<void> => {
         </button>
       </footer>
     </div>
+
+    <h2>Paramètres</h2>
+
+    <div class="date-rentree-card">
+      <header>
+        <h3>Date de rentrée</h3>
+      </header>
+
+      <div class="body">
+        <template v-if="dataToDisplay">
+          <span>
+            {{ toDisplayDate(dataToDisplay.dateRentreeEtab) }}
+          </span>
+
+          <div class="niveau-container">
+            <div
+              v-for="niveau in dataToDisplay.niveaux"
+              :key="niveau.niveau"
+              class="niveau-card"
+            >
+              <h4>{{ niveau.niveau }}</h4>
+              <span v-if="niveau.dateRentreeNiveau">
+                {{ toDisplayDate(niveau.dateRentreeNiveau) }}
+              </span>
+
+              <ul>
+                <li
+                  v-for="classe in niveau.classes"
+                  :key="classe.classe"
+                  class="classe-card"
+                >
+                  <span>
+                    <b>
+                      {{ classe.classe }}
+                    </b>
+                  </span>
+                  <span>
+                    {{ toDisplayDate(classe.dateRentreeClasse) }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <footer>
+        <button
+          class="btn-primary small"
+          @click="() => {
+            dialogState = true
+          }"
+        >
+          Modifier
+          <font-awesome-icon icon="fas fa-pen" />
+        </button>
+      </footer>
+    </div>
+
+    <ManageRestrictionsDialog
+      v-model="dialogState"
+      :restrictions="data"
+      @update:model-value="dialogState = false"
+      @save="save"
+    />
   </v-container>
 </template>
 
@@ -222,6 +316,12 @@ watchEffect(async (): Promise<void> => {
       }
     }
   }
+
+  > footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
 }
 
 .date-rentree-card {
@@ -235,12 +335,55 @@ watchEffect(async (): Promise<void> => {
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    > .niveau-container {
+      display: grid;
+      gap: 16px;
+
+      > .niveau-card {
+        display: flex;
+        flex-direction: column;
+        border-radius: 6px;
+        border: 1px solid var(--#{$prefix}stroke);
+        padding: 16px;
+
+        > ul {
+          @include unstyled-list;
+          display: grid;
+          gap: 16px;
+
+          > .classe-card {
+            display: flex;
+            flex-direction: column;
+            border-radius: 6px;
+            border: 1px solid var(--#{$prefix}stroke);
+            padding: 16px;
+          }
+        }
+      }
+    }
   }
 
   > footer {
     display: flex;
     justify-content: flex-end;
     margin-top: 24px;
+  }
+}
+
+@media (width >= map.get($grid-breakpoints, md)) {
+  .date-rentree-card {
+    > .body {
+      > .niveau-container {
+        grid-template-columns: repeat(auto-fill, minmax(512px, 1fr));
+
+        > .niveau-card {
+          > ul {
+            grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+          }
+        }
+      }
+    }
   }
 }
 </style>
