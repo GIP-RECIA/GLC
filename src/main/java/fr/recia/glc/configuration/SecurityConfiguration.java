@@ -15,6 +15,10 @@
  */
 package fr.recia.glc.configuration;
 
+import fr.recia.glc.configuration.bean.AdminProperties;
+import fr.recia.glc.ldap.IStructure;
+import fr.recia.glc.security.GLCUser;
+import fr.recia.glc.services.beans.IStructureLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.validation.Assertion;
@@ -31,25 +35,32 @@ import org.springframework.security.cas.web.CasAuthenticationEntryPoint;
 import org.springframework.security.cas.web.CasAuthenticationFilter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    public static final String PROTECTED_PATH = "/protected/";
     private final GLCProperties glcProperties;
+    private final IStructureLoader structureLoader;
+    private final AdminProperties adminProperties;
 
-    public SecurityConfiguration(GLCProperties glcProperties) {
+    public SecurityConfiguration(GLCProperties glcProperties, IStructureLoader structureLoader, AdminProperties adminProperties) {
         this.glcProperties = glcProperties;
+        this.structureLoader = structureLoader;
+        this.adminProperties = adminProperties;
     }
 
     /**
@@ -106,8 +117,34 @@ public class SecurityConfiguration {
         return (CasAssertionAuthenticationToken token) -> {
             Assertion assertion = token.getAssertion();
             Map<String, Object> attributes = assertion.getPrincipal().getAttributes();
+            List<String> groups = (List<String>) attributes.get(adminProperties.getGroupsAttribute());
             String username = assertion.getPrincipal().getName();
-            return new User(username, "", List.of(new SimpleGrantedAuthority("ROLE_USER")));
+            Pattern patternAdminLocal = Pattern.compile(adminProperties.getLocal());
+            Pattern patternAdminSarapisLocal = Pattern.compile(adminProperties.getSarapisLocal());
+            Pattern patternAdminCentral = Pattern.compile(adminProperties.getCentral());
+            // Calcul dynamique des authorities en fonction des groupes
+            // TODO : rôle dans le nom du groupe
+            Map<String, Set<String>> rightsForEtabs = new HashMap<>();
+            rightsForEtabs.put("ROLE_READWRITE", new HashSet<>());
+            for(String group : groups){
+                Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
+                Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
+                Matcher matcherAdminCentral = patternAdminCentral.matcher(group);
+                // Droits sur les établissements
+                if(matcherAdminLocal.matches()){
+                    rightsForEtabs.get("ROLE_READWRITE").add(matcherAdminLocal.group(2));
+                }
+                if(matcherAdminSarapisLocal.matches()){
+                    rightsForEtabs.get("ROLE_READWRITE").add(matcherAdminSarapisLocal.group(2));
+                }
+                // Droits sur les branches
+                if(matcherAdminCentral.matches()){
+                    for(IStructure structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))){
+                        rightsForEtabs.get("ROLE_READWRITE").add(structureFromGroup.getUAI());
+                    }
+                }
+            }
+            return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs);
         };
     }
 
@@ -126,8 +163,6 @@ public class SecurityConfiguration {
     public SingleSignOutFilter singleSignOutFilter() {
         return new SingleSignOutFilter();
     }
-
-    // Spring
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
