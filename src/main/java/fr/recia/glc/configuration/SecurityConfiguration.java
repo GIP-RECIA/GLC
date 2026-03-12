@@ -15,12 +15,10 @@
  */
 package fr.recia.glc.configuration;
 
-import fr.recia.glc.security.cas.AjaxLogoutSuccessHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.validation.Assertion;
 import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -141,7 +139,7 @@ public class SecurityConfiguration {
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .antMatchers("/health-check", "/api/config").permitAll()
-                                .antMatchers("/ui/**").authenticated()
+                                .antMatchers("/ui/**", "/").authenticated()
                                 .antMatchers("/api/**").authenticated()
                                 // Cet endpoint doit être accessible car c'est le callback du CAS vers l'appli spring pour faire valider le ticket
                                 .antMatchers(glcProperties.getCas().getCasTicketCallback()).permitAll()
