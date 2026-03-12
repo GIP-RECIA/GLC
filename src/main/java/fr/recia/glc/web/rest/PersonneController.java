@@ -21,7 +21,6 @@ import fr.recia.glc.pojo.JsonAdditionalFonctionBody;
 import fr.recia.glc.pojo.JsonAdditionalFonctionOldBody;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
-import fr.recia.glc.web.interceptor.bean.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,14 +46,13 @@ public class PersonneController {
   @Autowired
   private PersonneService personneService;
 
-  @Autowired
-  private UserHolder userHolder;
-
   @GetMapping
   public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
-    List<SimplePersonneDto> personnes = personneService.searchPersoonne(name, userHolder.isAdmin());
+    // TODO : userHolder.isAdmin()
+    List<SimplePersonneDto> personnes = personneService.searchPersoonne(name, true);
     if (personnes.isEmpty()) return new ResponseEntity<>(HttpStatus.OK);
-    if (!userHolder.isAdmin()) {
+    // TODO : !userHolder.isAdmin()
+    if (false) {
       personnes = personnes.stream()
         .map(personne -> {
           personne.setUid("");
@@ -71,7 +69,8 @@ public class PersonneController {
   public ResponseEntity<PersonneDto> getPersonne(@PathVariable Long id) {
     PersonneDto personne = personneService.getPersonne(id);
     if (personne == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    if (!userHolder.isAdmin()) personne.setUid("");
+    // TODO : !userHolder.isAdmin()
+    if (false) personne.setUid("");
     personne.setAllFonctions(fonctionService.getPersonneFonctions(id));
 
     return new ResponseEntity<>(personne, HttpStatus.OK);

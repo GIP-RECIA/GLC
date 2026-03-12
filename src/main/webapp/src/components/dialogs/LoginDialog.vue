@@ -20,7 +20,6 @@ import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useConfigurationStore } from '@/stores/index.ts'
-import { intercept, login } from '@/utils/index.ts'
 
 const configurationStore = useConfigurationStore()
 const { isInit, isAuthenticated } = storeToRefs(configurationStore)
@@ -34,12 +33,6 @@ const modelValue = computed<boolean>({
   set() {},
 })
 
-watchOnce(isInit, (newValue) => {
-  if (newValue && !isAuthenticated.value) {
-    login()
-    intercept()
-  }
-})
 </script>
 
 <template>

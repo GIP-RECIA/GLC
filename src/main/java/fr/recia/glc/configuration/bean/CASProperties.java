@@ -29,6 +29,10 @@ public class CASProperties {
   @NotEmpty
   private String urlLogin;
   private String urlLogout;
+  private String casServiceId;
+  private String casServerUrl;
+  private String casProviderKey;
+  private String casTicketCallback;
 
   @Override
   public String toString() {

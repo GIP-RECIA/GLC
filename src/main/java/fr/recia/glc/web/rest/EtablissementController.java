@@ -29,7 +29,6 @@ import fr.recia.glc.services.beans.UserContextRole;
 import fr.recia.glc.services.db.EtablissementService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
-import fr.recia.glc.web.interceptor.bean.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,23 +56,18 @@ public class EtablissementController {
   private FonctionService fonctionService;
   @Autowired
   private PersonneService personneService;
-
   @Autowired
   private AlertService alertService;
-
   @Autowired
   private GLCProperties glcProperties;
-
   @Autowired
   private UserContextRole userContextRole;
-
-  @Autowired
-  private UserHolder userHolder;
 
   @GetMapping()
   public ResponseEntity<List<SimpleEtablissementDto>> getEtablissements() {
     List<SimpleEtablissementDto> etablissements;
-    if (userHolder.isAdmin()) {
+    // TODO : userHolder.isAdmin()
+    if (true) {
       etablissements = etablissementService.getEtablissements();
     } else {
       Pattern permissionPattern = glcProperties.getLdap().getGroupBranch().getStructureProperties().getUaiPattern();
@@ -98,7 +92,8 @@ public class EtablissementController {
   public ResponseEntity<EtablissementDto> getEtablissement(@PathVariable Long id) {
     EtablissementDto etablissement = etablissementService.getEtablissement(id);
     if (etablissement == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    if (!userHolder.isAdmin()) {
+    // TODO : !userHolder.isAdmin()
+    if (false) {
       Pattern permissionPattern = glcProperties.getLdap().getGroupBranch().getStructureProperties().getUaiPattern();
       Set<String> allowedUAI = userContextRole.allowedStructures().stream()
         .map(structureKey -> {
@@ -121,7 +116,8 @@ public class EtablissementController {
       if (!allowedUAI.contains(etablissement.getUai())) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     } else etablissement.setPermission(PermissionType.ADMIN.getName());
     List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id);
-    if (!userHolder.isAdmin()) {
+    // TODO : !userHolder.isAdmin()
+    if (false) {
       etabPersonnes = etabPersonnes.stream()
         .map((personne) -> {
           personne.setUid("");
@@ -133,7 +129,8 @@ public class EtablissementController {
     etablissement.setPersonnes(etabPersonnes);
 
     List<SimplePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id);
-    if (!userHolder.isAdmin()) {
+    // TODO : !userHolder.isAdmin()
+    if (false) {
       withoutFunction = withoutFunction.stream()
         .map((personne) -> {
           personne.setUid("");

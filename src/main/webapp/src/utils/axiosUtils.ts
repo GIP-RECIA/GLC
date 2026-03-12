@@ -37,21 +37,7 @@ const instance = axios.create({
   xsrfHeaderName: 'X-CSRF-TOKEN',
 })
 
-function intercept() {
-  let lastUpdated = new Date()
 
-  instance.interceptors.request.use(async (config) => {
-    if (
-      differenceInMilliseconds(new Date(), lastUpdated)
-      > VITE_REFRESH_IDENTITY_MILLISECONDS
-    ) {
-      await login()
-      lastUpdated = new Date()
-    }
-
-    return config
-  })
-}
 
 function errorHandler(
   e: any,
