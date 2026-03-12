@@ -1,0 +1,20 @@
+error=false
+
+if ./mvnw notice:check; then
+  echo "Notice OK"
+else
+  error=true
+  echo "Fix notice"
+  ./mvnw notice:generate
+fi
+if ./mvnw license:check; then
+  echo "License OK"
+else
+  error=true
+  echo "Fix license"
+  ./mvnw license:format
+fi
+yarn exec lint-staged
+if $error; then
+  exit 1;
+fi
