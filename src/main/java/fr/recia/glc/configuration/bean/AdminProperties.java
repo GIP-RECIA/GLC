@@ -13,12 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.services.evaluators;
+package fr.recia.glc.configuration.bean;
 
-import fr.recia.glc.web.dto.UserDTO;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-public interface IEvaluation {
-
-  boolean isApplicable(UserDTO userInfos);
-
+@Component
+@ConfigurationProperties(prefix = "admin")
+@Data
+public class AdminProperties {
+    private String local;
+    private String sarapisLocal;
+    private String central;
+    private String groupsAttribute;
 }
