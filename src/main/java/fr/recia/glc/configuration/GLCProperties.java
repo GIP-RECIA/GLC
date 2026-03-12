@@ -25,7 +25,6 @@ import fr.recia.glc.configuration.bean.CustomMetricsProperties;
 import fr.recia.glc.configuration.bean.FrontProperties;
 import fr.recia.glc.configuration.bean.IpRangeProperties;
 import fr.recia.glc.configuration.bean.RoleMappingProperties;
-import fr.recia.glc.configuration.bean.SecurityProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -54,7 +53,6 @@ public class GLCProperties {
   private IpRangeProperties authorizedServices;
   private RoleMappingProperties admins;
   private RoleMappingProperties users;
-  private SecurityProperties security;
 
 
   @PostConstruct
@@ -75,7 +73,6 @@ public class GLCProperties {
       authorizedServices + ",\n" +
       admins + ",\n" +
       users + ",\n" +
-      security +
       "\n}";
   }
 

@@ -30,8 +30,6 @@ const instance = axios.create({
   baseURL: VITE_API_URI,
   timeout: VITE_AXIOS_TIMEOUT,
   withCredentials: true,
-  xsrfCookieName: 'CSRF-TOKEN',
-  xsrfHeaderName: 'X-CSRF-TOKEN',
 })
 
 function errorHandler(
