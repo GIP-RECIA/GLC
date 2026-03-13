@@ -99,20 +99,20 @@ async function save(): Promise<void> {
   if (requestAdd.value?.function) {
     try {
       if (requestAdd.value.type === 'id') {
-        await setPersonneAdditionalWithId(
-          currentPersonne.value!.id,
-          currentStructureId.value!,
-          requestAdd.value.function,
-          saveButton.value.i18n.split('.')[1],
-        )
+        await setPersonneAdditionalWithId({
+          id: currentPersonne.value!.id,
+          structureId: currentStructureId.value!,
+          toAddFunction: requestAdd.value.function,
+          requiredAction: saveButton.value.i18n.split('.')[1],
+        })
       }
       else {
-        await setPersonneAdditionalWithCode(
-          currentPersonne.value!.id,
-          currentStructureId.value!,
-          requestAdd.value.function,
-          saveButton.value.i18n.split('.')[1],
-        )
+        await setPersonneAdditionalWithCode({
+          id: currentPersonne.value!.id,
+          structureId: currentStructureId.value!,
+          additionalCode: requestAdd.value.function,
+          requiredAction: saveButton.value.i18n.split('.')[1],
+        })
       }
       closeAndResetModal(true)
     }

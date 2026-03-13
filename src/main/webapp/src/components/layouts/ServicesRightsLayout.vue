@@ -57,13 +57,13 @@ async function save(
   toAdd: string[],
   toRemove: string[],
 ) {
-  const response = await updateRight(
-    28,
+  const response = await updateRight({
+    id: 28,
     service,
-    serviceRight.role,
-    toAdd,
-    toRemove,
-  )
+    role: serviceRight.role,
+    membersToAdd: toAdd,
+    membersToRemove: toRemove,
+  })
   if (response) {
     toast.success('OK')
     emit(

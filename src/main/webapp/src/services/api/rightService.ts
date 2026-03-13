@@ -27,13 +27,21 @@ async function getRights(
   ).data
 }
 
-async function updateRight(
-  id: number,
-  service: string,
-  role: string,
-  membersToAdd: string[],
-  membersToRemove: string[],
-) {
+interface UpdateRightParams {
+  id: number
+  service: string
+  role: string
+  membersToAdd: string[]
+  membersToRemove: string[]
+}
+
+async function updateRight({
+  id,
+  service,
+  role,
+  membersToAdd,
+  membersToRemove,
+}: UpdateRightParams) {
   return !!(
     await axios.put<void>(
       `/api/rights/${id}/services/${service}/roles/${role}/members`,

@@ -38,13 +38,21 @@ async function searchPersonne(name: string) {
   ).data
 }
 
-async function setPersonneAdditional(
-  id: number,
-  structureId: number,
-  toAddFunctions: string[],
-  toDeleteFunctions: string[],
-  requiredAction: string,
-) {
+interface SetPersonneAdditionalParams {
+  id: number
+  structureId: number
+  toAddFunctions: string[]
+  toDeleteFunctions: string[]
+  requiredAction: string
+}
+
+async function setPersonneAdditional({
+  id,
+  structureId,
+  toAddFunctions,
+  toDeleteFunctions,
+  requiredAction,
+}: SetPersonneAdditionalParams) {
   return !!(
     await axios.post<void>(
       `/api/personne/${id}/fonction`,
@@ -58,27 +66,43 @@ async function setPersonneAdditional(
   )
 }
 
-function setPersonneAdditionalWithId(
-  id: number,
-  structureId: number,
-  toAddFunction: string,
-  requiredAction: string,
-) {
-  return setPersonneAdditional(
-    id,
-    structureId,
-    [toAddFunction],
-    [],
-    requiredAction,
-  )
+type SetPersonneAdditionalWithIdParams = Omit<
+  SetPersonneAdditionalParams,
+  'toAddFunctions'
+  | 'toDeleteFunctions'
+> & {
+  toAddFunction: string
 }
 
-async function setPersonneAdditionalWithCode(
-  id: number,
-  structureId: number,
-  additionalCode: string,
-  requiredAction: string,
-) {
+function setPersonneAdditionalWithId({
+  id,
+  structureId,
+  toAddFunction,
+  requiredAction,
+}: SetPersonneAdditionalWithIdParams) {
+  return setPersonneAdditional({
+    id,
+    structureId,
+    toAddFunctions: [toAddFunction],
+    toDeleteFunctions: [],
+    requiredAction,
+  })
+}
+
+type SetPersonneAdditionalWithCodeParams = Omit<
+  SetPersonneAdditionalParams,
+  'toAddFunctions'
+  | 'toDeleteFunctions'
+> & {
+  additionalCode: string
+}
+
+async function setPersonneAdditionalWithCode({
+  id,
+  structureId,
+  additionalCode,
+  requiredAction,
+}: SetPersonneAdditionalWithCodeParams) {
   return !!(
     await axios.post<void>(
       `/api/personne/${id}/fonction`,
@@ -91,12 +115,19 @@ async function setPersonneAdditionalWithCode(
   )
 }
 
-async function setPersonneAdditionalV2(
-  id: number,
-  structureId: number,
-  toAdd: FonctionForm | null,
-  toDelete: string | null,
-) {
+interface SetPersonneAdditionalV2Params {
+  id: number
+  structureId: number
+  toAdd: FonctionForm | null
+  toDelete: string | null
+}
+
+async function setPersonneAdditionalV2({
+  id,
+  structureId,
+  toAdd,
+  toDelete,
+}: SetPersonneAdditionalV2Params) {
   return !!(
     await axios.post<void>(
       `/api/personne/${id}/fonction/v2`,
@@ -109,30 +140,40 @@ async function setPersonneAdditionalV2(
   )
 }
 
-function addPersonneAdditionalV2(
-  id: number,
-  structureId: number,
-  toAdd: FonctionForm | undefined,
-) {
-  return setPersonneAdditionalV2(
+type AddPersonneAdditionalV2Params = Omit<
+  SetPersonneAdditionalV2Params,
+  'toDelete'
+>
+
+function addPersonneAdditionalV2({
+  id,
+  structureId,
+  toAdd,
+}: AddPersonneAdditionalV2Params) {
+  return setPersonneAdditionalV2({
     id,
     structureId,
-    toAdd ?? null,
-    null,
-  )
+    toAdd: toAdd ?? null,
+    toDelete: null,
+  })
 }
 
-function deletePersonneAdditionalV2(
-  id: number,
-  structureId: number,
-  toDelete: string | undefined,
-) {
-  return setPersonneAdditionalV2(
+type DeletePersonneAdditionalV2Params = Omit<
+  SetPersonneAdditionalV2Params,
+  'toAdd'
+>
+
+function deletePersonneAdditionalV2({
+  id,
+  structureId,
+  toDelete,
+}: DeletePersonneAdditionalV2Params) {
+  return setPersonneAdditionalV2({
     id,
     structureId,
-    null,
-    toDelete ?? null,
-  )
+    toAdd: null,
+    toDelete: toDelete ?? null,
+  })
 }
 
 export {

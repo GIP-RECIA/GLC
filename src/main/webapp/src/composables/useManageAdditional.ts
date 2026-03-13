@@ -152,16 +152,20 @@ function useManageAdditional() {
         : []
       switch (dialogState.value) {
         case PersonneDialogState.ManageAdditional:
-          await addPersonneAdditionalV2(personneId, structureId, selected[0])
+          await addPersonneAdditionalV2({
+            id: personneId,
+            structureId,
+            toAdd: selected[0],
+          })
           break
         case PersonneDialogState.ManageAdditionalMultiple:
-          await setPersonneAdditional(
-            personneId,
+          await setPersonneAdditional({
+            id: personneId,
             structureId,
-            selectedF.filter(checked => !baseF.includes(checked)),
-            baseF.filter(checked => !selectedF.includes(checked)),
-            action,
-          )
+            toAddFunctions: selectedF.filter(checked => !baseF.includes(checked)),
+            toDeleteFunctions: baseF.filter(checked => !selectedF.includes(checked)),
+            requiredAction: action,
+          })
           break
       }
       resetAddMode(true, action)
@@ -180,11 +184,11 @@ function useManageAdditional() {
       const personneId = currentPersonne.value!.id
       const structureId = currentStructureId.value!
       const { baseSelection } = data.value
-      await deletePersonneAdditionalV2(
-        personneId,
+      await deletePersonneAdditionalV2({
+        id: personneId,
         structureId,
-        baseSelection[0].fonction,
-      )
+        toDelete: baseSelection[0].fonction ?? null,
+      })
       resetAddMode(true, action)
     }
     catch (e) {
