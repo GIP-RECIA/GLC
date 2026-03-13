@@ -17,6 +17,7 @@ package fr.recia.glc.configuration;
 
 import fr.recia.glc.configuration.bean.AdminProperties;
 import fr.recia.glc.ldap.IStructure;
+import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.beans.IStructureLoader;
 import lombok.extern.slf4j.Slf4j;
@@ -124,23 +125,29 @@ public class SecurityConfiguration {
             Pattern patternAdminCentral = Pattern.compile(adminProperties.getCentral());
             // Calcul dynamique des authorities en fonction des groupes
             // TODO : rôle dans le nom du groupe
-            Map<String, Set<String>> rightsForEtabs = new HashMap<>();
-            rightsForEtabs.put("ROLE_READWRITE", new HashSet<>());
+            Map<GLCRole, Set<String>> rightsForEtabs = new HashMap<>();
+            rightsForEtabs.put(GLCRole.WRITE, new HashSet<>());
+            rightsForEtabs.put(GLCRole.READ, new HashSet<>());
             for(String group : groups){
                 Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
                 Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
                 Matcher matcherAdminCentral = patternAdminCentral.matcher(group);
                 // Droits sur les établissements
                 if(matcherAdminLocal.matches()){
-                    rightsForEtabs.get("ROLE_READWRITE").add(matcherAdminLocal.group(2));
+                    final String uai = matcherAdminLocal.group(2);
+                    rightsForEtabs.get(GLCRole.WRITE).add(uai);
+                    rightsForEtabs.get(GLCRole.READ).add(uai);
                 }
                 if(matcherAdminSarapisLocal.matches()){
-                    rightsForEtabs.get("ROLE_READWRITE").add(matcherAdminSarapisLocal.group(2));
+                    final String uai = matcherAdminSarapisLocal.group(2);
+                    rightsForEtabs.get(GLCRole.WRITE).add(uai);
+                    rightsForEtabs.get(GLCRole.READ).add(uai);
                 }
                 // Droits sur les branches
                 if(matcherAdminCentral.matches()){
                     for(IStructure structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))){
-                        rightsForEtabs.get("ROLE_READWRITE").add(structureFromGroup.getUAI());
+                        rightsForEtabs.get(GLCRole.WRITE).add(structureFromGroup.getUAI());
+                        rightsForEtabs.get(GLCRole.READ).add(structureFromGroup.getUAI());
                     }
                 }
             }

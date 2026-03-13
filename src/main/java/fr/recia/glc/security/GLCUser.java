@@ -13,9 +13,9 @@ import java.util.Set;
 @Setter
 public class GLCUser extends User {
 
-    private Map<String, Set<String>> rightsForEtabs;
+    private Map<GLCRole, Set<String>> rightsForEtabs;
 
-    public GLCUser(String username, String password, Collection<? extends GrantedAuthority> authorities, Map<String, Set<String>> rightsForEtabs) {
+    public GLCUser(String username, String password, Collection<? extends GrantedAuthority> authorities, Map<GLCRole, Set<String>> rightsForEtabs) {
         super(username, password, authorities);
         this.rightsForEtabs = rightsForEtabs;
     }

@@ -62,9 +62,12 @@ public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
   private void init() {
     loadedStructures = groupDao.getStructuresFromGroups();
     loadedStructures.forEach(structure -> {
-      if (loadedStructuresByBranch.containsKey(structure.getGroupBranch()))
+      if (loadedStructuresByBranch.containsKey(structure.getGroupBranch())) {
         loadedStructuresByBranch.get(structure.getGroupBranch()).add(structure);
-      else loadedStructuresByBranch.put(structure.getGroupBranch(), Sets.newHashSet(structure));
+      }
+      else {
+        loadedStructuresByBranch.put(structure.getGroupBranch(), Sets.newHashSet(structure));
+      }
     });
     log.debug(
       "Loaded Structure: {}",
@@ -104,101 +107,6 @@ public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
   @Override
   public Set<IStructure> getAllStructures() {
     return loadedStructures;
-  }
-
-  /* managing structure refresh like a cache but on managed way like on esco-ChangeEtablissement */
-
-  /**
-   * Cache Read / Write lock.
-   */
-  private final ReentrantReadWriteLock cacheRwl = new ReentrantReadWriteLock();
-  private final Lock cacheRl = cacheRwl.readLock();
-  private final Lock cacheWl = cacheRwl.writeLock();
-
-  /**
-   * Instant when the cache will be expiring.
-   */
-  @Getter
-  @Setter
-  protected volatile Instant expiringInstant;
-
-  @Getter
-  @Setter
-  private Cache c1;
-
-  @Getter
-  @Setter
-  private Cache c2;
-
-  /**
-   * Configured caching duration (default 1 hour).
-   */
-  private Duration cachingDuration = Duration.standardHours(1L);
-
-  /**
-   * Configured caching duration (default 3 second).
-   */
-  private Duration refreshExpiredDuration = Duration.standardSeconds(3);
-
-  /**
-   * True if cache is loading.
-   */
-  private final boolean loadingInProgress = false;
-
-//  protected synchronized void reload() {
-//    // Test if another concurrent thread just didn't already load the cache
-//    if (this.cacheLoadingNeeded()) {
-//      this.loadingInProgress = true;
-//      log.debug("Loading structure cache...");
-//
-//      init();
-//    }
-//  }
-
-  /**
-   * Test if a cache loading is needed.
-   * Cache loading is needed if Cache is not initialized or is expired and no loading is already in progress.
-   *
-   * @return true if cache loading is needed.
-   */
-  protected boolean cacheLoadingNeeded() {
-    return (this.expiringInstant == null || this.expiringInstant.isBeforeNow()) && !this.loadingInProgress;
-  }
-
-  /**
-   * Getter of cachingDuration.
-   *
-   * @return the cachingDuration
-   */
-  public long getCachingDuration() {
-    return this.cachingDuration.getMillis();
-  }
-
-  /**
-   * Setter of cachingDuration (in ms).
-   *
-   * @param cachingDuration the cachingDuration to set
-   */
-  public void setCachingDuration(final long cachingDuration) {
-    this.cachingDuration = Duration.millis(cachingDuration);
-  }
-
-  /**
-   * Getter of refreshExpiredDuration
-   *
-   * @return the refreshExpiredDuration
-   */
-  public long getRefreshExpiredDuration() {
-    return refreshExpiredDuration.getMillis();
-  }
-
-  /**
-   * Setter of refreshExpiredDuration
-   *
-   * @param refreshExpiredDuration the refreshExpiredDuration to set
-   */
-  public void setRefreshExpiredDuration(final long refreshExpiredDuration) {
-    this.refreshExpiredDuration = Duration.millis(refreshExpiredDuration);
   }
 
   @Override

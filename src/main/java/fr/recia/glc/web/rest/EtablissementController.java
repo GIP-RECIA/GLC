@@ -21,6 +21,7 @@ import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.dto.structure.EtablissementDto;
 import fr.recia.glc.db.dto.structure.SimpleEtablissementDto;
+import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.alert.AlertService;
 import fr.recia.glc.services.db.EtablissementService;
@@ -56,7 +57,8 @@ public class EtablissementController {
 
     @GetMapping()
     public ResponseEntity<List<SimpleEtablissementDto>> getEtablissements(@AuthenticationPrincipal GLCUser principal) {
-        Set<String> allowedUAI = principal.getRightsForEtabs().get("ROLE_READWRITE");
+        // Ne retourner que les établissements que la personne à le droit de lire
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
         List<SimpleEtablissementDto> etablissements = etablissementService.getEtablissements(allowedUAI);
         if (etablissements.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -64,38 +66,41 @@ public class EtablissementController {
         return new ResponseEntity<>(etablissements, HttpStatus.OK);
     }
 
+    /**
+     * Récupère les informations sur un établissement ainsi que toutes les personnes dedans
+     * @param principal
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}")
     public ResponseEntity<EtablissementDto> getEtablissement(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
         EtablissementDto etablissement = etablissementService.getEtablissement(id);
         if (etablissement == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Set<String> allowedUAI = principal.getRightsForEtabs().get("ROLE_READWRITE");
+        // Check si la personne à le droit de lire sur l'établissement
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
         if (!allowedUAI.contains(etablissement.getUai())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        // TODO : mettre admin que si l'utilisateur à les droits d'écriture sur l'établissement
-        etablissement.setPermission("ADMIN");
+
+        // Check si la personne à le droit d'écrire sur l'établissement
+        if(principal.getRightsForEtabs().get(GLCRole.WRITE).contains(etablissement.getUai())){
+            etablissement.setPermission("ADMIN");
+        }
+
+        // Récupération de la liste des personnes
         List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id);
-        etabPersonnes = etabPersonnes.stream()
-            .map((personne) -> {
-                personne.setUid("");
-                return personne;
-            })
-            .collect(Collectors.toList());
         etablissement.setPersonnes(etabPersonnes);
 
+        // Récupération de la liste des personnes sans fonction
         List<SimplePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id);
-        withoutFunction = withoutFunction.stream()
-                .map((personne) -> {
-                    personne.setUid("");
-                    return personne;
-                })
-                .collect(Collectors.toList());
         etablissement.setWithoutFunctions(withoutFunction);
 
+        // Récupération des alertes
         etablissement.setAlerts(alertService.getFonctionAlerts(etablissement.getId(), etablissement.getSource()));
 
+        // Récupération des filières (fonctions, typesFonctionFiliere et disciplines)
         List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);
         List<TypeFonctionFiliereDto> typesFonctionFiliere = fonctionService.getTypesFonctionFiliere(etablissement.getSource());
         List<DisciplineDto> disciplines = fonctionService.getDisciplines(etablissement.getSource());

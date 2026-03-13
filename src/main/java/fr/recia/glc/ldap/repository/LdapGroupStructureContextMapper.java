@@ -40,9 +40,6 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
   private ExternalGroupHelper externalGroupHelper;
   private final CustomLdapProperties ldapProperties;
 
-  /**
-   * @param externalGroupHelper
-   */
   public LdapGroupStructureContextMapper(ExternalGroupHelper externalGroupHelper, CustomLdapProperties ldapProperties) {
     super();
     this.externalGroupHelper = externalGroupHelper;
@@ -53,20 +50,18 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
   public StructureFromGroup mapFromContext(Object ctx) throws NamingException {
     Assert.notNull(externalGroupHelper, "The externalGroupHelper should not be null !");
     DirContextAdapter context = (DirContextAdapter) ctx;
-    StructureFromGroup structure = new StructureFromGroup();
-
     final String groupId = context.getStringAttribute(externalGroupHelper.getGroupIdAttribute());
-
+    StructureFromGroup structure = new StructureFromGroup();
     structure.setStructureKey(new StructureKey(groupId, getCategorieStructure(groupId)));
-
-    // extract infos from pattern
-    // récupération du groupe 1 pour la branche, le groupe 3 à split pour le displayName et l'UAI, le groupe 3 pour avoir le nom du groupe de l'établissement
-    // Attention tester Branche == coll car groupe 6 vide dans ce cas, et renseigné obligatoirement sinon
+    // extract infos from pattern : récupération du groupe 1 pour la branche, le groupe 3 à split pour le displayName et l'UAI, le groupe 3 pour avoir le nom du groupe de l'établissement
     Matcher matcher = ldapProperties.getGroupBranch().getStructureProperties().getStructureFromGroupPattern().matcher(groupId);
     if (matcher.find() && matcher.groupCount() >= 4) {
       structure.setGroupBranch(matcher.group(1));
       structure.setDisplayName(matcher.group(4));
-      if (matcher.groupCount() == 6) structure.setUAI(matcher.group(6));
+      // test Branche == coll car groupe 6 vide dans ce cas, et renseigné obligatoirement sinon
+      if (matcher.groupCount() == 6) {
+        structure.setUAI(matcher.group(6));
+      }
     }
 
     return structure;
