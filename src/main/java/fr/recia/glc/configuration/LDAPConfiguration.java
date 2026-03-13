@@ -170,13 +170,4 @@ public class LDAPConfiguration {
     return loader;
   }
 
-//  @Bean
-//  public IGroupService ldapGroupService(
-//    IPermissionService permissionService, TreeJSDTOFactory treeJSDTOFactory, UserDTOFactory userDTOFactory,
-//    SubscriberService subscriberService, FilterRepository filterRepository, ContextService contextService,
-//    IExternalGroupDao externalGroupDao
-//  ) {
-//    return new GroupService(permissionService, treeJSDTOFactory, userDTOFactory, externalGroupDao, subscriberService, filterRepository, contextService);
-//  }
-
 }

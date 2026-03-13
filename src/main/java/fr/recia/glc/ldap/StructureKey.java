@@ -15,9 +15,7 @@
  */
 package fr.recia.glc.ldap;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fr.recia.glc.db.enums.CategorieStructure;
-import fr.recia.glc.services.utils.CustomEnumSerializer;
 import fr.recia.glc.web.dto.ICompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +24,6 @@ import lombok.NonNull;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -45,16 +42,13 @@ public class StructureKey implements ICompositeKey<String, CategorieStructure>, 
    * The identifier of the context.
    */
   @NonNull
-  @NotNull
   private String keyId;
 
   /**
    * The type of the context.
    */
   @NonNull
-  @NotNull
   @Enumerated(EnumType.STRING)
-  @JsonSerialize(using = CustomEnumSerializer.class)
   private CategorieStructure keyType;
 
 }

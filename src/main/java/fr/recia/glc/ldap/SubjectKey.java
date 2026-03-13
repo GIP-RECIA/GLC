@@ -15,9 +15,7 @@
  */
 package fr.recia.glc.ldap;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fr.recia.glc.ldap.enums.SubjectType;
-import fr.recia.glc.services.utils.CustomEnumSerializer;
 import fr.recia.glc.web.dto.ICompositeKey;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,9 +23,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+import javax.persistence.Enumerated;import java.io.Serializable;
 
 /**
  * @author GIP RECIA - Julien Gribonvald 14 juin 2014
@@ -46,18 +42,13 @@ public class SubjectKey implements ICompositeKey<String, SubjectType>, Serializa
    * This field corresponds to the database column subject_id.
    */
   @NonNull
-  @NotNull
   private String keyId;
 
   /**
    * This field corresponds to the database column subject_type.
    */
   @NonNull
-  @NotNull
-  //@Convert(converter = SubjectTypeConverter.class)
   @Enumerated(EnumType.STRING)
-  @JsonSerialize(using = CustomEnumSerializer.class)
-  //@JsonDeserialize(using = SubjectTypeDeserializer.class)
   private SubjectType keyType;
 
 }

@@ -119,12 +119,4 @@ public class LdapGroupContextMapper implements ContextMapper<IExternalGroup> {
     return group;
   }
 
-  public ExternalGroupHelper getLdapGroupHelper() {
-    return externalGroupHelper;
-  }
-
-  public void setLdapGroupHelper(ExternalGroupHelper externalGroupHelper) {
-    this.externalGroupHelper = externalGroupHelper;
-  }
-
 }

@@ -25,10 +25,6 @@ import java.util.List;
  */
 public interface IExternalUserDao {
 
-  IExternalUser getUserByUid(final String uid);
-
-  List<String> getUserMailsByUids(final Iterable<String> uids);
-
   List<IExternalUser> getUsersByUids(final Iterable<String> uids);
 
   List<IExternalUser> getUsersByUidsWithFilter(final Iterable<String> uids, final String token);

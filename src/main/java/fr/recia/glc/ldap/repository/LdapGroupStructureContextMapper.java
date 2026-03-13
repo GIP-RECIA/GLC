@@ -79,12 +79,4 @@ public class LdapGroupStructureContextMapper implements ContextMapper<IStructure
     throw new IllegalArgumentException(String.format("Extracted Structure type unknown from %s", group));
   }
 
-  public ExternalGroupHelper getLdapGroupHelper() {
-    return externalGroupHelper;
-  }
-
-  public void setLdapGroupHelper(ExternalGroupHelper externalGroupHelper) {
-    this.externalGroupHelper = externalGroupHelper;
-  }
-
 }
