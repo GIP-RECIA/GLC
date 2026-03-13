@@ -14,46 +14,33 @@
  * limitations under the License.
  */
 
-import type { AxiosResponse } from 'axios'
 import type { StructureRestriction } from '@/types/index.ts'
-import { instance as axios, errorHandler } from '@/utils/index.ts'
+import { instance as axios } from '@/utils/index.ts'
 
 async function getRestrictions(
   id: number,
-): Promise<StructureRestriction | undefined> {
-  try {
-    const response: AxiosResponse<StructureRestriction> = await axios.get(
+) {
+  return (
+    await axios.get<StructureRestriction>(
       `/api/restriction/${id}`,
     )
-
-    return response.data
-  }
-  catch (e) {
-    errorHandler(e)
-  }
+  ).data
 }
 
 async function saveRestrictions(
   id: number,
   member: string,
   group: boolean,
-): Promise<boolean> {
-  try {
-    await axios.post(
+) {
+  return !!(
+    await axios.post<void>(
       `/api/restriction/${id}`,
       {
         member,
         group,
       },
     )
-
-    return true
-  }
-  catch (e) {
-    errorHandler(e)
-
-    return false
-  }
+  )
 }
 
 export {

@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 
-import type { FonctionForm } from '@/types/index.ts'
+import type { FonctionForm, Personne, SimplePersonne } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getPersonne(id: number) {
-  return await axios.get(
-    `/api/personne/${id}`,
-  )
+  return (
+    await axios.get<Personne>(
+      `/api/personne/${id}`,
+    )
+  ).data
 }
 
 async function searchPersonne(name: string) {
-  return await axios.get(
-    `/api/personne?name=${name}`,
-  )
+  return (
+    await axios.get<SimplePersonne[]>(
+      '/api/personne',
+      {
+        params: {
+          name,
+        },
+      },
+    )
+  ).data
 }
 
 async function setPersonneAdditional(
@@ -36,24 +45,26 @@ async function setPersonneAdditional(
   toDeleteFunctions: string[],
   requiredAction: string,
 ) {
-  return await axios.post(
-    `/api/personne/${id}/fonction`,
-    {
-      structureId,
-      toAddFunctions,
-      toDeleteFunctions,
-      requiredAction,
-    },
+  return !!(
+    await axios.post<void>(
+      `/api/personne/${id}/fonction`,
+      {
+        structureId,
+        toAddFunctions,
+        toDeleteFunctions,
+        requiredAction,
+      },
+    )
   )
 }
 
-async function setPersonneAdditionalWithId(
+function setPersonneAdditionalWithId(
   id: number,
   structureId: number,
   toAddFunction: string,
   requiredAction: string,
 ) {
-  return await setPersonneAdditional(
+  return setPersonneAdditional(
     id,
     structureId,
     [toAddFunction],
@@ -68,13 +79,15 @@ async function setPersonneAdditionalWithCode(
   additionalCode: string,
   requiredAction: string,
 ) {
-  return await axios.post(
-    `/api/personne/${id}/fonction`,
-    {
-      structureId,
-      additionalCode,
-      requiredAction,
-    },
+  return !!(
+    await axios.post<void>(
+      `/api/personne/${id}/fonction`,
+      {
+        structureId,
+        additionalCode,
+        requiredAction,
+      },
+    )
   )
 }
 
@@ -84,22 +97,24 @@ async function setPersonneAdditionalV2(
   toAdd: FonctionForm | null,
   toDelete: string | null,
 ) {
-  return await axios.post(
-    `/api/personne/${id}/fonction/v2`,
-    {
-      structureId,
-      toAdd,
-      toDelete,
-    },
+  return !!(
+    await axios.post<void>(
+      `/api/personne/${id}/fonction/v2`,
+      {
+        structureId,
+        toAdd,
+        toDelete,
+      },
+    )
   )
 }
 
-async function addPersonneAdditionalV2(
+function addPersonneAdditionalV2(
   id: number,
   structureId: number,
   toAdd: FonctionForm | undefined,
 ) {
-  return await setPersonneAdditionalV2(
+  return setPersonneAdditionalV2(
     id,
     structureId,
     toAdd ?? null,
@@ -107,12 +122,12 @@ async function addPersonneAdditionalV2(
   )
 }
 
-async function deletePersonneAdditionalV2(
+function deletePersonneAdditionalV2(
   id: number,
   structureId: number,
   toDelete: string | undefined,
 ) {
-  return await setPersonneAdditionalV2(
+  return setPersonneAdditionalV2(
     id,
     structureId,
     null,

@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
+import type { Etablissement, SimpleEtablissement } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getEtablissements() {
-  return await axios.get(
-    '/api/structure/etablissement',
-  )
+  return (
+    await axios.get<SimpleEtablissement[]>(
+      '/api/structure/etablissement',
+    )
+  ).data
 }
 
 async function getEtablissement(id: number) {
-  return await axios.get(
-    `/api/structure/etablissement/${id}`,
-  )
+  return (
+    await axios.get<Etablissement>(
+      `/api/structure/etablissement/${id}`,
+    )
+  ).data
 }
 
 export {

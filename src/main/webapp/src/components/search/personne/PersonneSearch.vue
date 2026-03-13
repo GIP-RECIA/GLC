@@ -86,8 +86,10 @@ async function findOutOfStructure(
   else {
     out.request = searchValue
     try {
-      const response = await searchPersonne(searchValue)
-      filterFromSource(response.data, searchValue)
+      filterFromSource(
+        await searchPersonne(searchValue),
+        searchValue,
+      )
       out.response = items.value
     }
     catch (e) {

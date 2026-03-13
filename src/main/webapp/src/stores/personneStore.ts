@@ -50,8 +50,7 @@ export const usePersonneStore = defineStore('personne', () => {
   ): Promise<void> => {
     configurationStore.isLoading = true
     try {
-      const response = await getPersonne(id)
-      currentPersonne.value = response.data
+      currentPersonne.value = await getPersonne(id)
       isCurrentPersonne.value = showModal
     }
     catch (e) {
@@ -66,8 +65,7 @@ export const usePersonneStore = defineStore('personne', () => {
       configurationStore.isLoading = true
       structureStore.refreshCurrentStructure()
       try {
-        const response = await getPersonne(personneId)
-        currentPersonne.value = response.data
+        currentPersonne.value = await getPersonne(personneId)
       }
       catch (e) {
         errorHandler(e, 'refreshCurrentPersonne')

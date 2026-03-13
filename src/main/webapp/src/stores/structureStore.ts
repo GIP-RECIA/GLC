@@ -53,8 +53,7 @@ export const useStructureStore = defineStore('structure', () => {
     if (!isInit.value) {
       configurationStore.isLoading = true
       try {
-        const response = await getEtablissements()
-        etabs.value = response.data
+        etabs.value = await getEtablissements()
       }
       catch (e) {
         errorHandler(e, 'initStructureStore')
@@ -79,8 +78,7 @@ export const useStructureStore = defineStore('structure', () => {
     configurationStore.isLoading = true
     currentEtab.value = undefined
     try {
-      const response = await getEtablissement(id)
-      const etab = response.data
+      const etab = await getEtablissement(id)
 
       // Mise à jour de l'onglet
       const index = structures.findIndex(structures => structures.id === id)
@@ -113,8 +111,7 @@ export const useStructureStore = defineStore('structure', () => {
     if (structureId) {
       configurationStore.isLoading = true
       try {
-        const response = await getEtablissement(structureId)
-        currentEtab.value = response.data
+        currentEtab.value = await getEtablissement(structureId)
       }
       catch (e) {
         errorHandler(e, 'refreshCurrentStructure')

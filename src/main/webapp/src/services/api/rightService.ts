@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-import type { AxiosResponse } from 'axios'
 import type { ServiceRights } from '@/types/index.ts'
-import { instance as axios, errorHandler } from '@/utils/index.ts'
+import { instance as axios } from '@/utils/index.ts'
 
 async function getRights(
   id: number,
 ): Promise<ServiceRights[] | undefined> {
-  try {
-    const response: AxiosResponse<ServiceRights[]> = await axios.get(
+  return (
+    await axios.get<ServiceRights[]>(
       `/api/rights/${id}`,
     )
-
-    return response.data
-  }
-  catch (e) {
-    errorHandler(e)
-  }
+  ).data
 }
 
 async function updateRight(
@@ -39,23 +33,16 @@ async function updateRight(
   role: string,
   membersToAdd: string[],
   membersToRemove: string[],
-): Promise<boolean> {
-  try {
-    await axios.put(
+) {
+  return !!(
+    await axios.put<void>(
       `/api/rights/${id}/services/${service}/roles/${role}/members`,
       {
         membersToAdd,
         membersToRemove,
       },
     )
-
-    return true
-  }
-  catch (e) {
-    errorHandler(e)
-
-    return false
-  }
+  )
 }
 
 export {

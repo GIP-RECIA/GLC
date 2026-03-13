@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+import type { Configuration } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getConfiguration() {
-  return await axios.get(
-    '/api/config',
-  )
+  return (
+    await axios.get<Configuration>(
+      '/api/config',
+    )
+  ).data
 }
 
 export {

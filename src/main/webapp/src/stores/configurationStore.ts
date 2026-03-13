@@ -40,8 +40,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
   const init = async (): Promise<void> => {
     if (!isInit.value) {
       try {
-        const response = await getConfiguration()
-        configuration.value = response.data
+        configuration.value = await getConfiguration()
         if (!configuration.value)
           return
         const { templateApiPath } = configuration.value.front
@@ -56,8 +55,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
   const initFonctions = async (): Promise<void> => {
     if (!isInitFonctions.value) {
       try {
-        const response = await getFonctions()
-        fonctions.value = response.data
+        fonctions.value = await getFonctions()
       }
       catch (e) {
         errorHandler(e, 'initFonctionStore')

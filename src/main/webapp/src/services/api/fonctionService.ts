@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+import type { SourceFonction } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getFonctions() {
-  return await axios.get(
-    '/api/fonction',
-  )
+  return (
+    await axios.get<SourceFonction[]>(
+      '/api/fonction',
+    )
+  ).data
 }
 
 export {
