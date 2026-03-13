@@ -21,7 +21,6 @@ import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.dto.structure.EtablissementDto;
 import fr.recia.glc.db.dto.structure.SimpleEtablissementDto;
-import fr.recia.glc.ldap.enums.PermissionType;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.alert.AlertService;
 import fr.recia.glc.services.db.EtablissementService;
@@ -76,7 +75,7 @@ public class EtablissementController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         // TODO : mettre admin que si l'utilisateur à les droits d'écriture sur l'établissement
-        etablissement.setPermission(PermissionType.ADMIN.getName());
+        etablissement.setPermission("ADMIN");
         List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id);
         etabPersonnes = etabPersonnes.stream()
             .map((personne) -> {

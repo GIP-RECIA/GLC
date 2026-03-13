@@ -15,15 +15,12 @@
  */
 package fr.recia.glc.web.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fr.recia.glc.ldap.enums.SubjectType;
-import fr.recia.glc.services.utils.CustomEnumSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -35,12 +32,9 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class SubjectKeyDTO implements ICompositeKey<String, SubjectType>, Serializable {
 
-  @NotNull
   @NonNull
   private String keyId;
-  @NotNull
   @NonNull
-  @JsonSerialize(using = CustomEnumSerializer.class)
   private SubjectType keyType;
 
   /**

@@ -86,12 +86,4 @@ public class LdapUserContextMapper implements ContextMapper<IExternalUser> {
     return person;
   }
 
-  public ExternalUserHelper getLdapUserHelper() {
-    return externalUserHelper;
-  }
-
-  public void setLdapUserHelper(ExternalUserHelper externalUserHelper) {
-    this.externalUserHelper = externalUserHelper;
-  }
-
 }
