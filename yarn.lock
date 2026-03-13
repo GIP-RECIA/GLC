@@ -1968,6 +1968,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pinia/colada-devtools@npm:^0.4.5":
+  version: 0.4.5
+  resolution: "@pinia/colada-devtools@npm:0.4.5"
+  checksum: 10/aa20c1065ed278d5b0c1fce3c572beae30cc35d3c8b9c2a954642d095fecebec1d8539d912d994181788d9993bc00ae76964d9878f9aaa4d7a2708c0b674357c
+  languageName: node
+  linkType: hard
+
+"@pinia/colada@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@pinia/colada@npm:1.0.0"
+  peerDependencies:
+    pinia: ^2.2.6 || ^3.0.0
+    vue: ^3.5.17
+  checksum: 10/3caa0fdde28c17f38e7e960a45ef711f1f1dcf3ea95224b92c3009e9886e3129fe52aed110ecd8f1eeec32f28a47222b365ba0dab617793ea81bb521c7545c26
+  languageName: node
+  linkType: hard
+
 "@pinia/testing@npm:^1.0.3":
   version: 1.0.3
   resolution: "@pinia/testing@npm:1.0.3"
@@ -5716,6 +5733,8 @@ __metadata:
     "@gip-recia/ui": "npm:^1.0.4"
     "@intlify/unplugin-vue-i18n": "npm:^11.0.7"
     "@juggle/resize-observer": "npm:^3.4.0"
+    "@pinia/colada": "npm:^1.0.0"
+    "@pinia/colada-devtools": "npm:^0.4.5"
     "@pinia/testing": "npm:^1.0.3"
     "@playwright/test": "npm:^1.58.2"
     "@tsconfig/node24": "npm:^24.0.4"

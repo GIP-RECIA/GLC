@@ -15,6 +15,7 @@
 -->
 
 <script setup lang="ts">
+import { PiniaColadaDevtools } from '@pinia/colada-devtools'
 import { watchOnce } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { onBeforeMount } from 'vue'
@@ -96,6 +97,8 @@ const appName = __APP_NAME__
       </footer>
     </div>
   </v-app>
+
+  <PiniaColadaDevtools />
 </template>
 
 <style lang="scss">

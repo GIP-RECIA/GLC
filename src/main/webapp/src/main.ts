@@ -15,6 +15,7 @@
  */
 
 import type { ToastContainerOptions } from 'vue3-toastify'
+import { PiniaColada } from '@pinia/colada'
 import { createApp } from 'vue'
 import Vue3Toasity from 'vue3-toastify'
 import App from '@/App.vue'
@@ -36,6 +37,7 @@ registerFontAwsome(app)
 
 app.use(i18n)
 app.use(pinia)
+app.use(PiniaColada)
 app.use(vuetify)
 app.use(router)
 app.use(
