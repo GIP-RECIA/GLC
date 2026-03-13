@@ -17,48 +17,34 @@ package fr.recia.glc.services.db;
 
 import fr.recia.glc.db.dto.structure.EtablissementDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
+import fr.recia.glc.db.entities.structure.CollectiviteLocale;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.entities.structure.QEtablissement;
+import fr.recia.glc.db.repositories.structure.CollectiviteLocaleRepository;
 import fr.recia.glc.db.repositories.structure.EtablissementRepository;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class EtablissementService {
+public class CollectiviteService {
 
   @Autowired
-  private EtablissementRepository<Etablissement> etablissementRepository;
+  private CollectiviteLocaleRepository<CollectiviteLocale> collectiviteLocaleRepository;
 
-  public List<SimpleStructureDto> getEtablissements() {
-    return IteratorUtils.toList(
-        etablissementRepository
-          .findAll(QEtablissement.etablissement.uai.isNotNull(), Sort.by("nom"))
-          .iterator()
-      ).stream()
-      .map(SimpleStructureDto::new)
-      .collect(Collectors.toList());
-  }
-
-  public List<SimpleStructureDto> getEtablissements(Set<String> allowedUAI) {
-    return IteratorUtils.toList(
-        etablissementRepository
-          .findAll(QEtablissement.etablissement.uai.isNotNull().and(QEtablissement.etablissement.uai.in(allowedUAI)),
-            Sort.by("nom")
-          ).iterator()
-      ).stream()
-      .map(SimpleStructureDto::new)
-      .collect(Collectors.toList());
-  }
-
-  public EtablissementDto getEtablissement(Long id) {
-    Etablissement etablissement = etablissementRepository.findById(id).orElse(null);
-    return etablissement != null ? new EtablissementDto(etablissement) : null;
+  public List<SimpleStructureDto> getCollectivites() {
+    List<CollectiviteLocale> collectiviteLocales = collectiviteLocaleRepository.findAll();
+    List<SimpleStructureDto> simpleStructureDtos = new ArrayList<>();
+    for(CollectiviteLocale collectiviteLocale : collectiviteLocales){
+      simpleStructureDtos.add(new SimpleStructureDto(collectiviteLocale));
+    }
+    return simpleStructureDtos;
   }
 
 }

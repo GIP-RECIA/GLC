@@ -20,10 +20,11 @@ import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.dto.structure.EtablissementDto;
-import fr.recia.glc.db.dto.structure.SimpleEtablissementDto;
+import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.alert.AlertService;
+import fr.recia.glc.services.db.CollectiviteService;
 import fr.recia.glc.services.db.EtablissementService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
@@ -39,7 +40,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -49,6 +49,8 @@ public class EtablissementController {
     @Autowired
     private EtablissementService etablissementService;
     @Autowired
+    private CollectiviteService collectiviteService;
+    @Autowired
     private FonctionService fonctionService;
     @Autowired
     private PersonneService personneService;
@@ -56,10 +58,14 @@ public class EtablissementController {
     private AlertService alertService;
 
     @GetMapping()
-    public ResponseEntity<List<SimpleEtablissementDto>> getEtablissements(@AuthenticationPrincipal GLCUser principal) {
-        // Ne retourner que les établissements que la personne à le droit de lire
+    public ResponseEntity<List<SimpleStructureDto>> getEtablissements(@AuthenticationPrincipal GLCUser principal) {
+        // Ne retourner que les établissements que la personne a le droit de lire
         Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
-        List<SimpleEtablissementDto> etablissements = etablissementService.getEtablissements(allowedUAI);
+        List<SimpleStructureDto> etablissements = etablissementService.getEtablissements(allowedUAI);
+        // Gestion des collectivités à côté pour l'instant pour simplifier la gestion des droits
+        if(principal.getRightsForColl().contains(GLCRole.READ)){
+            etablissements.addAll(collectiviteService.getCollectivites());
+        }
         if (etablissements.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -73,6 +79,7 @@ public class EtablissementController {
      * @return
      */
     @GetMapping(value = "/{id}")
+    // TODO : une autre route spécifique pour les collectivités
     public ResponseEntity<EtablissementDto> getEtablissement(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
         EtablissementDto etablissement = etablissementService.getEtablissement(id);
         if (etablissement == null) {

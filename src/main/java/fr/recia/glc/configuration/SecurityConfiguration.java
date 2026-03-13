@@ -123,15 +123,18 @@ public class SecurityConfiguration {
             Pattern patternAdminLocal = Pattern.compile(adminProperties.getLocal());
             Pattern patternAdminSarapisLocal = Pattern.compile(adminProperties.getSarapisLocal());
             Pattern patternAdminCentral = Pattern.compile(adminProperties.getCentral());
+            Pattern patternAdminCentralColl = Pattern.compile(adminProperties.getCentralColl());
             // Calcul dynamique des authorities en fonction des groupes
             // TODO : rôle dans le nom du groupe
             Map<GLCRole, Set<String>> rightsForEtabs = new HashMap<>();
             rightsForEtabs.put(GLCRole.WRITE, new HashSet<>());
             rightsForEtabs.put(GLCRole.READ, new HashSet<>());
+            Set<GLCRole> rightsForColl = new HashSet<>();
             for(String group : groups){
                 Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
                 Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
                 Matcher matcherAdminCentral = patternAdminCentral.matcher(group);
+                Matcher matcherAdminCentralColl = patternAdminCentralColl.matcher(group);
                 // Droits sur les établissements
                 if(matcherAdminLocal.matches()){
                     final String uai = matcherAdminLocal.group(2);
@@ -150,8 +153,12 @@ public class SecurityConfiguration {
                         rightsForEtabs.get(GLCRole.READ).add(structureFromGroup.getUAI());
                     }
                 }
+                if(matcherAdminCentralColl.matches()){
+                    rightsForColl.add(GLCRole.WRITE);
+                    rightsForColl.add(GLCRole.READ);
+                }
             }
-            return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs);
+            return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs, rightsForColl);
         };
     }
 
