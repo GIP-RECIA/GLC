@@ -14,24 +14,9 @@
  * limitations under the License.
  */
 
-export interface StructureRestriction {
-  dateRentreeEtab: string | null
-  niveaux: LevelRestriction[]
-}
-
-export interface LevelRestriction {
-  niveau: string
-  dateRentreeNiveau: string | null
-  classes: ClassRestriction[]
-}
-
-export interface ClassRestriction {
-  classe: string
-  dateRentreeClasse: string | null
-}
-
-export interface SaveRestrictionsParams {
-  id: number
-  member: string
-  group: boolean
-}
+export * from './configurationQuery.ts'
+export * from './fonctionQuery.ts'
+export * from './personneQuery.ts'
+export * from './restrictionQuery.ts'
+export * from './rightQuery.ts'
+export * from './structureQuery.ts'

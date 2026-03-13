@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-export interface StructureRestriction {
-  dateRentreeEtab: string | null
-  niveaux: LevelRestriction[]
+import { useMutation, useQuery } from '@pinia/colada'
+import { getRights, updateRight } from '@/services/api/index.ts'
+
+function useRightsQuery(id: number) {
+  return useQuery({
+    key: ['rights', id],
+    query: () => getRights(id),
+  })
 }
 
-export interface LevelRestriction {
-  niveau: string
-  dateRentreeNiveau: string | null
-  classes: ClassRestriction[]
+function useUpdateRightMutation() {
+  return useMutation({
+    mutation: updateRight,
+  })
 }
 
-export interface ClassRestriction {
-  classe: string
-  dateRentreeClasse: string | null
-}
-
-export interface SaveRestrictionsParams {
-  id: number
-  member: string
-  group: boolean
+export {
+  useRightsQuery,
+  useUpdateRightMutation,
 }

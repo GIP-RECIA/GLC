@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-export interface StructureRestriction {
-  dateRentreeEtab: string | null
-  niveaux: LevelRestriction[]
+import { useQuery } from '@pinia/colada'
+import { getEtablissement, getEtablissements } from '@/services/api/index.ts'
+
+function useEtablissementsQuery() {
+  return useQuery({
+    key: ['etablissements'],
+    query: () => getEtablissements(),
+  })
 }
 
-export interface LevelRestriction {
-  niveau: string
-  dateRentreeNiveau: string | null
-  classes: ClassRestriction[]
+function useEtablissementQuery(id: number) {
+  return useQuery({
+    key: ['etablissement', id],
+    query: () => getEtablissement(id),
+  })
 }
 
-export interface ClassRestriction {
-  classe: string
-  dateRentreeClasse: string | null
-}
-
-export interface SaveRestrictionsParams {
-  id: number
-  member: string
-  group: boolean
+export {
+  useEtablissementQuery,
+  useEtablissementsQuery,
 }
