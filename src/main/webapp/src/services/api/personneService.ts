@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-import type { FonctionForm, Personne, SimplePersonne } from '@/types/index.ts'
+import type {
+  AddPersonneAdditionalV2Params,
+  DeletePersonneAdditionalV2Params,
+  Personne,
+  SetPersonneAdditionalParams,
+  SetPersonneAdditionalV2Params,
+  SetPersonneAdditionalWithCodeParams,
+  SetPersonneAdditionalWithIdParams,
+  SimplePersonne,
+} from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getPersonne(id: number) {
@@ -38,14 +47,6 @@ async function searchPersonne(name: string) {
   ).data
 }
 
-interface SetPersonneAdditionalParams {
-  id: number
-  structureId: number
-  toAddFunctions: string[]
-  toDeleteFunctions: string[]
-  requiredAction: string
-}
-
 async function setPersonneAdditional({
   id,
   structureId,
@@ -66,14 +67,6 @@ async function setPersonneAdditional({
   )
 }
 
-type SetPersonneAdditionalWithIdParams = Omit<
-  SetPersonneAdditionalParams,
-  'toAddFunctions'
-  | 'toDeleteFunctions'
-> & {
-  toAddFunction: string
-}
-
 function setPersonneAdditionalWithId({
   id,
   structureId,
@@ -87,14 +80,6 @@ function setPersonneAdditionalWithId({
     toDeleteFunctions: [],
     requiredAction,
   })
-}
-
-type SetPersonneAdditionalWithCodeParams = Omit<
-  SetPersonneAdditionalParams,
-  'toAddFunctions'
-  | 'toDeleteFunctions'
-> & {
-  additionalCode: string
 }
 
 async function setPersonneAdditionalWithCode({
@@ -115,13 +100,6 @@ async function setPersonneAdditionalWithCode({
   )
 }
 
-interface SetPersonneAdditionalV2Params {
-  id: number
-  structureId: number
-  toAdd: FonctionForm | null
-  toDelete: string | null
-}
-
 async function setPersonneAdditionalV2({
   id,
   structureId,
@@ -140,11 +118,6 @@ async function setPersonneAdditionalV2({
   )
 }
 
-type AddPersonneAdditionalV2Params = Omit<
-  SetPersonneAdditionalV2Params,
-  'toDelete'
->
-
 function addPersonneAdditionalV2({
   id,
   structureId,
@@ -157,11 +130,6 @@ function addPersonneAdditionalV2({
     toDelete: null,
   })
 }
-
-type DeletePersonneAdditionalV2Params = Omit<
-  SetPersonneAdditionalV2Params,
-  'toAdd'
->
 
 function deletePersonneAdditionalV2({
   id,

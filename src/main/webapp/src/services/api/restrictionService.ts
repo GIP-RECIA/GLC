@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import type { StructureRestriction } from '@/types/index.ts'
+import type {
+  SaveRestrictionsParams,
+  StructureRestriction,
+} from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getRestrictions(
@@ -25,12 +28,6 @@ async function getRestrictions(
       `/api/restriction/${id}`,
     )
   ).data
-}
-
-interface SaveRestrictionsParams {
-  id: number
-  member: string
-  group: boolean
 }
 
 async function saveRestrictions({

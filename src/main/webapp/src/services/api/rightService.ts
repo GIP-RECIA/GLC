@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { ServiceRights } from '@/types/index.ts'
+import type { ServiceRights, UpdateRightParams } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getRights(
@@ -25,14 +25,6 @@ async function getRights(
       `/api/rights/${id}`,
     )
   ).data
-}
-
-interface UpdateRightParams {
-  id: number
-  service: string
-  role: string
-  membersToAdd: string[]
-  membersToRemove: string[]
 }
 
 async function updateRight({

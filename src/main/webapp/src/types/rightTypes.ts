@@ -19,3 +19,11 @@ export interface RightMember {
   user: boolean
   external: boolean
 }
+
+export interface UpdateRightParams {
+  id: number
+  service: string
+  role: string
+  membersToAdd: string[]
+  membersToRemove: string[]
+}

@@ -13,3 +13,9 @@ export interface ClassRestriction {
   classe: string
   dateRentreeClasse: string | null
 }
+
+export interface SaveRestrictionsParams {
+  id: number
+  member: string
+  group: boolean
+}

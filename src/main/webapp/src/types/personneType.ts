@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { PersonneFonction } from './fonctionType.ts'
+import type { FonctionForm, PersonneFonction } from './fonctionType.ts'
 
 export interface Personne {
   id: number
@@ -49,3 +49,44 @@ export interface SimplePersonne {
   email?: string
   dateSuppression?: string
 }
+
+export interface SetPersonneAdditionalParams {
+  id: number
+  structureId: number
+  toAddFunctions: string[]
+  toDeleteFunctions: string[]
+  requiredAction: string
+}
+
+export type SetPersonneAdditionalWithIdParams = Omit<
+  SetPersonneAdditionalParams,
+  'toAddFunctions'
+  | 'toDeleteFunctions'
+> & {
+  toAddFunction: string
+}
+
+export type SetPersonneAdditionalWithCodeParams = Omit<
+  SetPersonneAdditionalParams,
+  'toAddFunctions'
+  | 'toDeleteFunctions'
+> & {
+  additionalCode: string
+}
+
+export interface SetPersonneAdditionalV2Params {
+  id: number
+  structureId: number
+  toAdd: FonctionForm | null
+  toDelete: string | null
+}
+
+export type AddPersonneAdditionalV2Params = Omit<
+  SetPersonneAdditionalV2Params,
+  'toDelete'
+>
+
+export type DeletePersonneAdditionalV2Params = Omit<
+  SetPersonneAdditionalV2Params,
+  'toAdd'
+>
