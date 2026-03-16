@@ -42,7 +42,9 @@ import fr.recia.glc.util.DateUtils;
 import fr.recia.glc.util.SourceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -325,13 +327,16 @@ public class FonctionService {
     return saveAdditionalFonctions(personneId, structureId, List.of(fonction), List.of(), requiredAction);
   }
 
-  public boolean saveAdditionalFonctions(
-    Long personneId,
-    Long structureId,
-    List<String> toAddFunctions,
-    List<String> toDeleteFunctions,
-    String requiredAction
-  ) {
+  // TODO : evict aussi le cache des alertes
+  // Voir s'il faut evict le cache typesFonctionFiliere et disciplines
+  @Caching(evict = {
+          @CacheEvict(value = "personneFonctions", key = "#personneId"),
+          @CacheEvict(value = "personne", key = "#personneId"),
+          @CacheEvict(value = "personnesWithoutFunctions", key = "#structureId"),
+          @CacheEvict(value = "structureFonctions", key = "#structureId"),
+          @CacheEvict(value = "personnesByEtablissement", key = "#structureId")
+  })
+  public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<String> toAddFunctions, List<String> toDeleteFunctions, String requiredAction) {
     final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
     final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
     if (aPersonne == null
