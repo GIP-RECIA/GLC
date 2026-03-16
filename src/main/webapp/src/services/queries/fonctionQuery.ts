@@ -21,6 +21,7 @@ function useFonctionsQuery() {
   return useQuery({
     key: ['fonctions'],
     query: () => getFonctions(),
+    staleTime: Infinity,
   })
 }
 

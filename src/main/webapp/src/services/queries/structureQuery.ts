@@ -14,22 +14,31 @@
  * limitations under the License.
  */
 
-import { useQuery } from '@pinia/colada'
+import { defineQuery, useQuery } from '@pinia/colada'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { getEtablissement, getEtablissements } from '@/services/api/index.ts'
 
 function useEtablissementsQuery() {
   return useQuery({
     key: ['etablissements'],
     query: () => getEtablissements(),
+    staleTime: Infinity,
   })
 }
 
-function useEtablissementQuery(id: number) {
-  return useQuery({
-    key: ['etablissement', id],
-    query: () => getEtablissement(id),
-  })
-}
+const useEtablissementQuery = defineQuery(() => {
+  const route = useRoute()
+
+  const structureId = computed(() => Number(route.params.structureId))
+
+  return useQuery(() => ({
+    key: ['etablissement', structureId.value],
+    query: () => getEtablissement(structureId.value),
+    enabled: !Number.isNaN(structureId.value),
+    staleTime: 1000 * 60 * 60,
+  }))
+})
 
 export {
   useEtablissementQuery,

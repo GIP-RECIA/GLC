@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { useMutation, useQuery } from '@pinia/colada'
+import { defineQuery, useMutation, useQuery } from '@pinia/colada'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import {
   addPersonneAdditionalV2,
   deletePersonneAdditionalV2,
@@ -26,17 +28,24 @@ import {
   setPersonneAdditionalWithId,
 } from '@/services/api/index.ts'
 
-function usePersonneQuery(id: number) {
-  return useQuery({
-    key: ['personne', id],
-    query: () => getPersonne(id),
-  })
-}
+const usePersonneQuery = defineQuery(() => {
+  const route = useRoute()
+
+  const userId = computed(() => Number(route.params.userId))
+
+  return useQuery(() => ({
+    key: ['personne', userId.value],
+    query: () => getPersonne(userId.value),
+    enabled: !Number.isNaN(userId.value),
+    staleTime: 1000 * 60 * 30,
+  }))
+})
 
 function useSearchPersonneQuery(name: string) {
   return useQuery({
     key: ['personne', 'search', name],
     query: () => searchPersonne(name),
+    staleTime: Infinity,
   })
 }
 

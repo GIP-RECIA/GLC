@@ -21,6 +21,7 @@ function useConfigurationQuery() {
   return useQuery({
     key: ['configuration'],
     query: () => getConfiguration(),
+    staleTime: Infinity,
   })
 }
 
