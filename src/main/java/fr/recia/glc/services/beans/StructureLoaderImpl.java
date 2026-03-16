@@ -19,14 +19,10 @@ import com.google.common.collect.Sets;
 import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.ldap.repository.IExternalGroupDao;
 import fr.recia.glc.util.ListUtil;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.Duration;
-import org.joda.time.Instant;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.cache.Cache;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
@@ -35,8 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor

@@ -23,13 +23,16 @@ import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
 import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
 
 @Service
+@Slf4j
 public class PersonneService {
 
   @Autowired
@@ -43,13 +46,17 @@ public class PersonneService {
     return admin ? aPersonneRepository.findByNameLikeAdmin(name) : aPersonneRepository.findByNameLike(name);
   }
 
+  @Cacheable(value = "personnesByEtablissement")
   public List<SimplePersonneDto> getPersonnes(Long structureId) {
+    log.trace("getPersonnes for {}", structureId);
     final List<Long> personnesIds = aPersonneAStructureRepository.findPersonneByStructureId(structureId);
     if (personnesIds.isEmpty()) return List.of();
     return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
   }
 
+  @Cacheable(value = "personne")
   public PersonneDto getPersonne(Long id) {
+    log.trace("getPersonne for {}", id);
     return aPersonneRepository.findByPersonneId(id);
   }
 

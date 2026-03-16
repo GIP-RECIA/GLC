@@ -52,12 +52,6 @@ public class PersonneController {
         if (personnes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        personnes = personnes.stream()
-                .map(personne -> {
-                    personne.setUid("");
-                    return personne;
-                })
-                .collect(Collectors.toList());
         return new ResponseEntity<>(personnes, HttpStatus.OK);
     }
 
@@ -67,7 +61,6 @@ public class PersonneController {
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        personne.setUid("");
         personne.setAllFonctions(fonctionService.getPersonneFonctions(id));
         return new ResponseEntity<>(personne, HttpStatus.OK);
     }

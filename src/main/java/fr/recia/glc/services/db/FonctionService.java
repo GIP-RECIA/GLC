@@ -42,6 +42,7 @@ import fr.recia.glc.util.DateUtils;
 import fr.recia.glc.util.SourceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -94,7 +95,9 @@ public class FonctionService {
     this.fonctionsProperties = glcProperties.getCustomConfig().getFonctions();
   }
 
+  @Cacheable(value = "fonctions")
   public List<Object> getFonctions() {
+    log.trace("getFonctions");
     final List<String> sources = disciplineRepository.findAllNonSarapisSources();
     if (sources.isEmpty()) return Collections.emptyList();
 
@@ -270,7 +273,9 @@ public class FonctionService {
       .collect(Collectors.toList());
   }
 
+  @Cacheable(value = "personneFonctions")
   public List<FonctionDto> getPersonneFonctions(Long personneId) {
+    log.trace("getPersonneFonctions for {}", personneId);
     return fonctionRepository.findByPersonne(personneId);
   }
 
@@ -280,19 +285,27 @@ public class FonctionService {
       .collect(Collectors.toList());
   }
 
+  @Cacheable(value = "structureFonctions")
   public List<FonctionDto> getStructureFonctions(Long structureId) {
+    log.trace("getStructureFonctions for {}", structureId);
     return fonctionRepository.findByStructureId(structureId);
   }
 
+  @Cacheable(value = "typesFonctionFiliere")
   public List<TypeFonctionFiliereDto> getTypesFonctionFiliere(String source) {
+    log.trace("getTypesFonctionFiliere for {}", source);
     return typeFonctionFiliereRepository.findBySourceSarapis(source);
   }
 
+  @Cacheable(value = "disciplines")
   public List<DisciplineDto> getDisciplines(String source) {
+    log.trace("getDisciplines for {}", source);
     return disciplineRepository.findBySourceSarapis(source);
   }
 
+  @Cacheable(value = "personnesWithoutFunctions")
   public List<SimplePersonneDto> getPersonnesWithoutFunctions(Long structureId) {
+    log.trace("getPersonnesWithoutFunctions for {}", structureId);
     final List<Long> personnesIds = fonctionRepository.findPersonnesWithoutFunctions(structureId);
     return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
   }

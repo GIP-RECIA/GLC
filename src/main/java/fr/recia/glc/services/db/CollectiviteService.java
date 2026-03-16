@@ -15,30 +15,27 @@
  */
 package fr.recia.glc.services.db;
 
-import fr.recia.glc.db.dto.structure.EtablissementDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.db.entities.structure.CollectiviteLocale;
-import fr.recia.glc.db.entities.structure.Etablissement;
-import fr.recia.glc.db.entities.structure.QEtablissement;
 import fr.recia.glc.db.repositories.structure.CollectiviteLocaleRepository;
-import fr.recia.glc.db.repositories.structure.EtablissementRepository;
-import org.apache.commons.collections4.IteratorUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CollectiviteService {
 
   @Autowired
   private CollectiviteLocaleRepository<CollectiviteLocale> collectiviteLocaleRepository;
 
+  @Cacheable(value = "collectivites")
   public List<SimpleStructureDto> getCollectivites() {
+    log.trace("getCollectivites");
     List<CollectiviteLocale> collectiviteLocales = collectiviteLocaleRepository.findAll();
     List<SimpleStructureDto> simpleStructureDtos = new ArrayList<>();
     for(CollectiviteLocale collectiviteLocale : collectiviteLocales){

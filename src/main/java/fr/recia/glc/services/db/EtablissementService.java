@@ -20,8 +20,11 @@ import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.entities.structure.QEtablissement;
 import fr.recia.glc.db.repositories.structure.EtablissementRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class EtablissementService {
 
@@ -56,7 +60,9 @@ public class EtablissementService {
       .collect(Collectors.toList());
   }
 
+  @Cacheable(value = "etablissement")
   public EtablissementDto getEtablissement(Long id) {
+    log.trace("getEtablissement for {}", id);
     Etablissement etablissement = etablissementRepository.findById(id).orElse(null);
     return etablissement != null ? new EtablissementDto(etablissement) : null;
   }

@@ -19,7 +19,9 @@ import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.db.dto.AlertDto;
 import fr.recia.glc.services.db.FonctionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.Objects;
 
 import static fr.recia.glc.services.alert.AlertStatics.SPLIT_CHARTER;
 
+@Slf4j
 @Service
 public class AlertService {
 
@@ -59,7 +62,9 @@ public class AlertService {
       .build();
   }
 
+  @Cacheable(value = "fonctionAlerts")
   public List<AlertDto> getFonctionAlerts(Long etablissementId, String etablissementSource) {
+    log.trace("getFonctionAlerts for {} and {}", etablissementId, etablissementSource);
     List<AlertDto> alerts = new ArrayList<>();
     alertProperties.stream()
       .filter(alert -> Objects.equals(etablissementSource, alert.getSource()))
