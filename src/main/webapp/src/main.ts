@@ -37,7 +37,16 @@ registerFontAwsome(app)
 
 app.use(i18n)
 app.use(pinia)
-app.use(PiniaColada)
+app.use(
+  PiniaColada,
+  {
+    queryOptions: {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+)
 app.use(vuetify)
 app.use(router)
 app.use(
