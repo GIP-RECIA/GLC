@@ -16,42 +16,29 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 
-const isDev = import.meta.env.DEV
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    ...(
-      isDev
-        ? [
-            {
-              path: '/',
-              name: 'index',
-              component: () => import('@/views/IndexView.vue'),
-            },
-            {
-              path: '/access',
-              name: 'access',
-              component: () => import('@/views/AccessView.vue'),
-            },
-            {
-              path: '/admin',
-              name: 'admin',
-              component: () => import('@/views/AdminView.vue'),
-            },
-            {
-              path: '/settings',
-              name: 'settings',
-              component: () => import('@/views/SettingsView.vue'),
-            },
-          ]
-        : [{
-            path: '/',
-            redirect: () => {
-              return { name: 'account' }
-            },
-          }]
-    ),
+    {
+      path: '/',
+      name: 'index',
+      component: () => import('@/views/IndexView.vue'),
+    },
+    {
+      path: '/access',
+      name: 'access',
+      component: () => import('@/views/AccessView.vue'),
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/AdminView.vue'),
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('@/views/SettingsView.vue'),
+    },
     {
       path: '/account',
       children: [
@@ -90,7 +77,7 @@ const router = createRouter({
     {
       path: '/:pathName(.*)',
       redirect: () => {
-        return { name: isDev ? 'index' : 'account' }
+        return { name: 'index' }
       },
     },
   ],

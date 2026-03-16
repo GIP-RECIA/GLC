@@ -64,7 +64,6 @@ const appName = __APP_NAME__
         <v-progress-linear :active="isLoading" :indeterminate="isLoading" absolute bottom color="primary" />
         <div class="d-flex align-center w-100 px-1">
           <router-link
-            v-dev
             :to="{ name: 'index' }"
           >
             <v-icon
