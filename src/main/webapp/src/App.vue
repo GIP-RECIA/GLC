@@ -18,16 +18,26 @@
 import { PiniaColadaDevtools } from '@pinia/colada-devtools'
 import { watchOnce } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { onBeforeMount } from 'vue'
+import { computed, onBeforeMount } from 'vue'
+import { useRoute } from 'vue-router'
+import LoginDialog from '@/components/dialogs/LoginDialog.vue'
 import SettingsDialog from '@/components/dialogs/SettingsDialog.vue'
+import TabBar from '@/components/tabbar/TabBar.vue'
 import { useConfigurationStore } from '@/stores/index.ts'
+
+const route = useRoute()
 
 const configurationStore = useConfigurationStore()
 const { init, initFonctions } = configurationStore
-const { configuration, isInit, isLoading, isSettings } = storeToRefs(configurationStore)
+const {
+  configuration,
+  isInit,
+  isLoading,
+  isSettings,
+  isAuthenticated,
+} = storeToRefs(configurationStore)
 
 init()
-initFonctions()
 
 watchOnce(isInit, (newValue) => {
   if (!newValue || !configuration.value?.front.extendedUportal)
@@ -45,9 +55,18 @@ watchOnce(isInit, (newValue) => {
   }
 })
 
+watchOnce(isAuthenticated, (newValue) => {
+  if (newValue)
+    initFonctions()
+})
+
 onBeforeMount(() => {
   document.title = __APP_NAME__
 })
+
+const isAccountSection = computed(() =>
+  route.matched.some(r => r.name === 'account'),
+)
 
 const appName = __APP_NAME__
 </script>
@@ -60,8 +79,21 @@ const appName = __APP_NAME__
         :service-name="appName"
         v-bind="configuration!.front.extendedUportal?.header?.props"
       />
-      <v-toolbar density="compact" color="rgba(255, 255, 255, 0)">
-        <v-progress-linear :active="isLoading" :indeterminate="isLoading" absolute bottom color="primary" />
+      <v-toolbar
+        v-if="
+          isAuthenticated
+            && isAccountSection
+        "
+        density="compact"
+        color="rgba(255, 255, 255, 0)"
+      >
+        <v-progress-linear
+          :active="isLoading"
+          :indeterminate="isLoading"
+          absolute
+          bottom
+          color="primary"
+        />
         <div class="d-flex align-center w-100 px-1">
           <router-link
             :to="{ name: 'index' }"
@@ -70,7 +102,7 @@ const appName = __APP_NAME__
               icon="fas fa-home"
             />
           </router-link>
-          <router-view name="header" />
+          <TabBar />
           <v-spacer />
           <v-btn
             icon="fas fa-gear"
@@ -85,7 +117,8 @@ const appName = __APP_NAME__
     </header>
     <div class="d-flex flex-column h-100 overflow-y-auto">
       <v-main class="flex-grow-1">
-        <router-view />
+        <router-view v-if="isAuthenticated" />
+        <LoginDialog />
         <SettingsDialog />
       </v-main>
       <footer>

@@ -45,26 +45,17 @@ const router = createRouter({
         {
           path: '',
           name: 'account',
-          components: {
-            default: () => import('@/views/AccountView.vue'),
-            header: () => import('@/components/tabbar/TabBar.vue'),
-          },
+          component: () => import('@/views/AccountView.vue'),
         },
         {
           path: 'etab/:structureId(\\d+)',
           name: 'structure',
-          components: {
-            default: () => import('@/views/StructureView.vue'),
-            header: () => import('@/components/tabbar/TabBar.vue'),
-          },
+          component: () => import('@/views/StructureView.vue'),
         },
         {
           path: 'user/:userId(\\d+)',
           name: 'user',
-          components: {
-            default: () => import('@/views/UserView.vue'),
-            header: () => import('@/components/tabbar/TabBar.vue'),
-          },
+          component: () => import('@/views/UserView.vue'),
         },
         {
           path: ':pathName(.*)',
