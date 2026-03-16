@@ -15,23 +15,30 @@
 -->
 
 <script setup lang="ts">
-import type { StructureRestriction } from '@/types/index.ts'
-import { format } from 'date-fns'
+import type { Etablissement, StructureRestriction } from '@/types/index.ts'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { format, getYear } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watchEffect } from 'vue'
 import ManageRestrictionsDialog from '@/components/dialogs/ManageRestrictionsDialog.vue'
-import { getRestrictions } from '@/services/api/index.ts'
+import PageLayout from '@/components/PageLayout.vue'
+import SafeEmptyData from '@/components/SafeEmptyData.vue'
+import StructureSearch from '@/components/search/structure/StructureSearch.vue'
+import { getEtablissement, getRestrictions } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 
 const structureStore = useStructureStore()
-const { initCurrentEtab } = structureStore
 structureStore.init()
-const { etabs, currentEtab } = storeToRefs(structureStore)
+const { etabs } = storeToRefs(structureStore)
 
-const selectedEtab = ref<number>()
+const selectedEtab = ref<number | undefined>(
+  etabs.value
+    ? etabs.value[0]?.id
+    : undefined,
+)
 
-const data = ref<StructureRestriction>()
-const dataState = ref<'UNLOADED' | 'LOADING' | 'LOADED' | 'ERROR'>('UNLOADED')
+const currentEtab = ref<Etablissement | undefined>()
+const data = ref<StructureRestriction | undefined>()
 
 const dialogState = ref<boolean>(false)
 
@@ -46,7 +53,10 @@ const dataToDisplay = computed<StructureRestriction | undefined>(() => {
 
       return { ...niveau, classes }
     })
-    .filter(niveau => niveau.dateRentreeNiveau !== null || niveau.classes.length > 0)
+    .filter(niveau => (
+      niveau.dateRentreeNiveau !== null
+      || niveau.classes.length > 0
+    ))
 
   return { ...data.value, niveaux }
 })
@@ -55,11 +65,8 @@ watchEffect(async (): Promise<void> => {
   if (selectedEtab.value === undefined)
     return
 
-  initCurrentEtab(selectedEtab.value)
-  dataState.value = 'LOADING'
-  const response = await getRestrictions(selectedEtab.value)
-  data.value = response
-  dataState.value = response !== undefined ? 'LOADED' : 'ERROR'
+  currentEtab.value = await getEtablissement(selectedEtab.value)
+  data.value = await getRestrictions(selectedEtab.value)
 })
 
 function toDisplayDate(
@@ -73,196 +80,293 @@ function toDisplayDate(
 function save() {
 
 }
+
+const canEdit = computed<boolean>(() => (
+  currentEtab.value !== undefined
+  && data.value !== undefined
+))
+
+const schoolYear = computed<string | undefined>(() => {
+  if (!currentEtab.value)
+    return
+
+  const year = getYear(currentEtab.value.anneeScolaire)
+
+  return `${year}/${year + 1}`
+})
 </script>
 
 <template>
-  <v-container>
-    <h1>Paramétrage de l'établissement</h1>
-
-    <label for="tabs">Etablissement</label>
-    <select
-      id="tabs"
-      v-model="selectedEtab"
+  <div class="container">
+    <PageLayout
+      title="Paramétrage de l'établissement"
     >
-      <option
-        v-for="etab in etabs"
-        :key="etab.id"
-        :value="etab.id"
-      >
-        {{ etab.nom }} - {{ etab.type }} {{ etab.uai }}
-      </option>
-    </select>
+      <StructureSearch
+        v-model="selectedEtab"
+        :search-list="etabs"
+        variant="solo"
+      />
 
-    <h2>Informations générales</h2>
+      <div>
+        <h2>Informations générales</h2>
 
-    <div class="logo-card">
-      <img
-        v-if="currentEtab"
-        :src="currentEtab.logo ?? '/annuaire_images/default_banner_v1.jpg'"
-        alt="Logo de l'établissement"
-      >
-      <button
-        class="btn-primary small"
-        @click="() => {}"
-      >
-        Modifier
-        <font-awesome-icon icon="fas fa-pen" />
-      </button>
-    </div>
-
-    <div class="info-card">
-      <div class="body">
-        <ul v-if="currentEtab">
-          <li>
-            <h3>UAI</h3>
-            <p>{{ currentEtab.uai }}</p>
-          </li>
-          <li>
-            <h3>Siren</h3>
-            <p>{{ currentEtab.siren }}</p>
-          </li>
-          <li>
-            <h3>Etat</h3>
-            <p>{{ currentEtab.etat }}</p>
-          </li>
-          <li>
-            <h3>Etat alimentation</h3>
-            <p>{{ currentEtab.etatAlim }}</p>
-          </li>
-          <li>
-            <h3>Source</h3>
-            <p>{{ currentEtab.source }}</p>
-          </li>
-          <li>
-            <h3>Année scolaire</h3>
-            <p>{{ currentEtab.anneeScolaire }}</p>
-          </li>
-          <li>
-            <h3>Adresse</h3>
-            <p>{{ currentEtab.adresse.adresse }}</p>
-          </li>
-          <li>
-            <h3>Code postal</h3>
-            <p>{{ currentEtab.adresse.codePostal }}</p>
-          </li>
-          <li>
-            <h3>Ville</h3>
-            <p>{{ currentEtab.adresse.ville }}</p>
-          </li>
-          <li>
-            <h3>Boite postal</h3>
-            <p>{{ currentEtab.adresse.boitePostale }}</p>
-          </li>
-          <li>
-            <h3>Pays</h3>
-            <p>{{ currentEtab.adresse.pays }}</p>
-          </li>
-          <li>
-            <h3>Catégorie</h3>
-            <p>{{ currentEtab.categorie }}</p>
-          </li>
-          <li>
-            <h3>Mail</h3>
-            <p>{{ currentEtab.mail }}</p>
-          </li>
-          <li>
-            <h3>Nom</h3>
-            <p>{{ currentEtab.nom }}</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="info-card">
-      <div class="body">
-        <ul v-if="currentEtab">
-          <li>
-            <h3>Nom court</h3>
-            <p>{{ currentEtab.nomCourt }}</p>
-          </li>
-          <li>
-            <h3>Site web</h3>
-            <p>{{ currentEtab.siteWeb }}</p>
-          </li>
-        </ul>
-      </div>
-
-      <footer>
-        <button
-          class="btn-primary small"
-          @click="() => {}"
-        >
-          Modifier
-          <font-awesome-icon icon="fas fa-pen" />
-        </button>
-      </footer>
-    </div>
-
-    <h2>Paramètres</h2>
-
-    <div class="date-rentree-card">
-      <header>
-        <h3>Date de rentrée</h3>
-      </header>
-
-      <div class="body">
-        <template v-if="dataToDisplay">
-          <span>
-            {{ toDisplayDate(dataToDisplay.dateRentreeEtab) }}
-          </span>
-
-          <div class="niveau-container">
-            <div
-              v-for="niveau in dataToDisplay.niveaux"
-              :key="niveau.niveau"
-              class="niveau-card"
+        <div class="info-container">
+          <div class="r-card logo-card">
+            <img
+              :src="currentEtab?.logo ?? '/annuaire_images/default_banner_v1.jpg'"
+              alt="Photo de l'établissement"
             >
-              <h4>{{ niveau.niveau }}</h4>
-              <span v-if="niveau.dateRentreeNiveau">
-                {{ toDisplayDate(niveau.dateRentreeNiveau) }}
-              </span>
+            <footer
+              v-if="canEdit"
+            >
+              <button
+                class="btn-primary small"
+                @click="() => {}"
+              >
+                Modifier
+                <FontAwesomeIcon icon="fas fa-pen" />
+              </button>
+            </footer>
+          </div>
 
+          <div class="r-card info-card">
+            <header>
+              <h3>Identité</h3>
+            </header>
+
+            <div class="body">
               <ul>
-                <li
-                  v-for="classe in niveau.classes"
-                  :key="classe.classe"
-                  class="classe-card"
-                >
-                  <span>
-                    <b>
-                      {{ classe.classe }}
-                    </b>
-                  </span>
-                  <span>
-                    {{ toDisplayDate(classe.dateRentreeClasse) }}
-                  </span>
+                <li class="full-width">
+                  <h4>Nom</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.nom"
+                  />
+                </li>
+                <li class="full-width">
+                  <h4>Nom court</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.nomCourt"
+                  />
+                </li>
+                <li>
+                  <h4>Catégorie</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.categorie"
+                  />
+                </li>
+                <li>
+                  <h4>UAI</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.uai"
+                  />
+                </li>
+                <li>
+                  <h4>Siren</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.siren"
+                  />
+                </li>
+              </ul>
+            </div>
+
+            <footer
+              v-if="canEdit"
+            >
+              <button
+                class="btn-primary small"
+                @click="() => {}"
+              >
+                Modifier
+                <FontAwesomeIcon icon="fas fa-pen" />
+              </button>
+            </footer>
+          </div>
+
+          <div class="r-card info-card">
+            <header>
+              <h3>Localisation</h3>
+            </header>
+
+            <div class="body">
+              <ul>
+                <li class="full-width">
+                  <h4>Adresse</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.adresse.adresse"
+                  />
+                </li>
+                <li>
+                  <h4>Code postal</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.adresse.codePostal"
+                  />
+                </li>
+                <li>
+                  <h4>Ville</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.adresse.ville"
+                  />
+                </li>
+                <li>
+                  <h4>Boite postal</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.adresse.boitePostale"
+                  />
+                </li>
+                <li>
+                  <h4>Pays</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.adresse.pays"
+                  />
                 </li>
               </ul>
             </div>
           </div>
-        </template>
+
+          <div class="r-card info-card">
+            <header>
+              <h3>Contact</h3>
+            </header>
+
+            <div class="body">
+              <ul>
+                <li class="full-width">
+                  <h4>Mail</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.mail"
+                  />
+                </li>
+                <li class="full-width">
+                  <h4>Site web</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.siteWeb"
+                  />
+                </li>
+              </ul>
+            </div>
+
+            <footer
+              v-if="canEdit"
+            >
+              <button
+                class="btn-primary small"
+                @click="() => {}"
+              >
+                Modifier
+                <FontAwesomeIcon icon="fas fa-pen" />
+              </button>
+            </footer>
+          </div>
+
+          <div class="r-card info-card">
+            <header>
+              <h3>Administration</h3>
+            </header>
+
+            <div class="body">
+              <ul>
+                <li>
+                  <h4>Etat</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.etat"
+                  />
+                </li>
+                <li>
+                  <h4>Etat alimentation</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.etatAlim"
+                  />
+                </li>
+                <li>
+                  <h4>Source</h4>
+                  <SafeEmptyData
+                    :value="currentEtab?.source"
+                  />
+                </li>
+                <li>
+                  <h4>Année scolaire</h4>
+                  <SafeEmptyData
+                    :value="schoolYear"
+                  />
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <footer>
-        <button
-          class="btn-primary small"
-          @click="() => {
-            dialogState = true
-          }"
-        >
-          Modifier
-          <font-awesome-icon icon="fas fa-pen" />
-        </button>
-      </footer>
-    </div>
+      <div>
+        <h2>Paramètres</h2>
 
-    <ManageRestrictionsDialog
-      v-model="dialogState"
-      :restrictions="data"
-      @update:model-value="dialogState = false"
-      @save="save"
-    />
-  </v-container>
+        <div class="r-card date-rentree-card">
+          <header>
+            <h3>Date de rentrée</h3>
+          </header>
+
+          <div class="body">
+            <SafeEmptyData
+              :value="toDisplayDate(dataToDisplay?.dateRentreeEtab)"
+            />
+
+            <div
+              v-if="dataToDisplay"
+              v-show="dataToDisplay.niveaux.length > 0"
+              class="niveau-container"
+            >
+              <div
+                v-for="niveau in dataToDisplay.niveaux"
+                :key="niveau.niveau"
+                class="niveau-card"
+              >
+                <h4>{{ niveau.niveau }}</h4>
+                <span v-if="niveau.dateRentreeNiveau">
+                  {{ toDisplayDate(niveau.dateRentreeNiveau) }}
+                </span>
+
+                <ul>
+                  <li
+                    v-for="classe in niveau.classes"
+                    :key="classe.classe"
+                    class="classe-card"
+                  >
+                    <span>
+                      <b>
+                        {{ classe.classe }}
+                      </b>
+                    </span>
+                    <span>
+                      {{ toDisplayDate(classe.dateRentreeClasse) }}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <footer
+            v-if="canEdit"
+          >
+            <button
+              class="btn-primary small"
+              @click="() => {
+                dialogState = true
+              }"
+            >
+              Modifier
+              <FontAwesomeIcon icon="fas fa-pen" />
+            </button>
+          </footer>
+        </div>
+      </div>
+    </PageLayout>
+  </div>
+
+  <ManageRestrictionsDialog
+    v-model="dialogState"
+    :restrictions="data"
+    @update:model-value="dialogState = false"
+    @save="save"
+  />
 </template>
 
 <style scoped lang="scss">
@@ -271,14 +375,39 @@ function save() {
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
 
+.container {
+  margin-top: 32px;
+  margin-bottom: 40px;
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    margin-bottom: 60px;
+  }
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+
+    > .full-width {
+      grid-column: span 2;
+    }
+  }
+}
+
 .logo-card {
   flex: 0 0 auto;
+  justify-content: end;
   position: relative;
   overflow: hidden;
   aspect-ratio: 9 / 4;
   width: 100%;
-  border-radius: 10px;
-  box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
+  max-width: 720px;
 
   > img {
     position: absolute;
@@ -288,19 +417,14 @@ function save() {
     width: 100%;
   }
 
-  > button {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
+  > footer {
+    z-index: 0;
   }
 }
 
 .info-card {
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
-  box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
-  padding: 16px;
 
   > .body {
     > ul {
@@ -317,19 +441,21 @@ function save() {
     }
   }
 
-  > footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 24px;
+  @media (width >= map.get($grid-breakpoints, xl)) {
+    > .body > ul {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+
+      > .full-width {
+        grid-column: span 2;
+      }
+    }
   }
 }
 
 .date-rentree-card {
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
-  box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
-  padding: 16px;
 
   > .body {
     display: flex;
@@ -362,12 +488,6 @@ function save() {
         }
       }
     }
-  }
-
-  > footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 24px;
   }
 }
 
