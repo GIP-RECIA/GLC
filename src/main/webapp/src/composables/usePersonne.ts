@@ -28,8 +28,8 @@ function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
   const configurationStore = useConfigurationStore()
   const { isEditAllowed, getLoginOffice } = configurationStore
 
-  const stcuctureStore = useStructureStore()
-  const { fonction } = storeToRefs(stcuctureStore)
+  const structureStore = useStructureStore()
+  const { fonction } = storeToRefs(structureStore)
 
   const personneStore = usePersonneStore()
   const { currentPersonne } = storeToRefs(personneStore)
