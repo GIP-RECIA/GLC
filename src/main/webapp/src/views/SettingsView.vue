@@ -239,8 +239,19 @@ function setChildEditState(state: boolean): void {
     grid-template-columns: repeat(2, 1fr);
     align-items: start;
 
+    > .logo-card {
+      justify-self: center;
+      grid-column: span 2;
+    }
+
     > .full-width {
       grid-column: span 2;
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, xl)) {
+    > .logo-card {
+      grid-column: unset;
     }
   }
 }

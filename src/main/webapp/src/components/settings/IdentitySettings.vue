@@ -124,6 +124,12 @@ watch(
           />
         </li>
         <li>
+          <h4>Type</h4>
+          <SafeEmptyData
+            :value="etab?.type"
+          />
+        </li>
+        <li>
           <h4>UAI</h4>
           <SafeEmptyData
             :value="etab?.uai"
