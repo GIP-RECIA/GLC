@@ -16,19 +16,17 @@
 
 <script setup lang="ts">
 import type { Etablissement, StructureRestriction } from '@/types/index.ts'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
-import { computed, ref, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 import ManageRestrictionsDialog from '@/components/dialogs/ManageRestrictionsDialog.vue'
 import PageLayout from '@/components/PageLayout.vue'
-import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import StructureSearch from '@/components/search/structure/StructureSearch.vue'
 import AdminSettings from '@/components/settings/AdminSettings.vue'
 import ContactSettings from '@/components/settings/ContactSettings.vue'
 import IdentitySettings from '@/components/settings/IdentitySettings.vue'
 import LocalisationSettings from '@/components/settings/LocalisationSettings.vue'
 import LogoSettings from '@/components/settings/LogoSettings.vue'
+import RestrictionsSettings from '@/components/settings/RestrictionsSettings.vue'
 import { getEtablissement, getRestrictions } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 
@@ -47,25 +45,6 @@ const data = ref<StructureRestriction | undefined>()
 
 const dialogState = ref<boolean>(false)
 
-const dataToDisplay = computed<StructureRestriction | undefined>(() => {
-  if (!data.value)
-    return
-
-  const niveaux = data.value?.niveaux
-    .map((niveau) => {
-      const classes = niveau.classes
-        .filter(({ dateRentreeClasse }) => dateRentreeClasse !== null)
-
-      return { ...niveau, classes }
-    })
-    .filter(niveau => (
-      niveau.dateRentreeNiveau !== null
-      || niveau.classes.length > 0
-    ))
-
-  return { ...data.value, niveaux }
-})
-
 watchEffect(async (): Promise<void> => {
   if (selectedEtab.value === undefined)
     return
@@ -74,22 +53,9 @@ watchEffect(async (): Promise<void> => {
   data.value = await getRestrictions(selectedEtab.value)
 })
 
-function toDisplayDate(
-  date: string | undefined | null,
-): string | undefined {
-  return date
-    ? format(date, 'P p')
-    : undefined
-}
-
 function save() {
 
 }
-
-const canEdit = computed<boolean>(() => (
-  currentEtab.value !== undefined
-  && data.value !== undefined
-))
 
 const isChildEdit = ref<boolean>(false)
 
@@ -143,65 +109,11 @@ function setChildEditState(state: boolean): void {
       <div>
         <h2>Paramètres</h2>
 
-        <div class="r-card date-rentree-card">
-          <header>
-            <h3>Date de rentrée</h3>
-          </header>
-
-          <div class="body">
-            <SafeEmptyData
-              :value="toDisplayDate(dataToDisplay?.dateRentreeEtab)"
-            />
-
-            <div
-              v-if="dataToDisplay"
-              v-show="dataToDisplay.niveaux.length > 0"
-              class="niveau-container"
-            >
-              <div
-                v-for="niveau in dataToDisplay.niveaux"
-                :key="niveau.niveau"
-                class="niveau-card"
-              >
-                <h4>{{ niveau.niveau }}</h4>
-                <span v-if="niveau.dateRentreeNiveau">
-                  {{ toDisplayDate(niveau.dateRentreeNiveau) }}
-                </span>
-
-                <ul>
-                  <li
-                    v-for="classe in niveau.classes"
-                    :key="classe.classe"
-                    class="classe-card"
-                  >
-                    <span>
-                      <b>
-                        {{ classe.classe }}
-                      </b>
-                    </span>
-                    <span>
-                      {{ toDisplayDate(classe.dateRentreeClasse) }}
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <footer
-            v-if="canEdit"
-          >
-            <button
-              class="btn-primary small"
-              @click="() => {
-                dialogState = true
-              }"
-            >
-              Modifier
-              <FontAwesomeIcon icon="fas fa-pen" />
-            </button>
-          </footer>
-        </div>
+        <RestrictionsSettings
+          :restrictions="data"
+          :disable-edit="isChildEdit"
+          @edit="(val) => dialogState = val"
+        />
       </div>
     </PageLayout>
   </div>
@@ -252,60 +164,6 @@ function setChildEditState(state: boolean): void {
   @media (width >= map.get($grid-breakpoints, xl)) {
     > .logo-card {
       grid-column: unset;
-    }
-  }
-}
-
-.date-rentree-card {
-  display: flex;
-  flex-direction: column;
-
-  > .body {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    > .niveau-container {
-      display: grid;
-      gap: 16px;
-
-      > .niveau-card {
-        display: flex;
-        flex-direction: column;
-        border-radius: 6px;
-        border: 1px solid var(--#{$prefix}stroke);
-        padding: 16px;
-
-        > ul {
-          @include unstyled-list;
-          display: grid;
-          gap: 16px;
-
-          > .classe-card {
-            display: flex;
-            flex-direction: column;
-            border-radius: 6px;
-            border: 1px solid var(--#{$prefix}stroke);
-            padding: 16px;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media (width >= map.get($grid-breakpoints, md)) {
-  .date-rentree-card {
-    > .body {
-      > .niveau-container {
-        grid-template-columns: repeat(auto-fill, minmax(512px, 1fr));
-
-        > .niveau-card {
-          > ul {
-            grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
-          }
-        }
-      }
     }
   }
 }
