@@ -16,13 +16,47 @@
 
 <script setup lang="ts">
 import type { Etablissement } from '@/types/index.ts'
-import { faPen } from '@fortawesome/free-solid-svg-icons'
+import { faFloppyDisk, faPen, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
-defineProps<{
+const props = defineProps<{
   etab?: Etablissement
 }>()
+
+const emit = defineEmits<{
+  edit: [boolean]
+}>()
+
+const { t } = useI18n()
+
+const isEdit = ref<boolean>(false)
+
+const nomCourt = ref<string | undefined>(props.etab?.nomCourt)
+
+const canSave = computed<boolean>(() => (
+  isEdit.value
+  && nomCourt.value !== props.etab?.nomCourt
+))
+
+function toggleEdit(): void {
+  isEdit.value = !isEdit.value
+  emit('edit', isEdit.value)
+}
+
+function save(): void {
+  isEdit.value = false
+  emit('edit', false)
+}
+
+watch(
+  () => props.etab?.nomCourt,
+  (newValue) => {
+    nomCourt.value = newValue
+  },
+)
 </script>
 
 <template>
@@ -41,7 +75,32 @@ defineProps<{
         </li>
         <li class="full-width">
           <h4>Nom court</h4>
+          <div
+            v-if="isEdit"
+            class="field"
+          >
+            <div class="field-layout">
+              <div class="field-container">
+                <div class="middle">
+                  <label
+                    for="nomCourt"
+                  >
+                    Nom court
+                  </label>
+                  <input
+                    id="nomCourt"
+                    v-model.trim="nomCourt"
+                    type="text"
+                    class="field"
+                    placeholder=""
+                  >
+                </div>
+              </div>
+              <div class="active-indicator" />
+            </div>
+          </div>
           <SafeEmptyData
+            v-else
             :value="etab?.nomCourt"
           />
         </li>
@@ -71,10 +130,23 @@ defineProps<{
     >
       <button
         class="btn-primary small"
-        @click="() => {}"
+        @click="() => toggleEdit()"
       >
-        Modifier
-        <FontAwesomeIcon :icon="faPen" />
+        {{ t(`button.${isEdit ? 'cancel' : 'edit'}`) }}
+        <FontAwesomeIcon
+          :icon="isEdit ? faXmark : faPen"
+        />
+      </button>
+      <button
+        v-show="isEdit"
+        :disabled="!canSave"
+        class="btn-primary small"
+        @click="() => save()"
+      >
+        {{ t('button.save') }}
+        <FontAwesomeIcon
+          :icon="faFloppyDisk"
+        />
       </button>
     </footer>
   </div>
