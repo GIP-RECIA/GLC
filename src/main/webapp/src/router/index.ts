@@ -41,6 +41,7 @@ const router = createRouter({
     },
     {
       path: '/account',
+      name: 'accountRoot',
       children: [
         {
           path: '',

@@ -64,9 +64,9 @@ onBeforeMount(() => {
   document.title = __APP_NAME__
 })
 
-const isAccountSection = computed(() =>
-  route.matched.some(r => r.name === 'account'),
-)
+const isAccountSection = computed(() => (
+  route.matched.some(r => r.name === 'accountRoot')
+))
 
 const appName = __APP_NAME__
 </script>
