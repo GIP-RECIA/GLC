@@ -19,26 +19,28 @@ import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
 import ServicesRightsLayout from '@/components/layouts/ServicesRightsLayout.vue'
+import PageLayout from '@/components/PageLayout.vue'
+import StructureSearch from '@/components/search/structure/StructureSearch.vue'
 import { getRights } from '@/services/api/index.ts'
-import { useStructureStore } from '@/stores'
+import { useStructureStore } from '@/stores/index.ts'
 
 const structureStore = useStructureStore()
 structureStore.init()
 const { etabs } = storeToRefs(structureStore)
 
-const currentEtab = ref<number>()
+const selectedEtab = ref<number | undefined>(
+  etabs.value
+    ? etabs.value[0]?.id
+    : undefined,
+)
 
 const data = ref<ServiceRights[]>()
-const dataState = ref<'UNLOADED' | 'LOADING' | 'LOADED' | 'ERROR'>('UNLOADED')
 
 watchEffect(async (): Promise<void> => {
-  if (currentEtab.value === undefined)
+  if (selectedEtab.value === undefined)
     return
 
-  dataState.value = 'LOADING'
-  const response = await getRights(currentEtab.value)
-  data.value = response
-  dataState.value = response !== undefined ? 'LOADED' : 'ERROR'
+  data.value = await getRights(selectedEtab.value)
 })
 
 function update(
@@ -76,68 +78,37 @@ function update(
 </script>
 
 <template>
-  <v-container>
-    <h1>Gestion des droits d'administration</h1>
-
-    <ul
-      :style="{
-        height: '500px',
-        overflow: 'auto',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-        gap: '16px',
-        listStyle: 'none',
-      }"
+  <div class="container">
+    <PageLayout
+      title="Gestion des droits d'administration"
     >
-      <li
-        v-for="etab in etabs"
-        :key="etab.id"
-        :style="{
-          'background-color': currentEtab === etab.id
-            ? 'black'
-            : undefined,
-          'color': currentEtab === etab.id
-            ? 'white'
-            : undefined,
-          'border-radius': '10px',
-          'border': '1px solid grey',
-        }"
-      >
-        <button
-          :style="{
-            width: '100%',
-            height: '100%',
-          }"
-          @click="() => { currentEtab = etab.id }"
-        >
-          <div style="display: block; text-align: start; padding: 8px;">
-            <div>id: {{ etab.id }}</div>
-            <div>nom: {{ etab.nom }}</div>
-            <div>type: {{ etab.type ?? 'unknown' }}</div>
-            <div>uai: {{ etab.uai }}</div>
-          </div>
-        </button>
-      </li>
-    </ul>
+      <StructureSearch
+        v-model="selectedEtab"
+        :search-list="etabs"
+        variant="solo"
+      />
 
-    <label for="tabs">Etablissement</label>
-    <select
-      id="tabs"
-      v-model="currentEtab"
-    >
-      <option
-        v-for="etab in etabs"
-        :key="etab.id"
-        :value="etab.id"
-      >
-        {{ etab.nom }} - {{ etab.type }} {{ etab.uai }}
-      </option>
-    </select>
-
-    <ServicesRightsLayout
-      :services-rights="data"
-      :loading-state="dataState"
-      @update="update"
-    />
-  </v-container>
+      <ServicesRightsLayout
+        :services-rights="data"
+        loading-state="LOADED"
+        @update="update"
+      />
+    </PageLayout>
+  </div>
 </template>
+
+<style scoped lang="scss">
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/functions' as *;
+@use '@gip-recia/ui/mixins' as *;
+
+.container {
+  margin-top: 32px;
+  margin-bottom: 40px;
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    margin-bottom: 60px;
+  }
+}
+</style>

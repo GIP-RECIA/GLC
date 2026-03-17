@@ -15,40 +15,130 @@
 -->
 
 <script setup lang="ts">
+import {
+  faArrowLeft,
+  faCubesStacked,
+  faHouse,
+  faUserGear,
+  faUsersGear,
+  faUserShield,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import PageLayout from '@/components/PageLayout.vue'
 </script>
 
 <template>
-  <v-container>
-    <h1>Je veux</h1>
-    <ul>
-      <li>
-        <router-link :to="{ name: 'account' }">
-          Gérer les comptes
-        </router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'access' }">
-          Gérer les accès aux services
-        </router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'admin' }">
-          Gérer les droits d'administration
-        </router-link>
-      </li>
-      <li>
-        <a href="/portail/api/ExternalURLStats?fname=I2Grouper-UI&service=/grouperUi/">
-          Gérer les groupes
+  <div class="container">
+    <PageLayout
+      title="Administration de l'ENT"
+    >
+      <template #back>
+        <a
+          href="/portail"
+          target="_self"
+          class="btn-tertiary circle"
+          title="Retour à l'accueil"
+        >
+          <FontAwesomeIcon :icon="faArrowLeft" />
         </a>
-      </li>
-      <li>
-        <router-link :to="{ name: 'settings' }">
-          Paramétrer l'établissement
-        </router-link>
-      </li>
-    </ul>
-  </v-container>
+      </template>
+
+      <div>
+        <h2>Je veux</h2>
+
+        <ul>
+          <li>
+            <router-link
+              :to="{ name: 'account' }"
+              class="btn-tertiary"
+            >
+              <FontAwesomeIcon :icon="faUserGear" />
+              Gérer les comptes
+            </router-link>
+          </li>
+          <li>
+            <router-link
+              :to="{ name: 'access' }"
+              class="btn-tertiary"
+            >
+              <FontAwesomeIcon :icon="faCubesStacked" />
+              Gérer les accès aux services
+            </router-link>
+          </li>
+          <li>
+            <router-link
+              :to="{ name: 'admin' }"
+              class="btn-tertiary"
+            >
+              <FontAwesomeIcon :icon="faUserShield" />
+              Gérer les droits d'administration
+            </router-link>
+          </li>
+          <li>
+            <a
+              href="/portail/api/ExternalURLStats?fname=I2Grouper-UI&service=/grouperUi/"
+              class="btn-tertiary"
+            >
+              <FontAwesomeIcon :icon="faUsersGear" />
+              Gérer les groupes
+            </a>
+          </li>
+          <li>
+            <router-link
+              :to="{ name: 'settings' }"
+              class="btn-tertiary"
+            >
+              <FontAwesomeIcon :icon="faHouse" />
+              Paramétrer l'établissement
+            </router-link>
+          </li>
+        </ul>
+      </div>
+    </PageLayout>
+  </div>
 </template>
 
 <style scoped lang="scss">
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/functions' as *;
+@use '@gip-recia/ui/mixins' as *;
+
+.container {
+  margin-top: 32px;
+  margin-bottom: 40px;
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    margin-bottom: 60px;
+  }
+}
+
+.page-layout {
+  > header > .heading > .btn-tertiary {
+    align-self: flex-start;
+    font-size: var(--#{$prefix}font-size-md);
+  }
+
+  ul {
+    @include unstyled-list;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    > li {
+      > a {
+        > svg {
+          font-size: var(--#{$prefix}font-size-xl);
+        }
+      }
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    ul {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
 </style>

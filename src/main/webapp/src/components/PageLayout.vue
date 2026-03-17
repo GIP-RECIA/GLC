@@ -11,12 +11,15 @@ defineProps<{
   <div class="page-layout">
     <header>
       <div class="heading">
-        <router-link
-          :to="{ name: 'index' }"
-          class="btn-tertiary circle"
-        >
-          <FontAwesomeIcon :icon="faArrowLeft" />
-        </router-link>
+        <slot name="back">
+          <router-link
+            :to="{ name: 'index' }"
+            class="btn-tertiary circle"
+            title="Retour à l'accueil de l'application"
+          >
+            <FontAwesomeIcon :icon="faArrowLeft" />
+          </router-link>
+        </slot>
         <h1>{{ title }}</h1>
       </div>
       <slot name="header" />
