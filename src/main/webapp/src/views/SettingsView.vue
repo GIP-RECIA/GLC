@@ -17,13 +17,18 @@
 <script setup lang="ts">
 import type { Etablissement, StructureRestriction } from '@/types/index.ts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { format, getYear } from 'date-fns'
+import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watchEffect } from 'vue'
 import ManageRestrictionsDialog from '@/components/dialogs/ManageRestrictionsDialog.vue'
 import PageLayout from '@/components/PageLayout.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import StructureSearch from '@/components/search/structure/StructureSearch.vue'
+import AdminSettings from '@/components/settings/AdminSettings.vue'
+import ContactSettings from '@/components/settings/ContactSettings.vue'
+import IdentitySettings from '@/components/settings/IdentitySettings.vue'
+import LocalisationSettings from '@/components/settings/LocalisationSettings.vue'
+import LogoSettings from '@/components/settings/LogoSettings.vue'
 import { getEtablissement, getRestrictions } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 
@@ -85,15 +90,6 @@ const canEdit = computed<boolean>(() => (
   currentEtab.value !== undefined
   && data.value !== undefined
 ))
-
-const schoolYear = computed<string | undefined>(() => {
-  if (!currentEtab.value)
-    return
-
-  const year = getYear(currentEtab.value.anneeScolaire)
-
-  return `${year}/${year + 1}`
-})
 </script>
 
 <template>
@@ -111,187 +107,15 @@ const schoolYear = computed<string | undefined>(() => {
         <h2>Informations générales</h2>
 
         <div class="info-container">
-          <div class="r-card logo-card">
-            <img
-              :src="currentEtab?.logo ?? '/annuaire_images/default_banner_v1.jpg'"
-              alt="Photo de l'établissement"
-            >
-            <footer
-              v-if="canEdit"
-            >
-              <button
-                class="btn-primary small"
-                @click="() => {}"
-              >
-                Modifier
-                <FontAwesomeIcon icon="fas fa-pen" />
-              </button>
-            </footer>
-          </div>
+          <LogoSettings :etab="currentEtab" />
 
-          <div class="r-card info-card">
-            <header>
-              <h3>Identité</h3>
-            </header>
+          <IdentitySettings :etab="currentEtab" />
 
-            <div class="body">
-              <ul>
-                <li class="full-width">
-                  <h4>Nom</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.nom"
-                  />
-                </li>
-                <li class="full-width">
-                  <h4>Nom court</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.nomCourt"
-                  />
-                </li>
-                <li>
-                  <h4>Catégorie</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.categorie"
-                  />
-                </li>
-                <li>
-                  <h4>UAI</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.uai"
-                  />
-                </li>
-                <li>
-                  <h4>Siren</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.siren"
-                  />
-                </li>
-              </ul>
-            </div>
+          <LocalisationSettings :etab="currentEtab" />
 
-            <footer
-              v-if="canEdit"
-            >
-              <button
-                class="btn-primary small"
-                @click="() => {}"
-              >
-                Modifier
-                <FontAwesomeIcon icon="fas fa-pen" />
-              </button>
-            </footer>
-          </div>
+          <ContactSettings :etab="currentEtab" />
 
-          <div class="r-card info-card">
-            <header>
-              <h3>Localisation</h3>
-            </header>
-
-            <div class="body">
-              <ul>
-                <li class="full-width">
-                  <h4>Adresse</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.adresse.adresse"
-                  />
-                </li>
-                <li>
-                  <h4>Code postal</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.adresse.codePostal"
-                  />
-                </li>
-                <li>
-                  <h4>Ville</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.adresse.ville"
-                  />
-                </li>
-                <li>
-                  <h4>Boite postal</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.adresse.boitePostale"
-                  />
-                </li>
-                <li>
-                  <h4>Pays</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.adresse.pays"
-                  />
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="r-card info-card">
-            <header>
-              <h3>Contact</h3>
-            </header>
-
-            <div class="body">
-              <ul>
-                <li class="full-width">
-                  <h4>Mail</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.mail"
-                  />
-                </li>
-                <li class="full-width">
-                  <h4>Site web</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.siteWeb"
-                  />
-                </li>
-              </ul>
-            </div>
-
-            <footer
-              v-if="canEdit"
-            >
-              <button
-                class="btn-primary small"
-                @click="() => {}"
-              >
-                Modifier
-                <FontAwesomeIcon icon="fas fa-pen" />
-              </button>
-            </footer>
-          </div>
-
-          <div class="r-card info-card">
-            <header>
-              <h3>Administration</h3>
-            </header>
-
-            <div class="body">
-              <ul>
-                <li>
-                  <h4>Etat</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.etat"
-                  />
-                </li>
-                <li>
-                  <h4>Etat alimentation</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.etatAlim"
-                  />
-                </li>
-                <li>
-                  <h4>Source</h4>
-                  <SafeEmptyData
-                    :value="currentEtab?.source"
-                  />
-                </li>
-                <li>
-                  <h4>Année scolaire</h4>
-                  <SafeEmptyData
-                    :value="schoolYear"
-                  />
-                </li>
-              </ul>
-            </div>
-          </div>
+          <AdminSettings :etab="currentEtab" />
         </div>
       </div>
 
@@ -396,62 +220,6 @@ const schoolYear = computed<string | undefined>(() => {
 
     > .full-width {
       grid-column: span 2;
-    }
-  }
-}
-
-.logo-card {
-  flex: 0 0 auto;
-  justify-content: end;
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 9 / 4;
-  width: 100%;
-  max-width: 720px;
-
-  > img {
-    position: absolute;
-    inset: 0px;
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  > footer {
-    z-index: 0;
-  }
-}
-
-.info-card {
-  display: flex;
-  flex-direction: column;
-
-  > .body {
-    > ul {
-      @include unstyled-list;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-
-      > li {
-        > * {
-          margin-bottom: 0;
-        }
-      }
-    }
-  }
-
-  @media (width >= map.get($grid-breakpoints, xl)) {
-    > .body > ul {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-
-      > .full-width {
-        grid-column: span 2;
-      }
     }
   }
 }
