@@ -19,9 +19,17 @@ import type { Etablissement } from '@/types/index.ts'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-defineProps<{
-  etab?: Etablissement
-}>()
+withDefaults(
+  defineProps<{
+    etab?: Etablissement
+    canEdit?: boolean
+    disableEdit?: boolean
+  }>(),
+  {
+    canEdit: true,
+    disableEdit: false,
+  },
+)
 </script>
 
 <template>
@@ -31,9 +39,10 @@ defineProps<{
       alt="Photo de l'établissement"
     >
     <footer
-      v-if="etab"
+      v-if="etab && canEdit"
     >
       <button
+        :disabled="disableEdit"
         class="btn-primary small"
         @click="() => {}"
       >

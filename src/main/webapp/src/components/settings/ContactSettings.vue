@@ -22,9 +22,17 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
-const props = defineProps<{
-  etab?: Etablissement
-}>()
+const props = withDefaults(
+  defineProps<{
+    etab?: Etablissement
+    canEdit?: boolean
+    disableEdit?: boolean
+  }>(),
+  {
+    canEdit: true,
+    disableEdit: false,
+  },
+)
 
 const emit = defineEmits<{
   edit: [boolean]
@@ -74,7 +82,13 @@ watch(
           />
         </li>
         <li class="full-width">
-          <h4>Site web</h4>
+          <h4
+            :class="{
+              'sr-only': isEdit,
+            }"
+          >
+            Site web
+          </h4>
           <div
             v-if="isEdit"
             class="field"
@@ -91,7 +105,6 @@ watch(
                     id="siteWeb"
                     v-model.trim="siteWeb"
                     type="text"
-                    class="field"
                     placeholder=""
                   >
                 </div>
@@ -108,10 +121,12 @@ watch(
     </div>
 
     <footer
-      v-if="etab"
+      v-if="etab && canEdit"
     >
       <button
-        class="btn-primary small"
+        :disabled="disableEdit && !isEdit"
+        class="small"
+        :class="[isEdit ? 'btn-secondary' : 'btn-primary']"
         @click="() => toggleEdit()"
       >
         {{ t(`button.${isEdit ? 'cancel' : 'edit'}`) }}
@@ -152,8 +167,8 @@ watch(
       gap: 16px;
 
       > li {
-        > h4:not(:has(~ .field)) {
-          margin-bottom: 0;
+        > h4 {
+          margin-bottom: 4px;
         }
       }
     }

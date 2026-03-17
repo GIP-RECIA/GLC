@@ -89,8 +89,8 @@ const schoolYear = computed<string | undefined>(() => {
       gap: 16px;
 
       > li {
-        > * {
-          margin-bottom: 0;
+        > h4 {
+          margin-bottom: 4px;
         }
       }
     }

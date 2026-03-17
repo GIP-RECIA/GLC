@@ -90,6 +90,12 @@ const canEdit = computed<boolean>(() => (
   currentEtab.value !== undefined
   && data.value !== undefined
 ))
+
+const isChildEdit = ref<boolean>(false)
+
+function setChildEditState(state: boolean): void {
+  isChildEdit.value = state
+}
 </script>
 
 <template>
@@ -107,15 +113,30 @@ const canEdit = computed<boolean>(() => (
         <h2>Informations générales</h2>
 
         <div class="info-container">
-          <LogoSettings :etab="currentEtab" />
+          <LogoSettings
+            :etab="currentEtab"
+            :disable-edit="isChildEdit"
+          />
 
-          <IdentitySettings :etab="currentEtab" />
+          <IdentitySettings
+            :etab="currentEtab"
+            :disable-edit="isChildEdit"
+            @edit="setChildEditState"
+          />
 
-          <LocalisationSettings :etab="currentEtab" />
+          <LocalisationSettings
+            :etab="currentEtab"
+          />
 
-          <ContactSettings :etab="currentEtab" />
+          <ContactSettings
+            :etab="currentEtab"
+            :disable-edit="isChildEdit"
+            @edit="setChildEditState"
+          />
 
-          <AdminSettings :etab="currentEtab" />
+          <AdminSettings
+            :etab="currentEtab"
+          />
         </div>
       </div>
 
