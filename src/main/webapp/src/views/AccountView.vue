@@ -66,8 +66,10 @@ const items = computed<SimpleEtablissement[] | undefined>(() => {
 
     return etabs.value?.filter((etablissement) => {
       let filters = etablissement.nom.toLowerCase().includes(searchValue)
-        || etablissement.uai.toLowerCase().includes(searchValue)
         || etablissement.siren.toString().includes(searchValue)
+      if (etablissement.uai) {
+        filters = filters || etablissement.uai.toLowerCase().includes(searchValue)
+      }
       if (etablissement.ville) {
         filters = filters || etablissement.ville.toLowerCase().includes(searchValue)
       }

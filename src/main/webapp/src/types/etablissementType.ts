@@ -21,7 +21,7 @@ import type { SimplePersonne } from './personneType.ts'
 
 export interface Etablissement {
   id: number
-  uai: string
+  uai?: string
   etat: string
   etatAlim: string
   source: string
@@ -31,7 +31,7 @@ export interface Etablissement {
   type?: string
   mail: string
   nom: string
-  nomCourt: string
+  nomCourt?: string
   siren: string
   siteWeb: string
   modeleLogin: string
@@ -45,11 +45,11 @@ export interface Etablissement {
 
 export interface SimpleEtablissement {
   id: number
-  uai: string
+  uai?: string
   categorie: string
   type?: string
   nom: string
-  nomCourt: string
+  nomCourt?: string
   ville?: string
   siren: string
 }
