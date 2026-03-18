@@ -16,11 +16,13 @@
 
 <script setup lang="ts">
 import type { StructureRestriction } from '@/types/index.ts'
-import { faPen } from '@fortawesome/free-solid-svg-icons'
+import { faFloppyDisk, faPen, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { format } from 'date-fns'
-import { computed } from 'vue'
+import { format, formatISO } from 'date-fns'
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
+import LevelRestrictions from '@/components/settings/restrictions/LevelRestrictions.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -34,30 +36,27 @@ const props = withDefaults(
   },
 )
 
-defineEmits<{
+const emit = defineEmits<{
   edit: [boolean]
 }>()
 
-const dataToDisplay = computed<
-  StructureRestriction | undefined
->(() => {
-  if (!props.restrictions)
-    return
+const { t } = useI18n()
 
-  const niveaux = props.restrictions.niveaux
-    .map((niveau) => {
-      const classes = niveau.classes
-        .filter(({ dateRentreeClasse }) => dateRentreeClasse !== null)
+const isEdit = ref<boolean>(false)
 
-      return { ...niveau, classes }
-    })
-    .filter(niveau => (
-      niveau.dateRentreeNiveau !== null
-      || niveau.classes.length > 0
-    ))
+const canSave = computed<boolean>(() => (
+  true
+))
 
-  return { ...props.restrictions, niveaux }
-})
+function toggleEdit(): void {
+  isEdit.value = !isEdit.value
+  emit('edit', isEdit.value)
+}
+
+function save(): void {
+  isEdit.value = false
+  emit('edit', false)
+}
 
 function toDisplayDate(
   date: string | undefined | null,
@@ -66,6 +65,51 @@ function toDisplayDate(
     ? format(date, 'P p')
     : undefined
 }
+
+function toDateTime(date: string | null): string | null {
+  return date !== null
+    ? `${formatISO(date, { representation: 'date' })}T${format(date, 'HH:mm')}`
+    : null
+}
+
+const EMPTY_RESTRICTION: StructureRestriction = {
+  dateRentreeEtab: null,
+  niveaux: [],
+}
+
+const fields = ref<StructureRestriction>(EMPTY_RESTRICTION)
+
+watch(
+  () => props.restrictions,
+  (val) => {
+    if (!val)
+      return
+
+    const niveaux = val.niveaux.map((niveau) => {
+      const classes = niveau.classes.map((classe) => {
+        return {
+          ...classe,
+          dateRentreeClasse: toDateTime(classe.dateRentreeClasse),
+        }
+      })
+
+      return {
+        ...niveau,
+        dateRentreeNiveau: toDateTime(niveau.dateRentreeNiveau),
+        classes,
+      }
+    })
+
+    fields.value = {
+      dateRentreeEtab: toDateTime(val.dateRentreeEtab),
+      niveaux,
+    }
+  },
+  {
+    immediate: true,
+    deep: true,
+  },
+)
 </script>
 
 <template>
@@ -76,48 +120,58 @@ function toDisplayDate(
 
     <div class="body">
       <div class="item">
-        <h4>Etablissement</h4>
+        <h4
+          :class="{
+            'sr-only': isEdit,
+          }"
+        >
+          Etablissement
+        </h4>
+        <div
+          v-if="isEdit"
+          class="field"
+        >
+          <div class="field-layout">
+            <div class="field-container">
+              <div class="middle">
+                <label
+                  for="dateRentreeEtab"
+                >
+                  Etablissement
+                </label>
+                <input
+                  id="dateRentreeEtab"
+                  v-model="fields.dateRentreeEtab"
+                  type="datetime-local"
+                  placeholder=""
+                >
+              </div>
+            </div>
+            <div class="active-indicator" />
+          </div>
+        </div>
         <SafeEmptyData
-          :value="toDisplayDate(dataToDisplay?.dateRentreeEtab)"
+          v-else
+          :value="toDisplayDate(restrictions?.dateRentreeEtab)"
         />
       </div>
 
       <div
-        v-if="dataToDisplay"
-        v-show="dataToDisplay.niveaux.length > 0"
+        v-if="restrictions"
         class="niveau-container"
       >
-        <div
-          v-for="niveau in dataToDisplay.niveaux"
+        <LevelRestrictions
+          v-for="(niveau, index) in restrictions.niveaux"
+          v-show="
+            isEdit
+              || niveau.dateRentreeNiveau !== null
+              || niveau.classes.some(c => c.dateRentreeClasse !== null)
+          "
           :key="niveau.niveau"
-          class="niveau-card"
-        >
-          <div
-            v-show="niveau.dateRentreeNiveau !== null"
-            class="item"
-          >
-            <h4>{{ niveau.niveau }}</h4>
-            <SafeEmptyData
-              :value="toDisplayDate(niveau.dateRentreeNiveau)"
-            />
-          </div>
-
-          <ul v-show="niveau.classes.length > 0">
-            <li
-              v-for="classe in niveau.classes"
-              :key="classe.classe"
-            >
-              <div class="item">
-                <h5 class="h4">
-                  {{ classe.classe }}
-                </h5>
-                <SafeEmptyData
-                  :value="toDisplayDate(classe.dateRentreeClasse)"
-                />
-              </div>
-            </li>
-          </ul>
-        </div>
+          v-model="fields.niveaux[index]"
+          :level-restriction="niveau"
+          :is-edit="isEdit"
+        />
       </div>
     </div>
 
@@ -125,12 +179,36 @@ function toDisplayDate(
       v-if="restrictions && canEdit"
     >
       <button
-        :disabled="disableEdit"
-        class="btn-primary small"
-        @click="() => $emit('edit', true)"
+        v-show="isEdit"
+        class="btn-secondary small"
+        @click="() => {}"
       >
-        Modifier
-        <FontAwesomeIcon :icon="faPen" />
+        Ajouter
+        <FontAwesomeIcon
+          :icon="faPlus"
+        />
+      </button>
+      <button
+        :disabled="disableEdit && !isEdit"
+        class="small"
+        :class="[isEdit ? 'btn-secondary' : 'btn-primary']"
+        @click="() => toggleEdit()"
+      >
+        {{ t(`button.${isEdit ? 'cancel' : 'edit'}`) }}
+        <FontAwesomeIcon
+          :icon="isEdit ? faXmark : faPen"
+        />
+      </button>
+      <button
+        v-show="isEdit"
+        :disabled="!canSave"
+        class="btn-primary small"
+        @click="() => save()"
+      >
+        {{ t('button.save') }}
+        <FontAwesomeIcon
+          :icon="faFloppyDisk"
+        />
       </button>
     </footer>
   </div>
@@ -152,8 +230,7 @@ function toDisplayDate(
     gap: 16px;
 
     .item {
-      > h4,
-      > h5 {
+      > h4 {
         margin-bottom: 4px;
       }
     }
@@ -161,21 +238,6 @@ function toDisplayDate(
     > .niveau-container {
       display: grid;
       gap: 16px;
-
-      > .niveau-card {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        border-radius: 6px;
-        border: 1px solid var(--#{$prefix}stroke);
-        padding: 16px;
-
-        > ul {
-          @include unstyled-list;
-          display: grid;
-          gap: 16px;
-        }
-      }
     }
   }
 
@@ -183,12 +245,6 @@ function toDisplayDate(
     > .body {
       > .niveau-container {
         grid-template-columns: repeat(auto-fill, minmax(512px, 1fr));
-
-        > .niveau-card {
-          > ul {
-            grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
-          }
-        }
       }
     }
   }

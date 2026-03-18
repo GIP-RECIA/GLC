@@ -18,7 +18,6 @@
 import type { Etablissement, StructureRestriction } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
-import ManageRestrictionsDialog from '@/components/dialogs/ManageRestrictionsDialog.vue'
 import PageLayout from '@/components/PageLayout.vue'
 import StructureSearch from '@/components/search/structure/StructureSearch.vue'
 import AdminSettings from '@/components/settings/AdminSettings.vue'
@@ -43,8 +42,6 @@ const selectedEtab = ref<number | undefined>(
 const currentEtab = ref<Etablissement | undefined>()
 const data = ref<StructureRestriction | undefined>()
 
-const dialogState = ref<boolean>(false)
-
 watchEffect(async (): Promise<void> => {
   if (selectedEtab.value === undefined)
     return
@@ -52,10 +49,6 @@ watchEffect(async (): Promise<void> => {
   currentEtab.value = await getEtablissement(selectedEtab.value)
   data.value = await getRestrictions(selectedEtab.value)
 })
-
-function save() {
-
-}
 
 const isChildEdit = ref<boolean>(false)
 
@@ -112,18 +105,11 @@ function setChildEditState(state: boolean): void {
         <RestrictionsSettings
           :restrictions="data"
           :disable-edit="isChildEdit"
-          @edit="(val) => dialogState = val"
+          @edit="setChildEditState"
         />
       </div>
     </PageLayout>
   </div>
-
-  <ManageRestrictionsDialog
-    v-model="dialogState"
-    :restrictions="data"
-    @update:model-value="dialogState = false"
-    @save="save"
-  />
 </template>
 
 <style scoped lang="scss">
