@@ -178,13 +178,23 @@ watchEffect(
         <div v-if="serviceRight.allowPeople">
           <h2>Personnes</h2>
 
-          <label for="user" class="sr-only">Ajouter un utilisateur</label>
-          <input
-            id="user"
-            type="text"
-            name=""
-            placeholder="Nom Prénom"
-          >
+          <div class="field">
+            <div class="field-layout">
+              <div class="field-container">
+                <div class="middle">
+                  <label for="user">
+                    Ajouter un utilisateur (Nom Prénom)
+                  </label>
+                  <input
+                    id="user"
+                    type="text"
+                    placeholder=""
+                  >
+                </div>
+              </div>
+              <div class="active-indicator" />
+            </div>
+          </div>
 
           <ul>
             <li
