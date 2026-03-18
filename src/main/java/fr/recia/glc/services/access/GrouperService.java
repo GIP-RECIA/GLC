@@ -16,7 +16,7 @@
 package fr.recia.glc.services.access;
 
 import fr.recia.glc.configuration.Constants;
-import fr.recia.glc.configuration.bean.GrouperProperties;
+import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.web.dto.access.grouper.request.add.WsRestAddMemberRequestWrapper;
 import fr.recia.glc.web.dto.access.grouper.request.delete.WsRestDeleteMemberRequestWrapper;
 import fr.recia.glc.web.dto.access.grouper.request.find.WsRestFindGroupsRequestWrapper;
@@ -41,18 +41,18 @@ import java.util.List;
 public class GrouperService {
 
     private final RestTemplate restTemplate;
-    private final GrouperProperties grouperProperties;
+    private final GLCProperties glcProperties;
 
-    public GrouperService(RestTemplate restTemplateGrouper, GrouperProperties grouperProperties) {
+    public GrouperService(RestTemplate restTemplateGrouper, GLCProperties glcProperties) {
         this.restTemplate = restTemplateGrouper;
-        this.grouperProperties = grouperProperties;
+        this.glcProperties = glcProperties;
     }
 
     private HttpHeaders createHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(Constants.GROUPER_MEDIA_TYPE));
         headers.setAccept(Collections.singletonList(MediaType.valueOf(Constants.GROUPER_MEDIA_TYPE)));
-        headers.setBasicAuth(grouperProperties.getUsername(), grouperProperties.getPassword());
+        headers.setBasicAuth(glcProperties.getGrouper().getUsername(), glcProperties.getGrouper().getPassword());
         return headers;
     }
 
@@ -60,7 +60,7 @@ public class GrouperService {
      * Récupération de l'id d'un groupe par son chemin ID
      */
     private String findGroupId(String groupName) {
-        String url = grouperProperties.getBaseUrl() + "/groups";
+        String url = glcProperties.getGrouper().getBaseUrl() + "/groups";
         WsRestFindGroupsRequestWrapper payload = new WsRestFindGroupsRequestWrapper(groupName);
         HttpEntity<?> entity = new HttpEntity<>(payload, createHeaders());
         ResponseEntity<WsFindGroupsResponse> responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity, WsFindGroupsResponse.class);
@@ -86,7 +86,7 @@ public class GrouperService {
         if(includeUsers){
             sourceIds.add("esco:ldap");
         }
-        String url = grouperProperties.getBaseUrl() + "/memberships";
+        String url = glcProperties.getGrouper().getBaseUrl() + "/memberships";
         WsRestGetMembershipRequestWrapper payload = new WsRestGetMembershipRequestWrapper(groupName, memberFilter, includeSubjectDetail, sourceIds);
         HttpEntity<?> entity = new HttpEntity<>(payload, createHeaders());
         return restTemplate.exchange(url, HttpMethod.POST, entity, WsGetMembershipsResponse.class);
@@ -100,7 +100,7 @@ public class GrouperService {
      * @return
      */
     public ResponseEntity<WsAddMemberResponse> addMember(String groupName, String subjectId, boolean isGroup) {
-        String url = grouperProperties.getBaseUrl() + "/groups/" + groupName + "/members";
+        String url = glcProperties.getGrouper().getBaseUrl() + "/groups/" + groupName + "/members";
         HttpHeaders headers = createHeaders();
         String sourceId = Constants.GROUPER_SOURCEID_USER;
         if(isGroup){
@@ -121,7 +121,7 @@ public class GrouperService {
      * @return
      */
     public ResponseEntity<WsDeleteMemberResponse> removeMember(String groupName, String subjectId, boolean isGroup) {
-        String url = grouperProperties.getBaseUrl() + "/groups/" + groupName + "/members";
+        String url = glcProperties.getGrouper().getBaseUrl() + "/groups/" + groupName + "/members";
         HttpHeaders headers = createHeaders();
         String sourceId = Constants.GROUPER_SOURCEID_USER;
         if(isGroup){

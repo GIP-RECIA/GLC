@@ -15,7 +15,6 @@
  */
 package fr.recia.glc.configuration;
 
-import fr.recia.glc.configuration.bean.AdminProperties;
 import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
@@ -56,12 +55,10 @@ public class SecurityConfiguration {
 
     private final GLCProperties glcProperties;
     private final IStructureLoader structureLoader;
-    private final AdminProperties adminProperties;
 
-    public SecurityConfiguration(GLCProperties glcProperties, IStructureLoader structureLoader, AdminProperties adminProperties) {
+    public SecurityConfiguration(GLCProperties glcProperties, IStructureLoader structureLoader) {
         this.glcProperties = glcProperties;
         this.structureLoader = structureLoader;
-        this.adminProperties = adminProperties;
     }
 
     /**
@@ -118,12 +115,12 @@ public class SecurityConfiguration {
         return (CasAssertionAuthenticationToken token) -> {
             Assertion assertion = token.getAssertion();
             Map<String, Object> attributes = assertion.getPrincipal().getAttributes();
-            List<String> groups = (List<String>) attributes.get(adminProperties.getGroupsAttribute());
+            List<String> groups = (List<String>) attributes.get(glcProperties.getAdmin().getGroupsAttribute());
             String username = assertion.getPrincipal().getName();
-            Pattern patternAdminLocal = Pattern.compile(adminProperties.getLocal());
-            Pattern patternAdminSarapisLocal = Pattern.compile(adminProperties.getSarapisLocal());
-            Pattern patternAdminCentral = Pattern.compile(adminProperties.getCentral());
-            Pattern patternAdminCentralColl = Pattern.compile(adminProperties.getCentralColl());
+            Pattern patternAdminLocal = Pattern.compile(glcProperties.getAdmin().getLocal());
+            Pattern patternAdminSarapisLocal = Pattern.compile(glcProperties.getAdmin().getSarapisLocal());
+            Pattern patternAdminCentral = Pattern.compile(glcProperties.getAdmin().getCentral());
+            Pattern patternAdminCentralColl = Pattern.compile(glcProperties.getAdmin().getCentralColl());
             // Calcul dynamique des authorities en fonction des groupes
             // TODO : rôle dans le nom du groupe
             Map<GLCRole, Set<String>> rightsForEtabs = new HashMap<>();

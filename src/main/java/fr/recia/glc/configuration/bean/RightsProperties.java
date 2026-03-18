@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component
-@ConfigurationProperties(prefix = "rights")
 @Data
 public class RightsProperties {
     private Map<String, Map<String, RoleProperties>> services;

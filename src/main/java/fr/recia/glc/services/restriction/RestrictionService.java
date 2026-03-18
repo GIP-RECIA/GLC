@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.services.restriction;
 
-import fr.recia.glc.configuration.bean.RestrictionRentreeProperties;
+import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.web.dto.restriction.RestrictionEtab;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -26,20 +26,20 @@ import org.springframework.web.client.RestTemplate;
 public class RestrictionService {
 
     private final RestTemplate restTemplate;
-    private final RestrictionRentreeProperties restrictionRentreeProperties;
+    private final GLCProperties glcProperties;
 
-    public RestrictionService(RestTemplate restTemplateRestriction, RestrictionRentreeProperties restrictionRentreeProperties) {
+    public RestrictionService(RestTemplate restTemplateRestriction, GLCProperties glcProperties) {
         this.restTemplate = restTemplateRestriction;
-        this.restrictionRentreeProperties = restrictionRentreeProperties;
+        this.glcProperties = glcProperties;
     }
 
     public RestrictionEtab getRestrictions(String uai){
-        return restTemplate.exchange(restrictionRentreeProperties.getUrl()+"/"+uai, HttpMethod.GET, null, RestrictionEtab.class).getBody();
+        return restTemplate.exchange(glcProperties.getRestrictionRentree().getUrl()+"/"+uai, HttpMethod.GET, null, RestrictionEtab.class).getBody();
     }
 
     public void setNewRestriction(String uai, RestrictionEtab restrictionEtab){
         HttpEntity<?> entity = new HttpEntity<>(restrictionEtab);
-        restTemplate.exchange(restrictionRentreeProperties.getUrl()+"/"+uai, HttpMethod.POST, entity, RestrictionEtab.class);
+        restTemplate.exchange(glcProperties.getRestrictionRentree().getUrl()+"/"+uai, HttpMethod.POST, entity, RestrictionEtab.class);
     }
 
 }

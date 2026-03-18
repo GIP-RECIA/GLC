@@ -16,6 +16,7 @@
 package fr.recia.glc.configuration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.recia.glc.configuration.bean.AdminProperties;
 import fr.recia.glc.configuration.bean.CASProperties;
 import fr.recia.glc.configuration.bean.CorsProperties;
 import fr.recia.glc.configuration.bean.CustomConfigProperties;
@@ -23,8 +24,10 @@ import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.configuration.bean.CustomMailProperties;
 import fr.recia.glc.configuration.bean.CustomMetricsProperties;
 import fr.recia.glc.configuration.bean.FrontProperties;
+import fr.recia.glc.configuration.bean.GrouperProperties;
 import fr.recia.glc.configuration.bean.IpRangeProperties;
-import fr.recia.glc.configuration.bean.RoleMappingProperties;
+import fr.recia.glc.configuration.bean.RestrictionRentreeProperties;
+import fr.recia.glc.configuration.bean.RightsProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -51,9 +54,10 @@ public class GLCProperties {
   private CustomMetricsProperties metrics;
   private FrontProperties front;
   private IpRangeProperties authorizedServices;
-  private RoleMappingProperties admins;
-  private RoleMappingProperties users;
-
+  private RightsProperties rights;
+  private AdminProperties admin;
+  private GrouperProperties grouper;
+  private RestrictionRentreeProperties restrictionRentree;
 
   @PostConstruct
   private void init() throws JsonProcessingException {
@@ -71,8 +75,10 @@ public class GLCProperties {
       metrics + ",\n" +
       front + ",\n" +
       authorizedServices + ",\n" +
-      admins + ",\n" +
-      users + ",\n" +
+      rights + ",\n" +
+      restrictionRentree + ",\n" +
+      admin + ",\n" +
+      grouper + ",\n" +
       "\n}";
   }
 
