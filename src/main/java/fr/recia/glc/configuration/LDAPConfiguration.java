@@ -15,21 +15,12 @@
  */
 package fr.recia.glc.configuration;
 
-import com.google.common.collect.Lists;
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
-import fr.recia.glc.configuration.bean.GroupDesignerProperties;
-import fr.recia.glc.configuration.bean.GroupRegexProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.ExternalUserHelper;
-import fr.recia.glc.ldap.IExternalGroupDisplayNameFormatter;
 import fr.recia.glc.ldap.repository.IExternalGroupDao;
 import fr.recia.glc.ldap.repository.IExternalUserDao;
-import fr.recia.glc.ldap.repository.IGroupMemberDesigner;
-import fr.recia.glc.ldap.repository.LdapGroupAttachMemberDesignerImpl;
 import fr.recia.glc.ldap.repository.LdapGroupDaoImpl;
-import fr.recia.glc.ldap.repository.LdapGroupRegexpDisplayNameFormatter;
-import fr.recia.glc.ldap.repository.LdapGroupRegexpDisplayNameFormatterESCO;
-import fr.recia.glc.ldap.repository.LdapGroupRegexpDisplayNameFormatterESCOReplace;
 import fr.recia.glc.services.structure.IStructureLoader;
 import fr.recia.glc.services.structure.StructureLoaderImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +29,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.util.Assert;
-
-import java.util.List;
 
 @Configuration
 @Slf4j
@@ -133,40 +122,13 @@ public class LDAPConfiguration {
       ldapProperties.getGroupBranch(),
       "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !"
     );
-    List<IExternalGroupDisplayNameFormatter> formatters = Lists.newLinkedList();
-    // should be run firstly !
-    formatters.add(new LdapGroupRegexpDisplayNameFormatter(externalGroupHelper()));
-    for (GroupRegexProperties grp : ldapProperties.getGroupBranch().getNameFormatters()) {
-      formatters.add(new LdapGroupRegexpDisplayNameFormatterESCO(
-        externalGroupHelper(),
-        grp.getGroupMatcher(),
-        grp.getGroupNameRegex(),
-        grp.getGroupNameIndex(),
-        grp.getGroupRecomposerSeparator(),
-        grp.getGroupSuffixeToAppend()
-      ));
-    }
-    //should be run at final
-    formatters.add(new LdapGroupRegexpDisplayNameFormatterESCOReplace());
-
-    List<IGroupMemberDesigner> designers = Lists.newArrayList();
-    for (GroupDesignerProperties grp : ldapProperties.getGroupBranch().getDesigners()) {
-      designers.add(new LdapGroupAttachMemberDesignerImpl(
-        externalGroupHelper(),
-        grp.getGroupRootPattern(),
-        grp.getGroupAttachEndMatch(),
-        grp.getGroupToAttachEndPattern()
-      ));
-    }
-
-    return new LdapGroupDaoImpl(ldapTemplate, externalGroupHelper(), formatters, externalUserDao, designers, ldapProperties);
+    return new LdapGroupDaoImpl(ldapTemplate, externalGroupHelper(), externalUserDao, ldapProperties);
   }
 
   @Bean
   public IStructureLoader loadedStructure(IExternalGroupDao externalGroupDao) {
     log.debug("Loading Structure extracted from groups");
     IStructureLoader loader = new StructureLoaderImpl(externalGroupDao);
-
     return loader;
   }
 

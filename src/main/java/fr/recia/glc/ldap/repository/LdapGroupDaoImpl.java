@@ -19,7 +19,6 @@ import com.google.common.collect.Sets;
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.IExternalGroup;
-import fr.recia.glc.ldap.IExternalGroupDisplayNameFormatter;
 import fr.recia.glc.ldap.IStructure;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,9 +49,7 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
    */
   private LdapTemplate ldapTemplate;
   private ExternalGroupHelper externalGroupHelper;
-  private List<IExternalGroupDisplayNameFormatter> groupDisplayNameFormatters;
   private IExternalUserDao externalUserDao;
-  private List<IGroupMemberDesigner> groupMemberDesigners;
   private final CustomLdapProperties ldapProperties;
 
   /**
@@ -90,7 +87,7 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
     if (log.isDebugEnabled()) {
       log.debug("LDAP filter applied {} and resolve members {} ", filter.encode(), withMembers);
     }
-    ContextMapper<IExternalGroup> mapper = new LdapGroupContextMapper(this.externalGroupHelper, this.groupDisplayNameFormatters);
+    ContextMapper<IExternalGroup> mapper = new LdapGroupContextMapper(this.externalGroupHelper);
     LdapQuery query = LdapQueryBuilder.query()
       .attributes(externalGroupHelper.getAttributes().toArray(new String[0]))
       .base(externalGroupHelper.getGroupDNSubPath()).filter(filter);

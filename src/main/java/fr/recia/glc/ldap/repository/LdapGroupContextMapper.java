@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import fr.recia.glc.ldap.ExternalGroup;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.IExternalGroup;
-import fr.recia.glc.ldap.IExternalGroupDisplayNameFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.DirContextAdapter;
@@ -39,17 +38,14 @@ import java.util.regex.Matcher;
 @Slf4j
 public class LdapGroupContextMapper implements ContextMapper<IExternalGroup> {
 
-  private ExternalGroupHelper externalGroupHelper;
-
-  private final List<IExternalGroupDisplayNameFormatter> groupDisplayNameFormatters;
+  private final ExternalGroupHelper externalGroupHelper;
 
   /**
    * @param externalGroupHelper
    */
-  public LdapGroupContextMapper(ExternalGroupHelper externalGroupHelper, List<IExternalGroupDisplayNameFormatter> groupDisplayNameFormatters) {
+  public LdapGroupContextMapper(ExternalGroupHelper externalGroupHelper) {
     super();
     this.externalGroupHelper = externalGroupHelper;
-    this.groupDisplayNameFormatters = groupDisplayNameFormatters;
   }
 
   @Override
@@ -111,11 +107,6 @@ public class LdapGroupContextMapper implements ContextMapper<IExternalGroup> {
       }
     }
     group.setAttributes(attrs);
-
-    for (IExternalGroupDisplayNameFormatter formatter : groupDisplayNameFormatters) {
-      group = formatter.format(group);
-    }
-
     return group;
   }
 
