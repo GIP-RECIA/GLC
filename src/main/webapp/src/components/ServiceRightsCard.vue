@@ -15,15 +15,52 @@
 -->
 
 <script setup lang="ts">
-import type { ServiceRight, ServiceRights } from '@/types/index.ts'
+import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
+import { computed } from 'vue'
+import { alphaSort } from '@/utils/index.ts'
 
-defineProps<{
+const props = defineProps<{
   serviceRights: ServiceRights
 }>()
 
 defineEmits<{
   edit: [service: string, right: ServiceRight]
 }>()
+
+const extendedServiceRights = computed<{
+  service: string
+  rights: (
+    ServiceRight & {
+      groups: RightMember[]
+      users: RightMember[]
+      manuals: RightMember[]
+    }
+  )[]
+}>(() => {
+  const rights = props.serviceRights.rights.map((right) => {
+    const allowedIds = new Set([
+      ...right.mandatoryGroups.map(({ id }) => id),
+      ...right.possibleGroups.map(({ id }) => id),
+    ])
+
+    const members = [...right.currentMembers]
+      .sort((a, b) => (
+        alphaSort(a.displayName, b.displayName, 'asc')
+      ))
+
+    return {
+      ...right,
+      groups: members.filter(({ id, user }) => !user && allowedIds.has(id)),
+      users: members.filter(({ user }) => user),
+      manuals: members.filter(({ id, user }) => !user && !allowedIds.has(id)),
+    }
+  })
+
+  return {
+    ...props.serviceRights,
+    rights,
+  }
+})
 </script>
 
 <template>
@@ -36,7 +73,7 @@ defineEmits<{
 
     <div class="body">
       <div
-        v-for="right in serviceRights.rights"
+        v-for="right in extendedServiceRights.rights"
         :key="right.role"
         class="role-card"
       >
@@ -48,9 +85,23 @@ defineEmits<{
 
         <ul>
           <li
-            v-for="member in right.currentMembers"
+            v-for="member in right.groups"
             :key="member.id"
             class="tag-primary"
+          >
+            {{ member.displayName }}
+          </li>
+          <li
+            v-for="member in right.users"
+            :key="member.id"
+            class="tag-primary"
+          >
+            {{ member.displayName }}
+          </li>
+          <li
+            v-for="member in right.manuals"
+            :key="member.id"
+            class="tag"
           >
             {{ member.displayName }}
           </li>
