@@ -96,7 +96,8 @@ function toDisplayDate(
     <ul
       v-show="
         isEdit
-          || levelRestriction.classes.some(c => c.dateRentreeClasse !== null)
+          ? modelValue.classes.some(c => c.dateRentreeClasse !== null)
+          : levelRestriction.classes.some(c => c.dateRentreeClasse !== null)
       "
     >
       <li
@@ -118,7 +119,10 @@ function toDisplayDate(
     >
       <button
         class="btn-secondary small"
-        @click="() => {}"
+        @click="() => {
+          modelValue.classes.forEach(c => c.dateRentreeClasse = null)
+          modelValue.dateRentreeNiveau = null
+        }"
       >
         Supprimer
         <FontAwesomeIcon
@@ -127,7 +131,9 @@ function toDisplayDate(
       </button>
       <button
         class="btn-secondary small"
-        @click="() => {}"
+        @click="() => {
+          modelValue.classes[0].dateRentreeClasse = ''
+        }"
       >
         Ajouter
         <FontAwesomeIcon

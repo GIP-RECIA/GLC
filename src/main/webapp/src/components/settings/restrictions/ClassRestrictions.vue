@@ -84,7 +84,9 @@ function toDisplayDate(
           <div class="end">
             <button
               class="btn-tertiary circle"
-              @click="() => {}"
+              @click="() => {
+                modelValue.dateRentreeClasse = null
+              }"
             >
               <FontAwesomeIcon
                 :icon="faTrashCan"

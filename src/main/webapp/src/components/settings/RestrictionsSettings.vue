@@ -164,8 +164,14 @@ watch(
           v-for="(niveau, index) in restrictions.niveaux"
           v-show="
             isEdit
-              || niveau.dateRentreeNiveau !== null
-              || niveau.classes.some(c => c.dateRentreeClasse !== null)
+              ? (
+                fields.niveaux[index].dateRentreeNiveau !== null
+                || fields.niveaux[index].classes.some(c => c.dateRentreeClasse !== null)
+              )
+              : (
+                niveau.dateRentreeNiveau !== null
+                || niveau.classes.some(c => c.dateRentreeClasse !== null)
+              )
           "
           :key="niveau.niveau"
           v-model="fields.niveaux[index]"
@@ -181,7 +187,9 @@ watch(
       <button
         v-show="isEdit"
         class="btn-secondary small"
-        @click="() => {}"
+        @click="() => {
+          fields.niveaux[0].dateRentreeNiveau = ''
+        }"
       >
         Ajouter
         <FontAwesomeIcon
