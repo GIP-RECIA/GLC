@@ -19,6 +19,7 @@ import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.services.access.RightsService;
+import fr.recia.glc.services.structure.IStructureLoader;
 import fr.recia.glc.web.dto.access.rights.AddOrDeleteMemberRequest;
 import fr.recia.glc.web.dto.access.rights.ServiceAccess;
 import lombok.extern.slf4j.Slf4j;
@@ -43,45 +44,19 @@ public class RightsController {
     private RightsService rightsService;
     @Autowired
     private AStructureRepository<AStructure> aStructureRepository;
+    @Autowired
+    private IStructureLoader structureLoader;
 
-    // TODO : faire plus propre pour déduire la branche
     private String deductBranchFromStructure(AStructure aStructure){
         log.debug("Retrieving branch for structure {}", aStructure.getId());
-        String branch = "";
-        final long typeStructure = aStructure.getType().getId();
-        // Collège -> 1 branche par département
-        if(typeStructure == 8){
-            branch = "clg"+((Etablissement) aStructure).getUai().substring(1,3);
-        // Traitements pour le reste des structures
-        } else if(typeStructure == 11 || typeStructure == 21) {
-            branch = "cfa";
-        } else if(typeStructure == 22) {
-            branch = "ef2s";
-        } else {
-            if(aStructure.getCleJointure().getSource().equals("LA-CENTRE")){
-                if(typeStructure == 39){
-                    branch = "cfa";
-                } else {
-                    branch = "agri";
-                }
-            } else {
-                branch = "esco";
-            }
-        }
+        final String branch = structureLoader.getBranchOfStructure(((Etablissement) aStructure).getUai());
         log.debug("Branch for structure {} is {}", aStructure.getId(), branch);
         return branch;
     }
 
-    // TODO : faire plus propre pour déduire le nom du groupe
     private String deductGroupNameFromStructure(AStructure aStructure){
         log.debug("Retrieving group name for structure {}", aStructure.getId());
-        final String etabGroupLeft;
-        final String nomEtab = aStructure.getNom().replaceAll("'"," ");
-        if(aStructure.getNom().contains("$")){
-            etabGroupLeft = nomEtab.split("\\$")[1];
-        } else {
-            etabGroupLeft = nomEtab;
-        }
+        final String etabGroupLeft = structureLoader.getGroupNameOfStructure(((Etablissement) aStructure).getUai());
         final String etabGroupRight = ((Etablissement) aStructure).getUai();
         String groupName = etabGroupLeft+"_"+etabGroupRight;
         log.debug("Group name for structure {} is {}", aStructure.getId(), groupName);

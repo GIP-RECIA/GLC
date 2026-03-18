@@ -128,8 +128,7 @@ public class LDAPConfiguration {
   @Bean
   public IStructureLoader loadedStructure(IExternalGroupDao externalGroupDao) {
     log.debug("Loading Structure extracted from groups");
-    IStructureLoader loader = new StructureLoaderImpl(externalGroupDao);
-    return loader;
+    return new StructureLoaderImpl(externalGroupDao);
   }
 
 }

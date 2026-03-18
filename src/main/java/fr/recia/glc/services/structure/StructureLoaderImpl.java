@@ -38,8 +38,9 @@ import java.util.stream.Collectors;
 public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
 
   Set<IStructure> loadedStructures = new HashSet<>();
-
   Map<String, Set<IStructure>> loadedStructuresByBranch = new HashMap<>();
+  Map<String, String> branchForLoadedStructures = new HashMap<>();
+  Map<String, String> groupNameForLoadedStructures = new HashMap<>();
 
   @Setter
   private IExternalGroupDao groupDao;
@@ -56,6 +57,9 @@ public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
   private void init() {
     loadedStructures = groupDao.getStructuresFromGroups();
     loadedStructures.forEach(structure -> {
+      // TODO : pour les collectivités on a pas d'UAI
+      branchForLoadedStructures.put(structure.getUAI(), structure.getGroupBranch());
+      groupNameForLoadedStructures.put(structure.getUAI(), structure.getDisplayName());
       if (loadedStructuresByBranch.containsKey(structure.getGroupBranch())) {
         loadedStructuresByBranch.get(structure.getGroupBranch()).add(structure);
       }
@@ -91,6 +95,18 @@ public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
         .map(key -> "\t{ \"" + key + "\": " + loadedStructuresByBranch.get(key).size() + " }")
         .collect(Collectors.joining(",\n", "[\n", "\n]"))
     );
+    log.debug(
+            "Loaded Structure recap: {}",
+            branchForLoadedStructures.keySet().stream()
+                    .map(key -> "\t{ \"" + key + "\": " + branchForLoadedStructures.get(key) + " }")
+                    .collect(Collectors.joining(",\n", "[\n", "\n]"))
+    );
+    log.debug(
+            "Loaded Structure recap: {}",
+            groupNameForLoadedStructures.keySet().stream()
+                    .map(key -> "\t{ \"" + key + "\": " + groupNameForLoadedStructures.get(key) + " }")
+                    .collect(Collectors.joining(",\n", "[\n", "\n]"))
+    );
   }
 
   @Override
@@ -104,10 +120,16 @@ public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
   }
 
   @Override
-  public void afterPropertiesSet() throws Exception {
-//    Assert.notNull(this.groupDao, "No IExternalGroupDao configured !");
-//    Assert.notNull(this.c1, "No c1 cache configured !");
-//    Assert.notNull(this.c2, "No c2 cache configured !");
+  public String getBranchOfStructure(String uai) {
+    return branchForLoadedStructures.get(uai);
   }
+
+  @Override
+  public String getGroupNameOfStructure(String uai) {
+    return groupNameForLoadedStructures.get(uai);
+  }
+
+  @Override
+  public void afterPropertiesSet() throws Exception {}
 
 }

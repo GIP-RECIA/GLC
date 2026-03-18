@@ -25,4 +25,8 @@ public interface IStructureLoader {
 
   Set<IStructure> getAllStructures();
 
+  String getBranchOfStructure(String uai);
+
+  String getGroupNameOfStructure(String uai);
+
 }
