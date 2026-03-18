@@ -13,11 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.services.helpers;
+package fr.recia.glc.utils;
 
-public class GroupPathGenerator {
+import lombok.experimental.UtilityClass;
 
-    public static String groupPathFromTemplate(String groupTemplate, String branch, String etabGroup){
-        return groupTemplate.replace("BRANCH_NAME", branch).replace("ETAB_NAME", etabGroup);
-    }
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+@UtilityClass
+public class DateUtils {
+
+  private final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+
+  public static Date getDate(String date) throws ParseException {
+    return FORMATTER.parse(date);
+  }
+
 }

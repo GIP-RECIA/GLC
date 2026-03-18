@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.services.beans;
+package fr.recia.glc.services.structure;
 
 import com.google.common.collect.Sets;
 import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.ldap.repository.IExternalGroupDao;
-import fr.recia.glc.util.ListUtil;
+import fr.recia.glc.utils.ListUtil;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

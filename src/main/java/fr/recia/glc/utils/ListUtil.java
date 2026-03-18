@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.util;
+package fr.recia.glc.utils;
 
 import java.util.List;
 import java.util.Set;

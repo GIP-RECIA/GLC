@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.services.access;
+package fr.recia.glc.services.restriction;
 
 import fr.recia.glc.configuration.bean.RestrictionRentreeProperties;
 import fr.recia.glc.web.dto.restriction.RestrictionEtab;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

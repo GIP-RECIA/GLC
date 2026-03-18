@@ -13,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.services.beans;
+package fr.recia.glc.utils;
 
-import fr.recia.glc.ldap.IStructure;
+public class GroupPathGenerator {
 
-import java.util.Set;
-
-public interface IStructureLoader {
-
-  Set<IStructure> getStructuresOfBranch(String branchGroup);
-
-  Set<IStructure> getAllStructures();
-
+    public static String groupPathFromTemplate(String groupTemplate, String branch, String etabGroup){
+        return groupTemplate.replace("BRANCH_NAME", branch).replace("ETAB_NAME", etabGroup);
+    }
 }

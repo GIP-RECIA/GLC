@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.pojo;
+package fr.recia.glc.web.dto.function;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Data
-public class JsonAdditionalFonctionOldBody {
+@NoArgsConstructor
+@AllArgsConstructor
+public class JsonFonction {
 
-  private Long structureId;
-  private List<String> toAddFunctions;
-  private List<String> toDeleteFunctions;
-  private String requiredAction;
-  private String additionalCode;
+  private String fonction;
+  private String date;
+
+  public JsonFonction(String fonction) {
+    this.fonction = fonction;
+  }
 
   public boolean postDataOk() {
-    final boolean standard = (toAddFunctions != null && !toAddFunctions.isEmpty()) || (toDeleteFunctions != null && !toDeleteFunctions.isEmpty());
-
-    return (structureId != null && (standard || additionalCode != null) && requiredAction != null);
+    return fonction != null && !fonction.isEmpty() && date != null && !date.isEmpty();
   }
 
 }

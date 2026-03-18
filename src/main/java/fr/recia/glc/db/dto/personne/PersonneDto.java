@@ -21,7 +21,7 @@ import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.db.enums.Etat;
-import fr.recia.glc.services.utils.PersonneUtils;
+import fr.recia.glc.utils.PersonneUtils;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

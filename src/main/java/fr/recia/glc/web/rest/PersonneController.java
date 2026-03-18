@@ -17,8 +17,8 @@ package fr.recia.glc.web.rest;
 
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
-import fr.recia.glc.pojo.JsonAdditionalFonctionBody;
-import fr.recia.glc.pojo.JsonAdditionalFonctionOldBody;
+import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
+import fr.recia.glc.web.dto.function.JsonAdditionalFonctionOldBody;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController

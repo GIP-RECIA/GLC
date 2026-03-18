@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.configuration.bean;
 
-import fr.recia.glc.util.ListUtil;
+import fr.recia.glc.utils.ListUtil;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 

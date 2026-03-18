@@ -19,7 +19,7 @@ import fr.recia.glc.configuration.bean.AdminProperties;
 import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
-import fr.recia.glc.services.beans.IStructureLoader;
+import fr.recia.glc.services.structure.IStructureLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.validation.Assertion;

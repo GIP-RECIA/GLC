@@ -16,7 +16,7 @@
 package fr.recia.glc.configuration.bean;
 
 import fr.recia.glc.db.enums.CategorieStructure;
-import fr.recia.glc.util.ListUtil;
+import fr.recia.glc.utils.ListUtil;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

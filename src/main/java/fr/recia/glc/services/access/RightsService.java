@@ -24,8 +24,7 @@ import fr.recia.glc.db.entities.personne.QAPersonne;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.services.exceptions.UnauthorizedGroupModificationException;
 import fr.recia.glc.services.exceptions.UnauthorizedPeopleModificationException;
-import fr.recia.glc.services.helpers.GroupPathGenerator;
-import fr.recia.glc.web.dto.access.grouper.response.WsMembership;
+import fr.recia.glc.utils.GroupPathGenerator;
 import fr.recia.glc.web.dto.access.grouper.response.WsSubject;
 import fr.recia.glc.web.dto.access.grouper.response.add.WsAddMemberResponse;
 import fr.recia.glc.web.dto.access.grouper.response.memberships.WsGetMembershipsResponse;
@@ -34,7 +33,6 @@ import fr.recia.glc.web.dto.access.rights.Member;
 import fr.recia.glc.web.dto.access.rights.Right;
 import fr.recia.glc.web.dto.access.rights.ServiceAccess;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

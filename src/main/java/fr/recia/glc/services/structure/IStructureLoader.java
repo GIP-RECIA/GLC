@@ -13,22 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.pojo;
+package fr.recia.glc.services.structure;
 
-import lombok.Data;
+import fr.recia.glc.ldap.IStructure;
 
-@Data
-public class JsonAdditionalFonctionBody {
+import java.util.Set;
 
-  private Long structureId;
-  private JsonFonction toAdd;
-  private String toDelete;
+public interface IStructureLoader {
 
-  public boolean postDataOk() {
-    final boolean add = toAdd != null && toAdd.postDataOk();
-    final boolean delete = toDelete != null && !toDelete.isEmpty();
+  Set<IStructure> getStructuresOfBranch(String branchGroup);
 
-    return (structureId != null && (add || delete) && !(add && delete));
-  }
+  Set<IStructure> getAllStructures();
 
 }

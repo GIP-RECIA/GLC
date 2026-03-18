@@ -18,7 +18,7 @@ package fr.recia.glc.web.rest;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
-import fr.recia.glc.services.access.RestrictionService;
+import fr.recia.glc.services.restriction.RestrictionService;
 import fr.recia.glc.web.dto.restriction.RestrictionEtab;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
