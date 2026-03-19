@@ -21,6 +21,7 @@ import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionOldBody;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
+import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,6 +63,12 @@ public class PersonneController {
         }
         personne.setAllFonctions(fonctionService.getPersonneFonctions(id));
         return new ResponseEntity<>(personne, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> addPersonne(@RequestBody UserCreation userCreation) {
+        personneService.addPersonne(userCreation);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/{id}/fonction")

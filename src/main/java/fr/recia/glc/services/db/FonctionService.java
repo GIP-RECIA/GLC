@@ -354,7 +354,6 @@ public class FonctionService {
         .map(fonction -> {
           TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
           Discipline discipline = disciplineRepository.findById(fonction.getDiscipline()).orElse(null);
-
           return new Fonction(discipline, filiere, aStructure, aPersonne, source);
         })
         .collect(Collectors.toList()));

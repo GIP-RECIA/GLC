@@ -19,6 +19,9 @@ import fr.recia.glc.db.entities.gestion.GenUID;
 import fr.recia.glc.db.repositories.AbstractRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface GenUIDRepository<T extends GenUID> extends AbstractRepository<T, Long> {
+    Optional<T> findByCAndLAndXx(String c, String l, String xx);
 }

@@ -18,7 +18,6 @@ package fr.recia.glc.services.access;
 import com.querydsl.core.types.Predicate;
 import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.configuration.GLCProperties;
-import fr.recia.glc.configuration.bean.RightsProperties;
 import fr.recia.glc.configuration.bean.RoleProperties;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.personne.QAPersonne;
