@@ -20,9 +20,14 @@ import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.common.CleJointure;
+import fr.recia.glc.db.entities.education.Enseignement;
+import fr.recia.glc.db.entities.education.MEF;
+import fr.recia.glc.db.entities.education.MappingEleveEnseignement;
 import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.gestion.AnneeScolaire;
 import fr.recia.glc.db.entities.gestion.GenUID;
+import fr.recia.glc.db.entities.groupe.Classe;
+import fr.recia.glc.db.entities.groupe.MappingAGroupeAPersonne;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.personne.Eleve;
 import fr.recia.glc.db.entities.personne.Login;
@@ -32,9 +37,13 @@ import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.Sexe;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
+import fr.recia.glc.db.repositories.education.EnseignementRepository;
+import fr.recia.glc.db.repositories.education.MEFRepository;
 import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.gestion.AnneeScolaireRepository;
 import fr.recia.glc.db.repositories.gestion.GenUIDRepository;
+import fr.recia.glc.db.repositories.groupe.ClasseRepository;
+import fr.recia.glc.db.repositories.groupe.MappingAGroupeAPersonneRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.personne.LoginRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
@@ -53,6 +62,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,6 +85,14 @@ public class PersonneService {
     private AnneeScolaireRepository<AnneeScolaire> anneeScolaireRepository;
     @Autowired
     private LoginRepository<Login> loginRepository;
+    @Autowired
+    private MEFRepository<MEF> mefRepository;
+    @Autowired
+    private EnseignementRepository<Enseignement> enseignementRepository;
+    @Autowired
+    private ClasseRepository<Classe> classeRepository;
+    @Autowired
+    private MappingAGroupeAPersonneRepository<MappingAGroupeAPersonne> mappingAGroupeAPersonneRepository;
     @Autowired
     private UidFactory uidFactory;
     @Autowired
@@ -188,21 +206,20 @@ public class PersonneService {
         apersonne.setPassword(passwordGenerator.genPassword());
         apersonne.setCn(nameCalculator.cn(userCreation.getNom(), userCreation.getPrenom()));
         apersonne.setDisplayName(nameCalculator.display(userCreation.getNom(), userCreation.getPrenom()));
-        // TODO : champs spécfiques pour chaque catégorie de personne
-        ((Eleve) apersonne).setStatut(userCreation.getStatut());
-        ((Eleve) apersonne).setRegime(userCreation.getRegime());
-        ((Eleve) apersonne).setMajeur(userCreation.isMajeur());
-        ((Eleve) apersonne).setMajeurAnticipe(userCreation.isMajeurAnticipe());
-        ((Eleve) apersonne).setTransport(userCreation.isTransportScolaire());
-        // TODO : ajouter les fonctions et les classes
         // 6. Sauvegarder la personne
         aPersonneRepository.saveAndFlush(apersonne);
         log.debug("local personne {} created", uid);
-        // TODO : login
-        updateLogin(nameCalculator.login(userCreation.getNom(), userCreation.getPrenom()), apersonne);
         // Si c'est bon pour la personne alors on met aussi à jour le genuid
         genUID.setIiii(increment);
         genUIDRepository.saveAndFlush(genUID);
+        // Gestion du login
+        updateLogin(nameCalculator.login(userCreation.getNom(), userCreation.getPrenom()), apersonne);
+        // TODO : champs spécfiques pour chaque catégorie de personne
+        if(apersonne.getCategorie() == CategoriePersonne.Eleve){
+            updateEleve((Eleve) apersonne, userCreation);
+        }
+        // TODO : ajouter les fonctions et les classes
+
     }
 
     /**
@@ -210,7 +227,7 @@ public class PersonneService {
      * Le login passé en paramêtre ne doit pas avoir de compteur à la fin
      * Il doit être de la forme prenom.nom
      */
-    public APersonne updateLogin(final String loginPrefix, final APersonne aPersonne) {
+    private void updateLogin(final String loginPrefix, final APersonne aPersonne) {
         Pattern p = Pattern.compile(loginPrefix + "(\\d*)");
         Matcher m;
         Instant date = new Date().toInstant();
@@ -261,8 +278,40 @@ public class PersonneService {
         login.setDateCreation(date);
         login.setDateModification(date);
         loginRepository.saveAndFlush(login);
-        return aPersonne;
     }
+
+    /**
+     * Ajout des attributs spécifiques à un élève
+     */
+    private void updateEleve(final Eleve eleve, final UserCreation userCreation) {
+        log.debug("updating eleve {}", eleve.getUid());
+        eleve.setStatut(userCreation.getStatut());
+        eleve.setRegime(userCreation.getRegime());
+        eleve.setMajeur(userCreation.isMajeur());
+        eleve.setMajeurAnticipe(userCreation.isMajeurAnticipe());
+        eleve.setTransport(userCreation.isTransportScolaire());
+        MEF mef = mefRepository.getReferenceById(userCreation.getMefEleve());
+        log.debug("mef for eleve is {}", mef.getId());
+        eleve.setMef(mef);
+        Set<MappingEleveEnseignement> mappingEleveEnseignements = new HashSet<>();
+        for(Long enseignementId: userCreation.getEnseignements()){
+            Enseignement enseignement = enseignementRepository.getReferenceById(enseignementId);
+            log.debug("Adding new enseignement {}", enseignement);
+            mappingEleveEnseignements.add(new MappingEleveEnseignement(eleve.getCleJointure().getSource(), enseignement));
+        }
+        log.debug("All enseignements are {}", mappingEleveEnseignements);
+        eleve.setEnseignements(mappingEleveEnseignements);
+        aPersonneRepository.saveAndFlush(eleve);
+        log.debug("Saved enseignements...");
+
+        // On fait par le MappingAGroupeAPersonne car on ne peut pas faire via la classe
+        Classe classe = classeRepository.getReferenceById(userCreation.getClasse());
+        log.debug("Adding {} to class {}", eleve.getUid(), classe.getId());
+        MappingAGroupeAPersonne mappingAGroupeAPersonne = new MappingAGroupeAPersonne(eleve.getCleJointure().getSource(), eleve, classe);
+        mappingAGroupeAPersonneRepository.save(mappingAGroupeAPersonne);
+        log.debug("Saved classe...");
+    }
+
 
     public SimplePersonneDto getPersonneSimple(Long id) {
         return aPersonneRepository.findByPersonneIdSimple(id);

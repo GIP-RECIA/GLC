@@ -1,5 +1,7 @@
 package fr.recia.glc.web.dto.user;
 
+import fr.recia.glc.db.entities.education.Enseignement;
+import fr.recia.glc.db.entities.education.MEF;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
 import lombok.Data;
@@ -25,7 +27,9 @@ public class UserCreation {
     private boolean majeur;
     private boolean majeurAnticipe;
     private boolean transportScolaire;
-    private String classeEleve;
+    private Long mefEleve;
+    private Long classe;
+    private List<Long> enseignements;
     // Tous sauf élève
     private String fonction;
     private List<String> disciplines; // Liées à une fonction dans l'établissement

@@ -46,8 +46,6 @@ import java.util.Set;
 })
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 public class Eleve extends APersonne {
 
   /**

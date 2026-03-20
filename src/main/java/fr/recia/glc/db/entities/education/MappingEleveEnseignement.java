@@ -36,8 +36,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class MappingEleveEnseignement implements Serializable {
 
   /**

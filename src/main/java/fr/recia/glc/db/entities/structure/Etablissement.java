@@ -41,13 +41,12 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 public class Etablissement extends AStructure {
 
   /**
    * Numero UAI, ancien RNE.
    */
+  @EqualsAndHashCode.Include
   @Column(unique = true, length = IntConst.IUAI)
   private String uai;
   /**
