@@ -22,9 +22,9 @@ public class UserCreation {
     // Spécifique élève
     private String statut;
     private String regime;
-    private String majeur;
-    private String majeurAnticipe;
-    private String transportScolaire;
+    private boolean majeur;
+    private boolean majeurAnticipe;
+    private boolean transportScolaire;
     private String classeEleve;
     // Tous sauf élève
     private String fonction;

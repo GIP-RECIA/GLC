@@ -188,6 +188,12 @@ public class PersonneService {
         apersonne.setPassword(passwordGenerator.genPassword());
         apersonne.setCn(nameCalculator.cn(userCreation.getNom(), userCreation.getPrenom()));
         apersonne.setDisplayName(nameCalculator.display(userCreation.getNom(), userCreation.getPrenom()));
+        // TODO : champs spécfiques pour chaque catégorie de personne
+        ((Eleve) apersonne).setStatut(userCreation.getStatut());
+        ((Eleve) apersonne).setRegime(userCreation.getRegime());
+        ((Eleve) apersonne).setMajeur(userCreation.isMajeur());
+        ((Eleve) apersonne).setMajeurAnticipe(userCreation.isMajeurAnticipe());
+        ((Eleve) apersonne).setTransport(userCreation.isTransportScolaire());
         // TODO : ajouter les fonctions et les classes
         // 6. Sauvegarder la personne
         aPersonneRepository.saveAndFlush(apersonne);
