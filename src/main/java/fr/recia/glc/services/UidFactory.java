@@ -14,9 +14,6 @@ public class UidFactory {
     private int nbLettreInc = 0;
     private int baseConvertion = ('Z' > 'z' ? 'Z' : 'z') + 1;
 
-    // TODO : variable en fonction du domaine
-    private String codeGenerateur = "Z";
-
     public String codeAnnee(final String annee) {
         // si l'annee est du type 2009/2010
         // c'est 2009 qui nous interesses
@@ -31,21 +28,21 @@ public class UidFactory {
         return annee.substring(idx - nbLettreAnn, idx);
     }
 
-    private boolean calculNbLettreInc(){
+    private boolean calculNbLettreInc(final String codeGenerateur){
         if (nbLettreInc > 0) {
             return true;
         }
         if (codeRegion != null && codeGenerateur != null ) {
-            nbLettreInc = nbLettreTotal - nbLettreAnn - getCodeRegion().length() - getCodeGenerateur().length();
+            nbLettreInc = nbLettreTotal - nbLettreAnn - getCodeRegion().length() - codeGenerateur.length();
         } else {
             nbLettreInc = 0;
         }
         return nbLettreInc > 0;
     }
 
-    public String uid(final String annee, final int increment) {
+    public String uid(final String annee, final int increment, final String codeGenerateur) {
         String uidS;
-        if (calculNbLettreInc()){
+        if (calculNbLettreInc(codeGenerateur)){
             if (nbLettreAnn > 0 ) {
                 String codeAnnee = codeAnnee(annee);
                 if (codeAnnee == null) {

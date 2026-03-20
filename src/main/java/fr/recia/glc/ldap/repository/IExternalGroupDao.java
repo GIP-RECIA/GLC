@@ -16,7 +16,7 @@
 package fr.recia.glc.ldap.repository;
 
 import fr.recia.glc.ldap.IExternalGroup;
-import fr.recia.glc.ldap.IStructure;
+import fr.recia.glc.ldap.StructureFromGroup;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.Set;
  */
 public interface IExternalGroupDao {
 
-  Set<IStructure> getStructuresFromGroups();
+  Set<StructureFromGroup> getStructuresFromGroups();
 
   List<IExternalGroup> getGroupsWithFilter(@NotNull final String stringFilter, final String token, final boolean withMembers);
 

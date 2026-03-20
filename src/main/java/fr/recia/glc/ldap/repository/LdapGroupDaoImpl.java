@@ -19,7 +19,7 @@ import com.google.common.collect.Sets;
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.IExternalGroup;
-import fr.recia.glc.ldap.IStructure;
+import fr.recia.glc.ldap.StructureFromGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -61,12 +61,12 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
   }
 
   @Override
-  public Set<IStructure> getStructuresFromGroups() {
+  public Set<StructureFromGroup> getStructuresFromGroups() {
     HardcodedFilter filter = new HardcodedFilter(ldapProperties.getGroupBranch().getStructureProperties().getFilterGroupsOfStructure());
     if (log.isDebugEnabled()) {
       log.debug("LDAP filter applied {} ", filter.encode());
     }
-    ContextMapper<IStructure> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper, ldapProperties);
+    ContextMapper<StructureFromGroup> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper, ldapProperties);
     LdapQuery query = LdapQueryBuilder.query()
       .attributes(externalGroupHelper.getAttributes().toArray(new String[0]))
       .base(externalGroupHelper.getGroupDNSubPath()).filter(filter);

@@ -16,7 +16,7 @@
 package fr.recia.glc.services.structure;
 
 import com.google.common.collect.Sets;
-import fr.recia.glc.ldap.IStructure;
+import fr.recia.glc.ldap.StructureFromGroup;
 import fr.recia.glc.ldap.repository.IExternalGroupDao;
 import fr.recia.glc.utils.ListUtil;
 import lombok.NoArgsConstructor;
@@ -37,8 +37,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
 
-  Set<IStructure> loadedStructures = new HashSet<>();
-  Map<String, Set<IStructure>> loadedStructuresByBranch = new HashMap<>();
+  Set<StructureFromGroup> loadedStructures = new HashSet<>();
+  Map<String, Set<StructureFromGroup>> loadedStructuresByBranch = new HashMap<>();
   Map<String, String> branchForLoadedStructures = new HashMap<>();
   Map<String, String> groupNameForLoadedStructures = new HashMap<>();
 
@@ -110,12 +110,12 @@ public class StructureLoaderImpl implements IStructureLoader, InitializingBean {
   }
 
   @Override
-  public Set<IStructure> getStructuresOfBranch(String branchGroup) {
+  public Set<StructureFromGroup> getStructuresOfBranch(String branchGroup) {
     return loadedStructuresByBranch.getOrDefault(branchGroup, Collections.emptySet());
   }
 
   @Override
-  public Set<IStructure> getAllStructures() {
+  public Set<StructureFromGroup> getAllStructures() {
     return loadedStructures;
   }
 

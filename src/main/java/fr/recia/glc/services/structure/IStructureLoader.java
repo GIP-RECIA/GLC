@@ -15,18 +15,15 @@
  */
 package fr.recia.glc.services.structure;
 
-import fr.recia.glc.ldap.IStructure;
+import fr.recia.glc.ldap.StructureFromGroup;
 
 import java.util.Set;
 
 public interface IStructureLoader {
 
-  Set<IStructure> getStructuresOfBranch(String branchGroup);
-
-  Set<IStructure> getAllStructures();
-
+  Set<StructureFromGroup> getStructuresOfBranch(String branchGroup);
+  Set<StructureFromGroup> getAllStructures();
   String getBranchOfStructure(String uai);
-
   String getGroupNameOfStructure(String uai);
 
 }

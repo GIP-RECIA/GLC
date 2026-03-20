@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.configuration;
 
-import fr.recia.glc.ldap.IStructure;
+import fr.recia.glc.ldap.StructureFromGroup;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.structure.IStructureLoader;
@@ -145,7 +145,7 @@ public class SecurityConfiguration {
                 }
                 // Droits sur les branches
                 if(matcherAdminCentral.matches()){
-                    for(IStructure structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))){
+                    for(StructureFromGroup structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))){
                         rightsForEtabs.get(GLCRole.WRITE).add(structureFromGroup.getUAI());
                         rightsForEtabs.get(GLCRole.READ).add(structureFromGroup.getUAI());
                     }

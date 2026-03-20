@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.services.db;
 
+import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
@@ -24,6 +25,7 @@ import fr.recia.glc.db.entities.gestion.AnneeScolaire;
 import fr.recia.glc.db.entities.gestion.GenUID;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.personne.Eleve;
+import fr.recia.glc.db.entities.personne.Login;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
@@ -34,7 +36,10 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.gestion.AnneeScolaireRepository;
 import fr.recia.glc.db.repositories.gestion.GenUIDRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
+import fr.recia.glc.db.repositories.personne.LoginRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.ldap.Structure;
+import fr.recia.glc.ldap.repository.LdapStructureDao;
 import fr.recia.glc.services.NameCalculator;
 import fr.recia.glc.services.PasswordGenerator;
 import fr.recia.glc.services.UidFactory;
@@ -48,7 +53,10 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -67,11 +75,17 @@ public class PersonneService {
     @Autowired
     private AnneeScolaireRepository<AnneeScolaire> anneeScolaireRepository;
     @Autowired
+    private LoginRepository<Login> loginRepository;
+    @Autowired
     private UidFactory uidFactory;
     @Autowired
     private NameCalculator nameCalculator;
     @Autowired
     private PasswordGenerator passwordGenerator;
+    @Autowired
+    private LdapStructureDao ldapStructureDao;
+    @Autowired
+    private GLCProperties glcProperties;
 
     public List<SimplePersonneDto> searchPersonne(String name, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdmin(name) : aPersonneRepository.findByNameLike(name);
@@ -96,26 +110,54 @@ public class PersonneService {
      * @param userCreation Le DTO venant du front qui contient les informations nécéssaires à la création
      */
     public void addPersonne(UserCreation userCreation){
-        // Récupération de l'année scolaire actuelle
+        log.debug("Trying to create local user {}", userCreation);
+        // 1. Récupération de la date
+        Instant date = new Date().toInstant();
+        // 2. Récupération de l'année scolaire actuelle (on suppose que c'est la dernière)
         AnneeScolaire anneeScolaire = anneeScolaireRepository.findAll().get(anneeScolaireRepository.findAll().size()-1);
         final String anneeEnCours = anneeScolaire.getAnneeEnCours().toString().split("-")[0];
-        // Génération de l'UID
-        // 1. Récupération du genUID correspondant en fonction du domaine de l'établissement
-        // TODO : codeGenerateur variable
-        GenUID genUID = genUIDRepository.findByCAndLAndXx(uidFactory.getCodeGenerateur(), uidFactory.getCodeRegion(), uidFactory.codeAnnee(anneeEnCours)).get();
-        // 2. Création de l'uid
-        String uid = uidFactory.uid(anneeEnCours, genUID.getIiii()+1);
-        // 3. Récupération de la clé de jointure créée
-        String cle = uidFactory.clee(uid);
-        // Récupération de l'établissement
+        final String codeAnnee = uidFactory.codeAnnee(anneeEnCours);
+        log.debug("Annee en cours : {}", codeAnnee);
+        // 3. Récupération de l'établissement
         AStructure aStructure = aStructureRepository.getReferenceById(userCreation.getStructureRattachement());
         String source = uidFactory.getSource(aStructure.getCleJointure().getSource());
-        // Création de la personne avec les bons attributs
+        log.debug("Source : {}", source);
+        // 4. Génération de l'UID
+        // 4.1. Récupération du genUID correspondant en fonction du domaine de l'établissement
+        Structure structure = ldapStructureDao.structureFromSiren(aStructure.getSiren());
+        String codeGenerateur;
+        if(structure.getDomains().size()==1){
+            codeGenerateur = glcProperties.getUidFactory().getDomainToCodeGenerateur().get(structure.getDomains().get(0));
+        } else {
+            codeGenerateur = glcProperties.getUidFactory().getDefaultCodeGenerateur();
+        }
+        log.debug("codeGenerateur : {}", codeGenerateur);
+        // 4.2. Créer un nouveau genUID si il n'y a pas encore de genUID pour le codeGenerateur cette année
+        GenUID genUID = genUIDRepository.findByCAndLAndXx(codeGenerateur, uidFactory.getCodeRegion(), codeAnnee).orElseGet(() -> {
+            log.debug("No genUID : creating a new one");
+            GenUID newGenUID = new GenUID();
+            newGenUID.setDateCreation(date);
+            newGenUID.setDateModification(date);
+            newGenUID.setIiii(0);
+            newGenUID.setXx(codeAnnee);
+            newGenUID.setL(uidFactory.getCodeRegion());
+            newGenUID.setC(codeGenerateur);
+            return genUIDRepository.saveAndFlush(newGenUID);
+        });
+        log.debug("genUID : {}", genUID);
+        // 4.3. Création de l'uid
+        final int increment = genUID.getIiii()+1;
+        log.debug("increment {}", increment);
+        String uid = uidFactory.uid(anneeEnCours, increment, codeGenerateur);
+        log.debug("uid generated : {}", uid);
+        // 4.4. Récupération de la clé de jointure créée
+        String cle = uidFactory.clee(uid);
+        log.debug("cle : {}", cle);
+        // 5. Création de la personne avec les bons attributs
         CategoriePersonne catPer = userCreation.getCategoriePersonne();
         Civilite civilite = userCreation.getCivilite();
         // TODO : instancier le bon type d'objet
         APersonne apersonne = new Eleve();
-        Instant date = new Date().toInstant();
         apersonne.setDateCreation(date);
         apersonne.setDateModification(date);
         apersonne.setAnneeScolaire(anneeScolaire.getAnneeEnCours());
@@ -146,15 +188,73 @@ public class PersonneService {
         apersonne.setPassword(passwordGenerator.genPassword());
         apersonne.setCn(nameCalculator.cn(userCreation.getNom(), userCreation.getPrenom()));
         apersonne.setDisplayName(nameCalculator.display(userCreation.getNom(), userCreation.getPrenom()));
-        // TODO : login
-        //apersonne.setLogin(nameCalculator.login(userCreation.getNom(), userCreation.getPrenom()));
-
-        // Sauvegarder la personne
+        // TODO : ajouter les fonctions et les classes
+        // 6. Sauvegarder la personne
         aPersonneRepository.saveAndFlush(apersonne);
-        log.info("local personne {} created", uid);
+        log.debug("local personne {} created", uid);
+        // TODO : login
+        updateLogin(nameCalculator.login(userCreation.getNom(), userCreation.getPrenom()), apersonne);
         // Si c'est bon pour la personne alors on met aussi à jour le genuid
-        genUID.setIiii(genUID.getIiii()+1);
+        genUID.setIiii(increment);
         genUIDRepository.saveAndFlush(genUID);
+    }
+
+    /**
+     * Modifie le login d'une personne.
+     * Le login passé en paramêtre ne doit pas avoir  de compteur à la fin.
+     * Il doit être de la forme prenom.nom .
+     */
+    public APersonne updateLogin(final String loginPrefix, final APersonne aPersonne) {
+        Pattern p = Pattern.compile(loginPrefix + "(\\d*)");
+        Matcher m;
+        Instant date = new Date().toInstant();
+        List<Login> loginList = loginRepository.findByNomLike(loginPrefix+"%");
+        String newLogin = loginPrefix;
+        int nbMax = 0;
+        int nb = 0;
+        boolean[] cptUtilise = new boolean[100];
+        if (loginList != null) {
+            for (Login l : loginList) {
+                m = p.matcher(l.getNom());
+                if (m.matches()) {
+                    if ("".equals(m.group(1))) {
+                        nb = 0;
+                    } else {
+                        nb = Integer.parseInt(m.group(1));
+                    }
+                    if (nb < 100) {
+                        cptUtilise[nb++] = true;
+                    }
+
+                    if (nbMax < nb) {
+                        nbMax = nb;
+                    }
+                }
+            }
+        }
+        if (nbMax > 0) {
+            if (nbMax < 100) {
+                newLogin = String.format("%s%d", newLogin, nbMax);
+            } else {
+                // on cherche le premier disponible.
+                for (int i = 0; i < cptUtilise.length; i++) {
+                    if (!cptUtilise[i]){
+                        nbMax = i;
+                        newLogin = String.format("%s%d", newLogin, i);
+                        break;
+                    }
+                }
+                if (nbMax > 100) {
+                    log.error("Login too high");
+                }
+            }
+        }
+        Login login = new Login(newLogin);
+        login.setApersonneLogin(aPersonne);
+        login.setDateCreation(date);
+        login.setDateModification(date);
+        loginRepository.saveAndFlush(login);
+        return aPersonne;
     }
 
     public SimplePersonneDto getPersonneSimple(Long id) {

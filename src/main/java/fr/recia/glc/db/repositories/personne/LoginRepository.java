@@ -17,8 +17,12 @@ package fr.recia.glc.db.repositories.personne;
 
 import fr.recia.glc.db.entities.personne.Login;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface LoginRepository<T extends Login> extends AbstractRepository<T, Long> {
+    List<Login> findByNomLike(String pattern);
 }

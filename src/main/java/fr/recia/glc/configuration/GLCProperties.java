@@ -28,6 +28,7 @@ import fr.recia.glc.configuration.bean.GrouperProperties;
 import fr.recia.glc.configuration.bean.IpRangeProperties;
 import fr.recia.glc.configuration.bean.RestrictionRentreeProperties;
 import fr.recia.glc.configuration.bean.RightsProperties;
+import fr.recia.glc.configuration.bean.UIDFactoryProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -58,6 +59,7 @@ public class GLCProperties {
   private AdminProperties admin;
   private GrouperProperties grouper;
   private RestrictionRentreeProperties restrictionRentree;
+  private UIDFactoryProperties uidFactory;
 
   @PostConstruct
   private void init() throws JsonProcessingException {

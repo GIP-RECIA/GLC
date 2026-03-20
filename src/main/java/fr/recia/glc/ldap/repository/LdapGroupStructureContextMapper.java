@@ -18,7 +18,6 @@ package fr.recia.glc.ldap.repository;
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.ldap.ExternalGroupHelper;
-import fr.recia.glc.ldap.IStructure;
 import fr.recia.glc.ldap.StructureFromGroup;
 import fr.recia.glc.ldap.StructureKey;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,7 @@ import java.util.regex.Pattern;
  * @author GIP RECIA - Julien Gribonvald 3 juin. 2015
  */
 @Slf4j
-public class LdapGroupStructureContextMapper implements ContextMapper<IStructure> {
+public class LdapGroupStructureContextMapper implements ContextMapper<StructureFromGroup> {
 
   private ExternalGroupHelper externalGroupHelper;
   private final CustomLdapProperties ldapProperties;

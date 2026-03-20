@@ -15,16 +15,20 @@
  */
 package fr.recia.glc.ldap;
 
-public interface IStructure {
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-  StructureKey getStructureKey();
+import java.util.List;
 
-  String getUAI();
+@Setter
+@Getter
+@NoArgsConstructor
+@ToString
+public class Structure {
 
-  String getDisplayName();
-
-  String getGroupBranch();
-
-  String getGroupNameEtab();
+  private String siren;
+  private List<String> domains;
 
 }

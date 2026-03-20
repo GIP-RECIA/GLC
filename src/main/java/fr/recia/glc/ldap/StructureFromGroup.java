@@ -24,16 +24,12 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ToString
-public class StructureFromGroup implements IStructure {
+public class StructureFromGroup{
 
   private StructureKey structureKey;
-
   private String UAI;
-
   private String displayName;
-
   private String groupBranch;
-
   private String groupNameEtab;
 
 }
