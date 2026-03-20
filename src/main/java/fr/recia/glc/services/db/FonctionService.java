@@ -327,6 +327,15 @@ public class FonctionService {
     return saveAdditionalFonctions(personneId, structureId, List.of(fonction), List.of(), requiredAction);
   }
 
+  /**
+   * Modifie les fonctions d'une personne sur une stucture
+   * @param personneId L'id de la personne
+   * @param structureId L'id de la stucture
+   * @param toAddFunctions La liste des fonctions à ajouter sous la forme "filière-discipline"
+   * @param toDeleteFunctions La liste des fonctions à supprimer sous la forme "filière-discipline"
+   * @param requiredAction Si on doit rattacher une personne à un établissement (attach) ou le détacher (detach)
+   * @return
+   */
   // TODO : evict aussi le cache des alertes
   // Voir s'il faut evict le cache typesFonctionFiliere et disciplines
   @Caching(evict = {

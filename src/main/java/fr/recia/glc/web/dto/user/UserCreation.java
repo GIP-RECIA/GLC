@@ -31,8 +31,7 @@ public class UserCreation {
     private Long classe;
     private List<Long> enseignements;
     // Tous sauf élève
-    private String fonction;
-    private List<String> disciplines; // Liées à une fonction dans l'établissement
+    private List<String> fonctions;
     // Spécifique enseignant
     private String enseignement;
     private List<String> classesEns;

@@ -17,6 +17,7 @@ package fr.recia.glc.web.rest;
 
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.services.db.AddPersonneService;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionOldBody;
 import fr.recia.glc.services.db.FonctionService;
@@ -45,6 +46,8 @@ public class PersonneController {
     private FonctionService fonctionService;
     @Autowired
     private PersonneService personneService;
+    @Autowired
+    private AddPersonneService addPersonneService;
 
     @GetMapping
     public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
@@ -67,7 +70,7 @@ public class PersonneController {
 
     @PostMapping
     public ResponseEntity<Void> addPersonne(@RequestBody UserCreation userCreation) {
-        personneService.addPersonne(userCreation);
+        addPersonneService.addPersonne(userCreation);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
