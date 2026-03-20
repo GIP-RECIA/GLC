@@ -8,4 +8,9 @@ import java.util.Map;
 public class UIDFactoryProperties {
     private String defaultCodeGenerateur;
     private Map<String,String> domainToCodeGenerateur;
+    private String codeRegion;
+    private String nomSource;
+    private int nbLettreAnn;
+    private int nbLettreTotal;
+    private int nbLettreInc;
 }

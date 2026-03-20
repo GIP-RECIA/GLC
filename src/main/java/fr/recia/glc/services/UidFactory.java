@@ -1,22 +1,31 @@
 package fr.recia.glc.services;
 
+import fr.recia.glc.configuration.GLCProperties;
 import lombok.Data;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @Data
 public class UidFactory {
 
-    private String codeRegion = "F";
-    private String nomSource = "SarapisUI";
-    private int nbLettreAnn = 2;
-    private int nbLettreTotal = 8;
-    private int nbLettreInc = 0;
-    private int baseConvertion = ('Z' > 'z' ? 'Z' : 'z') + 1;
+    private String codeRegion;
+    private String nomSource;
+    private int nbLettreAnn;
+    private int nbLettreTotal;
+    private int nbLettreInc;
+    private int baseConvertion;
+
+    public UidFactory(GLCProperties glcProperties){
+        this.codeRegion = glcProperties.getUidFactory().getCodeRegion();
+        this.nomSource = glcProperties.getUidFactory().getNomSource();
+        this.nbLettreAnn = glcProperties.getUidFactory().getNbLettreAnn();
+        this.nbLettreTotal = glcProperties.getUidFactory().getNbLettreTotal();
+        this.nbLettreInc = glcProperties.getUidFactory().getNbLettreInc();
+        this.baseConvertion = ('Z' > 'z' ? 'Z' : 'z') + 1;
+    }
 
     public String codeAnnee(final String annee) {
-        // si l'annee est du type 2009/2010
-        // c'est 2009 qui nous interesses
+        // si l'annee est du type 2009/2010, c'est 2009 qui nous interesses
         int idx = annee.indexOf('/');
         if (idx < nbLettreAnn) {
             // cas ou on n'a pas de /
@@ -90,7 +99,7 @@ public class UidFactory {
         long clee = 0;
         for (int i = 0; i < uid.length(); i++) {
             int val = uid.charAt(i);
-            clee = (baseConvertion * clee )+ val;
+            clee = (baseConvertion * clee) + val;
         }
         return String.valueOf(clee);
     }
@@ -98,6 +107,5 @@ public class UidFactory {
     public String getSource(String suffixSource) {
         return String.format("%s_%s", nomSource, suffixSource);
     }
-
 
 }

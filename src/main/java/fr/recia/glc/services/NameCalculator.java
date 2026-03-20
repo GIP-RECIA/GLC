@@ -2,23 +2,21 @@ package fr.recia.glc.services;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.text.Normalizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-@Service
+@Component
 @Data
 public class NameCalculator {
 
     private final StringOperation stringOperation;
 
     private static final char MAX_VALUE = 512;
-    /**
-     * la taille maximales des logins avant increment.
-     */
+    /** la taille maximales des logins avant increment. */
     private static final int MAX_LOGIN_LENGHT = 18;
     private final String[] coresp = new String[NameCalculator.MAX_VALUE];
     private final Pattern pattern;
@@ -44,9 +42,6 @@ public class NameCalculator {
 
     }
 
-    /* (non-Javadoc)
-     * @see org.esco.sarapis.ui.commons.utils.INameCalculator#normalise(java.lang.String, java.lang.String)
-     */
     public String display(final String nom, final String prenom) {
         return prenom.trim() + " " + nom.trim();
     }
@@ -57,7 +52,7 @@ public class NameCalculator {
 
     public String sansAccent(final String chaine, final char blanc) {
         Matcher m = pattern.matcher(chaine);
-        StringBuffer res = new StringBuffer();
+        StringBuilder res = new StringBuilder();
 
         while (m.find()) {
             for (int i = 1; i <= m.groupCount(); i++) {
@@ -68,7 +63,7 @@ public class NameCalculator {
                             break;
                         case 2:
                             char c = m.group(i).charAt(0);
-                            if (c >= 0 && c < MAX_VALUE) {
+                            if (c < MAX_VALUE) {
                                 res.append(coresp[c]);
                             }
                             break;

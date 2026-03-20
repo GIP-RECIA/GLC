@@ -1,8 +1,10 @@
 package fr.recia.glc.services;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@NoArgsConstructor
 public class AlphanumericsTools {
 
     /** Valeur de l'incrément.*/
@@ -10,13 +12,6 @@ public class AlphanumericsTools {
 
     /** Valeur pour la base Alpha Numérique.*/
     private static final int BASE_ALPHA_NUM = 36;
-
-    /**
-     * Constructeur de l'objet AlphanumericsTools.java.
-     */
-    private AlphanumericsTools() {
-        super();
-    }
 
     /**
      * Méthode de conversion d'un int en base N.
@@ -37,27 +32,27 @@ public class AlphanumericsTools {
         int reste;
         int nombre = nb;
         final int max = 9;
-        String chaine = "";
+        StringBuilder chaine = new StringBuilder();
         while (nombre >= base) {
             reste = nombre % base;
             nombre = (nombre - reste) / base;
             if (reste > max) {
-                chaine = ((char) (reste - max + INCREMENT)) + chaine;
+                chaine.insert(0, ((char) (reste - max + INCREMENT)));
             } else {
-                chaine = String.valueOf(reste) + chaine;
+                chaine.insert(0, reste);
             }
         }
         if (nombre > max ) {
-            chaine = String.valueOf((char) (nombre - max + INCREMENT)) + chaine;
+            chaine.insert(0, (char) (nombre - max + INCREMENT));
         } else {
-            chaine = String.valueOf(nombre) + chaine;
+            chaine.insert(0, nombre);
         }
         // Pour l'obtention d'un nombre de caratères égal à la demande
         for (int i = chaine.length(); i < nbChar; i++ ) {
-            chaine = "0" + chaine;
+            chaine.insert(0, "0");
         }
 
-        return chaine.toLowerCase();
+        return chaine.toString().toLowerCase();
     }
 
     /**

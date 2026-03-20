@@ -53,7 +53,6 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -124,6 +123,7 @@ public class PersonneService {
         log.debug("Source : {}", source);
         // 4. Génération de l'UID
         // 4.1. Récupération du genUID correspondant en fonction du domaine de l'établissement
+        // TODO : cache
         Structure structure = ldapStructureDao.structureFromSiren(aStructure.getSiren());
         String codeGenerateur;
         if(structure.getDomains().size()==1){
@@ -200,9 +200,9 @@ public class PersonneService {
     }
 
     /**
-     * Modifie le login d'une personne.
-     * Le login passé en paramêtre ne doit pas avoir  de compteur à la fin.
-     * Il doit être de la forme prenom.nom .
+     * Trouve et modifie le login d'une personne.
+     * Le login passé en paramêtre ne doit pas avoir de compteur à la fin
+     * Il doit être de la forme prenom.nom
      */
     public APersonne updateLogin(final String loginPrefix, final APersonne aPersonne) {
         Pattern p = Pattern.compile(loginPrefix + "(\\d*)");
@@ -245,6 +245,7 @@ public class PersonneService {
                     }
                 }
                 if (nbMax > 100) {
+                    // TODO : throw exception
                     log.error("Login too high");
                 }
             }
