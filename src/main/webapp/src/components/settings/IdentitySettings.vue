@@ -151,7 +151,7 @@ watch(
         :disabled="disableEdit && !isEdit"
         class="small"
         :class="[isEdit ? 'btn-secondary' : 'btn-primary']"
-        @click="() => toggleEdit()"
+        @click="toggleEdit"
       >
         {{ t(`button.${isEdit ? 'cancel' : 'edit'}`) }}
         <FontAwesomeIcon
@@ -162,7 +162,7 @@ watch(
         v-show="isEdit"
         :disabled="!canSave"
         class="btn-primary small"
-        @click="() => save()"
+        @click="save"
       >
         {{ t('button.save') }}
         <FontAwesomeIcon

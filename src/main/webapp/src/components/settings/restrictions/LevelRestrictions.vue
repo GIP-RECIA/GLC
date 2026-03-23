@@ -68,6 +68,15 @@ function addClass(uid: string | number): void {
   if (classe)
     classe.dateRentreeClasse = ''
 }
+
+function deleteLevel(): void {
+  modelValue.value.classes.forEach(c => c.dateRentreeClasse = null)
+  modelValue.value.dateRentreeNiveau = null
+}
+
+function clearLevel(): void {
+  modelValue.value.dateRentreeNiveau = ''
+}
 </script>
 
 <template>
@@ -101,9 +110,7 @@ function addClass(uid: string | number): void {
               <button
                 title="Réinitialiser"
                 class="btn-tertiary circle"
-                @click="() => {
-                  modelValue.dateRentreeNiveau = ''
-                }"
+                @click="clearLevel"
               >
                 <FontAwesomeIcon
                   :icon="faRotateLeft"
@@ -155,10 +162,7 @@ function addClass(uid: string | number): void {
     >
       <button
         class="btn-secondary small"
-        @click="() => {
-          modelValue.classes.forEach(c => c.dateRentreeClasse = null)
-          modelValue.dateRentreeNiveau = null
-        }"
+        @click="deleteLevel"
       >
         Supprimer
         <FontAwesomeIcon

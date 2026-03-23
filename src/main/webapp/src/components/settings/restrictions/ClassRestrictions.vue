@@ -52,6 +52,14 @@ function toDisplayDate(
     ? format(date, 'P p')
     : undefined
 }
+
+function deleteClass(): void {
+  modelValue.value.dateRentreeClasse = null
+}
+
+function clearClass(): void {
+  modelValue.value.dateRentreeClasse = ''
+}
 </script>
 
 <template>
@@ -86,9 +94,7 @@ function toDisplayDate(
               <button
                 title="Réinitialiser"
                 class="btn-tertiary circle"
-                @click="() => {
-                  modelValue.dateRentreeClasse = ''
-                }"
+                @click="clearClass"
               >
                 <FontAwesomeIcon
                   :icon="faRotateLeft"
@@ -101,9 +107,7 @@ function toDisplayDate(
       </div>
       <button
         class="btn-tertiary circle"
-        @click="() => {
-          modelValue.dateRentreeClasse = null
-        }"
+        @click="deleteClass"
       >
         <FontAwesomeIcon
           :icon="faTrashCan"

@@ -32,7 +32,7 @@ withDefaults(
   },
 )
 
-defineEmits<{
+const emit = defineEmits<{
   'update:model-value': [uid: string | number]
 }>()
 
@@ -47,6 +47,11 @@ const isExpanded = ref<boolean>(false)
 function toggle(): void {
   isExpanded.value = !isExpanded.value
 }
+
+function handleItemClick(key: string | number) {
+  toggle()
+  emit('update:model-value', key)
+}
 </script>
 
 <template>
@@ -57,7 +62,7 @@ function toggle(): void {
       :aria-label="aLabel"
       :disabled="disabled"
       :class="btnClass"
-      @click="() => toggle()"
+      @click="toggle"
     >
       <slot />
     </button>
@@ -72,10 +77,7 @@ function toggle(): void {
         :key="item.uid"
       >
         <button
-          @click="() => {
-            toggle()
-            $emit('update:model-value', item.uid)
-          }"
+          @click="handleItemClick(item.uid)"
         >
           {{ item.name }}
         </button>

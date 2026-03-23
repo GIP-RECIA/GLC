@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { StructureRestriction } from '@/types/index.ts'
-import { faFloppyDisk, faPen, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faFloppyDisk, faPen, faPlus, faRotateLeft, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format, formatISO } from 'date-fns'
 import { computed, ref, watch } from 'vue'
@@ -124,6 +124,10 @@ function addLevel(uid: string | number): void {
   if (level)
     level.dateRentreeNiveau = ''
 }
+
+function clearEtab(): void {
+  fields.value.dateRentreeEtab = ''
+}
 </script>
 
 <template>
@@ -159,6 +163,17 @@ function addLevel(uid: string | number): void {
                   type="datetime-local"
                   placeholder=""
                 >
+              </div>
+              <div class="end">
+                <button
+                  title="Réinitialiser"
+                  class="btn-tertiary circle"
+                  @click="clearEtab"
+                >
+                  <FontAwesomeIcon
+                    :icon="faRotateLeft"
+                  />
+                </button>
               </div>
             </div>
             <div class="active-indicator" />
@@ -214,7 +229,7 @@ function addLevel(uid: string | number): void {
         :disabled="disableEdit && !isEdit"
         class="small"
         :class="[isEdit ? 'btn-secondary' : 'btn-primary']"
-        @click="() => toggleEdit()"
+        @click="toggleEdit"
       >
         {{ t(`button.${isEdit ? 'cancel' : 'edit'}`) }}
         <FontAwesomeIcon
@@ -225,7 +240,7 @@ function addLevel(uid: string | number): void {
         v-show="isEdit"
         :disabled="!canSave"
         class="btn-primary small"
-        @click="() => save()"
+        @click="save"
       >
         {{ t('button.save') }}
         <FontAwesomeIcon
