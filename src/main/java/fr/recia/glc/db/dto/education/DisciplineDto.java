@@ -21,8 +21,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -36,11 +36,13 @@ public class DisciplineDto {
   private String source;
   private List<SimplePersonneDto> personnes;
 
+  // Constructeur utilisé par la requête en BD
   public DisciplineDto(Long id, String code, String disciplinePoste, String source) {
     this.id = id;
     this.code = code;
     this.disciplinePoste = disciplinePoste;
     this.source = source;
+    this.personnes = new ArrayList<>();
   }
 
   public DisciplineDto(DisciplineDto disciplineDto) {
@@ -48,9 +50,7 @@ public class DisciplineDto {
     this.code = disciplineDto.getCode();
     this.disciplinePoste = disciplineDto.getDisciplinePoste();
     this.source = disciplineDto.getSource();
-    if (disciplineDto.getPersonnes() != null)
-      this.personnes = disciplineDto.getPersonnes().stream().map(SimplePersonneDto::new).collect(Collectors.toList());
-    else this.personnes = null;
+    this.personnes = new ArrayList<>();
   }
 
 }

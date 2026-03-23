@@ -18,6 +18,7 @@ package fr.recia.glc.web.rest;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
+import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.dto.structure.EtablissementDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
@@ -39,7 +40,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -109,9 +113,26 @@ public class EtablissementController {
 
         // Récupération des filières (fonctions, typesFonctionFiliere et disciplines)
         List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);
-        List<TypeFonctionFiliereDto> typesFonctionFiliere = fonctionService.getTypesFonctionFiliere(etablissement.getSource());
-        List<DisciplineDto> disciplines = fonctionService.getDisciplines(etablissement.getSource());
-        etablissement.setFilieres(fonctions, typesFonctionFiliere, disciplines);
+        // On créé des maps pour pouvoir récupérer les objets par leur id en O(1)
+        List<TypeFonctionFiliereDto> typesFonctionFiliereList = fonctionService.getTypesFonctionFiliere(etablissement.getSource());
+        Map<Long, TypeFonctionFiliereDto> typesFonctionFiliereMap = typesFonctionFiliereList.stream()
+            .collect(Collectors.toMap(
+                    TypeFonctionFiliereDto::getId,
+                    Function.identity()
+            ));
+        List<DisciplineDto> disciplinesList = fonctionService.getDisciplines(etablissement.getSource());
+        Map<Long, DisciplineDto> disciplinesMap = disciplinesList.stream()
+            .collect(Collectors.toMap(
+                    DisciplineDto::getId,
+                    Function.identity()
+            ));
+        Map<Long, SimplePersonneDto> personnesMap = etabPersonnes.stream()
+                .collect(Collectors.toMap(
+                        SimplePersonneDto::getId,
+                        Function.identity()
+                ));
+
+        etablissement.setFilieres(fonctions, typesFonctionFiliereMap, disciplinesMap, personnesMap);
 
         return new ResponseEntity<>(etablissement, HttpStatus.OK);
     }

@@ -216,7 +216,6 @@ public class AddPersonneService {
     private void updateNonEnsEtablissement(final NonEnseignantEtablissement nonEnseignantEtablissement, final AStructure aStructure, final UserCreation userCreation){
         log.debug("updating nonEnseignantEtablissement {}", nonEnseignantEtablissement.getUid());
         fonctionService.saveAdditionalFonctions(nonEnseignantEtablissement.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), "save");
-
     }
 
     /**
@@ -224,6 +223,7 @@ public class AddPersonneService {
      */
     private void updateNonEnsServiceAcad(final NonEnseignantServiceAcademique nonEnseignantServiceAcademique, final AStructure aStructure, final UserCreation userCreation){
         log.debug("updating nonEnseignantServiceAcademique {}", nonEnseignantServiceAcademique.getUid());
+        fonctionService.saveAdditionalFonctions(nonEnseignantServiceAcademique.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), "save");
     }
 
     /**
@@ -231,6 +231,7 @@ public class AddPersonneService {
      */
     private void updateEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation){
         log.debug("updating enseignant {}", enseignant.getUid());
+        fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), "save");
     }
 
     /**
@@ -263,7 +264,6 @@ public class AddPersonneService {
         mappingAGroupeAPersonneRepository.save(mappingAGroupeAPersonne);
         log.debug("Saved classe...");
     }
-
 
     /**
      * Trouve et modifie le login d'une personne.

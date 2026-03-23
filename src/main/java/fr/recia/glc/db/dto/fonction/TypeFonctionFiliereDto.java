@@ -21,8 +21,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -30,27 +30,27 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 public class TypeFonctionFiliereDto {
 
-  private Long id;
-  private String codeFiliere;
-  private String libelleFiliere;
-  private String source;
-  private List<DisciplineDto> disciplines;
+    private Long id;
+    private String codeFiliere;
+    private String libelleFiliere;
+    private String source;
+    private List<DisciplineDto> disciplines;
 
-  public TypeFonctionFiliereDto(Long id, String codeFiliere, String libelleFiliere, String source) {
-    this.id = id;
-    this.codeFiliere = codeFiliere;
-    this.libelleFiliere = libelleFiliere;
-    this.source = source;
-  }
+    // Constructeur utilisé par la requête en BD
+    public TypeFonctionFiliereDto(Long id, String codeFiliere, String libelleFiliere, String source) {
+        this.id = id;
+        this.codeFiliere = codeFiliere;
+        this.libelleFiliere = libelleFiliere;
+        this.source = source;
+        this.disciplines = new ArrayList<>();
+    }
 
-  public TypeFonctionFiliereDto(TypeFonctionFiliereDto typeFonctionFiliereDto) {
-    this.id = typeFonctionFiliereDto.getId();
-    this.codeFiliere = typeFonctionFiliereDto.getCodeFiliere();
-    this.libelleFiliere = typeFonctionFiliereDto.getLibelleFiliere();
-    this.source = typeFonctionFiliereDto.getSource();
-    if (typeFonctionFiliereDto.getDisciplines() != null)
-      this.disciplines = typeFonctionFiliereDto.getDisciplines().stream().map(DisciplineDto::new).collect(Collectors.toList());
-    else this.disciplines = null;
-  }
+    public TypeFonctionFiliereDto(TypeFonctionFiliereDto typeFonctionFiliereDto) {
+        this.id = typeFonctionFiliereDto.getId();
+        this.codeFiliere = typeFonctionFiliereDto.getCodeFiliere();
+        this.libelleFiliere = typeFonctionFiliereDto.getLibelleFiliere();
+        this.source = typeFonctionFiliereDto.getSource();
+        this.disciplines = new ArrayList<>();
+    }
 
 }
