@@ -18,7 +18,7 @@ package fr.recia.glc.configuration;
 import fr.recia.glc.ldap.StructureFromGroup;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
-import fr.recia.glc.services.structure.IStructureLoader;
+import fr.recia.glc.services.structure.StructureLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.validation.Assertion;
@@ -54,9 +54,9 @@ import java.util.regex.Pattern;
 public class SecurityConfiguration {
 
     private final GLCProperties glcProperties;
-    private final IStructureLoader structureLoader;
+    private final StructureLoader structureLoader;
 
-    public SecurityConfiguration(GLCProperties glcProperties, IStructureLoader structureLoader) {
+    public SecurityConfiguration(GLCProperties glcProperties, StructureLoader structureLoader) {
         this.glcProperties = glcProperties;
         this.structureLoader = structureLoader;
     }

@@ -1,30 +1,28 @@
 package fr.recia.glc.ldap.repository;
 
+import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.StructureSirenDomain;
 import fr.recia.glc.ldap.StructureSirenDomainAttributesMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Data
+@AllArgsConstructor
 @Slf4j
 public class LdapStructureDao {
 
-    @Autowired
     private LdapTemplate ldapTemplate;
-    @Autowired
     private StructureSirenDomainAttributesMapper structureSirenDomainAttributesMapper;
+    private CustomLdapProperties ldapProperties;
 
     public List<StructureSirenDomain> structuresFromSiren(){
-        // TODO : paramétriser le filtre et la base
-        String base = "ou=structures";
-        String filter = "(!(objectClass=ENTEntreprise))";
         return ldapTemplate.search(
-                base,
-                filter,
+                ldapProperties.getStructureBranch().getBase(),
+                ldapProperties.getStructureBranch().getAllStructuresBySirenFilter(),
                 structureSirenDomainAttributesMapper
         );
     }

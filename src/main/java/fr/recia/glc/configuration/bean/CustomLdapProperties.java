@@ -51,6 +51,8 @@ public class CustomLdapProperties {
   private BranchProperties userBranch = new BranchProperties();
   @Nullable
   private GroupBranchProperties groupBranch = new GroupBranchProperties();
+  @NotNull
+  private StructureBranchProperties structureBranch = new StructureBranchProperties();
 
   @Data
   @Validated
@@ -91,14 +93,20 @@ public class CustomLdapProperties {
     @Override
     public String toString() {
       return "{" +
-        "\n\t\t\"ignorePartialResultException\": \"" + ignorePartialResultException + "\"," +
-        "\n\t\t\"ignoreNameNotFoundException\": \"" + ignoreNameNotFoundException + "\"," +
-        "\n\t\t\"ignoreSizeLimitExceededException\": \"" + ignoreSizeLimitExceededException + "\"," +
-        "\n\t\t\"searchScope\": \"" + searchScope + "\"," +
-        "\n\t\t\"timeLimit\": \"" + timeLimit + "\"," +
-        "\n\t\t\"countLimit\": \"" + countLimit + "\"" +
-        "\n\t}";
+              "\n\t\t\"ignorePartialResultException\": \"" + ignorePartialResultException + "\"," +
+              "\n\t\t\"ignoreNameNotFoundException\": \"" + ignoreNameNotFoundException + "\"," +
+              "\n\t\t\"ignoreSizeLimitExceededException\": \"" + ignoreSizeLimitExceededException + "\"," +
+              "\n\t\t\"searchScope\": \"" + searchScope + "\"," +
+              "\n\t\t\"timeLimit\": \"" + timeLimit + "\"," +
+              "\n\t\t\"countLimit\": \"" + countLimit + "\"" +
+              "\n\t}";
     }
+  }
+
+  @Data
+  public static class StructureBranchProperties {
+    private String allStructuresBySirenFilter;
+    private String base;
   }
 
   @Data

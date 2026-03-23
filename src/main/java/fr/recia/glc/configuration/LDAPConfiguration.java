@@ -17,8 +17,7 @@ package fr.recia.glc.configuration;
 
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
-import fr.recia.glc.ldap.ExternalUserHelper;
-import fr.recia.glc.ldap.repository.IExternalUserDao;
+import fr.recia.glc.ldap.StructureSirenDomainAttributesMapper;
 import fr.recia.glc.ldap.repository.LdapGroupDao;
 import fr.recia.glc.ldap.repository.LdapStructureDao;
 import fr.recia.glc.services.structure.StructureLoader;
@@ -69,23 +68,6 @@ public class LDAPConfiguration {
   }
 
   @Bean
-  public ExternalUserHelper externalUserHelper() {
-    final ExternalUserHelper ldapUh = new ExternalUserHelper(
-      ldapProperties.getUserBranch().getIdAttribute(),
-      ldapProperties.getUserBranch().getDisplayNameAttribute(),
-      ldapProperties.getUserBranch().getMailAttribute(),
-      ldapProperties.getUserBranch().getSearchAttribute(),
-      ldapProperties.getUserBranch().getGroupAttribute(),
-      ldapProperties.getUserBranch().getOtherBackendAttributes(),
-      ldapProperties.getUserBranch().getOtherDisplayedAttributes(),
-      ldapProperties.getUserBranch().getBaseDN()
-    );
-    log.debug("LdapAttributes for Users configured : {}", ldapUh);
-
-    return ldapUh;
-  }
-
-  @Bean
   public ExternalGroupHelper externalGroupHelper() {
     log.debug("Configure bean ExternalGroupHelper with LDAP attributes");
     Assert.notNull(
@@ -115,13 +97,23 @@ public class LDAPConfiguration {
   }
 
   @Bean
-  public LdapGroupDao ldapExternalGroupDao(IExternalUserDao externalUserDao, LdapTemplate ldapTemplate) {
+  public LdapGroupDao ldapExternalGroupDao(LdapTemplate ldapTemplate) {
     log.debug("Configuring IExternalGroupDao with LDAP DAO");
     Assert.notNull(
       ldapProperties.getGroupBranch(),
       "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !"
     );
-    return new LdapGroupDao(ldapTemplate, externalGroupHelper(), externalUserDao, ldapProperties);
+    return new LdapGroupDao(ldapTemplate, externalGroupHelper(), ldapProperties);
+  }
+
+  @Bean
+  public LdapStructureDao ldapStructureDao(LdapTemplate ldapTemplate, StructureSirenDomainAttributesMapper structureSirenDomainAttributesMapper) {
+    log.debug("Configuring IExternalGroupDao with LDAP DAO");
+    Assert.notNull(
+            ldapProperties.getGroupBranch(),
+            "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !"
+    );
+    return new LdapStructureDao(ldapTemplate, structureSirenDomainAttributesMapper, ldapProperties);
   }
 
   @Bean

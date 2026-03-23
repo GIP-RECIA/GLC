@@ -18,22 +18,16 @@ package fr.recia.glc.ldap.repository;
 import com.google.common.collect.Sets;
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
-import fr.recia.glc.ldap.IExternalGroup;
 import fr.recia.glc.ldap.StructureFromGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.filter.AndFilter;
-import org.springframework.ldap.filter.Filter;
 import org.springframework.ldap.filter.HardcodedFilter;
-import org.springframework.ldap.filter.WhitespaceWildcardsFilter;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.query.LdapQueryBuilder;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,21 +38,9 @@ import java.util.Set;
 @Slf4j
 public class LdapGroupDao {
 
-  /**
-   * Spring template used to perform search in the ldap.
-   */
   private LdapTemplate ldapTemplate;
   private ExternalGroupHelper externalGroupHelper;
-  private IExternalUserDao externalUserDao;
-  private final CustomLdapProperties ldapProperties;
-
-  /**
-   * constructor.
-   */
-  public LdapGroupDao(CustomLdapProperties ldapProperties) {
-    super();
-    this.ldapProperties = ldapProperties;
-  }
+  private CustomLdapProperties ldapProperties;
 
   public Set<StructureFromGroup> getStructuresFromGroups() {
     HardcodedFilter filter = new HardcodedFilter(ldapProperties.getGroupBranch().getStructureProperties().getFilterGroupsOfStructure());
