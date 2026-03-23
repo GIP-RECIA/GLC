@@ -34,8 +34,6 @@ import fr.recia.glc.db.repositories.groupe.MappingAGroupeAPersonneRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.personne.LoginRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
-import fr.recia.glc.ldap.StructureSirenDomain;
-import fr.recia.glc.ldap.repository.LdapStructureDao;
 import fr.recia.glc.services.NameCalculator;
 import fr.recia.glc.services.PasswordGenerator;
 import fr.recia.glc.services.UidFactory;
@@ -89,8 +87,6 @@ public class AddPersonneService {
     @Autowired
     private PasswordGenerator passwordGenerator;
     @Autowired
-    private LdapStructureDao ldapStructureDao;
-    @Autowired
     private FonctionService fonctionService;
     @Autowired
     private GLCProperties glcProperties;
@@ -108,6 +104,7 @@ public class AddPersonneService {
         Instant date = new Date().toInstant();
         // 2. Récupération de l'année scolaire actuelle (on suppose que c'est la dernière)
         AnneeScolaire anneeScolaire = anneeScolaireRepository.findAll().get(anneeScolaireRepository.findAll().size()-1);
+        // TODO : trouver une manière plus propre de récupérer l'année scolaire
         final String anneeEnCours = anneeScolaire.getAnneeEnCours().toString().split("-")[0];
         final String codeAnnee = uidFactory.codeAnnee(anneeEnCours);
         log.debug("Annee en cours : {}", codeAnnee);
@@ -119,7 +116,7 @@ public class AddPersonneService {
         // 4.1. Récupération du genUID correspondant en fonction du domaine de l'établissement
         List<String> domainsOfStructure = structureLoader.getDomainsOfStructure(aStructure.getSiren());
         String codeGenerateur;
-        if(domainsOfStructure.size()==1){
+        if(domainsOfStructure.size() == 1){
             codeGenerateur = glcProperties.getUidFactory().getDomainToCodeGenerateur().get(domainsOfStructure.get(0));
         } else {
             codeGenerateur = glcProperties.getUidFactory().getDefaultCodeGenerateur();
@@ -149,24 +146,7 @@ public class AddPersonneService {
         // 5. Création de la personne avec les bons attributs
         CategoriePersonne catPer = userCreation.getCategoriePersonne();
         Civilite civilite = userCreation.getCivilite();
-        // TODO : instancier le bon type d'objet
-        APersonne apersonne;
-        if(catPer == CategoriePersonne.Eleve){
-            apersonne = new Eleve();
-        }
-        else if(catPer == CategoriePersonne.Non_enseignant_etablissement){
-            apersonne = new NonEnseignantEtablissement();
-        }
-        else if(catPer == CategoriePersonne.Non_enseignant_service_academique){
-            apersonne = new NonEnseignantServiceAcademique();
-        }
-        else if(catPer == CategoriePersonne.Enseignant){
-            apersonne = new Enseignant();
-        }
-        // Type invalide
-        else {
-            throw new RuntimeException("Invalid CategoriePersonne");
-        }
+        APersonne apersonne = instanciatePersonne(catPer);
         apersonne.setDateCreation(date);
         apersonne.setDateModification(date);
         apersonne.setAnneeScolaire(anneeScolaire.getAnneeEnCours());
@@ -208,7 +188,38 @@ public class AddPersonneService {
         genUIDRepository.saveAndFlush(genUID);
         // Gestion du login
         updateLogin(nameCalculator.login(userCreation.getNom(), userCreation.getPrenom()), apersonne);
-        // TODO : champs spécfiques pour chaque catégorie de personne
+        // Champs spécfiques pour chaque catégorie de personne
+        updateSpecificFields(apersonne, userCreation, aStructure);
+    }
+
+    /**
+     * Instancie le bon type d'objet en fonction de la catégorie de la personne
+     */
+    private APersonne instanciatePersonne(CategoriePersonne catPer) {
+        APersonne apersonne;
+        if(catPer == CategoriePersonne.Eleve){
+            apersonne = new Eleve();
+        }
+        else if(catPer == CategoriePersonne.Non_enseignant_etablissement){
+            apersonne = new NonEnseignantEtablissement();
+        }
+        else if(catPer == CategoriePersonne.Non_enseignant_service_academique){
+            apersonne = new NonEnseignantServiceAcademique();
+        }
+        else if(catPer == CategoriePersonne.Enseignant){
+            apersonne = new Enseignant();
+        }
+        // Type invalide
+        else {
+            throw new RuntimeException("Invalid CategoriePersonne");
+        }
+        return apersonne;
+    }
+
+    /**
+     * Met à jour les champs spécifiques en fonction du profil
+     */
+    private void updateSpecificFields(APersonne apersonne, UserCreation userCreation, AStructure aStructure){
         if(apersonne.getCategorie() == CategoriePersonne.Eleve){
             updateEleve((Eleve) apersonne, userCreation);
         }
@@ -246,6 +257,7 @@ public class AddPersonneService {
         log.debug("updating enseignant {}", enseignant.getUid());
         fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
         List<MappingAGroupeAPersonneEnseignement> personneEnseignements = new ArrayList<>();
+        // Ajout de tous les groupes de l'enseignement
         for(Long groupId : userCreation.getGroupesEns()){
             MappingAGroupeAPersonneEnseignement personneEnseignement = new MappingAGroupeAPersonneEnseignement();
             MappingAGroupeAPersonneEnseignementId pk = new MappingAGroupeAPersonneEnseignementId();
