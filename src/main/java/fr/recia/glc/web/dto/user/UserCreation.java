@@ -33,8 +33,7 @@ public class UserCreation {
     // Tous sauf élève
     private List<String> fonctions;
     // Spécifique enseignant
-    private String enseignement;
-    private List<String> classesEns;
-    private List<String> groupesEns;
+    private Long enseignementProf;
+    private List<Long> groupesEns;
 
 }

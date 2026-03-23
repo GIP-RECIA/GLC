@@ -7,8 +7,11 @@ import fr.recia.glc.db.entities.education.MEF;
 import fr.recia.glc.db.entities.education.MappingEleveEnseignement;
 import fr.recia.glc.db.entities.gestion.AnneeScolaire;
 import fr.recia.glc.db.entities.gestion.GenUID;
+import fr.recia.glc.db.entities.groupe.AGroupeOfFoncClasseGroupe;
 import fr.recia.glc.db.entities.groupe.Classe;
 import fr.recia.glc.db.entities.groupe.MappingAGroupeAPersonne;
+import fr.recia.glc.db.entities.groupe.MappingAGroupeAPersonneEnseignement;
+import fr.recia.glc.db.entities.groupe.MappingAGroupeAPersonneEnseignementId;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.personne.Eleve;
 import fr.recia.glc.db.entities.personne.Enseignant;
@@ -24,7 +27,9 @@ import fr.recia.glc.db.repositories.education.EnseignementRepository;
 import fr.recia.glc.db.repositories.education.MEFRepository;
 import fr.recia.glc.db.repositories.gestion.AnneeScolaireRepository;
 import fr.recia.glc.db.repositories.gestion.GenUIDRepository;
+import fr.recia.glc.db.repositories.groupe.AGroupeOfFoncClasseGroupeRepository;
 import fr.recia.glc.db.repositories.groupe.ClasseRepository;
+import fr.recia.glc.db.repositories.groupe.MappingAGroupeAPersonneEnseignementRepository;
 import fr.recia.glc.db.repositories.groupe.MappingAGroupeAPersonneRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.personne.LoginRepository;
@@ -71,6 +76,10 @@ public class AddPersonneService {
     private ClasseRepository<Classe> classeRepository;
     @Autowired
     private MappingAGroupeAPersonneRepository<MappingAGroupeAPersonne> mappingAGroupeAPersonneRepository;
+    @Autowired
+    private MappingAGroupeAPersonneEnseignementRepository<MappingAGroupeAPersonneEnseignement> mappingAGroupeAPersonneEnseignementRepository;
+    @Autowired
+    private AGroupeOfFoncClasseGroupeRepository<AGroupeOfFoncClasseGroupe> aGroupeOfFoncClasseGroupeRepository;
     @Autowired
     private UidFactory uidFactory;
     @Autowired
@@ -232,6 +241,20 @@ public class AddPersonneService {
     private void updateEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation){
         log.debug("updating enseignant {}", enseignant.getUid());
         fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), "save");
+        List<MappingAGroupeAPersonneEnseignement> personneEnseignements = new ArrayList<>();
+        for(Long groupId : userCreation.getGroupesEns()){
+            MappingAGroupeAPersonneEnseignement personneEnseignement = new MappingAGroupeAPersonneEnseignement();
+            MappingAGroupeAPersonneEnseignementId pk = new MappingAGroupeAPersonneEnseignementId();
+            pk.setEnseignant(enseignant);
+            Enseignement enseignement = enseignementRepository.getReferenceById(userCreation.getEnseignementProf());
+            pk.setEnseignement(enseignement);
+            AGroupeOfFoncClasseGroupe aGroupeOfFoncClasseGroupe = aGroupeOfFoncClasseGroupeRepository.getReferenceById(groupId);
+            pk.setGroupe(aGroupeOfFoncClasseGroupe);
+            personneEnseignement.setPk(pk);
+            personneEnseignement.setSource(enseignant.getCleJointure().getSource());
+            personneEnseignements.add(personneEnseignement);
+        }
+        mappingAGroupeAPersonneEnseignementRepository.saveAllAndFlush(personneEnseignements);
     }
 
     /**
@@ -261,7 +284,7 @@ public class AddPersonneService {
         Classe classe = classeRepository.getReferenceById(userCreation.getClasse());
         log.debug("Adding {} to class {}", eleve.getUid(), classe.getId());
         MappingAGroupeAPersonne mappingAGroupeAPersonne = new MappingAGroupeAPersonne(eleve.getCleJointure().getSource(), eleve, classe);
-        mappingAGroupeAPersonneRepository.save(mappingAGroupeAPersonne);
+        mappingAGroupeAPersonneRepository.saveAndFlush(mappingAGroupeAPersonne);
         log.debug("Saved classe...");
     }
 
