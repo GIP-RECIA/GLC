@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { ClassRestriction } from '@/types/index.ts'
-import { faRotateLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format } from 'date-fns'
 import { computed, useId } from 'vue'
@@ -56,10 +56,6 @@ function toDisplayDate(
 function deleteClass(): void {
   modelValue.value.dateRentreeClasse = null
 }
-
-function clearClass(): void {
-  modelValue.value.dateRentreeClasse = ''
-}
 </script>
 
 <template>
@@ -74,7 +70,7 @@ function clearClass(): void {
     </h5>
     <div
       v-if="isEdit"
-      class="field-layout"
+      class="input-container"
     >
       <div class="field">
         <div class="field-layout">
@@ -89,17 +85,6 @@ function clearClass(): void {
                 type="datetime-local"
                 placeholder=""
               >
-            </div>
-            <div class="end">
-              <button
-                title="Réinitialiser"
-                class="btn-tertiary circle"
-                @click="clearClass"
-              >
-                <FontAwesomeIcon
-                  :icon="faRotateLeft"
-                />
-              </button>
             </div>
           </div>
           <div class="active-indicator" />
@@ -132,7 +117,7 @@ function clearClass(): void {
     margin-bottom: 4px;
   }
 
-  > .field-layout {
+  > .input-container {
     display: flex;
     align-items: center;
     gap: 8px;

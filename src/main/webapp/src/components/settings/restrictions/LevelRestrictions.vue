@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { LevelRestriction } from '@/types/index.ts'
-import { faPlus, faRotateLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format } from 'date-fns'
 import { computed, useId } from 'vue'
@@ -73,10 +73,6 @@ function deleteLevel(): void {
   modelValue.value.classes.forEach(c => c.dateRentreeClasse = null)
   modelValue.value.dateRentreeNiveau = null
 }
-
-function clearLevel(): void {
-  modelValue.value.dateRentreeNiveau = ''
-}
 </script>
 
 <template>
@@ -105,17 +101,6 @@ function clearLevel(): void {
                 type="datetime-local"
                 placeholder=""
               >
-            </div>
-            <div class="end">
-              <button
-                title="Réinitialiser"
-                class="btn-tertiary circle"
-                @click="clearLevel"
-              >
-                <FontAwesomeIcon
-                  :icon="faRotateLeft"
-                />
-              </button>
             </div>
           </div>
           <div class="active-indicator" />
@@ -198,6 +183,7 @@ function clearLevel(): void {
   border-radius: 6px;
   border: 1px solid var(--#{$prefix}stroke);
   padding: 16px;
+  max-width: calc(100vw - 4 * 16px);
 
   > .item {
     > h4 {
@@ -214,6 +200,7 @@ function clearLevel(): void {
   > footer {
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
     gap: 6px;
   }
 
