@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { ClassRestriction } from '@/types/index.ts'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format } from 'date-fns'
 import { computed, useId } from 'vue'
@@ -66,36 +66,49 @@ function toDisplayDate(
     </h5>
     <div
       v-if="isEdit"
-      class="field"
+      class="field-layout"
     >
-      <div class="field-layout">
-        <div class="field-container">
-          <div class="middle">
-            <label :for="id">
-              {{ classRestriction.classe }}
-            </label>
-            <input
-              :id="id"
-              v-model="modelValue.dateRentreeClasse"
-              type="datetime-local"
-              placeholder=""
-            >
+      <div class="field">
+        <div class="field-layout">
+          <div class="field-container">
+            <div class="middle">
+              <label :for="id">
+                {{ classRestriction.classe }}
+              </label>
+              <input
+                :id="id"
+                v-model="modelValue.dateRentreeClasse"
+                type="datetime-local"
+                placeholder=""
+              >
+            </div>
+            <div class="end">
+              <button
+                title="Réinitialiser"
+                class="btn-tertiary circle"
+                @click="() => {
+                  modelValue.dateRentreeClasse = ''
+                }"
+              >
+                <FontAwesomeIcon
+                  :icon="faRotateLeft"
+                />
+              </button>
+            </div>
           </div>
-          <div class="end">
-            <button
-              class="btn-tertiary circle"
-              @click="() => {
-                modelValue.dateRentreeClasse = null
-              }"
-            >
-              <FontAwesomeIcon
-                :icon="faTrashCan"
-              />
-            </button>
-          </div>
+          <div class="active-indicator" />
         </div>
-        <div class="active-indicator" />
       </div>
+      <button
+        class="btn-tertiary circle"
+        @click="() => {
+          modelValue.dateRentreeClasse = null
+        }"
+      >
+        <FontAwesomeIcon
+          :icon="faTrashCan"
+        />
+      </button>
     </div>
     <SafeEmptyData
       v-else
@@ -113,6 +126,16 @@ function toDisplayDate(
 .item {
   > h5 {
     margin-bottom: 4px;
+  }
+
+  > .field-layout {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    > .field {
+      flex: 1 1 auto;
+    }
   }
 }
 </style>

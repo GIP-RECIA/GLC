@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format, formatISO } from 'date-fns'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import MenuButton from '@/components/MenuButton.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import LevelRestrictions from '@/components/settings/restrictions/LevelRestrictions.vue'
 
@@ -85,8 +86,8 @@ watch(
     if (!val)
       return
 
-    const niveaux = val.niveaux.map((niveau) => {
-      const classes = niveau.classes.map((classe) => {
+    const niveaux = val.niveaux.map((level) => {
+      const classes = level.classes.map((classe) => {
         return {
           ...classe,
           dateRentreeClasse: toDateTime(classe.dateRentreeClasse),
@@ -94,8 +95,8 @@ watch(
       })
 
       return {
-        ...niveau,
-        dateRentreeNiveau: toDateTime(niveau.dateRentreeNiveau),
+        ...level,
+        dateRentreeNiveau: toDateTime(level.dateRentreeNiveau),
         classes,
       }
     })
@@ -110,6 +111,19 @@ watch(
     deep: true,
   },
 )
+
+const addableLevels = computed<{ uid: string, name: string }[]>(() => (
+  fields.value?.niveaux
+    .filter(level => level.dateRentreeNiveau === null)
+    .map(level => ({ uid: level.niveau, name: level.niveau }))
+    ?? []
+))
+
+function addLevel(uid: string | number): void {
+  const level = fields.value.niveaux.find(level => level.niveau === uid)
+  if (level)
+    level.dateRentreeNiveau = ''
+}
 </script>
 
 <template>
@@ -184,18 +198,18 @@ watch(
     <footer
       v-if="restrictions && canEdit"
     >
-      <button
+      <MenuButton
         v-show="isEdit"
-        class="btn-secondary small"
-        @click="() => {
-          fields.niveaux[0].dateRentreeNiveau = ''
-        }"
+        :items="addableLevels"
+        :disabled="addableLevels.length === 0"
+        btn-class="btn-secondary small"
+        @update:model-value="addLevel"
       >
         Ajouter
         <FontAwesomeIcon
           :icon="faPlus"
         />
-      </button>
+      </MenuButton>
       <button
         :disabled="disableEdit && !isEdit"
         class="small"

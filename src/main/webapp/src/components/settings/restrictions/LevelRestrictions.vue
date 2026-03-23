@@ -16,10 +16,11 @@
 
 <script setup lang="ts">
 import type { LevelRestriction } from '@/types/index.ts'
-import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faRotateLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format } from 'date-fns'
 import { computed, useId } from 'vue'
+import MenuButton from '@/components/MenuButton.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import ClassRestrictions from '@/components/settings/restrictions/ClassRestrictions.vue'
 
@@ -54,6 +55,19 @@ function toDisplayDate(
     ? format(date, 'P p')
     : undefined
 }
+
+const addableClasses = computed<{ uid: string, name: string }[]>(() => (
+  modelValue.value?.classes
+    .filter(classe => classe.dateRentreeClasse === null)
+    .map(classe => ({ uid: classe.classe, name: classe.classe }))
+    ?? []
+))
+
+function addClass(uid: string | number): void {
+  const classe = modelValue.value.classes.find(classe => classe.classe === uid)
+  if (classe)
+    classe.dateRentreeClasse = ''
+}
 </script>
 
 <template>
@@ -82,6 +96,19 @@ function toDisplayDate(
                 type="datetime-local"
                 placeholder=""
               >
+            </div>
+            <div class="end">
+              <button
+                title="Réinitialiser"
+                class="btn-tertiary circle"
+                @click="() => {
+                  modelValue.dateRentreeNiveau = ''
+                }"
+              >
+                <FontAwesomeIcon
+                  :icon="faRotateLeft"
+                />
+              </button>
             </div>
           </div>
           <div class="active-indicator" />
@@ -138,17 +165,18 @@ function toDisplayDate(
           :icon="faTrashCan"
         />
       </button>
-      <button
-        class="btn-secondary small"
-        @click="() => {
-          modelValue.classes[0].dateRentreeClasse = ''
-        }"
+      <MenuButton
+        v-show="isEdit"
+        :items="addableClasses"
+        :disabled="addableClasses.length === 0"
+        btn-class="btn-secondary small"
+        @update:model-value="addClass"
       >
         Ajouter
         <FontAwesomeIcon
           :icon="faPlus"
         />
-      </button>
+      </MenuButton>
     </footer>
   </div>
 </template>
