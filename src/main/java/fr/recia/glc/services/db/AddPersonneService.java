@@ -162,6 +162,9 @@ public class AddPersonneService {
         apersonne.setDateNaissance(userCreation.getDateNaissance());
         apersonne.setDisplayName(userCreation.getPrenom());
         apersonne.setCivilite(civilite);
+        Set<AStructure> listeStructures = new HashSet<>();
+        listeStructures.add(aStructure);
+        apersonne.setListeStructures(listeStructures);
         if(apersonne.getCivilite() == Civilite.M){
             apersonne.setSexe(Sexe.M);
         } else {
@@ -203,7 +206,7 @@ public class AddPersonneService {
             updateNonEnsServiceAcad((NonEnseignantServiceAcademique) apersonne, aStructure, userCreation);
         }
         if(apersonne.getCategorie() == CategoriePersonne.Enseignant){
-            updatEnseignant((Enseignant) apersonne, aStructure, userCreation);
+            updateEnseignant((Enseignant) apersonne, aStructure, userCreation);
         }
     }
 
@@ -226,7 +229,7 @@ public class AddPersonneService {
     /**
      * Ajout des attributs spécifiques à un enseignant
      */
-    private void updatEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation){
+    private void updateEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation){
         log.debug("updating enseignant {}", enseignant.getUid());
     }
 
