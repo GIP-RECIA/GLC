@@ -102,6 +102,15 @@ function toDisplayDate(
     >
       <li
         v-for="(classe, index) in levelRestriction.classes"
+        v-show="
+          isEdit
+            ? (
+              modelValue.classes[index].dateRentreeClasse !== null
+            )
+            : (
+              classe.dateRentreeClasse !== null
+            )
+        "
         :key="classe.classe"
       >
         <ClassRestrictions
