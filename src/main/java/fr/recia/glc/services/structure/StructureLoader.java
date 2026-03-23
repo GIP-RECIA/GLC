@@ -1,0 +1,152 @@
+/*
+ * Copyright (C) 2023 GIP-RECIA, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package fr.recia.glc.services.structure;
+
+import com.google.common.collect.Sets;
+import fr.recia.glc.ldap.StructureFromGroup;
+import fr.recia.glc.ldap.StructureSirenDomain;
+import fr.recia.glc.ldap.repository.LdapGroupDao;
+import fr.recia.glc.ldap.repository.LdapStructureDao;
+import fr.recia.glc.utils.ListUtil;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
+
+import javax.annotation.PostConstruct;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Classe qui charge au démarrage de l'app des infos sur les structures pour les retrouver efficacement par la suite :
+ * - Retrouver la branche d'une structure par son UAI
+ * - Trouver la liste de toutes les structures d'une branche
+ * - Retrouver le nom de groupe d'une structure par son UAI
+ * - Retrouver les domaines d'une structure depuis son SIREN
+ */
+@NoArgsConstructor
+@Slf4j
+public class StructureLoader implements InitializingBean {
+
+    private Map<String, Set<StructureFromGroup>> loadedStructuresByBranch;
+    private Map<String, String> branchForLoadedStructures;
+    private Map<String, String> groupNameForLoadedStructures;
+    private Map<String, List<String>> domainsBySirenForStructures;
+    private LdapGroupDao groupDao;
+    private LdapStructureDao ldapStructureDao;
+
+    public StructureLoader(LdapGroupDao groupDao, LdapStructureDao ldapStructureDao) {
+        this.groupDao = groupDao;
+        this.ldapStructureDao = ldapStructureDao;
+        this.loadedStructuresByBranch = new HashMap<>();
+        this.branchForLoadedStructures = new HashMap<>();
+        this.groupNameForLoadedStructures = new HashMap<>();
+        this.domainsBySirenForStructures = new HashMap<>();
+    }
+
+    @PostConstruct
+    private void loadingStructures() {
+        init();
+    }
+
+    private void init() {
+        Set<StructureFromGroup> loadedStructures = groupDao.getStructuresFromGroups();
+        loadedStructures.forEach(structure -> {
+            // TODO : pour les collectivités on a pas d'UAI
+            branchForLoadedStructures.put(structure.getUAI(), structure.getGroupBranch());
+            groupNameForLoadedStructures.put(structure.getUAI(), structure.getDisplayName());
+            if (loadedStructuresByBranch.containsKey(structure.getGroupBranch())) {
+                loadedStructuresByBranch.get(structure.getGroupBranch()).add(structure);
+            }
+            else {
+                loadedStructuresByBranch.put(structure.getGroupBranch(), Sets.newHashSet(structure));
+            }
+        });
+        log.debug(
+                "Loaded Structure: {}",
+                loadedStructuresByBranch.keySet().stream()
+                        .map(key -> {
+                            List<String> values = loadedStructuresByBranch.get(key).stream()
+                                    .map(structure -> "{" +
+                                            "\n\t\t\t\"keyId\": \"" + structure.getStructureKey().getKeyId() + "\"" +
+                                            ",\n\t\t\t\"keyType\": \"" + structure.getStructureKey().getKeyType() + "\"" +
+                                            ",\n\t\t\t\"UAI\": \"" + structure.getUAI() + "\"" +
+                                            ",\n\t\t\t\"displayName\": \"" + structure.getDisplayName() + "\"" +
+                                            ",\n\t\t\t\"groupBranch\": \"" + structure.getGroupBranch() + "\"" +
+                                            "\n\t\t}"
+                                    )
+                                    .collect(Collectors.toList());
+
+                            return "{" +
+                                    "\n\t\"" + key + "\": " + ListUtil.toStringList(values, ",\n\t\t", "[\n\t\t", "\n\t]") +
+                                    "\n}";
+                        })
+                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+        );
+        log.debug(
+                "loadedStructuresByBranch recap: {}",
+                loadedStructuresByBranch.keySet().stream()
+                        .map(key -> "\t{ \"" + key + "\": " + loadedStructuresByBranch.get(key).size() + " }")
+                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+        );
+        log.debug(
+                "branchForLoadedStructures recap: {}",
+                branchForLoadedStructures.keySet().stream()
+                        .map(key -> "\t{ \"" + key + "\": " + branchForLoadedStructures.get(key) + " }")
+                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+        );
+        log.debug(
+                "groupNameForLoadedStructures recap: {}",
+                groupNameForLoadedStructures.keySet().stream()
+                        .map(key -> "\t{ \"" + key + "\": " + groupNameForLoadedStructures.get(key) + " }")
+                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+        );
+        List<StructureSirenDomain> structureSirenDomains = ldapStructureDao.structuresFromSiren();
+        for(StructureSirenDomain structureSirenDomain : structureSirenDomains){
+            domainsBySirenForStructures.put(structureSirenDomain.getSiren(), structureSirenDomain.getDomains());
+        }
+        log.debug(
+                "domainsBySirenForStructures recap: {}",
+                domainsBySirenForStructures.keySet().stream()
+                        .map(key -> "\t{ \"" + key + "\": " + domainsBySirenForStructures.get(key) + " }")
+                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+        );
+    }
+
+    public Set<StructureFromGroup> getStructuresOfBranch(String branchGroup) {
+        return loadedStructuresByBranch.getOrDefault(branchGroup, Collections.emptySet());
+    }
+
+    public String getBranchOfStructure(String uai) {
+        return branchForLoadedStructures.get(uai);
+    }
+
+    public String getGroupNameOfStructure(String uai) {
+        return groupNameForLoadedStructures.get(uai);
+    }
+
+    public List<String> getDomainsOfStructure(String siren){
+        return domainsBySirenForStructures.get(siren);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {}
+
+}

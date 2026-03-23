@@ -18,11 +18,10 @@ package fr.recia.glc.configuration;
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.ExternalUserHelper;
-import fr.recia.glc.ldap.repository.IExternalGroupDao;
 import fr.recia.glc.ldap.repository.IExternalUserDao;
-import fr.recia.glc.ldap.repository.LdapGroupDaoImpl;
-import fr.recia.glc.services.structure.IStructureLoader;
-import fr.recia.glc.services.structure.StructureLoaderImpl;
+import fr.recia.glc.ldap.repository.LdapGroupDao;
+import fr.recia.glc.ldap.repository.LdapStructureDao;
+import fr.recia.glc.services.structure.StructureLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -116,19 +115,19 @@ public class LDAPConfiguration {
   }
 
   @Bean
-  public IExternalGroupDao ldapExternalGroupDao(IExternalUserDao externalUserDao, LdapTemplate ldapTemplate) {
+  public LdapGroupDao ldapExternalGroupDao(IExternalUserDao externalUserDao, LdapTemplate ldapTemplate) {
     log.debug("Configuring IExternalGroupDao with LDAP DAO");
     Assert.notNull(
       ldapProperties.getGroupBranch(),
       "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !"
     );
-    return new LdapGroupDaoImpl(ldapTemplate, externalGroupHelper(), externalUserDao, ldapProperties);
+    return new LdapGroupDao(ldapTemplate, externalGroupHelper(), externalUserDao, ldapProperties);
   }
 
   @Bean
-  public IStructureLoader loadedStructure(IExternalGroupDao externalGroupDao) {
+  public StructureLoader loadedStructure(LdapGroupDao ldapGroupDao, LdapStructureDao ldapStructureDao) {
     log.debug("Loading Structure extracted from groups");
-    return new StructureLoaderImpl(externalGroupDao);
+    return new StructureLoader(ldapGroupDao, ldapStructureDao);
   }
 
 }

@@ -26,7 +26,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @ToString
-public class Structure {
+public class StructureSirenDomain {
 
   private String siren;
   private List<String> domains;

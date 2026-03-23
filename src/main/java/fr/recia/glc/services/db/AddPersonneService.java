@@ -34,11 +34,12 @@ import fr.recia.glc.db.repositories.groupe.MappingAGroupeAPersonneRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.personne.LoginRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
-import fr.recia.glc.ldap.Structure;
+import fr.recia.glc.ldap.StructureSirenDomain;
 import fr.recia.glc.ldap.repository.LdapStructureDao;
 import fr.recia.glc.services.NameCalculator;
 import fr.recia.glc.services.PasswordGenerator;
 import fr.recia.glc.services.UidFactory;
+import fr.recia.glc.services.structure.StructureLoader;
 import fr.recia.glc.web.dto.function.FonctionAction;
 import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
@@ -93,6 +94,8 @@ public class AddPersonneService {
     private FonctionService fonctionService;
     @Autowired
     private GLCProperties glcProperties;
+    @Autowired
+    private StructureLoader structureLoader;
 
     /**
      * Création d'une personne dans la base sarapis
@@ -114,11 +117,10 @@ public class AddPersonneService {
         log.debug("Source : {}", source);
         // 4. Génération de l'UID
         // 4.1. Récupération du genUID correspondant en fonction du domaine de l'établissement
-        // TODO : cache
-        Structure structure = ldapStructureDao.structureFromSiren(aStructure.getSiren());
+        List<String> domainsOfStructure = structureLoader.getDomainsOfStructure(aStructure.getSiren());
         String codeGenerateur;
-        if(structure.getDomains().size()==1){
-            codeGenerateur = glcProperties.getUidFactory().getDomainToCodeGenerateur().get(structure.getDomains().get(0));
+        if(domainsOfStructure.size()==1){
+            codeGenerateur = glcProperties.getUidFactory().getDomainToCodeGenerateur().get(domainsOfStructure.get(0));
         } else {
             codeGenerateur = glcProperties.getUidFactory().getDefaultCodeGenerateur();
         }

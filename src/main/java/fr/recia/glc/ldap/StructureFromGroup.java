@@ -30,6 +30,5 @@ public class StructureFromGroup{
   private String UAI;
   private String displayName;
   private String groupBranch;
-  private String groupNameEtab;
 
 }

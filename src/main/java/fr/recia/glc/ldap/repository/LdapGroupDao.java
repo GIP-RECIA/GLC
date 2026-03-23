@@ -42,7 +42,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @Slf4j
-public class LdapGroupDaoImpl implements IExternalGroupDao {
+public class LdapGroupDao {
 
   /**
    * Spring template used to perform search in the ldap.
@@ -55,12 +55,11 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
   /**
    * constructor.
    */
-  public LdapGroupDaoImpl(CustomLdapProperties ldapProperties) {
+  public LdapGroupDao(CustomLdapProperties ldapProperties) {
     super();
     this.ldapProperties = ldapProperties;
   }
 
-  @Override
   public Set<StructureFromGroup> getStructuresFromGroups() {
     HardcodedFilter filter = new HardcodedFilter(ldapProperties.getGroupBranch().getStructureProperties().getFilterGroupsOfStructure());
     if (log.isDebugEnabled()) {
@@ -71,27 +70,6 @@ public class LdapGroupDaoImpl implements IExternalGroupDao {
       .attributes(externalGroupHelper.getAttributes().toArray(new String[0]))
       .base(externalGroupHelper.getGroupDNSubPath()).filter(filter);
     return Sets.newHashSet(ldapTemplate.search(query, mapper));
-  }
-
-  @Override
-  public List<IExternalGroup> getGroupsWithFilter(@NotNull String stringFilter, String token, final boolean withMembers) {
-    AndFilter filter = new AndFilter().and(new HardcodedFilter(stringFilter));
-    if (token != null && !token.isEmpty()) {
-      filter.and(new WhitespaceWildcardsFilter(externalGroupHelper.getGroupSearchAttribute(), token));
-    }
-    log.debug("getGroupsWithFilter LDAP filter {}, token {}, withMembers {}", stringFilter, token, withMembers);
-    return searchWithFilter(filter, withMembers);
-  }
-
-  private List<IExternalGroup> searchWithFilter(@NotNull final Filter filter, final boolean withMembers) {
-    if (log.isDebugEnabled()) {
-      log.debug("LDAP filter applied {} and resolve members {} ", filter.encode(), withMembers);
-    }
-    ContextMapper<IExternalGroup> mapper = new LdapGroupContextMapper(this.externalGroupHelper);
-    LdapQuery query = LdapQueryBuilder.query()
-      .attributes(externalGroupHelper.getAttributes().toArray(new String[0]))
-      .base(externalGroupHelper.getGroupDNSubPath()).filter(filter);
-    return ldapTemplate.search(query, mapper);
   }
 
 }

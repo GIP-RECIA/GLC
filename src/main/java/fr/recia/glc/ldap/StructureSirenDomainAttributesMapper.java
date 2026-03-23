@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class StructureAttributesMapper implements AttributesMapper<Structure> {
+public class StructureSirenDomainAttributesMapper implements AttributesMapper<StructureSirenDomain> {
 
     @Override
-    public Structure mapFromAttributes(Attributes attrs) throws NamingException {
-        Structure entry = new Structure();
+    public StructureSirenDomain mapFromAttributes(Attributes attrs) throws NamingException {
+        StructureSirenDomain entry = new StructureSirenDomain();
         Attribute sirenAttr = attrs.get("ENTStructureSIREN");
         if (sirenAttr != null) {
             entry.setSiren((String) sirenAttr.get());

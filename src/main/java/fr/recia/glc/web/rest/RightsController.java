@@ -19,7 +19,7 @@ import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.services.access.RightsService;
-import fr.recia.glc.services.structure.IStructureLoader;
+import fr.recia.glc.services.structure.StructureLoader;
 import fr.recia.glc.web.dto.access.rights.AddOrDeleteMemberRequest;
 import fr.recia.glc.web.dto.access.rights.ServiceAccess;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class RightsController {
     @Autowired
     private AStructureRepository<AStructure> aStructureRepository;
     @Autowired
-    private IStructureLoader structureLoader;
+    private StructureLoader structureLoader;
 
     private String deductBranchFromStructure(AStructure aStructure){
         log.debug("Retrieving branch for structure {}", aStructure.getId());
