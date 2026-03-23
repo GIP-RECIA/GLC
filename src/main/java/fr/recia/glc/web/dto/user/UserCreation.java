@@ -4,6 +4,7 @@ import fr.recia.glc.db.entities.education.Enseignement;
 import fr.recia.glc.db.entities.education.MEF;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
+import fr.recia.glc.web.dto.function.FonctionToModify;
 import lombok.Data;
 
 import java.util.Date;
@@ -31,7 +32,7 @@ public class UserCreation {
     private Long classe;
     private List<Long> enseignements;
     // Tous sauf élève
-    private List<String> fonctions;
+    private List<FonctionToModify> fonctions;
     // Spécifique enseignant
     private Long enseignementProf;
     private List<Long> groupesEns;

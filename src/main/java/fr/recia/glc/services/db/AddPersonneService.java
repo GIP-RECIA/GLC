@@ -39,7 +39,7 @@ import fr.recia.glc.ldap.repository.LdapStructureDao;
 import fr.recia.glc.services.NameCalculator;
 import fr.recia.glc.services.PasswordGenerator;
 import fr.recia.glc.services.UidFactory;
-import fr.recia.glc.web.dto.FonctionAction;
+import fr.recia.glc.web.dto.function.FonctionAction;
 import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +97,7 @@ public class AddPersonneService {
     /**
      * Création d'une personne dans la base sarapis
      * @param userCreation Le DTO venant du front qui contient les informations nécéssaires à la création
+     * TODO : gérer l'ajout de classes locales et groupes locaux, et de responsables d'un élève
      */
     public void addPersonne(UserCreation userCreation){
         log.debug("Trying to create local user {}", userCreation);

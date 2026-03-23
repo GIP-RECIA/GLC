@@ -37,7 +37,8 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
-import fr.recia.glc.web.dto.FonctionAction;
+import fr.recia.glc.web.dto.function.FonctionAction;
+import fr.recia.glc.web.dto.function.FonctionToModify;
 import fr.recia.glc.web.dto.function.JsonFonction;
 import fr.recia.glc.utils.DateUtils;
 import fr.recia.glc.utils.SourceUtils;
@@ -313,21 +314,6 @@ public class FonctionService {
     return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
   }
 
-  public boolean saveAdditionalFonction(Long personneId, Long structureId, String additional, FonctionAction requiredAction) {
-    final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
-    if (aStructure == null) return false;
-
-    final String source = SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
-
-    final String[] split = additional.split("-");
-    final Long filiere = typeFonctionFiliereRepository.findByCode(split[0], source);
-    final Long discipline = disciplineRepository.findByCode(split[1], source);
-    if (filiere == null || discipline == null) return false;
-    final String fonction = filiere + "-" + discipline;
-
-    return saveAdditionalFonctions(personneId, structureId, List.of(fonction), List.of(), requiredAction);
-  }
-
   /**
    * Modifie les fonctions d'une personne sur une stucture
    * @param personneId L'id de la personne
@@ -346,7 +332,7 @@ public class FonctionService {
           @CacheEvict(value = "structureFonctions", key = "#structureId"),
           @CacheEvict(value = "personnesByEtablissement", key = "#structureId")
   })
-  public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<String> toAddFunctions, List<String> toDeleteFunctions, String requiredAction) {
+  public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<FonctionToModify> toAddFunctions, List<FonctionToModify> toDeleteFunctions, FonctionAction requiredAction) {
     final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
     final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
     if (aPersonne == null
@@ -356,8 +342,14 @@ public class FonctionService {
 
     final String source = Constants.SARAPISUI_ + SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
 
-    final List<FonctionDto> toAddAdditional = toFonctionDto(personneId, toAddFunctions.stream().map(JsonFonction::new).collect(Collectors.toList()), source, structureId);
-    final List<FonctionDto> toDeleteAdditional = toFonctionDto(personneId, toDeleteFunctions.stream().map(JsonFonction::new).collect(Collectors.toList()), source, structureId);
+    List<FonctionDto> toAddAdditional = new ArrayList<>();
+    for(FonctionToModify fonctionToAdd : toAddFunctions){
+      toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId));
+    }
+    List<FonctionDto> toDeleteAdditional = new ArrayList<>();
+    for(FonctionToModify fonctionToDelete : toDeleteFunctions){
+      toDeleteAdditional.add(new FonctionDto(personneId, fonctionToDelete.getFiliere(), fonctionToDelete.getDiscipline(), source, structureId));
+    }
 
     if (!toAddAdditional.isEmpty()) {
       fonctionRepository.saveAll(toAddAdditional.stream()
@@ -409,52 +401,6 @@ public class FonctionService {
     return true;
   }
 
-  public boolean setAdditional(Long personneId, Long structureId, JsonFonction toAdd, String toDelete) {
-    final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
-    final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
-    if (aPersonne == null
-      || aStructure == null
-      || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())
-    ) return false;
-
-    final String source = Constants.SARAPISUI_ + SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
-    final boolean isInStructure = personneService.isInStructure(personneId, structureId);
-    log.debug(
-      "setAdditional (userId : {}, structureId : {}, source : {}, isInStructure : {}, toAdd : {}, toDelete, {})",
-      aPersonne.getId(), aStructure.getId(), source, isInStructure, toAdd, toDelete
-    );
-
-    if (toAdd != null) {
-      FonctionDto fonctionDto = toFonctionDto(personneId, toAdd, source, structureId);
-      try {
-        fonctionDto.setDateFin(DateUtils.getDate(toAdd.getDate()));
-      } catch (ParseException e) {
-        log.error("Unable to set end date");
-      }
-      Fonction fonction = getFonctionOrNewFonction(fonctionDto, aStructure, aPersonne);
-      if (fonctionDto.getDateFin() != null && fonctionDto.getDateFin() != fonction.getDateFin())
-        fonction.setDateFin(fonctionDto.getDateFin());
-      fonctionRepository.save(fonction);
-      if (!isInStructure) aPersonneAStructureRepository2.insertInStructure(personneId, structureId);
-    }
-
-    if (toDelete != null) {
-      final FonctionDto fonctionDto = toFonctionDto(personneId, toDelete, source, structureId);
-      final Fonction fonction = getFonction(fonctionDto);
-      if (fonction != null) fonctionRepository.delete(fonction);
-      if (isInStructure && !personneService.hasFunctionsInStructure(personneId, structureId, List.of(fonction.getId())))
-        aPersonneAStructureRepository2.deleteFromStructure(personneId, structureId);
-    }
-
-    fonctionRepository.flush();
-
-    aPersonne.prePersist();
-    aPersonne.prePersistAPersonne();
-    aPersonneRepository.saveAndFlush(aPersonne);
-
-    return true;
-  }
-
   private Fonction getFonction(FonctionDto fonctionDto) {
     return fonctionRepository.findOne(
       QFonction.fonction.filiere.id.eq(fonctionDto.getFiliere())
@@ -478,46 +424,6 @@ public class FonctionService {
       );
     }
     return fonction;
-  }
-
-  private FonctionDto toFonctionDto(Long personneId, String code, String source, Long structureId) {
-    String[] split = code.split("-");
-
-    return new FonctionDto(
-      personneId,
-      Long.parseLong(split[0]),
-      Long.parseLong(split[1]),
-      source,
-      structureId
-    );
-  }
-
-  private FonctionDto toFonctionDto(Long personneId, JsonFonction code, String source, Long structureId) {
-    String[] split = code.getFonction().split("-");
-    Date date = null;
-
-    if (code.getDate() != null && !code.getDate().isEmpty()) {
-      try {
-        date = DateUtils.getDate(code.getDate());
-      } catch (ParseException e) {
-        log.error(String.valueOf(e));
-      }
-    }
-
-    return new FonctionDto(
-      personneId,
-      Long.parseLong(split[0]),
-      Long.parseLong(split[1]),
-      source,
-      structureId,
-      date
-    );
-  }
-
-  private List<FonctionDto> toFonctionDto(Long personneId, List<JsonFonction> codes, String source, Long structureId) {
-    return codes.stream()
-      .map(code -> toFonctionDto(personneId, code, source, structureId))
-      .collect(Collectors.toList());
   }
 
   public long nbDiscipline(Long structureId, String filiereCode, String disciplineCode) {

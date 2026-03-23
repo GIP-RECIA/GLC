@@ -15,7 +15,6 @@
  */
 package fr.recia.glc.web.dto.function;
 
-import fr.recia.glc.web.dto.FonctionAction;
 import lombok.Data;
 
 import java.util.List;
@@ -24,15 +23,8 @@ import java.util.List;
 public class JsonAdditionalFonctionOldBody {
 
   private Long structureId;
-  private List<String> toAddFunctions;
-  private List<String> toDeleteFunctions;
+  private List<FonctionToModify> toAddFunctions;
+  private List<FonctionToModify> toDeleteFunctions;
   private FonctionAction requiredAction;
-  private String additionalCode;
-
-  public boolean postDataOk() {
-    final boolean standard = (toAddFunctions != null && !toAddFunctions.isEmpty()) || (toDeleteFunctions != null && !toDeleteFunctions.isEmpty());
-
-    return (structureId != null && (standard || additionalCode != null) && requiredAction != null);
-  }
 
 }

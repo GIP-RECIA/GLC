@@ -76,42 +76,12 @@ public class PersonneController {
 
     @PostMapping(value = "/{id}/fonction")
     public ResponseEntity<Void> setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) {
-        if (!body.postDataOk()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        boolean success;
-        if (body.getAdditionalCode() == null) {
-            success = fonctionService.saveAdditionalFonctions(
-                    id,
-                    body.getStructureId(),
-                    body.getToAddFunctions(),
-                    body.getToDeleteFunctions(),
-                    body.getRequiredAction()
-            );
-        } else {
-            success = fonctionService.saveAdditionalFonction(
-                    id,
-                    body.getStructureId(),
-                    body.getAdditionalCode(),
-                    body.getRequiredAction()
-            );
-        }
-        if (!success) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/{id}/fonction/v2")
-    public ResponseEntity<Void> setPersonneAdditionals(@PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) {
-        if (!body.postDataOk()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        boolean success = fonctionService.setAdditional(
+        boolean success = fonctionService.saveAdditionalFonctions(
                 id,
                 body.getStructureId(),
-                body.getToAdd(),
-                body.getToDelete()
+                body.getToAddFunctions(),
+                body.getToDeleteFunctions(),
+                body.getRequiredAction()
         );
         if (!success) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

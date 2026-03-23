@@ -1,4 +1,4 @@
-package fr.recia.glc.web.dto;
+package fr.recia.glc.web.dto.function;
 
 public enum FonctionAction {
     attach,
