@@ -31,7 +31,6 @@ import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.ForceEtat;
 import fr.recia.glc.db.enums.Sexe;
 import fr.recia.glc.db.utils.IntConst;
-import fr.recia.glc.ldap.Subject;
 import fr.recia.glc.ldap.SubjectKey;
 import fr.recia.glc.ldap.enums.SubjectType;
 import lombok.EqualsAndHashCode;
@@ -84,7 +83,7 @@ import static fr.recia.glc.configuration.Constants.SARAPISUI_;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class APersonne extends AbstractTracedEntity implements Subject {
+public abstract class APersonne extends AbstractTracedEntity {
 
   /**
    * Etat de l'entité valide, bloqué ou supprimé.
