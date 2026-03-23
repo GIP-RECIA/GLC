@@ -119,20 +119,31 @@ public class EtablissementDto {
 
             // Ajout de la discipline si elle n'existe pas
             Long disciplineId = fonctionDto.getDiscipline();
-            DisciplineDto disciplineDto;
-            if(!disciplinesMap.get(filiereId).containsKey(disciplineId)){
-                disciplineDto = new DisciplineDto(disciplines.get(disciplineId));
-                disciplinesMap.get(filiereId).put(disciplineId, disciplineDto);
-                typeFonctionFiliereDto.getDisciplines().add(disciplineDto);
-            } else {
-                disciplineDto = disciplinesMap.get(filiereId).get(disciplineId);
-            }
-            // Ajout de la personne dans la discipline
-            if(personnesMap.containsKey(fonctionDto.getPersonne())) {
+            // Cas spécial pour les CFA
+            if(disciplineId == null){
                 SimplePersonneDto simplePersonneDto = personnesMap.get(fonctionDto.getPersonne());
-                disciplineDto.getPersonnes().add(simplePersonneDto);
+                typeFonctionFiliereDto.getPersonnesWithoutDiscipline().add(simplePersonneDto);
             } else {
-                log.warn("person in functions by not in structure : {}", fonctionDto.getPersonne());
+                if(disciplines.containsKey(disciplineId)){
+                    DisciplineDto disciplineDto;
+                    if(!disciplinesMap.get(filiereId).containsKey(disciplineId)){
+                        disciplineDto = new DisciplineDto(disciplines.get(disciplineId));
+                        disciplinesMap.get(filiereId).put(disciplineId, disciplineDto);
+                        typeFonctionFiliereDto.getDisciplines().add(disciplineDto);
+                    } else {
+                        disciplineDto = disciplinesMap.get(filiereId).get(disciplineId);
+                    }
+                    // Ajout de la personne dans la discipline
+                    if(personnesMap.containsKey(fonctionDto.getPersonne())) {
+                        SimplePersonneDto simplePersonneDto = personnesMap.get(fonctionDto.getPersonne());
+                        disciplineDto.getPersonnes().add(simplePersonneDto);
+                    } else {
+                        log.warn("person in functions by not in structure : {}", fonctionDto.getPersonne());
+                    }
+                }
+                else {
+                    log.warn("discipline {} is not in known disciplines for {}", disciplineId, fonctionDto.getSource());
+                }
             }
         }
 

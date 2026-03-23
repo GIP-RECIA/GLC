@@ -16,6 +16,7 @@
 package fr.recia.glc.db.dto.fonction;
 
 import fr.recia.glc.db.dto.education.DisciplineDto;
+import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -35,6 +36,8 @@ public class TypeFonctionFiliereDto {
     private String libelleFiliere;
     private String source;
     private List<DisciplineDto> disciplines;
+    // Liste des personnes directement dans la filière sans être dans une discipline (pour les CFA)
+    private List<SimplePersonneDto> personnesWithoutDiscipline;
 
     // Constructeur utilisé par la requête en BD
     public TypeFonctionFiliereDto(Long id, String codeFiliere, String libelleFiliere, String source) {
@@ -43,6 +46,7 @@ public class TypeFonctionFiliereDto {
         this.libelleFiliere = libelleFiliere;
         this.source = source;
         this.disciplines = new ArrayList<>();
+        this.personnesWithoutDiscipline = new ArrayList<>();
     }
 
     public TypeFonctionFiliereDto(TypeFonctionFiliereDto typeFonctionFiliereDto) {
@@ -51,6 +55,7 @@ public class TypeFonctionFiliereDto {
         this.libelleFiliere = typeFonctionFiliereDto.getLibelleFiliere();
         this.source = typeFonctionFiliereDto.getSource();
         this.disciplines = new ArrayList<>();
+        this.personnesWithoutDiscipline = new ArrayList<>();
     }
 
 }
