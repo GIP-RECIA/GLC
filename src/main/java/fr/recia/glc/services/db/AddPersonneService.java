@@ -39,6 +39,7 @@ import fr.recia.glc.ldap.repository.LdapStructureDao;
 import fr.recia.glc.services.NameCalculator;
 import fr.recia.glc.services.PasswordGenerator;
 import fr.recia.glc.services.UidFactory;
+import fr.recia.glc.web.dto.FonctionAction;
 import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -224,7 +225,7 @@ public class AddPersonneService {
      */
     private void updateNonEnsEtablissement(final NonEnseignantEtablissement nonEnseignantEtablissement, final AStructure aStructure, final UserCreation userCreation){
         log.debug("updating nonEnseignantEtablissement {}", nonEnseignantEtablissement.getUid());
-        fonctionService.saveAdditionalFonctions(nonEnseignantEtablissement.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), "save");
+        fonctionService.saveAdditionalFonctions(nonEnseignantEtablissement.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
     }
 
     /**
@@ -232,7 +233,7 @@ public class AddPersonneService {
      */
     private void updateNonEnsServiceAcad(final NonEnseignantServiceAcademique nonEnseignantServiceAcademique, final AStructure aStructure, final UserCreation userCreation){
         log.debug("updating nonEnseignantServiceAcademique {}", nonEnseignantServiceAcademique.getUid());
-        fonctionService.saveAdditionalFonctions(nonEnseignantServiceAcademique.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), "save");
+        fonctionService.saveAdditionalFonctions(nonEnseignantServiceAcademique.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
     }
 
     /**
@@ -240,7 +241,7 @@ public class AddPersonneService {
      */
     private void updateEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation){
         log.debug("updating enseignant {}", enseignant.getUid());
-        fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), "save");
+        fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
         List<MappingAGroupeAPersonneEnseignement> personneEnseignements = new ArrayList<>();
         for(Long groupId : userCreation.getGroupesEns()){
             MappingAGroupeAPersonneEnseignement personneEnseignement = new MappingAGroupeAPersonneEnseignement();

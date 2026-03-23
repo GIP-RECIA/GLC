@@ -151,8 +151,6 @@ public class CustomLdapProperties {
     private boolean DNContainsDisplayName = false;
     private boolean resolveUserMembers = false;
     private boolean resolveUserMembersByUserAttributes = true;
-    private List<GroupDesignerProperties> designers;
-    private List<GroupRegexProperties> nameFormatters;
     private Pattern dontResolveMembersWithGroupPattern;
     @NotNull
     private StructureProperties structureProperties;
@@ -198,8 +196,6 @@ public class CustomLdapProperties {
         "\n\t\t\"DNContainsDisplayName\": \"" + DNContainsDisplayName + "\"," +
         "\n\t\t\"resolveUserMembers\": \"" + resolveUserMembers + "\"," +
         "\n\t\t\"resolveUserMembersByUserAttributes\": \"" + resolveUserMembersByUserAttributes + "\"," +
-        "\n\t\t\"designers\": " + ListUtil.toStringList(designers, ",\n\t\t\t", "[\n\t\t\t", "\n\t\t]") + "," +
-        "\n\t\t\"nameFormatters\": " + ListUtil.toStringList(nameFormatters, ",\n\t\t\t", "[\n\t\t\t", "\n\t\t]") + "," +
         "\n\t\t\"dontResolveMembersWithGroupPattern\": \"" + dontResolveMembersWithGroupPattern + "\"," +
         "\n\t\t\"structureProperties\": " + structureProperties +
         "\n\t}";

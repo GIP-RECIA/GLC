@@ -37,6 +37,7 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.web.dto.FonctionAction;
 import fr.recia.glc.web.dto.function.JsonFonction;
 import fr.recia.glc.utils.DateUtils;
 import fr.recia.glc.utils.SourceUtils;
@@ -312,7 +313,7 @@ public class FonctionService {
     return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
   }
 
-  public boolean saveAdditionalFonction(Long personneId, Long structureId, String additional, String requiredAction) {
+  public boolean saveAdditionalFonction(Long personneId, Long structureId, String additional, FonctionAction requiredAction) {
     final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
     if (aStructure == null) return false;
 
@@ -383,14 +384,14 @@ public class FonctionService {
         .count();
 
       switch (requiredAction) {
-        case "attach":
+        case attach:
           if (isInStructure || toAddAdditional.isEmpty()) {
             log.error("Unable to attach user {} to structure {}", aPersonne.getId(), aStructure.getId());
             break;
           }
           aPersonneAStructureRepository2.insertInStructure(personneId, structureId);
           break;
-        case "detach":
+        case detach:
           if (!isInStructure || !toAddAdditional.isEmpty() || toDeleteAdditional.isEmpty() || officialFonctionsInStructure > 0) {
             log.error("Unable to detach user {} to structure {}", aPersonne.getId(), aStructure.getId());
             break;
