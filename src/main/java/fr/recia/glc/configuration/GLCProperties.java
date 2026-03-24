@@ -24,6 +24,7 @@ import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.configuration.bean.CustomMailProperties;
 import fr.recia.glc.configuration.bean.CustomMetricsProperties;
 import fr.recia.glc.configuration.bean.FrontProperties;
+import fr.recia.glc.configuration.bean.GroupProperties;
 import fr.recia.glc.configuration.bean.GrouperProperties;
 import fr.recia.glc.configuration.bean.IpRangeProperties;
 import fr.recia.glc.configuration.bean.RestrictionRentreeProperties;
@@ -36,6 +37,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import java.util.stream.Collectors;
 
 @Configuration
 @ConfigurationProperties(
@@ -62,8 +64,14 @@ public class GLCProperties {
   private UIDFactoryProperties uidFactory;
 
   @PostConstruct
-  private void init() throws JsonProcessingException {
+  private void init() {
     log.info("Loaded properties: {}", this);
+    rights.setDeclaredGroupsMap(rights.getDeclaredGroups().stream()
+            .collect(Collectors.toUnmodifiableMap(
+                    GroupProperties::getGrouperPath,
+                    GroupProperties::getDisplayName
+            ))
+    );
   }
 
   @Override

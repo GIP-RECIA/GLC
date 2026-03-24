@@ -29,13 +29,4 @@ public class RightsProperties {
     private Map<String, Map<String, RoleProperties>> services;
     private List<GroupProperties> declaredGroups;
     private Map<String, String> declaredGroupsMap;
-
-    @PostConstruct
-    public void init() {
-        declaredGroupsMap = declaredGroups.stream()
-                .collect(Collectors.toUnmodifiableMap(
-                        GroupProperties::getGrouperPath,
-                        GroupProperties::getDisplayName
-                ));
-    }
 }
