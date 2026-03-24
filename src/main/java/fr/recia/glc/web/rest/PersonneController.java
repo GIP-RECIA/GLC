@@ -62,6 +62,7 @@ public class PersonneController {
 
     @GetMapping
     public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
+        // TODO : vérification de droits avancée
         List<SimplePersonneDto> personnes = personneService.searchPersonne(name, true);
         if (personnes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -103,7 +104,7 @@ public class PersonneController {
     public ResponseEntity<Void> addPersonne(@AuthenticationPrincipal GLCUser principal, @RequestBody UserCreation userCreation) {
         // Vérifier qu'on a les droits d'ajouter la personne = que sur la structure sur laquelle on veut l'ajouter on a les droits d'écriture
         Etablissement etablissement = etablissementRepository.findById(userCreation.getStructureRattachement()).orElseThrow();
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
         // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
         if(allowedUAI.contains(etablissement.getUai())){
@@ -119,7 +120,7 @@ public class PersonneController {
     public ResponseEntity<Void> setPersonneAdditionalFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) {
         // Vérifier qu'on a les droits de modifier la personne = que sur la structure dans laquelle on veut modifier la fonction on a les droits d'écriture
         Etablissement etablissement = etablissementRepository.findById(body.getStructureId()).orElseThrow();
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
         // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
         if(allowedUAI.contains(etablissement.getUai())){

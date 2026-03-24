@@ -18,13 +18,17 @@ package fr.recia.glc.web.rest;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.security.GLCRole;
+import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.access.RightsService;
 import fr.recia.glc.services.structure.StructureLoader;
 import fr.recia.glc.web.dto.access.rights.AddOrDeleteMemberRequest;
 import fr.recia.glc.web.dto.access.rights.ServiceAccess;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -64,36 +69,48 @@ public class RightsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<ServiceAccess>> listRights(@PathVariable Long id,
-                                                          @RequestParam(required = false, defaultValue = "true") boolean showExternal,
+    public ResponseEntity<List<ServiceAccess>> listRights(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id,
+                                                          @RequestParam(required = false, defaultValue = "false") boolean showExternal,
                                                           @RequestParam(required = false, defaultValue = "true") boolean showAdmin) {
         log.debug("Listing rights for structure {}", id);
-        final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
-        final String etabGroup = deductGroupNameFromStructure(aStructure);
-        final String branch = deductBranchFromStructure(aStructure);
-        final List<ServiceAccess> rights = rightsService.getRights(branch, etabGroup, showExternal, showAdmin);
-        log.debug("Rights for structure {} are {}", id, rights);
-        return ResponseEntity.ok(rights);
+        final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
+        // TODO : gérer le cas des collectivités
+        if(allowedUAI.contains(((Etablissement) aStructure).getUai())){
+            final String etabGroup = deductGroupNameFromStructure(aStructure);
+            final String branch = deductBranchFromStructure(aStructure);
+            final List<ServiceAccess> rights = rightsService.getRights(branch, etabGroup, showExternal, showAdmin);
+            log.debug("Rights for structure {} are {}", id, rights);
+            return ResponseEntity.ok(rights);
+        } else {
+            log.warn("User {} is not authorized to list rights in {}", principal.getUsername(), id);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @PutMapping("/{id}/services/{service}/roles/{role}/members")
-    public ResponseEntity<Void> updateRights(@PathVariable Long id,
-                                             @PathVariable String service,
-                                             @PathVariable String role,
+    public ResponseEntity<Void> updateRights(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id,
+                                             @PathVariable String service, @PathVariable String role,
                                              @RequestBody AddOrDeleteMemberRequest request){
         log.debug("Updating rights for structure {}", id);
-        final AStructure aStructure = aStructureRepository.findById(id).orElse(null);
-        final String etabGroup = deductGroupNameFromStructure(aStructure);
-        final String branch = deductBranchFromStructure(aStructure);
-        for(String memberToAdd : request.getMembersToAdd()){
-            log.debug("Adding right for member {} in structure {} for service {} for role {}", memberToAdd, id, service, role);
-            rightsService.addRight(service, role, memberToAdd, branch, etabGroup);
+        final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        // TODO : gérer le cas des collectivités
+        if(allowedUAI.contains(((Etablissement) aStructure).getUai())){
+            final String etabGroup = deductGroupNameFromStructure(aStructure);
+            final String branch = deductBranchFromStructure(aStructure);
+            for(String memberToAdd : request.getMembersToAdd()){
+                log.debug("Adding right for member {} in structure {} for service {} for role {}", memberToAdd, id, service, role);
+                rightsService.addRight(service, role, memberToAdd, branch, etabGroup);
+            }
+            for(String memberToRemove : request.getMembersToRemove()){
+                log.debug("Removing right for member {} in structure {} for service {} for role {}", memberToRemove, id, service, role);
+                rightsService.removeRight(service, role, memberToRemove, branch, etabGroup);
+            }
+            return ResponseEntity.ok().build();
+        } else {
+            log.warn("User {} is not authorized to update rights in {}", principal.getUsername(), id);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        for(String memberToRemove : request.getMembersToRemove()){
-            log.debug("Removing right for member {} in structure {} for service {} for role {}", memberToRemove, id, service, role);
-            rightsService.removeRight(service, role, memberToRemove, branch, etabGroup);
-        }
-        return ResponseEntity.ok().build();
     }
-
 }
