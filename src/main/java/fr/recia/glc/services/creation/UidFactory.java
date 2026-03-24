@@ -1,4 +1,4 @@
-package fr.recia.glc.services;
+package fr.recia.glc.services.creation;
 
 import fr.recia.glc.configuration.GLCProperties;
 import lombok.Data;

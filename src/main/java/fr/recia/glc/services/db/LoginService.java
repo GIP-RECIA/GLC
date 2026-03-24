@@ -1,4 +1,4 @@
-package fr.recia.glc.services;
+package fr.recia.glc.services.db;
 
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.personne.Login;
@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
 
 @Slf4j
 @Component
-@Data
+@Service
 public class LoginService {
 
     @Autowired

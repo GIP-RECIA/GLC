@@ -1,4 +1,4 @@
-package fr.recia.glc.services;
+package fr.recia.glc.services.creation;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
