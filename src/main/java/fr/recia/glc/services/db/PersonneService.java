@@ -55,9 +55,9 @@ public class PersonneService {
     }
 
     @Cacheable(value = "personne")
-    public PersonneDto getPersonne(Long id) {
+    public APersonne getPersonne(Long id) {
         log.trace("getPersonne for {}", id);
-        return aPersonneRepository.findByPersonneId(id);
+        return aPersonneRepository.findById(id).orElse(null);
     }
 
     public SimplePersonneDto getPersonneSimple(Long id) {

@@ -17,7 +17,14 @@ package fr.recia.glc.web.rest;
 
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.entities.personne.APersonne;
+import fr.recia.glc.db.entities.structure.AStructure;
+import fr.recia.glc.db.entities.structure.Etablissement;
+import fr.recia.glc.db.repositories.structure.EtablissementRepository;
+import fr.recia.glc.security.GLCRole;
+import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.db.AddPersonneService;
+import fr.recia.glc.services.db.EtablissementService;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionOldBody;
 import fr.recia.glc.services.db.FonctionService;
@@ -27,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -48,6 +57,8 @@ public class PersonneController {
     private PersonneService personneService;
     @Autowired
     private AddPersonneService addPersonneService;
+    @Autowired
+    private EtablissementRepository<Etablissement> etablissementRepository;
 
     @GetMapping
     public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
@@ -59,34 +70,73 @@ public class PersonneController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PersonneDto> getPersonne(@PathVariable Long id) {
-        PersonneDto personne = personneService.getPersonne(id);
+    public ResponseEntity<PersonneDto> getPersonne(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
+        APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        personne.setAllFonctions(fonctionService.getPersonneFonctions(id));
-        return new ResponseEntity<>(personne, HttpStatus.OK);
+        // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
+        boolean canRead = false;
+        // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
+        for(AStructure aStructure : personne.getListeStructures()){
+            // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
+            if(aStructure instanceof Etablissement){
+                if(allowedUAI.contains(((Etablissement) aStructure).getUai())){
+                    canRead = true;
+                    break;
+                }
+            }
+        }
+        if(canRead){
+            PersonneDto personneDto = new PersonneDto(personne);
+            personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
+            return new ResponseEntity<>(personneDto, HttpStatus.OK);
+        } else {
+            log.warn("User {} is not authorized to view person {}", principal.getUsername(), id);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
     }
 
     @PostMapping
-    public ResponseEntity<Void> addPersonne(@RequestBody UserCreation userCreation) {
-        addPersonneService.addPersonne(userCreation);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Void> addPersonne(@AuthenticationPrincipal GLCUser principal, @RequestBody UserCreation userCreation) {
+        // Vérifier qu'on a les droits d'ajouter la personne = que sur la structure sur laquelle on veut l'ajouter on a les droits d'écriture
+        Etablissement etablissement = etablissementRepository.findById(userCreation.getStructureRattachement()).orElseThrow();
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
+        // TODO : gérer la partie des collectivités
+        // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
+        if(allowedUAI.contains(etablissement.getUai())){
+            addPersonneService.addPersonne(userCreation);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            log.warn("User {} is not authorized to add person in {}", principal.getUsername(), userCreation.getStructureRattachement());
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping(value = "/{id}/fonction")
-    public ResponseEntity<Void> setPersonneAdditionalFonctions(@PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) {
-        boolean success = fonctionService.saveAdditionalFonctions(
-                id,
-                body.getStructureId(),
-                body.getToAddFunctions(),
-                body.getToDeleteFunctions(),
-                body.getRequiredAction()
-        );
-        if (!success) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Void> setPersonneAdditionalFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) {
+        // Vérifier qu'on a les droits de modifier la personne = que sur la structure dans laquelle on veut modifier la fonction on a les droits d'écriture
+        Etablissement etablissement = etablissementRepository.findById(body.getStructureId()).orElseThrow();
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
+        // TODO : gérer la partie des collectivités
+        // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
+        if(allowedUAI.contains(etablissement.getUai())){
+            boolean success = fonctionService.saveAdditionalFonctions(
+                    id,
+                    body.getStructureId(),
+                    body.getToAddFunctions(),
+                    body.getToDeleteFunctions(),
+                    body.getRequiredAction()
+            );
+            if (!success) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            log.warn("User {} is not authorized to modify funtion for user {} in {}", principal.getUsername(), id, body.getStructureId());
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

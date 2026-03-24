@@ -22,7 +22,6 @@ import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.utils.PersonneUtils;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,104 +38,83 @@ import java.util.stream.Collectors;
 @ToString
 public class PersonneDto {
 
-  private Long id;
-  private Etat etat;
-  private Date anneeScolaire;
-  private CategoriePersonne categorie;
-  private Civilite civilite;
-  private String source;
-  private String cn;
-  private Date dateNaissance;
-//  private String displayName;
-  private String email;
-  private String givenName;
-//  private String numBureau;
-  private String patronyme;
-//  private Sexe sexe;
-  private String sn;
-//  private String titre;
-  private String uid;
-//  private String uuid;
-//  private String emailPersonnel;
-//  private boolean listeRouge;
-//  private ForceEtat forceEtat;
-//  private String idEduConnect;
-  private Date dateFin;
-  private Date dateSourceModification;
-  private String login;
-//  private String alias;
-//  private Set<String> prenoms;
-  private Long structure;
-  private List<FonctionDto> fonctions;
-  private List<FonctionDto> additionalFonctions;
-  @Getter(AccessLevel.NONE)
-  @Setter(AccessLevel.NONE)
-  private Instant dateModification;
-  @Getter(AccessLevel.NONE)
-  @Setter(AccessLevel.NONE)
-  private Instant dateAcquittement;
-  @Setter(AccessLevel.NONE)
-  private Date dateSuppression;
+    private Long id;
+    private Etat etat;
+    private Date anneeScolaire;
+    private CategoriePersonne categorie;
+    private Civilite civilite;
+    private String source;
+    private String cn;
+    private Date dateNaissance;
+    private String email;
+    private String givenName;
+    private String patronyme;
+    private String sn;
+    private String uid;
+    private Date dateFin;
+    private Date dateSourceModification;
+    private String login;
+    private Long structure;
+    private List<FonctionDto> fonctions;
+    private List<FonctionDto> additionalFonctions;
+    private Instant dateModification;
+    private Instant dateAcquittement;
+    private Date dateSuppression;
 
-  public PersonneDto(
-    Long id, Etat etat, Date anneeScolaire, CategoriePersonne categorie, Civilite civilite, String source, String cn,
-    Date dateNaissance, String email, String givenName, String patronyme, String sn, String uid, String login,
-    Long structure, Date dateFin, Date dateSourceModification, Instant dateModification, Instant dateAcquittement
-  ) {
-    this.id = id;
-    this.etat = etat;
-    this.anneeScolaire = anneeScolaire;
-    this.categorie = categorie;
-    this.civilite = civilite;
-    this.source = source;
-    this.cn = cn;
-    this.dateNaissance = dateNaissance;
-    this.email = email;
-    this.givenName = givenName;
-    this.patronyme = patronyme;
-    this.sn = sn;
-    this.uid = uid;
-    this.login = login;
-    this.structure = structure;
-    this.dateFin = dateFin;
-    this.dateSourceModification = dateSourceModification;
-
-    if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
-      this.etat = Etat.Deleting;
-      this.dateSuppression = PersonneUtils.getSupressionDate(dateModification);
+    public PersonneDto(Long id, Etat etat, Date anneeScolaire, CategoriePersonne categorie, Civilite civilite, String source, String cn,
+                       Date dateNaissance, String email, String givenName, String patronyme, String sn, String uid, String login,
+                       Long structure, Date dateFin, Date dateSourceModification, Instant dateModification, Instant dateAcquittement) {
+        this.id = id;
+        this.etat = etat;
+        this.anneeScolaire = anneeScolaire;
+        this.categorie = categorie;
+        this.civilite = civilite;
+        this.source = source;
+        this.cn = cn;
+        this.dateNaissance = dateNaissance;
+        this.email = email;
+        this.givenName = givenName;
+        this.patronyme = patronyme;
+        this.sn = sn;
+        this.uid = uid;
+        this.login = login;
+        this.structure = structure;
+        this.dateFin = dateFin;
+        this.dateSourceModification = dateSourceModification;
+        if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
+            this.etat = Etat.Deleting;
+            this.dateSuppression = PersonneUtils.getSupressionDate(dateModification);
+        }
     }
-  }
 
-  public PersonneDto(APersonne aPersonne) {
-    this.id = aPersonne.getId();
-    this.etat = aPersonne.getEtat();
-    this.anneeScolaire = aPersonne.getAnneeScolaire();
-    this.categorie = aPersonne.getCategorie();
-    this.civilite = aPersonne.getCivilite();
-    this.source = aPersonne.getCleJointure().getSource();
-    this.cn = aPersonne.getCn();
-    this.dateNaissance = aPersonne.getDateNaissance();
-    this.email = aPersonne.getEmail();
-    this.givenName = aPersonne.getGivenName();
-    this.patronyme = aPersonne.getPatronyme();
-    this.sn = aPersonne.getSn();
-    this.uid = aPersonne.getUid();
-    this.login = aPersonne.getLogin().getNom();
-//    this.structure = aPersonne.getStructRattachement().getId(); // TODO
-    this.dateFin = aPersonne.getDateFin();
-    this.dateSourceModification = aPersonne.getDateSourceModification();
-
-    if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
-      this.etat = Etat.Deleting;
-      this.dateSuppression = PersonneUtils.getSupressionDate(aPersonne.getDateModification());
+    public PersonneDto(APersonne aPersonne) {
+        this.id = aPersonne.getId();
+        this.etat = aPersonne.getEtat();
+        this.anneeScolaire = aPersonne.getAnneeScolaire();
+        this.categorie = aPersonne.getCategorie();
+        this.civilite = aPersonne.getCivilite();
+        this.source = aPersonne.getCleJointure().getSource();
+        this.cn = aPersonne.getCn();
+        this.dateNaissance = aPersonne.getDateNaissance();
+        this.email = aPersonne.getEmail();
+        this.givenName = aPersonne.getGivenName();
+        this.patronyme = aPersonne.getPatronyme();
+        this.sn = aPersonne.getSn();
+        this.uid = aPersonne.getUid();
+        this.login = aPersonne.getLogin().getNom();
+        this.dateFin = aPersonne.getDateFin();
+        this.dateSourceModification = aPersonne.getDateSourceModification();
+        if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
+            this.etat = Etat.Deleting;
+            this.dateSuppression = PersonneUtils.getSupressionDate(aPersonne.getDateModification());
+        }
     }
-  }
 
-  public void setAllFonctions(List<FonctionDto> fonctions) {
-    if (!fonctions.isEmpty()) {
-      setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
-      setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+    public void setAllFonctions(List<FonctionDto> fonctions) {
+        if (!fonctions.isEmpty()) {
+            setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+            setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+        }
     }
-  }
 
 }
