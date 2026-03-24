@@ -47,11 +47,15 @@ public class PersonneService {
     }
 
     @Cacheable(value = "personnesByEtablissement")
-    public List<SimplePersonneDto> getPersonnes(Long structureId) {
+    public List<SimplePersonneDto> getPersonnes(Long structureId, boolean showUid) {
         log.trace("getPersonnes for {}", structureId);
         final List<Long> personnesIds = aPersonneAStructureRepository.findPersonneByStructureId(structureId);
         if (personnesIds.isEmpty()) return List.of();
-        return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
+        if(showUid){
+            return aPersonneRepository.findByPersonneIdsWithUid(new HashSet<>(personnesIds));
+        } else {
+            return aPersonneRepository.findByPersonneIdsWithoutUid(new HashSet<>(personnesIds));
+        }
     }
 
     @Cacheable(value = "personne")

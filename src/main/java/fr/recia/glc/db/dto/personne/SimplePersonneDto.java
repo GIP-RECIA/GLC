@@ -32,67 +32,74 @@ import java.util.Date;
 @EqualsAndHashCode
 public class SimplePersonneDto {
 
-  private Long id;
-  private Etat etat;
-  private CategoriePersonne categorie;
-  private String source;
-  private String cn;
-  private String email;
-  private String sn;
-  private String uid;
-  @Getter(AccessLevel.NONE)
-  @Setter(AccessLevel.NONE)
-  private Instant dateModification;
-  @Getter(AccessLevel.NONE)
-  @Setter(AccessLevel.NONE)
-  private Instant dateAcquittement;
-  @Setter(AccessLevel.NONE)
-  private Date dateSuppression;
+    private Long id;
+    private Etat etat;
+    private CategoriePersonne categorie;
+    private String source;
+    private String cn;
+    private String email;
+    private String sn;
+    private String uid;
+    private Instant dateModification;
+    private Instant dateAcquittement;
+    private Date dateSuppression;
 
-  public SimplePersonneDto(
-    Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email, String sn, String uid,
-    Instant dateModification, Instant dateAcquittement
-  ) {
-    this.id = id;
-    this.etat = etat;
-    this.categorie = categorie;
-    this.source = source;
-    this.cn = cn;
-    this.email = email;
-    this.sn = sn;
-    this.uid = uid;
-
-    if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
-      this.etat = Etat.Deleting;
-      this.dateSuppression = PersonneUtils.getSupressionDate(dateModification);
+    public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
+                             String sn, String uid, Instant dateModification, Instant dateAcquittement) {
+        this.id = id;
+        this.etat = etat;
+        this.categorie = categorie;
+        this.source = source;
+        this.cn = cn;
+        this.email = email;
+        this.sn = sn;
+        this.uid = uid;
+        if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
+            this.etat = Etat.Deleting;
+            this.dateSuppression = PersonneUtils.getSupressionDate(dateModification);
+        }
     }
-  }
 
-  public SimplePersonneDto(APersonne aPersonne) {
-    this.id = aPersonne.getId();
-    this.etat = aPersonne.getEtat();
-    this.categorie = aPersonne.getCategorie();
-    this.source = aPersonne.getCleJointure().getSource();
-    this.cn = aPersonne.getCn();
-    this.sn = aPersonne.getSn();
-    this.uid = aPersonne.getUid();
-
-    if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
-      this.etat = Etat.Deleting;
-      this.dateSuppression = PersonneUtils.getSupressionDate(aPersonne.getDateModification());
+    public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
+                             String sn, Instant dateModification, Instant dateAcquittement) {
+        this.id = id;
+        this.etat = etat;
+        this.categorie = categorie;
+        this.source = source;
+        this.cn = cn;
+        this.email = email;
+        this.sn = sn;
+        if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
+            this.etat = Etat.Deleting;
+            this.dateSuppression = PersonneUtils.getSupressionDate(dateModification);
+        }
     }
-  }
 
-  public SimplePersonneDto(SimplePersonneDto simplePersonneDto) {
-    this.id = simplePersonneDto.getId();
-    this.etat = simplePersonneDto.getEtat();
-    this.categorie = simplePersonneDto.getCategorie();
-    this.source = simplePersonneDto.getSource();
-    this.cn = simplePersonneDto.getCn();
-    this.email = simplePersonneDto.getEmail();
-    this.sn = simplePersonneDto.getSn();
-    this.uid = simplePersonneDto.getUid();
-    this.dateSuppression = simplePersonneDto.getDateSuppression();
-  }
+    public SimplePersonneDto(APersonne aPersonne) {
+        this.id = aPersonne.getId();
+        this.etat = aPersonne.getEtat();
+        this.categorie = aPersonne.getCategorie();
+        this.source = aPersonne.getCleJointure().getSource();
+        this.cn = aPersonne.getCn();
+        this.sn = aPersonne.getSn();
+        this.uid = aPersonne.getUid();
+
+        if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
+            this.etat = Etat.Deleting;
+            this.dateSuppression = PersonneUtils.getSupressionDate(aPersonne.getDateModification());
+        }
+    }
+
+    public SimplePersonneDto(SimplePersonneDto simplePersonneDto) {
+        this.id = simplePersonneDto.getId();
+        this.etat = simplePersonneDto.getEtat();
+        this.categorie = simplePersonneDto.getCategorie();
+        this.source = simplePersonneDto.getSource();
+        this.cn = simplePersonneDto.getCn();
+        this.email = simplePersonneDto.getEmail();
+        this.sn = simplePersonneDto.getSn();
+        this.uid = simplePersonneDto.getUid();
+        this.dateSuppression = simplePersonneDto.getDateSuppression();
+    }
 
 }

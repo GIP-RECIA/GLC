@@ -109,6 +109,7 @@ public class SecurityConfiguration {
 
     /**
      * Transformer l’utilisateur CAS en utilisateur Spring Security pour remplir les User Details
+     * Calcule et stocke les droits de l'utilisateur pour les réutiliser plus tard sans avoir à tout recalculer
      */
     @Bean
     public AuthenticationUserDetailsService<CasAssertionAuthenticationToken> customUserDetailsService() {
@@ -126,6 +127,7 @@ public class SecurityConfiguration {
             Map<GLCRole, Set<String>> rightsForEtabs = new HashMap<>();
             rightsForEtabs.put(GLCRole.WRITE, new HashSet<>());
             rightsForEtabs.put(GLCRole.READ, new HashSet<>());
+            rightsForEtabs.put(GLCRole.VIEW_UID, new HashSet<>());
             Set<GLCRole> rightsForColl = new HashSet<>();
             for(String group : groups){
                 Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
@@ -148,11 +150,13 @@ public class SecurityConfiguration {
                     for(StructureFromGroup structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))){
                         rightsForEtabs.get(GLCRole.WRITE).add(structureFromGroup.getUAI());
                         rightsForEtabs.get(GLCRole.READ).add(structureFromGroup.getUAI());
+                        rightsForEtabs.get(GLCRole.VIEW_UID).add(structureFromGroup.getUAI());
                     }
                 }
                 if(matcherAdminCentralColl.matches()){
                     rightsForColl.add(GLCRole.WRITE);
                     rightsForColl.add(GLCRole.READ);
+                    rightsForColl.add(GLCRole.VIEW_UID);
                 }
             }
             return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs, rightsForColl);

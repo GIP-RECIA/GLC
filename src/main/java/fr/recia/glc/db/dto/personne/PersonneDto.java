@@ -87,7 +87,7 @@ public class PersonneDto {
         }
     }
 
-    public PersonneDto(APersonne aPersonne) {
+    public PersonneDto(APersonne aPersonne, boolean showUid) {
         this.id = aPersonne.getId();
         this.etat = aPersonne.getEtat();
         this.anneeScolaire = aPersonne.getAnneeScolaire();
@@ -100,7 +100,9 @@ public class PersonneDto {
         this.givenName = aPersonne.getGivenName();
         this.patronyme = aPersonne.getPatronyme();
         this.sn = aPersonne.getSn();
-        this.uid = aPersonne.getUid();
+        if(showUid){
+            this.uid = aPersonne.getUid();
+        }
         this.login = aPersonne.getLogin().getNom();
         this.dateFin = aPersonne.getDateFin();
         this.dateSourceModification = aPersonne.getDateSourceModification();

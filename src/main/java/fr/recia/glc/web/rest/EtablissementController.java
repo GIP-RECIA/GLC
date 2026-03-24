@@ -100,12 +100,15 @@ public class EtablissementController {
             etablissement.setPermission("ADMIN");
         }
 
+        // Booléen qui indique si on affiche l'uid ou non
+        boolean showUid = principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(etablissement.getUai());
+
         // Récupération de la liste des personnes
-        List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id);
+        List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id, showUid);
         etablissement.setPersonnes(etabPersonnes);
 
         // Récupération de la liste des personnes sans fonction
-        List<SimplePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id);
+        List<SimplePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id, showUid);
         etablissement.setWithoutFunctions(withoutFunction);
 
         // Récupération des alertes
@@ -113,6 +116,7 @@ public class EtablissementController {
 
         // Récupération des filières (fonctions, typesFonctionFiliere et disciplines)
         List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);
+
         // On créé des maps pour pouvoir récupérer les objets par leur id en O(1)
         List<TypeFonctionFiliereDto> typesFonctionFiliereList = fonctionService.getTypesFonctionFiliere(etablissement.getSource());
         Map<Long, TypeFonctionFiliereDto> typesFonctionFiliereMap = typesFonctionFiliereList.stream()
@@ -132,6 +136,7 @@ public class EtablissementController {
                         Function.identity()
                 ));
 
+        // Logique d'assemblage de l'objet à envoyer au font pour les fillières
         etablissement.setFilieres(fonctions, typesFonctionFiliereMap, disciplinesMap, personnesMap);
 
         return new ResponseEntity<>(etablissement, HttpStatus.OK);

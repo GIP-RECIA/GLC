@@ -308,10 +308,14 @@ public class FonctionService {
   }
 
   @Cacheable(value = "personnesWithoutFunctions")
-  public List<SimplePersonneDto> getPersonnesWithoutFunctions(Long structureId) {
+  public List<SimplePersonneDto> getPersonnesWithoutFunctions(Long structureId, boolean showUid) {
     log.trace("getPersonnesWithoutFunctions for {}", structureId);
     final List<Long> personnesIds = fonctionRepository.findPersonnesWithoutFunctions(structureId);
-    return aPersonneRepository.findByPersonneIds(new HashSet<>(personnesIds));
+    if(showUid){
+      return aPersonneRepository.findByPersonneIdsWithUid(new HashSet<>(personnesIds));
+    } else {
+      return aPersonneRepository.findByPersonneIdsWithoutUid(new HashSet<>(personnesIds));
+    }
   }
 
   /**

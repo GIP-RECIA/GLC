@@ -42,7 +42,14 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     "FROM APersonne ap " +
     "WHERE ap.id IN :ids " +
     "ORDER BY ap.cn, ap.sn")
-  List<SimplePersonneDto> findByPersonneIds(Set<Long> ids);
+  List<SimplePersonneDto> findByPersonneIdsWithUid(Set<Long> ids);
+
+  @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+          "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+          "FROM APersonne ap " +
+          "WHERE ap.id IN :ids " +
+          "ORDER BY ap.cn, ap.sn")
+  List<SimplePersonneDto> findByPersonneIdsWithoutUid(Set<Long> ids);
 
   @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie," +
     "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +

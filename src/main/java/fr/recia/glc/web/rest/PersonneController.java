@@ -79,18 +79,22 @@ public class PersonneController {
         // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
         Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
         boolean canRead = false;
+        boolean showUid = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for(AStructure aStructure : personne.getListeStructures()){
             // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
             if(aStructure instanceof Etablissement){
                 if(allowedUAI.contains(((Etablissement) aStructure).getUai())){
                     canRead = true;
-                    break;
+                }
+                if(principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(((Etablissement) aStructure).getUai())){
+                    showUid = true;
                 }
             }
         }
         if(canRead){
-            PersonneDto personneDto = new PersonneDto(personne);
+            // Booléen qui indique si on affiche l'uid ou non
+            PersonneDto personneDto = new PersonneDto(personne, showUid);
             personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
             return new ResponseEntity<>(personneDto, HttpStatus.OK);
         } else {
