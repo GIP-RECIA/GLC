@@ -61,6 +61,9 @@ public class EtablissementController {
     @Autowired
     private AlertService alertService;
 
+    /**
+     * Récupère la liste de toutes les structures que l'utilisateur à le droit d'administrer
+     */
     @GetMapping()
     public ResponseEntity<List<SimpleStructureDto>> getEtablissements(@AuthenticationPrincipal GLCUser principal) {
         // Ne retourner que les établissements que la personne a le droit de lire
@@ -78,9 +81,6 @@ public class EtablissementController {
 
     /**
      * Récupère les informations sur un établissement ainsi que toutes les personnes dedans
-     * @param principal
-     * @param id
-     * @return
      */
     @GetMapping(value = "/{id}")
     // TODO : une autre route spécifique pour les collectivités
