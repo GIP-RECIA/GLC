@@ -34,6 +34,7 @@ import fr.recia.glc.db.repositories.groupe.MappingAGroupeAPersonneRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.personne.LoginRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.services.LoginService;
 import fr.recia.glc.services.NameCalculator;
 import fr.recia.glc.services.PasswordGenerator;
 import fr.recia.glc.services.UidFactory;
@@ -51,8 +52,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -88,6 +87,8 @@ public class AddPersonneService {
     private PasswordGenerator passwordGenerator;
     @Autowired
     private FonctionService fonctionService;
+    @Autowired
+    private LoginService loginService;
     @Autowired
     private GLCProperties glcProperties;
     @Autowired
@@ -187,7 +188,8 @@ public class AddPersonneService {
         genUID.setIiii(increment);
         genUIDRepository.saveAndFlush(genUID);
         // Gestion du login
-        updateLogin(nameCalculator.login(userCreation.getNom(), userCreation.getPrenom()), apersonne);
+        Login login = loginService.updateLogin(nameCalculator.login(userCreation.getNom(), userCreation.getPrenom()), apersonne);
+        loginRepository.saveAndFlush(login);
         // Champs spécfiques pour chaque catégorie de personne
         updateSpecificFields(apersonne, userCreation, aStructure);
     }
@@ -302,64 +304,6 @@ public class AddPersonneService {
         MappingAGroupeAPersonne mappingAGroupeAPersonne = new MappingAGroupeAPersonne(eleve.getCleJointure().getSource(), eleve, classe);
         mappingAGroupeAPersonneRepository.saveAndFlush(mappingAGroupeAPersonne);
         log.debug("Saved classe...");
-    }
-
-    /**
-     * Trouve et modifie le login d'une personne.
-     * Le login passé en paramêtre ne doit pas avoir de compteur à la fin
-     * Il doit être de la forme prenom.nom
-     */
-    private void updateLogin(final String loginPrefix, final APersonne aPersonne) {
-        Pattern p = Pattern.compile(loginPrefix + "(\\d*)");
-        Matcher m;
-        Instant date = new Date().toInstant();
-        List<Login> loginList = loginRepository.findByNomLike(loginPrefix+"%");
-        String newLogin = loginPrefix;
-        int nbMax = 0;
-        int nb = 0;
-        boolean[] cptUtilise = new boolean[100];
-        if (loginList != null) {
-            for (Login l : loginList) {
-                m = p.matcher(l.getNom());
-                if (m.matches()) {
-                    if ("".equals(m.group(1))) {
-                        nb = 0;
-                    } else {
-                        nb = Integer.parseInt(m.group(1));
-                    }
-                    if (nb < 100) {
-                        cptUtilise[nb++] = true;
-                    }
-
-                    if (nbMax < nb) {
-                        nbMax = nb;
-                    }
-                }
-            }
-        }
-        if (nbMax > 0) {
-            if (nbMax < 100) {
-                newLogin = String.format("%s%d", newLogin, nbMax);
-            } else {
-                // on cherche le premier disponible.
-                for (int i = 0; i < cptUtilise.length; i++) {
-                    if (!cptUtilise[i]){
-                        nbMax = i;
-                        newLogin = String.format("%s%d", newLogin, i);
-                        break;
-                    }
-                }
-                if (nbMax > 100) {
-                    // TODO : throw exception
-                    log.error("Login too high");
-                }
-            }
-        }
-        Login login = new Login(newLogin);
-        login.setApersonneLogin(aPersonne);
-        login.setDateCreation(date);
-        login.setDateModification(date);
-        loginRepository.saveAndFlush(login);
     }
 
 }
