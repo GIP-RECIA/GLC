@@ -22,7 +22,6 @@ import java.util.List;
 
 @Data
 public class RestrictionEtab {
-    private String uai;
     private ZonedDateTime dateRentreeEtab;
     private List<RestrictionNiveau> niveaux;
 }
