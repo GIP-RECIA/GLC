@@ -38,23 +38,23 @@ import java.io.Serializable;
 @ToString
 public class MappingAGroupeAPersonneEnseignementId implements Serializable {
 
-  /**
-   * The personne to associate to the groupe and enseignement.
-   */
-  @ManyToOne
-  @JoinColumn(name = "APERSONNE_ID", nullable = false)
-  private Enseignant enseignant;
-  /**
-   * The groupe to associate with the person and enseignement.
-   */
-  @ManyToOne
-  @JoinColumn(name = "AGROUPEOFFONCCLASSEGROUPE_ID", nullable = false)
-  private AGroupeOfFoncClasseGroupe groupe;
-  /**
-   * The enseignement to associate with the person and groupe.
-   */
-  @ManyToOne
-  @JoinColumn(name = "ENSEIGNEMENT_ID", nullable = false)
-  private Enseignement enseignement;
+    /**
+     * The personne to associate to the groupe and enseignement.
+     */
+    @ManyToOne
+    @JoinColumn(name = "APERSONNE_ID", nullable = false)
+    private Enseignant enseignant;
+    /**
+     * The groupe to associate with the person and enseignement.
+     */
+    @ManyToOne
+    @JoinColumn(name = "AGROUPEOFFONCCLASSEGROUPE_ID", nullable = false)
+    private AGroupeOfFoncClasseGroupe groupe;
+    /**
+     * The enseignement to associate with the person and groupe.
+     */
+    @ManyToOne
+    @JoinColumn(name = "ENSEIGNEMENT_ID", nullable = false)
+    private Enseignement enseignement;
 
 }

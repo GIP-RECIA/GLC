@@ -1,7 +1,5 @@
 package fr.recia.glc.web.dto.user;
 
-import fr.recia.glc.db.entities.education.Enseignement;
-import fr.recia.glc.db.entities.education.MEF;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.web.dto.function.FonctionToModify;

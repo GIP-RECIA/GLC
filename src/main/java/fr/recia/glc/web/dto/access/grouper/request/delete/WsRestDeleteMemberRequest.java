@@ -23,6 +23,7 @@ import java.util.List;
 @Data
 public class WsRestDeleteMemberRequest {
     private List<SubjectLookup> subjectLookups;
+
     public WsRestDeleteMemberRequest(String subjectId, String subjectSourceId) {
         this.subjectLookups = List.of(new SubjectLookup(subjectId, subjectSourceId));
     }

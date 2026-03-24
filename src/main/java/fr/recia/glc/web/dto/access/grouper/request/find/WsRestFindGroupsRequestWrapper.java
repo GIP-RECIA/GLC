@@ -22,6 +22,7 @@ import lombok.Data;
 public class WsRestFindGroupsRequestWrapper {
     @JsonProperty("WsRestFindGroupsRequest")
     private WsRestFindGroupsRequest wsRestFindGroupsRequest;
+
     public WsRestFindGroupsRequestWrapper(String groupName) {
         this.wsRestFindGroupsRequest = new WsRestFindGroupsRequest(groupName);
     }

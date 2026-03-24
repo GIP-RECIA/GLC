@@ -17,7 +17,7 @@ package fr.recia.glc.utils;
 
 public class GroupPathGenerator {
 
-    public static String groupPathFromTemplate(String groupTemplate, String branch, String etabGroup){
+    public static String groupPathFromTemplate(String groupTemplate, String branch, String etabGroup) {
         return groupTemplate.replace("BRANCH_NAME", branch).replace("ETAB_NAME", etabGroup);
     }
 }

@@ -30,21 +30,15 @@ import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.EtablissementRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.PostConstruct;
 
 import static org.springframework.test.util.ReflectionTestUtils.setField;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @Slf4j
@@ -52,37 +46,38 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @SpringBootTest
 class EtablissementControllerTest {
 
-  @Autowired
-  private EtablissementRepository<Etablissement> etablissementRepository;
-  @Autowired
-  private FonctionRepository<Fonction> fonctionRepository;
-  @Autowired
-  private APersonneRepository<APersonne> aPersonneRepository;
-  @Autowired
-  private DisciplineRepository<Discipline> disciplineRepository;
-  @Autowired
-  private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
-  @Autowired
-  private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
+    @Autowired
+    private EtablissementRepository<Etablissement> etablissementRepository;
+    @Autowired
+    private FonctionRepository<Fonction> fonctionRepository;
+    @Autowired
+    private APersonneRepository<APersonne> aPersonneRepository;
+    @Autowired
+    private DisciplineRepository<Discipline> disciplineRepository;
+    @Autowired
+    private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
+    @Autowired
+    private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
 
-  private MockMvc mockEtablissementControllerMvc;
+    private MockMvc mockEtablissementControllerMvc;
 
-  @PostConstruct
-  void setup() {
-    GLCProperties glcProperties = new GLCProperties();
-    EtablissementController etablissementController = new EtablissementController();
-    setField(etablissementController, "etablissementRepository", etablissementRepository);
-    setField(etablissementController, "fonctionRepository", fonctionRepository);
-    setField(etablissementController, "aPersonneRepository", aPersonneRepository);
-    setField(etablissementController, "disciplineRepository", disciplineRepository);
-    setField(etablissementController, "typeFonctionFiliereRepository", typeFonctionFiliereRepository);
-    setField(etablissementController, "aPersonneAStructureRepository", aPersonneAStructureRepository);
+    @PostConstruct
+    void setup() {
+        GLCProperties glcProperties = new GLCProperties();
+        EtablissementController etablissementController = new EtablissementController();
+        setField(etablissementController, "etablissementRepository", etablissementRepository);
+        setField(etablissementController, "fonctionRepository", fonctionRepository);
+        setField(etablissementController, "aPersonneRepository", aPersonneRepository);
+        setField(etablissementController, "disciplineRepository", disciplineRepository);
+        setField(etablissementController, "typeFonctionFiliereRepository", typeFonctionFiliereRepository);
+        setField(etablissementController, "aPersonneAStructureRepository", aPersonneAStructureRepository);
 
-    mockEtablissementControllerMvc = standaloneSetup(etablissementController).build();
-  }
+        mockEtablissementControllerMvc = standaloneSetup(etablissementController).build();
+    }
 
-  @BeforeEach
-  void init() {}
+    @BeforeEach
+    void init() {
+    }
 
 //  @Test
 //  void getEtablissements() throws Exception {

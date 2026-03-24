@@ -21,5 +21,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FonctionDomaineGroupementEtablissementRepository<T extends FonctionDomaineGroupementEtablissement>
-  extends AbstractRepository<T, Long> {
+    extends AbstractRepository<T, Long> {
 }

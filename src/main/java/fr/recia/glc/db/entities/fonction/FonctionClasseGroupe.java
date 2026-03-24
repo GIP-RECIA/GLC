@@ -41,42 +41,42 @@ import javax.persistence.ManyToOne;
 @ToString(callSuper = true)
 public class FonctionClasseGroupe extends AFonction {
 
-  /**
-   * Type énuméré du type de fonction.
-   */
-  @Enumerated(EnumType.STRING)
-  @Column(length = IntConst.I30)
-  private TypeClasse type;
+    /**
+     * Type énuméré du type de fonction.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(length = IntConst.I30)
+    private TypeClasse type;
 
-  /**
-   * Relation bidirectionnelle.
-   * Classe ou groupe concerné.
-   */
-  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-  @JoinColumn(name = "classe_groupe_fk")
-  private AGroupeOfFoncClasseGroupe classeGroupe;
+    /**
+     * Relation bidirectionnelle.
+     * Classe ou groupe concerné.
+     */
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "classe_groupe_fk")
+    private AGroupeOfFoncClasseGroupe classeGroupe;
 
-  /**
-   * Constructeur de l'objet FonctionClasseGroupe.java.
-   */
-  public FonctionClasseGroupe() {
-    super();
-    this.setCategorie(CategorieFonction.Classe);
-  }
+    /**
+     * Constructeur de l'objet FonctionClasseGroupe.java.
+     */
+    public FonctionClasseGroupe() {
+        super();
+        this.setCategorie(CategorieFonction.Classe);
+    }
 
-  /**
-   * Constructeur de l'objet FonctionClasseGroupe.java.
-   *
-   * @param type         Type énuméré du type de fonction.
-   * @param personne     Personne ayant cette fonction.
-   * @param classeGroupe Classe ou groupe concerné.
-   * @param source       Source d'alimentation gérant cette fonction.
-   */
-  public FonctionClasseGroupe(final TypeClasse type, final APersonne personne,
-                              final AGroupeOfFoncClasseGroupe classeGroupe, final String source) {
-    super(CategorieFonction.Classe, personne, source);
-    this.type = type;
-    this.classeGroupe = classeGroupe;
-  }
+    /**
+     * Constructeur de l'objet FonctionClasseGroupe.java.
+     *
+     * @param type         Type énuméré du type de fonction.
+     * @param personne     Personne ayant cette fonction.
+     * @param classeGroupe Classe ou groupe concerné.
+     * @param source       Source d'alimentation gérant cette fonction.
+     */
+    public FonctionClasseGroupe(final TypeClasse type, final APersonne personne,
+                                final AGroupeOfFoncClasseGroupe classeGroupe, final String source) {
+        super(CategorieFonction.Classe, personne, source);
+        this.type = type;
+        this.classeGroupe = classeGroupe;
+    }
 
 }

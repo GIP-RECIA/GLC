@@ -11,13 +11,19 @@ import java.text.Normalizer;
 @Data
 public class StringOperation {
 
-    /** REGEXP pour la suppression des caractères ne devant pas apparaitre dans le CN. */
+    /**
+     * REGEXP pour la suppression des caractères ne devant pas apparaitre dans le CN.
+     */
     public static final String REGEX_CN = "[-']";
 
-    /** Pour la regexp de remplacement des multi espaces.*/
+    /**
+     * Pour la regexp de remplacement des multi espaces.
+     */
     public static final String STRING_SPACE = " ";
 
-    /** REGEXP pour la suppression des espaces en trop. */
+    /**
+     * REGEXP pour la suppression des espaces en trop.
+     */
     public static final String REGEX_SPACES = "\\s{2,}";
 
     /**
@@ -44,17 +50,17 @@ public class StringOperation {
     /**
      * Méthode permettant de construire le CN d'une personne à partir du sn et du givenName.
      *
-     * @param sn Le nom de la personne.
+     * @param sn        Le nom de la personne.
      * @param givenName Le prénom de la personne.
      * @return <code>String</code>Le CN formaté.
      */
     public String cleanForCN(final String sn, final String givenName) {
         StringBuilder sb = new StringBuilder();
         sb.append(sansAccent(sn.replaceAll(REGEX_CN, STRING_SPACE)
-                .replaceAll(REGEX_SPACES, STRING_SPACE)));
+            .replaceAll(REGEX_SPACES, STRING_SPACE)));
         sb.append(STRING_SPACE);
         sb.append(sansAccent(givenName.replaceAll(REGEX_CN, STRING_SPACE)
-                .replaceAll(REGEX_SPACES, STRING_SPACE).toUpperCase()));
+            .replaceAll(REGEX_SPACES, STRING_SPACE).toUpperCase()));
         return sb.toString();
     }
 

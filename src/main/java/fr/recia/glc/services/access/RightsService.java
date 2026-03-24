@@ -50,16 +50,16 @@ public class RightsService {
     private final Map<String, String> invertedTemplateCache;
     private final APersonneRepository<APersonne> aPersonneRepository;
 
-    public RightsService(GLCProperties glcProperties, GrouperService grouperService, APersonneRepository<APersonne> aPersonneRepository){
+    public RightsService(GLCProperties glcProperties, GrouperService grouperService, APersonneRepository<APersonne> aPersonneRepository) {
         this.glcProperties = glcProperties;
         this.grouperService = grouperService;
         this.aPersonneRepository = aPersonneRepository;
         this.invertedTemplateCache = new HashMap<>();
     }
 
-    private List<Member> getGroupsFullPathAndCache(List<String> memberList, String branch, String etabName){
+    private List<Member> getGroupsFullPathAndCache(List<String> memberList, String branch, String etabName) {
         List<Member> groups = new ArrayList<>();
-        for(String canonicalName : memberList){
+        for (String canonicalName : memberList) {
             String resolvedName = GroupPathGenerator.groupPathFromTemplate(canonicalName, branch, etabName);
             groups.add(new Member(resolvedName, glcProperties.getRights().getDeclaredGroupsMap().get(canonicalName), false, false));
             // Add to inverted cache
@@ -68,22 +68,22 @@ public class RightsService {
         return groups;
     }
 
-    private boolean isGroup(String memberName){
-        return !(memberName.startsWith("F") && memberName.length()==8);
+    private boolean isGroup(String memberName) {
+        return !(memberName.startsWith("F") && memberName.length() == 8);
     }
 
     /**
      * Donne la liste de tous les droits des services pour le front d'après la configuration
      */
-    public List<ServiceAccess> getRights(String branch, String etabGroup, boolean showExternal, boolean showAdmin){
+    public List<ServiceAccess> getRights(String branch, String etabGroup, boolean showExternal, boolean showAdmin) {
         List<ServiceAccess> serviceAccessList = new ArrayList<>();
-        for(String service: glcProperties.getRights().getServices().keySet()){
+        for (String service : glcProperties.getRights().getServices().keySet()) {
             ServiceAccess serviceAccess = new ServiceAccess();
             serviceAccess.setService(service);
             List<Right> rights = new ArrayList<>();
             final Map<String, RoleProperties> rolesByService = glcProperties.getRights().getServices().get(service);
-            for(String role : rolesByService.keySet()){
-                try{
+            for (String role : rolesByService.keySet()) {
+                try {
                     final RoleProperties roleProperties = rolesByService.get(role);
                     Right right = new Right();
                     right.setDescription(roleProperties.getDescription());
@@ -96,21 +96,21 @@ public class RightsService {
                     // Ajout des membres déjà présents via grouper
                     List<Member> currentMembers = new ArrayList<>();
                     WsGetMembershipsResponse wsGetMembershipsResponse = grouperService.listMemberships(GroupPathGenerator.groupPathFromTemplate(
-                            roleProperties.getTargetGroup(), branch, etabGroup), showExternal, true, true).getBody();
+                        roleProperties.getTargetGroup(), branch, etabGroup), showExternal, true, true).getBody();
                     List<WsSubject> wsSubjectList = wsGetMembershipsResponse.getResults().getWsSubjects();
                     log.info("Subjets retrieved for group {} are : {}", roleProperties.getTargetGroup(), wsSubjectList);
-                    for(WsSubject wsSubject : wsSubjectList){
+                    for (WsSubject wsSubject : wsSubjectList) {
                         boolean isUser = !wsSubject.getSourceId().equals(Constants.GROUPER_SOURCEID_GROUP);
                         Member member;
-                        if(isUser){
+                        if (isUser) {
                             // TODO : faire une requête pour toutes les personnes d'un coup pour des raisons de performance
                             Predicate predicate = QAPersonne.aPersonne.uid.eq(wsSubject.getId());
                             member = new Member(wsSubject.getId(), aPersonneRepository.findOne(predicate).get().getDisplayName(), true, true);
                         } else {
-                            if(invertedTemplateCache.containsKey(wsSubject.getName())){
-                                member = new Member(wsSubject.getName(), glcProperties.getRights().getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())),false, false);
+                            if (invertedTemplateCache.containsKey(wsSubject.getName())) {
+                                member = new Member(wsSubject.getName(), glcProperties.getRights().getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())), false, false);
                             } else {
-                                member = new Member(wsSubject.getName(), wsSubject.getName(),false, true);
+                                member = new Member(wsSubject.getName(), wsSubject.getName(), false, true);
                             }
                         }
                         currentMembers.add(member);
@@ -118,17 +118,17 @@ public class RightsService {
                     right.setCurrentMembers(currentMembers);
                     right.setAllowPeople(rolesByService.get(role).isAllowPeople());
                     right.setAdmin(rolesByService.get(role).isAdmin());
-                    if(right.isAdmin() && !showAdmin){
+                    if (right.isAdmin() && !showAdmin) {
 
                     } else {
                         rights.add(right);
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     log.warn("Could not add right because grouper returned an error", e);
                 }
             }
             serviceAccess.setRights(rights);
-            if(!serviceAccess.getRights().isEmpty()){
+            if (!serviceAccess.getRights().isEmpty()) {
                 serviceAccessList.add(serviceAccess);
             }
         }
@@ -138,21 +138,21 @@ public class RightsService {
     /**
      * Ajoute un droit sur un service pour un membre donné
      */
-    public ResponseEntity<WsAddMemberResponse> addRight(String service, String role, String memberToAdd, String branch, String etabGroup){
+    public ResponseEntity<WsAddMemberResponse> addRight(String service, String role, String memberToAdd, String branch, String etabGroup) {
         // Récupération du targetGroup depuis la conf pour être sûr qu'on ajoute sur le bon
         String targetGroup = GroupPathGenerator.groupPathFromTemplate(glcProperties.getRights().getServices().get(service).get(role).getTargetGroup(), branch, etabGroup);
         // Vérification qu'on a bien le droit d'ajouter le membre en question
         // Le défaut de ce sytème de vérification c'est qu'il faut les avoir chargé dans le cache d'abord (donc avec un GET) mais normalement
         // on est pas censé faire des POST directement si on passe par l'UI
-        if(isGroup(memberToAdd)){
-            if(!glcProperties.getRights().getServices().get(service).get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToAdd))
-                    && !glcProperties.getRights().getServices().get(service).get(role).getMandatoryGroups().contains(invertedTemplateCache.get(memberToAdd))){
-                throw new UnauthorizedGroupModificationException("Can't add member "+memberToAdd+" for role "+role+" in service "+service);
+        if (isGroup(memberToAdd)) {
+            if (!glcProperties.getRights().getServices().get(service).get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToAdd))
+                && !glcProperties.getRights().getServices().get(service).get(role).getMandatoryGroups().contains(invertedTemplateCache.get(memberToAdd))) {
+                throw new UnauthorizedGroupModificationException("Can't add member " + memberToAdd + " for role " + role + " in service " + service);
             }
 
         } else {
-            if(!glcProperties.getRights().getServices().get(service).get(role).isAllowPeople()){
-                throw new UnauthorizedPeopleModificationException("Can't add member "+memberToAdd+" for role"+role+" in service "+service);
+            if (!glcProperties.getRights().getServices().get(service).get(role).isAllowPeople()) {
+                throw new UnauthorizedPeopleModificationException("Can't add member " + memberToAdd + " for role" + role + " in service " + service);
             }
         }
         return grouperService.addMember(targetGroup, memberToAdd, isGroup(memberToAdd));
@@ -161,17 +161,17 @@ public class RightsService {
     /**
      * Retire un droit sur un service pour un membre donné
      */
-    public ResponseEntity<WsDeleteMemberResponse> removeRight(String service, String role, String memberToRemove, String branch, String etabGroup){
+    public ResponseEntity<WsDeleteMemberResponse> removeRight(String service, String role, String memberToRemove, String branch, String etabGroup) {
         // Récupération du targetGroup depuis la conf pour être sûr qu'on ajoute sur le bon
         String targetGroup = GroupPathGenerator.groupPathFromTemplate(glcProperties.getRights().getServices().get(service).get(role).getTargetGroup(), branch, etabGroup);
         // Vérification qu'on a bien le droit de supprimer le membre en question
-        if(isGroup(memberToRemove)){
-            if(!glcProperties.getRights().getServices().get(service).get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToRemove))){
-                throw new UnauthorizedGroupModificationException("Can't remove member "+memberToRemove+" for role"+role+" in service "+service);
+        if (isGroup(memberToRemove)) {
+            if (!glcProperties.getRights().getServices().get(service).get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToRemove))) {
+                throw new UnauthorizedGroupModificationException("Can't remove member " + memberToRemove + " for role" + role + " in service " + service);
             }
         } else {
-            if(!glcProperties.getRights().getServices().get(service).get(role).isAllowPeople()){
-                throw new UnauthorizedPeopleModificationException("Can't remove member "+memberToRemove+" for role"+role+" in service "+service);
+            if (!glcProperties.getRights().getServices().get(service).get(role).isAllowPeople()) {
+                throw new UnauthorizedPeopleModificationException("Can't remove member " + memberToRemove + " for role" + role + " in service " + service);
             }
         }
         return grouperService.removeMember(targetGroup, memberToRemove, isGroup(memberToRemove));

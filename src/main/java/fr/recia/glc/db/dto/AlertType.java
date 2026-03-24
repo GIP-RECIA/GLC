@@ -16,8 +16,8 @@
 package fr.recia.glc.db.dto;
 
 public enum AlertType {
-  success,
-  info,
-  warning,
-  error
+    success,
+    info,
+    warning,
+    error
 }

@@ -15,7 +15,7 @@ public class UidFactory {
     private int nbLettreInc;
     private int baseConvertion;
 
-    public UidFactory(GLCProperties glcProperties){
+    public UidFactory(GLCProperties glcProperties) {
         this.codeRegion = glcProperties.getUidFactory().getCodeRegion();
         this.nomSource = glcProperties.getUidFactory().getNomSource();
         this.nbLettreAnn = glcProperties.getUidFactory().getNbLettreAnn();
@@ -37,11 +37,11 @@ public class UidFactory {
         return annee.substring(idx - nbLettreAnn, idx);
     }
 
-    private boolean calculNbLettreInc(final String codeGenerateur){
+    private boolean calculNbLettreInc(final String codeGenerateur) {
         if (nbLettreInc > 0) {
             return true;
         }
-        if (codeRegion != null && codeGenerateur != null ) {
+        if (codeRegion != null && codeGenerateur != null) {
             nbLettreInc = nbLettreTotal - nbLettreAnn - getCodeRegion().length() - codeGenerateur.length();
         } else {
             nbLettreInc = 0;
@@ -51,22 +51,22 @@ public class UidFactory {
 
     public String uid(final String annee, final int increment, final String codeGenerateur) {
         String uidS;
-        if (calculNbLettreInc(codeGenerateur)){
-            if (nbLettreAnn > 0 ) {
+        if (calculNbLettreInc(codeGenerateur)) {
+            if (nbLettreAnn > 0) {
                 String codeAnnee = codeAnnee(annee);
                 if (codeAnnee == null) {
                     return null;
                 }
                 uidS = String.format("%s%s%s%s",
-                        codeRegion,
-                        codeAnnee,
-                        codeGenerateur,
-                        AlphanumericsTools.toAlphanum(increment, nbLettreInc));
+                    codeRegion,
+                    codeAnnee,
+                    codeGenerateur,
+                    AlphanumericsTools.toAlphanum(increment, nbLettreInc));
             } else {
                 uidS = String.format("%s%s%s",
-                        codeRegion,
-                        codeGenerateur,
-                        AlphanumericsTools.toAlphanum(increment, nbLettreInc));
+                    codeRegion,
+                    codeGenerateur,
+                    AlphanumericsTools.toAlphanum(increment, nbLettreInc));
 
             }
             return uidS;
@@ -76,6 +76,7 @@ public class UidFactory {
 
     /**
      * convertie la clee en uid
+     *
      * @param clee
      * @return uid
      */
@@ -86,7 +87,7 @@ public class UidFactory {
         for (int i = nbLettreTotal; --i >= 0; ) {
             int c = (int) (clef % baseConvertion);
             uid[i] = (char) c;
-            clef = clef/baseConvertion;
+            clef = clef / baseConvertion;
         }
 
         return new String(uid);

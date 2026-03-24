@@ -32,14 +32,14 @@ import java.util.Map;
 @RequestMapping(value = "/api/config")
 public class ConfigurationController {
 
-  @Autowired
-  private GLCProperties glcProperties;
+    @Autowired
+    private GLCProperties glcProperties;
 
-  @GetMapping()
-  public ResponseEntity<Object> getConfiguration() {
-    Map<String, Object> data = new HashMap<>();
-    data.put("front", glcProperties.getFront());
-    return new ResponseEntity<>(data, HttpStatus.OK);
-  }
+    @GetMapping()
+    public ResponseEntity<Object> getConfiguration() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("front", glcProperties.getFront());
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
 
 }

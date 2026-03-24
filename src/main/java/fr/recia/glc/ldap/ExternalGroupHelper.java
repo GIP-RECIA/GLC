@@ -28,56 +28,56 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class ExternalGroupHelper {
 
-  /**
-   * The uid ldap attribute name.
-   */
-  private String groupIdAttribute;
-  /**
-   * The display name ldap attribute name.
-   */
-  private String groupDisplayNameAttribute;
-  /**
-   * The user search attribute name.
-   */
-  private String groupSearchAttribute;
-  private String groupMembersAttribute;
-  private Pattern groupKeyMemberRegex;
-  private int groupKeyMemberIndex;
-  private Pattern userKeyMemberRegex;
-  private int userKeyMemberIndex;
-  private Pattern groupDisplayNameRegex;
-  private boolean groupDNContainsDisplayName;
-  private boolean groupResolveUserMember;
-  private boolean groupResolveUserMemberByUserAttributes;
-  private Pattern groupsPatternWithoutMembersResolving;
-  /**
-   * The other attributes desired to show, facultative
-   */
-  private Set<String> otherGroupDisplayedAttributes;
-  private String groupDNSubPath;
+    /**
+     * The uid ldap attribute name.
+     */
+    private String groupIdAttribute;
+    /**
+     * The display name ldap attribute name.
+     */
+    private String groupDisplayNameAttribute;
+    /**
+     * The user search attribute name.
+     */
+    private String groupSearchAttribute;
+    private String groupMembersAttribute;
+    private Pattern groupKeyMemberRegex;
+    private int groupKeyMemberIndex;
+    private Pattern userKeyMemberRegex;
+    private int userKeyMemberIndex;
+    private Pattern groupDisplayNameRegex;
+    private boolean groupDNContainsDisplayName;
+    private boolean groupResolveUserMember;
+    private boolean groupResolveUserMemberByUserAttributes;
+    private Pattern groupsPatternWithoutMembersResolving;
+    /**
+     * The other attributes desired to show, facultative
+     */
+    private Set<String> otherGroupDisplayedAttributes;
+    private String groupDNSubPath;
 
-  public Set<String> getAttributes() {
-    Set<String> set = new HashSet<>(otherGroupDisplayedAttributes);
-    set.add(groupIdAttribute);
-    set.add(groupDisplayNameAttribute);
-    set.add(groupSearchAttribute);
-    set.add(groupMembersAttribute);
-    return set;
-  }
+    public Set<String> getAttributes() {
+        Set<String> set = new HashSet<>(otherGroupDisplayedAttributes);
+        set.add(groupIdAttribute);
+        set.add(groupDisplayNameAttribute);
+        set.add(groupSearchAttribute);
+        set.add(groupMembersAttribute);
+        return set;
+    }
 
-  // used to tell if use match or get group of pattern
-  public boolean isFormattingDisplayName() {
-    return groupDisplayNameRegex != null;
-  }
+    // used to tell if use match or get group of pattern
+    public boolean isFormattingDisplayName() {
+        return groupDisplayNameRegex != null;
+    }
 
-  // used to tell if use match or get group of pattern
-  public boolean isExtractGroupMembers() {
-    return groupKeyMemberIndex > 0;
-  }
+    // used to tell if use match or get group of pattern
+    public boolean isExtractGroupMembers() {
+        return groupKeyMemberIndex > 0;
+    }
 
-  // used to tell if use match or get group of pattern
-  public boolean isExtractUserMembers() {
-    return userKeyMemberIndex > 0;
-  }
+    // used to tell if use match or get group of pattern
+    public boolean isExtractUserMembers() {
+        return userKeyMemberIndex > 0;
+    }
 
 }

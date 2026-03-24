@@ -34,52 +34,52 @@ import static fr.recia.glc.services.alert.AlertStatics.SPLIT_CHARTER;
 @Service
 public class AlertService {
 
-  @Autowired
-  private FonctionService fonctionService;
+    @Autowired
+    private FonctionService fonctionService;
 
-  private final List<CustomConfigProperties.AlertProperties> alertProperties;
+    private final List<CustomConfigProperties.AlertProperties> alertProperties;
 
-  public AlertService(GLCProperties glcProperties) {
-    this.alertProperties = glcProperties.getCustomConfig().getAlerts();
-  }
+    public AlertService(GLCProperties glcProperties) {
+        this.alertProperties = glcProperties.getCustomConfig().getAlerts();
+    }
 
-  private AlertDto buildMinFonctionAlert(CustomConfigProperties.AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
-    return buildFonctionAlert(FonctionAlertType.min, data.getCode(), data.getMin(), nbDiscipline);
-  }
+    private AlertDto buildMinFonctionAlert(CustomConfigProperties.AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
+        return buildFonctionAlert(FonctionAlertType.min, data.getCode(), data.getMin(), nbDiscipline);
+    }
 
-  private AlertDto buildMaxFonctionAlert(CustomConfigProperties.AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
-    return buildFonctionAlert(FonctionAlertType.max, data.getCode(), data.getMax(), nbDiscipline);
-  }
+    private AlertDto buildMaxFonctionAlert(CustomConfigProperties.AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
+        return buildFonctionAlert(FonctionAlertType.max, data.getCode(), data.getMax(), nbDiscipline);
+    }
 
-  private AlertDto buildFonctionAlert(
-    FonctionAlertType type, String code,
-    CustomConfigProperties.AlertProperties.FonctionAlertProperties.ValueProperties value, long nbDiscipline
-  ) {
-    return AlertDto.builder()
-      .title(type + SPLIT_CHARTER + code + SPLIT_CHARTER + value.getValue() + SPLIT_CHARTER + nbDiscipline)
-      .type(value.getType())
-      .action(value.isAction())
-      .build();
-  }
+    private AlertDto buildFonctionAlert(
+        FonctionAlertType type, String code,
+        CustomConfigProperties.AlertProperties.FonctionAlertProperties.ValueProperties value, long nbDiscipline
+    ) {
+        return AlertDto.builder()
+            .title(type + SPLIT_CHARTER + code + SPLIT_CHARTER + value.getValue() + SPLIT_CHARTER + nbDiscipline)
+            .type(value.getType())
+            .action(value.isAction())
+            .build();
+    }
 
-  @Cacheable(value = "fonctionAlerts")
-  public List<AlertDto> getFonctionAlerts(Long etablissementId, String etablissementSource) {
-    log.trace("getFonctionAlerts for {} and {}", etablissementId, etablissementSource);
-    List<AlertDto> alerts = new ArrayList<>();
-    alertProperties.stream()
-      .filter(alert -> Objects.equals(etablissementSource, alert.getSource()))
-      .findAny().ifPresent(sourceAlerts -> sourceAlerts.getFonctionAlerts().forEach(fonctionAlert -> {
-        String[] codes = fonctionAlert.getCode().split("-");
-        long nbDiscipline = fonctionService.nbDiscipline(etablissementId, codes[0], codes[1]);
-        if (fonctionAlert.getMin() != null && fonctionAlert.getMin().getValue() > 0
-          && nbDiscipline < fonctionAlert.getMin().getValue())
-          alerts.add(buildMinFonctionAlert(fonctionAlert, nbDiscipline));
-        if (fonctionAlert.getMax() != null && fonctionAlert.getMax().getValue() > 0
-          && nbDiscipline > fonctionAlert.getMax().getValue())
-          alerts.add(buildMaxFonctionAlert(fonctionAlert, nbDiscipline));
-      }));
+    @Cacheable(value = "fonctionAlerts")
+    public List<AlertDto> getFonctionAlerts(Long etablissementId, String etablissementSource) {
+        log.trace("getFonctionAlerts for {} and {}", etablissementId, etablissementSource);
+        List<AlertDto> alerts = new ArrayList<>();
+        alertProperties.stream()
+            .filter(alert -> Objects.equals(etablissementSource, alert.getSource()))
+            .findAny().ifPresent(sourceAlerts -> sourceAlerts.getFonctionAlerts().forEach(fonctionAlert -> {
+                String[] codes = fonctionAlert.getCode().split("-");
+                long nbDiscipline = fonctionService.nbDiscipline(etablissementId, codes[0], codes[1]);
+                if (fonctionAlert.getMin() != null && fonctionAlert.getMin().getValue() > 0
+                    && nbDiscipline < fonctionAlert.getMin().getValue())
+                    alerts.add(buildMinFonctionAlert(fonctionAlert, nbDiscipline));
+                if (fonctionAlert.getMax() != null && fonctionAlert.getMax().getValue() > 0
+                    && nbDiscipline > fonctionAlert.getMax().getValue())
+                    alerts.add(buildMaxFonctionAlert(fonctionAlert, nbDiscipline));
+            }));
 
-    return alerts;
-  }
+        return alerts;
+    }
 
 }

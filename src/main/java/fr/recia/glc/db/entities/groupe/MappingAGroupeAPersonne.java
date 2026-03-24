@@ -36,12 +36,12 @@ import java.io.Serializable;
 @Entity
 @Table(name = "apersonnes_agroupes")
 @AssociationOverrides({
-  @AssociationOverride(
-    name = "pk.personne",
-    joinColumns = @JoinColumn(name = "APERSONNE_ID")),
-  @AssociationOverride(
-    name = "pk.groupe",
-    joinColumns = @JoinColumn(name = "AGROUPEOFAPERS_ID"))
+    @AssociationOverride(
+        name = "pk.personne",
+        joinColumns = @JoinColumn(name = "APERSONNE_ID")),
+    @AssociationOverride(
+        name = "pk.groupe",
+        joinColumns = @JoinColumn(name = "AGROUPEOFAPERS_ID"))
 })
 @Getter
 @Setter
@@ -50,28 +50,28 @@ import java.io.Serializable;
 @ToString
 public class MappingAGroupeAPersonne implements Serializable {
 
-  /**
-   * The Source which insert the entry.
-   */
-  @Basic
-  @Column(name = "SOURCE", length = IntConst.ISOURCE, nullable = false)
-  private String source;
-  /**
-   * The pk
-   */
-  @EmbeddedId
-  private MappingAGroupeAPersonneId pk = new MappingAGroupeAPersonneId();
+    /**
+     * The Source which insert the entry.
+     */
+    @Basic
+    @Column(name = "SOURCE", length = IntConst.ISOURCE, nullable = false)
+    private String source;
+    /**
+     * The pk
+     */
+    @EmbeddedId
+    private MappingAGroupeAPersonneId pk = new MappingAGroupeAPersonneId();
 
-  /**
-   * Contructor of the object MappingAGroupeAPersonne.java.
-   *
-   * @param source
-   * @param groupe
-   * @param personne
-   */
-  public MappingAGroupeAPersonne(final String source, final APersonne personne, final AGroupeOfAPersonne groupe) {
-    this.source = source;
-    this.pk = new MappingAGroupeAPersonneId(personne, groupe);
-  }
+    /**
+     * Contructor of the object MappingAGroupeAPersonne.java.
+     *
+     * @param source
+     * @param groupe
+     * @param personne
+     */
+    public MappingAGroupeAPersonne(final String source, final APersonne personne, final AGroupeOfAPersonne groupe) {
+        this.source = source;
+        this.pk = new MappingAGroupeAPersonneId(personne, groupe);
+    }
 
 }

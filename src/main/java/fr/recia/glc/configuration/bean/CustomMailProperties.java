@@ -24,16 +24,16 @@ import javax.validation.constraints.NotBlank;
 @Validated
 public class CustomMailProperties {
 
-  private String baseUrl;
-  @NotBlank
-  private String from;
+    private String baseUrl;
+    @NotBlank
+    private String from;
 
-  @Override
-  public String toString() {
-    return "CustomMailProperties\": {" +
-      "\n\t\"baseUrl\": \"" + baseUrl + "\"," +
-      "\n\t\"from\": \"" + from + "\"" +
-      "\n}";
-  }
+    @Override
+    public String toString() {
+        return "CustomMailProperties\": {" +
+            "\n\t\"baseUrl\": \"" + baseUrl + "\"," +
+            "\n\t\"from\": \"" + from + "\"" +
+            "\n}";
+    }
 
 }

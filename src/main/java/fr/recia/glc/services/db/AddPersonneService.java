@@ -95,15 +95,16 @@ public class AddPersonneService {
 
     /**
      * Création d'une personne dans la base sarapis
+     *
      * @param userCreation Le DTO venant du front qui contient les informations nécéssaires à la création
-     * TODO : gérer l'ajout de classes locales et groupes locaux, et de responsables d'un élève
+     *                     TODO : gérer l'ajout de classes locales et groupes locaux, et de responsables d'un élève
      */
-    public void addPersonne(UserCreation userCreation){
+    public void addPersonne(UserCreation userCreation) {
         log.debug("Trying to create local user {}", userCreation);
         // 1. Récupération de la date
         Instant date = new Date().toInstant();
         // 2. Récupération de l'année scolaire actuelle (on suppose que c'est la dernière)
-        AnneeScolaire anneeScolaire = anneeScolaireRepository.findAll().get(anneeScolaireRepository.findAll().size()-1);
+        AnneeScolaire anneeScolaire = anneeScolaireRepository.findAll().get(anneeScolaireRepository.findAll().size() - 1);
         // TODO : trouver une manière plus propre de récupérer l'année scolaire
         final String anneeEnCours = anneeScolaire.getAnneeEnCours().toString().split("-")[0];
         final String codeAnnee = uidFactory.codeAnnee(anneeEnCours);
@@ -116,7 +117,7 @@ public class AddPersonneService {
         // 4.1. Récupération du genUID correspondant en fonction du domaine de l'établissement
         List<String> domainsOfStructure = structureLoader.getDomainsOfStructure(aStructure.getSiren());
         String codeGenerateur;
-        if(domainsOfStructure.size() == 1){
+        if (domainsOfStructure.size() == 1) {
             codeGenerateur = glcProperties.getUidFactory().getDomainToCodeGenerateur().get(domainsOfStructure.get(0));
         } else {
             codeGenerateur = glcProperties.getUidFactory().getDefaultCodeGenerateur();
@@ -136,7 +137,7 @@ public class AddPersonneService {
         });
         log.debug("genUID : {}", genUID);
         // 4.3. Création de l'uid
-        final int increment = genUID.getIiii()+1;
+        final int increment = genUID.getIiii() + 1;
         log.debug("increment {}", increment);
         String uid = uidFactory.uid(anneeEnCours, increment, codeGenerateur);
         log.debug("uid generated : {}", uid);
@@ -158,7 +159,7 @@ public class AddPersonneService {
         Set<AStructure> listeStructures = new HashSet<>();
         listeStructures.add(aStructure);
         apersonne.setListeStructures(listeStructures);
-        if(apersonne.getCivilite() == Civilite.M){
+        if (apersonne.getCivilite() == Civilite.M) {
             apersonne.setSexe(Sexe.M);
         } else {
             apersonne.setSexe(Sexe.F);
@@ -198,16 +199,13 @@ public class AddPersonneService {
      */
     private APersonne instanciatePersonne(CategoriePersonne catPer) {
         APersonne apersonne;
-        if(catPer == CategoriePersonne.Eleve){
+        if (catPer == CategoriePersonne.Eleve) {
             apersonne = new Eleve();
-        }
-        else if(catPer == CategoriePersonne.Non_enseignant_etablissement){
+        } else if (catPer == CategoriePersonne.Non_enseignant_etablissement) {
             apersonne = new NonEnseignantEtablissement();
-        }
-        else if(catPer == CategoriePersonne.Non_enseignant_service_academique){
+        } else if (catPer == CategoriePersonne.Non_enseignant_service_academique) {
             apersonne = new NonEnseignantServiceAcademique();
-        }
-        else if(catPer == CategoriePersonne.Enseignant){
+        } else if (catPer == CategoriePersonne.Enseignant) {
             apersonne = new Enseignant();
         }
         // Type invalide
@@ -220,17 +218,17 @@ public class AddPersonneService {
     /**
      * Met à jour les champs spécifiques en fonction du profil
      */
-    private void updateSpecificFields(APersonne apersonne, UserCreation userCreation, AStructure aStructure){
-        if(apersonne.getCategorie() == CategoriePersonne.Eleve){
+    private void updateSpecificFields(APersonne apersonne, UserCreation userCreation, AStructure aStructure) {
+        if (apersonne.getCategorie() == CategoriePersonne.Eleve) {
             updateEleve((Eleve) apersonne, userCreation);
         }
-        if(apersonne.getCategorie() == CategoriePersonne.Non_enseignant_etablissement){
+        if (apersonne.getCategorie() == CategoriePersonne.Non_enseignant_etablissement) {
             updateNonEnsEtablissement((NonEnseignantEtablissement) apersonne, aStructure, userCreation);
         }
-        if(apersonne.getCategorie() == CategoriePersonne.Non_enseignant_service_academique){
+        if (apersonne.getCategorie() == CategoriePersonne.Non_enseignant_service_academique) {
             updateNonEnsServiceAcad((NonEnseignantServiceAcademique) apersonne, aStructure, userCreation);
         }
-        if(apersonne.getCategorie() == CategoriePersonne.Enseignant){
+        if (apersonne.getCategorie() == CategoriePersonne.Enseignant) {
             updateEnseignant((Enseignant) apersonne, aStructure, userCreation);
         }
     }
@@ -238,7 +236,7 @@ public class AddPersonneService {
     /**
      * Ajout des attributs spécifiques à un nonEnseignantEtablissement
      */
-    private void updateNonEnsEtablissement(final NonEnseignantEtablissement nonEnseignantEtablissement, final AStructure aStructure, final UserCreation userCreation){
+    private void updateNonEnsEtablissement(final NonEnseignantEtablissement nonEnseignantEtablissement, final AStructure aStructure, final UserCreation userCreation) {
         log.debug("updating nonEnseignantEtablissement {}", nonEnseignantEtablissement.getUid());
         fonctionService.saveAdditionalFonctions(nonEnseignantEtablissement.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
     }
@@ -246,7 +244,7 @@ public class AddPersonneService {
     /**
      * Ajout des attributs spécifiques à un nonEnseignantServiceAcademique
      */
-    private void updateNonEnsServiceAcad(final NonEnseignantServiceAcademique nonEnseignantServiceAcademique, final AStructure aStructure, final UserCreation userCreation){
+    private void updateNonEnsServiceAcad(final NonEnseignantServiceAcademique nonEnseignantServiceAcademique, final AStructure aStructure, final UserCreation userCreation) {
         log.debug("updating nonEnseignantServiceAcademique {}", nonEnseignantServiceAcademique.getUid());
         fonctionService.saveAdditionalFonctions(nonEnseignantServiceAcademique.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
     }
@@ -254,12 +252,12 @@ public class AddPersonneService {
     /**
      * Ajout des attributs spécifiques à un enseignant
      */
-    private void updateEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation){
+    private void updateEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation) {
         log.debug("updating enseignant {}", enseignant.getUid());
         fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
         List<MappingAGroupeAPersonneEnseignement> personneEnseignements = new ArrayList<>();
         // Ajout de tous les groupes de l'enseignement
-        for(Long groupId : userCreation.getGroupesEns()){
+        for (Long groupId : userCreation.getGroupesEns()) {
             MappingAGroupeAPersonneEnseignement personneEnseignement = new MappingAGroupeAPersonneEnseignement();
             MappingAGroupeAPersonneEnseignementId pk = new MappingAGroupeAPersonneEnseignementId();
             pk.setEnseignant(enseignant);
@@ -288,7 +286,7 @@ public class AddPersonneService {
         log.debug("mef for eleve is {}", mef.getId());
         eleve.setMef(mef);
         Set<MappingEleveEnseignement> mappingEleveEnseignements = new HashSet<>();
-        for(Long enseignementId: userCreation.getEnseignements()){
+        for (Long enseignementId : userCreation.getEnseignements()) {
             Enseignement enseignement = enseignementRepository.getReferenceById(enseignementId);
             log.debug("Adding new enseignement {}", enseignement);
             mappingEleveEnseignements.add(new MappingEleveEnseignement(eleve.getCleJointure().getSource(), enseignement));

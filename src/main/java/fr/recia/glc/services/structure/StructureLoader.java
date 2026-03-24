@@ -28,7 +28,6 @@ import org.springframework.beans.factory.InitializingBean;
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -74,59 +73,58 @@ public class StructureLoader implements InitializingBean {
             groupNameForLoadedStructures.put(structure.getUAI(), structure.getDisplayName());
             if (loadedStructuresByBranch.containsKey(structure.getGroupBranch())) {
                 loadedStructuresByBranch.get(structure.getGroupBranch()).add(structure);
-            }
-            else {
+            } else {
                 loadedStructuresByBranch.put(structure.getGroupBranch(), Sets.newHashSet(structure));
             }
         });
         log.debug(
-                "Loaded Structure: {}",
-                loadedStructuresByBranch.keySet().stream()
-                        .map(key -> {
-                            List<String> values = loadedStructuresByBranch.get(key).stream()
-                                    .map(structure -> "{" +
-                                            "\n\t\t\t\"keyId\": \"" + structure.getStructureKey().getKeyId() + "\"" +
-                                            ",\n\t\t\t\"keyType\": \"" + structure.getStructureKey().getKeyType() + "\"" +
-                                            ",\n\t\t\t\"UAI\": \"" + structure.getUAI() + "\"" +
-                                            ",\n\t\t\t\"displayName\": \"" + structure.getDisplayName() + "\"" +
-                                            ",\n\t\t\t\"groupBranch\": \"" + structure.getGroupBranch() + "\"" +
-                                            "\n\t\t}"
-                                    )
-                                    .collect(Collectors.toList());
+            "Loaded Structure: {}",
+            loadedStructuresByBranch.keySet().stream()
+                .map(key -> {
+                    List<String> values = loadedStructuresByBranch.get(key).stream()
+                        .map(structure -> "{" +
+                            "\n\t\t\t\"keyId\": \"" + structure.getStructureKey().getKeyId() + "\"" +
+                            ",\n\t\t\t\"keyType\": \"" + structure.getStructureKey().getKeyType() + "\"" +
+                            ",\n\t\t\t\"UAI\": \"" + structure.getUAI() + "\"" +
+                            ",\n\t\t\t\"displayName\": \"" + structure.getDisplayName() + "\"" +
+                            ",\n\t\t\t\"groupBranch\": \"" + structure.getGroupBranch() + "\"" +
+                            "\n\t\t}"
+                        )
+                        .collect(Collectors.toList());
 
-                            return "{" +
-                                    "\n\t\"" + key + "\": " + ListUtil.toStringList(values, ",\n\t\t", "[\n\t\t", "\n\t]") +
-                                    "\n}";
-                        })
-                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+                    return "{" +
+                        "\n\t\"" + key + "\": " + ListUtil.toStringList(values, ",\n\t\t", "[\n\t\t", "\n\t]") +
+                        "\n}";
+                })
+                .collect(Collectors.joining(",\n", "[\n", "\n]"))
         );
         log.debug(
-                "loadedStructuresByBranch recap: {}",
-                loadedStructuresByBranch.keySet().stream()
-                        .map(key -> "\t{ \"" + key + "\": " + loadedStructuresByBranch.get(key).size() + " }")
-                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+            "loadedStructuresByBranch recap: {}",
+            loadedStructuresByBranch.keySet().stream()
+                .map(key -> "\t{ \"" + key + "\": " + loadedStructuresByBranch.get(key).size() + " }")
+                .collect(Collectors.joining(",\n", "[\n", "\n]"))
         );
         log.debug(
-                "branchForLoadedStructures recap: {}",
-                branchForLoadedStructures.keySet().stream()
-                        .map(key -> "\t{ \"" + key + "\": " + branchForLoadedStructures.get(key) + " }")
-                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+            "branchForLoadedStructures recap: {}",
+            branchForLoadedStructures.keySet().stream()
+                .map(key -> "\t{ \"" + key + "\": " + branchForLoadedStructures.get(key) + " }")
+                .collect(Collectors.joining(",\n", "[\n", "\n]"))
         );
         log.debug(
-                "groupNameForLoadedStructures recap: {}",
-                groupNameForLoadedStructures.keySet().stream()
-                        .map(key -> "\t{ \"" + key + "\": " + groupNameForLoadedStructures.get(key) + " }")
-                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+            "groupNameForLoadedStructures recap: {}",
+            groupNameForLoadedStructures.keySet().stream()
+                .map(key -> "\t{ \"" + key + "\": " + groupNameForLoadedStructures.get(key) + " }")
+                .collect(Collectors.joining(",\n", "[\n", "\n]"))
         );
         List<StructureSirenDomain> structureSirenDomains = ldapStructureDao.structuresFromSiren();
-        for(StructureSirenDomain structureSirenDomain : structureSirenDomains){
+        for (StructureSirenDomain structureSirenDomain : structureSirenDomains) {
             domainsBySirenForStructures.put(structureSirenDomain.getSiren(), structureSirenDomain.getDomains());
         }
         log.debug(
-                "domainsBySirenForStructures recap: {}",
-                domainsBySirenForStructures.keySet().stream()
-                        .map(key -> "\t{ \"" + key + "\": " + domainsBySirenForStructures.get(key) + " }")
-                        .collect(Collectors.joining(",\n", "[\n", "\n]"))
+            "domainsBySirenForStructures recap: {}",
+            domainsBySirenForStructures.keySet().stream()
+                .map(key -> "\t{ \"" + key + "\": " + domainsBySirenForStructures.get(key) + " }")
+                .collect(Collectors.joining(",\n", "[\n", "\n]"))
         );
     }
 
@@ -142,11 +140,12 @@ public class StructureLoader implements InitializingBean {
         return groupNameForLoadedStructures.get(uai);
     }
 
-    public List<String> getDomainsOfStructure(String siren){
+    public List<String> getDomainsOfStructure(String siren) {
         return domainsBySirenForStructures.get(siren);
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {}
+    public void afterPropertiesSet() throws Exception {
+    }
 
 }

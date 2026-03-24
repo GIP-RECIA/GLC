@@ -31,20 +31,20 @@ import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
 @Validated
 public class GroupDesignerProperties {
 
-  @NotNull
-  private String groupRootPattern;
-  @NotNull
-  private String groupAttachEndMatch;
-  @NotEmpty
-  private List<String> groupToAttachEndPattern;
+    @NotNull
+    private String groupRootPattern;
+    @NotNull
+    private String groupAttachEndMatch;
+    @NotEmpty
+    private List<String> groupToAttachEndPattern;
 
-  @Override
-  public String toString() {
-    return "{" +
-      "\n\t\t\t\t\"groupRootPattern\": \"" + groupRootPattern + "\"," +
-      "\n\t\t\t\t\"groupAttachEndMatch\": \"" + groupAttachEndMatch + "\"," +
-      "\n\t\t\t\t\"groupToAttachEndPattern\": " + ListUtil.toStringList(groupToAttachEndPattern, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
-      "\n\t\t\t}";
-  }
+    @Override
+    public String toString() {
+        return "{" +
+            "\n\t\t\t\t\"groupRootPattern\": \"" + groupRootPattern + "\"," +
+            "\n\t\t\t\t\"groupAttachEndMatch\": \"" + groupAttachEndMatch + "\"," +
+            "\n\t\t\t\t\"groupToAttachEndPattern\": " + ListUtil.toStringList(groupToAttachEndPattern, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
+            "\n\t\t\t}";
+    }
 
 }

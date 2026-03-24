@@ -16,20 +16,20 @@
 package fr.recia.glc.db.enums;
 
 public enum CategorieStructure {
-  /**
-   * Collectivité Locale.
-   */
-  Collectivite_locale,
-  /**
-   * Entreprise.
-   */
-  Entreprise,
-  /**
-   * Etablissement.
-   */
-  Etablissement,
-  /**
-   * Service Académique.
-   */
-  Service_academique
+    /**
+     * Collectivité Locale.
+     */
+    Collectivite_locale,
+    /**
+     * Entreprise.
+     */
+    Entreprise,
+    /**
+     * Etablissement.
+     */
+    Etablissement,
+    /**
+     * Service Académique.
+     */
+    Service_academique
 }

@@ -30,18 +30,18 @@ import java.util.List;
 @Service
 public class CollectiviteService {
 
-  @Autowired
-  private CollectiviteLocaleRepository<CollectiviteLocale> collectiviteLocaleRepository;
+    @Autowired
+    private CollectiviteLocaleRepository<CollectiviteLocale> collectiviteLocaleRepository;
 
-  @Cacheable(value = "collectivites")
-  public List<SimpleStructureDto> getCollectivites() {
-    log.trace("getCollectivites");
-    List<CollectiviteLocale> collectiviteLocales = collectiviteLocaleRepository.findAll();
-    List<SimpleStructureDto> simpleStructureDtos = new ArrayList<>();
-    for(CollectiviteLocale collectiviteLocale : collectiviteLocales){
-      simpleStructureDtos.add(new SimpleStructureDto(collectiviteLocale));
+    @Cacheable(value = "collectivites")
+    public List<SimpleStructureDto> getCollectivites() {
+        log.trace("getCollectivites");
+        List<CollectiviteLocale> collectiviteLocales = collectiviteLocaleRepository.findAll();
+        List<SimpleStructureDto> simpleStructureDtos = new ArrayList<>();
+        for (CollectiviteLocale collectiviteLocale : collectiviteLocales) {
+            simpleStructureDtos.add(new SimpleStructureDto(collectiviteLocale));
+        }
+        return simpleStructureDtos;
     }
-    return simpleStructureDtos;
-  }
 
 }

@@ -20,10 +20,8 @@ import fr.recia.glc.db.entities.education.MEF;
 import fr.recia.glc.db.entities.education.MappingEleveEnseignement;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.utils.IntConst;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,90 +39,90 @@ import java.util.Set;
 
 @Entity
 @Table(indexes = {
-  @Index(name = "siecleId", columnList = "siecleId"),
-  @Index(name = "INE", columnList = "INE")
+    @Index(name = "siecleId", columnList = "siecleId"),
+    @Index(name = "INE", columnList = "INE")
 })
 @Getter
 @Setter
 public class Eleve extends APersonne {
 
-  /**
-   * Identifiant sconet.
-   */
-  @Column(length = IntConst.I15)
-  private String siecleId;
-  /**
-   * Identifiant National.
-   */
-  @Column(length = IntConst.I11)
-  private String INE;
-  /**
-   * Vrai si l'élève est majeur, Faux sinon.
-   */
-  @Column(nullable = false, columnDefinition = "BIT not null DEFAULT false")
-  private boolean majeur;
-  /**
-   * Vrai si l'élève est majeur anticipé, Faux sinon, null si non renseigné.
-   */
-  @Column(columnDefinition = "BIT")
-  private Boolean majeurAnticipe;
-  /**
-   * Régime de l'élève.
-   */
-  @Column(length = IntConst.I128)
-  private String regime;
-  /**
-   * Statut de l'élève.
-   */
-  @Column(length = IntConst.I128)
-  private String statut;
-  /**
-   * Vrai si l'élève utilise les transports scolaire, Faux sinon, null si non renseigné.
-   */
-  @Column(columnDefinition = "BIT")
-  private Boolean transport;
-  /**
-   * Vrai si l'élève est boursier, Faux sinon, null si non renseigné.
-   */
-  @Column(columnDefinition = "BIT")
-  private Boolean boursier;
+    /**
+     * Identifiant sconet.
+     */
+    @Column(length = IntConst.I15)
+    private String siecleId;
+    /**
+     * Identifiant National.
+     */
+    @Column(length = IntConst.I11)
+    private String INE;
+    /**
+     * Vrai si l'élève est majeur, Faux sinon.
+     */
+    @Column(nullable = false, columnDefinition = "BIT not null DEFAULT false")
+    private boolean majeur;
+    /**
+     * Vrai si l'élève est majeur anticipé, Faux sinon, null si non renseigné.
+     */
+    @Column(columnDefinition = "BIT")
+    private Boolean majeurAnticipe;
+    /**
+     * Régime de l'élève.
+     */
+    @Column(length = IntConst.I128)
+    private String regime;
+    /**
+     * Statut de l'élève.
+     */
+    @Column(length = IntConst.I128)
+    private String statut;
+    /**
+     * Vrai si l'élève utilise les transports scolaire, Faux sinon, null si non renseigné.
+     */
+    @Column(columnDefinition = "BIT")
+    private Boolean transport;
+    /**
+     * Vrai si l'élève est boursier, Faux sinon, null si non renseigné.
+     */
+    @Column(columnDefinition = "BIT")
+    private Boolean boursier;
 
-  /**
-   * Relation unidirectionnelle.
-   * MEF associé à l'élève.
-   */
-  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "mef_fk")
-  private MEF mef;
-  /**
-   * Relation unidirectionnelle.
-   * Liste des enseignements suivis par l'élève.
-   */
-  @ElementCollection(fetch = FetchType.LAZY)
-  @JoinTable(name = "eleves_enseignements", joinColumns = @JoinColumn(name = "ELEVE_ID", referencedColumnName = "ID"))
-  private Set<MappingEleveEnseignement> enseignements = new HashSet<>();
+    /**
+     * Relation unidirectionnelle.
+     * MEF associé à l'élève.
+     */
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "mef_fk")
+    private MEF mef;
+    /**
+     * Relation unidirectionnelle.
+     * Liste des enseignements suivis par l'élève.
+     */
+    @ElementCollection(fetch = FetchType.LAZY)
+    @JoinTable(name = "eleves_enseignements", joinColumns = @JoinColumn(name = "ELEVE_ID", referencedColumnName = "ID"))
+    private Set<MappingEleveEnseignement> enseignements = new HashSet<>();
 
-  /**
-   * Constructeur de l'objet Eleve.java.
-   */
-  public Eleve() {
-    super();
-    this.setCategorie(CategoriePersonne.Eleve);
-  }
+    /**
+     * Constructeur de l'objet Eleve.java.
+     */
+    public Eleve() {
+        super();
+        this.setCategorie(CategoriePersonne.Eleve);
+    }
 
-  /**
-   * Constructeur de l'objet Eleve.java.
-   *
-   * @param anneeScolaire Année scolaire de validité de l'individu. Année à la rentrée de septembre.
-   * @param cleJointure   Clé de jointure, identifiant unique fourni par les différentes sources,
-   *                      mais unique uniquement pour le périmètre de la source.
-   * @param cn            Nom canonique de la personne : NOM + Prénom usuels.
-   * @param givenName     Prénom usuel.
-   * @param sn            Nom d'usage.
-   */
-  public Eleve(final Date anneeScolaire, final CleJointure cleJointure,
-               final String cn, final String givenName, final String sn) {
-    super(anneeScolaire, CategoriePersonne.Eleve, cleJointure, cn, givenName, sn);
-  }
+    /**
+     * Constructeur de l'objet Eleve.java.
+     *
+     * @param anneeScolaire Année scolaire de validité de l'individu. Année à la rentrée de septembre.
+     * @param cleJointure   Clé de jointure, identifiant unique fourni par les différentes sources,
+     *                      mais unique uniquement pour le périmètre de la source.
+     * @param cn            Nom canonique de la personne : NOM + Prénom usuels.
+     * @param givenName     Prénom usuel.
+     * @param sn            Nom d'usage.
+     */
+    public Eleve(final Date anneeScolaire, final CleJointure cleJointure,
+                 final String cn, final String givenName, final String sn) {
+        super(anneeScolaire, CategoriePersonne.Eleve, cleJointure, cn, givenName, sn);
+    }
 
 }

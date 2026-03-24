@@ -24,23 +24,23 @@ import javax.persistence.PersistenceContext;
 @Repository
 public class APersonneAStructureRepository2 {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-  @Transactional
-  public void insertInStructure(Long idPersonne, Long idStructure) {
-    entityManager.createNativeQuery("INSERT INTO apersonnes_astructures (APERSONNE_ID, ASTRUCTURE_ID) VALUES (?, ?)")
-      .setParameter(1, idPersonne)
-      .setParameter(2, idStructure)
-      .executeUpdate();
-  }
+    @Transactional
+    public void insertInStructure(Long idPersonne, Long idStructure) {
+        entityManager.createNativeQuery("INSERT INTO apersonnes_astructures (APERSONNE_ID, ASTRUCTURE_ID) VALUES (?, ?)")
+            .setParameter(1, idPersonne)
+            .setParameter(2, idStructure)
+            .executeUpdate();
+    }
 
-  @Transactional
-  public void deleteFromStructure(Long idPersonne, Long idStructure) {
-    entityManager.createNativeQuery("DELETE FROM apersonnes_astructures WHERE APERSONNE_ID = ? AND ASTRUCTURE_ID = ?")
-      .setParameter(1, idPersonne)
-      .setParameter(2, idStructure)
-      .executeUpdate();
-  }
+    @Transactional
+    public void deleteFromStructure(Long idPersonne, Long idStructure) {
+        entityManager.createNativeQuery("DELETE FROM apersonnes_astructures WHERE APERSONNE_ID = ? AND ASTRUCTURE_ID = ?")
+            .setParameter(1, idPersonne)
+            .setParameter(2, idStructure)
+            .executeUpdate();
+    }
 
 }

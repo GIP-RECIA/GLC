@@ -29,46 +29,46 @@ import java.util.Set;
 
 @Service
 public class SubjectKeyDTOFactoryImpl implements
-  CompositeKeyDTOFactory<SubjectKeyDTO, SubjectKey, String, SubjectType> {
+    CompositeKeyDTOFactory<SubjectKeyDTO, SubjectKey, String, SubjectType> {
 
-  public SubjectKey convertToModelKey(@NotNull final SubjectKeyDTO id) {
-    return new SubjectKey(id.getKeyId(), id.getKeyType());
-  }
-
-  public SubjectKeyDTO convertToDTOKey(@NotNull final SubjectKey id) {
-    return new SubjectKeyDTO(id.getKeyId(), id.getKeyType());
-  }
-
-  public Set<SubjectKey> convertToModelKey(@NotNull final Set<SubjectKeyDTO> dtos) {
-    final Set<SubjectKey> models = Sets.newHashSet();
-    for (SubjectKeyDTO dto : dtos) {
-      models.add(this.convertToModelKey(dto));
+    public SubjectKey convertToModelKey(@NotNull final SubjectKeyDTO id) {
+        return new SubjectKey(id.getKeyId(), id.getKeyType());
     }
-    return models;
-  }
 
-  public List<SubjectKey> convertToModelKey(@NotNull final List<SubjectKeyDTO> dtos) {
-    final List<SubjectKey> models = Lists.newArrayList();
-    for (SubjectKeyDTO dto : dtos) {
-      models.add(this.convertToModelKey(dto));
+    public SubjectKeyDTO convertToDTOKey(@NotNull final SubjectKey id) {
+        return new SubjectKeyDTO(id.getKeyId(), id.getKeyType());
     }
-    return models;
-  }
 
-  public Set<SubjectKeyDTO> convertToDTOKey(@NotNull final Set<SubjectKey> models) {
-    final Set<SubjectKeyDTO> dtos = Sets.newHashSet();
-    for (SubjectKey model : models) {
-      dtos.add(this.convertToDTOKey(model));
+    public Set<SubjectKey> convertToModelKey(@NotNull final Set<SubjectKeyDTO> dtos) {
+        final Set<SubjectKey> models = Sets.newHashSet();
+        for (SubjectKeyDTO dto : dtos) {
+            models.add(this.convertToModelKey(dto));
+        }
+        return models;
     }
-    return dtos;
-  }
 
-  public List<SubjectKeyDTO> convertToDTOKey(@NotNull final List<SubjectKey> models) {
-    final List<SubjectKeyDTO> dtos = Lists.newArrayList();
-    for (SubjectKey model : models) {
-      dtos.add(this.convertToDTOKey(model));
+    public List<SubjectKey> convertToModelKey(@NotNull final List<SubjectKeyDTO> dtos) {
+        final List<SubjectKey> models = Lists.newArrayList();
+        for (SubjectKeyDTO dto : dtos) {
+            models.add(this.convertToModelKey(dto));
+        }
+        return models;
     }
-    return dtos;
-  }
+
+    public Set<SubjectKeyDTO> convertToDTOKey(@NotNull final Set<SubjectKey> models) {
+        final Set<SubjectKeyDTO> dtos = Sets.newHashSet();
+        for (SubjectKey model : models) {
+            dtos.add(this.convertToDTOKey(model));
+        }
+        return dtos;
+    }
+
+    public List<SubjectKeyDTO> convertToDTOKey(@NotNull final List<SubjectKey> models) {
+        final List<SubjectKeyDTO> dtos = Lists.newArrayList();
+        for (SubjectKey model : models) {
+            dtos.add(this.convertToDTOKey(model));
+        }
+        return dtos;
+    }
 
 }

@@ -3,7 +3,6 @@ package fr.recia.glc.services.db;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.personne.Login;
 import fr.recia.glc.db.repositories.personne.LoginRepository;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,7 +31,7 @@ public class LoginService {
         Pattern p = Pattern.compile(loginPrefix + "(\\d*)");
         Matcher m;
         Instant date = new Date().toInstant();
-        List<Login> loginList = loginRepository.findByNomLike(loginPrefix+"%");
+        List<Login> loginList = loginRepository.findByNomLike(loginPrefix + "%");
         String newLogin = loginPrefix;
         int nbMax = 0;
         int nb = 0;
@@ -62,7 +61,7 @@ public class LoginService {
             } else {
                 // on cherche le premier disponible.
                 for (int i = 0; i < cptUtilise.length; i++) {
-                    if (!cptUtilise[i]){
+                    if (!cptUtilise[i]) {
                         nbMax = i;
                         newLogin = String.format("%s%d", newLogin, i);
                         break;

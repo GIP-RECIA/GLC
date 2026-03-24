@@ -37,13 +37,13 @@ import javax.persistence.Entity;
 @ToString(callSuper = true)
 public class EnsRespStageRelation extends AStageRelation {
 
-  /**
-   * @param source
-   * @param tuteurStage
-   * @param eleve
-   */
-  public EnsRespStageRelation(final String source, final Enseignant tuteurStage, final Eleve eleve) {
-    super(source, tuteurStage, eleve, TypeStage.Enseignant_responsable, CategorieRelation.EnsRespStage);
-  }
+    /**
+     * @param source
+     * @param tuteurStage
+     * @param eleve
+     */
+    public EnsRespStageRelation(final String source, final Enseignant tuteurStage, final Eleve eleve) {
+        super(source, tuteurStage, eleve, TypeStage.Enseignant_responsable, CategorieRelation.EnsRespStage);
+    }
 
 }

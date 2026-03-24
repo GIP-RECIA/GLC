@@ -21,36 +21,36 @@ import java.util.stream.Collectors;
 
 public class ListUtil {
 
-  private ListUtil() {
-    throw new IllegalStateException("Utility class");
-  }
+    private ListUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
-  public static <T> String toStringList(List<T> list) {
-    return toStringList(list, ", ");
-  }
+    public static <T> String toStringList(List<T> list) {
+        return toStringList(list, ", ");
+    }
 
-  public static <T> String toStringList(List<T> list, String delimiter) {
-    return toStringList(list, delimiter, "[ ", " ]");
-  }
+    public static <T> String toStringList(List<T> list, String delimiter) {
+        return toStringList(list, delimiter, "[ ", " ]");
+    }
 
-  public static <T> String toStringList(List<T> list, String delimiter, String prefix, String suffix) {
-    return list.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(delimiter, prefix, suffix));
-  }
+    public static <T> String toStringList(List<T> list, String delimiter, String prefix, String suffix) {
+        return list.stream()
+            .map(String::valueOf)
+            .collect(Collectors.joining(delimiter, prefix, suffix));
+    }
 
-  public static <T> String toStringList(Set<T> list) {
-    return toStringList(list, ", ");
-  }
+    public static <T> String toStringList(Set<T> list) {
+        return toStringList(list, ", ");
+    }
 
-  public static <T> String toStringList(Set<T> list, String delimiter) {
-    return toStringList(list, delimiter, "[ ", " ]");
-  }
+    public static <T> String toStringList(Set<T> list, String delimiter) {
+        return toStringList(list, delimiter, "[ ", " ]");
+    }
 
-  public static <T> String toStringList(Set<T> list, String delimiter, String prefix, String suffix) {
-    return list.stream()
-      .map(String::valueOf)
-      .collect(Collectors.joining(delimiter, prefix, suffix));
-  }
+    public static <T> String toStringList(Set<T> list, String delimiter, String prefix, String suffix) {
+        return list.stream()
+            .map(String::valueOf)
+            .collect(Collectors.joining(delimiter, prefix, suffix));
+    }
 
 }

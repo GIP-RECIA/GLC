@@ -16,16 +16,16 @@
 package fr.recia.glc.db.enums;
 
 public enum EtatAlim {
-  /**
-   * Non alimenté.
-   */
-  Non_alimente,
-  /**
-   * En bascule, attente du complet.
-   */
-  Bascule,
-  /**
-   * Traitement quotidient des deltas.
-   */
-  Ouvert
+    /**
+     * Non alimenté.
+     */
+    Non_alimente,
+    /**
+     * En bascule, attente du complet.
+     */
+    Bascule,
+    /**
+     * Traitement quotidient des deltas.
+     */
+    Ouvert
 }

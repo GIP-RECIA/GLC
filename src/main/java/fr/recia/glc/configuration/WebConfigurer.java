@@ -38,28 +38,28 @@ import java.util.Arrays;
 @Configuration
 public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<WebServerFactory> {
 
-  @Autowired
-  private Environment env;
+    @Autowired
+    private Environment env;
 
-  @Override
-  public void onStartup(ServletContext servletContext) throws ServletException {
-    log.info("Web application configuration, using profiles: {}", Arrays.toString(env.getActiveProfiles()));
-  }
-
-  /**
-   * Set up Mime types.
-   */
-  @Override
-  public void customize(WebServerFactory server) {
-    if (server instanceof ConfigurableServletWebServerFactory) {
-      MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
-      // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
-      mappings.add("html", MediaType.TEXT_HTML_VALUE + ";charset=" + StandardCharsets.UTF_8.name().toLowerCase());
-      // CloudFoundry issue, see https://github.com/cloudfoundry/gorouter/issues/64
-      mappings.add("json", MediaType.TEXT_HTML_VALUE + ";charset=" + StandardCharsets.UTF_8.name().toLowerCase());
-      ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) server;
-      servletWebServer.setMimeMappings(mappings);
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        log.info("Web application configuration, using profiles: {}", Arrays.toString(env.getActiveProfiles()));
     }
-  }
+
+    /**
+     * Set up Mime types.
+     */
+    @Override
+    public void customize(WebServerFactory server) {
+        if (server instanceof ConfigurableServletWebServerFactory) {
+            MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
+            // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
+            mappings.add("html", MediaType.TEXT_HTML_VALUE + ";charset=" + StandardCharsets.UTF_8.name().toLowerCase());
+            // CloudFoundry issue, see https://github.com/cloudfoundry/gorouter/issues/64
+            mappings.add("json", MediaType.TEXT_HTML_VALUE + ";charset=" + StandardCharsets.UTF_8.name().toLowerCase());
+            ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) server;
+            servletWebServer.setMimeMappings(mappings);
+        }
+    }
 
 }

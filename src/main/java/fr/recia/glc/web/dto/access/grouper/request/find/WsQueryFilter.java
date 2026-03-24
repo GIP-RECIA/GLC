@@ -21,6 +21,7 @@ import lombok.Data;
 public class WsQueryFilter {
     private String queryFilterType = "FIND_BY_GROUP_NAME_APPROXIMATE";
     private String groupName;
+
     public WsQueryFilter(String groupName) {
         this.groupName = groupName;
     }

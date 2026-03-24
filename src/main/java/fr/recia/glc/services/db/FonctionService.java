@@ -37,11 +37,9 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.utils.SourceUtils;
 import fr.recia.glc.web.dto.function.FonctionAction;
 import fr.recia.glc.web.dto.function.FonctionToModify;
-import fr.recia.glc.web.dto.function.JsonFonction;
-import fr.recia.glc.utils.DateUtils;
-import fr.recia.glc.utils.SourceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -49,11 +47,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -71,369 +67,370 @@ import static fr.recia.glc.utils.SourceUtils.areSourcesEquals;
 @Service
 public class FonctionService {
 
-  @Autowired
-  private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
-  @Autowired
-  private APersonneAStructureRepository2 aPersonneAStructureRepository2;
-  @Autowired
-  private APersonneRepository<APersonne> aPersonneRepository;
-  @Autowired
-  private AStructureRepository<AStructure> aStructureRepository;
-  @Autowired
-  private FonctionRepository<Fonction> fonctionRepository;
-  @Autowired
-  private DisciplineRepository<Discipline> disciplineRepository;
-  @Autowired
-  private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
+    @Autowired
+    private APersonneAStructureRepository<APersonneAStructure> aPersonneAStructureRepository;
+    @Autowired
+    private APersonneAStructureRepository2 aPersonneAStructureRepository2;
+    @Autowired
+    private APersonneRepository<APersonne> aPersonneRepository;
+    @Autowired
+    private AStructureRepository<AStructure> aStructureRepository;
+    @Autowired
+    private FonctionRepository<Fonction> fonctionRepository;
+    @Autowired
+    private DisciplineRepository<Discipline> disciplineRepository;
+    @Autowired
+    private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
 
-  @Autowired
-  private PersonneService personneService;
+    @Autowired
+    private PersonneService personneService;
 
-  private static final String ALL = "ALL";
-  public static final String FILIERE = "filieres";
-  public static final String DISCIPLINE = "disciplines";
+    private static final String ALL = "ALL";
+    public static final String FILIERE = "filieres";
+    public static final String DISCIPLINE = "disciplines";
 
-  private final List<CustomConfigProperties.FonctionsProperties> fonctionsProperties;
+    private final List<CustomConfigProperties.FonctionsProperties> fonctionsProperties;
 
-  public FonctionService(GLCProperties glcProperties) {
-    this.fonctionsProperties = glcProperties.getCustomConfig().getFonctions();
-  }
-
-  @Cacheable(value = "fonctions")
-  public List<Object> getFonctions() {
-    log.trace("getFonctions");
-    final List<String> sources = disciplineRepository.findAllNonSarapisSources();
-    if (sources.isEmpty()) return Collections.emptyList();
-
-    final List<TypeFonctionFiliereDto> typesFonctionFiliere = typeFonctionFiliereRepository.findWithoutSource();
-    final List<DisciplineDto> disciplines = disciplineRepository.findWithoutSource();
-    final List<FonctionDto> fonctions = fonctionRepository.findWithoutSource();
-
-    final ArrayList<Object> data = new ArrayList<>();
-
-    final Map<String, Object> all = new HashMap<>();
-    all.put("source", ALL);
-    all.put(FILIERE, getOfficial(
-      typesFonctionFiliere,
-      disciplines,
-      new ArrayList<>(new LinkedHashSet<>(Stream.concat(
-        fonctions.stream(),
-        getFonctionsFromMapping(typesFonctionFiliere, disciplines).stream()
-      ).collect(Collectors.toList()))),
-      ALL));
-    data.add(all);
-
-    sources.forEach(source -> {
-      final Map<String, Object> object = new HashMap<>();
-      object.put("source", source);
-      object.put(FILIERE, getOfficial(typesFonctionFiliere, disciplines, fonctions, source));
-      object.put("customMapping", getCustomMapping(source));
-      data.add(object);
-    });
-
-    return data;
-  }
-
-  private List<FonctionDto> getFonctionsFromMapping(
-    List<TypeFonctionFiliereDto> typesFonctionFiliere,
-    List<DisciplineDto> disciplines
-  ) {
-    List<FonctionDto> data = new ArrayList<>();
-
-    fonctionsProperties.forEach(file -> file.getFilieres().forEach(filiere -> {
-      TypeFonctionFiliereDto filiereDto = typesFonctionFiliere.stream()
-        .filter(tffdto -> Objects.equals(tffdto.getCodeFiliere(), filiere.getCode()) && areSourcesEquals(tffdto.getSource(), file.getSource(), false))
-        .findAny()
-        .orElse(null);
-
-      filiere.getDisciplines().forEach(discipline -> {
-        DisciplineDto disciplineDto = disciplines.stream()
-          .filter(ddto -> Objects.equals(ddto.getCode(), discipline) && areSourcesEquals(ddto.getSource(), file.getSource(), false))
-          .findAny()
-          .orElse(null);
-
-        if (disciplineDto != null && filiereDto != null)
-          data.add(new FonctionDto(disciplineDto.getId(), filiereDto.getId(), file.getSource()));
-      });
-    }));
-
-    return data;
-  }
-
-  private List<TypeFonctionFiliereDto> getOfficial(
-    List<TypeFonctionFiliereDto> typesFonctionFiliere,
-    List<DisciplineDto> disciplines,
-    List<FonctionDto> fonctions,
-    String source
-  ) {
-    if (!source.equals(ALL)) {
-      return getDisciplinesByFiliere(
-        typesFonctionFiliere.stream()
-          .filter(typeFonctionFiliere -> areSourcesEquals(typeFonctionFiliere.getSource(), source))
-          .collect(Collectors.toList()),
-        disciplines.stream()
-          .filter(discipline -> areSourcesEquals(discipline.getSource(), source))
-          .collect(Collectors.toList()),
-        fonctions.stream()
-          .filter(fonction -> areSourcesEquals(fonction.getSource(), source, false))
-          .collect(Collectors.toList()),
-        source
-      ).stream()
-        .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
-        .collect(Collectors.toList());
+    public FonctionService(GLCProperties glcProperties) {
+        this.fonctionsProperties = glcProperties.getCustomConfig().getFonctions();
     }
 
-    return getDisciplinesByFiliere(typesFonctionFiliere, disciplines, fonctions, source);
-  }
+    @Cacheable(value = "fonctions")
+    public List<Object> getFonctions() {
+        log.trace("getFonctions");
+        final List<String> sources = disciplineRepository.findAllNonSarapisSources();
+        if (sources.isEmpty()) return Collections.emptyList();
 
-  private Map<String, Object> getCustomMapping(String source) {
-    Map<String, Object> data = new HashMap<>();
+        final List<TypeFonctionFiliereDto> typesFonctionFiliere = typeFonctionFiliereRepository.findWithoutSource();
+        final List<DisciplineDto> disciplines = disciplineRepository.findWithoutSource();
+        final List<FonctionDto> fonctions = fonctionRepository.findWithoutSource();
 
-    // Recherche du mapping
-    CustomConfigProperties.FonctionsProperties fonction = fonctionsProperties.stream()
-      .filter(f -> Objects.equals(f.getSource(), source))
-      .findAny()
-      .orElse(null);
-    if (fonction == null) return data;
+        final ArrayList<Object> data = new ArrayList<>();
 
-    // Recherche des filières
-    List<String> typeFonctionFiliereCodes = fonction.getFilieres().stream()
-      .map(CustomConfigProperties.FonctionsProperties.FiliereProperties::getCode)
-      .collect(Collectors.toList());
-    List<TypeFonctionFiliereDto> typesFonctionFiliere =
-      typeFonctionFiliereRepository.findByCodeAndSourceSarapis(typeFonctionFiliereCodes, source);
-    typesFonctionFiliere.sort(Comparator.comparingInt(tff -> typeFonctionFiliereCodes.indexOf(tff.getCodeFiliere())));
+        final Map<String, Object> all = new HashMap<>();
+        all.put("source", ALL);
+        all.put(FILIERE, getOfficial(
+            typesFonctionFiliere,
+            disciplines,
+            new ArrayList<>(new LinkedHashSet<>(Stream.concat(
+                fonctions.stream(),
+                getFonctionsFromMapping(typesFonctionFiliere, disciplines).stream()
+            ).collect(Collectors.toList()))),
+            ALL));
+        data.add(all);
 
-    // Ajout des disciplines aux filières
-    if (!typesFonctionFiliere.isEmpty()) {
-      typesFonctionFiliere = typesFonctionFiliere.stream()
-        .map(typeFonctionFiliere -> {
-          List<String> disciplineCodes = fonction.getFilieres().stream()
-            .filter(af -> Objects.equals(af.getCode(), typeFonctionFiliere.getCodeFiliere()))
+        sources.forEach(source -> {
+            final Map<String, Object> object = new HashMap<>();
+            object.put("source", source);
+            object.put(FILIERE, getOfficial(typesFonctionFiliere, disciplines, fonctions, source));
+            object.put("customMapping", getCustomMapping(source));
+            data.add(object);
+        });
+
+        return data;
+    }
+
+    private List<FonctionDto> getFonctionsFromMapping(
+        List<TypeFonctionFiliereDto> typesFonctionFiliere,
+        List<DisciplineDto> disciplines
+    ) {
+        List<FonctionDto> data = new ArrayList<>();
+
+        fonctionsProperties.forEach(file -> file.getFilieres().forEach(filiere -> {
+            TypeFonctionFiliereDto filiereDto = typesFonctionFiliere.stream()
+                .filter(tffdto -> Objects.equals(tffdto.getCodeFiliere(), filiere.getCode()) && areSourcesEquals(tffdto.getSource(), file.getSource(), false))
+                .findAny()
+                .orElse(null);
+
+            filiere.getDisciplines().forEach(discipline -> {
+                DisciplineDto disciplineDto = disciplines.stream()
+                    .filter(ddto -> Objects.equals(ddto.getCode(), discipline) && areSourcesEquals(ddto.getSource(), file.getSource(), false))
+                    .findAny()
+                    .orElse(null);
+
+                if (disciplineDto != null && filiereDto != null)
+                    data.add(new FonctionDto(disciplineDto.getId(), filiereDto.getId(), file.getSource()));
+            });
+        }));
+
+        return data;
+    }
+
+    private List<TypeFonctionFiliereDto> getOfficial(
+        List<TypeFonctionFiliereDto> typesFonctionFiliere,
+        List<DisciplineDto> disciplines,
+        List<FonctionDto> fonctions,
+        String source
+    ) {
+        if (!source.equals(ALL)) {
+            return getDisciplinesByFiliere(
+                typesFonctionFiliere.stream()
+                    .filter(typeFonctionFiliere -> areSourcesEquals(typeFonctionFiliere.getSource(), source))
+                    .collect(Collectors.toList()),
+                disciplines.stream()
+                    .filter(discipline -> areSourcesEquals(discipline.getSource(), source))
+                    .collect(Collectors.toList()),
+                fonctions.stream()
+                    .filter(fonction -> areSourcesEquals(fonction.getSource(), source, false))
+                    .collect(Collectors.toList()),
+                source
+            ).stream()
+                .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
+                .collect(Collectors.toList());
+        }
+
+        return getDisciplinesByFiliere(typesFonctionFiliere, disciplines, fonctions, source);
+    }
+
+    private Map<String, Object> getCustomMapping(String source) {
+        Map<String, Object> data = new HashMap<>();
+
+        // Recherche du mapping
+        CustomConfigProperties.FonctionsProperties fonction = fonctionsProperties.stream()
+            .filter(f -> Objects.equals(f.getSource(), source))
             .findAny()
-            .map(CustomConfigProperties.FonctionsProperties.FiliereProperties::getDisciplines)
-            .orElse(new ArrayList<>());
+            .orElse(null);
+        if (fonction == null) return data;
 
-          List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(disciplineCodes, source);
-          disciplines.sort(Comparator.comparingInt(discipline -> disciplineCodes.indexOf(discipline.getCode())));
-          typeFonctionFiliere.setDisciplines(disciplines);
+        // Recherche des filières
+        List<String> typeFonctionFiliereCodes = fonction.getFilieres().stream()
+            .map(CustomConfigProperties.FonctionsProperties.FiliereProperties::getCode)
+            .collect(Collectors.toList());
+        List<TypeFonctionFiliereDto> typesFonctionFiliere =
+            typeFonctionFiliereRepository.findByCodeAndSourceSarapis(typeFonctionFiliereCodes, source);
+        typesFonctionFiliere.sort(Comparator.comparingInt(tff -> typeFonctionFiliereCodes.indexOf(tff.getCodeFiliere())));
 
-          return typeFonctionFiliere;
-        })
-        .collect(Collectors.toList());
-      data.put(FILIERE, typesFonctionFiliere);
+        // Ajout des disciplines aux filières
+        if (!typesFonctionFiliere.isEmpty()) {
+            typesFonctionFiliere = typesFonctionFiliere.stream()
+                .map(typeFonctionFiliere -> {
+                    List<String> disciplineCodes = fonction.getFilieres().stream()
+                        .filter(af -> Objects.equals(af.getCode(), typeFonctionFiliere.getCodeFiliere()))
+                        .findAny()
+                        .map(CustomConfigProperties.FonctionsProperties.FiliereProperties::getDisciplines)
+                        .orElse(new ArrayList<>());
+
+                    List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(disciplineCodes, source);
+                    disciplines.sort(Comparator.comparingInt(discipline -> disciplineCodes.indexOf(discipline.getCode())));
+                    typeFonctionFiliere.setDisciplines(disciplines);
+
+                    return typeFonctionFiliere;
+                })
+                .collect(Collectors.toList());
+            data.put(FILIERE, typesFonctionFiliere);
+        }
+
+        // Recherche des disciplines sans filières
+        List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(fonction.getDisciplines(), source);
+        if (!disciplines.isEmpty()) data.put(DISCIPLINE, disciplines);
+
+        return data;
     }
 
-    // Recherche des disciplines sans filières
-    List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(fonction.getDisciplines(), source);
-    if (!disciplines.isEmpty()) data.put(DISCIPLINE, disciplines);
-
-    return data;
-  }
-
-  private List<TypeFonctionFiliereDto> getDisciplinesByFiliere(
-    List<TypeFonctionFiliereDto> typesFonctionFiliere,
-    List<DisciplineDto> disciplines,
-    List<FonctionDto> fonctions,
-    String source
-  ) {
-    return getDisciplinesByFiliere(typesFonctionFiliere, disciplines, fonctions, source, List.of(SANS_OBJET), List.of(SANS_OBJET));
-  }
-
-  private List<TypeFonctionFiliereDto> getDisciplinesByFiliere(
-    List<TypeFonctionFiliereDto> typesFonctionFiliere,
-    List<DisciplineDto> disciplines,
-    List<FonctionDto> fonctions,
-    String source,
-    List<String> typesFonctionFiliereToNotInclue,
-    List<String> disciplinesToNotInclue
-  ) {
-    if (fonctions.isEmpty()) return Collections.emptyList();
-
-    final List<TypeFonctionFiliereDto> tmpTypesFonctionFiliere = typesFonctionFiliere.stream()
-      .map(TypeFonctionFiliereDto::new)
-      .collect(Collectors.toList());
-    final List<DisciplineDto> tmpDisciplines = disciplines.stream()
-      .map(DisciplineDto::new)
-      .collect(Collectors.toList());
-    final List<FonctionDto> tmpFonctions = fonctions.stream()
-      .map(FonctionDto::new)
-      .collect(Collectors.toList());
-
-    return tmpTypesFonctionFiliere.stream()
-      .filter(typeFonctionFiliere -> !typesFonctionFiliereToNotInclue.contains(typeFonctionFiliere.getLibelleFiliere()))
-      .map(typeFonctionFiliere -> {
-        Set<Long> disciplineIds = tmpFonctions.stream()
-          .filter(fonction -> Objects.equals(fonction.getFiliere(), typeFonctionFiliere.getId()))
-          .map(FonctionDto::getDiscipline)
-          .collect(Collectors.toSet());
-        List<DisciplineDto> disciplinesInFiliere = tmpDisciplines.stream()
-          .filter(discipline -> disciplineIds.contains(discipline.getId()) && !disciplinesToNotInclue.contains(discipline.getDisciplinePoste()))
-          .collect(Collectors.toList());
-        typeFonctionFiliere.setDisciplines(disciplinesInFiliere);
-
-        return typeFonctionFiliere;
-      })
-      .collect(Collectors.toList());
-  }
-
-  @Cacheable(value = "personneFonctions")
-  public List<FonctionDto> getPersonneFonctions(Long personneId) {
-    log.trace("getPersonneFonctions for {}", personneId);
-    return fonctionRepository.findByPersonne(personneId);
-  }
-
-  public List<FonctionDto> getAdditionalFonctions(Long personneId) {
-    return fonctionRepository.findByPersonne(personneId).stream()
-      .filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_))
-      .collect(Collectors.toList());
-  }
-
-  @Cacheable(value = "structureFonctions")
-  public List<FonctionDto> getStructureFonctions(Long structureId) {
-    log.trace("getStructureFonctions for {}", structureId);
-    return fonctionRepository.findByStructureId(structureId);
-  }
-
-  @Cacheable(value = "typesFonctionFiliere")
-  public List<TypeFonctionFiliereDto> getTypesFonctionFiliere(String source) {
-    log.trace("getTypesFonctionFiliere for {}", source);
-    return typeFonctionFiliereRepository.findBySourceSarapis(source);
-  }
-
-  @Cacheable(value = "disciplines")
-  public List<DisciplineDto> getDisciplines(String source) {
-    log.trace("getDisciplines for {}", source);
-    return disciplineRepository.findBySourceSarapis(source);
-  }
-
-  @Cacheable(value = "personnesWithoutFunctions")
-  public List<SimplePersonneDto> getPersonnesWithoutFunctions(Long structureId, boolean showUid) {
-    log.trace("getPersonnesWithoutFunctions for {}", structureId);
-    final List<Long> personnesIds = fonctionRepository.findPersonnesWithoutFunctions(structureId);
-    if(showUid){
-      return aPersonneRepository.findByPersonneIdsWithUid(new HashSet<>(personnesIds));
-    } else {
-      return aPersonneRepository.findByPersonneIdsWithoutUid(new HashSet<>(personnesIds));
-    }
-  }
-
-  /**
-   * Modifie les fonctions d'une personne sur une stucture
-   * @param personneId L'id de la personne
-   * @param structureId L'id de la stucture
-   * @param toAddFunctions La liste des fonctions à ajouter sous la forme "filière-discipline"
-   * @param toDeleteFunctions La liste des fonctions à supprimer sous la forme "filière-discipline"
-   * @param requiredAction Si on doit rattacher une personne à un établissement (attach) ou le détacher (detach)
-   * @return
-   */
-  // TODO : evict aussi le cache des alertes
-  // Voir s'il faut evict le cache typesFonctionFiliere et disciplines
-  @Caching(evict = {
-          @CacheEvict(value = "personneFonctions", key = "#personneId"),
-          @CacheEvict(value = "personne", key = "#personneId"),
-          @CacheEvict(value = "personnesWithoutFunctions", key = "#structureId"),
-          @CacheEvict(value = "structureFonctions", key = "#structureId"),
-          @CacheEvict(value = "personnesByEtablissement", key = "#structureId")
-  })
-  public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<FonctionToModify> toAddFunctions, List<FonctionToModify> toDeleteFunctions, FonctionAction requiredAction) {
-    final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
-    final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
-    if (aPersonne == null
-      || aStructure == null
-      || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())
-    ) return false;
-
-    final String source = Constants.SARAPISUI_ + SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
-
-    List<FonctionDto> toAddAdditional = new ArrayList<>();
-    for(FonctionToModify fonctionToAdd : toAddFunctions){
-      toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId));
-    }
-    List<FonctionDto> toDeleteAdditional = new ArrayList<>();
-    for(FonctionToModify fonctionToDelete : toDeleteFunctions){
-      toDeleteAdditional.add(new FonctionDto(personneId, fonctionToDelete.getFiliere(), fonctionToDelete.getDiscipline(), source, structureId));
+    private List<TypeFonctionFiliereDto> getDisciplinesByFiliere(
+        List<TypeFonctionFiliereDto> typesFonctionFiliere,
+        List<DisciplineDto> disciplines,
+        List<FonctionDto> fonctions,
+        String source
+    ) {
+        return getDisciplinesByFiliere(typesFonctionFiliere, disciplines, fonctions, source, List.of(SANS_OBJET), List.of(SANS_OBJET));
     }
 
-    if (!toAddAdditional.isEmpty()) {
-      fonctionRepository.saveAll(toAddAdditional.stream()
-        .map(fonction -> {
-          TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
-          Discipline discipline = disciplineRepository.findById(fonction.getDiscipline()).orElse(null);
-          return new Fonction(discipline, filiere, aStructure, aPersonne, source);
-        })
-        .collect(Collectors.toList()));
+    private List<TypeFonctionFiliereDto> getDisciplinesByFiliere(
+        List<TypeFonctionFiliereDto> typesFonctionFiliere,
+        List<DisciplineDto> disciplines,
+        List<FonctionDto> fonctions,
+        String source,
+        List<String> typesFonctionFiliereToNotInclue,
+        List<String> disciplinesToNotInclue
+    ) {
+        if (fonctions.isEmpty()) return Collections.emptyList();
+
+        final List<TypeFonctionFiliereDto> tmpTypesFonctionFiliere = typesFonctionFiliere.stream()
+            .map(TypeFonctionFiliereDto::new)
+            .collect(Collectors.toList());
+        final List<DisciplineDto> tmpDisciplines = disciplines.stream()
+            .map(DisciplineDto::new)
+            .collect(Collectors.toList());
+        final List<FonctionDto> tmpFonctions = fonctions.stream()
+            .map(FonctionDto::new)
+            .collect(Collectors.toList());
+
+        return tmpTypesFonctionFiliere.stream()
+            .filter(typeFonctionFiliere -> !typesFonctionFiliereToNotInclue.contains(typeFonctionFiliere.getLibelleFiliere()))
+            .map(typeFonctionFiliere -> {
+                Set<Long> disciplineIds = tmpFonctions.stream()
+                    .filter(fonction -> Objects.equals(fonction.getFiliere(), typeFonctionFiliere.getId()))
+                    .map(FonctionDto::getDiscipline)
+                    .collect(Collectors.toSet());
+                List<DisciplineDto> disciplinesInFiliere = tmpDisciplines.stream()
+                    .filter(discipline -> disciplineIds.contains(discipline.getId()) && !disciplinesToNotInclue.contains(discipline.getDisciplinePoste()))
+                    .collect(Collectors.toList());
+                typeFonctionFiliere.setDisciplines(disciplinesInFiliere);
+
+                return typeFonctionFiliere;
+            })
+            .collect(Collectors.toList());
     }
 
-    if (!toDeleteAdditional.isEmpty()) {
-      fonctionRepository.deleteAllById(toDeleteAdditional.stream()
-        .map(fonction -> fonctionRepository.findId(fonction.getFiliere(), fonction.getDiscipline(), personneId, fonction.getStructure(), fonction.getSource()))
-        .collect(Collectors.toList()));
+    @Cacheable(value = "personneFonctions")
+    public List<FonctionDto> getPersonneFonctions(Long personneId) {
+        log.trace("getPersonneFonctions for {}", personneId);
+        return fonctionRepository.findByPersonne(personneId);
     }
 
-    if (!toAddAdditional.isEmpty() || !toDeleteAdditional.isEmpty()) {
-      fonctionRepository.flush();
-
-      boolean isInStructure = aPersonneAStructureRepository.isInStructure(personneId, structureId) > 0;
-      int officialFonctionsInStructure = (int) fonctionRepository.findByPersonne(personneId).stream()
-        .filter(fonction -> !SourceUtils.isSourceOfficial(fonction.getSource()) && Objects.equals(fonction.getStructure(), structureId))
-        .count();
-
-      switch (requiredAction) {
-        case attach:
-          if (isInStructure || toAddAdditional.isEmpty()) {
-            log.error("Unable to attach user {} to structure {}", aPersonne.getId(), aStructure.getId());
-            break;
-          }
-          aPersonneAStructureRepository2.insertInStructure(personneId, structureId);
-          break;
-        case detach:
-          if (!isInStructure || !toAddAdditional.isEmpty() || toDeleteAdditional.isEmpty() || officialFonctionsInStructure > 0) {
-            log.error("Unable to detach user {} to structure {}", aPersonne.getId(), aStructure.getId());
-            break;
-          }
-          aPersonneAStructureRepository2.deleteFromStructure(personneId, structureId);
-          break;
-        default:
-          break;
-      }
-      aPersonne.prePersist();
-      aPersonne.prePersistAPersonne();
-      aPersonneRepository.saveAndFlush(aPersonne);
+    public List<FonctionDto> getAdditionalFonctions(Long personneId) {
+        return fonctionRepository.findByPersonne(personneId).stream()
+            .filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_))
+            .collect(Collectors.toList());
     }
 
-    return true;
-  }
-
-  private Fonction getFonction(FonctionDto fonctionDto) {
-    return fonctionRepository.findOne(
-      QFonction.fonction.filiere.id.eq(fonctionDto.getFiliere())
-        .and(QFonction.fonction.disciplinePoste.id.eq(fonctionDto.getDiscipline()))
-        .and(QFonction.fonction.personne.id.eq(fonctionDto.getPersonne()))
-        .and(QFonction.fonction.structure.id.eq(fonctionDto.getStructure()))
-        .and(QFonction.fonction.source.eq(fonctionDto.getSource()))
-    ).orElse(null);
-  }
-
-  private Fonction getFonctionOrNewFonction(FonctionDto fonctionDto, AStructure aStructure, APersonne aPersonne) {
-    Fonction fonction = getFonction(fonctionDto);
-    if (fonction == null) {
-      fonction = new Fonction(
-        disciplineRepository.findById(fonctionDto.getDiscipline()).orElse(null),
-        typeFonctionFiliereRepository.findById(fonctionDto.getFiliere()).orElse(null),
-        aStructure,
-        aPersonne,
-        fonctionDto.getSource(),
-        fonctionDto.getDateFin()
-      );
+    @Cacheable(value = "structureFonctions")
+    public List<FonctionDto> getStructureFonctions(Long structureId) {
+        log.trace("getStructureFonctions for {}", structureId);
+        return fonctionRepository.findByStructureId(structureId);
     }
-    return fonction;
-  }
 
-  public long nbDiscipline(Long structureId, String filiereCode, String disciplineCode) {
-    return fonctionRepository.count(QFonction.fonction.structure.id.eq(structureId)
-      .and(QFonction.fonction.filiere.codeFiliere.eq(filiereCode))
-      .and(QFonction.fonction.disciplinePoste.code.eq(disciplineCode)));
-  }
+    @Cacheable(value = "typesFonctionFiliere")
+    public List<TypeFonctionFiliereDto> getTypesFonctionFiliere(String source) {
+        log.trace("getTypesFonctionFiliere for {}", source);
+        return typeFonctionFiliereRepository.findBySourceSarapis(source);
+    }
+
+    @Cacheable(value = "disciplines")
+    public List<DisciplineDto> getDisciplines(String source) {
+        log.trace("getDisciplines for {}", source);
+        return disciplineRepository.findBySourceSarapis(source);
+    }
+
+    @Cacheable(value = "personnesWithoutFunctions")
+    public List<SimplePersonneDto> getPersonnesWithoutFunctions(Long structureId, boolean showUid) {
+        log.trace("getPersonnesWithoutFunctions for {}", structureId);
+        final List<Long> personnesIds = fonctionRepository.findPersonnesWithoutFunctions(structureId);
+        if (showUid) {
+            return aPersonneRepository.findByPersonneIdsWithUid(new HashSet<>(personnesIds));
+        } else {
+            return aPersonneRepository.findByPersonneIdsWithoutUid(new HashSet<>(personnesIds));
+        }
+    }
+
+    /**
+     * Modifie les fonctions d'une personne sur une stucture
+     *
+     * @param personneId        L'id de la personne
+     * @param structureId       L'id de la stucture
+     * @param toAddFunctions    La liste des fonctions à ajouter sous la forme "filière-discipline"
+     * @param toDeleteFunctions La liste des fonctions à supprimer sous la forme "filière-discipline"
+     * @param requiredAction    Si on doit rattacher une personne à un établissement (attach) ou le détacher (detach)
+     * @return
+     */
+    // TODO : evict aussi le cache des alertes
+    // Voir s'il faut evict le cache typesFonctionFiliere et disciplines
+    @Caching(evict = {
+        @CacheEvict(value = "personneFonctions", key = "#personneId"),
+        @CacheEvict(value = "personne", key = "#personneId"),
+        @CacheEvict(value = "personnesWithoutFunctions", key = "#structureId"),
+        @CacheEvict(value = "structureFonctions", key = "#structureId"),
+        @CacheEvict(value = "personnesByEtablissement", key = "#structureId")
+    })
+    public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<FonctionToModify> toAddFunctions, List<FonctionToModify> toDeleteFunctions, FonctionAction requiredAction) {
+        final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
+        final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
+        if (aPersonne == null
+            || aStructure == null
+            || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())
+        ) return false;
+
+        final String source = Constants.SARAPISUI_ + SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
+
+        List<FonctionDto> toAddAdditional = new ArrayList<>();
+        for (FonctionToModify fonctionToAdd : toAddFunctions) {
+            toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId));
+        }
+        List<FonctionDto> toDeleteAdditional = new ArrayList<>();
+        for (FonctionToModify fonctionToDelete : toDeleteFunctions) {
+            toDeleteAdditional.add(new FonctionDto(personneId, fonctionToDelete.getFiliere(), fonctionToDelete.getDiscipline(), source, structureId));
+        }
+
+        if (!toAddAdditional.isEmpty()) {
+            fonctionRepository.saveAll(toAddAdditional.stream()
+                .map(fonction -> {
+                    TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
+                    Discipline discipline = disciplineRepository.findById(fonction.getDiscipline()).orElse(null);
+                    return new Fonction(discipline, filiere, aStructure, aPersonne, source);
+                })
+                .collect(Collectors.toList()));
+        }
+
+        if (!toDeleteAdditional.isEmpty()) {
+            fonctionRepository.deleteAllById(toDeleteAdditional.stream()
+                .map(fonction -> fonctionRepository.findId(fonction.getFiliere(), fonction.getDiscipline(), personneId, fonction.getStructure(), fonction.getSource()))
+                .collect(Collectors.toList()));
+        }
+
+        if (!toAddAdditional.isEmpty() || !toDeleteAdditional.isEmpty()) {
+            fonctionRepository.flush();
+
+            boolean isInStructure = aPersonneAStructureRepository.isInStructure(personneId, structureId) > 0;
+            int officialFonctionsInStructure = (int) fonctionRepository.findByPersonne(personneId).stream()
+                .filter(fonction -> !SourceUtils.isSourceOfficial(fonction.getSource()) && Objects.equals(fonction.getStructure(), structureId))
+                .count();
+
+            switch (requiredAction) {
+                case attach:
+                    if (isInStructure || toAddAdditional.isEmpty()) {
+                        log.error("Unable to attach user {} to structure {}", aPersonne.getId(), aStructure.getId());
+                        break;
+                    }
+                    aPersonneAStructureRepository2.insertInStructure(personneId, structureId);
+                    break;
+                case detach:
+                    if (!isInStructure || !toAddAdditional.isEmpty() || toDeleteAdditional.isEmpty() || officialFonctionsInStructure > 0) {
+                        log.error("Unable to detach user {} to structure {}", aPersonne.getId(), aStructure.getId());
+                        break;
+                    }
+                    aPersonneAStructureRepository2.deleteFromStructure(personneId, structureId);
+                    break;
+                default:
+                    break;
+            }
+            aPersonne.prePersist();
+            aPersonne.prePersistAPersonne();
+            aPersonneRepository.saveAndFlush(aPersonne);
+        }
+
+        return true;
+    }
+
+    private Fonction getFonction(FonctionDto fonctionDto) {
+        return fonctionRepository.findOne(
+            QFonction.fonction.filiere.id.eq(fonctionDto.getFiliere())
+                .and(QFonction.fonction.disciplinePoste.id.eq(fonctionDto.getDiscipline()))
+                .and(QFonction.fonction.personne.id.eq(fonctionDto.getPersonne()))
+                .and(QFonction.fonction.structure.id.eq(fonctionDto.getStructure()))
+                .and(QFonction.fonction.source.eq(fonctionDto.getSource()))
+        ).orElse(null);
+    }
+
+    private Fonction getFonctionOrNewFonction(FonctionDto fonctionDto, AStructure aStructure, APersonne aPersonne) {
+        Fonction fonction = getFonction(fonctionDto);
+        if (fonction == null) {
+            fonction = new Fonction(
+                disciplineRepository.findById(fonctionDto.getDiscipline()).orElse(null),
+                typeFonctionFiliereRepository.findById(fonctionDto.getFiliere()).orElse(null),
+                aStructure,
+                aPersonne,
+                fonctionDto.getSource(),
+                fonctionDto.getDateFin()
+            );
+        }
+        return fonction;
+    }
+
+    public long nbDiscipline(Long structureId, String filiereCode, String disciplineCode) {
+        return fonctionRepository.count(QFonction.fonction.structure.id.eq(structureId)
+            .and(QFonction.fonction.filiere.codeFiliere.eq(filiereCode))
+            .and(QFonction.fonction.disciplinePoste.code.eq(disciplineCode)));
+    }
 
 }

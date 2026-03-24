@@ -30,7 +30,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints = {
-  @UniqueConstraint(columnNames = {"l", "c", "xx"})
+    @UniqueConstraint(columnNames = {"l", "c", "xx"})
 })
 @Getter
 @Setter
@@ -39,36 +39,36 @@ import javax.persistence.UniqueConstraint;
 @ToString(callSuper = true)
 public class GenUID extends AbstractTracedEntity {
 
-  /**
-   * Code région.
-   */
-  @Column(length = IntConst.I1)
-  private String l;
-  /**
-   * Code département.
-   */
-  @Column(length = IntConst.I1)
-  private String c;
-  /**
-   * Code de l'année d'insertion.
-   */
-  @Column(length = IntConst.I2)
-  private String xx;
-  /**
-   * Code alphanumérique autoincrémenté, sauvegardé sous forme d'entier.
-   */
-  private int iiii;
+    /**
+     * Code région.
+     */
+    @Column(length = IntConst.I1)
+    private String l;
+    /**
+     * Code département.
+     */
+    @Column(length = IntConst.I1)
+    private String c;
+    /**
+     * Code de l'année d'insertion.
+     */
+    @Column(length = IntConst.I2)
+    private String xx;
+    /**
+     * Code alphanumérique autoincrémenté, sauvegardé sous forme d'entier.
+     */
+    private int iiii;
 
-  /**
-   * Constructeur de l'objet GenUID.java.
-   *
-   * @param l Code région.
-   * @param c Code département.
-   */
-  public GenUID(final String l, final String c) {
-    super();
-    this.l = l;
-    this.c = c;
-  }
+    /**
+     * Constructeur de l'objet GenUID.java.
+     *
+     * @param l Code région.
+     * @param c Code département.
+     */
+    public GenUID(final String l, final String c) {
+        super();
+        this.l = l;
+        this.c = c;
+    }
 
 }

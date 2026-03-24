@@ -21,26 +21,26 @@ import static fr.recia.glc.configuration.Constants.SARAPISUI_;
 
 public class SourceUtils {
 
-  private SourceUtils() {
-    throw new IllegalStateException("Utility class");
-  }
+    private SourceUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
-  public static boolean isSourceOfficial(String source) {
-    return !source.startsWith(SARAPISUI_);
-  }
+    public static boolean isSourceOfficial(String source) {
+        return !source.startsWith(SARAPISUI_);
+    }
 
-  public static String getOfficialSource(String source) {
-    return !isSourceOfficial(source) ? source.substring(SARAPISUI_.length()) : source;
-  }
+    public static String getOfficialSource(String source) {
+        return !isSourceOfficial(source) ? source.substring(SARAPISUI_.length()) : source;
+    }
 
-  public static boolean areSourcesEquals(String source1, String source2) {
-    return areSourcesEquals(source1, source2, true);
-  }
+    public static boolean areSourcesEquals(String source1, String source2) {
+        return areSourcesEquals(source1, source2, true);
+    }
 
-  public static boolean areSourcesEquals(String source1, String source2, boolean strict) {
-    return !strict
-      ? Objects.equals(getOfficialSource(source1), getOfficialSource(source2))
-      : Objects.equals(source1, source2);
-  }
+    public static boolean areSourcesEquals(String source1, String source2, boolean strict) {
+        return !strict
+            ? Objects.equals(getOfficialSource(source1), getOfficialSource(source2))
+            : Objects.equals(source1, source2);
+    }
 
 }

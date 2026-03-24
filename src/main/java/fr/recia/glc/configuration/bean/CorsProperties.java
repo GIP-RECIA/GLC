@@ -27,23 +27,23 @@ import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
 @Data
 public class CorsProperties {
 
-  private boolean enable;
-  private boolean allowCredentials;
-  private List<String> allowedOrigins;
-  private List<String> exposedHeaders;
-  private List<String> allowedHeaders;
-  private List<String> allowedMethods;
+    private boolean enable;
+    private boolean allowCredentials;
+    private List<String> allowedOrigins;
+    private List<String> exposedHeaders;
+    private List<String> allowedHeaders;
+    private List<String> allowedMethods;
 
-  @Override
-  public String toString() {
-    return "CorsProperties\": {" +
-      "\n\t\"enable\": " + enable + "," +
-      "\n\t\"allowCredentials\": " + allowCredentials + "," +
-      "\n\t\"allowedOrigins\": " + ListUtil.toStringList(allowedOrigins, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
-      "\n\t\"exposedHeaders\": " + ListUtil.toStringList(exposedHeaders, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
-      "\n\t\"allowedHeaders\": " + ListUtil.toStringList(allowedHeaders, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
-      "\n\t\"allowedMethods\": " + ListUtil.toStringList(allowedMethods, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
-      "\n}";
-  }
+    @Override
+    public String toString() {
+        return "CorsProperties\": {" +
+            "\n\t\"enable\": " + enable + "," +
+            "\n\t\"allowCredentials\": " + allowCredentials + "," +
+            "\n\t\"allowedOrigins\": " + ListUtil.toStringList(allowedOrigins, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
+            "\n\t\"exposedHeaders\": " + ListUtil.toStringList(exposedHeaders, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
+            "\n\t\"allowedHeaders\": " + ListUtil.toStringList(allowedHeaders, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) + "," +
+            "\n\t\"allowedMethods\": " + ListUtil.toStringList(allowedMethods, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
+            "\n}";
+    }
 
 }

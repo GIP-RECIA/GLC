@@ -28,7 +28,7 @@ import java.util.List;
 @ToString
 public class StructureSirenDomain {
 
-  private String siren;
-  private List<String> domains;
+    private String siren;
+    private List<String> domains;
 
 }

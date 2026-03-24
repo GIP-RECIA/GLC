@@ -24,14 +24,14 @@ import java.util.List;
 @Repository
 public interface APersonneAStructureRepository<T extends APersonneAStructure> extends AbstractRepository<T, Long> {
 
-  @Query("SELECT DISTINCT apas.aPersonneId " +
-    "FROM APersonneAStructure apas " +
-    "WHERE apas.aStructureId = :id")
-  List<Long> findPersonneByStructureId(Long id);
+    @Query("SELECT DISTINCT apas.aPersonneId " +
+        "FROM APersonneAStructure apas " +
+        "WHERE apas.aStructureId = :id")
+    List<Long> findPersonneByStructureId(Long id);
 
-  @Query("SELECT COUNT(*) " +
-    "FROM APersonneAStructure apas " +
-    "WHERE apas.aPersonneId = :personneId AND apas.aStructureId = :structureId")
-  Long isInStructure(Long personneId, Long structureId);
+    @Query("SELECT COUNT(*) " +
+        "FROM APersonneAStructure apas " +
+        "WHERE apas.aPersonneId = :personneId AND apas.aStructureId = :structureId")
+    Long isInStructure(Long personneId, Long structureId);
 
 }

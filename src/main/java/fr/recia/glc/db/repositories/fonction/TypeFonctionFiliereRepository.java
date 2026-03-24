@@ -26,51 +26,51 @@ import java.util.List;
 @Repository
 public interface TypeFonctionFiliereRepository<T extends TypeFonctionFiliere> extends AbstractRepository<T, Long> {
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
-    "tff.libelleFiliere, tff.source) " +
-    "FROM TypeFonctionFiliere tff " +
-    "WHERE tff.codeFiliere IN :codes " +
-    "AND tff.source = :source " +
-    "ORDER BY tff.libelleFiliere")
-  List<TypeFonctionFiliereDto> findByCodeAndSource(List<String> codes, String source);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
+        "tff.libelleFiliere, tff.source) " +
+        "FROM TypeFonctionFiliere tff " +
+        "WHERE tff.codeFiliere IN :codes " +
+        "AND tff.source = :source " +
+        "ORDER BY tff.libelleFiliere")
+    List<TypeFonctionFiliereDto> findByCodeAndSource(List<String> codes, String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
-    "tff.libelleFiliere, tff.source) " +
-    "FROM TypeFonctionFiliere tff " +
-    "WHERE tff.codeFiliere IN :codes " +
-    "AND (tff.source = :source " +
-    "OR tff.source = CONCAT('SarapisUi_', :source)) " +
-    "ORDER BY tff.libelleFiliere")
-  List<TypeFonctionFiliereDto> findByCodeAndSourceSarapis(List<String> codes, String source);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
+        "tff.libelleFiliere, tff.source) " +
+        "FROM TypeFonctionFiliere tff " +
+        "WHERE tff.codeFiliere IN :codes " +
+        "AND (tff.source = :source " +
+        "OR tff.source = CONCAT('SarapisUi_', :source)) " +
+        "ORDER BY tff.libelleFiliere")
+    List<TypeFonctionFiliereDto> findByCodeAndSourceSarapis(List<String> codes, String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
-    "tff.libelleFiliere, tff.source) " +
-    "FROM TypeFonctionFiliere tff " +
-    "WHERE tff.source = :source " +
-    "ORDER BY tff.libelleFiliere")
-  List<TypeFonctionFiliereDto> findBySource(String source);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
+        "tff.libelleFiliere, tff.source) " +
+        "FROM TypeFonctionFiliere tff " +
+        "WHERE tff.source = :source " +
+        "ORDER BY tff.libelleFiliere")
+    List<TypeFonctionFiliereDto> findBySource(String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
-    "tff.libelleFiliere, tff.source) " +
-    "FROM TypeFonctionFiliere tff " +
-    "WHERE tff.source = :source " +
-    "OR tff.source = CONCAT('SarapisUi_', :source) " +
-    "OR tff.source LIKE 'COLL-%' " +
-    "ORDER BY tff.libelleFiliere")
-  List<TypeFonctionFiliereDto> findBySourceSarapis(String source);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
+        "tff.libelleFiliere, tff.source) " +
+        "FROM TypeFonctionFiliere tff " +
+        "WHERE tff.source = :source " +
+        "OR tff.source = CONCAT('SarapisUi_', :source) " +
+        "OR tff.source LIKE 'COLL-%' " +
+        "ORDER BY tff.libelleFiliere")
+    List<TypeFonctionFiliereDto> findBySourceSarapis(String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
-    "tff.libelleFiliere, tff.source) " +
-    "FROM TypeFonctionFiliere tff " +
-    "ORDER BY tff.libelleFiliere")
-  List<TypeFonctionFiliereDto> findWithoutSource();
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto(tff.id, tff.codeFiliere, " +
+        "tff.libelleFiliere, tff.source) " +
+        "FROM TypeFonctionFiliere tff " +
+        "ORDER BY tff.libelleFiliere")
+    List<TypeFonctionFiliereDto> findWithoutSource();
 
-  @Query(value = "SELECT tff.id " +
-    "FROM typefonctionfiliere tff " +
-    "WHERE tff.codeFiliere = :code " +
-    "AND (tff.source = :source " +
-    "OR tff.source = CONCAT('SarapisUi_', :source))",
-    nativeQuery = true)
-  Long findByCode(String code, String source);
+    @Query(value = "SELECT tff.id " +
+        "FROM typefonctionfiliere tff " +
+        "WHERE tff.codeFiliere = :code " +
+        "AND (tff.source = :source " +
+        "OR tff.source = CONCAT('SarapisUi_', :source))",
+        nativeQuery = true)
+    Long findByCode(String code, String source);
 
 }

@@ -33,38 +33,38 @@ import javax.persistence.Entity;
 @ToString(callSuper = true)
 public class ServiceAcademique extends AStructure {
 
-  /**
-   * Numéro UAI, ancien RNE.
-   */
-  @Column(unique = true, length = IntConst.IUAI)
-  private String uai;
-  /**
-   * Nom de l'académie ou code.
-   */
-  private String academie;
+    /**
+     * Numéro UAI, ancien RNE.
+     */
+    @Column(unique = true, length = IntConst.IUAI)
+    private String uai;
+    /**
+     * Nom de l'académie ou code.
+     */
+    private String academie;
 
-  /**
-   * Constructeur de l'objet ServiceAcademique.java.
-   */
-  public ServiceAcademique() {
-    super();
-    this.setCategorie(CategorieStructure.Service_academique);
-  }
+    /**
+     * Constructeur de l'objet ServiceAcademique.java.
+     */
+    public ServiceAcademique() {
+        super();
+        this.setCategorie(CategorieStructure.Service_academique);
+    }
 
-  /**
-   * Constructeur de l'objet ServiceAcademique.java.
-   *
-   * @param uai         Numéro UAI, ancien RNE.
-   * @param nom         Nom unique de la stucture.
-   * @param siren       Numéro de SIRET/SIREN unique de la structure.
-   * @param cleJointure Clé de jointure unique de la structure.
-   * @param academie    Nom de l'académie ou code.
-   */
-  public ServiceAcademique(final String uai, final String nom, final String siren,
-                           final CleJointure cleJointure, final String academie) {
-    super(CategorieStructure.Service_academique, nom, siren, cleJointure);
-    this.academie = academie;
-    this.uai = uai;
-  }
+    /**
+     * Constructeur de l'objet ServiceAcademique.java.
+     *
+     * @param uai         Numéro UAI, ancien RNE.
+     * @param nom         Nom unique de la stucture.
+     * @param siren       Numéro de SIRET/SIREN unique de la structure.
+     * @param cleJointure Clé de jointure unique de la structure.
+     * @param academie    Nom de l'académie ou code.
+     */
+    public ServiceAcademique(final String uai, final String nom, final String siren,
+                             final CleJointure cleJointure, final String academie) {
+        super(CategorieStructure.Service_academique, nom, siren, cleJointure);
+        this.academie = academie;
+        this.uai = uai;
+    }
 
 }

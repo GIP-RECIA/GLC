@@ -7,16 +7,21 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 public class AlphanumericsTools {
 
-    /** Valeur de l'incrément.*/
+    /**
+     * Valeur de l'incrément.
+     */
     private static final int INCREMENT = 64;
 
-    /** Valeur pour la base Alpha Numérique.*/
+    /**
+     * Valeur pour la base Alpha Numérique.
+     */
     private static final int BASE_ALPHA_NUM = 36;
 
     /**
      * Méthode de conversion d'un int en base N.
-     * @param nb le nombre à convertir.
-     * @param base la base de conversion, base 36 conseillée pour l'alphanumérique.
+     *
+     * @param nb     le nombre à convertir.
+     * @param base   la base de conversion, base 36 conseillée pour l'alphanumérique.
      * @param nbChar nombre de caractères que l'on doit obtenir.
      * @return <code>String</code> La chaine de caractère obtenue.
      */
@@ -26,7 +31,7 @@ public class AlphanumericsTools {
             inc = inc * base;
         }
         // on vérifie que l'on reste dans le cadre du nombre de caratères
-        if (inc < (nb + 1) ) {
+        if (inc < (nb + 1)) {
             log.warn("Try to convert a number in base on too less characters: nb base nbchar = ");
         }
         int reste;
@@ -42,13 +47,13 @@ public class AlphanumericsTools {
                 chaine.insert(0, reste);
             }
         }
-        if (nombre > max ) {
+        if (nombre > max) {
             chaine.insert(0, (char) (nombre - max + INCREMENT));
         } else {
             chaine.insert(0, nombre);
         }
         // Pour l'obtention d'un nombre de caratères égal à la demande
-        for (int i = chaine.length(); i < nbChar; i++ ) {
+        for (int i = chaine.length(); i < nbChar; i++) {
             chaine.insert(0, "0");
         }
 
@@ -57,7 +62,8 @@ public class AlphanumericsTools {
 
     /**
      * Méthode de conversion d'un entier en alphanumérique.
-     * @param nb le nombre à convertir.
+     *
+     * @param nb     le nombre à convertir.
      * @param nbChar le nombre de caractère maximum à obtenir, null si nb trop grand.
      * @return <code>String</code> La chaine de caractère alphanumérique obtenue.
      */

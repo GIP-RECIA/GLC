@@ -46,57 +46,57 @@ import java.util.Date;
 @ToString(callSuper = true)
 public abstract class AFonction extends AbstractTracedEntity {
 
-  /**
-   * Categorie de la fonction.
-   */
-  @Enumerated(EnumType.STRING)
-  @Column(length = IntConst.I20)
-  private CategorieFonction categorie;
-  /**
-   * Source d'alimentation de la fonction.
-   */
-  @Column(length = IntConst.ISOURCE)
-  private String source;
+    /**
+     * Categorie de la fonction.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(length = IntConst.I20)
+    private CategorieFonction categorie;
+    /**
+     * Source d'alimentation de la fonction.
+     */
+    @Column(length = IntConst.ISOURCE)
+    private String source;
 
-  /**
-   * Relation bidirectionnelle.
-   *
-   * @see fr.recia.glc.db.entities.personne.APersonne
-   */
-  @ManyToOne
-  @JoinColumn(name = "personne_fk")
-  private APersonne personne;
+    /**
+     * Relation bidirectionnelle.
+     *
+     * @see fr.recia.glc.db.entities.personne.APersonne
+     */
+    @ManyToOne
+    @JoinColumn(name = "personne_fk")
+    private APersonne personne;
 
-  @Temporal(TemporalType.DATE)
-  private Date dateFin;
+    @Temporal(TemporalType.DATE)
+    private Date dateFin;
 
-  /**
-   * Constructeur de l'objet AFonction.java.
-   *
-   * @param categorie Categorie de la fonction.
-   * @param personne  Personne ayant cette fonction.
-   * @param source    Source d'alimentation gérant cette fonction.
-   */
-  public AFonction(final CategorieFonction categorie, final APersonne personne, final String source) {
-    super();
-    this.categorie = categorie;
-    this.source = source;
-    this.personne = personne;
-  }
+    /**
+     * Constructeur de l'objet AFonction.java.
+     *
+     * @param categorie Categorie de la fonction.
+     * @param personne  Personne ayant cette fonction.
+     * @param source    Source d'alimentation gérant cette fonction.
+     */
+    public AFonction(final CategorieFonction categorie, final APersonne personne, final String source) {
+        super();
+        this.categorie = categorie;
+        this.source = source;
+        this.personne = personne;
+    }
 
-  /**
-   * Constructeur de l'objet AFonction.java.
-   *
-   * @param categorie Categorie de la fonction.
-   * @param personne  Personne ayant cette fonction.
-   * @param source    Source d'alimentation gérant cette fonction.
-   * @param dateFin   Date de fin de la fonction.
-   */
-  public AFonction(final CategorieFonction categorie, final APersonne personne, final String source, final Date dateFin) {
-    this.categorie = categorie;
-    this.source = source;
-    this.personne = personne;
-    this.dateFin = dateFin;
-  }
+    /**
+     * Constructeur de l'objet AFonction.java.
+     *
+     * @param categorie Categorie de la fonction.
+     * @param personne  Personne ayant cette fonction.
+     * @param source    Source d'alimentation gérant cette fonction.
+     * @param dateFin   Date de fin de la fonction.
+     */
+    public AFonction(final CategorieFonction categorie, final APersonne personne, final String source, final Date dateFin) {
+        this.categorie = categorie;
+        this.source = source;
+        this.personne = personne;
+        this.dateFin = dateFin;
+    }
 
 }

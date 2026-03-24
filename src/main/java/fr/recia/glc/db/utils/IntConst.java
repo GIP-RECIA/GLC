@@ -22,57 +22,57 @@ package fr.recia.glc.db.utils;
  * 29 avr. 09
  */
 public final class IntConst {
-  /**
-   * Constante de la longueur de la chaine de la source dans la cle de jointure.
-   */
-  public static final int ISOURCE = IntConst.I60;
-  /**
-   * Constante de la longueur de la chaine de la clé dans la clé de jointure.
-   */
-  public static final int ICLE = IntConst.I20;
-  /**
-   * Constante de la longueur de la chaine de la clé dans la clé de jointure.
-   */
-  public static final int IUAI = IntConst.I8;
+    /**
+     * Constante de la longueur de la chaine de la source dans la cle de jointure.
+     */
+    public static final int ISOURCE = IntConst.I60;
+    /**
+     * Constante de la longueur de la chaine de la clé dans la clé de jointure.
+     */
+    public static final int ICLE = IntConst.I20;
+    /**
+     * Constante de la longueur de la chaine de la clé dans la clé de jointure.
+     */
+    public static final int IUAI = IntConst.I8;
 
-  /**
-   * Constantes.
-   */
-  public static final int I0 = 0;
-  public static final int I1 = 1;
-  public static final int I2 = 2;
-  public static final int I3 = 3;
-  public static final int I4 = 4;
-  public static final int I5 = 5;
-  public static final int I6 = 6;
-  public static final int I7 = 7;
-  public static final int I8 = 8;
-  public static final int I9 = 9;
-  public static final int I10 = 10;
-  public static final int I11 = 11;
-  public static final int I15 = 15;
-  public static final int I16 = 16;
-  public static final int I20 = 20;
-  public static final int I25 = 25;
-  public static final int I30 = 30;
-  public static final int I32 = 32;
-  public static final int I35 = 35;
-  public static final int I36 = 36;
-  public static final int I40 = 40;
-  public static final int I45 = 45;
-  public static final int I50 = 50;
-  public static final int I60 = 60;
-  public static final int I70 = 70;
-  public static final int I80 = 80;
-  public static final int I90 = 90;
-  public static final int I100 = 100;
-  public static final int I128 = 128;
+    /**
+     * Constantes.
+     */
+    public static final int I0 = 0;
+    public static final int I1 = 1;
+    public static final int I2 = 2;
+    public static final int I3 = 3;
+    public static final int I4 = 4;
+    public static final int I5 = 5;
+    public static final int I6 = 6;
+    public static final int I7 = 7;
+    public static final int I8 = 8;
+    public static final int I9 = 9;
+    public static final int I10 = 10;
+    public static final int I11 = 11;
+    public static final int I15 = 15;
+    public static final int I16 = 16;
+    public static final int I20 = 20;
+    public static final int I25 = 25;
+    public static final int I30 = 30;
+    public static final int I32 = 32;
+    public static final int I35 = 35;
+    public static final int I36 = 36;
+    public static final int I40 = 40;
+    public static final int I45 = 45;
+    public static final int I50 = 50;
+    public static final int I60 = 60;
+    public static final int I70 = 70;
+    public static final int I80 = 80;
+    public static final int I90 = 90;
+    public static final int I100 = 100;
+    public static final int I128 = 128;
 
-  /**
-   * Constructeur de l'objet IntConst.java.
-   */
-  private IntConst() {
-    throw new IllegalStateException("Util class");
-  }
+    /**
+     * Constructeur de l'objet IntConst.java.
+     */
+    private IntConst() {
+        throw new IllegalStateException("Util class");
+    }
 
 }

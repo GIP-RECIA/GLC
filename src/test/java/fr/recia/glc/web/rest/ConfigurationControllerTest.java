@@ -36,23 +36,23 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @SpringBootTest
 class ConfigurationControllerTest {
 
-  private MockMvc mockConfigurationControllerMvc;
+    private MockMvc mockConfigurationControllerMvc;
 
-  @PostConstruct
-  void setup() {
-    ConfigurationController configurationController = new ConfigurationController();
+    @PostConstruct
+    void setup() {
+        ConfigurationController configurationController = new ConfigurationController();
 
-    mockConfigurationControllerMvc = standaloneSetup(configurationController).build();
-  }
+        mockConfigurationControllerMvc = standaloneSetup(configurationController).build();
+    }
 
-  @Test
-  void getConfigurationTest() throws Exception {
-    mockConfigurationControllerMvc.perform(get("/api/config")
-        .accept(MediaType.APPLICATION_JSON))
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-      .andReturn();
-  }
+    @Test
+    void getConfigurationTest() throws Exception {
+        mockConfigurationControllerMvc.perform(get("/api/config")
+                .accept(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn();
+    }
 
 }

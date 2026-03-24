@@ -33,13 +33,13 @@ public class RestrictionService {
         this.glcProperties = glcProperties;
     }
 
-    public RestrictionEtab getRestrictions(String uai){
-        return restTemplate.exchange(glcProperties.getRestrictionRentree().getUrl()+"/"+uai, HttpMethod.GET, null, RestrictionEtab.class).getBody();
+    public RestrictionEtab getRestrictions(String uai) {
+        return restTemplate.exchange(glcProperties.getRestrictionRentree().getUrl() + "/" + uai, HttpMethod.GET, null, RestrictionEtab.class).getBody();
     }
 
-    public void setNewRestriction(String uai, RestrictionEtab restrictionEtab){
+    public void setNewRestriction(String uai, RestrictionEtab restrictionEtab) {
         HttpEntity<?> entity = new HttpEntity<>(restrictionEtab);
-        restTemplate.exchange(glcProperties.getRestrictionRentree().getUrl()+"/"+uai, HttpMethod.POST, entity, RestrictionEtab.class);
+        restTemplate.exchange(glcProperties.getRestrictionRentree().getUrl() + "/" + uai, HttpMethod.POST, entity, RestrictionEtab.class);
     }
 
 }

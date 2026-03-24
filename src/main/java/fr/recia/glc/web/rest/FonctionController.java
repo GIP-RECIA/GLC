@@ -31,15 +31,15 @@ import java.util.List;
 @RequestMapping(value = "/api/fonction")
 public class FonctionController {
 
-  @Autowired
-  private FonctionService fonctionService;
+    @Autowired
+    private FonctionService fonctionService;
 
-  @GetMapping()
-  public ResponseEntity<List<Object>> getFonctions() {
-    List<Object> data = fonctionService.getFonctions();
-    if (data.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping()
+    public ResponseEntity<List<Object>> getFonctions() {
+        List<Object> data = fonctionService.getFonctions();
+        if (data.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-    return new ResponseEntity<>(data, HttpStatus.OK);
-  }
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
 
 }

@@ -40,8 +40,8 @@ import java.io.Serializable;
 @Table(name = "relations_apersonnes")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @AssociationOverrides({
-  @AssociationOverride(name = "pk.personne1", joinColumns = @JoinColumn(name = "APERSONNE1_ID")),
-  @AssociationOverride(name = "pk.personne2", joinColumns = @JoinColumn(name = "APERSONNE2_ID"))
+    @AssociationOverride(name = "pk.personne1", joinColumns = @JoinColumn(name = "APERSONNE1_ID")),
+    @AssociationOverride(name = "pk.personne2", joinColumns = @JoinColumn(name = "APERSONNE2_ID"))
 })
 @Getter
 @Setter
@@ -50,29 +50,29 @@ import java.io.Serializable;
 @ToString
 public abstract class AMappingRelation implements Serializable {
 
-  /**
-   * The Source which insert the entry.
-   */
-  @Basic
-  @Column(name = "SOURCE", length = IntConst.ISOURCE, nullable = false)
-  private String source;
-  /**
-   * The pk
-   */
-  @EmbeddedId
-  private MappingAPersonneAPersonneId pk = new MappingAPersonneAPersonneId();
+    /**
+     * The Source which insert the entry.
+     */
+    @Basic
+    @Column(name = "SOURCE", length = IntConst.ISOURCE, nullable = false)
+    private String source;
+    /**
+     * The pk
+     */
+    @EmbeddedId
+    private MappingAPersonneAPersonneId pk = new MappingAPersonneAPersonneId();
 
-  /**
-   * Contructor of the object MappingAGroupeAPersonne.java.
-   *
-   * @param source
-   * @param personne1
-   * @param personne2
-   */
-  public AMappingRelation(final String source, final APersonne personne1,
-                          final APersonne personne2, final CategorieRelation categoryRelation) {
-    this.source = source;
-    this.pk = new MappingAPersonneAPersonneId(personne1, personne2, categoryRelation);
-  }
+    /**
+     * Contructor of the object MappingAGroupeAPersonne.java.
+     *
+     * @param source
+     * @param personne1
+     * @param personne2
+     */
+    public AMappingRelation(final String source, final APersonne personne1,
+                            final APersonne personne2, final CategorieRelation categoryRelation) {
+        this.source = source;
+        this.pk = new MappingAPersonneAPersonneId(personne1, personne2, categoryRelation);
+    }
 
 }

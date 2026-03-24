@@ -22,5 +22,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PersRelRelationRepository<T extends PersRelRelation>
-  extends AbstractRepository<T, MappingAPersonneAPersonneId> {
+    extends AbstractRepository<T, MappingAPersonneAPersonneId> {
 }

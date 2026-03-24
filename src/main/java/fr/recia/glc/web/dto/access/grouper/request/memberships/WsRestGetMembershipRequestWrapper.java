@@ -24,6 +24,7 @@ import java.util.List;
 public class WsRestGetMembershipRequestWrapper {
     @JsonProperty("WsRestGetMembershipsRequest")
     private WsRestGetMembershipRequest wsRestGetMembershipsRequest;
+
     public WsRestGetMembershipRequestWrapper(String groupName, String memberFilter, String includeSubjectDetail, List<String> sourceIds) {
         this.wsRestGetMembershipsRequest = new WsRestGetMembershipRequest(groupName, memberFilter, includeSubjectDetail, sourceIds);
     }

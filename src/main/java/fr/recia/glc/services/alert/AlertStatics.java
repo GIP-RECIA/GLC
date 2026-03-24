@@ -17,10 +17,10 @@ package fr.recia.glc.services.alert;
 
 public class AlertStatics {
 
-  private AlertStatics() {
-    throw new IllegalStateException("Utility class");
-  }
+    private AlertStatics() {
+        throw new IllegalStateException("Utility class");
+    }
 
-  public static final String SPLIT_CHARTER = "_";
+    public static final String SPLIT_CHARTER = "_";
 
 }

@@ -26,23 +26,23 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @ExcludeFromJacocoGeneratedReport
 public class ServletInitializer extends SpringBootServletInitializer {
 
-  @Override
-  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-    return application
-      .profiles(addDefaultProfile())
-      .bannerMode(Banner.Mode.OFF)
-      .sources(GlcApplication.class);
-  }
-
-  private String addDefaultProfile() {
-    String profile = System.getProperty("spring.profiles.active");
-    if (profile != null) {
-      log.info("Running with Spring profile(s) : {}", profile);
-      return profile;
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application
+            .profiles(addDefaultProfile())
+            .bannerMode(Banner.Mode.OFF)
+            .sources(GlcApplication.class);
     }
 
-    log.warn("No Spring profile configured, running with default configuration");
-    return Constants.SPRING_PROFILE_DEVELOPMENT;
-  }
+    private String addDefaultProfile() {
+        String profile = System.getProperty("spring.profiles.active");
+        if (profile != null) {
+            log.info("Running with Spring profile(s) : {}", profile);
+            return profile;
+        }
+
+        log.warn("No Spring profile configured, running with default configuration");
+        return Constants.SPRING_PROFILE_DEVELOPMENT;
+    }
 
 }

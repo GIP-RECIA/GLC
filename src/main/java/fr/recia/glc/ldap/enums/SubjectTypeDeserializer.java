@@ -27,13 +27,13 @@ import java.io.IOException;
  */
 public class SubjectTypeDeserializer extends JsonDeserializer<SubjectType> {
 
-  @Override
-  public SubjectType deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
-    SubjectType type = SubjectType.fromName(jp.getValueAsString());
-    if (type != null) return type;
-    throw new JsonMappingException(jp, String.format("Invalid value '%s' for %s, must be in range of %s",
-      jp.getValueAsString(), SubjectType.class.getSimpleName(), SubjectType.values().toString()
-    ));
-  }
+    @Override
+    public SubjectType deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+        SubjectType type = SubjectType.fromName(jp.getValueAsString());
+        if (type != null) return type;
+        throw new JsonMappingException(jp, String.format("Invalid value '%s' for %s, must be in range of %s",
+            jp.getValueAsString(), SubjectType.class.getSimpleName(), SubjectType.values().toString()
+        ));
+    }
 
 }

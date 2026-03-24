@@ -39,44 +39,44 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class FonctionMEF extends AFonction {
 
-  /**
-   * Relation unidirectionnelle.
-   */
-  @ManyToOne
-  @JoinColumn(name = "etablissement_fk")
-  private Etablissement etablissement;
+    /**
+     * Relation unidirectionnelle.
+     */
+    @ManyToOne
+    @JoinColumn(name = "etablissement_fk")
+    private Etablissement etablissement;
 
-  /**
-   * Relation unidirectionnelle.
-   */
-  @ElementCollection(fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "fonctions_mefs",
-    joinColumns = @JoinColumn(name = "FONCTIONMEF_ID", referencedColumnName = "ID")
-  )
-  private Set<MappingFonctionMEFMEF> mefs = new HashSet<>();
+    /**
+     * Relation unidirectionnelle.
+     */
+    @ElementCollection(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "fonctions_mefs",
+        joinColumns = @JoinColumn(name = "FONCTIONMEF_ID", referencedColumnName = "ID")
+    )
+    private Set<MappingFonctionMEFMEF> mefs = new HashSet<>();
 
-  /**
-   * Constructeur de l'objet FonctionMEF.java.
-   */
-  public FonctionMEF() {
-    super();
-    this.setCategorie(CategorieFonction.MEF);
-  }
+    /**
+     * Constructeur de l'objet FonctionMEF.java.
+     */
+    public FonctionMEF() {
+        super();
+        this.setCategorie(CategorieFonction.MEF);
+    }
 
-  /**
-   * Constructeur de l'objet FonctionMEF.java.
-   *
-   * @param mefs          Liste des mefs.
-   * @param etablissement l'établissement associé à l'enseignement de ces mef
-   * @param personne      la personne ayant la fonction d'enseigner associé à ce mefs.
-   * @param source        Source d'alimentation gérant cette fonction.
-   */
-  public FonctionMEF(final Set<MappingFonctionMEFMEF> mefs, final Etablissement etablissement,
-                     final APersonne personne, final String source) {
-    super(CategorieFonction.MEF, personne, source);
-    this.mefs = mefs;
-    this.etablissement = etablissement;
-  }
+    /**
+     * Constructeur de l'objet FonctionMEF.java.
+     *
+     * @param mefs          Liste des mefs.
+     * @param etablissement l'établissement associé à l'enseignement de ces mef
+     * @param personne      la personne ayant la fonction d'enseigner associé à ce mefs.
+     * @param source        Source d'alimentation gérant cette fonction.
+     */
+    public FonctionMEF(final Set<MappingFonctionMEFMEF> mefs, final Etablissement etablissement,
+                       final APersonne personne, final String source) {
+        super(CategorieFonction.MEF, personne, source);
+        this.mefs = mefs;
+        this.etablissement = etablissement;
+    }
 
 }

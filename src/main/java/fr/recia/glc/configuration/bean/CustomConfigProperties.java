@@ -29,103 +29,103 @@ import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
 @Data
 public class CustomConfigProperties {
 
-  private Integer suppressDays;
-  private List<AlertProperties> alerts;
-  private List<FonctionsProperties> fonctions;
-
-  @Data
-  public static class AlertProperties {
-
-    private String source;
-    private List<FonctionAlertProperties> fonctionAlerts;
-
+    private Integer suppressDays;
+    private List<AlertProperties> alerts;
+    private List<FonctionsProperties> fonctions;
 
     @Data
-    public static class FonctionAlertProperties {
+    public static class AlertProperties {
 
-      private String code;
-      private ValueProperties min;
-      private ValueProperties max;
+        private String source;
+        private List<FonctionAlertProperties> fonctionAlerts;
 
-      @Data
-      public static class ValueProperties {
 
-        private int value;
-        private AlertType type;
-        private boolean action;
+        @Data
+        public static class FonctionAlertProperties {
+
+            private String code;
+            private ValueProperties min;
+            private ValueProperties max;
+
+            @Data
+            public static class ValueProperties {
+
+                private int value;
+                private AlertType type;
+                private boolean action;
+
+                @Override
+                public String toString() {
+                    return "{ " +
+                        "\"value\": " + value + ", " +
+                        "\"type\": \"" + type + "\", " +
+                        "\"action\": \"" + action +
+                        "\" }";
+                }
+            }
+
+            @Override
+            public String toString() {
+                return "{" +
+                    "\n\t\t\t\t\t\"code\": \"" + code + "\"," +
+                    "\n\t\t\t\t\t\"min\": " + min + "," +
+                    "\n\t\t\t\t\t\"max\": " + max +
+                    "\n\t\t\t\t}";
+            }
+
+        }
 
         @Override
         public String toString() {
-          return "{ " +
-            "\"value\": " + value + ", " +
-            "\"type\": \"" + type + "\", " +
-            "\"action\": \"" + action +
-            "\" }";
+            return "{" +
+                "\n\t\t\t\"source\": \"" + source + "\"," +
+                "\n\t\t\t\"fonctionAlerts\": " + ListUtil.toStringList(fonctionAlerts, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") +
+                "\n\t\t}";
         }
-      }
-
-      @Override
-      public String toString() {
-        return "{" +
-          "\n\t\t\t\t\t\"code\": \"" + code + "\"," +
-          "\n\t\t\t\t\t\"min\": " + min + "," +
-          "\n\t\t\t\t\t\"max\": " + max +
-          "\n\t\t\t\t}";
-      }
 
     }
-
-    @Override
-    public String toString() {
-      return "{" +
-        "\n\t\t\t\"source\": \"" + source + "\"," +
-        "\n\t\t\t\"fonctionAlerts\": " + ListUtil.toStringList(fonctionAlerts, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") +
-        "\n\t\t}";
-    }
-
-  }
-
-  @Data
-  public static class FonctionsProperties {
-
-    private String source;
-    private List<FiliereProperties> filieres = new ArrayList<>();
-    private List<String> disciplines = new ArrayList<>();
 
     @Data
-    public static class FiliereProperties {
+    public static class FonctionsProperties {
 
-      private String code;
-      private List<String> disciplines;
+        private String source;
+        private List<FiliereProperties> filieres = new ArrayList<>();
+        private List<String> disciplines = new ArrayList<>();
 
-      @Override
-      public String toString() {
-        return "{" +
-          "\n\t\t\t\t\t\"code\": \"" + code + "\"," +
-          "\n\t\t\t\t\t\"disciplines\": " + ListUtil.toStringList(disciplines, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
-          "\n\t\t\t\t}";
-      }
+        @Data
+        public static class FiliereProperties {
+
+            private String code;
+            private List<String> disciplines;
+
+            @Override
+            public String toString() {
+                return "{" +
+                    "\n\t\t\t\t\t\"code\": \"" + code + "\"," +
+                    "\n\t\t\t\t\t\"disciplines\": " + ListUtil.toStringList(disciplines, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
+                    "\n\t\t\t\t}";
+            }
+
+        }
+
+        @Override
+        public String toString() {
+            return "{" +
+                "\n\t\t\t\"source\": \"" + source + "\"," +
+                "\n\t\t\t\"filieres\": " + ListUtil.toStringList(filieres, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") + "," +
+                "\n\t\t\t\"disciplines\": " + ListUtil.toStringList(disciplines, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
+                "\n\t\t}";
+        }
 
     }
 
     @Override
     public String toString() {
-      return "{" +
-        "\n\t\t\t\"source\": \"" + source + "\"," +
-        "\n\t\t\t\"filieres\": " + ListUtil.toStringList(filieres, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") + "," +
-        "\n\t\t\t\"disciplines\": " + ListUtil.toStringList(disciplines, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
-        "\n\t\t}";
+        return "CustomConfigProperties\": {" +
+            "\n\t\"suppressDays\": " + suppressDays + "," +
+            "\n\t\"alerts\": " + ListUtil.toStringList(alerts, ",\n\t\t", "[\n\t\t", "\n\t]") +
+            "\n\t\"fonctions\": " + ListUtil.toStringList(fonctions, ",\n\t\t", "[\n\t\t", "\n\t]") +
+            "\n}";
     }
-
-  }
-
-  @Override
-  public String toString() {
-    return "CustomConfigProperties\": {" +
-      "\n\t\"suppressDays\": " + suppressDays + "," +
-      "\n\t\"alerts\": " + ListUtil.toStringList(alerts, ",\n\t\t", "[\n\t\t", "\n\t]") +
-      "\n\t\"fonctions\": " + ListUtil.toStringList(fonctions, ",\n\t\t", "[\n\t\t", "\n\t]") +
-      "\n}";
-  }
 
 }

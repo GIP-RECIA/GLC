@@ -32,27 +32,27 @@ import java.util.Date;
 @ToString(callSuper = true)
 public class NonEnseignantEtablissement extends APersonnel {
 
-  /**
-   * Constructeur de l'objet NonEnseignantEtablissement.java.
-   */
-  public NonEnseignantEtablissement() {
-    super();
-    this.setCategorie(CategoriePersonne.Non_enseignant_etablissement);
-  }
+    /**
+     * Constructeur de l'objet NonEnseignantEtablissement.java.
+     */
+    public NonEnseignantEtablissement() {
+        super();
+        this.setCategorie(CategoriePersonne.Non_enseignant_etablissement);
+    }
 
-  /**
-   * Constructeur de l'objet NonEnseignantEtablissement.java.
-   *
-   * @param anneeScolaire Année scolaire de validité de l'individu. Année à la rentrée de septembre.
-   * @param cleJointure   Clé de jointure, identifiant unique fourni par les différentes sources, mais unique uniquement pour le périmètre de la
-   *                      source.
-   * @param cn            Nom canonique de la personne : NOM + Prénom usuels.
-   * @param givenName     Prénom usuel.
-   * @param sn            Nom d'usage.
-   */
-  public NonEnseignantEtablissement(final Date anneeScolaire, final CleJointure cleJointure,
-                                    final String cn, final String givenName, final String sn) {
-    super(anneeScolaire, CategoriePersonne.Non_enseignant_etablissement, cleJointure, cn, givenName, sn);
-  }
+    /**
+     * Constructeur de l'objet NonEnseignantEtablissement.java.
+     *
+     * @param anneeScolaire Année scolaire de validité de l'individu. Année à la rentrée de septembre.
+     * @param cleJointure   Clé de jointure, identifiant unique fourni par les différentes sources, mais unique uniquement pour le périmètre de la
+     *                      source.
+     * @param cn            Nom canonique de la personne : NOM + Prénom usuels.
+     * @param givenName     Prénom usuel.
+     * @param sn            Nom d'usage.
+     */
+    public NonEnseignantEtablissement(final Date anneeScolaire, final CleJointure cleJointure,
+                                      final String cn, final String givenName, final String sn) {
+        super(anneeScolaire, CategoriePersonne.Non_enseignant_etablissement, cleJointure, cn, givenName, sn);
+    }
 
 }

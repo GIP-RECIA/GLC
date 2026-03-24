@@ -17,24 +17,24 @@ package fr.recia.glc.configuration;
 
 public class Constants {
 
-  private Constants() {
-    throw new IllegalStateException("Utility class");
-  }
+    private Constants() {
+        throw new IllegalStateException("Utility class");
+    }
 
-  public static final String SARAPISUI_ = "SarapisUi_";
-  public static final String SANS_OBJET = "SANS OBJET";
-  public static final String JSON_ARRAY_DELIMITER = "\", \"";
-  public static final String JSON_ARRAY_PREFIX = "[ \"";
-  public static final String JSON_ARRAY_SUFFIX = "\" ]";
+    public static final String SARAPISUI_ = "SarapisUi_";
+    public static final String SANS_OBJET = "SANS OBJET";
+    public static final String JSON_ARRAY_DELIMITER = "\", \"";
+    public static final String JSON_ARRAY_PREFIX = "[ \"";
+    public static final String JSON_ARRAY_SUFFIX = "\" ]";
 
-  public static final String SPRING_PROFILE_DEVELOPMENT = "dev";
-  public static final String SPRING_PROFILE_PRODUCTION = "prod";
-  public static final String SPRING_PROFILE_TEST = "test";
+    public static final String SPRING_PROFILE_DEVELOPMENT = "dev";
+    public static final String SPRING_PROFILE_PRODUCTION = "prod";
+    public static final String SPRING_PROFILE_TEST = "test";
 
-  public static final String GROUPER_SOURCEID_USER = "esco:ldap";
-  public static final String GROUPER_SOURCEID_GROUP = "g:gsa";
-  public static final String GROUPER_MEDIA_TYPE = "text/x-json";
-  public static final String GROUPER_DIRECT_MEMBERSHIP = "immediate";
+    public static final String GROUPER_SOURCEID_USER = "esco:ldap";
+    public static final String GROUPER_SOURCEID_GROUP = "g:gsa";
+    public static final String GROUPER_MEDIA_TYPE = "text/x-json";
+    public static final String GROUPER_DIRECT_MEMBERSHIP = "immediate";
 
 
 }

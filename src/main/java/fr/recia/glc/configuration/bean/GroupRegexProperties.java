@@ -24,24 +24,24 @@ import javax.validation.constraints.NotBlank;
 @Validated
 public class GroupRegexProperties {
 
-  @NotBlank
-  private String groupMatcher;
-  @NotBlank
-  private String groupNameRegex;
-  @NotBlank
-  private String groupNameIndex;
-  private String groupRecomposerSeparator;
-  private String groupSuffixeToAppend;
+    @NotBlank
+    private String groupMatcher;
+    @NotBlank
+    private String groupNameRegex;
+    @NotBlank
+    private String groupNameIndex;
+    private String groupRecomposerSeparator;
+    private String groupSuffixeToAppend;
 
-  @Override
-  public String toString() {
-    return "{" +
-      "\n\t\t\t\t\"groupMatcher\": \"" + groupMatcher + "\"," +
-      "\n\t\t\t\t\"groupNameRegex\": \"" + groupNameRegex + "\"," +
-      "\n\t\t\t\t\"groupNameIndex\": \"" + groupNameIndex + "\"," +
-      "\n\t\t\t\t\"groupRecomposerSeparator\": \"" + groupRecomposerSeparator + "\"," +
-      "\n\t\t\t\t\"groupSuffixeToAppend\": \"" + groupSuffixeToAppend + "\"" +
-      "\n\t\t\t}";
-  }
+    @Override
+    public String toString() {
+        return "{" +
+            "\n\t\t\t\t\"groupMatcher\": \"" + groupMatcher + "\"," +
+            "\n\t\t\t\t\"groupNameRegex\": \"" + groupNameRegex + "\"," +
+            "\n\t\t\t\t\"groupNameIndex\": \"" + groupNameIndex + "\"," +
+            "\n\t\t\t\t\"groupRecomposerSeparator\": \"" + groupRecomposerSeparator + "\"," +
+            "\n\t\t\t\t\"groupSuffixeToAppend\": \"" + groupSuffixeToAppend + "\"" +
+            "\n\t\t\t}";
+    }
 
 }

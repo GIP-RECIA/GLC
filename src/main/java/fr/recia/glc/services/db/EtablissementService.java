@@ -23,7 +23,6 @@ import fr.recia.glc.db.repositories.structure.EtablissementRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -36,35 +35,35 @@ import java.util.stream.Collectors;
 @Service
 public class EtablissementService {
 
-  @Autowired
-  private EtablissementRepository<Etablissement> etablissementRepository;
+    @Autowired
+    private EtablissementRepository<Etablissement> etablissementRepository;
 
-  public List<SimpleStructureDto> getEtablissements() {
-    return IteratorUtils.toList(
-        etablissementRepository
-          .findAll(QEtablissement.etablissement.uai.isNotNull(), Sort.by("nom"))
-          .iterator()
-      ).stream()
-      .map(SimpleStructureDto::new)
-      .collect(Collectors.toList());
-  }
+    public List<SimpleStructureDto> getEtablissements() {
+        return IteratorUtils.toList(
+                etablissementRepository
+                    .findAll(QEtablissement.etablissement.uai.isNotNull(), Sort.by("nom"))
+                    .iterator()
+            ).stream()
+            .map(SimpleStructureDto::new)
+            .collect(Collectors.toList());
+    }
 
-  public List<SimpleStructureDto> getEtablissements(Set<String> allowedUAI) {
-    return IteratorUtils.toList(
-        etablissementRepository
-          .findAll(QEtablissement.etablissement.uai.isNotNull().and(QEtablissement.etablissement.uai.in(allowedUAI)),
-            Sort.by("nom")
-          ).iterator()
-      ).stream()
-      .map(SimpleStructureDto::new)
-      .collect(Collectors.toList());
-  }
+    public List<SimpleStructureDto> getEtablissements(Set<String> allowedUAI) {
+        return IteratorUtils.toList(
+                etablissementRepository
+                    .findAll(QEtablissement.etablissement.uai.isNotNull().and(QEtablissement.etablissement.uai.in(allowedUAI)),
+                        Sort.by("nom")
+                    ).iterator()
+            ).stream()
+            .map(SimpleStructureDto::new)
+            .collect(Collectors.toList());
+    }
 
-  @Cacheable(value = "etablissement")
-  public EtablissementDto getEtablissement(Long id) {
-    log.trace("getEtablissement for {}", id);
-    Etablissement etablissement = etablissementRepository.findById(id).orElse(null);
-    return etablissement != null ? new EtablissementDto(etablissement) : null;
-  }
+    @Cacheable(value = "etablissement")
+    public EtablissementDto getEtablissement(Long id) {
+        log.trace("getEtablissement for {}", id);
+        Etablissement etablissement = etablissementRepository.findById(id).orElse(null);
+        return etablissement != null ? new EtablissementDto(etablissement) : null;
+    }
 
 }

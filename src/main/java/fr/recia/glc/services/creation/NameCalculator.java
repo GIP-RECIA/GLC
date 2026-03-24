@@ -16,7 +16,9 @@ public class NameCalculator {
     private final StringOperation stringOperation;
 
     private static final char MAX_VALUE = 512;
-    /** la taille maximales des logins avant increment. */
+    /**
+     * la taille maximales des logins avant increment.
+     */
     private static final int MAX_LOGIN_LENGHT = 18;
     private final String[] coresp = new String[NameCalculator.MAX_VALUE];
     private final Pattern pattern;

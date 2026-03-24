@@ -38,20 +38,20 @@ import java.util.Set;
 @Slf4j
 public class LdapGroupDao {
 
-  private LdapTemplate ldapTemplate;
-  private ExternalGroupHelper externalGroupHelper;
-  private CustomLdapProperties ldapProperties;
+    private LdapTemplate ldapTemplate;
+    private ExternalGroupHelper externalGroupHelper;
+    private CustomLdapProperties ldapProperties;
 
-  public Set<StructureFromGroup> getStructuresFromGroups() {
-    HardcodedFilter filter = new HardcodedFilter(ldapProperties.getGroupBranch().getStructureProperties().getFilterGroupsOfStructure());
-    if (log.isDebugEnabled()) {
-      log.debug("LDAP filter applied {} ", filter.encode());
+    public Set<StructureFromGroup> getStructuresFromGroups() {
+        HardcodedFilter filter = new HardcodedFilter(ldapProperties.getGroupBranch().getStructureProperties().getFilterGroupsOfStructure());
+        if (log.isDebugEnabled()) {
+            log.debug("LDAP filter applied {} ", filter.encode());
+        }
+        ContextMapper<StructureFromGroup> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper, ldapProperties);
+        LdapQuery query = LdapQueryBuilder.query()
+            .attributes(externalGroupHelper.getAttributes().toArray(new String[0]))
+            .base(externalGroupHelper.getGroupDNSubPath()).filter(filter);
+        return Sets.newHashSet(ldapTemplate.search(query, mapper));
     }
-    ContextMapper<StructureFromGroup> mapper = new LdapGroupStructureContextMapper(this.externalGroupHelper, ldapProperties);
-    LdapQuery query = LdapQueryBuilder.query()
-      .attributes(externalGroupHelper.getAttributes().toArray(new String[0]))
-      .base(externalGroupHelper.getGroupDNSubPath()).filter(filter);
-    return Sets.newHashSet(ldapTemplate.search(query, mapper));
-  }
 
 }

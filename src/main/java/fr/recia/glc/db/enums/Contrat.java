@@ -16,12 +16,12 @@
 package fr.recia.glc.db.enums;
 
 public enum Contrat {
-  /**
-   * Contrat privé.
-   */
-  Prive,
-  /**
-   * Contrat public.
-   */
-  Public,
+    /**
+     * Contrat privé.
+     */
+    Prive,
+    /**
+     * Contrat public.
+     */
+    Public,
 }

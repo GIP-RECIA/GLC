@@ -16,17 +16,17 @@
 package fr.recia.glc.db.enums;
 
 public enum Civilite {
-  /**
-   * Monsieur.
-   */
-  M,
-  /**
-   * Mademoiselle.
-   */
-  @Deprecated
-  Mlle,
-  /**
-   * Madame.
-   */
-  Mme
+    /**
+     * Monsieur.
+     */
+    M,
+    /**
+     * Mademoiselle.
+     */
+    @Deprecated
+    Mlle,
+    /**
+     * Madame.
+     */
+    Mme
 }

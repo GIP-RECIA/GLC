@@ -24,15 +24,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JsonFonction {
 
-  private String fonction;
-  private String date;
+    private String fonction;
+    private String date;
 
-  public JsonFonction(String fonction) {
-    this.fonction = fonction;
-  }
+    public JsonFonction(String fonction) {
+        this.fonction = fonction;
+    }
 
-  public boolean postDataOk() {
-    return fonction != null && !fonction.isEmpty() && date != null && !date.isEmpty();
-  }
+    public boolean postDataOk() {
+        return fonction != null && !fonction.isEmpty() && date != null && !date.isEmpty();
+    }
 
 }

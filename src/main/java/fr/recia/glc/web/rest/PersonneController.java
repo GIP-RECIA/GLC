@@ -24,11 +24,9 @@ import fr.recia.glc.db.repositories.structure.EtablissementRepository;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.db.AddPersonneService;
-import fr.recia.glc.services.db.EtablissementService;
-import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
-import fr.recia.glc.web.dto.function.JsonAdditionalFonctionOldBody;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
+import fr.recia.glc.web.dto.function.JsonAdditionalFonctionOldBody;
 import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,18 +79,18 @@ public class PersonneController {
         boolean canRead = false;
         boolean showUid = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
-        for(AStructure aStructure : personne.getListeStructures()){
+        for (AStructure aStructure : personne.getListeStructures()) {
             // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
-            if(aStructure instanceof Etablissement){
-                if(allowedUAI.contains(((Etablissement) aStructure).getUai())){
+            if (aStructure instanceof Etablissement) {
+                if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
                     canRead = true;
                 }
-                if(principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(((Etablissement) aStructure).getUai())){
+                if (principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(((Etablissement) aStructure).getUai())) {
                     showUid = true;
                 }
             }
         }
-        if(canRead){
+        if (canRead) {
             // Booléen qui indique si on affiche l'uid ou non
             PersonneDto personneDto = new PersonneDto(personne, showUid);
             personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
@@ -111,7 +109,7 @@ public class PersonneController {
         Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
         // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
-        if(allowedUAI.contains(etablissement.getUai())){
+        if (allowedUAI.contains(etablissement.getUai())) {
             addPersonneService.addPersonne(userCreation);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -127,13 +125,13 @@ public class PersonneController {
         Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
         // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
-        if(allowedUAI.contains(etablissement.getUai())){
+        if (allowedUAI.contains(etablissement.getUai())) {
             boolean success = fonctionService.saveAdditionalFonctions(
-                    id,
-                    body.getStructureId(),
-                    body.getToAddFunctions(),
-                    body.getToDeleteFunctions(),
-                    body.getRequiredAction()
+                id,
+                body.getStructureId(),
+                body.getToAddFunctions(),
+                body.getToDeleteFunctions(),
+                body.getRequiredAction()
             );
             if (!success) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

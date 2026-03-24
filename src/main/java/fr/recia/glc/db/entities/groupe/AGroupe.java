@@ -40,44 +40,44 @@ import java.util.Date;
 @ToString(callSuper = true)
 public abstract class AGroupe extends AbstractTracedEntity {
 
-  /**
-   * Type de groupe.
-   */
-  @Enumerated(EnumType.STRING)
-  @Column(length = IntConst.I30)
-  private CategorieGroupe categorie;
-  /**
-   * Année scolaire de validité de l'objet.
-   * Année à la rentrée de septembre.
-   */
-  @Temporal(TemporalType.DATE)
-  private Date anneeScolaire;
-  /**
-   * Nom unique de groupe, peut servir comme identifiant au sein d'un établissement.
-   */
-  private String cn;
-  /**
-   * Description du groupe.
-   */
-  private String description;
-  /**
-   * Source ayant créé le groupe.
-   */
-  @Column(length = IntConst.ISOURCE)
-  private String source;
+    /**
+     * Type de groupe.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(length = IntConst.I30)
+    private CategorieGroupe categorie;
+    /**
+     * Année scolaire de validité de l'objet.
+     * Année à la rentrée de septembre.
+     */
+    @Temporal(TemporalType.DATE)
+    private Date anneeScolaire;
+    /**
+     * Nom unique de groupe, peut servir comme identifiant au sein d'un établissement.
+     */
+    private String cn;
+    /**
+     * Description du groupe.
+     */
+    private String description;
+    /**
+     * Source ayant créé le groupe.
+     */
+    @Column(length = IntConst.ISOURCE)
+    private String source;
 
-  /**
-   * Constructeur de l'objet AGroupe.java.
-   *
-   * @param cn        Nom unique de groupe, peut servir comme identifiant.
-   * @param categorie Type de groupe.
-   * @param source    Source ayant créé l'objet.
-   */
-  public AGroupe(final String cn, final CategorieGroupe categorie, final String source) {
-    super();
-    this.cn = cn;
-    this.categorie = categorie;
-    this.source = source;
-  }
+    /**
+     * Constructeur de l'objet AGroupe.java.
+     *
+     * @param cn        Nom unique de groupe, peut servir comme identifiant.
+     * @param categorie Type de groupe.
+     * @param source    Source ayant créé l'objet.
+     */
+    public AGroupe(final String cn, final CategorieGroupe categorie, final String source) {
+        super();
+        this.cn = cn;
+        this.categorie = categorie;
+        this.source = source;
+    }
 
 }

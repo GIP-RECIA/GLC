@@ -22,9 +22,9 @@ import java.util.List;
 @Data
 public class JsonAdditionalFonctionOldBody {
 
-  private Long structureId;
-  private List<FonctionToModify> toAddFunctions;
-  private List<FonctionToModify> toDeleteFunctions;
-  private FonctionAction requiredAction;
+    private Long structureId;
+    private List<FonctionToModify> toAddFunctions;
+    private List<FonctionToModify> toDeleteFunctions;
+    private FonctionAction requiredAction;
 
 }

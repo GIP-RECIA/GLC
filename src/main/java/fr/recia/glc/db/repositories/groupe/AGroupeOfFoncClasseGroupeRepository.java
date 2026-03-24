@@ -16,7 +16,6 @@
 package fr.recia.glc.db.repositories.groupe;
 
 import fr.recia.glc.db.entities.groupe.AGroupeOfFoncClasseGroupe;
-import fr.recia.glc.db.entities.groupe.Groupe;
 import fr.recia.glc.db.repositories.AbstractRepository;
 import org.springframework.stereotype.Repository;
 

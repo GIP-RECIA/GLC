@@ -16,9 +16,9 @@
 package fr.recia.glc.db.enums;
 
 public enum PropertyValue {
-  TRUE,
-  FALSE,
-  ON,
-  OFF,
-  PAUSE
+    TRUE,
+    FALSE,
+    ON,
+    OFF,
+    PAUSE
 }

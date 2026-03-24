@@ -38,35 +38,35 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class Entreprise extends AStructure {
 
-  /**
-   * Relation unidirectionnelle.
-   * Liste des établissements en partenariat avec l'entreprise.
-   */
-  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "partenariat",
-    joinColumns = @JoinColumn(name = "ENTREPRISE_ID", referencedColumnName = "ID"),
-    inverseJoinColumns = @JoinColumn(name = "ETABLISSEMENT_ID", referencedColumnName = "ID")
-  )
-  private Set<Etablissement> partenariat = new HashSet<>();
+    /**
+     * Relation unidirectionnelle.
+     * Liste des établissements en partenariat avec l'entreprise.
+     */
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "partenariat",
+        joinColumns = @JoinColumn(name = "ENTREPRISE_ID", referencedColumnName = "ID"),
+        inverseJoinColumns = @JoinColumn(name = "ETABLISSEMENT_ID", referencedColumnName = "ID")
+    )
+    private Set<Etablissement> partenariat = new HashSet<>();
 
-  /**
-   * Constructeur de l'objet Entreprise.java.
-   */
-  public Entreprise() {
-    super();
-    this.setCategorie(CategorieStructure.Entreprise);
-  }
+    /**
+     * Constructeur de l'objet Entreprise.java.
+     */
+    public Entreprise() {
+        super();
+        this.setCategorie(CategorieStructure.Entreprise);
+    }
 
-  /**
-   * Constructeur de l'objet Entreprise.java.
-   *
-   * @param nom         Nom unique de la stucture.
-   * @param siren       Numéro de SIRET/SIREN unique de la structure.
-   * @param cleJointure Clé de jointure unique de la structure.
-   */
-  public Entreprise(final String nom, final String siren, final CleJointure cleJointure) {
-    super(CategorieStructure.Entreprise, nom, siren, cleJointure);
-  }
+    /**
+     * Constructeur de l'objet Entreprise.java.
+     *
+     * @param nom         Nom unique de la stucture.
+     * @param siren       Numéro de SIRET/SIREN unique de la structure.
+     * @param cleJointure Clé de jointure unique de la structure.
+     */
+    public Entreprise(final String nom, final String siren, final CleJointure cleJointure) {
+        super(CategorieStructure.Entreprise, nom, siren, cleJointure);
+    }
 
 }

@@ -22,6 +22,7 @@ import lombok.Data;
 public class WsRestAddMemberRequestWrapper {
     @JsonProperty("WsRestAddMemberRequest")
     private WsRestAddMemberRequest wsRestAddMemberRequest;
+
     public WsRestAddMemberRequestWrapper(String subjectId, String subjectSourceId) {
         this.wsRestAddMemberRequest = new WsRestAddMemberRequest(subjectId, subjectSourceId);
     }

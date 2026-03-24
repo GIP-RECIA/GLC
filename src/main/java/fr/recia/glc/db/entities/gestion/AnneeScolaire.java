@@ -36,45 +36,45 @@ import java.util.Date;
 @ToString(callSuper = true)
 public class AnneeScolaire extends AbstractTracedEntity {
 
-  /**
-   * Informe de l'année en cours, une seule insertion par année possible,
-   * année à la rentrée (de septembre).
-   */
-  @Column(unique = true, nullable = false)
-  @Temporal(TemporalType.DATE)
-  private Date anneeEnCours;
-  /**
-   * Date exacte du passage à l'année suivante pour les insertions.
-   */
-  @Column(nullable = false)
-  @Temporal(TemporalType.DATE)
-  private Date passageAnneeSuivante;
-  /**
-   * Date de fin des autorisations des accés pour les utilisateurs de l'année scolaire précédente.
-   * Si null on y place la date de passageAnneeSuivante.
-   */
-  @Column(nullable = false)
-  @Temporal(TemporalType.DATE)
-  private Date finAutorisation;
-  /**
-   * Booleen indiquant l'insertion du complet des établissements en début d'année scolaire.
-   */
-  @Column(nullable = false, columnDefinition = "BIT")
-  private boolean etabMAJ;
+    /**
+     * Informe de l'année en cours, une seule insertion par année possible,
+     * année à la rentrée (de septembre).
+     */
+    @Column(unique = true, nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date anneeEnCours;
+    /**
+     * Date exacte du passage à l'année suivante pour les insertions.
+     */
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date passageAnneeSuivante;
+    /**
+     * Date de fin des autorisations des accés pour les utilisateurs de l'année scolaire précédente.
+     * Si null on y place la date de passageAnneeSuivante.
+     */
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date finAutorisation;
+    /**
+     * Booleen indiquant l'insertion du complet des établissements en début d'année scolaire.
+     */
+    @Column(nullable = false, columnDefinition = "BIT")
+    private boolean etabMAJ;
 
-  /**
-   * Constructeur de l'objet AnneeScolaire.java.
-   *
-   * @param anneeEnCours         Année scolaire en cours, année à la rentrée (de septembre).
-   * @param passageAnneeSuivante Date de passage des insertions à l'année suivante.
-   * @param finAutorisation      Date de fin des autorisations des accés
-   *                             pour les utilisateurs de l'année scolaire précédente.
-   */
-  public AnneeScolaire(final Date anneeEnCours, final Date passageAnneeSuivante, final Date finAutorisation) {
-    super();
-    this.anneeEnCours = anneeEnCours;
-    this.passageAnneeSuivante = passageAnneeSuivante;
-    this.finAutorisation = finAutorisation;
-  }
+    /**
+     * Constructeur de l'objet AnneeScolaire.java.
+     *
+     * @param anneeEnCours         Année scolaire en cours, année à la rentrée (de septembre).
+     * @param passageAnneeSuivante Date de passage des insertions à l'année suivante.
+     * @param finAutorisation      Date de fin des autorisations des accés
+     *                             pour les utilisateurs de l'année scolaire précédente.
+     */
+    public AnneeScolaire(final Date anneeEnCours, final Date passageAnneeSuivante, final Date finAutorisation) {
+        super();
+        this.anneeEnCours = anneeEnCours;
+        this.passageAnneeSuivante = passageAnneeSuivante;
+        this.finAutorisation = finAutorisation;
+    }
 
 }

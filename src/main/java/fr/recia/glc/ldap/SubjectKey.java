@@ -23,7 +23,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EnumType;
-import javax.persistence.Enumerated;import java.io.Serializable;
+import javax.persistence.Enumerated;
+import java.io.Serializable;
 
 /**
  * @author GIP RECIA - Julien Gribonvald 14 juin 2014
@@ -33,22 +34,22 @@ import javax.persistence.Enumerated;import java.io.Serializable;
 @RequiredArgsConstructor
 public class SubjectKey implements ICompositeKey<String, SubjectType>, Serializable {
 
-  /**
-   * Serial Version id.
-   */
-  private static final long serialVersionUID = 687644117634464074L;
+    /**
+     * Serial Version id.
+     */
+    private static final long serialVersionUID = 687644117634464074L;
 
-  /**
-   * This field corresponds to the database column subject_id.
-   */
-  @NonNull
-  private String keyId;
+    /**
+     * This field corresponds to the database column subject_id.
+     */
+    @NonNull
+    private String keyId;
 
-  /**
-   * This field corresponds to the database column subject_type.
-   */
-  @NonNull
-  @Enumerated(EnumType.STRING)
-  private SubjectType keyType;
+    /**
+     * This field corresponds to the database column subject_type.
+     */
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private SubjectType keyType;
 
 }

@@ -38,18 +38,18 @@ import java.io.Serializable;
 @ToString
 public class MappingAGroupeAPersonneId implements Serializable {
 
-  /**
-   * The personne to associate to the groupe.
-   */
-  @ManyToOne(cascade = CascadeType.REFRESH)
-  @JoinColumn(name = "APERSONNE_ID", nullable = false)
-  private APersonne personne;
+    /**
+     * The personne to associate to the groupe.
+     */
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "APERSONNE_ID", nullable = false)
+    private APersonne personne;
 
-  /**
-   * The groupe to associate with the person.
-   */
-  @ManyToOne
-  @JoinColumn(name = "AGROUPEOFAPERS_ID", nullable = false)
-  private AGroupeOfAPersonne groupe;
+    /**
+     * The groupe to associate with the person.
+     */
+    @ManyToOne
+    @JoinColumn(name = "AGROUPEOFAPERS_ID", nullable = false)
+    private AGroupeOfAPersonne groupe;
 
 }

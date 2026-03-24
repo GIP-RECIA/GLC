@@ -32,94 +32,94 @@ import org.springframework.util.Assert;
 @Slf4j
 public class LDAPConfiguration {
 
-  private final CustomLdapProperties ldapProperties;
+    private final CustomLdapProperties ldapProperties;
 
-  public LDAPConfiguration(GLCProperties glcProperties) {
-    this.ldapProperties = glcProperties.getLdap();
-  }
+    public LDAPConfiguration(GLCProperties glcProperties) {
+        this.ldapProperties = glcProperties.getLdap();
+    }
 
-  @Bean
-  public LdapContextSource contextSource() {
-    log.debug("Configuring LdapContextSource");
-    final LdapContextSource ldapCtx = new LdapContextSource();
-    ldapCtx.setAnonymousReadOnly(ldapProperties.getContextSource().isAnonymousReadOnly());
-    ldapCtx.setBase(ldapProperties.getContextSource().getBase());
-    ldapCtx.setUrls(ldapProperties.getContextSource().getUrls());
-    ldapCtx.setUserDn(ldapProperties.getContextSource().getUsername());
-    ldapCtx.setPassword(ldapProperties.getContextSource().getPassword());
-    ldapCtx.setPooled(ldapProperties.getContextSource().isNativePooling());
-    log.debug("LDAPContext is configured with properties {}", ldapProperties.getContextSource());
+    @Bean
+    public LdapContextSource contextSource() {
+        log.debug("Configuring LdapContextSource");
+        final LdapContextSource ldapCtx = new LdapContextSource();
+        ldapCtx.setAnonymousReadOnly(ldapProperties.getContextSource().isAnonymousReadOnly());
+        ldapCtx.setBase(ldapProperties.getContextSource().getBase());
+        ldapCtx.setUrls(ldapProperties.getContextSource().getUrls());
+        ldapCtx.setUserDn(ldapProperties.getContextSource().getUsername());
+        ldapCtx.setPassword(ldapProperties.getContextSource().getPassword());
+        ldapCtx.setPooled(ldapProperties.getContextSource().isNativePooling());
+        log.debug("LDAPContext is configured with properties {}", ldapProperties.getContextSource());
 
-    return ldapCtx;
-  }
+        return ldapCtx;
+    }
 
-  @Bean
-  public LdapTemplate ldapTemplate() {
-    final LdapTemplate ldapTpl = new LdapTemplate();
-    ldapTpl.setContextSource(contextSource());
-    ldapTpl.setDefaultCountLimit(ldapProperties.getLdapTemplate().getCountLimit());
-    ldapTpl.setDefaultTimeLimit(ldapProperties.getLdapTemplate().getTimeLimit());
-    ldapTpl.setDefaultSearchScope(ldapProperties.getLdapTemplate().getSearchScope());
-    ldapTpl.setIgnoreNameNotFoundException(ldapProperties.getLdapTemplate().isIgnoreNameNotFoundException());
-    ldapTpl.setIgnorePartialResultException(ldapProperties.getLdapTemplate().isIgnorePartialResultException());
-    ldapTpl.setIgnoreSizeLimitExceededException(ldapProperties.getLdapTemplate().isIgnoreSizeLimitExceededException());
+    @Bean
+    public LdapTemplate ldapTemplate() {
+        final LdapTemplate ldapTpl = new LdapTemplate();
+        ldapTpl.setContextSource(contextSource());
+        ldapTpl.setDefaultCountLimit(ldapProperties.getLdapTemplate().getCountLimit());
+        ldapTpl.setDefaultTimeLimit(ldapProperties.getLdapTemplate().getTimeLimit());
+        ldapTpl.setDefaultSearchScope(ldapProperties.getLdapTemplate().getSearchScope());
+        ldapTpl.setIgnoreNameNotFoundException(ldapProperties.getLdapTemplate().isIgnoreNameNotFoundException());
+        ldapTpl.setIgnorePartialResultException(ldapProperties.getLdapTemplate().isIgnorePartialResultException());
+        ldapTpl.setIgnoreSizeLimitExceededException(ldapProperties.getLdapTemplate().isIgnoreSizeLimitExceededException());
 
-    return ldapTpl;
-  }
+        return ldapTpl;
+    }
 
-  @Bean
-  public ExternalGroupHelper externalGroupHelper() {
-    log.debug("Configure bean ExternalGroupHelper with LDAP attributes");
-    Assert.notNull(
-      ldapProperties.getGroupBranch(),
-      "Use of LDAP group branch require 'app.ldap.groupBranch.*' properties configured !"
-    );
-    ExternalGroupHelper ldapUh = new ExternalGroupHelper(
-      ldapProperties.getGroupBranch().getIdAttribute(),
-      ldapProperties.getGroupBranch().getDisplayNameAttribute(),
-      ldapProperties.getGroupBranch().getSearchAttribute(),
-      ldapProperties.getGroupBranch().getGroupAttribute(),
-      ldapProperties.getGroupBranch().getGroupMemberKeyPattern(),
-      ldapProperties.getGroupBranch().getGroupMemberKeyPatternIndex(),
-      ldapProperties.getGroupBranch().getUserMemberKeyPattern(),
-      ldapProperties.getGroupBranch().getUserMemberKeyPatternIndex(),
-      ldapProperties.getGroupBranch().getGroupDisplayNamePattern(),
-      ldapProperties.getGroupBranch().isDNContainsDisplayName(),
-      ldapProperties.getGroupBranch().isResolveUserMembers(),
-      ldapProperties.getGroupBranch().isResolveUserMembersByUserAttributes(),
-      ldapProperties.getGroupBranch().getDontResolveMembersWithGroupPattern(),
-      ldapProperties.getGroupBranch().getOtherDisplayedAttributes(),
-      ldapProperties.getGroupBranch().getBaseDN()
-    );
-    log.debug("LdapAttributes for Groups configured : {}", ldapUh);
+    @Bean
+    public ExternalGroupHelper externalGroupHelper() {
+        log.debug("Configure bean ExternalGroupHelper with LDAP attributes");
+        Assert.notNull(
+            ldapProperties.getGroupBranch(),
+            "Use of LDAP group branch require 'app.ldap.groupBranch.*' properties configured !"
+        );
+        ExternalGroupHelper ldapUh = new ExternalGroupHelper(
+            ldapProperties.getGroupBranch().getIdAttribute(),
+            ldapProperties.getGroupBranch().getDisplayNameAttribute(),
+            ldapProperties.getGroupBranch().getSearchAttribute(),
+            ldapProperties.getGroupBranch().getGroupAttribute(),
+            ldapProperties.getGroupBranch().getGroupMemberKeyPattern(),
+            ldapProperties.getGroupBranch().getGroupMemberKeyPatternIndex(),
+            ldapProperties.getGroupBranch().getUserMemberKeyPattern(),
+            ldapProperties.getGroupBranch().getUserMemberKeyPatternIndex(),
+            ldapProperties.getGroupBranch().getGroupDisplayNamePattern(),
+            ldapProperties.getGroupBranch().isDNContainsDisplayName(),
+            ldapProperties.getGroupBranch().isResolveUserMembers(),
+            ldapProperties.getGroupBranch().isResolveUserMembersByUserAttributes(),
+            ldapProperties.getGroupBranch().getDontResolveMembersWithGroupPattern(),
+            ldapProperties.getGroupBranch().getOtherDisplayedAttributes(),
+            ldapProperties.getGroupBranch().getBaseDN()
+        );
+        log.debug("LdapAttributes for Groups configured : {}", ldapUh);
 
-    return ldapUh;
-  }
+        return ldapUh;
+    }
 
-  @Bean
-  public LdapGroupDao ldapExternalGroupDao(LdapTemplate ldapTemplate) {
-    log.debug("Configuring IExternalGroupDao with LDAP DAO");
-    Assert.notNull(
-      ldapProperties.getGroupBranch(),
-      "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !"
-    );
-    return new LdapGroupDao(ldapTemplate, externalGroupHelper(), ldapProperties);
-  }
-
-  @Bean
-  public LdapStructureDao ldapStructureDao(LdapTemplate ldapTemplate, StructureSirenDomainAttributesMapper structureSirenDomainAttributesMapper) {
-    log.debug("Configuring IExternalGroupDao with LDAP DAO");
-    Assert.notNull(
+    @Bean
+    public LdapGroupDao ldapExternalGroupDao(LdapTemplate ldapTemplate) {
+        log.debug("Configuring IExternalGroupDao with LDAP DAO");
+        Assert.notNull(
             ldapProperties.getGroupBranch(),
             "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !"
-    );
-    return new LdapStructureDao(ldapTemplate, structureSirenDomainAttributesMapper, ldapProperties);
-  }
+        );
+        return new LdapGroupDao(ldapTemplate, externalGroupHelper(), ldapProperties);
+    }
 
-  @Bean
-  public StructureLoader loadedStructure(LdapGroupDao ldapGroupDao, LdapStructureDao ldapStructureDao) {
-    log.debug("Loading Structure extracted from groups");
-    return new StructureLoader(ldapGroupDao, ldapStructureDao);
-  }
+    @Bean
+    public LdapStructureDao ldapStructureDao(LdapTemplate ldapTemplate, StructureSirenDomainAttributesMapper structureSirenDomainAttributesMapper) {
+        log.debug("Configuring IExternalGroupDao with LDAP DAO");
+        Assert.notNull(
+            ldapProperties.getGroupBranch(),
+            "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !"
+        );
+        return new LdapStructureDao(ldapTemplate, structureSirenDomainAttributesMapper, ldapProperties);
+    }
+
+    @Bean
+    public StructureLoader loadedStructure(LdapGroupDao ldapGroupDao, LdapStructureDao ldapStructureDao) {
+        log.debug("Loading Structure extracted from groups");
+        return new StructureLoader(ldapGroupDao, ldapStructureDao);
+    }
 
 }

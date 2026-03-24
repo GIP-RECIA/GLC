@@ -18,15 +18,13 @@ package fr.recia.glc.configuration.bean;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotEmpty;
-
 @Data
 @Validated
 public class CASProperties {
 
-  private String casServiceId;
-  private String casServerUrl;
-  private String casProviderKey;
-  private String casTicketCallback;
+    private String casServiceId;
+    private String casServerUrl;
+    private String casProviderKey;
+    private String casTicketCallback;
 
 }

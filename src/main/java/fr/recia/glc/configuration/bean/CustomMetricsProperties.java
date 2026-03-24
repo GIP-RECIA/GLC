@@ -24,14 +24,14 @@ import javax.validation.constraints.NotNull;
 @Validated
 public class CustomMetricsProperties {
 
-  @NotNull
-  private final IpRangeProperties prometeusAuthorizedAcess = new IpRangeProperties();
+    @NotNull
+    private final IpRangeProperties prometeusAuthorizedAcess = new IpRangeProperties();
 
-  @Override
-  public String toString() {
-    return "CustomMetricsProperties\": {" +
-      "\n\t\"prometeusAuthorizedAcess\": " + prometeusAuthorizedAcess +
-      "\n}";
-  }
+    @Override
+    public String toString() {
+        return "CustomMetricsProperties\": {" +
+            "\n\t\"prometeusAuthorizedAcess\": " + prometeusAuthorizedAcess +
+            "\n}";
+    }
 
 }

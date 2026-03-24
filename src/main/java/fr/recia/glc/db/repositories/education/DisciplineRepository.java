@@ -26,52 +26,52 @@ import java.util.List;
 @Repository
 public interface DisciplineRepository<T extends Discipline> extends AbstractRepository<T, Long> {
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
-    "FROM Discipline d " +
-    "WHERE d.code IN :codes " +
-    "AND d.source = :source " +
-    "ORDER BY d.disciplinePoste")
-  List<DisciplineDto> findByCodeAndSource(List<String> codes, String source);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
+        "FROM Discipline d " +
+        "WHERE d.code IN :codes " +
+        "AND d.source = :source " +
+        "ORDER BY d.disciplinePoste")
+    List<DisciplineDto> findByCodeAndSource(List<String> codes, String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
-    "FROM Discipline d " +
-    "WHERE d.code IN :codes " +
-    "AND (d.source = :source " +
-    "OR d.source = CONCAT('SarapisUi_', :source)) " +
-    "ORDER BY d.disciplinePoste")
-  List<DisciplineDto> findByCodeAndSourceSarapis(List<String> codes, String source);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
+        "FROM Discipline d " +
+        "WHERE d.code IN :codes " +
+        "AND (d.source = :source " +
+        "OR d.source = CONCAT('SarapisUi_', :source)) " +
+        "ORDER BY d.disciplinePoste")
+    List<DisciplineDto> findByCodeAndSourceSarapis(List<String> codes, String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
-    "FROM Discipline d " +
-    "WHERE d.source = :source " +
-    "ORDER BY d.disciplinePoste")
-  List<DisciplineDto> findBySource(String source);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
+        "FROM Discipline d " +
+        "WHERE d.source = :source " +
+        "ORDER BY d.disciplinePoste")
+    List<DisciplineDto> findBySource(String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
-    "FROM Discipline d " +
-    "WHERE d.source = :source " +
-    "OR d.source = CONCAT('SarapisUi_', :source) " +
-    "OR d.source LIKE 'COLL-%' " +
-    "ORDER BY d.disciplinePoste")
-  List<DisciplineDto> findBySourceSarapis(String source);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
+        "FROM Discipline d " +
+        "WHERE d.source = :source " +
+        "OR d.source = CONCAT('SarapisUi_', :source) " +
+        "OR d.source LIKE 'COLL-%' " +
+        "ORDER BY d.disciplinePoste")
+    List<DisciplineDto> findBySourceSarapis(String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
-    "FROM Discipline d " +
-    "ORDER BY d.disciplinePoste")
-  List<DisciplineDto> findWithoutSource();
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
+        "FROM Discipline d " +
+        "ORDER BY d.disciplinePoste")
+    List<DisciplineDto> findWithoutSource();
 
-  @Query("SELECT DISTINCT d.source " +
-    "FROM Discipline d " +
-    "WHERE d.source NOT LIKE 'SarapisUi_%'" +
-    "ORDER BY d.source")
-  List<String> findAllNonSarapisSources();
+    @Query("SELECT DISTINCT d.source " +
+        "FROM Discipline d " +
+        "WHERE d.source NOT LIKE 'SarapisUi_%'" +
+        "ORDER BY d.source")
+    List<String> findAllNonSarapisSources();
 
-  @Query(value = "SELECT d.id " +
-    "FROM discipline d " +
-    "WHERE d.code = :code " +
-    "AND (d.source = :source " +
-    "OR d.source = CONCAT('SarapisUi_', :source))",
-    nativeQuery = true)
-  Long findByCode(String code, String source);
+    @Query(value = "SELECT d.id " +
+        "FROM discipline d " +
+        "WHERE d.code = :code " +
+        "AND (d.source = :source " +
+        "OR d.source = CONCAT('SarapisUi_', :source))",
+        nativeQuery = true)
+    Long findByCode(String code, String source);
 
 }

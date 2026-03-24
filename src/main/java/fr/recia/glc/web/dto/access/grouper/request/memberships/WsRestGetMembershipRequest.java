@@ -26,6 +26,7 @@ public class WsRestGetMembershipRequest {
     private String memberFilter;
     private String includeSubjectDetail;
     private List<String> sourceIds;
+
     public WsRestGetMembershipRequest(String subjectId, String memberFilter, String includeSubjectDetail, List<String> sourceIds) {
         this.wsGroupLookups = List.of(new WsGroupLookup(subjectId));
         this.memberFilter = memberFilter;

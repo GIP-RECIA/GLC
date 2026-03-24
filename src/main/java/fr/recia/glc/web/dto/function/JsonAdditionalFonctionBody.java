@@ -20,15 +20,15 @@ import lombok.Data;
 @Data
 public class JsonAdditionalFonctionBody {
 
-  private Long structureId;
-  private JsonFonction toAdd;
-  private String toDelete;
+    private Long structureId;
+    private JsonFonction toAdd;
+    private String toDelete;
 
-  public boolean postDataOk() {
-    final boolean add = toAdd != null && toAdd.postDataOk();
-    final boolean delete = toDelete != null && !toDelete.isEmpty();
+    public boolean postDataOk() {
+        final boolean add = toAdd != null && toAdd.postDataOk();
+        final boolean delete = toDelete != null && !toDelete.isEmpty();
 
-    return (structureId != null && (add || delete) && !(add && delete));
-  }
+        return (structureId != null && (add || delete) && !(add && delete));
+    }
 
 }

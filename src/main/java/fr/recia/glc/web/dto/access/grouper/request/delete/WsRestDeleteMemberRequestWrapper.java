@@ -22,6 +22,7 @@ import lombok.Data;
 public class WsRestDeleteMemberRequestWrapper {
     @JsonProperty("WsRestDeleteMemberRequest")
     private WsRestDeleteMemberRequest wsRestDeleteMemberRequest;
+
     public WsRestDeleteMemberRequestWrapper(String subjectId, String subjectSourceId) {
         this.wsRestDeleteMemberRequest = new WsRestDeleteMemberRequest(subjectId, subjectSourceId);
     }

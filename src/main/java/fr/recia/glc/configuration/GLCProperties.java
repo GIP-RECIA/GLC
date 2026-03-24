@@ -15,7 +15,6 @@
  */
 package fr.recia.glc.configuration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.recia.glc.configuration.bean.AdminProperties;
 import fr.recia.glc.configuration.bean.CASProperties;
 import fr.recia.glc.configuration.bean.CorsProperties;
@@ -41,55 +40,55 @@ import java.util.stream.Collectors;
 
 @Configuration
 @ConfigurationProperties(
-  prefix = "app",
-  ignoreUnknownFields = false
+    prefix = "app",
+    ignoreUnknownFields = false
 )
 @Data
 @Validated
 @Slf4j
 public class GLCProperties {
 
-  private CASProperties cas;
-  private CorsProperties cors;
-  private CustomConfigProperties customConfig;
-  private CustomLdapProperties ldap;
-  private CustomMailProperties mail;
-  private CustomMetricsProperties metrics;
-  private FrontProperties front;
-  private IpRangeProperties authorizedServices;
-  private RightsProperties rights;
-  private AdminProperties admin;
-  private GrouperProperties grouper;
-  private RestrictionRentreeProperties restrictionRentree;
-  private UIDFactoryProperties uidFactory;
+    private CASProperties cas;
+    private CorsProperties cors;
+    private CustomConfigProperties customConfig;
+    private CustomLdapProperties ldap;
+    private CustomMailProperties mail;
+    private CustomMetricsProperties metrics;
+    private FrontProperties front;
+    private IpRangeProperties authorizedServices;
+    private RightsProperties rights;
+    private AdminProperties admin;
+    private GrouperProperties grouper;
+    private RestrictionRentreeProperties restrictionRentree;
+    private UIDFactoryProperties uidFactory;
 
-  @PostConstruct
-  private void init() {
-    log.info("Loaded properties: {}", this);
-    rights.setDeclaredGroupsMap(rights.getDeclaredGroups().stream()
+    @PostConstruct
+    private void init() {
+        log.info("Loaded properties: {}", this);
+        rights.setDeclaredGroupsMap(rights.getDeclaredGroups().stream()
             .collect(Collectors.toUnmodifiableMap(
-                    GroupProperties::getGrouperPath,
-                    GroupProperties::getDisplayName
+                GroupProperties::getGrouperPath,
+                GroupProperties::getDisplayName
             ))
-    );
-  }
+        );
+    }
 
-  @Override
-  public String toString() {
-    return "{\n" +
-      cas + ",\n" +
-      cors + ",\n" +
-      customConfig + ",\n" +
-      ldap + ",\n" +
-      mail + ",\n" +
-      metrics + ",\n" +
-      front + ",\n" +
-      authorizedServices + ",\n" +
-      rights + ",\n" +
-      restrictionRentree + ",\n" +
-      admin + ",\n" +
-      grouper + ",\n" +
-      "\n}";
-  }
+    @Override
+    public String toString() {
+        return "{\n" +
+            cas + ",\n" +
+            cors + ",\n" +
+            customConfig + ",\n" +
+            ldap + ",\n" +
+            mail + ",\n" +
+            metrics + ",\n" +
+            front + ",\n" +
+            authorizedServices + ",\n" +
+            rights + ",\n" +
+            restrictionRentree + ",\n" +
+            admin + ",\n" +
+            grouper + ",\n" +
+            "\n}";
+    }
 
 }

@@ -23,6 +23,7 @@ import java.util.List;
 @Data
 public class WsRestAddMemberRequest {
     private List<SubjectLookup> subjectLookups;
+
     public WsRestAddMemberRequest(String subjectId, String subjectSourceId) {
         this.subjectLookups = List.of(new SubjectLookup(subjectId, subjectSourceId));
     }

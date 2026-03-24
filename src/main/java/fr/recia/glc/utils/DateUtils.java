@@ -24,10 +24,10 @@ import java.util.Date;
 @UtilityClass
 public class DateUtils {
 
-  private final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
-  public static Date getDate(String date) throws ParseException {
-    return FORMATTER.parse(date);
-  }
+    public static Date getDate(String date) throws ParseException {
+        return FORMATTER.parse(date);
+    }
 
 }

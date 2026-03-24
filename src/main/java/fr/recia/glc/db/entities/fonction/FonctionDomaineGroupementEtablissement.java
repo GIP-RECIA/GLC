@@ -40,47 +40,47 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class FonctionDomaineGroupementEtablissement extends AFonction {
 
-  /**
-   * Relation unidirectionnelle.
-   * Domaines d'exercice.
-   */
-  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "domaines_gp_etab",
-    joinColumns = @JoinColumn(name = "FONCTIONDOMAINEGROUPETAB_ID", referencedColumnName = "ID"),
-    inverseJoinColumns = @JoinColumn(name = "TYPEDOMAINE_ID", referencedColumnName = "ID")
-  )
-  private Set<TypeDomaine> domaines = new HashSet<>();
-  /**
-   * Relation unidirectionnelle.
-   * Groupement d'établissment dans lequel l'exercice des domaines est effectué.
-   */
-  @ManyToOne
-  @JoinColumn(name = "groupe_etablissement_fk", insertable = false, updatable = false)
-  private GroupementEtablissements groupeEtablissements;
+    /**
+     * Relation unidirectionnelle.
+     * Domaines d'exercice.
+     */
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "domaines_gp_etab",
+        joinColumns = @JoinColumn(name = "FONCTIONDOMAINEGROUPETAB_ID", referencedColumnName = "ID"),
+        inverseJoinColumns = @JoinColumn(name = "TYPEDOMAINE_ID", referencedColumnName = "ID")
+    )
+    private Set<TypeDomaine> domaines = new HashSet<>();
+    /**
+     * Relation unidirectionnelle.
+     * Groupement d'établissment dans lequel l'exercice des domaines est effectué.
+     */
+    @ManyToOne
+    @JoinColumn(name = "groupe_etablissement_fk", insertable = false, updatable = false)
+    private GroupementEtablissements groupeEtablissements;
 
-  /**
-   * Constructeur de l'objet FonctionDomaineGroupementEtablissement.java.
-   */
-  public FonctionDomaineGroupementEtablissement() {
-    super();
-    this.setCategorie(CategorieFonction.Domaine_Groupement);
-  }
+    /**
+     * Constructeur de l'objet FonctionDomaineGroupementEtablissement.java.
+     */
+    public FonctionDomaineGroupementEtablissement() {
+        super();
+        this.setCategorie(CategorieFonction.Domaine_Groupement);
+    }
 
-  /**
-   * Constructeur de l'objet FonctionDomaineGroupementEtablissement.java.
-   *
-   * @param domaines             Domaines d'exercice.
-   * @param groupeEtablissements Groupement d'établissment dans lequel l'exercice des domaines est effectué.
-   * @param personne             Personne exerçant ces domaines.
-   * @param source               Source d'alimentation gérant cette fonction.
-   */
-  public FonctionDomaineGroupementEtablissement(final Set<TypeDomaine> domaines,
-                                                final GroupementEtablissements groupeEtablissements,
-                                                final APersonne personne, final String source) {
-    super(CategorieFonction.Domaine_Groupement, personne, source);
-    this.domaines = domaines;
-    this.groupeEtablissements = groupeEtablissements;
-  }
+    /**
+     * Constructeur de l'objet FonctionDomaineGroupementEtablissement.java.
+     *
+     * @param domaines             Domaines d'exercice.
+     * @param groupeEtablissements Groupement d'établissment dans lequel l'exercice des domaines est effectué.
+     * @param personne             Personne exerçant ces domaines.
+     * @param source               Source d'alimentation gérant cette fonction.
+     */
+    public FonctionDomaineGroupementEtablissement(final Set<TypeDomaine> domaines,
+                                                  final GroupementEtablissements groupeEtablissements,
+                                                  final APersonne personne, final String source) {
+        super(CategorieFonction.Domaine_Groupement, personne, source);
+        this.domaines = domaines;
+        this.groupeEtablissements = groupeEtablissements;
+    }
 
 }

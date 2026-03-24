@@ -28,9 +28,9 @@ import java.lang.annotation.Target;
 @Documented
 @Constraint(validatedBy = IpAddressValidator.class)
 public @interface IpAddress {
-  String message() default "{ipAddress.invalid}";
+    String message() default "{ipAddress.invalid}";
 
-  Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-  Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }

@@ -75,15 +75,15 @@ public class GrouperService {
      */
     public ResponseEntity<WsGetMembershipsResponse> listMemberships(String groupName, boolean includeIndirect, boolean includeSubjectNames, boolean includeUsers) {
         String includeSubjectDetail = "F";
-        if(includeSubjectNames){
+        if (includeSubjectNames) {
             includeSubjectDetail = "T";
         }
         String memberFilter = "Immediate";
-        if(includeIndirect){
+        if (includeIndirect) {
             memberFilter = "All";
         }
         List<String> sourceIds = new ArrayList<>(List.of("g:gsa"));
-        if(includeUsers){
+        if (includeUsers) {
             sourceIds.add("esco:ldap");
         }
         String url = glcProperties.getGrouper().getBaseUrl() + "/memberships";
@@ -94,16 +94,17 @@ public class GrouperService {
 
     /**
      * Ajouter un membre dans un groupe
+     *
      * @param groupName Le nom du groupe dans lequel on veut ajouter le membre
      * @param subjectId Soit l'uid de la personne à ajouter, soit le chemin ID du groupe à ajouter
-     * @param isGroup Un booléen qui indique si c'est un groupe ou une personne qui est à ajouter
+     * @param isGroup   Un booléen qui indique si c'est un groupe ou une personne qui est à ajouter
      * @return
      */
     public ResponseEntity<WsAddMemberResponse> addMember(String groupName, String subjectId, boolean isGroup) {
         String url = glcProperties.getGrouper().getBaseUrl() + "/groups/" + groupName + "/members";
         HttpHeaders headers = createHeaders();
         String sourceId = Constants.GROUPER_SOURCEID_USER;
-        if(isGroup){
+        if (isGroup) {
             sourceId = Constants.GROUPER_SOURCEID_GROUP;
             subjectId = findGroupId(subjectId);
         }
@@ -115,16 +116,17 @@ public class GrouperService {
 
     /**
      * Supprimer un membre d'un groupe
+     *
      * @param groupName Le nom du groupe duquel on veut supprimer le membre
      * @param subjectId Soit l'uid de la personne à ajouter, soit le chemin ID du groupe à supprimer
-     * @param isGroup Un booléen qui indique si c'est un groupe ou une personne qui est à supprimer
+     * @param isGroup   Un booléen qui indique si c'est un groupe ou une personne qui est à supprimer
      * @return
      */
     public ResponseEntity<WsDeleteMemberResponse> removeMember(String groupName, String subjectId, boolean isGroup) {
         String url = glcProperties.getGrouper().getBaseUrl() + "/groups/" + groupName + "/members";
         HttpHeaders headers = createHeaders();
         String sourceId = Constants.GROUPER_SOURCEID_USER;
-        if(isGroup){
+        if (isGroup) {
             sourceId = Constants.GROUPER_SOURCEID_GROUP;
             subjectId = findGroupId(subjectId);
         }

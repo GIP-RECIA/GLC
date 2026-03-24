@@ -25,13 +25,13 @@ import java.util.Date;
 @UtilityClass
 public class PersonneUtils {
 
-  public static Date getSupressionDate(Instant instant) {
-    final LocalDateTime suppressDate = instant.atZone(ZoneId.systemDefault())
-      .toLocalDateTime()
-      .plusDays(20);
+    public static Date getSupressionDate(Instant instant) {
+        final LocalDateTime suppressDate = instant.atZone(ZoneId.systemDefault())
+            .toLocalDateTime()
+            .plusDays(20);
 
-    return Date.from(suppressDate.atZone(ZoneId.systemDefault()).toInstant());
-  }
+        return Date.from(suppressDate.atZone(ZoneId.systemDefault()).toInstant());
+    }
 
 
 }

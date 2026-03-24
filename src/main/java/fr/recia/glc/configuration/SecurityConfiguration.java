@@ -78,7 +78,7 @@ public class SecurityConfiguration {
     @Bean
     public CasAuthenticationEntryPoint casAuthenticationEntryPoint(ServiceProperties serviceProperties) {
         CasAuthenticationEntryPoint entryPoint = new CasAuthenticationEntryPoint();
-        entryPoint.setLoginUrl(glcProperties.getCas().getCasServerUrl()+"/login");
+        entryPoint.setLoginUrl(glcProperties.getCas().getCasServerUrl() + "/login");
         entryPoint.setServiceProperties(serviceProperties);
         return entryPoint;
     }
@@ -129,31 +129,31 @@ public class SecurityConfiguration {
             rightsForEtabs.put(GLCRole.READ, new HashSet<>());
             rightsForEtabs.put(GLCRole.VIEW_UID, new HashSet<>());
             Set<GLCRole> rightsForColl = new HashSet<>();
-            for(String group : groups){
+            for (String group : groups) {
                 Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
                 Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
                 Matcher matcherAdminCentral = patternAdminCentral.matcher(group);
                 Matcher matcherAdminCentralColl = patternAdminCentralColl.matcher(group);
                 // Droits sur les établissements
-                if(matcherAdminLocal.matches()){
+                if (matcherAdminLocal.matches()) {
                     final String uai = matcherAdminLocal.group(2);
                     rightsForEtabs.get(GLCRole.WRITE).add(uai);
                     rightsForEtabs.get(GLCRole.READ).add(uai);
                 }
-                if(matcherAdminSarapisLocal.matches()){
+                if (matcherAdminSarapisLocal.matches()) {
                     final String uai = matcherAdminSarapisLocal.group(2);
                     rightsForEtabs.get(GLCRole.WRITE).add(uai);
                     rightsForEtabs.get(GLCRole.READ).add(uai);
                 }
                 // Droits sur les branches
-                if(matcherAdminCentral.matches()){
-                    for(StructureFromGroup structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))){
+                if (matcherAdminCentral.matches()) {
+                    for (StructureFromGroup structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))) {
                         rightsForEtabs.get(GLCRole.WRITE).add(structureFromGroup.getUAI());
                         rightsForEtabs.get(GLCRole.READ).add(structureFromGroup.getUAI());
                         rightsForEtabs.get(GLCRole.VIEW_UID).add(structureFromGroup.getUAI());
                     }
                 }
-                if(matcherAdminCentralColl.matches()){
+                if (matcherAdminCentralColl.matches()) {
                     rightsForColl.add(GLCRole.WRITE);
                     rightsForColl.add(GLCRole.READ);
                     rightsForColl.add(GLCRole.VIEW_UID);
@@ -182,22 +182,22 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+            .csrf().ignoringAntMatchers("/**")
+            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         http
-                // Filtre pour le logout à mettre avant tout
-                .addFilterBefore(singleSignOutFilter(), CasAuthenticationFilter.class)
-                // La partie exceptionHandling permet de rediriger sur le CAS si on a un 403
-                .exceptionHandling(e -> e.authenticationEntryPoint(casAuthenticationEntryPoint(serviceProperties())))
-                .authorizeHttpRequests(
-                        authorizeHttpRequests -> authorizeHttpRequests
-                                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .antMatchers("/health-check", "/api/config").permitAll()
-                                .antMatchers("/ui/**", "/").authenticated()
-                                .antMatchers("/api/**").authenticated()
-                                // Cet endpoint doit être accessible car c'est le callback du CAS vers l'appli spring pour faire valider le ticket
-                                .antMatchers(glcProperties.getCas().getCasTicketCallback()).permitAll()
-                                .anyRequest().denyAll());
+            // Filtre pour le logout à mettre avant tout
+            .addFilterBefore(singleSignOutFilter(), CasAuthenticationFilter.class)
+            // La partie exceptionHandling permet de rediriger sur le CAS si on a un 403
+            .exceptionHandling(e -> e.authenticationEntryPoint(casAuthenticationEntryPoint(serviceProperties())))
+            .authorizeHttpRequests(
+                authorizeHttpRequests -> authorizeHttpRequests
+                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .antMatchers("/health-check", "/api/config").permitAll()
+                    .antMatchers("/ui/**", "/").authenticated()
+                    .antMatchers("/api/**").authenticated()
+                    // Cet endpoint doit être accessible car c'est le callback du CAS vers l'appli spring pour faire valider le ticket
+                    .antMatchers(glcProperties.getCas().getCasTicketCallback()).permitAll()
+                    .anyRequest().denyAll());
         return http.build();
     }
 

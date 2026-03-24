@@ -20,24 +20,24 @@ import java.io.Serializable;
 
 public interface ICompositeKey<ID extends Serializable, TYPE> extends Serializable {
 
-  /**
-   * @return the keyId
-   */
-  ID getKeyId();
+    /**
+     * @return the keyId
+     */
+    ID getKeyId();
 
-  /**
-   * @param keyId the keyId to set
-   */
-  //public void setKeyId(final ID keyId);
+    /**
+     * @param keyId the keyId to set
+     */
+    //public void setKeyId(final ID keyId);
 
-  /**
-   * @return the keyType
-   */
-  TYPE getKeyType();
+    /**
+     * @return the keyType
+     */
+    TYPE getKeyType();
 
-  /**
-   * @param keyType the keyType to set
-   */
-  //public void setKeyType(final TYPE keyType);
+    /**
+     * @param keyType the keyType to set
+     */
+    //public void setKeyType(final TYPE keyType);
 
 }

@@ -25,5 +25,5 @@ import java.io.Serializable;
 @SuppressWarnings("java:S119")
 @NoRepositoryBean
 public interface AbstractRepository<M, ID extends Serializable>
-  extends JpaRepository<M, ID>, QuerydslPredicateExecutor<M>, JpaSpecificationExecutor<M> {
+    extends JpaRepository<M, ID>, QuerydslPredicateExecutor<M>, JpaSpecificationExecutor<M> {
 }

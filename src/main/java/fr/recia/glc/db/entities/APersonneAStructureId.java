@@ -26,7 +26,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class APersonneAStructureId implements Serializable {
 
-  private Long aPersonneId;
-  private Long aStructureId;
+    private Long aPersonneId;
+    private Long aStructureId;
 
 }

@@ -37,9 +37,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "apersonnes_agroupes_enseignements")
 @AssociationOverrides({
-  @AssociationOverride(name = "pk.enseignant", joinColumns = @JoinColumn(name = "APERSONNE_ID")),
-  @AssociationOverride(name = "pk.groupe", joinColumns = @JoinColumn(name = "AGROUPEOFFONCCLASSEGROUPE_ID")),
-  @AssociationOverride(name = "pk.enseignement", joinColumns = @JoinColumn(name = "ENSEIGNEMENT_ID"))
+    @AssociationOverride(name = "pk.enseignant", joinColumns = @JoinColumn(name = "APERSONNE_ID")),
+    @AssociationOverride(name = "pk.groupe", joinColumns = @JoinColumn(name = "AGROUPEOFFONCCLASSEGROUPE_ID")),
+    @AssociationOverride(name = "pk.enseignement", joinColumns = @JoinColumn(name = "ENSEIGNEMENT_ID"))
 })
 @Getter
 @Setter
@@ -48,31 +48,31 @@ import java.io.Serializable;
 @ToString
 public class MappingAGroupeAPersonneEnseignement implements Serializable {
 
-  /**
-   * The Source which insert the entry.
-   */
-  @Basic
-  @Column(name = "SOURCE", length = IntConst.ISOURCE, nullable = false)
-  private String source;
+    /**
+     * The Source which insert the entry.
+     */
+    @Basic
+    @Column(name = "SOURCE", length = IntConst.ISOURCE, nullable = false)
+    private String source;
 
-  /**
-   * The pk
-   */
-  @EmbeddedId
-  private MappingAGroupeAPersonneEnseignementId pk = new MappingAGroupeAPersonneEnseignementId();
+    /**
+     * The pk
+     */
+    @EmbeddedId
+    private MappingAGroupeAPersonneEnseignementId pk = new MappingAGroupeAPersonneEnseignementId();
 
-  /**
-   * Contructor of the object MappingAGroupeAPersonneEnseignement.java.
-   *
-   * @param source
-   * @param groupe
-   * @param enseignant
-   * @param enseignement
-   */
-  public MappingAGroupeAPersonneEnseignement(final String source, final Enseignant enseignant,
-                                             final AGroupeOfFoncClasseGroupe groupe, final Enseignement enseignement) {
-    this.source = source;
-    this.pk = new MappingAGroupeAPersonneEnseignementId(enseignant, groupe, enseignement);
-  }
+    /**
+     * Contructor of the object MappingAGroupeAPersonneEnseignement.java.
+     *
+     * @param source
+     * @param groupe
+     * @param enseignant
+     * @param enseignement
+     */
+    public MappingAGroupeAPersonneEnseignement(final String source, final Enseignant enseignant,
+                                               final AGroupeOfFoncClasseGroupe groupe, final Enseignement enseignement) {
+        this.source = source;
+        this.pk = new MappingAGroupeAPersonneEnseignementId(enseignant, groupe, enseignement);
+    }
 
 }

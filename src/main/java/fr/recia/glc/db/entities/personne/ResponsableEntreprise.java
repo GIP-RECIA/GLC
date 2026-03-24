@@ -34,29 +34,29 @@ import java.util.Date;
 @ToString(callSuper = true)
 public class ResponsableEntreprise extends APersonne implements Serializable {
 
-  /**
-   * Constructeur de l'objet ResponsableEntreprise.java.
-   */
-  public ResponsableEntreprise() {
-    super();
-    this.setCategorie(CategoriePersonne.Responsable_Entreprise);
-  }
+    /**
+     * Constructeur de l'objet ResponsableEntreprise.java.
+     */
+    public ResponsableEntreprise() {
+        super();
+        this.setCategorie(CategoriePersonne.Responsable_Entreprise);
+    }
 
-  /**
-   * Constructeur de l'objet ResponsableEntreprise.java.
-   *
-   * @param anneeScolaire Année scolaire de validité de l'individu. Année à la rentrée de septembre.
-   * @param cleJointure   Clé de jointure, identifiant unique fourni par les différentes sources,
-   *                      mais unique uniquement pour le périmètre de la source.
-   * @param cn            Nom canonique de la personne : NOM + Prénom usuels.
-   * @param givenName     Prénom usuel.
-   * @param sn            Nom d'usage.
-   * @param societe       Société dont la personne est le responsable.
-   */
-  public ResponsableEntreprise(final Date anneeScolaire, final CleJointure cleJointure,
-                               final String cn, final String givenName, final String sn, final AStructure societe) {
-    super(anneeScolaire, CategoriePersonne.Responsable_Entreprise, cleJointure, cn, givenName, sn);
-    this.setStructRattachement(societe);
-  }
+    /**
+     * Constructeur de l'objet ResponsableEntreprise.java.
+     *
+     * @param anneeScolaire Année scolaire de validité de l'individu. Année à la rentrée de septembre.
+     * @param cleJointure   Clé de jointure, identifiant unique fourni par les différentes sources,
+     *                      mais unique uniquement pour le périmètre de la source.
+     * @param cn            Nom canonique de la personne : NOM + Prénom usuels.
+     * @param givenName     Prénom usuel.
+     * @param sn            Nom d'usage.
+     * @param societe       Société dont la personne est le responsable.
+     */
+    public ResponsableEntreprise(final Date anneeScolaire, final CleJointure cleJointure,
+                                 final String cn, final String givenName, final String sn, final AStructure societe) {
+        super(anneeScolaire, CategoriePersonne.Responsable_Entreprise, cleJointure, cn, givenName, sn);
+        this.setStructRattachement(societe);
+    }
 
 }

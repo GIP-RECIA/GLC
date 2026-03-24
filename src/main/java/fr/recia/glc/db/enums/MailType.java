@@ -16,20 +16,20 @@
 package fr.recia.glc.db.enums;
 
 public enum MailType {
-  /**
-   * Mail à usage public.
-   */
-  Public,
-  /**
-   * Mail à usage interne.
-   */
-  Interne,
-  /**
-   * Mail sans usage.
-   */
-  Unused,
-  /**
-   * Mail en provenance du SI non modifiable.
-   */
-  SI
+    /**
+     * Mail à usage public.
+     */
+    Public,
+    /**
+     * Mail à usage interne.
+     */
+    Interne,
+    /**
+     * Mail sans usage.
+     */
+    Unused,
+    /**
+     * Mail en provenance du SI non modifiable.
+     */
+    SI
 }

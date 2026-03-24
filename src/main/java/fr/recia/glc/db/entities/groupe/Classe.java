@@ -38,35 +38,35 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class Classe extends AGroupeOfFoncClasseGroupe {
 
-  /**
-   * Mefs associé à la classe.
-   */
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "classes_mefs",
-    joinColumns = @JoinColumn(name = "CLASSE_ID", referencedColumnName = "ID"),
-    inverseJoinColumns = @JoinColumn(name = "MEF_ID", referencedColumnName = "ID")
-  )
-  private Set<MEF> mefs = new HashSet<>();
+    /**
+     * Mefs associé à la classe.
+     */
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "classes_mefs",
+        joinColumns = @JoinColumn(name = "CLASSE_ID", referencedColumnName = "ID"),
+        inverseJoinColumns = @JoinColumn(name = "MEF_ID", referencedColumnName = "ID")
+    )
+    private Set<MEF> mefs = new HashSet<>();
 
-  /**
-   * Constructeur de l'objet Classe.java.
-   */
-  public Classe() {
-    super();
-    this.setCategorie(CategorieGroupe.Classe);
-  }
+    /**
+     * Constructeur de l'objet Classe.java.
+     */
+    public Classe() {
+        super();
+        this.setCategorie(CategorieGroupe.Classe);
+    }
 
-  /**
-   * Constructeur de l'objet Classe.java.
-   *
-   * @param cn           Nom unique de la classe, peut servir comme identifiant.
-   * @param membres      Liste des personnes membre de la classe.
-   * @param proprietaire Etablissement ayant défini cette classe.
-   * @param source       Source ayant créé l'objet.
-   */
-  public Classe(final String cn, final Set<MappingAGroupeAPersonne> membres,
-                final Etablissement proprietaire, final String source) {
-    super(cn, CategorieGroupe.Classe, membres, proprietaire, source);
-  }
+    /**
+     * Constructeur de l'objet Classe.java.
+     *
+     * @param cn           Nom unique de la classe, peut servir comme identifiant.
+     * @param membres      Liste des personnes membre de la classe.
+     * @param proprietaire Etablissement ayant défini cette classe.
+     * @param source       Source ayant créé l'objet.
+     */
+    public Classe(final String cn, final Set<MappingAGroupeAPersonne> membres,
+                  final Etablissement proprietaire, final String source) {
+        super(cn, CategorieGroupe.Classe, membres, proprietaire, source);
+    }
 
 }

@@ -34,21 +34,21 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class StructureKey implements ICompositeKey<String, CategorieStructure>, Serializable {
 
-  /**
-   * Serial Id.
-   */
-  private static final long serialVersionUID = -210670392798727508L;
-  /**
-   * The identifier of the context.
-   */
-  @NonNull
-  private String keyId;
+    /**
+     * Serial Id.
+     */
+    private static final long serialVersionUID = -210670392798727508L;
+    /**
+     * The identifier of the context.
+     */
+    @NonNull
+    private String keyId;
 
-  /**
-   * The type of the context.
-   */
-  @NonNull
-  @Enumerated(EnumType.STRING)
-  private CategorieStructure keyType;
+    /**
+     * The type of the context.
+     */
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private CategorieStructure keyType;
 
 }

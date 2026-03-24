@@ -36,24 +36,24 @@ import java.util.Set;
 @ToString(callSuper = true)
 public abstract class AGroupeOfAPersonne extends AGroupe {
 
-  /**
-   * Relation bidirectionnelle. Liste des personnes membres du groupe.
-   */
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.groupe")
-  private Set<MappingAGroupeAPersonne> membres = new HashSet<>();
+    /**
+     * Relation bidirectionnelle. Liste des personnes membres du groupe.
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.groupe")
+    private Set<MappingAGroupeAPersonne> membres = new HashSet<>();
 
-  /**
-   * Constructeur de l'objet AGroupeOfAPersonne.java.
-   *
-   * @param cn        Nom unique de groupe, peut servir comme identifiant.
-   * @param categorie Type de groupe.
-   * @param membres   Liste des membres du groupe.
-   * @param source    Source ayant créé l'objet.
-   */
-  public AGroupeOfAPersonne(final String cn, final CategorieGroupe categorie,
-                            final Set<MappingAGroupeAPersonne> membres, final String source) {
-    super(cn, categorie, source);
-    this.membres = membres;
-  }
+    /**
+     * Constructeur de l'objet AGroupeOfAPersonne.java.
+     *
+     * @param cn        Nom unique de groupe, peut servir comme identifiant.
+     * @param categorie Type de groupe.
+     * @param membres   Liste des membres du groupe.
+     * @param source    Source ayant créé l'objet.
+     */
+    public AGroupeOfAPersonne(final String cn, final CategorieGroupe categorie,
+                              final Set<MappingAGroupeAPersonne> membres, final String source) {
+        super(cn, categorie, source);
+        this.membres = membres;
+    }
 
 }

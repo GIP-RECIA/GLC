@@ -35,12 +35,12 @@ import javax.persistence.Table;
 @Setter
 public class APersonneAStructure {
 
-  @Id
-  @Column(name = "APERSONNE_ID")
-  private Long aPersonneId;
-  @Id
-  @Column(name = "ASTRUCTURE_ID")
-  private Long aStructureId;
+    @Id
+    @Column(name = "APERSONNE_ID")
+    private Long aPersonneId;
+    @Id
+    @Column(name = "ASTRUCTURE_ID")
+    private Long aStructureId;
 
 }
 

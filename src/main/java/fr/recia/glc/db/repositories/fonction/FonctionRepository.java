@@ -26,106 +26,106 @@ import java.util.List;
 @Repository
 public interface FonctionRepository<T extends Fonction> extends AbstractRepository<T, Long> {
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source, " +
-    "f.structure.id, f.dateFin) " +
-    "FROM Fonction f " +
-    "WHERE f.personne.id = :id " +
-    "ORDER BY f.filiere.libelleFiliere")
-  List<FonctionDto> findByPersonne(Long id);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source, " +
+        "f.structure.id, f.dateFin) " +
+        "FROM Fonction f " +
+        "WHERE f.personne.id = :id " +
+        "ORDER BY f.filiere.libelleFiliere")
+    List<FonctionDto> findByPersonne(Long id);
 
-  @Query("SELECT COUNT(f.id) " +
-    "FROM Fonction f " +
-    "WHERE f.personne.id = :id " +
-    "AND f.structure.id = :structureId " +
-    "AND f.source NOT LIKE 'SarapisUi_%'")
-  Long nbOfficialFonctionsInStructure(Long id, Long structureId);
+    @Query("SELECT COUNT(f.id) " +
+        "FROM Fonction f " +
+        "WHERE f.personne.id = :id " +
+        "AND f.structure.id = :structureId " +
+        "AND f.source NOT LIKE 'SarapisUi_%'")
+    Long nbOfficialFonctionsInStructure(Long id, Long structureId);
 
-  @Query("SELECT COUNT(f.id) " +
-    "FROM Fonction f " +
-    "WHERE f.personne.id = :id " +
-    "AND f.structure.id = :structureId " +
-    "AND f.source LIKE 'SarapisUi_%'")
-  Long nbAdditionalFonctionsInStructure(Long id, Long structureId);
+    @Query("SELECT COUNT(f.id) " +
+        "FROM Fonction f " +
+        "WHERE f.personne.id = :id " +
+        "AND f.structure.id = :structureId " +
+        "AND f.source LIKE 'SarapisUi_%'")
+    Long nbAdditionalFonctionsInStructure(Long id, Long structureId);
 
-  @Query("SELECT COUNT(f.id) " +
-    "FROM Fonction f " +
-    "WHERE f.personne.id = :id " +
-    "AND f.structure.id = :structureId " +
-    "AND f.source LIKE 'SarapisUi_%' " +
-    "AND f.id NOT IN :fonctionIds")
-  Long nbAdditionalFonctionsInStructure(Long id, Long structureId, List<Long> fonctionIds);
+    @Query("SELECT COUNT(f.id) " +
+        "FROM Fonction f " +
+        "WHERE f.personne.id = :id " +
+        "AND f.structure.id = :structureId " +
+        "AND f.source LIKE 'SarapisUi_%' " +
+        "AND f.id NOT IN :fonctionIds")
+    Long nbAdditionalFonctionsInStructure(Long id, Long structureId, List<Long> fonctionIds);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
-    "FROM Fonction f " +
-    "WHERE f.personne.id = :id " +
-    "AND f.personne.structRattachement.id = :structure " +
-    "ORDER BY f.filiere.libelleFiliere")
-  List<FonctionDto> findByPersonneIdAndStructure(Long id, Long structure);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
+        "FROM Fonction f " +
+        "WHERE f.personne.id = :id " +
+        "AND f.personne.structRattachement.id = :structure " +
+        "ORDER BY f.filiere.libelleFiliere")
+    List<FonctionDto> findByPersonneIdAndStructure(Long id, Long structure);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
-    "FROM Fonction f " +
-    "WHERE f.source = :source OR f.source = CONCAT('SarapisUi_', :source) " +
-    "AND f.disciplinePoste IS NOT NULL " +
-    "AND f.filiere IS NOT NULL " +
-    "AND f.categorie = 'Fonction' " +
-    "ORDER BY f.filiere.libelleFiliere")
-  List<FonctionDto> findBySource(String source);
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
+        "FROM Fonction f " +
+        "WHERE f.source = :source OR f.source = CONCAT('SarapisUi_', :source) " +
+        "AND f.disciplinePoste IS NOT NULL " +
+        "AND f.filiere IS NOT NULL " +
+        "AND f.categorie = 'Fonction' " +
+        "ORDER BY f.filiere.libelleFiliere")
+    List<FonctionDto> findBySource(String source);
 
-  @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
-    "FROM Fonction f " +
-    "WHERE f.disciplinePoste IS NOT NULL " +
-    "AND f.filiere IS NOT NULL " +
-    "AND f.categorie = 'Fonction' " +
-    "ORDER BY f.filiere.libelleFiliere")
-  List<FonctionDto> findWithoutSource();
+    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
+        "FROM Fonction f " +
+        "WHERE f.disciplinePoste IS NOT NULL " +
+        "AND f.filiere IS NOT NULL " +
+        "AND f.categorie = 'Fonction' " +
+        "ORDER BY f.filiere.libelleFiliere")
+    List<FonctionDto> findWithoutSource();
 
-  @Query(value = "select distinct apas.APERSONNE_ID " +
-    "from apersonnes_astructures apas " +
-    "inner join apersonne ap on ap.id = apas.APERSONNE_ID " +
-    "where apas.ASTRUCTURE_ID = :structureId " +
-    "and (" +
-    "apas.APERSONNE_ID not in (" +
-    "select distinct af.personne_fk " +
-    "from afonction af " +
-    "inner join fonction f on f.id = af.id " +
-    "inner join apersonne ap on ap.id = af.personne_fk " +
-    "where f.astructure_fk = :structureId" +
-    ") " +
-    "or apas.APERSONNE_ID not in (" +
-    "select distinct af.personne_fk " +
-    "from afonction af " +
-    "inner join fonction f on af.id = f.id " +
-    "inner join typefonctionfiliere tff on f.filiere_fk = tff.id " +
-    "inner join discipline d on f.discipline_poste_fk = d.id " +
-    "where f.astructure_fk = :structureId " +
-    "and (tff.codeFiliere != '-' or d.code != '-') " +
-    "group by af.personne_fk " +
-    "having count(f.filiere_fk) > 0" +
-    ") " +
-    ") " +
-    "and ap.categorie in ('Enseignant', 'Non_enseignant_collectivite_locale', 'Non_enseignant_etablissement', 'Non_enseignant_service_academique')",
-    nativeQuery = true)
-  List<Long> findPersonnesWithoutFunctions(Long structureId);
+    @Query(value = "select distinct apas.APERSONNE_ID " +
+        "from apersonnes_astructures apas " +
+        "inner join apersonne ap on ap.id = apas.APERSONNE_ID " +
+        "where apas.ASTRUCTURE_ID = :structureId " +
+        "and (" +
+        "apas.APERSONNE_ID not in (" +
+        "select distinct af.personne_fk " +
+        "from afonction af " +
+        "inner join fonction f on f.id = af.id " +
+        "inner join apersonne ap on ap.id = af.personne_fk " +
+        "where f.astructure_fk = :structureId" +
+        ") " +
+        "or apas.APERSONNE_ID not in (" +
+        "select distinct af.personne_fk " +
+        "from afonction af " +
+        "inner join fonction f on af.id = f.id " +
+        "inner join typefonctionfiliere tff on f.filiere_fk = tff.id " +
+        "inner join discipline d on f.discipline_poste_fk = d.id " +
+        "where f.astructure_fk = :structureId " +
+        "and (tff.codeFiliere != '-' or d.code != '-') " +
+        "group by af.personne_fk " +
+        "having count(f.filiere_fk) > 0" +
+        ") " +
+        ") " +
+        "and ap.categorie in ('Enseignant', 'Non_enseignant_collectivite_locale', 'Non_enseignant_etablissement', 'Non_enseignant_service_academique')",
+        nativeQuery = true)
+    List<Long> findPersonnesWithoutFunctions(Long structureId);
 
-  @Query("SELECT DISTINCT f.filiere.id " +
-    "FROM Fonction f " +
-    "WHERE f.structure.id = :id")
-  List<Long> findFilieresByStructureId(Long id);
+    @Query("SELECT DISTINCT f.filiere.id " +
+        "FROM Fonction f " +
+        "WHERE f.structure.id = :id")
+    List<Long> findFilieresByStructureId(Long id);
 
-  @Query("SELECT new fr.recia.glc.db.dto.fonction.FonctionDto(f.personne.id, f.filiere.id, f.disciplinePoste.id, " +
-    "f.source) " +
-    "FROM Fonction f " +
-    "WHERE f.structure.id = :structureId " +
-    "ORDER BY f.filiere.libelleFiliere")
-  List<FonctionDto> findByStructureId(Long structureId);
+    @Query("SELECT new fr.recia.glc.db.dto.fonction.FonctionDto(f.personne.id, f.filiere.id, f.disciplinePoste.id, " +
+        "f.source) " +
+        "FROM Fonction f " +
+        "WHERE f.structure.id = :structureId " +
+        "ORDER BY f.filiere.libelleFiliere")
+    List<FonctionDto> findByStructureId(Long structureId);
 
-  @Query("SELECT f.id " +
-    "FROM Fonction f " +
-    "WHERE f.filiere.id = :filiereId " +
-    "AND f.disciplinePoste.id = :disciplineId " +
-    "AND f.personne.id = :personneId " +
-    "AND f.structure.id = :structureId " +
-    "AND f.source = :source")
-  Long findId(Long filiereId, Long disciplineId, Long personneId, Long structureId, String source);
+    @Query("SELECT f.id " +
+        "FROM Fonction f " +
+        "WHERE f.filiere.id = :filiereId " +
+        "AND f.disciplinePoste.id = :disciplineId " +
+        "AND f.personne.id = :personneId " +
+        "AND f.structure.id = :structureId " +
+        "AND f.source = :source")
+    Long findId(Long filiereId, Long disciplineId, Long personneId, Long structureId, String source);
 
 }

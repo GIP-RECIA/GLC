@@ -18,7 +18,6 @@ package fr.recia.glc.web.rest;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
-import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.dto.structure.EtablissementDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
@@ -70,7 +69,7 @@ public class EtablissementController {
         Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
         List<SimpleStructureDto> etablissements = etablissementService.getEtablissements(allowedUAI);
         // Gestion des collectivités à côté pour l'instant pour simplifier la gestion des droits
-        if(principal.getRightsForColl().contains(GLCRole.READ)){
+        if (principal.getRightsForColl().contains(GLCRole.READ)) {
             etablissements.addAll(collectiviteService.getCollectivites());
         }
         if (etablissements.isEmpty()) {
@@ -96,7 +95,7 @@ public class EtablissementController {
         }
 
         // Check si la personne à le droit d'écrire sur l'établissement
-        if(principal.getRightsForEtabs().get(GLCRole.WRITE).contains(etablissement.getUai())){
+        if (principal.getRightsForEtabs().get(GLCRole.WRITE).contains(etablissement.getUai())) {
             etablissement.setPermission("ADMIN");
         }
 
@@ -121,20 +120,20 @@ public class EtablissementController {
         List<TypeFonctionFiliereDto> typesFonctionFiliereList = fonctionService.getTypesFonctionFiliere(etablissement.getSource());
         Map<Long, TypeFonctionFiliereDto> typesFonctionFiliereMap = typesFonctionFiliereList.stream()
             .collect(Collectors.toMap(
-                    TypeFonctionFiliereDto::getId,
-                    Function.identity()
+                TypeFonctionFiliereDto::getId,
+                Function.identity()
             ));
         List<DisciplineDto> disciplinesList = fonctionService.getDisciplines(etablissement.getSource());
         Map<Long, DisciplineDto> disciplinesMap = disciplinesList.stream()
             .collect(Collectors.toMap(
-                    DisciplineDto::getId,
-                    Function.identity()
+                DisciplineDto::getId,
+                Function.identity()
             ));
         Map<Long, SimplePersonneDto> personnesMap = etabPersonnes.stream()
-                .collect(Collectors.toMap(
-                        SimplePersonneDto::getId,
-                        Function.identity()
-                ));
+            .collect(Collectors.toMap(
+                SimplePersonneDto::getId,
+                Function.identity()
+            ));
 
         // Logique d'assemblage de l'objet à envoyer au font pour les fillières
         etablissement.setFilieres(fonctions, typesFonctionFiliereMap, disciplinesMap, personnesMap);

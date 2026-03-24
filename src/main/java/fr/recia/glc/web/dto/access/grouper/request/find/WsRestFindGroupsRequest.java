@@ -20,6 +20,7 @@ import lombok.Data;
 @Data
 public class WsRestFindGroupsRequest {
     private WsQueryFilter wsQueryFilter;
+
     public WsRestFindGroupsRequest(String groupName) {
         this.wsQueryFilter = new WsQueryFilter(groupName);
     }

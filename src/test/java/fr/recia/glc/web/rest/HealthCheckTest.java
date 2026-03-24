@@ -36,23 +36,23 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @SpringBootTest
 class HealthCheckTest {
 
-  private MockMvc mockHealthCheckMvc;
+    private MockMvc mockHealthCheckMvc;
 
-  @PostConstruct
-  public void setup() {
-    openMocks(this);
-    HealthCheckController healthCheckController = new HealthCheckController();
+    @PostConstruct
+    public void setup() {
+        openMocks(this);
+        HealthCheckController healthCheckController = new HealthCheckController();
 
-    mockHealthCheckMvc = standaloneSetup(healthCheckController).build();
-  }
+        mockHealthCheckMvc = standaloneSetup(healthCheckController).build();
+    }
 
-  @Test
-  void testHealthCheck() throws Exception {
-    mockHealthCheckMvc.perform(head("/health-check")
-        .contentType(TestUtil.APPLICATION_JSON_UTF8)
-        .accept(TestUtil.APPLICATION_JSON_UTF8))
-      .andDo(print())
-      .andExpect(status().isOk());
-  }
+    @Test
+    void testHealthCheck() throws Exception {
+        mockHealthCheckMvc.perform(head("/health-check")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isOk());
+    }
 
 }

@@ -32,18 +32,18 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class SubjectKeyDTO implements ICompositeKey<String, SubjectType>, Serializable {
 
-  @NonNull
-  private String keyId;
-  @NonNull
-  private SubjectType keyType;
+    @NonNull
+    private String keyId;
+    @NonNull
+    private SubjectType keyType;
 
-  /**
-   * @param keyId
-   * @param keyType
-   */
-  public SubjectKeyDTO(@NonNull final String keyId, @NonNull final SubjectType keyType) {
-    this.keyId = keyId;
-    this.keyType = keyType;
-  }
+    /**
+     * @param keyId
+     * @param keyType
+     */
+    public SubjectKeyDTO(@NonNull final String keyId, @NonNull final SubjectType keyType) {
+        this.keyId = keyId;
+        this.keyType = keyType;
+    }
 
 }

@@ -16,6 +16,6 @@
 package fr.recia.glc.services.alert;
 
 public enum FonctionAlertType {
-  min,
-  max
+    min,
+    max
 }

@@ -36,15 +36,15 @@ import java.io.Serializable;
 @ToString
 public class CleJointure implements Serializable {
 
-  /**
-   * Source de l'alimentation.
-   */
-  @Column(length = IntConst.ISOURCE)
-  private String source;
-  /**
-   * Clé fournie lors l'alimentation.
-   */
-  @Column(length = IntConst.ICLE)
-  private String cle;
+    /**
+     * Source de l'alimentation.
+     */
+    @Column(length = IntConst.ISOURCE)
+    private String source;
+    /**
+     * Clé fournie lors l'alimentation.
+     */
+    @Column(length = IntConst.ICLE)
+    private String cle;
 
 }

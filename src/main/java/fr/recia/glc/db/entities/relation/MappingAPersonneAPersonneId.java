@@ -43,21 +43,21 @@ import java.io.Serializable;
 @ToString
 public class MappingAPersonneAPersonneId implements Serializable {
 
-  /**
-   * The personne to associate to the personne2.
-   */
-  @ManyToOne(cascade = {CascadeType.REFRESH})
-  @JoinColumn(name = "APERSONNE1_ID", nullable = false)
-  private APersonne personne1;
-  /**
-   * The personne to associate to the personne2.
-   */
-  @ManyToOne(cascade = {CascadeType.REFRESH})
-  @JoinColumn(name = "APERSONNE2_ID", nullable = false)
-  private APersonne personne2;
+    /**
+     * The personne to associate to the personne2.
+     */
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "APERSONNE1_ID", nullable = false)
+    private APersonne personne1;
+    /**
+     * The personne to associate to the personne2.
+     */
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "APERSONNE2_ID", nullable = false)
+    private APersonne personne2;
 
-  @Enumerated(EnumType.STRING)
-  @Column(length = IntConst.I20)
-  private CategorieRelation categorie;
+    @Enumerated(EnumType.STRING)
+    @Column(length = IntConst.I20)
+    private CategorieRelation categorie;
 
 }

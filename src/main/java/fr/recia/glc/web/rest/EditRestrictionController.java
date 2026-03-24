@@ -53,8 +53,8 @@ public class EditRestrictionController {
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
         Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
         // TODO : gérer le cas des collectivités
-        if(allowedUAI.contains(((Etablissement) aStructure).getUai())){
-            restrictionService.setNewRestriction(((Etablissement)aStructure).getUai(), request);
+        if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+            restrictionService.setNewRestriction(((Etablissement) aStructure).getUai(), request);
             return ResponseEntity.ok().build();
         } else {
             log.warn("User {} is not authorized to edit restriction in {}", principal.getUsername(), id);
@@ -63,12 +63,12 @@ public class EditRestrictionController {
     }
 
     @GetMapping("/etab/{id}")
-    public ResponseEntity<RestrictionEtab> listRestrictions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+    public ResponseEntity<RestrictionEtab> listRestrictions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
         Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
         // TODO : gérer le cas des collectivités
-        if(allowedUAI.contains(((Etablissement) aStructure).getUai())){
-            return ResponseEntity.ok(restrictionService.getRestrictions(((Etablissement)aStructure).getUai()));
+        if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+            return ResponseEntity.ok(restrictionService.getRestrictions(((Etablissement) aStructure).getUai()));
         } else {
             log.warn("User {} is not authorized to list restrictions in {}", principal.getUsername(), id);
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

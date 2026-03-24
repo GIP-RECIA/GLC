@@ -38,16 +38,16 @@ import javax.persistence.Enumerated;
 @ToString
 public class ExternalId {
 
-  /**
-   * Identifiant externe.
-   */
-  @Column(nullable = false)
-  private String id;
-  /**
-   * Destinataire de l'identifiant.
-   */
-  @Enumerated(EnumType.STRING)
-  @Column(length = IntConst.I20, nullable = false)
-  private ExternalIdSource destinataire;
+    /**
+     * Identifiant externe.
+     */
+    @Column(nullable = false)
+    private String id;
+    /**
+     * Destinataire de l'identifiant.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(length = IntConst.I20, nullable = false)
+    private ExternalIdSource destinataire;
 
 }

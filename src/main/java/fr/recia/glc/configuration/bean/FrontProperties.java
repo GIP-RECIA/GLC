@@ -26,109 +26,109 @@ import java.util.Map;
 @Data
 public class FrontProperties {
 
-  private Long endFunctionWarning;
-  private StaffProperties staff;
-  private List<Etat> editAllowedStates;
-  private List<Etat> filterAccountStates;
-  private String templateApiPath;
-  private ExtendedUportalProperties extendedUportal;
-  private List<LoginOfficeProperties> loginOffices;
+    private Long endFunctionWarning;
+    private StaffProperties staff;
+    private List<Etat> editAllowedStates;
+    private List<Etat> filterAccountStates;
+    private String templateApiPath;
+    private ExtendedUportalProperties extendedUportal;
+    private List<LoginOfficeProperties> loginOffices;
 
-  @Data
-  public static class StaffProperties {
+    @Data
+    public static class StaffProperties {
 
-    private CategoriePersonne teaching;
-    private CategoriePersonne school;
-    private CategoriePersonne collectivity;
-    private CategoriePersonne academic;
+        private CategoriePersonne teaching;
+        private CategoriePersonne school;
+        private CategoriePersonne collectivity;
+        private CategoriePersonne academic;
 
-    @Override
-    public String toString() {
-      return "{" +
-        "\n\t\t\"teaching\": \"" + teaching + "\"," +
-        "\n\t\t\"school\": \"" + school + "\"," +
-        "\n\t\t\"collectivity\": \"" + collectivity + "\"," +
-        "\n\t\t\"academic\": \"" + academic + "\"" +
-        "\n\t}";
-    }
+        @Override
+        public String toString() {
+            return "{" +
+                "\n\t\t\"teaching\": \"" + teaching + "\"," +
+                "\n\t\t\"school\": \"" + school + "\"," +
+                "\n\t\t\"collectivity\": \"" + collectivity + "\"," +
+                "\n\t\t\"academic\": \"" + academic + "\"" +
+                "\n\t}";
+        }
 
-  }
-
-  @Data
-  public static class ExtendedUportalProperties {
-
-    private ComponentProperties header;
-    private ComponentProperties footer;
-
-    @Override
-    public String toString() {
-      return "{" +
-        "\n\t\t\"header\": " + header + "," +
-        "\n\t\t\"footer\": " + footer +
-        "\n\t}";
     }
 
     @Data
-    public static class ComponentProperties {
+    public static class ExtendedUportalProperties {
 
-      private String componentPath;
-      private Map<String, String> props;
+        private ComponentProperties header;
+        private ComponentProperties footer;
 
-      @Override
-      public String toString() {
-        return "{" +
-          "\n\t\t\t\"componentPath\": \"" + componentPath + "\"," +
-          "\n\t\t\t\"props\": " + props +
-          "\n\t\t}";
-      }
+        @Override
+        public String toString() {
+            return "{" +
+                "\n\t\t\"header\": " + header + "," +
+                "\n\t\t\"footer\": " + footer +
+                "\n\t}";
+        }
+
+        @Data
+        public static class ComponentProperties {
+
+            private String componentPath;
+            private Map<String, String> props;
+
+            @Override
+            public String toString() {
+                return "{" +
+                    "\n\t\t\t\"componentPath\": \"" + componentPath + "\"," +
+                    "\n\t\t\t\"props\": " + props +
+                    "\n\t\t}";
+            }
+
+        }
 
     }
 
-  }
-
-  @Data
-  public static class LoginOfficeProperties {
-
-    private String source;
-    private List<GuichetProperties> guichets;
-
     @Data
-    public static class GuichetProperties {
+    public static class LoginOfficeProperties {
 
-      private String nom;
-      private List<CategoriePersonne> categoriesPersonne;
+        private String source;
+        private List<GuichetProperties> guichets;
 
-      @Override
-      public String toString() {
-        return "\t\t\t\t{" +
-          "\n\t\t\t\t\t\"nom\": \"" + nom + "\"," +
-          "\n\t\t\t\t\t\"categoriesPersonne\": " + ListUtil.toStringList(categoriesPersonne) +
-          "\n\t\t\t\t}";
-      }
+        @Data
+        public static class GuichetProperties {
+
+            private String nom;
+            private List<CategoriePersonne> categoriesPersonne;
+
+            @Override
+            public String toString() {
+                return "\t\t\t\t{" +
+                    "\n\t\t\t\t\t\"nom\": \"" + nom + "\"," +
+                    "\n\t\t\t\t\t\"categoriesPersonne\": " + ListUtil.toStringList(categoriesPersonne) +
+                    "\n\t\t\t\t}";
+            }
+
+        }
+
+        @Override
+        public String toString() {
+            return "\t\t{" +
+                "\n\t\t\t\"source\": \"" + source + "\"," +
+                "\n\t\t\t\"guichets\": " + ListUtil.toStringList(guichets, ",\n", "[\n", "\n\t\t\t]") +
+                "\n\t\t}";
+        }
 
     }
 
     @Override
     public String toString() {
-      return "\t\t{" +
-        "\n\t\t\t\"source\": \"" + source + "\"," +
-        "\n\t\t\t\"guichets\": " + ListUtil.toStringList(guichets, ",\n", "[\n", "\n\t\t\t]") +
-        "\n\t\t}";
+        return "\"FrontProperties\": {" +
+            "\n\t\"endFunctionWarning\": " + endFunctionWarning + "," +
+            "\n\t\"staff\": " + staff + "," +
+            "\n\t\"editAllowedStates\": " + ListUtil.toStringList(editAllowedStates) + "," +
+            "\n\t\"filterAccountStates\": " + ListUtil.toStringList(filterAccountStates) + "," +
+            "\n\t\"templateApiPath\": \"" + templateApiPath + "\"," +
+            "\n\t\"extendedUportal\": " + extendedUportal +
+            "\n\t\"loginOffices\": " + ListUtil.toStringList(loginOffices, ",\n", "[\n", "\n\t]") +
+            "\n}";
     }
-
-  }
-
-  @Override
-  public String toString() {
-    return "\"FrontProperties\": {" +
-      "\n\t\"endFunctionWarning\": " + endFunctionWarning + "," +
-      "\n\t\"staff\": " + staff + "," +
-      "\n\t\"editAllowedStates\": " + ListUtil.toStringList(editAllowedStates) + "," +
-      "\n\t\"filterAccountStates\": " + ListUtil.toStringList(filterAccountStates) + "," +
-      "\n\t\"templateApiPath\": \"" + templateApiPath + "\"," +
-      "\n\t\"extendedUportal\": " + extendedUportal +
-      "\n\t\"loginOffices\": " + ListUtil.toStringList(loginOffices, ",\n", "[\n", "\n\t]") +
-      "\n}";
-  }
 
 }

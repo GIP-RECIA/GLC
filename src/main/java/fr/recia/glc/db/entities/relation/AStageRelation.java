@@ -39,24 +39,24 @@ import javax.persistence.Enumerated;
 @ToString(callSuper = true)
 public abstract class AStageRelation extends AMappingRelation {
 
-  /**
-   * Type énuméré du type de la relation de stage.
-   */
-  @Enumerated(EnumType.STRING)
-  @Column(length = IntConst.I30)
-  private TypeStage type;
+    /**
+     * Type énuméré du type de la relation de stage.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(length = IntConst.I30)
+    private TypeStage type;
 
-  /**
-   * @param source
-   * @param tuteurStage
-   * @param eleve
-   * @param type
-   * @param typeStage
-   */
-  public AStageRelation(final String source, final APersonne tuteurStage, final Eleve eleve,
-                        final TypeStage type, final CategorieRelation typeStage) {
-    super(source, tuteurStage, eleve, typeStage);
-    this.type = type;
-  }
+    /**
+     * @param source
+     * @param tuteurStage
+     * @param eleve
+     * @param type
+     * @param typeStage
+     */
+    public AStageRelation(final String source, final APersonne tuteurStage, final Eleve eleve,
+                          final TypeStage type, final CategorieRelation typeStage) {
+        super(source, tuteurStage, eleve, typeStage);
+        this.type = type;
+    }
 
 }

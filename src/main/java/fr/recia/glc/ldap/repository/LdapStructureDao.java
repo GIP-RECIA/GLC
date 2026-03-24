@@ -19,11 +19,11 @@ public class LdapStructureDao {
     private StructureSirenDomainAttributesMapper structureSirenDomainAttributesMapper;
     private CustomLdapProperties ldapProperties;
 
-    public List<StructureSirenDomain> structuresFromSiren(){
+    public List<StructureSirenDomain> structuresFromSiren() {
         return ldapTemplate.search(
-                ldapProperties.getStructureBranch().getBase(),
-                ldapProperties.getStructureBranch().getAllStructuresBySirenFilter(),
-                structureSirenDomainAttributesMapper
+            ldapProperties.getStructureBranch().getBase(),
+            ldapProperties.getStructureBranch().getAllStructuresBySirenFilter(),
+            structureSirenDomainAttributesMapper
         );
     }
 

@@ -37,13 +37,13 @@ import javax.persistence.Entity;
 @ToString(callSuper = true)
 public class MAStageRelation extends AStageRelation {
 
-  /**
-   * @param source
-   * @param tuteurStage
-   * @param eleve
-   */
-  public MAStageRelation(final String source, final TuteurStage tuteurStage, final Eleve eleve) {
-    super(source, tuteurStage, eleve, TypeStage.Tuteur, CategorieRelation.MAStage);
-  }
+    /**
+     * @param source
+     * @param tuteurStage
+     * @param eleve
+     */
+    public MAStageRelation(final String source, final TuteurStage tuteurStage, final Eleve eleve) {
+        super(source, tuteurStage, eleve, TypeStage.Tuteur, CategorieRelation.MAStage);
+    }
 
 }

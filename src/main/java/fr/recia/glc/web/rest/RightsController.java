@@ -52,18 +52,18 @@ public class RightsController {
     @Autowired
     private StructureLoader structureLoader;
 
-    private String deductBranchFromStructure(AStructure aStructure){
+    private String deductBranchFromStructure(AStructure aStructure) {
         log.debug("Retrieving branch for structure {}", aStructure.getId());
         final String branch = structureLoader.getBranchOfStructure(((Etablissement) aStructure).getUai());
         log.debug("Branch for structure {} is {}", aStructure.getId(), branch);
         return branch;
     }
 
-    private String deductGroupNameFromStructure(AStructure aStructure){
+    private String deductGroupNameFromStructure(AStructure aStructure) {
         log.debug("Retrieving group name for structure {}", aStructure.getId());
         final String etabGroupLeft = structureLoader.getGroupNameOfStructure(((Etablissement) aStructure).getUai());
         final String etabGroupRight = ((Etablissement) aStructure).getUai();
-        String groupName = etabGroupLeft+"_"+etabGroupRight;
+        String groupName = etabGroupLeft + "_" + etabGroupRight;
         log.debug("Group name for structure {} is {}", aStructure.getId(), groupName);
         return groupName;
     }
@@ -76,7 +76,7 @@ public class RightsController {
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
         Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
         // TODO : gérer le cas des collectivités
-        if(allowedUAI.contains(((Etablissement) aStructure).getUai())){
+        if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
             final String etabGroup = deductGroupNameFromStructure(aStructure);
             final String branch = deductBranchFromStructure(aStructure);
             final List<ServiceAccess> rights = rightsService.getRights(branch, etabGroup, showExternal, showAdmin);
@@ -91,19 +91,19 @@ public class RightsController {
     @PutMapping("/{id}/services/{service}/roles/{role}/members")
     public ResponseEntity<Void> updateRights(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id,
                                              @PathVariable String service, @PathVariable String role,
-                                             @RequestBody AddOrDeleteMemberRequest request){
+                                             @RequestBody AddOrDeleteMemberRequest request) {
         log.debug("Updating rights for structure {}", id);
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
         Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
         // TODO : gérer le cas des collectivités
-        if(allowedUAI.contains(((Etablissement) aStructure).getUai())){
+        if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
             final String etabGroup = deductGroupNameFromStructure(aStructure);
             final String branch = deductBranchFromStructure(aStructure);
-            for(String memberToAdd : request.getMembersToAdd()){
+            for (String memberToAdd : request.getMembersToAdd()) {
                 log.debug("Adding right for member {} in structure {} for service {} for role {}", memberToAdd, id, service, role);
                 rightsService.addRight(service, role, memberToAdd, branch, etabGroup);
             }
-            for(String memberToRemove : request.getMembersToRemove()){
+            for (String memberToRemove : request.getMembersToRemove()) {
                 log.debug("Removing right for member {} in structure {} for service {} for role {}", memberToRemove, id, service, role);
                 rightsService.removeRight(service, role, memberToRemove, branch, etabGroup);
             }

@@ -16,12 +16,12 @@
 package fr.recia.glc.db.enums;
 
 public enum Sexe {
-  /**
-   * Féminin.
-   */
-  F,
-  /**
-   * Masculin.
-   */
-  M
+    /**
+     * Féminin.
+     */
+    F,
+    /**
+     * Masculin.
+     */
+    M
 }

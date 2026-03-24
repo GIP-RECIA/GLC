@@ -23,29 +23,29 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.Collection;
 
 public class IpAddressValidator implements ConstraintValidator<IpAddress, Object> {
-  @Override
-  public void initialize(IpAddress constraintAnnotation) {
-  }
-
-  @Override
-  public boolean isValid(Object value, ConstraintValidatorContext cvContext) {
-    if (value instanceof Collection) {
-      for (Object val : (Collection<?>) value) {
-        if (!(val instanceof String) || !isIpAddressValid((String) val)) return false;
-      }
-      return true;
-    } else if (value instanceof String) {
-      return isIpAddressValid((String) value);
+    @Override
+    public void initialize(IpAddress constraintAnnotation) {
     }
-    return false;
-  }
 
-  private boolean isIpAddressValid(String value) {
-    try {
-      new IPAddressString(value).toAddress();
-    } catch (AddressStringException e) {
-      return false;
+    @Override
+    public boolean isValid(Object value, ConstraintValidatorContext cvContext) {
+        if (value instanceof Collection) {
+            for (Object val : (Collection<?>) value) {
+                if (!(val instanceof String) || !isIpAddressValid((String) val)) return false;
+            }
+            return true;
+        } else if (value instanceof String) {
+            return isIpAddressValid((String) value);
+        }
+        return false;
     }
-    return true;
-  }
+
+    private boolean isIpAddressValid(String value) {
+        try {
+            new IPAddressString(value).toAddress();
+        } catch (AddressStringException e) {
+            return false;
+        }
+        return true;
+    }
 }

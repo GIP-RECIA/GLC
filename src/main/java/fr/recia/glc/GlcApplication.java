@@ -32,23 +32,23 @@ import java.net.UnknownHostException;
 @EnableCaching
 public class GlcApplication {
 
-  public static void main(String[] args) throws UnknownHostException {
-    SpringApplication app = new SpringApplication(GlcApplication.class);
-    app.setBannerMode(Banner.Mode.OFF);
+    public static void main(String[] args) throws UnknownHostException {
+        SpringApplication app = new SpringApplication(GlcApplication.class);
+        app.setBannerMode(Banner.Mode.OFF);
 
-    Environment env = app.run(args).getEnvironment();
-    log.info(
-      "Access URLs:" +
-        "\n----------------------------------------------------------" +
-        "\n\tLocal: \t\thttp://127.0.0.1:{}" +
-        "\n\tExternal: \thttp://{}:{}" +
-        "\n\tProfiles: \t{}" +
-        "\n----------------------------------------------------------",
-      env.getProperty("server.port"),
-      InetAddress.getLocalHost().getHostAddress(),
-      env.getProperty("server.port"),
-      env.getProperty("spring.profiles.active")
-    );
-  }
+        Environment env = app.run(args).getEnvironment();
+        log.info(
+            "Access URLs:" +
+                "\n----------------------------------------------------------" +
+                "\n\tLocal: \t\thttp://127.0.0.1:{}" +
+                "\n\tExternal: \thttp://{}:{}" +
+                "\n\tProfiles: \t{}" +
+                "\n----------------------------------------------------------",
+            env.getProperty("server.port"),
+            InetAddress.getLocalHost().getHostAddress(),
+            env.getProperty("server.port"),
+            env.getProperty("spring.profiles.active")
+        );
+    }
 
 }

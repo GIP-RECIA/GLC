@@ -34,8 +34,8 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints = {
-  @UniqueConstraint(columnNames = {"APERSONNE_LOGIN"}),
-  @UniqueConstraint(columnNames = {"APERSONNE_ALIAS"})
+    @UniqueConstraint(columnNames = {"APERSONNE_LOGIN"}),
+    @UniqueConstraint(columnNames = {"APERSONNE_ALIAS"})
 })
 @Getter
 @Setter
@@ -44,42 +44,42 @@ import javax.persistence.UniqueConstraint;
 @ToString(callSuper = true)
 public class Login extends AbstractTracedEntity {
 
-  /**
-   * Nom de login.
-   */
-  @Column(unique = true, nullable = false, length = IntConst.I100)
-  private String nom;
+    /**
+     * Nom de login.
+     */
+    @Column(unique = true, nullable = false, length = IntConst.I100)
+    private String nom;
 
-  /**
-   * Relation bidirectionnelle.
-   * Personne ayant ce login.
-   */
-  @OneToOne(cascade = {CascadeType.REFRESH})
-  @JoinColumn(name = "apersonne_login")
-  private APersonne apersonneLogin;
-  /**
-   * Relation bidirectionnelle.
-   * Personne ayant cet alias.
-   */
-  @OneToOne(cascade = {CascadeType.REFRESH})
-  @JoinColumn(name = "apersonne_alias")
-  private APersonne apersonneAlias;
-  /**
-   * Relation bidirectionnelle.
-   * Personne ayant eu ce login/alias.
-   */
-  @ManyToOne(cascade = {CascadeType.REFRESH})
-  @JoinColumn(name = "apersonne_old_alias")
-  private APersonne apersonneOldAlias;
+    /**
+     * Relation bidirectionnelle.
+     * Personne ayant ce login.
+     */
+    @OneToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "apersonne_login")
+    private APersonne apersonneLogin;
+    /**
+     * Relation bidirectionnelle.
+     * Personne ayant cet alias.
+     */
+    @OneToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "apersonne_alias")
+    private APersonne apersonneAlias;
+    /**
+     * Relation bidirectionnelle.
+     * Personne ayant eu ce login/alias.
+     */
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "apersonne_old_alias")
+    private APersonne apersonneOldAlias;
 
-  /**
-   * Constructeur de l'objet Login.java.
-   *
-   * @param nom Nom de login.
-   */
-  public Login(final String nom) {
-    super();
-    this.nom = nom;
-  }
+    /**
+     * Constructeur de l'objet Login.java.
+     *
+     * @param nom Nom de login.
+     */
+    public Login(final String nom) {
+        super();
+        this.nom = nom;
+    }
 
 }

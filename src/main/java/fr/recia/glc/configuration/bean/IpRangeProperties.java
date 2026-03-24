@@ -34,15 +34,15 @@ import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
 @Validated
 public class IpRangeProperties {
 
-  @NotEmpty
-  @IpAddress
-  private Set<String> ipRanges;
+    @NotEmpty
+    @IpAddress
+    private Set<String> ipRanges;
 
-  @Override
-  public String toString() {
-    return "IpRangeProperties\": {" +
-      "\n\t\"ipRanges\": " + ListUtil.toStringList(ipRanges, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
-      "\n}";
-  }
+    @Override
+    public String toString() {
+        return "IpRangeProperties\": {" +
+            "\n\t\"ipRanges\": " + ListUtil.toStringList(ipRanges, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
+            "\n}";
+    }
 
 }

@@ -15,7 +15,6 @@
  */
 package fr.recia.glc.services.db;
 
-import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.fonction.Fonction;
@@ -51,7 +50,7 @@ public class PersonneService {
         log.trace("getPersonnes for {}", structureId);
         final List<Long> personnesIds = aPersonneAStructureRepository.findPersonneByStructureId(structureId);
         if (personnesIds.isEmpty()) return List.of();
-        if(showUid){
+        if (showUid) {
             return aPersonneRepository.findByPersonneIdsWithUid(new HashSet<>(personnesIds));
         } else {
             return aPersonneRepository.findByPersonneIdsWithoutUid(new HashSet<>(personnesIds));
@@ -86,7 +85,7 @@ public class PersonneService {
 
     public boolean hasFunctionsInStructure(Long id, Long structureId, List<Long> fonctionsIds) {
         return this.hasOfficialFunctionsInStructure(id, structureId) ||
-                this.hasAdditionalFunctionsInStructure(id, structureId, fonctionsIds);
+            this.hasAdditionalFunctionsInStructure(id, structureId, fonctionsIds);
     }
 
 }

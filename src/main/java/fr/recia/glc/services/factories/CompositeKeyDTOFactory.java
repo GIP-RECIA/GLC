@@ -34,31 +34,31 @@ import java.util.Set;
 public interface CompositeKeyDTOFactory<DTOKEY extends ICompositeKey<KEY, TYPE>, MODELKEY extends ICompositeKey<KEY, TYPE>, KEY extends Serializable, TYPE extends Serializable> {
 
 
-  /**
-   * Load model from storage based on the specified identifier.
-   *
-   * @param id Load model for this identifier
-   * @return Model loaded from persistent storage
-   * //@throws org.esupportail.publisher.service.exceptions.ObjectNotFoundException
-   */
-  MODELKEY convertToModelKey(@NotNull final DTOKEY id);
+    /**
+     * Load model from storage based on the specified identifier.
+     *
+     * @param id Load model for this identifier
+     * @return Model loaded from persistent storage
+     * //@throws org.esupportail.publisher.service.exceptions.ObjectNotFoundException
+     */
+    MODELKEY convertToModelKey(@NotNull final DTOKEY id);
 
-  Set<MODELKEY> convertToModelKey(@NotNull final Set<DTOKEY> id);
+    Set<MODELKEY> convertToModelKey(@NotNull final Set<DTOKEY> id);
 
-  List<MODELKEY> convertToModelKey(@NotNull final List<DTOKEY> id);
+    List<MODELKEY> convertToModelKey(@NotNull final List<DTOKEY> id);
 
-  /**
-   * Load model from storage based on the specified identifier.
-   *
-   * @param set Load model for this identifier
-   * @return Model loaded from persistent storage
-   * //@throws org.esupportail.publisher.service.exceptions.ObjectNotFoundException
-   */
-  DTOKEY convertToDTOKey(@NotNull final MODELKEY set);
+    /**
+     * Load model from storage based on the specified identifier.
+     *
+     * @param set Load model for this identifier
+     * @return Model loaded from persistent storage
+     * //@throws org.esupportail.publisher.service.exceptions.ObjectNotFoundException
+     */
+    DTOKEY convertToDTOKey(@NotNull final MODELKEY set);
 
-  Set<DTOKEY> convertToDTOKey(@NotNull final Set<MODELKEY> id);
+    Set<DTOKEY> convertToDTOKey(@NotNull final Set<MODELKEY> id);
 
-  List<DTOKEY> convertToDTOKey(@NotNull final List<MODELKEY> id);
+    List<DTOKEY> convertToDTOKey(@NotNull final List<MODELKEY> id);
 
 
 }

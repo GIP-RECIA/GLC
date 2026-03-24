@@ -100,7 +100,7 @@ public class PersonneDto {
         this.givenName = aPersonne.getGivenName();
         this.patronyme = aPersonne.getPatronyme();
         this.sn = aPersonne.getSn();
-        if(showUid){
+        if (showUid) {
             this.uid = aPersonne.getUid();
         }
         this.login = aPersonne.getLogin().getNom();

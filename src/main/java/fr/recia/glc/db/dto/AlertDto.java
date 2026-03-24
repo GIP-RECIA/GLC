@@ -22,9 +22,9 @@ import lombok.Data;
 @Data
 public class AlertDto {
 
-  private String title;
-  private String text;
-  private AlertType type;
-  private boolean action;
+    private String title;
+    private String text;
+    private AlertType type;
+    private boolean action;
 
 }

@@ -15,14 +15,10 @@
  */
 package fr.recia.glc.configuration.bean;
 
-import javax.annotation.PostConstruct;
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Data
 public class RightsProperties {

@@ -23,21 +23,15 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.PostConstruct;
 
 import static org.springframework.test.util.ReflectionTestUtils.setField;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @Slf4j
@@ -45,27 +39,28 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @SpringBootTest
 class FonctionControllerTest {
 
-  @Autowired
-  private FonctionRepository<Fonction> fonctionRepository;
-  @Autowired
-  private DisciplineRepository<Discipline> disciplineRepository;
-  @Autowired
-  private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
+    @Autowired
+    private FonctionRepository<Fonction> fonctionRepository;
+    @Autowired
+    private DisciplineRepository<Discipline> disciplineRepository;
+    @Autowired
+    private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
 
-  private MockMvc mockFonctionControllerMvc;
+    private MockMvc mockFonctionControllerMvc;
 
-  @PostConstruct
-  void setup() {
-    FonctionController fonctionController = new FonctionController();
-    setField(fonctionController, "fonctionRepository", fonctionRepository);
-    setField(fonctionController, "disciplineRepository", disciplineRepository);
-    setField(fonctionController, "typeFonctionFiliereRepository", typeFonctionFiliereRepository);
+    @PostConstruct
+    void setup() {
+        FonctionController fonctionController = new FonctionController();
+        setField(fonctionController, "fonctionRepository", fonctionRepository);
+        setField(fonctionController, "disciplineRepository", disciplineRepository);
+        setField(fonctionController, "typeFonctionFiliereRepository", typeFonctionFiliereRepository);
 
-    mockFonctionControllerMvc = standaloneSetup(fonctionController).build();
-  }
+        mockFonctionControllerMvc = standaloneSetup(fonctionController).build();
+    }
 
-  @BeforeEach
-  void init() {}
+    @BeforeEach
+    void init() {
+    }
 
 //  @Test
 //  void getFonctions() throws Exception {

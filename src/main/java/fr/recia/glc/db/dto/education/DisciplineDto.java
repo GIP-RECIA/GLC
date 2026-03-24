@@ -30,27 +30,27 @@ import java.util.List;
 @EqualsAndHashCode
 public class DisciplineDto {
 
-  private Long id;
-  private String code;
-  private String disciplinePoste;
-  private String source;
-  private List<SimplePersonneDto> personnes;
+    private Long id;
+    private String code;
+    private String disciplinePoste;
+    private String source;
+    private List<SimplePersonneDto> personnes;
 
-  // Constructeur utilisé par la requête en BD
-  public DisciplineDto(Long id, String code, String disciplinePoste, String source) {
-    this.id = id;
-    this.code = code;
-    this.disciplinePoste = disciplinePoste;
-    this.source = source;
-    this.personnes = new ArrayList<>();
-  }
+    // Constructeur utilisé par la requête en BD
+    public DisciplineDto(Long id, String code, String disciplinePoste, String source) {
+        this.id = id;
+        this.code = code;
+        this.disciplinePoste = disciplinePoste;
+        this.source = source;
+        this.personnes = new ArrayList<>();
+    }
 
-  public DisciplineDto(DisciplineDto disciplineDto) {
-    this.id = disciplineDto.getId();
-    this.code = disciplineDto.getCode();
-    this.disciplinePoste = disciplineDto.getDisciplinePoste();
-    this.source = disciplineDto.getSource();
-    this.personnes = new ArrayList<>();
-  }
+    public DisciplineDto(DisciplineDto disciplineDto) {
+        this.id = disciplineDto.getId();
+        this.code = disciplineDto.getCode();
+        this.disciplinePoste = disciplineDto.getDisciplinePoste();
+        this.source = disciplineDto.getSource();
+        this.personnes = new ArrayList<>();
+    }
 
 }

@@ -30,56 +30,56 @@ import java.util.Date;
 @ToString
 public class FonctionDto {
 
-  private Long personne;
-  private Long filiere;
-  private Long discipline;
-  private String source;
-  private Long structure;
-  private Date dateFin;
+    private Long personne;
+    private Long filiere;
+    private Long discipline;
+    private String source;
+    private Long structure;
+    private Date dateFin;
 
-  public FonctionDto(Long filiere, Long discipline, String source) {
-    this.filiere = filiere;
-    this.discipline = discipline;
-    this.source = source;
-  }
+    public FonctionDto(Long filiere, Long discipline, String source) {
+        this.filiere = filiere;
+        this.discipline = discipline;
+        this.source = source;
+    }
 
-  public FonctionDto(Long filiere, Long discipline, String source, Long structure) {
-    this.filiere = filiere;
-    this.discipline = discipline;
-    this.source = source;
-    this.structure = structure;
-  }
+    public FonctionDto(Long filiere, Long discipline, String source, Long structure) {
+        this.filiere = filiere;
+        this.discipline = discipline;
+        this.source = source;
+        this.structure = structure;
+    }
 
-  public FonctionDto(Long filiere, Long discipline, String source, Long structure, Date dateFin) {
-    this.filiere = filiere;
-    this.discipline = discipline;
-    this.source = source;
-    this.structure = structure;
-    this.dateFin = dateFin;
-  }
+    public FonctionDto(Long filiere, Long discipline, String source, Long structure, Date dateFin) {
+        this.filiere = filiere;
+        this.discipline = discipline;
+        this.source = source;
+        this.structure = structure;
+        this.dateFin = dateFin;
+    }
 
-  public FonctionDto(Long personne, Long filiere, Long discipline, String source) {
-    this.personne = personne;
-    this.filiere = filiere;
-    this.discipline = discipline;
-    this.source = source;
-  }
+    public FonctionDto(Long personne, Long filiere, Long discipline, String source) {
+        this.personne = personne;
+        this.filiere = filiere;
+        this.discipline = discipline;
+        this.source = source;
+    }
 
-  public FonctionDto(Long personne, Long filiere, Long discipline, String source, Long structure) {
-    this.personne = personne;
-    this.filiere = filiere;
-    this.discipline = discipline;
-    this.source = source;
-    this.structure = structure;
-  }
+    public FonctionDto(Long personne, Long filiere, Long discipline, String source, Long structure) {
+        this.personne = personne;
+        this.filiere = filiere;
+        this.discipline = discipline;
+        this.source = source;
+        this.structure = structure;
+    }
 
-  public FonctionDto(FonctionDto fonctionDto) {
-    this.personne = fonctionDto.getPersonne();
-    this.discipline = fonctionDto.getDiscipline();
-    this.filiere = fonctionDto.getFiliere();
-    this.source = fonctionDto.getSource();
-    this.structure = fonctionDto.getStructure();
-    this.dateFin = fonctionDto.getDateFin();
-  }
+    public FonctionDto(FonctionDto fonctionDto) {
+        this.personne = fonctionDto.getPersonne();
+        this.discipline = fonctionDto.getDiscipline();
+        this.filiere = fonctionDto.getFiliere();
+        this.source = fonctionDto.getSource();
+        this.structure = fonctionDto.getStructure();
+        this.dateFin = fonctionDto.getDateFin();
+    }
 
 }
