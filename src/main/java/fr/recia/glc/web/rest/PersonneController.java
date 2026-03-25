@@ -103,6 +103,7 @@ public class PersonneController {
 
     @GetMapping("/lock/{id}")
     public ResponseEntity<Void> lockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+        // TODO : a-t-on besoin de modifier la date de modification de la personne ? à vérifier
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -153,6 +154,36 @@ public class PersonneController {
             log.warn("User {} is not authorized to unlock person {}", principal.getUsername(), id);
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
+    }
+
+    @GetMapping("/unlock")
+    public ResponseEntity<Void> unlockPersons(@AuthenticationPrincipal GLCUser principal, @RequestParam List<Long> ids){
+        // TODO : débloquage de masse en une seule requête pour être plus efficace
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        for(Long id : ids){
+            APersonne personne = personneService.getPersonne(id);
+            if (personne == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
+            boolean canRead = false;
+            // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
+            for (AStructure aStructure : personne.getListeStructures()) {
+                // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
+                if (aStructure instanceof Etablissement) {
+                    if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+                        canRead = true;
+                    }
+                }
+            }
+            if (canRead) {
+                personneService.unlockPerson(personne);
+            } else {
+                log.warn("User {} is not authorized to unlock person {}", principal.getUsername(), id);
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping

@@ -98,7 +98,6 @@ public class PersonneService {
             log.warn("Try to unlock person {} that is not locked", aPersonne.getId());
         }
         return false;
-
     }
 
     public SimplePersonneDto getPersonneSimple(Long id) {
