@@ -22,6 +22,7 @@ import FonctionForm from '@/components/forms/FonctionForm.vue'
 import { useManageAdditional } from '@/composables/index.ts'
 import { usePersonneStore, useStructureStore } from '@/stores/index.ts'
 import { PersonneDialogState } from '@/types/enums/index.ts'
+import { fonctionsToId } from '@/utils'
 
 const personneStore = usePersonneStore()
 const { dialogState } = storeToRefs(personneStore)
@@ -49,14 +50,14 @@ const {
       v-if="dialogState === PersonneDialogState.ManageAdditional"
       v-model="data.selected[0]"
       :filieres="fonction?.customMapping?.filieres"
-      :disabled="data.disabled"
+      :disabled="fonctionsToId(data.disabled)"
       :disable-fonction-edit="!!data.baseSelection[0]"
     />
     <CheckboxForm
       v-if="dialogState === PersonneDialogState.ManageAdditionalMultiple"
       v-model="data.selected"
       :filieres="fonction?.customMapping?.filieres"
-      :disabled="data.disabled"
+      :disabled="fonctionsToId(data.disabled)"
     />
   </v-card-text>
 

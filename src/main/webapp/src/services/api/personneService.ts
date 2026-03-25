@@ -15,11 +15,8 @@
  */
 
 import type {
-  AddPersonneAdditionalV2Params,
-  DeletePersonneAdditionalV2Params,
   Personne,
   SetPersonneAdditionalParams,
-  SetPersonneAdditionalV2Params,
   SetPersonneAdditionalWithCodeParams,
   SetPersonneAdditionalWithIdParams,
   SimplePersonne,
@@ -100,57 +97,10 @@ async function setPersonneAdditionalWithCode({
   )
 }
 
-async function setPersonneAdditionalV2({
-  id,
-  structureId,
-  toAdd,
-  toDelete,
-}: SetPersonneAdditionalV2Params) {
-  return !!(
-    await axios.post<void>(
-      `/api/personne/${id}/fonction/v2`,
-      {
-        structureId,
-        toAdd,
-        toDelete,
-      },
-    )
-  )
-}
-
-function addPersonneAdditionalV2({
-  id,
-  structureId,
-  toAdd,
-}: AddPersonneAdditionalV2Params) {
-  return setPersonneAdditionalV2({
-    id,
-    structureId,
-    toAdd: toAdd ?? null,
-    toDelete: null,
-  })
-}
-
-function deletePersonneAdditionalV2({
-  id,
-  structureId,
-  toDelete,
-}: DeletePersonneAdditionalV2Params) {
-  return setPersonneAdditionalV2({
-    id,
-    structureId,
-    toAdd: null,
-    toDelete: toDelete ?? null,
-  })
-}
-
 export {
-  addPersonneAdditionalV2,
-  deletePersonneAdditionalV2,
   getPersonne,
   searchPersonne,
   setPersonneAdditional,
-  setPersonneAdditionalV2,
   setPersonneAdditionalWithCode,
   setPersonneAdditionalWithId,
 }

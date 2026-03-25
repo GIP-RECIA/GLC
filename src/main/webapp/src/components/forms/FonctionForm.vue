@@ -19,7 +19,7 @@ import type { Discipline, Filiere, FonctionForm } from '@/types/index.ts'
 import { debounce } from 'lodash-es'
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { filiereDisciplineToId, idToFonction, isBetween } from '@/utils/index.ts'
+import { filiereDisciplineToId, isBetween } from '@/utils/index.ts'
 
 const props = withDefaults(
   defineProps<{
@@ -48,22 +48,16 @@ const { t } = useI18n()
 
 const modelValue = defineModel<FonctionForm>()
 
-interface Form {
-  filiere: number | undefined
-  discipline: number | undefined
-  date: string | undefined
-}
-
-const form = ref<Form>({
+const form = ref<FonctionForm>({
   filiere: undefined,
   discipline: undefined,
-  date: undefined,
+  dateFin: undefined,
 })
 
 const isReady = ref<boolean>(false)
 
 const filteredFilieres = computed<Filiere[] | undefined>(() => {
-  if (!props.disabled)
+  if (!props.disabled || props.disableFonctionEdit)
     return props.filieres
   return props.filieres
     ?.map((filiere) => {
@@ -89,20 +83,19 @@ const filteredDisciplines = computed<Discipline[] | undefined>(() => {
  */
 watch(
   form,
-  debounce((newValue: Form): void => {
+  debounce((newValue: FonctionForm): void => {
     if (!isReady.value)
       return
-    const { filiere, discipline, date } = newValue
+    const { filiere, discipline, dateFin } = newValue
 
     const isDateOk = props.config.date?.min && props.config.date?.max
-      ? isBetween(date ?? '', props.config.date.min, props.config.date.max)
-      : date !== ''
+      ? isBetween(dateFin ?? '', props.config.date.min, props.config.date.max)
+      : dateFin !== ''
     modelValue.value = {
-      fonction: !!filiere && !!discipline
-        ? filiereDisciplineToId(filiere, discipline)
-        : undefined,
-      date: isDateOk
-        ? date
+      filiere,
+      discipline,
+      dateFin: isDateOk
+        ? dateFin
         : undefined,
     }
   }, 200),
@@ -122,14 +115,11 @@ watch(
 
 onBeforeMount((): void => {
   debounce(() => (isReady.value = true), 500)()
-  if (!modelValue.value?.fonction)
+  if (!modelValue.value?.filiere || !modelValue.value?.discipline)
     return
-  const { filiere, discipline } = idToFonction(modelValue.value.fonction)
   form.value = {
     ...form.value,
-    filiere,
-    discipline,
-    date: modelValue.value.date,
+    ...modelValue.value,
   }
 })
 </script>
@@ -163,7 +153,7 @@ onBeforeMount((): void => {
       required
     />
     <v-text-field
-      v-model="form.date"
+      v-model="form.dateFin"
       :label="t('person.function.endDate')"
       type="date"
       v-bind="config.date"

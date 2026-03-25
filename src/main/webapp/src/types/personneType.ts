@@ -53,8 +53,8 @@ export interface SimplePersonne {
 export interface SetPersonneAdditionalParams {
   id: number
   structureId: number
-  toAddFunctions: string[]
-  toDeleteFunctions: string[]
+  toAddFunctions: FonctionForm[]
+  toDeleteFunctions: FonctionForm[]
   requiredAction: string
 }
 
@@ -63,7 +63,7 @@ export type SetPersonneAdditionalWithIdParams = Omit<
   'toAddFunctions'
   | 'toDeleteFunctions'
 > & {
-  toAddFunction: string
+  toAddFunction: FonctionForm
 }
 
 export type SetPersonneAdditionalWithCodeParams = Omit<
@@ -71,22 +71,5 @@ export type SetPersonneAdditionalWithCodeParams = Omit<
   'toAddFunctions'
   | 'toDeleteFunctions'
 > & {
-  additionalCode: string
+  additionalCode: FonctionForm
 }
-
-export interface SetPersonneAdditionalV2Params {
-  id: number
-  structureId: number
-  toAdd: FonctionForm | null
-  toDelete: string | null
-}
-
-export type AddPersonneAdditionalV2Params = Omit<
-  SetPersonneAdditionalV2Params,
-  'toDelete'
->
-
-export type DeletePersonneAdditionalV2Params = Omit<
-  SetPersonneAdditionalV2Params,
-  'toAdd'
->

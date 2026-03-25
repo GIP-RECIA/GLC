@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { endInfo, enumValues, PersonneFonction } from '@/types/index.ts'
+import type { endInfo, enumValues, FonctionForm, PersonneFonction } from '@/types/index.ts'
 import { differenceInMonths, isPast } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { useConfigurationStore } from '@/stores/index.ts'
@@ -180,7 +180,7 @@ function getDateFin(date: string): endInfo {
 }
 
 function fonctionToId(
-  fonction: PersonneFonction,
+  fonction: PersonneFonction | FonctionForm,
 ): string {
   return `${fonction.filiere}-${fonction.discipline}`
 }
@@ -193,7 +193,7 @@ function filiereDisciplineToId(
 }
 
 function fonctionsToId(
-  fonctions: PersonneFonction[] | undefined,
+  fonctions: PersonneFonction[] | FonctionForm[] | undefined,
 ): string[] {
   return fonctions
     ? fonctions.map(fonction => fonctionToId(fonction))
@@ -214,9 +214,29 @@ function idToFonction(
   }
 }
 
+function fonctionToFonctionForm(
+  fonction: PersonneFonction,
+): FonctionForm {
+  return {
+    filiere: fonction.filiere,
+    discipline: fonction.discipline,
+    dateFin: fonction.dateFin,
+  }
+}
+
+function fonctionsToFonctionsForm(
+  fonctions: PersonneFonction[] | undefined,
+): FonctionForm[] {
+  return fonctions
+    ? fonctions.map(fonction => fonctionToFonctionForm(fonction))
+    : []
+}
+
 export {
   filiereDisciplineToId,
+  fonctionsToFonctionsForm,
   fonctionsToId,
+  fonctionToFonctionForm,
   fonctionToId,
   getCategoriePersonne,
   getDateFin,

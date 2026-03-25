@@ -39,8 +39,9 @@ const modelValue = defineModel<FonctionForm[]>()
         v-model="modelValue"
         :label="discipline.disciplinePoste"
         :value="{
-          fonction: filiereDisciplineToId(filiere.id, discipline.id),
-          date: null,
+          filiere: filiere.id,
+          discipline: discipline.id,
+          dateFin: null,
         }"
         :disabled="
           disabled?.includes(

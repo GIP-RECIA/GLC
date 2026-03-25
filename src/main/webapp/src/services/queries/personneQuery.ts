@@ -18,12 +18,9 @@ import { defineQuery, useMutation, useQuery } from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
-  addPersonneAdditionalV2,
-  deletePersonneAdditionalV2,
   getPersonne,
   searchPersonne,
   setPersonneAdditional,
-  setPersonneAdditionalV2,
   setPersonneAdditionalWithCode,
   setPersonneAdditionalWithId,
 } from '@/services/api/index.ts'
@@ -67,31 +64,10 @@ function useSetPersonneAdditionalWithCodeMutation() {
   })
 }
 
-function useSetPersonneAdditionalV2Mutation() {
-  return useMutation({
-    mutation: setPersonneAdditionalV2,
-  })
-}
-
-function useAddPersonneAdditionalV2Mutation() {
-  return useMutation({
-    mutation: addPersonneAdditionalV2,
-  })
-}
-
-function useDeletePersonneAdditionalV2Mutation() {
-  return useMutation({
-    mutation: deletePersonneAdditionalV2,
-  })
-}
-
 export {
-  useAddPersonneAdditionalV2Mutation,
-  useDeletePersonneAdditionalV2Mutation,
   usePersonneQuery,
   useSearchPersonneQuery,
   useSetPersonneAdditionalMutation,
-  useSetPersonneAdditionalV2Mutation,
   useSetPersonneAdditionalWithCodeMutation,
   useSetPersonneAdditionalWithIdMutation,
 }

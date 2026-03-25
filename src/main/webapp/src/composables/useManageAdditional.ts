@@ -19,17 +19,13 @@ import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
-import {
-  addPersonneAdditionalV2,
-  deletePersonneAdditionalV2,
-  setPersonneAdditional,
-} from '@/services/api/index.ts'
+import { setPersonneAdditional } from '@/services/api/index.ts'
 import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts'
 import { PersonneDialogState } from '@/types/enums/index.ts'
 import {
   errorHandler,
-  filiereDisciplineToId,
-  fonctionsToId,
+  fonctionsToFonctionsForm,
+  fonctionToFonctionForm,
   fonctionToId,
   isEmpty,
 } from '@/utils/index.ts'
@@ -55,7 +51,7 @@ function useManageAdditional() {
   const data = ref<{
     baseSelection: FonctionForm[]
     selected: FonctionForm[]
-    disabled: string[]
+    disabled: FonctionForm[]
   }>({
     baseSelection: [],
     selected: [],
@@ -68,13 +64,28 @@ function useManageAdditional() {
       case PersonneDialogState.ManageAdditional:
         if (selected[0]) {
           return baseSelection[0]
-            ? !!selected[0].date && selected[0].date !== baseSelection[0].date
-            : !!selected[0].fonction && !!selected[0].date
+            ? (
+                !!selected[0].dateFin
+                && selected[0].dateFin !== baseSelection[0].dateFin
+              )
+            : (
+                !!selected[0].filiere
+                && !!selected[0].discipline
+                && !!selected[0].dateFin
+              )
         }
         break
       case PersonneDialogState.ManageAdditionalMultiple:
         return selected.length === baseSelection.length
-          ? !selected.every(entry => baseSelection.includes(entry))
+          ? (
+              !selected
+                .map(entry => fonctionToId(entry))
+                .every(entry => (
+                  baseSelection
+                    .map(entry => fonctionToId(entry))
+                    .includes(entry)
+                ))
+            )
           : true
     }
     return false
@@ -142,20 +153,20 @@ function useManageAdditional() {
       const structureId = currentStructureId.value!
       // TODO: Change API => Use existing API witch not support date
       const { baseSelection, selected } = data.value
-      const selectedF: string[] = selected
-        .map(({ fonction }) => fonction)
-        .filter(entry => entry !== undefined)
-      const baseF: string[] = baseSelection.length > 0
+      const selectedF = selected
+        .filter(entry => entry.filiere !== undefined && entry.discipline !== undefined)
+      const baseF = baseSelection.length > 0
         ? baseSelection
-            .map(({ fonction }) => fonction)
-            .filter(entry => entry !== undefined)
+            .filter(entry => entry.filiere !== undefined && entry.discipline !== undefined)
         : []
       switch (dialogState.value) {
         case PersonneDialogState.ManageAdditional:
-          await addPersonneAdditionalV2({
+          await setPersonneAdditional({
             id: personneId,
             structureId,
-            toAdd: selected[0],
+            toAddFunctions: [selected[0]],
+            toDeleteFunctions: [],
+            requiredAction: action,
           })
           break
         case PersonneDialogState.ManageAdditionalMultiple:
@@ -184,10 +195,12 @@ function useManageAdditional() {
       const personneId = currentPersonne.value!.id
       const structureId = currentStructureId.value!
       const { baseSelection } = data.value
-      await deletePersonneAdditionalV2({
+      await setPersonneAdditional({
         id: personneId,
         structureId,
-        toDelete: baseSelection[0].fonction ?? null,
+        toAddFunctions: [],
+        toDeleteFunctions: [baseSelection[0]],
+        requiredAction: action === 'delete' ? 'save' : action,
       })
       resetAddMode(true, action)
     }
@@ -200,26 +213,17 @@ function useManageAdditional() {
   onBeforeMount(() => {
     const { fonctions, additionalFonctions } = personneStructure.value
     let selected: FonctionForm[] = []
-    let disabled: string[] = fonctionsToId(fonctions)
+    let disabled: FonctionForm[] = fonctionsToFonctionsForm(fonctions)
     switch (dialogState.value) {
       case PersonneDialogState.ManageAdditional:
-        disabled = disabled.concat(fonctionsToId(additionalFonctions))
+        disabled = fonctionsToFonctionsForm(additionalFonctions)
         if (editFunction.value) {
-          const { filiere, discipline, dateFin } = editFunction.value
-          selected.push({
-            fonction: filiereDisciplineToId(filiere, discipline),
-            date: dateFin,
-          })
-          disabled = disabled.filter(fonction => fonction !== selected[0].fonction)
+          selected.push(fonctionToFonctionForm(editFunction.value))
+          disabled = disabled.filter(fonction => fonction !== selected[0])
         }
         break
       case PersonneDialogState.ManageAdditionalMultiple:
-        selected = additionalFonctions?.map((fonction) => {
-          return {
-            fonction: fonctionToId(fonction),
-            date: fonction.dateFin,
-          }
-        }) ?? []
+        selected = fonctionsToFonctionsForm(additionalFonctions)
         break
     }
     data.value = {

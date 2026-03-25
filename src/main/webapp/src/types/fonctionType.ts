@@ -36,7 +36,10 @@ export interface PersonneFonction {
   dateFin?: string
 }
 
-export interface FonctionForm {
-  fonction?: string
-  date?: string
+export type FonctionForm = Pick<
+  PersonneFonction,
+  | 'dateFin'
+> & {
+  filiere?: number
+  discipline?: number
 }
