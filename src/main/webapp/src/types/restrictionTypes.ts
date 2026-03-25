@@ -32,6 +32,5 @@ export interface ClassRestriction {
 
 export interface SaveRestrictionsParams {
   id: number
-  member: string
-  group: boolean
+  body: StructureRestriction
 }

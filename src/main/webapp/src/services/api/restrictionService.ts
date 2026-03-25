@@ -32,16 +32,12 @@ async function getRestrictions(
 
 async function saveRestrictions({
   id,
-  member,
-  group,
+  body,
 }: SaveRestrictionsParams) {
   return !!(
     await axios.post<void>(
       `/api/restriction/${id}`,
-      {
-        member,
-        group,
-      },
+      body,
     )
   )
 }

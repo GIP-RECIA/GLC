@@ -103,6 +103,7 @@ function setChildEditState(state: boolean): void {
         <h2>Paramètres</h2>
 
         <RestrictionsSettings
+          :etab-id="selectedEtab"
           :restrictions="data"
           :disable-edit="isChildEdit"
           @edit="setChildEditState"

@@ -19,14 +19,17 @@ import type { StructureRestriction } from '@/types/index.ts'
 import { faFloppyDisk, faPen, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format, formatISO } from 'date-fns'
+import { cloneDeep } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import MenuButton from '@/components/MenuButton.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import LevelRestrictions from '@/components/settings/restrictions/LevelRestrictions.vue'
+import { saveRestrictions } from '@/services/api/index.ts'
 
 const props = withDefaults(
   defineProps<{
+    etabId?: number
     restrictions?: StructureRestriction
     canEdit?: boolean
     disableEdit?: boolean
@@ -49,36 +52,13 @@ const canSave = computed<boolean>(() => (
   true
 ))
 
-function toggleEdit(): void {
-  isEdit.value = !isEdit.value
-  emit('edit', isEdit.value)
-}
-
-function save(): void {
-  isEdit.value = false
-  emit('edit', false)
-}
-
-function toDisplayDate(
-  date: string | undefined | null,
-): string | undefined {
-  return date
-    ? format(date, 'P p')
-    : undefined
-}
-
-function toDateTime(date: string | null): string | null {
-  return date !== null
-    ? `${formatISO(date, { representation: 'date' })}T${format(date, 'HH:mm')}`
-    : null
-}
-
 const EMPTY_RESTRICTION: StructureRestriction = {
   dateRentreeEtab: null,
   niveaux: [],
 }
 
 const fields = ref<StructureRestriction>(EMPTY_RESTRICTION)
+let initalFields: StructureRestriction = EMPTY_RESTRICTION
 
 watch(
   () => props.restrictions,
@@ -101,16 +81,73 @@ watch(
       }
     })
 
-    fields.value = {
+    initalFields = {
       dateRentreeEtab: toDateTime(val.dateRentreeEtab),
       niveaux,
     }
+    fields.value = cloneDeep(initalFields)
   },
   {
     immediate: true,
     deep: true,
   },
 )
+
+function toggleEdit(): void {
+  if (isEdit.value)
+    fields.value = cloneDeep(initalFields)
+  isEdit.value = !isEdit.value
+  emit('edit', isEdit.value)
+}
+
+function save(): void {
+  if (!props.etabId)
+    return
+
+  const body = {
+    dateRentreeEtab: toStringDate(fields.value.dateRentreeEtab),
+    niveaux: fields.value.niveaux.map((level) => {
+      const classes = level.classes.map((classe) => {
+        return {
+          ...classe,
+          dateRentreeClasse: toStringDate(classe.dateRentreeClasse),
+        }
+      })
+
+      return {
+        ...level,
+        dateRentreeNiveau: toStringDate(level.dateRentreeNiveau),
+        classes,
+      }
+    }),
+  }
+
+  saveRestrictions({
+    id: props.etabId,
+    body,
+  })
+  toggleEdit()
+}
+
+function toDisplayDate(
+  date: string | undefined | null,
+): string | undefined {
+  return date
+    ? format(date, 'P p')
+    : undefined
+}
+
+function toDateTime(date: string | null): string | null {
+  return date !== null
+    ? `${formatISO(date, { representation: 'date' })}T${format(date, 'HH:mm')}`
+    : null
+}
+
+function toStringDate(date: string | null): string | null {
+  return date !== null && date.trim().length > 1
+    ? `${date}:00Z`
+    : null
+}
 
 const addableLevels = computed<{ uid: string, name: string }[]>(() => (
   fields.value?.niveaux
