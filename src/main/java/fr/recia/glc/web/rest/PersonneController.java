@@ -99,7 +99,60 @@ public class PersonneController {
             log.warn("User {} is not authorized to view person {}", principal.getUsername(), id);
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
+    }
 
+    @GetMapping("/lock/{id}")
+    public ResponseEntity<Void> lockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+        APersonne personne = personneService.getPersonne(id);
+        if (personne == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        boolean canRead = false;
+        // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
+        for (AStructure aStructure : personne.getListeStructures()) {
+            // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
+            if (aStructure instanceof Etablissement) {
+                if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+                    canRead = true;
+                }
+            }
+        }
+        if (canRead) {
+            personneService.lockPerson(personne);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            log.warn("User {} is not authorized to lock person {}", principal.getUsername(), id);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @GetMapping("/unlock/{id}")
+    public ResponseEntity<Void> unlockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+        APersonne personne = personneService.getPersonne(id);
+        if (personne == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
+        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        boolean canRead = false;
+        // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
+        for (AStructure aStructure : personne.getListeStructures()) {
+            // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
+            if (aStructure instanceof Etablissement) {
+                if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+                    canRead = true;
+                }
+            }
+        }
+        if (canRead) {
+            personneService.unlockPerson(personne);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            log.warn("User {} is not authorized to unlock person {}", principal.getUsername(), id);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping

@@ -19,9 +19,11 @@ import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.personne.APersonne;
+import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
 import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
+import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -40,6 +42,8 @@ public class PersonneService {
     private APersonneRepository<APersonne> aPersonneRepository;
     @Autowired
     private FonctionRepository<Fonction> fonctionRepository;
+    @Autowired
+    private LdapPeopleDao ldapPeopleDao;
 
     public List<SimplePersonneDto> searchPersonne(String name, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdmin(name) : aPersonneRepository.findByNameLike(name);
@@ -61,6 +65,40 @@ public class PersonneService {
     public APersonne getPersonne(Long id) {
         log.trace("getPersonne for {}", id);
         return aPersonneRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * Bloque une personne : attention il faut bloquer dans la BD et dans le LDAP aussi
+     */
+    // TODO : evict correctement le cache de la personne et de l'établissement pour le tableau de bord
+    public boolean lockPerson(APersonne aPersonne){
+        if(aPersonne.getEtat() != Etat.Bloque){
+            aPersonne.setEtat(Etat.Bloque);
+            aPersonneRepository.saveAndFlush(aPersonne);
+            ldapPeopleDao.lockPerson(aPersonne.getUid());
+            return true;
+        } else {
+            log.warn("Try to lock person {} that is already locked", aPersonne.getId());
+        }
+        return false;
+    }
+
+    /**
+     * Débloque une personne : attention il faut débloquer dans la BD et dans le LDAP aussi
+     */
+    // TODO : evict correctement le cache de la personne et de l'établissement pour le tableau de bord
+    public boolean unlockPerson(APersonne aPersonne){
+        // TODO : dans quel état remettre la personne on ne sait pas dans quel état elle était avant
+        if(aPersonne.getEtat() == Etat.Bloque){
+            aPersonne.setEtat(Etat.Valide);
+            aPersonneRepository.saveAndFlush(aPersonne);
+            ldapPeopleDao.unlockPerson(aPersonne.getUid());
+            return true;
+        } else {
+            log.warn("Try to unlock person {} that is not locked", aPersonne.getId());
+        }
+        return false;
+
     }
 
     public SimplePersonneDto getPersonneSimple(Long id) {

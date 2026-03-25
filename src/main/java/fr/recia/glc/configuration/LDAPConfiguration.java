@@ -19,6 +19,7 @@ import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.StructureSirenDomainAttributesMapper;
 import fr.recia.glc.ldap.repository.LdapGroupDao;
+import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import fr.recia.glc.ldap.repository.LdapStructureDao;
 import fr.recia.glc.services.structure.StructureLoader;
 import lombok.extern.slf4j.Slf4j;
@@ -108,12 +109,12 @@ public class LDAPConfiguration {
 
     @Bean
     public LdapStructureDao ldapStructureDao(LdapTemplate ldapTemplate, StructureSirenDomainAttributesMapper structureSirenDomainAttributesMapper) {
-        log.debug("Configuring IExternalGroupDao with LDAP DAO");
-        Assert.notNull(
-            ldapProperties.getGroupBranch(),
-            "Use of Group Branch require 'app.ldap.groupBranch.*' properties configured !"
-        );
         return new LdapStructureDao(ldapTemplate, structureSirenDomainAttributesMapper, ldapProperties);
+    }
+
+    @Bean
+    public LdapPeopleDao ldapPeopleDao(LdapTemplate ldapTemplate) {
+        return new LdapPeopleDao(ldapTemplate, ldapProperties);
     }
 
     @Bean
