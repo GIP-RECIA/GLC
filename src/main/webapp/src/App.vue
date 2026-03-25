@@ -20,7 +20,6 @@ import { watchOnce } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
-import LoginDialog from '@/components/dialogs/LoginDialog.vue'
 import SettingsDialog from '@/components/dialogs/SettingsDialog.vue'
 import TabBar from '@/components/tabbar/TabBar.vue'
 import { useConfigurationStore } from '@/stores/index.ts'
@@ -34,10 +33,10 @@ const {
   isInit,
   isLoading,
   isSettings,
-  isAuthenticated,
 } = storeToRefs(configurationStore)
 
 init()
+initFonctions()
 
 watchOnce(isInit, (newValue) => {
   if (!newValue || !configuration.value?.front.extendedUportal)
@@ -53,11 +52,6 @@ watchOnce(isInit, (newValue) => {
     extendedUportalFooterScript.setAttribute('src', footer.componentPath)
     document.head.appendChild(extendedUportalFooterScript)
   }
-})
-
-watchOnce(isAuthenticated, (newValue) => {
-  if (newValue)
-    initFonctions()
 })
 
 onBeforeMount(() => {
@@ -78,12 +72,10 @@ const appName = __APP_NAME__
         v-if="isInit"
         :service-name="appName"
         v-bind="configuration!.front.extendedUportal?.header?.props"
+        navigation-drawer-visible
       />
       <v-toolbar
-        v-if="
-          isAuthenticated
-            && isAccountSection
-        "
+        v-if="isAccountSection"
         density="compact"
         color="rgba(255, 255, 255, 0)"
       >
@@ -117,8 +109,7 @@ const appName = __APP_NAME__
     </header>
     <div class="d-flex flex-column h-100 overflow-y-auto">
       <v-main class="flex-grow-1">
-        <router-view v-if="isAuthenticated" />
-        <LoginDialog />
+        <router-view />
         <SettingsDialog />
       </v-main>
       <footer>

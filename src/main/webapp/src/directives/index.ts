@@ -15,7 +15,6 @@
  */
 
 import type { App } from 'vue'
-import { authenticated } from './authenticationDirective.ts'
 import { dev } from './devDirective.ts'
 import { permission } from './permissionDirective.ts'
 import { admin, role } from './roleDirective.ts'
