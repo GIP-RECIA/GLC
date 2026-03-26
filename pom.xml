@@ -454,10 +454,12 @@
             index.html</packagingExcludes>
           <warSourceExcludes>org/,
             public/,
-            src/</warSourceExcludes>
+            src/,
+            dist/</warSourceExcludes>
           <webResources>
             <resource>
               <directory>src/main/webapp/dist</directory>
+              <targetPath>WEB-INF/classes/static/ui</targetPath>
             </resource>
           </webResources>
         </configuration>
