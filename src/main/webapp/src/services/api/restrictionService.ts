@@ -25,7 +25,7 @@ async function getRestrictions(
 ) {
   return (
     await axios.get<StructureRestriction>(
-      `/api/restriction/${id}`,
+      `/api/restriction/etab/${id}`,
     )
   ).data
 }
@@ -36,7 +36,7 @@ async function saveRestrictions({
 }: SaveRestrictionsParams) {
   return !!(
     await axios.post<void>(
-      `/api/restriction/${id}`,
+      `/api/restriction/etab/${id}`,
       body,
     )
   )
