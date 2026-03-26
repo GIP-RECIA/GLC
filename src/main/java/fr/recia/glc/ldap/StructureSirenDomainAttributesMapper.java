@@ -30,10 +30,15 @@ public class StructureSirenDomainAttributesMapper implements AttributesMapper<St
 
     @Override
     public StructureSirenDomain mapFromAttributes(Attributes attrs) throws NamingException {
+        // TODO : attributs chargé depuis la conf et plus en dur
         StructureSirenDomain entry = new StructureSirenDomain();
         Attribute sirenAttr = attrs.get("ENTStructureSIREN");
         if (sirenAttr != null) {
             entry.setSiren((String) sirenAttr.get());
+        }
+        Attribute uaiAttr = attrs.get("ENTStructureUAI");
+        if (uaiAttr != null) {
+            entry.setUai((String) uaiAttr.get());
         }
         Attribute domainesAttr = attrs.get("ESCODomaines");
         if (domainesAttr != null) {

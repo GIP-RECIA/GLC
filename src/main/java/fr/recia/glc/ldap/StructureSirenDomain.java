@@ -30,5 +30,6 @@ public class StructureSirenDomain {
 
     private String siren;
     private List<String> domains;
+    private String uai;
 
 }

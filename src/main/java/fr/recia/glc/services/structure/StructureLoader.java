@@ -47,6 +47,7 @@ public class StructureLoader implements InitializingBean {
     private Map<String, Set<StructureFromGroup>> loadedStructuresByBranch;
     private Map<String, String> branchForLoadedStructures;
     private Map<String, String> groupNameForLoadedStructures;
+    private Map<String, String> uaiToSirenForStructures;
     private Map<String, List<String>> domainsBySirenForStructures;
     private LdapGroupDao groupDao;
     private LdapStructureDao ldapStructureDao;
@@ -56,6 +57,7 @@ public class StructureLoader implements InitializingBean {
         this.ldapStructureDao = ldapStructureDao;
         this.loadedStructuresByBranch = new HashMap<>();
         this.branchForLoadedStructures = new HashMap<>();
+        this.uaiToSirenForStructures = new HashMap<>();
         this.groupNameForLoadedStructures = new HashMap<>();
         this.domainsBySirenForStructures = new HashMap<>();
     }
@@ -118,12 +120,22 @@ public class StructureLoader implements InitializingBean {
         );
         List<StructureSirenDomain> structureSirenDomains = ldapStructureDao.structuresFromSiren();
         for (StructureSirenDomain structureSirenDomain : structureSirenDomains) {
+            log.debug("{}", structureSirenDomain);
             domainsBySirenForStructures.put(structureSirenDomain.getSiren(), structureSirenDomain.getDomains());
+            if(structureSirenDomain.getUai()!=null){
+                uaiToSirenForStructures.put(structureSirenDomain.getUai(), structureSirenDomain.getSiren());
+            }
         }
         log.debug(
             "domainsBySirenForStructures recap: {}",
             domainsBySirenForStructures.keySet().stream()
                 .map(key -> "\t{ \"" + key + "\": " + domainsBySirenForStructures.get(key) + " }")
+                .collect(Collectors.joining(",\n", "[\n", "\n]"))
+        );
+        log.debug(
+            "uaiToSirenForStructures recap: {}",
+            uaiToSirenForStructures.keySet().stream()
+                .map(key -> "\t{ \"" + key + "\": " + uaiToSirenForStructures.get(key) + " }")
                 .collect(Collectors.joining(",\n", "[\n", "\n]"))
         );
     }
