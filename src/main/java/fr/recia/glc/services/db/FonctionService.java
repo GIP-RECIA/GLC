@@ -331,7 +331,8 @@ public class FonctionService {
         @CacheEvict(value = "personne", key = "#personneId"),
         @CacheEvict(value = "personnesWithoutFunctions", key = "#structureId"),
         @CacheEvict(value = "structureFonctions", key = "#structureId"),
-        @CacheEvict(value = "personnesByEtablissement", key = "#structureId")
+        @CacheEvict(value = "personnesByEtablissement", key = "{#structureId, true}"),
+        @CacheEvict(value = "personnesByEtablissement", key = "{#structureId, false}")
     })
     public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<FonctionToModify> toAddFunctions, List<FonctionToModify> toDeleteFunctions, FonctionAction requiredAction) {
         final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);

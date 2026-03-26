@@ -70,6 +70,7 @@ public class PersonneController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<PersonneDto> getPersonne(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
+        // TODO : la route est aussi appellée lors du rattachement sauf qu'on a pas forcément les droits sur l'étab duquel la personne est de base
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
