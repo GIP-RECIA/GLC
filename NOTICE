@@ -121,6 +121,7 @@ This project includes:
   Spring Beans under Apache License, Version 2.0
   Spring Commons Logging Bridge under Apache License, Version 2.0
   Spring Context under Apache License, Version 2.0
+  Spring Context Support under Apache License, Version 2.0
   Spring Core under Apache License, Version 2.0
   Spring Data Core under Apache License, Version 2.0
   Spring Data JPA under Apache License, Version 2.0
@@ -147,6 +148,7 @@ This project includes:
   spring-boot-starter under Apache License, Version 2.0
   spring-boot-starter-actuator under Apache License, Version 2.0
   spring-boot-starter-aop under Apache License, Version 2.0
+  spring-boot-starter-cache under Apache License, Version 2.0
   spring-boot-starter-data-jpa under Apache License, Version 2.0
   spring-boot-starter-data-ldap under Apache License, Version 2.0
   spring-boot-starter-jdbc under Apache License, Version 2.0
