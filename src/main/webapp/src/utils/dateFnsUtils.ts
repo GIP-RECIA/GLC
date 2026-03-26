@@ -15,7 +15,13 @@
  */
 
 import type { Duration } from 'date-fns'
-import { intervalToDuration, isAfter, isBefore } from 'date-fns'
+import {
+  format,
+  intervalToDuration,
+  isAfter,
+  isBefore,
+  parseISO,
+} from 'date-fns'
 
 type dateType = string | number | Date
 
@@ -57,9 +63,32 @@ function isBetween(
       )
 }
 
+function formatDateTime(
+  date: string | undefined | null,
+): string | undefined {
+  return date
+    ? format(date, 'P p')
+    : undefined
+}
+
+function toDateTime(date: string | null): string | null {
+  return date !== null
+    ? format(parseISO(date), 'yyyy-MM-dd\'T\'HH:mm')
+    : null
+}
+
+function toISOString(date: string | null): string | null {
+  return date !== null && date.trim().length > 1
+    ? new Date(date).toISOString()
+    : null
+}
+
 export {
   dateToDuration,
+  formatDateTime,
   isAfterOrEqual,
   isBeforeOrEqual,
   isBetween,
+  toDateTime,
+  toISOString,
 }

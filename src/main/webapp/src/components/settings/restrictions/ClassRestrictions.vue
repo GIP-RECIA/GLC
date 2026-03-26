@@ -18,9 +18,9 @@
 import type { ClassRestriction } from '@/types/index.ts'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { format } from 'date-fns'
 import { computed, useId } from 'vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
+import { formatDateTime } from '@/utils/index.ts'
 
 withDefaults(
   defineProps<{
@@ -44,14 +44,6 @@ const modelValue = defineModel<ClassRestriction>({
     dateRentreeClasse: null,
   },
 })
-
-function toDisplayDate(
-  date: string | undefined | null,
-): string | undefined {
-  return date
-    ? format(date, 'P p')
-    : undefined
-}
 
 function deleteClass(): void {
   modelValue.value.dateRentreeClasse = null
@@ -101,7 +93,7 @@ function deleteClass(): void {
     </div>
     <SafeEmptyData
       v-else
-      :value="toDisplayDate(classRestriction.dateRentreeClasse)"
+      :value="formatDateTime(classRestriction.dateRentreeClasse)"
     />
   </div>
 </template>

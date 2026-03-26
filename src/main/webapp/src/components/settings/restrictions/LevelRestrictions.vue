@@ -18,11 +18,11 @@
 import type { LevelRestriction } from '@/types/index.ts'
 import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { format } from 'date-fns'
 import { computed, useId } from 'vue'
 import MenuButton from '@/components/MenuButton.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import ClassRestrictions from '@/components/settings/restrictions/ClassRestrictions.vue'
+import { formatDateTime } from '@/utils/index.ts'
 
 withDefaults(
   defineProps<{
@@ -47,14 +47,6 @@ const modelValue = defineModel<LevelRestriction>({
     classes: [],
   },
 })
-
-function toDisplayDate(
-  date: string | undefined | null,
-): string | undefined {
-  return date
-    ? format(date, 'P p')
-    : undefined
-}
 
 const addableClasses = computed<{ uid: string, name: string }[]>(() => (
   modelValue.value?.classes
@@ -108,7 +100,7 @@ function deleteLevel(): void {
       </div>
       <SafeEmptyData
         v-else
-        :value="toDisplayDate(levelRestriction.dateRentreeNiveau)"
+        :value="formatDateTime(levelRestriction.dateRentreeNiveau)"
       />
     </div>
 

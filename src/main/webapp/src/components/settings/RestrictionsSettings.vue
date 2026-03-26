@@ -18,7 +18,6 @@
 import type { StructureRestriction } from '@/types/index.ts'
 import { faFloppyDisk, faPen, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { format, formatISO } from 'date-fns'
 import { cloneDeep } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -26,6 +25,7 @@ import MenuButton from '@/components/MenuButton.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import LevelRestrictions from '@/components/settings/restrictions/LevelRestrictions.vue'
 import { saveRestrictions } from '@/services/api/index.ts'
+import { formatDateTime, toDateTime, toISOString } from '@/utils/index.ts'
 
 const props = withDefaults(
   defineProps<{
@@ -105,18 +105,18 @@ function save(): void {
     return
 
   const body = {
-    dateRentreeEtab: toStringDate(fields.value.dateRentreeEtab),
+    dateRentreeEtab: toISOString(fields.value.dateRentreeEtab),
     niveaux: fields.value.niveaux.map((level) => {
       const classes = level.classes.map((classe) => {
         return {
           ...classe,
-          dateRentreeClasse: toStringDate(classe.dateRentreeClasse),
+          dateRentreeClasse: toISOString(classe.dateRentreeClasse),
         }
       })
 
       return {
         ...level,
-        dateRentreeNiveau: toStringDate(level.dateRentreeNiveau),
+        dateRentreeNiveau: toISOString(level.dateRentreeNiveau),
         classes,
       }
     }),
@@ -127,26 +127,6 @@ function save(): void {
     body,
   })
   toggleEdit()
-}
-
-function toDisplayDate(
-  date: string | undefined | null,
-): string | undefined {
-  return date
-    ? format(date, 'P p')
-    : undefined
-}
-
-function toDateTime(date: string | null): string | null {
-  return date !== null
-    ? `${formatISO(date, { representation: 'date' })}T${format(date, 'HH:mm')}`
-    : null
-}
-
-function toStringDate(date: string | null): string | null {
-  return date !== null && date.trim().length > 1
-    ? `${date}:00Z`
-    : null
 }
 
 const addableLevels = computed<{ uid: string, name: string }[]>(() => (
@@ -203,7 +183,7 @@ function addLevel(uid: string | number): void {
         </div>
         <SafeEmptyData
           v-else
-          :value="toDisplayDate(restrictions?.dateRentreeEtab)"
+          :value="formatDateTime(restrictions?.dateRentreeEtab)"
         />
       </div>
 
