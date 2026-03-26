@@ -22,7 +22,6 @@ import {
   faHouse,
   faUserGear,
   faUsersGear,
-  faUserShield,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import PageLayout from '@/components/PageLayout.vue'
@@ -64,15 +63,6 @@ import PageLayout from '@/components/PageLayout.vue'
             >
               <FontAwesomeIcon :icon="faCubesStacked" />
               Gérer les accès aux services
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              :to="{ name: 'admin' }"
-              class="btn-tertiary"
-            >
-              <FontAwesomeIcon :icon="faUserShield" />
-              Gérer les droits d'administration
             </router-link>
           </li>
           <li>
