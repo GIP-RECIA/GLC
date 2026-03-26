@@ -18,7 +18,7 @@
 import type { ClassRestriction } from '@/types/index.ts'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { computed, useId } from 'vue'
+import { useId } from 'vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import { formatDateTime } from '@/utils/index.ts'
 
@@ -32,11 +32,7 @@ withDefaults(
   },
 )
 
-const uid = useId()
-
-const id = computed<string>(() => (
-  `niveau-classe-${uid}`
-))
+const id = `niveau-classe-${useId()}`
 
 const modelValue = defineModel<ClassRestriction>({
   default: {

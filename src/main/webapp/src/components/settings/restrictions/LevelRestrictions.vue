@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { LevelRestriction } from '@/types/index.ts'
+import type { ClassRestriction, LevelRestriction } from '@/types/index.ts'
 import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, useId } from 'vue'
@@ -24,7 +24,7 @@ import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import ClassRestrictions from '@/components/settings/restrictions/ClassRestrictions.vue'
 import { formatDateTime } from '@/utils/index.ts'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     levelRestriction: LevelRestriction
     isEdit?: boolean
@@ -34,11 +34,7 @@ withDefaults(
   },
 )
 
-const uid = useId()
-
-const id = computed<string>(() => (
-  `niveau-${uid}`
-))
+const id = `niveau-${useId()}`
 
 const modelValue = defineModel<LevelRestriction>({
   default: {
@@ -47,6 +43,22 @@ const modelValue = defineModel<LevelRestriction>({
     classes: [],
   },
 })
+
+const hasClasses = computed<boolean>(() => {
+  const dataSource = props.isEdit
+    ? modelValue.value
+    : props.levelRestriction
+
+  return dataSource.classes.some(c => c.dateRentreeClasse !== null)
+})
+
+function hasDate(classe: ClassRestriction, index: number) {
+  const c = props.isEdit
+    ? modelValue.value.classes[index]
+    : classe
+
+  return c.dateRentreeClasse !== null
+}
 
 const addableClasses = computed<{ uid: string, name: string }[]>(() => (
   modelValue.value?.classes
@@ -104,25 +116,11 @@ function deleteLevel(): void {
       />
     </div>
 
-    <ul
-      v-show="
-        isEdit
-          ? modelValue.classes.some(c => c.dateRentreeClasse !== null)
-          : levelRestriction.classes.some(c => c.dateRentreeClasse !== null)
-      "
-    >
+    <ul v-show="hasClasses">
       <li
         v-for="(classe, index) in levelRestriction.classes"
-        v-show="
-          isEdit
-            ? (
-              modelValue.classes[index].dateRentreeClasse !== null
-            )
-            : (
-              classe.dateRentreeClasse !== null
-            )
-        "
-        :key="classe.classe"
+        v-show="hasDate(classe, index)"
+        :key="`${id}-${classe.classe}`"
       >
         <ClassRestrictions
           v-model="modelValue.classes[index]"

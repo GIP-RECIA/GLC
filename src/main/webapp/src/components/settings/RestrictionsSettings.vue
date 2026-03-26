@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { StructureRestriction } from '@/types/index.ts'
+import type { LevelRestriction, StructureRestriction } from '@/types/index.ts'
 import { faFloppyDisk, faPen, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { cloneDeep } from 'lodash-es'
@@ -93,6 +93,17 @@ watch(
   },
 )
 
+function hasLevel(level: LevelRestriction, index: number) {
+  const l = isEdit.value
+    ? fields.value.niveaux[index]
+    : level
+
+  return (
+    l.dateRentreeNiveau !== null
+    || l.classes.some(c => c.dateRentreeClasse !== null)
+  )
+}
+
 function toggleEdit(): void {
   if (isEdit.value)
     fields.value = cloneDeep(initalFields)
@@ -165,9 +176,7 @@ function addLevel(uid: string | number): void {
           <div class="field-layout">
             <div class="field-container">
               <div class="middle">
-                <label
-                  for="dateRentreeEtab"
-                >
+                <label for="dateRentreeEtab">
                   Etablissement
                 </label>
                 <input
@@ -193,18 +202,8 @@ function addLevel(uid: string | number): void {
       >
         <LevelRestrictions
           v-for="(niveau, index) in restrictions.niveaux"
-          v-show="
-            isEdit
-              ? (
-                fields.niveaux[index].dateRentreeNiveau !== null
-                || fields.niveaux[index].classes.some(c => c.dateRentreeClasse !== null)
-              )
-              : (
-                niveau.dateRentreeNiveau !== null
-                || niveau.classes.some(c => c.dateRentreeClasse !== null)
-              )
-          "
-          :key="niveau.niveau"
+          v-show="hasLevel(niveau, index)"
+          :key="`restriction-level-${niveau.niveau}`"
           v-model="fields.niveaux[index]"
           :level-restriction="niveau"
           :is-edit="isEdit"
