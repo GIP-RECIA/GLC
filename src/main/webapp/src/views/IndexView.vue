@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import {
   faArrowLeft,
+  faClock,
   faCubesStacked,
   faHouse,
   faUserGear,
@@ -82,6 +83,15 @@ import PageLayout from '@/components/PageLayout.vue'
               <FontAwesomeIcon :icon="faUsersGear" />
               Gérer les groupes
             </a>
+          </li>
+          <li>
+            <router-link
+              :to="{ name: 'restriction' }"
+              class="btn-tertiary"
+            >
+              <FontAwesomeIcon :icon="faClock" />
+              Paramétrer les dates
+            </router-link>
           </li>
           <li>
             <router-link

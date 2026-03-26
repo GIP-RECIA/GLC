@@ -15,17 +15,13 @@
 -->
 
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { StructureRestriction } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
 import PageLayout from '@/components/PageLayout.vue'
 import StructureSearch from '@/components/search/structure/StructureSearch.vue'
-import AdminSettings from '@/components/settings/AdminSettings.vue'
-import ContactSettings from '@/components/settings/ContactSettings.vue'
-import IdentitySettings from '@/components/settings/IdentitySettings.vue'
-import LocalisationSettings from '@/components/settings/LocalisationSettings.vue'
-import LogoSettings from '@/components/settings/LogoSettings.vue'
-import { getEtablissement } from '@/services/api/index.ts'
+import RestrictionsSettings from '@/components/settings/RestrictionsSettings.vue'
+import { getRestrictions } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 
 const structureStore = useStructureStore()
@@ -38,13 +34,13 @@ const selectedEtab = ref<number | undefined>(
     : undefined,
 )
 
-const currentEtab = ref<Etablissement | undefined>()
+const data = ref<StructureRestriction | undefined>()
 
 watchEffect(async (): Promise<void> => {
   if (selectedEtab.value === undefined)
     return
 
-  currentEtab.value = await getEtablissement(selectedEtab.value)
+  data.value = await getRestrictions(selectedEtab.value)
 })
 
 const isChildEdit = ref<boolean>(false)
@@ -57,7 +53,7 @@ function setChildEditState(state: boolean): void {
 <template>
   <div class="container">
     <PageLayout
-      title="Paramétrage de l'établissement"
+      title="Paramétrage des dates"
     >
       <StructureSearch
         v-model="selectedEtab"
@@ -66,34 +62,14 @@ function setChildEditState(state: boolean): void {
       />
 
       <div>
-        <h2>Informations générales</h2>
+        <h2>Ouverture et fermeture des accès</h2>
 
-        <div class="info-container">
-          <LogoSettings
-            :etab="currentEtab"
-            :disable-edit="isChildEdit"
-          />
-
-          <IdentitySettings
-            :etab="currentEtab"
-            :disable-edit="isChildEdit"
-            @edit="setChildEditState"
-          />
-
-          <LocalisationSettings
-            :etab="currentEtab"
-          />
-
-          <ContactSettings
-            :etab="currentEtab"
-            :disable-edit="isChildEdit"
-            @edit="setChildEditState"
-          />
-
-          <AdminSettings
-            :etab="currentEtab"
-          />
-        </div>
+        <RestrictionsSettings
+          :etab-id="selectedEtab"
+          :restrictions="data"
+          :disable-edit="isChildEdit"
+          @edit="setChildEditState"
+        />
       </div>
     </PageLayout>
   </div>
