@@ -48,10 +48,10 @@ public class EtablissementService {
             .collect(Collectors.toList());
     }
 
-    public List<SimpleStructureDto> getEtablissements(Set<String> allowedUAI) {
+    public List<SimpleStructureDto> getEtablissements(Set<String> allowedSiren) {
         return IteratorUtils.toList(
                 etablissementRepository
-                    .findAll(QEtablissement.etablissement.uai.isNotNull().and(QEtablissement.etablissement.uai.in(allowedUAI)),
+                    .findAll(QEtablissement.etablissement.siren.isNotNull().and(QEtablissement.etablissement.siren.in(allowedSiren)),
                         Sort.by("nom")
                     ).iterator()
             ).stream()

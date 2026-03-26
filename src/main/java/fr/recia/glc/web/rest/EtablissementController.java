@@ -66,8 +66,8 @@ public class EtablissementController {
     @GetMapping()
     public ResponseEntity<List<SimpleStructureDto>> getEtablissements(@AuthenticationPrincipal GLCUser principal) {
         // Ne retourner que les établissements que la personne a le droit de lire
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
-        List<SimpleStructureDto> etablissements = etablissementService.getEtablissements(allowedUAI);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        List<SimpleStructureDto> etablissements = etablissementService.getEtablissements(allowedSiren);
         // Gestion des collectivités à côté pour l'instant pour simplifier la gestion des droits
         if (principal.getRightsForColl().contains(GLCRole.READ)) {
             etablissements.addAll(collectiviteService.getCollectivites());
@@ -89,18 +89,18 @@ public class EtablissementController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // Check si la personne à le droit de lire sur l'établissement
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
-        if (!allowedUAI.contains(etablissement.getUai())) {
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        if (!allowedSiren.contains(etablissement.getSiren())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         // Check si la personne à le droit d'écrire sur l'établissement
-        if (principal.getRightsForEtabs().get(GLCRole.WRITE).contains(etablissement.getUai())) {
+        if (principal.getRightsForEtabs().get(GLCRole.WRITE).contains(etablissement.getSiren())) {
             etablissement.setPermission("ADMIN");
         }
 
         // Booléen qui indique si on affiche l'uid ou non
-        boolean showUid = principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(etablissement.getUai());
+        boolean showUid = principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(etablissement.getSiren());
 
         // Récupération de la liste des personnes
         List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id, showUid);

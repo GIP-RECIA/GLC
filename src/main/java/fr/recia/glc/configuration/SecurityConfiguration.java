@@ -137,22 +137,27 @@ public class SecurityConfiguration {
                 // Droits sur les établissements
                 if (matcherAdminLocal.matches()) {
                     final String uai = matcherAdminLocal.group(2);
-                    rightsForEtabs.get(GLCRole.WRITE).add(uai);
-                    rightsForEtabs.get(GLCRole.READ).add(uai);
+                    final String siren = structureLoader.getSirenByUai(uai);
+                    rightsForEtabs.get(GLCRole.WRITE).add(siren);
+                    rightsForEtabs.get(GLCRole.READ).add(siren);
                 }
                 if (matcherAdminSarapisLocal.matches()) {
                     final String uai = matcherAdminSarapisLocal.group(2);
-                    rightsForEtabs.get(GLCRole.WRITE).add(uai);
-                    rightsForEtabs.get(GLCRole.READ).add(uai);
+                    final String siren = structureLoader.getSirenByUai(uai);
+                    rightsForEtabs.get(GLCRole.WRITE).add(siren);
+                    rightsForEtabs.get(GLCRole.READ).add(siren);
                 }
                 // Droits sur les branches
                 if (matcherAdminCentral.matches()) {
                     for (StructureFromGroup structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))) {
-                        rightsForEtabs.get(GLCRole.WRITE).add(structureFromGroup.getUAI());
-                        rightsForEtabs.get(GLCRole.READ).add(structureFromGroup.getUAI());
-                        rightsForEtabs.get(GLCRole.VIEW_UID).add(structureFromGroup.getUAI());
+                        final String uai = structureFromGroup.getUAI();
+                        final String siren = structureLoader.getSirenByUai(uai);
+                        rightsForEtabs.get(GLCRole.WRITE).add(siren);
+                        rightsForEtabs.get(GLCRole.READ).add(siren);
+                        rightsForEtabs.get(GLCRole.VIEW_UID).add(siren);
                     }
                 }
+                // TODO : Droits sur les collectivités (toutes d'un coup via admin de branche)
                 if (matcherAdminCentralColl.matches()) {
                     rightsForColl.add(GLCRole.WRITE);
                     rightsForColl.add(GLCRole.READ);

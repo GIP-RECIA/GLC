@@ -156,6 +156,10 @@ public class StructureLoader implements InitializingBean {
         return domainsBySirenForStructures.get(siren);
     }
 
+    public String getSirenByUai(String uai) {
+        return uaiToSirenForStructures.get(uai);
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
     }

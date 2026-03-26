@@ -75,17 +75,17 @@ public class PersonneController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         boolean canRead = false;
         boolean showUid = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
             // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
             if (aStructure instanceof Etablissement) {
-                if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+                if (allowedSiren.contains(aStructure.getSiren())) {
                     canRead = true;
                 }
-                if (principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(((Etablissement) aStructure).getUai())) {
+                if (principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(aStructure.getSiren())) {
                     showUid = true;
                 }
             }
@@ -109,13 +109,13 @@ public class PersonneController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         boolean canRead = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
             // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
             if (aStructure instanceof Etablissement) {
-                if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+                if (allowedSiren.contains(aStructure.getSiren())) {
                     canRead = true;
                 }
             }
@@ -136,13 +136,13 @@ public class PersonneController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         boolean canRead = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
             // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
             if (aStructure instanceof Etablissement) {
-                if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+                if (allowedSiren.contains(aStructure.getSiren())) {
                     canRead = true;
                 }
             }
@@ -159,7 +159,7 @@ public class PersonneController {
     @GetMapping("/unlock")
     public ResponseEntity<Void> unlockPersons(@AuthenticationPrincipal GLCUser principal, @RequestParam List<Long> ids){
         // TODO : débloquage de masse en une seule requête pour être plus efficace
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         for(Long id : ids){
             APersonne personne = personneService.getPersonne(id);
             if (personne == null) {
@@ -171,7 +171,7 @@ public class PersonneController {
             for (AStructure aStructure : personne.getListeStructures()) {
                 // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
                 if (aStructure instanceof Etablissement) {
-                    if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+                    if (allowedSiren.contains(aStructure.getSiren())) {
                         canRead = true;
                     }
                 }
@@ -190,10 +190,10 @@ public class PersonneController {
     public ResponseEntity<Void> addPersonne(@AuthenticationPrincipal GLCUser principal, @RequestBody UserCreation userCreation) {
         // Vérifier qu'on a les droits d'ajouter la personne = que sur la structure sur laquelle on veut l'ajouter on a les droits d'écriture
         Etablissement etablissement = etablissementRepository.findById(userCreation.getStructureRattachement()).orElseThrow();
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
-        if (allowedUAI.contains(etablissement.getUai())) {
+        if (allowedSiren.contains(etablissement.getSiren())) {
             addPersonneService.addPersonne(userCreation);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -206,10 +206,10 @@ public class PersonneController {
     public ResponseEntity<Void> setPersonneAdditionalFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) {
         // Vérifier qu'on a les droits de modifier la personne = que sur la structure dans laquelle on veut modifier la fonction on a les droits d'écriture
         Etablissement etablissement = etablissementRepository.findById(body.getStructureId()).orElseThrow();
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
-        if (allowedUAI.contains(etablissement.getUai())) {
+        if (allowedSiren.contains(etablissement.getSiren())) {
             boolean success = fonctionService.saveAdditionalFonctions(
                 id,
                 body.getStructureId(),

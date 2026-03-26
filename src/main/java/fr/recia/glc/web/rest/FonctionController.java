@@ -38,7 +38,6 @@ public class FonctionController {
     public ResponseEntity<List<Object>> getFonctions() {
         List<Object> data = fonctionService.getFonctions();
         if (data.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 

@@ -51,9 +51,9 @@ public class EditRestrictionController {
     @PostMapping("/etab/{id}")
     public ResponseEntity<Void> editRestriction(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody RestrictionEtab request) {
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
-        // TODO : gérer le cas des collectivités
-        if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        if (allowedSiren.contains(aStructure.getSiren())) {
+            // TODO : gérer le cas des collectivités
             restrictionService.setNewRestriction(((Etablissement) aStructure).getUai(), request);
             return ResponseEntity.ok().build();
         } else {
@@ -65,9 +65,9 @@ public class EditRestrictionController {
     @GetMapping("/etab/{id}")
     public ResponseEntity<RestrictionEtab> listRestrictions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
-        // TODO : gérer le cas des collectivités
-        if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        if (allowedSiren.contains(aStructure.getSiren())) {
+            // TODO : gérer le cas des collectivités
             return ResponseEntity.ok(restrictionService.getRestrictions(((Etablissement) aStructure).getUai()));
         } else {
             log.warn("User {} is not authorized to list restrictions in {}", principal.getUsername(), id);
