@@ -26,8 +26,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,6 +50,7 @@ public class StructureLoader implements InitializingBean {
     private Map<String, String> branchForLoadedStructures;
     private Map<String, String> groupNameForLoadedStructures;
     private Map<String, String> uaiToSirenForStructures;
+    private List<StructureSirenDomain> loadedCollectivites;
     private Map<String, List<String>> domainsBySirenForStructures;
     private LdapGroupDao groupDao;
     private LdapStructureDao ldapStructureDao;
@@ -60,6 +63,7 @@ public class StructureLoader implements InitializingBean {
         this.uaiToSirenForStructures = new HashMap<>();
         this.groupNameForLoadedStructures = new HashMap<>();
         this.domainsBySirenForStructures = new HashMap<>();
+        this.loadedCollectivites = new ArrayList<>();
     }
 
     @PostConstruct
@@ -68,6 +72,7 @@ public class StructureLoader implements InitializingBean {
     }
 
     private void init() {
+        loadedCollectivites = ldapStructureDao.structuresCollectivites();
         Set<StructureFromGroup> loadedStructures = groupDao.getStructuresFromGroups();
         loadedStructures.forEach(structure -> {
             // TODO : pour les collectivités on a pas d'UAI
@@ -158,6 +163,10 @@ public class StructureLoader implements InitializingBean {
 
     public String getSirenByUai(String uai) {
         return uaiToSirenForStructures.get(uai);
+    }
+
+    public List<StructureSirenDomain> getAllCollectivites(){
+        return this.loadedCollectivites;
     }
 
     @Override

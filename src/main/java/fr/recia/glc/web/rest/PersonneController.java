@@ -81,13 +81,11 @@ public class PersonneController {
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
             // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
-            if (aStructure instanceof Etablissement) {
-                if (allowedSiren.contains(aStructure.getSiren())) {
-                    canRead = true;
-                }
-                if (principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(aStructure.getSiren())) {
-                    showUid = true;
-                }
+            if (allowedSiren.contains(aStructure.getSiren())) {
+                canRead = true;
+            }
+            if (principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(aStructure.getSiren())) {
+                showUid = true;
             }
         }
         if (canRead) {
@@ -114,10 +112,8 @@ public class PersonneController {
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
             // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
-            if (aStructure instanceof Etablissement) {
-                if (allowedSiren.contains(aStructure.getSiren())) {
-                    canRead = true;
-                }
+            if (allowedSiren.contains(aStructure.getSiren())) {
+                canRead = true;
             }
         }
         if (canRead) {
@@ -141,10 +137,8 @@ public class PersonneController {
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
             // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
-            if (aStructure instanceof Etablissement) {
-                if (allowedSiren.contains(aStructure.getSiren())) {
-                    canRead = true;
-                }
+            if (allowedSiren.contains(aStructure.getSiren())) {
+                canRead = true;
             }
         }
         if (canRead) {
@@ -170,10 +164,8 @@ public class PersonneController {
             // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
             for (AStructure aStructure : personne.getListeStructures()) {
                 // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
-                if (aStructure instanceof Etablissement) {
-                    if (allowedSiren.contains(aStructure.getSiren())) {
-                        canRead = true;
-                    }
+                if (allowedSiren.contains(aStructure.getSiren())) {
+                    canRead = true;
                 }
             }
             if (canRead) {

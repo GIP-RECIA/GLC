@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.db.dto.structure;
 
+import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.CollectiviteLocale;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.enums.CategorieStructure;
@@ -32,6 +33,25 @@ public class SimpleStructureDto {
     private String ville;
     private String siren;
 
+    public SimpleStructureDto(AStructure aStructure) {
+        String[] split = aStructure.getNom().split("\\$");
+        if (split.length > 2) {
+            this.type = split[0];
+            this.nom = split[1];
+            this.ville = split[2];
+        } else {
+            this.nom = aStructure.getNom();
+            this.ville = aStructure.getAdresse().getVille();
+        }
+        this.id = aStructure.getId();
+        if(aStructure instanceof Etablissement){
+            this.uai = ((Etablissement) aStructure).getUai();
+        }
+        this.categorie = aStructure.getCategorie();
+        this.nomCourt = aStructure.getNomCourt();
+        this.siren = aStructure.getSiren();
+    }
+
     public SimpleStructureDto(Etablissement etablissement) {
         String[] split = etablissement.getNom().split("\\$");
         if (split.length > 2) {
@@ -39,7 +59,6 @@ public class SimpleStructureDto {
             this.nom = split[1];
             this.ville = split[2];
         } else {
-//      this.type = etablissement.getType().getLibelle();
             this.nom = etablissement.getNom();
             this.ville = etablissement.getAdresse().getVille();
         }

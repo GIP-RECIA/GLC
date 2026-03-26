@@ -16,6 +16,7 @@
 package fr.recia.glc.configuration;
 
 import fr.recia.glc.ldap.StructureFromGroup;
+import fr.recia.glc.ldap.StructureSirenDomain;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.structure.StructureLoader;
@@ -157,11 +158,13 @@ public class SecurityConfiguration {
                         rightsForEtabs.get(GLCRole.VIEW_UID).add(siren);
                     }
                 }
-                // TODO : Droits sur les collectivités (toutes d'un coup via admin de branche)
+                // Droits sur les collectivités
                 if (matcherAdminCentralColl.matches()) {
-                    rightsForColl.add(GLCRole.WRITE);
-                    rightsForColl.add(GLCRole.READ);
-                    rightsForColl.add(GLCRole.VIEW_UID);
+                    for(StructureSirenDomain collectivite : structureLoader.getAllCollectivites()){
+                        rightsForEtabs.get(GLCRole.WRITE).add(collectivite.getSiren());
+                        rightsForEtabs.get(GLCRole.READ).add(collectivite.getSiren());
+                        rightsForEtabs.get(GLCRole.VIEW_UID).add(collectivite.getSiren());
+                    }
                 }
             }
             return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs, rightsForColl);

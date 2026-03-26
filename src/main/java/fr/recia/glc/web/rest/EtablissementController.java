@@ -28,6 +28,7 @@ import fr.recia.glc.services.db.CollectiviteService;
 import fr.recia.glc.services.db.EtablissementService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
+import fr.recia.glc.services.db.StructureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,8 @@ public class EtablissementController {
     @Autowired
     private CollectiviteService collectiviteService;
     @Autowired
+    private StructureService structureService;
+    @Autowired
     private FonctionService fonctionService;
     @Autowired
     private PersonneService personneService;
@@ -67,7 +70,7 @@ public class EtablissementController {
     public ResponseEntity<List<SimpleStructureDto>> getEtablissements(@AuthenticationPrincipal GLCUser principal) {
         // Ne retourner que les établissements que la personne a le droit de lire
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
-        List<SimpleStructureDto> etablissements = etablissementService.getEtablissements(allowedSiren);
+        List<SimpleStructureDto> etablissements = structureService.getStructures(allowedSiren);
         // Gestion des collectivités à côté pour l'instant pour simplifier la gestion des droits
         if (principal.getRightsForColl().contains(GLCRole.READ)) {
             etablissements.addAll(collectiviteService.getCollectivites());
