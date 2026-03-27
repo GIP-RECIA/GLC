@@ -15,14 +15,16 @@
  */
 package fr.recia.glc.db.dto.education;
 
+import com.sun.source.tree.Tree;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Getter
 @Setter
@@ -34,7 +36,7 @@ public class DisciplineDto {
     private String code;
     private String disciplinePoste;
     private String source;
-    private List<SimplePersonneDto> personnes;
+    private Set<SimplePersonneDto> personnes;
 
     // Constructeur utilisé par la requête en BD
     public DisciplineDto(Long id, String code, String disciplinePoste, String source) {
@@ -42,7 +44,10 @@ public class DisciplineDto {
         this.code = code;
         this.disciplinePoste = disciplinePoste;
         this.source = source;
-        this.personnes = new ArrayList<>();
+        this.personnes = new TreeSet<>(
+                Comparator.comparing(SimplePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                    .thenComparing(SimplePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                    .thenComparing(SimplePersonneDto::getId));
     }
 
     public DisciplineDto(DisciplineDto disciplineDto) {
@@ -50,7 +55,10 @@ public class DisciplineDto {
         this.code = disciplineDto.getCode();
         this.disciplinePoste = disciplineDto.getDisciplinePoste();
         this.source = disciplineDto.getSource();
-        this.personnes = new ArrayList<>();
+        this.personnes = new TreeSet<>(
+            Comparator.comparing(SimplePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(SimplePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(SimplePersonneDto::getId));
     }
 
 }
