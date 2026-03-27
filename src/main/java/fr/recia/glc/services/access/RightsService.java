@@ -61,7 +61,7 @@ public class RightsService {
         List<Member> groups = new ArrayList<>();
         for (String canonicalName : memberList) {
             String resolvedName = GroupPathGenerator.groupPathFromTemplate(canonicalName, branch, etabName);
-            groups.add(new Member(resolvedName, glcProperties.getRights().getDeclaredGroupsMap().get(canonicalName), false, false));
+            groups.add(new Member(resolvedName, glcProperties.getRights().getDeclaredGroupsMap().get(canonicalName), "", false, false));
             // Add to inverted cache
             invertedTemplateCache.put(resolvedName, canonicalName);
         }
@@ -105,12 +105,13 @@ public class RightsService {
                         if (isUser) {
                             // TODO : faire une requête pour toutes les personnes d'un coup pour des raisons de performance
                             Predicate predicate = QAPersonne.aPersonne.uid.eq(wsSubject.getId());
-                            member = new Member(wsSubject.getId(), aPersonneRepository.findOne(predicate).get().getDisplayName(), true, true);
+                            APersonne aPersonne = aPersonneRepository.findOne(predicate).get();
+                            member = new Member(wsSubject.getId(), aPersonne.getDisplayName(), aPersonne.getEmail(), true,true);
                         } else {
                             if (invertedTemplateCache.containsKey(wsSubject.getName())) {
-                                member = new Member(wsSubject.getName(), glcProperties.getRights().getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())), false, false);
+                                member = new Member(wsSubject.getName(), glcProperties.getRights().getDeclaredGroupsMap().get(invertedTemplateCache.get(wsSubject.getName())), "", false, false);
                             } else {
-                                member = new Member(wsSubject.getName(), wsSubject.getName(), false, true);
+                                member = new Member(wsSubject.getName(), wsSubject.getName(), "", false, true);
                             }
                         }
                         currentMembers.add(member);

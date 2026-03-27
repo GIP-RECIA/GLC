@@ -23,6 +23,7 @@ import lombok.Data;
 public class Member {
     private String id;
     private String displayName;
+    private String mail;
     private boolean isUser;
     private boolean external;
 }
