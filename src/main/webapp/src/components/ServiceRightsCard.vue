@@ -66,9 +66,9 @@ const extendedServiceRights = computed<{
 <template>
   <div class="service-card">
     <header>
-      <h2>
+      <h3>
         {{ serviceRights.service }}
-      </h2>
+      </h3>
     </header>
 
     <div class="body">
@@ -78,9 +78,9 @@ const extendedServiceRights = computed<{
         class="role-card"
       >
         <header>
-          <h3>
+          <h4>
             {{ right.description }}
-          </h3>
+          </h4>
         </header>
 
         <ul>

@@ -88,11 +88,15 @@ function update(
         variant="solo"
       />
 
-      <ServicesRightsLayout
-        :services-rights="data"
-        loading-state="LOADED"
-        @update="update"
-      />
+      <div>
+        <h2>Services</h2>
+
+        <ServicesRightsLayout
+          :services-rights="data"
+          loading-state="LOADED"
+          @update="update"
+        />
+      </div>
     </PageLayout>
   </div>
 </template>
