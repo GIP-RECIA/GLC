@@ -78,9 +78,6 @@ const schoolYear = computed<string | undefined>(() => {
 @use '@gip-recia/ui/mixins' as *;
 
 .info-card {
-  display: flex;
-  flex-direction: column;
-
   > .body {
     > ul {
       @include unstyled-list;

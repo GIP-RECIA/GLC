@@ -260,9 +260,6 @@ function addLevel(uid: string | number): void {
 @use '@gip-recia/ui/mixins' as *;
 
 .open-restrictions-card {
-  display: flex;
-  flex-direction: column;
-
   > .body {
     display: flex;
     flex-direction: column;
