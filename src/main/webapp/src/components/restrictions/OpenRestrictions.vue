@@ -201,9 +201,9 @@ function addLevel(uid: string | number): void {
       </div>
 
       <div v-if="restrictions">
-        <h3>
+        <h4>
           Niveaux
-        </h3>
+        </h4>
         <div class="niveau-container">
           <LevelRestrictions
             v-for="(niveau, index) in restrictions.niveaux"

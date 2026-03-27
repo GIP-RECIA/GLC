@@ -83,13 +83,14 @@ function deleteLevel(): void {
   <div class="level-card">
     <div class="body">
       <div class="item">
-        <h4
+        <h5
+          class="h4"
           :class="{
             'sr-only': isEdit,
           }"
         >
           {{ levelRestriction.niveau }}
-        </h4>
+        </h5>
         <div
           v-if="isEdit"
           class="field"
@@ -118,9 +119,9 @@ function deleteLevel(): void {
       </div>
 
       <div v-show="hasClasses">
-        <h5 class="h4">
+        <h6 class="h4">
           Classes
-        </h5>
+        </h6>
         <ul>
           <li
             v-for="(classe, index) in levelRestriction.classes"
@@ -187,7 +188,7 @@ function deleteLevel(): void {
     gap: 16px;
 
     > .item {
-      > h4 {
+      > h5 {
         margin-bottom: 4px;
       }
     }

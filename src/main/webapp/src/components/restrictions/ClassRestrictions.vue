@@ -48,14 +48,14 @@ function deleteClass(): void {
 
 <template>
   <div class="item">
-    <h6
+    <span
       class="h4"
       :class="{
         'sr-only': isEdit,
       }"
     >
       {{ classRestriction.classe }}
-    </h6>
+    </span>
     <div
       v-if="isEdit"
       class="input-container"
@@ -102,7 +102,8 @@ function deleteClass(): void {
 @use '@gip-recia/ui/mixins' as *;
 
 .item {
-  > h6 {
+  > .h4 {
+    display: block;
     margin-bottom: 4px;
   }
 
