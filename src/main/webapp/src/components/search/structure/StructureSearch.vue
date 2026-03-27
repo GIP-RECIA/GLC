@@ -61,3 +61,14 @@ const modelValue = defineModel<number | undefined>()
     </template>
   </v-autocomplete>
 </template>
+
+<style scoped lang="scss">
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/functions' as *;
+@use '@gip-recia/ui/mixins' as *;
+
+.v-autocomplete {
+  max-width: 600px;
+}
+</style>
