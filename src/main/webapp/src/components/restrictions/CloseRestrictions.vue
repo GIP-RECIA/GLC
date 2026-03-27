@@ -45,7 +45,7 @@ defineProps<{
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
 
-.open-restrictions-card {
+.close-restrictions-card {
   > .body {
     display: flex;
     flex-direction: column;
