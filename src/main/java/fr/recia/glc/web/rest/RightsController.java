@@ -74,9 +74,9 @@ public class RightsController {
                                                           @RequestParam(required = false, defaultValue = "true") boolean showAdmin) {
         log.debug("Listing rights for structure {}", id);
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         // TODO : gérer le cas des collectivités
-        if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+        if (allowedSiren.contains(aStructure.getSiren())) {
             final String etabGroup = deductGroupNameFromStructure(aStructure);
             final String branch = deductBranchFromStructure(aStructure);
             final List<ServiceAccess> rights = rightsService.getRights(branch, etabGroup, showExternal, showAdmin);
@@ -94,9 +94,9 @@ public class RightsController {
                                              @RequestBody AddOrDeleteMemberRequest request) {
         log.debug("Updating rights for structure {}", id);
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
-        Set<String> allowedUAI = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         // TODO : gérer le cas des collectivités
-        if (allowedUAI.contains(((Etablissement) aStructure).getUai())) {
+        if (allowedSiren.contains(aStructure.getSiren())) {
             final String etabGroup = deductGroupNameFromStructure(aStructure);
             final String branch = deductBranchFromStructure(aStructure);
             for (String memberToAdd : request.getMembersToAdd()) {
