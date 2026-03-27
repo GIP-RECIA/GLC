@@ -129,7 +129,6 @@ public class SecurityConfiguration {
             rightsForEtabs.put(GLCRole.WRITE, new HashSet<>());
             rightsForEtabs.put(GLCRole.READ, new HashSet<>());
             rightsForEtabs.put(GLCRole.VIEW_UID, new HashSet<>());
-            Set<GLCRole> rightsForColl = new HashSet<>();
             for (String group : groups) {
                 Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
                 Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
@@ -167,7 +166,7 @@ public class SecurityConfiguration {
                     }
                 }
             }
-            return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs, rightsForColl);
+            return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs);
         };
     }
 

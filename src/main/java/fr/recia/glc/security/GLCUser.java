@@ -29,16 +29,10 @@ import java.util.Set;
 public class GLCUser extends User {
 
     private Map<GLCRole, Set<String>> rightsForEtabs;
-    private Set<GLCRole> rightsForColl;
 
-    public GLCUser(String username, String password, Collection<? extends GrantedAuthority> authorities, Map<GLCRole, Set<String>> rightsForEtabs, Set<GLCRole> rightsForColl) {
+    public GLCUser(String username, String password, Collection<? extends GrantedAuthority> authorities, Map<GLCRole, Set<String>> rightsForEtabs) {
         super(username, password, authorities);
         this.rightsForEtabs = rightsForEtabs;
-        this.rightsForColl = rightsForColl;
-    }
-
-    public GLCUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
 }

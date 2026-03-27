@@ -71,10 +71,6 @@ public class EtablissementController {
         // Ne retourner que les établissements que la personne a le droit de lire
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         List<SimpleStructureDto> etablissements = structureService.getStructures(allowedSiren);
-        // Gestion des collectivités à côté pour l'instant pour simplifier la gestion des droits
-        if (principal.getRightsForColl().contains(GLCRole.READ)) {
-            etablissements.addAll(collectiviteService.getCollectivites());
-        }
         if (etablissements.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
