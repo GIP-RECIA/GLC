@@ -30,6 +30,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,12 +44,9 @@ public class StructureService {
 
     public List<SimpleStructureDto> getStructures(Set<String> allowedSiren) {
         return IteratorUtils.toList(
-                structureRepository
-                    .findAll(QAStructure.aStructure.siren.isNotNull().and(QAStructure.aStructure.siren.in(allowedSiren)),
-                        Sort.by("nom")
-                    ).iterator()
-            ).stream()
+                structureRepository.findAll(QAStructure.aStructure.siren.isNotNull().and(QAStructure.aStructure.siren.in(allowedSiren))).iterator()).stream()
             .map(SimpleStructureDto::new)
+            .sorted(Comparator.comparing(SimpleStructureDto::getNom))
             .collect(Collectors.toList());
     }
 }

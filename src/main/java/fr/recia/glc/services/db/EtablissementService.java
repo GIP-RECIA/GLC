@@ -38,27 +38,6 @@ public class EtablissementService {
     @Autowired
     private EtablissementRepository<Etablissement> etablissementRepository;
 
-    public List<SimpleStructureDto> getEtablissements() {
-        return IteratorUtils.toList(
-                etablissementRepository
-                    .findAll(QEtablissement.etablissement.uai.isNotNull(), Sort.by("nom"))
-                    .iterator()
-            ).stream()
-            .map(SimpleStructureDto::new)
-            .collect(Collectors.toList());
-    }
-
-    public List<SimpleStructureDto> getEtablissements(Set<String> allowedSiren) {
-        return IteratorUtils.toList(
-                etablissementRepository
-                    .findAll(QEtablissement.etablissement.siren.isNotNull().and(QEtablissement.etablissement.siren.in(allowedSiren)),
-                        Sort.by("nom")
-                    ).iterator()
-            ).stream()
-            .map(SimpleStructureDto::new)
-            .collect(Collectors.toList());
-    }
-
     @Cacheable(value = "etablissement")
     public EtablissementDto getEtablissement(Long id) {
         log.trace("getEtablissement for {}", id);
