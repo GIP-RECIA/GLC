@@ -95,6 +95,7 @@ public class EtablissementController {
 
         // Check si la personne à le droit d'écrire sur l'établissement
         if (principal.getRightsForEtabs().get(GLCRole.WRITE).contains(etablissement.getSiren())) {
+            // Droit spécifique pour le front pour qu'il affiche les boutons de modification
             etablissement.setPermission("ADMIN");
         }
 

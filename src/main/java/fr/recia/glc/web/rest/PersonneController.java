@@ -59,9 +59,9 @@ public class PersonneController {
     private EtablissementRepository<Etablissement> etablissementRepository;
 
     @GetMapping
-    public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@RequestParam(value = "name") String name) {
-        // TODO : vérification de droits avancée
-        List<SimplePersonneDto> personnes = personneService.searchPersonne(name, true);
+    public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal, @RequestParam(value = "name") String name) {
+        // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
+        List<SimplePersonneDto> personnes = personneService.searchPersonne(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
         if (personnes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
