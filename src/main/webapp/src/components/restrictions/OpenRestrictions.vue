@@ -22,8 +22,8 @@ import { cloneDeep } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import MenuButton from '@/components/MenuButton.vue'
+import LevelRestrictions from '@/components/restrictions/LevelRestrictions.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
-import LevelRestrictions from '@/components/settings/restrictions/LevelRestrictions.vue'
 import { saveRestrictions } from '@/services/api/index.ts'
 import { formatDateTime, toDateTime, toISOString } from '@/utils/index.ts'
 
@@ -142,7 +142,10 @@ function save(): void {
 
 const addableLevels = computed<{ uid: string, name: string }[]>(() => (
   fields.value?.niveaux
-    .filter(level => level.dateRentreeNiveau === null)
+    .filter(level => (
+      level.dateRentreeNiveau === null
+      && level.classes.every(c => c.dateRentreeClasse === null)
+    ))
     .map(level => ({ uid: level.niveau, name: level.niveau }))
     ?? []
 ))
@@ -155,20 +158,16 @@ function addLevel(uid: string | number): void {
 </script>
 
 <template>
-  <div class="r-card restriction-card">
-    <header>
-      <h3>Date de rentrée</h3>
-    </header>
-
+  <div class="r-card open-restrictions-card">
     <div class="body">
       <div class="item">
-        <h4
+        <h3
           :class="{
             'sr-only': isEdit,
           }"
         >
           Etablissement
-        </h4>
+        </h3>
         <div
           v-if="isEdit"
           class="field"
@@ -196,18 +195,20 @@ function addLevel(uid: string | number): void {
         />
       </div>
 
-      <div
-        v-if="restrictions"
-        class="niveau-container"
-      >
-        <LevelRestrictions
-          v-for="(niveau, index) in restrictions.niveaux"
-          v-show="hasLevel(niveau, index)"
-          :key="`restriction-level-${niveau.niveau}`"
-          v-model="fields.niveaux[index]"
-          :level-restriction="niveau"
-          :is-edit="isEdit"
-        />
+      <div v-if="restrictions">
+        <h3>
+          Niveaux
+        </h3>
+        <div class="niveau-container">
+          <LevelRestrictions
+            v-for="(niveau, index) in restrictions.niveaux"
+            v-show="hasLevel(niveau, index)"
+            :key="`restriction-level-${niveau.niveau}`"
+            v-model="fields.niveaux[index]"
+            :level-restriction="niveau"
+            :is-edit="isEdit"
+          />
+        </div>
       </div>
     </div>
 
@@ -258,7 +259,7 @@ function addLevel(uid: string | number): void {
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
 
-.restriction-card {
+.open-restrictions-card {
   display: flex;
   flex-direction: column;
 
@@ -268,20 +269,21 @@ function addLevel(uid: string | number): void {
     gap: 16px;
 
     .item {
-      > h4 {
+      > h3 {
         margin-bottom: 4px;
       }
     }
 
-    > .niveau-container {
+    > div > .niveau-container {
       display: grid;
       gap: 16px;
+      align-items: start;
     }
   }
 
   @media (width >= map.get($grid-breakpoints, md)) {
     > .body {
-      > .niveau-container {
+      > div > .niveau-container {
         grid-template-columns: repeat(auto-fill, minmax(512px, 1fr));
       }
     }

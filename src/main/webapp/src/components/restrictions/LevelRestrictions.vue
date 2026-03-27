@@ -20,8 +20,8 @@ import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, useId } from 'vue'
 import MenuButton from '@/components/MenuButton.vue'
+import ClassRestrictions from '@/components/restrictions/ClassRestrictions.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
-import ClassRestrictions from '@/components/settings/restrictions/ClassRestrictions.vue'
 import { formatDateTime } from '@/utils/index.ts'
 
 const props = withDefaults(
@@ -80,57 +80,62 @@ function deleteLevel(): void {
 </script>
 
 <template>
-  <div class="niveau-card">
-    <div class="item">
-      <h4
-        :class="{
-          'sr-only': isEdit,
-        }"
-      >
-        {{ levelRestriction.niveau }}
-      </h4>
-      <div
-        v-if="isEdit"
-        class="field"
-      >
-        <div class="field-layout">
-          <div class="field-container">
-            <div class="middle">
-              <label :for="id">
-                {{ levelRestriction.niveau }}
-              </label>
-              <input
-                :id="id"
-                v-model="modelValue.dateRentreeNiveau"
-                type="datetime-local"
-                placeholder=""
-              >
+  <div class="level-card">
+    <div class="body">
+      <div class="item">
+        <h4
+          :class="{
+            'sr-only': isEdit,
+          }"
+        >
+          {{ levelRestriction.niveau }}
+        </h4>
+        <div
+          v-if="isEdit"
+          class="field"
+        >
+          <div class="field-layout">
+            <div class="field-container">
+              <div class="middle">
+                <label :for="id">
+                  {{ levelRestriction.niveau }}
+                </label>
+                <input
+                  :id="id"
+                  v-model="modelValue.dateRentreeNiveau"
+                  type="datetime-local"
+                  placeholder=""
+                >
+              </div>
             </div>
+            <div class="active-indicator" />
           </div>
-          <div class="active-indicator" />
         </div>
-      </div>
-      <SafeEmptyData
-        v-else
-        :value="formatDateTime(levelRestriction.dateRentreeNiveau)"
-      />
-    </div>
-
-    <ul v-show="hasClasses">
-      <li
-        v-for="(classe, index) in levelRestriction.classes"
-        v-show="hasDate(classe, index)"
-        :key="`${id}-${classe.classe}`"
-      >
-        <ClassRestrictions
-          v-model="modelValue.classes[index]"
-          :class-restriction="classe"
-          :is-edit="isEdit"
+        <SafeEmptyData
+          v-else
+          :value="formatDateTime(levelRestriction.dateRentreeNiveau)"
         />
-      </li>
-    </ul>
+      </div>
 
-    <div class="grow-1" />
+      <div v-show="hasClasses">
+        <h5 class="h4">
+          Classes
+        </h5>
+        <ul>
+          <li
+            v-for="(classe, index) in levelRestriction.classes"
+            v-show="hasDate(classe, index)"
+            :key="`${id}-${classe.classe}`"
+          >
+            <ClassRestrictions
+              v-model="modelValue.classes[index]"
+              :class-restriction="classe"
+              :is-edit="isEdit"
+            />
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <footer
       v-if="isEdit"
@@ -166,7 +171,7 @@ function deleteLevel(): void {
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
 
-.niveau-card {
+.level-card {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -175,16 +180,23 @@ function deleteLevel(): void {
   padding: 16px;
   max-width: calc(100vw - 4 * 16px);
 
-  > .item {
-    > h4 {
-      margin-bottom: 4px;
-    }
-  }
-
-  > ul {
-    @include unstyled-list;
-    display: grid;
+  > .body {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
     gap: 16px;
+
+    > .item {
+      > h4 {
+        margin-bottom: 4px;
+      }
+    }
+
+    > div > ul {
+      @include unstyled-list;
+      display: grid;
+      gap: 16px;
+    }
   }
 
   > footer {
@@ -192,10 +204,11 @@ function deleteLevel(): void {
     justify-content: flex-end;
     flex-wrap: wrap;
     gap: 6px;
+    margin-top: 16px;
   }
 
   @media (width >= map.get($grid-breakpoints, md)) {
-    > ul {
+    > .body > div > ul {
       grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
     }
   }

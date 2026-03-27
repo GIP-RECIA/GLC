@@ -19,8 +19,8 @@ import type { StructureRestriction } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
 import PageLayout from '@/components/PageLayout.vue'
+import OpenRestrictions from '@/components/restrictions/OpenRestrictions.vue'
 import StructureSearch from '@/components/search/structure/StructureSearch.vue'
-import RestrictionsSettings from '@/components/settings/RestrictionsSettings.vue'
 import { getRestrictions } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 
@@ -62,9 +62,9 @@ function setChildEditState(state: boolean): void {
       />
 
       <div>
-        <h2>Ouverture et fermeture des accès</h2>
+        <h2>Ouverture des accès</h2>
 
-        <RestrictionsSettings
+        <OpenRestrictions
           :etab-id="selectedEtab"
           :restrictions="data"
           :disable-edit="isChildEdit"
