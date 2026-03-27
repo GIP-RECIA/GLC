@@ -50,6 +50,8 @@ const canSave = computed<boolean>(() => (
 ))
 
 function toggleEdit(): void {
+  if (isEdit.value)
+    nomCourt.value = props.etab.nomCourt
   isEdit.value = !isEdit.value
   emit('edit', isEdit.value)
 }
