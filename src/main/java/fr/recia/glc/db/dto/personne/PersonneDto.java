@@ -57,13 +57,13 @@ public class PersonneDto {
     private Long structure;
     private List<FonctionDto> fonctions;
     private List<FonctionDto> additionalFonctions;
-    private Instant dateModification;
-    private Instant dateAcquittement;
+    private Date dateModification;
+    private Date dateAcquittement;
     private Date dateSuppression;
 
     public PersonneDto(Long id, Etat etat, Date anneeScolaire, CategoriePersonne categorie, Civilite civilite, String source, String cn,
                        Date dateNaissance, String email, String givenName, String patronyme, String sn, String uid, String login,
-                       Long structure, Date dateFin, Date dateSourceModification, Instant dateModification, Instant dateAcquittement) {
+                       Long structure, Date dateFin, Date dateSourceModification, Date dateModification, Date dateAcquittement) {
         this.id = id;
         this.etat = etat;
         this.anneeScolaire = anneeScolaire;
@@ -83,7 +83,7 @@ public class PersonneDto {
         this.dateSourceModification = dateSourceModification;
         if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
             this.etat = Etat.Deleting;
-            this.dateSuppression = PersonneUtils.getSupressionDate(dateModification);
+            this.dateSuppression = dateModification;
         }
     }
 
@@ -108,7 +108,7 @@ public class PersonneDto {
         this.dateSourceModification = aPersonne.getDateSourceModification();
         if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
             this.etat = Etat.Deleting;
-            this.dateSuppression = PersonneUtils.getSupressionDate(aPersonne.getDateModification());
+            this.dateSuppression = aPersonne.getDateModification();
         }
     }
 

@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.db.entities.groupe;
 
-import fr.recia.glc.db.entities.common.AbstractTracedEntity;
+import fr.recia.glc.db.entities.common.AbstractTimedEntity;
 import fr.recia.glc.db.enums.CategorieGroupe;
 import fr.recia.glc.db.utils.IntConst;
 import lombok.EqualsAndHashCode;
@@ -38,7 +38,7 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class AGroupe extends AbstractTracedEntity {
+public abstract class AGroupe extends AbstractTimedEntity {
 
     /**
      * Type de groupe.

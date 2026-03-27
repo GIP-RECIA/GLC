@@ -395,8 +395,6 @@ public class FonctionService {
                 default:
                     break;
             }
-            aPersonne.prePersist();
-            aPersonne.prePersistAPersonne();
             aPersonneRepository.saveAndFlush(aPersonne);
         }
 

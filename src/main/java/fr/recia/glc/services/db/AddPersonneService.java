@@ -142,8 +142,8 @@ public class AddPersonneService {
         GenUID genUID = genUIDRepository.findByCAndLAndXx(codeGenerateur, uidFactory.getCodeRegion(), codeAnnee).orElseGet(() -> {
             log.debug("No genUID : creating a new one");
             GenUID newGenUID = new GenUID();
-            newGenUID.setDateCreation(date);
-            newGenUID.setDateModification(date);
+            newGenUID.setDateCreation(Date.from(date));
+            newGenUID.setDateModification(Date.from(date));
             newGenUID.setIiii(0);
             newGenUID.setXx(codeAnnee);
             newGenUID.setL(uidFactory.getCodeRegion());
@@ -163,8 +163,8 @@ public class AddPersonneService {
         CategoriePersonne catPer = userCreation.getCategoriePersonne();
         Civilite civilite = userCreation.getCivilite();
         APersonne apersonne = instanciatePersonne(catPer);
-        apersonne.setDateCreation(date);
-        apersonne.setDateModification(date);
+        apersonne.setDateCreation(Date.from(date));
+        apersonne.setDateModification(Date.from(date));
         apersonne.setAnneeScolaire(anneeScolaire.getAnneeEnCours());
         apersonne.setCategorie(catPer);
         apersonne.setCleJointure(new CleJointure(source, cle));

@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.db.entities.gestion;
 
-import fr.recia.glc.db.entities.common.AbstractTracedEntity;
+import fr.recia.glc.db.entities.common.AbstractEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +34,7 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class AnneeScolaire extends AbstractTracedEntity {
+public class AnneeScolaire extends AbstractEntity {
 
     /**
      * Informe de l'année en cours, une seule insertion par année possible,

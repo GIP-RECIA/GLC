@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.db.entities.personne;
 
-import fr.recia.glc.db.entities.common.AbstractTracedEntity;
+import fr.recia.glc.db.entities.common.AbstractTimedEntity;
 import fr.recia.glc.db.entities.common.Adresse;
 import fr.recia.glc.db.entities.common.CleJointure;
 import fr.recia.glc.db.entities.common.ExternalId;
@@ -59,10 +59,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -83,7 +85,7 @@ import static fr.recia.glc.configuration.Constants.SARAPISUI_;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class APersonne extends AbstractTracedEntity {
+public abstract class APersonne extends AbstractTimedEntity {
 
     /**
      * Etat de l'entité valide, bloqué ou supprimé.
@@ -319,12 +321,33 @@ public abstract class APersonne extends AbstractTracedEntity {
     )
     private Set<ExternalId> externalIds = new HashSet<>();
 
+    /**
+     * Setter automatique du membre dateSourceModification lors de la creation de l'objet.
+     */
+    @Override
     @PrePersist
-    public void prePersistAPersonne() {
-        if (getCleJointure().getSource().startsWith(SARAPISUI_))
-            dateSourceModification = new Date();
+    public void prePersistOps() {
+        super.prePersistOps();
+        Date d = new Date();
+        d.setTime(Calendar.getInstance().getTimeInMillis());
+        if (this.dateSourceModification == null) {
+            this.dateSourceModification = d;
+        }
     }
 
+    /**
+     * Setter automatique du membre dateModification lors de la modification de l'objet. On désactive la fonction automatique pour le delete des
+     * personne. Cela est à gérer dans la partie métier.
+     */
+    @Override
+    @PreUpdate
+    public void preUpdateOps() {
+        if (!Etat.Delete.equals(this.getEtat())) {
+            this.getDateModification().setTime(Calendar.getInstance().getTimeInMillis());
+        }
+        this.dateSourceModification = new Date(Calendar.getInstance().getTimeInMillis());
+
+    }
     /**
      * Constructeur de l'objet APersonne.java.
      */

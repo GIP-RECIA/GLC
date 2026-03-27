@@ -39,12 +39,12 @@ public class SimplePersonneDto {
     private String email;
     private String sn;
     private String uid;
-    private Instant dateModification;
-    private Instant dateAcquittement;
+    private Date dateModification;
+    private Date dateAcquittement;
     private Date dateSuppression;
 
     public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                             String sn, String uid, Instant dateModification, Instant dateAcquittement) {
+                             String sn, String uid, Date dateModification, Date dateAcquittement) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -55,12 +55,12 @@ public class SimplePersonneDto {
         this.uid = uid;
         if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
             this.etat = Etat.Deleting;
-            this.dateSuppression = PersonneUtils.getSupressionDate(dateModification);
+            this.dateSuppression = dateModification;
         }
     }
 
     public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                             String sn, Instant dateModification, Instant dateAcquittement) {
+                             String sn, Date dateModification, Date dateAcquittement) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -70,7 +70,7 @@ public class SimplePersonneDto {
         this.sn = sn;
         if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
             this.etat = Etat.Deleting;
-            this.dateSuppression = PersonneUtils.getSupressionDate(dateModification);
+            this.dateSuppression = dateModification;
         }
     }
 
@@ -85,7 +85,7 @@ public class SimplePersonneDto {
 
         if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
             this.etat = Etat.Deleting;
-            this.dateSuppression = PersonneUtils.getSupressionDate(aPersonne.getDateModification());
+            this.dateSuppression = aPersonne.getDateModification();
         }
     }
 

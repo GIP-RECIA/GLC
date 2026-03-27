@@ -1,0 +1,59 @@
+package fr.recia.glc.db.entities.gestion;
+
+import fr.recia.glc.db.entities.common.AbstractSimpleEntity;
+import fr.recia.glc.db.entities.groupe.RoleApplicatif;
+import fr.recia.glc.db.entities.structure.AStructure;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class DroitsAttribut extends AbstractSimpleEntity {
+
+	/** Nom de l'attribut. */
+	private String cle;
+	/** Autorisation de visibilité de la clé. False par défaut.*/
+	@Column(nullable = false, columnDefinition = "BIT")
+	private boolean visible;
+	/** Autorisation de modification de la clé. False par défaut.*/
+	@Column(nullable = false, columnDefinition = "BIT")
+	private boolean modifier;
+	/** Autorisation d'ajout de la clé. False par défaut.*/
+	@Column(nullable = false, columnDefinition = "BIT")
+	private boolean ajouter;
+	/** Autorisation de suppression de la clé. False par défaut.*/
+	@Column(nullable = false, columnDefinition = "BIT")
+	private boolean supprimer;
+	/** Autorisation de visibilité la clé à d'autres personnes. False par défaut.*/
+	@Column(nullable = false, columnDefinition = "BIT")
+	private boolean collectif;
+
+	/** Relation unidirectionnelle.
+	 * Structure pour laquelle est configuré ce type de droit. */
+	@ManyToOne
+	@JoinColumn(name = "structure_fk")
+	private AStructure structure;
+
+	/** Relation unidirectionnelle.
+	 * RoleApplicatif auquel s'applique ce type de droit. */
+	@ManyToOne
+	@JoinColumn(name = "role_applicatif_fk")
+	private RoleApplicatif roleApplicatif;
+
+	@Override
+	public String toString() {
+        return "DroitAttribut [" + super.toString() + ", " + this.cle + ", " + this.ajouter + ", " + this.visible + ", " +
+            this.modifier + ", " + this.supprimer + ", " + this.collectif + ", " + this.structure + ", " + this.roleApplicatif + "]";
+	}
+
+}

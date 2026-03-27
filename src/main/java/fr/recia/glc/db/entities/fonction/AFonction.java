@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.db.entities.fonction;
 
-import fr.recia.glc.db.entities.common.AbstractTracedEntity;
+import fr.recia.glc.db.entities.common.AbstractTimedEntity;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategorieFonction;
 import fr.recia.glc.db.utils.IntConst;
@@ -44,7 +44,7 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class AFonction extends AbstractTracedEntity {
+public abstract class AFonction extends AbstractTimedEntity {
 
     /**
      * Categorie de la fonction.

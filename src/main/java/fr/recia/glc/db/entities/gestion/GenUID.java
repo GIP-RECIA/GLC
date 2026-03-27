@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.db.entities.gestion;
 
-import fr.recia.glc.db.entities.common.AbstractTracedEntity;
+import fr.recia.glc.db.entities.common.AbstractEntity;
 import fr.recia.glc.db.utils.IntConst;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,7 +37,7 @@ import javax.persistence.UniqueConstraint;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class GenUID extends AbstractTracedEntity {
+public class GenUID extends AbstractEntity {
 
     /**
      * Code région.

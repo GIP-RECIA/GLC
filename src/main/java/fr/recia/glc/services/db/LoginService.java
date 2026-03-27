@@ -90,8 +90,8 @@ public class LoginService {
         }
         Login login = new Login(newLogin);
         login.setApersonneLogin(aPersonne);
-        login.setDateCreation(date);
-        login.setDateModification(date);
+        login.setDateCreation(Date.from(date));
+        login.setDateModification(Date.from(date));
         return login;
     }
 
