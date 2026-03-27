@@ -23,6 +23,8 @@ import java.util.List;
 @Data
 public class RestrictionEtab {
     private boolean enabled;
+    private ZonedDateTime dateDebutBloquage;
+    private ZonedDateTime dateRentreeDefaut;
     private ZonedDateTime dateRentreeEtab;
     private List<RestrictionNiveau> niveaux;
 }
