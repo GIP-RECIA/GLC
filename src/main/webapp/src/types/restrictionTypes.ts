@@ -15,6 +15,7 @@
  */
 
 export interface StructureRestriction {
+  enabled: boolean
   dateRentreeEtab: string | null
   niveaux: LevelRestriction[]
 }

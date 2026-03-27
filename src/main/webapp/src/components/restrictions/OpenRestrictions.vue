@@ -53,6 +53,7 @@ const canSave = computed<boolean>(() => (
 ))
 
 const EMPTY_RESTRICTION: StructureRestriction = {
+  enabled: true,
   dateRentreeEtab: null,
   niveaux: [],
 }
@@ -82,6 +83,7 @@ watch(
     })
 
     initalFields = {
+      enabled: val.enabled,
       dateRentreeEtab: toDateTime(val.dateRentreeEtab),
       niveaux,
     }
@@ -116,6 +118,7 @@ function save(): void {
     return
 
   const body = {
+    enabled: fields.value.enabled,
     dateRentreeEtab: toISOString(fields.value.dateRentreeEtab),
     niveaux: fields.value.niveaux.map((level) => {
       const classes = level.classes.map((classe) => {

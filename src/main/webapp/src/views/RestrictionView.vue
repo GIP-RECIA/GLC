@@ -20,6 +20,7 @@ import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
 import PageLayout from '@/components/PageLayout.vue'
 import CloseRestrictions from '@/components/restrictions/CloseRestrictions.vue'
+import GlobalRestrictions from '@/components/restrictions/GlobalRestrictions.vue'
 import OpenRestrictions from '@/components/restrictions/OpenRestrictions.vue'
 import StructureSearch from '@/components/search/structure/StructureSearch.vue'
 import { getRestrictions } from '@/services/api/index.ts'
@@ -63,23 +64,36 @@ function setChildEditState(state: boolean): void {
       />
 
       <div>
-        <h2>Fermeture des accès</h2>
+        <h2>Paramétrage global</h2>
 
-        <CloseRestrictions
-          :restrictions="data"
-        />
-      </div>
-
-      <div>
-        <h2>Ouverture des accès</h2>
-
-        <OpenRestrictions
+        <GlobalRestrictions
           :etab-id="selectedEtab"
           :restrictions="data"
           :disable-edit="isChildEdit"
           @edit="setChildEditState"
         />
       </div>
+
+      <template v-if="!data || data.enabled">
+        <div>
+          <h2>Fermeture des accès</h2>
+
+          <CloseRestrictions
+            :restrictions="data"
+          />
+        </div>
+
+        <div>
+          <h2>Ouverture des accès</h2>
+
+          <OpenRestrictions
+            :etab-id="selectedEtab"
+            :restrictions="data"
+            :disable-edit="isChildEdit"
+            @edit="setChildEditState"
+          />
+        </div>
+      </template>
     </PageLayout>
   </div>
 </template>
