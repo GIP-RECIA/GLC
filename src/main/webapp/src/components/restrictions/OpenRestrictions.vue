@@ -171,7 +171,7 @@ function addLevel(uid: string | number): void {
             'sr-only': isEdit,
           }"
         >
-          Etablissement
+          Ouverture des accès
         </h3>
         <div
           v-if="isEdit"
@@ -181,7 +181,7 @@ function addLevel(uid: string | number): void {
             <div class="field-container">
               <div class="middle">
                 <label for="dateRentreeEtab">
-                  Etablissement
+                  Ouverture des accès
                 </label>
                 <input
                   id="dateRentreeEtab"

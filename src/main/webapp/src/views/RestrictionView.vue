@@ -68,7 +68,7 @@ function update(restrictions: StructureRestriction): void {
       />
 
       <div>
-        <h2>Paramétrage global</h2>
+        <h2>Période de rentrée</h2>
 
         <div class="info-container">
           <GlobalRestrictions
@@ -78,32 +78,23 @@ function update(restrictions: StructureRestriction): void {
             @edit="setChildEditState"
             @update="update"
           />
-        </div>
-      </div>
 
-      <template v-if="!data || data.enabled">
-        <div>
-          <h2>Fermeture des accès</h2>
-
-          <div class="info-container">
+          <template v-if="!data || data.enabled">
             <CloseRestrictions
               :restrictions="data"
             />
-          </div>
-        </div>
 
-        <div>
-          <h2>Ouverture des accès</h2>
-
-          <OpenRestrictions
-            :etab-id="selectedEtab"
-            :restrictions="data"
-            :disable-edit="isChildEdit"
-            @edit="setChildEditState"
-            @update="update"
-          />
+            <OpenRestrictions
+              :etab-id="selectedEtab"
+              :restrictions="data"
+              :disable-edit="isChildEdit"
+              class="full-width"
+              @edit="setChildEditState"
+              @update="update"
+            />
+          </template>
         </div>
-      </template>
+      </div>
     </PageLayout>
   </div>
 </template>

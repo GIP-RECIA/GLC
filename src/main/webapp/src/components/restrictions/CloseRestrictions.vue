@@ -29,7 +29,7 @@ defineProps<{
     <div class="body">
       <div class="item">
         <h3>
-          Etablissement
+          Fermeture des accès
         </h3>
         <SafeEmptyData
           :value="formatDateTime(undefined)"
