@@ -70,22 +70,26 @@ function update(restrictions: StructureRestriction): void {
       <div>
         <h2>Paramétrage global</h2>
 
-        <GlobalRestrictions
-          :etab-id="selectedEtab"
-          :restrictions="data"
-          :disable-edit="isChildEdit"
-          @edit="setChildEditState"
-          @update="update"
-        />
+        <div class="info-container">
+          <GlobalRestrictions
+            :etab-id="selectedEtab"
+            :restrictions="data"
+            :disable-edit="isChildEdit"
+            @edit="setChildEditState"
+            @update="update"
+          />
+        </div>
       </div>
 
       <template v-if="!data || data.enabled">
         <div>
           <h2>Fermeture des accès</h2>
 
-          <CloseRestrictions
-            :restrictions="data"
-          />
+          <div class="info-container">
+            <CloseRestrictions
+              :restrictions="data"
+            />
+          </div>
         </div>
 
         <div>
@@ -129,19 +133,8 @@ function update(restrictions: StructureRestriction): void {
     grid-template-columns: repeat(2, 1fr);
     align-items: start;
 
-    > .logo-card {
-      justify-self: center;
-      grid-column: span 2;
-    }
-
     > .full-width {
       grid-column: span 2;
-    }
-  }
-
-  @media (width >= map.get($grid-breakpoints, xl)) {
-    > .logo-card {
-      grid-column: unset;
     }
   }
 }
