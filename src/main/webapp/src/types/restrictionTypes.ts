@@ -16,6 +16,8 @@
 
 export interface StructureRestriction {
   enabled: boolean
+  dateDebutBloquage: string | null
+  dateRentreeDefaut: string | null
   dateRentreeEtab: string | null
   niveaux: LevelRestriction[]
 }

@@ -55,6 +55,8 @@ const canSave = computed<boolean>(() => (
 
 const EMPTY_RESTRICTION: StructureRestriction = {
   enabled: true,
+  dateDebutBloquage: null,
+  dateRentreeDefaut: null,
   dateRentreeEtab: null,
   niveaux: [],
 }
@@ -84,7 +86,7 @@ watch(
     })
 
     initalFields = {
-      enabled: val.enabled,
+      ...val,
       dateRentreeEtab: toDateTime(val.dateRentreeEtab),
       niveaux,
     }
@@ -95,6 +97,19 @@ watch(
     deep: true,
   },
 )
+
+const displayDateRentreeEtab = computed<string>(() => {
+  const isDateRentreeEtab = props.restrictions?.dateRentreeEtab !== null
+  const date = formatDateTime(
+    isDateRentreeEtab
+      ? props.restrictions?.dateRentreeEtab
+      : props.restrictions?.dateRentreeDefaut,
+  )
+
+  return isDateRentreeEtab
+    ? date
+    : `${date} (defaut)`
+})
 
 function hasLevel(level: LevelRestriction, index: number) {
   const l = isEdit.value
@@ -120,6 +135,8 @@ function save(): void {
 
   const body = {
     enabled: fields.value.enabled,
+    dateDebutBloquage: toISOString(fields.value.dateDebutBloquage),
+    dateRentreeDefaut: toISOString(fields.value.dateRentreeDefaut),
     dateRentreeEtab: toISOString(fields.value.dateRentreeEtab),
     niveaux: fields.value.niveaux.map((level) => {
       const classes = level.classes.map((classe) => {
@@ -196,7 +213,7 @@ function addLevel(uid: string | number): void {
         </div>
         <SafeEmptyData
           v-else
-          :value="formatDateTime(restrictions?.dateRentreeEtab)"
+          :value="displayDateRentreeEtab"
         />
       </div>
 

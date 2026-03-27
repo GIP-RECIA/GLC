@@ -32,7 +32,7 @@ defineProps<{
           Fermeture des accès
         </h3>
         <SafeEmptyData
-          :value="formatDateTime(undefined)"
+          :value="formatDateTime(restrictions?.dateDebutBloquage)"
         />
       </div>
     </div>
