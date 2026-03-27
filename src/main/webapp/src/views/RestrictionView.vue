@@ -50,6 +50,10 @@ const isChildEdit = ref<boolean>(false)
 function setChildEditState(state: boolean): void {
   isChildEdit.value = state
 }
+
+function update(restrictions: StructureRestriction): void {
+  data.value = restrictions
+}
 </script>
 
 <template>
@@ -71,6 +75,7 @@ function setChildEditState(state: boolean): void {
           :restrictions="data"
           :disable-edit="isChildEdit"
           @edit="setChildEditState"
+          @update="update"
         />
       </div>
 
@@ -91,6 +96,7 @@ function setChildEditState(state: boolean): void {
             :restrictions="data"
             :disable-edit="isChildEdit"
             @edit="setChildEditState"
+            @update="update"
           />
         </div>
       </template>

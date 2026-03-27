@@ -42,6 +42,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   edit: [boolean]
+  update: [restrictions: StructureRestriction]
 }>()
 
 const { t } = useI18n()
@@ -141,6 +142,7 @@ function save(): void {
     body,
   })
   toggleEdit()
+  emit('update', body)
 }
 
 const addableLevels = computed<{ uid: string, name: string }[]>(() => (
