@@ -29,7 +29,7 @@ public class StaticRedirectionController {
         "/", "/ui", "/ui/",
         "/ui/account", "/ui/account/**",
         "/ui/access", "/ui/access/**",
-        "/ui/admin", "/ui/admin/**",
+        "/ui/restriction", "/ui/restriction/**",
         "/ui/settings", "/ui/settings/**"
     })
     public String forward() {
