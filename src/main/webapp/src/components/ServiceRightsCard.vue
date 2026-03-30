@@ -94,6 +94,7 @@ const extendedServiceRights = computed<{
           <li
             v-for="member in right.users"
             :key="member.id"
+            :title="`${member.displayName} (${member.mail})`"
             class="tag-primary"
           >
             {{ member.displayName }}
@@ -152,6 +153,13 @@ const extendedServiceRights = computed<{
         flex-wrap: wrap;
         gap: 7px 8px;
         padding-bottom: 16px;
+
+        > li {
+          &.tag,
+          &.tag-primary {
+            word-break: break-all;
+          }
+        }
       }
 
       > footer {
