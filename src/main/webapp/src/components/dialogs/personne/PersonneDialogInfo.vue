@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import type { Personne, PersonneFonction } from '@/types/index.ts'
-import { useSessionStorage } from '@vueuse/core'
 import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -50,8 +49,6 @@ const {
   hasFunctions,
   canEditAdditionals,
 } = usePersonne()
-
-const isInfo2 = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info2`, true)
 
 function addFonction(): void {
   editFonction(undefined)
@@ -221,17 +218,6 @@ function editFonction(
           </div>
 
           <div class="d-flex flex-column ga-2">
-            <v-alert
-              v-if="structureTab !== Tabs.School"
-              v-model="isInfo2"
-              type="info"
-              variant="tonal"
-              rounded="lg"
-              closable
-            >
-              Pour gérer les fonctions complémentaires de ce profil, veuillez utiliser
-              <a href="/GLC" target="_self">GLC</a>.
-            </v-alert>
             <FonctionsLayout
               :filieres="allFilieres"
               :fonctions="personneStructure.additionalFonctions"

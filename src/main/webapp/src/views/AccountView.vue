@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import type { SimpleEtablissement } from '@/types/index.ts'
-import { useSessionStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -81,24 +80,10 @@ const items = computed<SimpleEtablissement[] | undefined>(() => {
     return etabs.value
   }
 })
-
-const isInfo = useSessionStorage<boolean>(`${__APP_SLUG__}.is-info`, true)
 </script>
 
 <template>
   <v-container>
-    <v-alert
-      v-model="isInfo"
-      type="info"
-      variant="tonal"
-      rounded="lg"
-      class="mb-8"
-      closable
-    >
-      Cette application vient compléter l'application de gestion des comptes en permettant de gérer plus finement les
-      fonctions des personnels administratifs. Elle remplacera progressivement l'application historique de gestion des
-      comptes de l'ENT.
-    </v-alert>
     <v-text-field
       v-model="search"
       :placeholder="t('search.structure.placeholder')"
