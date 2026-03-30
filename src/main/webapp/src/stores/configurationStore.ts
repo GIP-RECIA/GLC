@@ -194,10 +194,6 @@ export const useConfigurationStore = defineStore('configuration', () => {
     searchList?: SimplePersonne[]
   }>()
 
-  /* -- Gestion de la modale des paramètres -- */
-
-  const isSettings = ref<boolean>(false)
-
   return {
     configuration,
     fonctions,
@@ -223,6 +219,5 @@ export const useConfigurationStore = defineStore('configuration', () => {
     isAttach,
     isQuickAdd,
     requestAdd,
-    isSettings,
   }
 })

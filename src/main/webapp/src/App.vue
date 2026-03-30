@@ -20,7 +20,6 @@ import { watchOnce } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
-import SettingsDialog from '@/components/dialogs/SettingsDialog.vue'
 import TabBar from '@/components/tabbar/TabBar.vue'
 import { useConfigurationStore } from '@/stores/index.ts'
 
@@ -32,7 +31,6 @@ const {
   configuration,
   isInit,
   isLoading,
-  isSettings,
 } = storeToRefs(configurationStore)
 
 init()
@@ -95,22 +93,12 @@ const appName = __APP_NAME__
             />
           </router-link>
           <TabBar />
-          <v-spacer />
-          <v-btn
-            icon="fas fa-gear"
-            variant="text"
-            color="default"
-            size="small"
-            class="ms-1 text-medium-emphasis"
-            @click="isSettings = true"
-          />
         </div>
       </v-toolbar>
     </header>
     <div class="d-flex flex-column h-100 overflow-y-auto">
       <v-main class="flex-grow-1">
         <router-view />
-        <SettingsDialog />
       </v-main>
       <footer>
         <extended-uportal-footer
