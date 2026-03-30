@@ -33,6 +33,7 @@ export interface RightMember {
   id: string
   displayName: string
   user: boolean
+  mail?: string
   external: boolean
 }
 

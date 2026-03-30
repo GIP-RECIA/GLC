@@ -175,7 +175,10 @@ watchEffect(
           </fieldset>
         </div>
 
-        <div v-if="serviceRight.allowPeople">
+        <div
+          v-if="serviceRight.allowPeople"
+          class="people-layout"
+        >
           <h2>Personnes</h2>
 
           <div class="field">
@@ -196,20 +199,25 @@ watchEffect(
             </div>
           </div>
 
-          <ul>
+          <ul class="user-container">
             <li
               v-for="user in serviceRight.currentMembers.filter(({ user }) => user)"
               :key="user.id"
             >
-              <span
+              <div
                 :style="{
                   'text-decoration': !currentUsers.includes(user.id)
                     ? 'line-through'
                     : undefined,
                 }"
               >
-                {{ user.displayName }}
-              </span>
+                <span>
+                  {{ user.displayName }}
+                </span>
+                <span>
+                  {{ user.mail }}
+                </span>
+              </div>
 
               <button
                 class="btn-secondary small"
@@ -257,6 +265,56 @@ watchEffect(
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.people-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  > h2 {
+    margin-bottom: unset;
+  }
+}
+
+.user-container {
+  display: grid;
+  gap: 8px;
+
+  > li {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+
+      > span:first-child {
+        font-weight: bold;
+      }
+    }
+
+    > button {
+      align-self: end;
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, sm)) {
+    > li {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      > button {
+        align-self: unset;
+      }
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 ul {
