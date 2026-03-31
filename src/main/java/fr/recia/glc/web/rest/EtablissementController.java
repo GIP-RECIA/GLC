@@ -24,11 +24,9 @@ import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.alert.AlertService;
-import fr.recia.glc.services.db.CollectiviteService;
-import fr.recia.glc.services.db.EtablissementService;
+import fr.recia.glc.services.db.StructureService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
-import fr.recia.glc.services.db.StructureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,8 +48,6 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/structure/etablissement")
 public class EtablissementController {
 
-    @Autowired
-    private EtablissementService etablissementService;
     @Autowired
     private StructureService structureService;
     @Autowired
@@ -81,7 +77,7 @@ public class EtablissementController {
     @GetMapping(value = "/{id}")
     // TODO : une autre route spécifique pour les collectivités
     public ResponseEntity<EtablissementDto> getEtablissement(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
-        EtablissementDto etablissement = etablissementService.getEtablissement(id);
+        EtablissementDto etablissement = structureService.getEtablissement(id);
         if (etablissement == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
