@@ -49,6 +49,7 @@ import fr.recia.glc.db.repositories.groupe.MappingAGroupeAPersonneRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.personne.LoginRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.services.cache.CacheInvalidationService;
 import fr.recia.glc.services.creation.NameCalculator;
 import fr.recia.glc.services.creation.PasswordGenerator;
 import fr.recia.glc.services.creation.UidFactory;
@@ -107,13 +108,14 @@ public class AddPersonneService {
     private GLCProperties glcProperties;
     @Autowired
     private StructureLoader structureLoader;
+    @Autowired
+    private CacheInvalidationService cacheInvalidationService;
 
     /**
      * Création d'une personne dans la base sarapis
-     *
      * @param userCreation Le DTO venant du front qui contient les informations nécéssaires à la création
-     *                     TODO : gérer l'ajout de classes locales et groupes locaux, et de responsables d'un élève
      */
+    // TODO : gérer l'ajout de classes locales et groupes locaux, et de responsables d'un élève
     public void addPersonne(UserCreation userCreation) {
         log.debug("Trying to create local user {}", userCreation);
         // 1. Récupération de la date
@@ -207,6 +209,8 @@ public class AddPersonneService {
         loginRepository.saveAndFlush(login);
         // Champs spécfiques pour chaque catégorie de personne
         updateSpecificFields(apersonne, userCreation, aStructure);
+        // Vider les caches concernés
+        cacheInvalidationService.evictPersonneAndAssociatedStructures(apersonne.getId(), aStructure.getId());
     }
 
     /**
