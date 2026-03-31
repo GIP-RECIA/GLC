@@ -3,7 +3,7 @@ import type { RouteLocationAsRelativeGeneric } from 'vue-router'
 import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useSessionStorage } from '@vueuse/core'
-import { onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
+import { onMounted, onUnmounted, useTemplateRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import TabItem from './TabItem.vue'
 import TabMenu from './TabMenu.vue'
@@ -22,34 +22,35 @@ const items = useSessionStorage<TabItemT[]>(
   [],
 )
 
-watch(
-  () => route.params,
-  ({ structureId, userId }) => {
-    if (structureId && typeof structureId === 'string') {
-      addItem({
-        id: `structure-${structureId}`,
-        name: `structure-${structureId}`,
-        to: {
-          name: 'structure',
-          params: { structureId },
-        },
-      })
-    }
-    if (userId && typeof userId === 'string') {
-      addItem({
-        id: `user-${userId}`,
-        name: `user-${userId}`,
-        to: {
-          name: 'user',
-          params: { userId },
-        },
-      })
-    }
-  },
-  {
-    immediate: true,
-  },
-)
+router.afterEach((to, from) => {
+  const fromIndex = items.value.findIndex(i =>
+    from.fullPath === router.resolve(i.to).fullPath,
+  )
+
+  const { structureId, userId } = to.params
+
+  if (structureId && typeof structureId === 'string') {
+    addItem({
+      id: `structure-${structureId}`,
+      name: `structure-${structureId}`,
+      to: {
+        name: 'structure',
+        params: { structureId },
+      },
+    }, fromIndex)
+  }
+
+  if (userId && typeof userId === 'string') {
+    addItem({
+      id: `user-${userId}`,
+      name: `user-${userId}`,
+      to: {
+        name: 'user',
+        params: { userId },
+      },
+    }, fromIndex)
+  }
+})
 
 function addItem(item: TabItemT, index: number = -1): void {
   const exists = items.value.some(i => i.id === item.id)
