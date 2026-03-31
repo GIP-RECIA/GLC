@@ -18,6 +18,7 @@ package fr.recia.glc.db.dto.structure;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.CollectiviteLocale;
 import fr.recia.glc.db.entities.structure.Etablissement;
+import fr.recia.glc.db.entities.structure.ServiceAcademique;
 import fr.recia.glc.db.enums.CategorieStructure;
 import lombok.Data;
 
@@ -44,8 +45,11 @@ public class SimpleStructureDto {
             this.ville = aStructure.getAdresse().getVille();
         }
         this.id = aStructure.getId();
-        if(aStructure instanceof Etablissement){
+        if(aStructure.getCategorie().equals(CategorieStructure.Etablissement)){
             this.uai = ((Etablissement) aStructure).getUai();
+        }
+        else if(aStructure.getCategorie().equals(CategorieStructure.Service_academique)){
+            this.uai = ((ServiceAcademique) aStructure).getUai();
         }
         this.categorie = aStructure.getCategorie();
         this.nomCourt = aStructure.getNomCourt();

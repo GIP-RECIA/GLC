@@ -53,8 +53,6 @@ public class EtablissementController {
     @Autowired
     private EtablissementService etablissementService;
     @Autowired
-    private CollectiviteService collectiviteService;
-    @Autowired
     private StructureService structureService;
     @Autowired
     private FonctionService fonctionService;
