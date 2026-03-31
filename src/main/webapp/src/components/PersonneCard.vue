@@ -19,15 +19,12 @@ import type { enumValues, SimplePersonne } from '@/types/index.ts'
 import { format } from 'date-fns'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { usePersonneStore } from '@/stores/index.ts'
 import { getEtat, getIcon } from '@/utils/index.ts'
 
 const props = defineProps<{
   personne: SimplePersonne
   variant?: NonNullable<'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain'>
 }>()
-const personneStore = usePersonneStore()
-const { initCurrentPersonne } = personneStore
 
 const { t } = useI18n()
 
@@ -57,7 +54,7 @@ const data = computed<{
   <v-card
     :variant="variant"
     tag="button"
-    @click="initCurrentPersonne(personne.id, true)"
+    :to="{ name: 'user', params: { userId: personne.id } }"
   >
     <v-card-text class="d-flex align-center text-left pa-3">
       <v-tooltip

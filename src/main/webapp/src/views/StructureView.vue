@@ -20,7 +20,6 @@ import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import AttachDialog from '@/components/dialogs/AttachDialog.vue'
-import PersonneDialog from '@/components/dialogs/personne/PersonneDialog.vue'
 import QuickAddDialog from '@/components/dialogs/QuickAddDialog.vue'
 import AccountTab from '@/components/tabs/structure/AccountTab.vue'
 import CategorieTab from '@/components/tabs/structure/CategorieTab.vue'
@@ -152,7 +151,6 @@ watch(
       <AccountTab />
     </v-window-item>
   </v-window>
-  <PersonneDialog />
   <AttachDialog />
   <QuickAddDialog />
 </template>
