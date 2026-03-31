@@ -42,6 +42,13 @@ public class StructureService {
     @Autowired
     private AStructureRepository<AStructure> structureRepository;
 
+    @Cacheable(value = "etablissement")
+    public EtablissementDto getEtablissement(Long id) {
+        log.trace("getEtablissement for {}", id);
+        AStructure aStructure = structureRepository.findById(id).orElse(null);
+        return aStructure != null ? new EtablissementDto(aStructure) : null;
+    }
+
     public List<SimpleStructureDto> getStructures(Set<String> allowedSiren) {
         return IteratorUtils.toList(
                 structureRepository.findAll(QAStructure.aStructure.siren.isNotNull().and(QAStructure.aStructure.siren.in(allowedSiren))).iterator()).stream()

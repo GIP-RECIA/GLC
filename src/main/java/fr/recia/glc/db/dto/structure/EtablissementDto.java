@@ -21,7 +21,9 @@ import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.common.Adresse;
+import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
+import fr.recia.glc.db.entities.structure.ServiceAcademique;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
@@ -61,28 +63,33 @@ public class EtablissementDto {
     private List<AlertDto> alerts;
     private String permission;
 
-    public EtablissementDto(Etablissement etablissement) {
-        this.id = etablissement.getId();
-        this.uai = etablissement.getUai();
-        this.etat = etablissement.getEtat();
-        this.etatAlim = etablissement.getEtatAlim();
-        this.source = etablissement.getCleJointure().getSource();
-        this.anneeScolaire = etablissement.getAnneeScolaire();
-        this.adresse = etablissement.getAdresse();
-        this.categorie = etablissement.getCategorie();
-        this.mail = etablissement.getMail();
-        this.nomCourt = etablissement.getNomCourt();
-        this.siren = etablissement.getSiren();
-        this.siteWeb = etablissement.getSiteWeb();
-        this.modeleLogin = etablissement.getModeleLogin();
-        this.logo = etablissement.getLogo();
+    public EtablissementDto(AStructure aStructure) {
+        this.id = aStructure.getId();
+        if(aStructure.getCategorie().equals(CategorieStructure.Etablissement)){
+            this.uai = ((Etablissement) aStructure).getUai();
+        }
+        else if(aStructure.getCategorie().equals(CategorieStructure.Service_academique)){
+            this.uai = ((ServiceAcademique) aStructure).getUai();
+        }
+        this.etat = aStructure.getEtat();
+        this.etatAlim = aStructure.getEtatAlim();
+        this.source = aStructure.getCleJointure().getSource();
+        this.anneeScolaire = aStructure.getAnneeScolaire();
+        this.adresse = aStructure.getAdresse();
+        this.categorie = aStructure.getCategorie();
+        this.mail = aStructure.getMail();
+        this.nomCourt = aStructure.getNomCourt();
+        this.siren = aStructure.getSiren();
+        this.siteWeb = aStructure.getSiteWeb();
+        this.modeleLogin = aStructure.getModeleLogin();
+        this.logo = aStructure.getLogo();
 
-        String[] split = etablissement.getNom().split("\\$");
+        String[] split = aStructure.getNom().split("\\$");
         if (split.length > 1) {
             this.type = split[0];
             this.nom = split[1];
         } else {
-            this.nom = etablissement.getNom();
+            this.nom = aStructure.getNom();
         }
     }
 
