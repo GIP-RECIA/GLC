@@ -20,6 +20,7 @@ import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
+import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.db.repositories.structure.EtablissementRepository;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
@@ -57,9 +58,25 @@ public class PersonneController {
     private AddPersonneService addPersonneService;
     @Autowired
     private EtablissementRepository<Etablissement> etablissementRepository;
+    @Autowired
+    private AStructureRepository<AStructure> aStructureRepository;
 
     @GetMapping
-    public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal, @RequestParam(value = "name") String name) {
+    public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal, @RequestParam(value = "name") String name, @RequestParam(value = "etab", required = false) Long etabId) {
+        if(etabId != null){
+            AStructure aStructure = aStructureRepository.getReferenceById(etabId);
+            Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+            if(allowedSiren.contains(aStructure.getSiren())){
+                List<SimplePersonneDto> personnes = personneService.searchPersonneInEtab(name, etabId);
+                if (personnes.isEmpty()) {
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+                return new ResponseEntity<>(personnes, HttpStatus.OK);
+            } else {
+                log.warn("User {} is not authorized to view etab {}", principal.getUsername(), etabId);
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
         // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
         List<SimplePersonneDto> personnes = personneService.searchPersonne(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
         if (personnes.isEmpty()) {

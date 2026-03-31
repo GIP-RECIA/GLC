@@ -49,6 +49,10 @@ public class PersonneService {
         return admin ? aPersonneRepository.findByNameLikeAdmin(name) : aPersonneRepository.findByNameLike(name);
     }
 
+    public List<SimplePersonneDto> searchPersonneInEtab(String name, Long structureId) {
+        return aPersonneRepository.findByNameLikeInEtab(name, structureId);
+    }
+
     @Cacheable(value = "personnesByEtablissement")
     public List<SimplePersonneDto> getPersonnes(Long structureId, boolean showUid) {
         log.trace("getPersonnes for {}", structureId);
