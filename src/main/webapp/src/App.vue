@@ -69,7 +69,6 @@ const appName = __APP_NAME__
         v-if="isInit"
         :service-name="appName"
         v-bind="configuration!.front.extendedUportal?.header?.props"
-        navigation-drawer-visible
       />
       <AccountToolbar
         v-if="isAccountSection"
