@@ -18,13 +18,10 @@
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { usePersonne } from '@/composables/index.ts'
-import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts'
-import { PersonneDialogState, Tabs } from '@/types/enums/index.ts'
+import { usePersonneStore } from '@/stores/index.ts'
+import { PersonneDialogState } from '@/types/enums/index.ts'
 import PersonneDialogInfo from './PersonneDialogInfo.vue'
 import PersonneDialogManageAdditional from './PersonneDialogManageAdditional.vue'
-
-const configurationStore = useConfigurationStore()
-const { structureTab } = storeToRefs(configurationStore)
 
 const personneStore = usePersonneStore()
 const {
@@ -74,7 +71,6 @@ const modelValue = computed<boolean>({
       <PersonneDialogManageAdditional
         v-if="(dialogState === PersonneDialogState.ManageAdditional
           || dialogState === PersonneDialogState.ManageAdditionalMultiple)
-          && structureTab === Tabs.School
           && canEditAdditionals"
       />
     </v-card>

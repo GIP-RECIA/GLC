@@ -23,14 +23,14 @@ import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue'
 import ReadonlyData from '@/components/ReadonlyData.vue'
 import { usePersonne } from '@/composables/index.ts'
 import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts'
-import { PersonneDialogState, Tabs } from '@/types/enums/index.ts'
+import { PersonneDialogState } from '@/types/enums/index.ts'
 import { getCategoriePersonne, getIcon } from '@/utils/index.ts'
 
 defineProps<{
   personne?: Personne
 }>()
 const configurationStore = useConfigurationStore()
-const { allFilieres, structureTab } = storeToRefs(configurationStore)
+const { allFilieres } = storeToRefs(configurationStore)
 
 const personneStore = usePersonneStore()
 const {
@@ -192,7 +192,7 @@ function editFonction(
             </div>
             <div class="d-flex align-center gc-2 mb-2">
               <v-btn
-                v-if="structureTab === Tabs.School && canEditAdditionals"
+                v-if="canEditAdditionals"
                 color="primary"
                 variant="tonal"
                 density="compact"
@@ -221,7 +221,7 @@ function editFonction(
             <FonctionsLayout
               :filieres="allFilieres"
               :fonctions="personneStructure.additionalFonctions"
-              :clickable="structureTab === Tabs.School && canEditAdditionals"
+              :clickable="canEditAdditionals"
               @item-clic="editFonction"
             />
           </div>
