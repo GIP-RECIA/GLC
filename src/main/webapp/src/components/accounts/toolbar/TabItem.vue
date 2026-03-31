@@ -75,7 +75,6 @@ div {
     font-size: var(--#{$prefix}font-size-sm);
     padding: 6px 0 6px 10px;
 
-    &.router-link-active,
     &.router-link-exact-active {
       color: var(--#{$prefix}primary);
     }
@@ -110,21 +109,18 @@ div {
     }
   }
 
-  &:has(
-      a:not(.router-link-active, .router-link-exact-active):hover,
-      a:not(.router-link-active, .router-link-exact-active):focus-visible
-    )::after {
+  &:has(a:not(.router-link-exact-active):hover, a:not(.router-link-exact-active):focus-visible)::after {
     content: '';
     position: absolute;
     inset: auto 0 0;
     border-bottom: 2px dotted var(--#{$prefix}primary);
   }
 
-  &:has(.router-link-active:focus-visible, .router-link-exact-active:focus-visible) {
+  &:has(.router-link-exact-active:focus-visible) {
     outline: 2px dotted var(--#{$prefix}primary);
   }
 
-  &:has(.router-link-active, .router-link-exact-active)::after {
+  &:has(.router-link-exact-active)::after {
     content: '';
     position: absolute;
     inset: auto 0 0;

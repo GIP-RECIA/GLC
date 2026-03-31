@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { RouteLocationAsRelativeGeneric } from 'vue-router'
-import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faHome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useSessionStorage } from '@vueuse/core'
-import { onMounted, onUnmounted, useTemplateRef } from 'vue'
+import { computed, onMounted, onUnmounted, useTemplateRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import TabItem from './TabItem.vue'
 import TabMenu from './TabMenu.vue'
@@ -21,6 +21,8 @@ const items = useSessionStorage<TabItemT[]>(
   `${__APP_SLUG__}.account.tabs`,
   [],
 )
+
+const isItems = computed<boolean>(() => items.value.length > 0)
 
 router.afterEach((to, from) => {
   const fromIndex = items.value.findIndex(i =>
@@ -127,6 +129,18 @@ onUnmounted(() => {
         <router-link
           :to="{ name: 'index' }"
           class="btn-tertiary circle"
+          title="Retour à l'accueil de l'application"
+        >
+          <FontAwesomeIcon
+            :icon="faArrowLeft"
+          />
+        </router-link>
+      </li>
+      <li id="structures">
+        <router-link
+          :to="{ name: 'account' }"
+          class="btn-tertiary circle"
+          title="Retourner à la liste des structures"
         >
           <FontAwesomeIcon
             :icon="faHome"
@@ -140,7 +154,7 @@ onUnmounted(() => {
         />
       </li>
       <li
-        v-show="items.length > 0"
+        v-show="isItems"
         id="tab-list"
       >
         <div>
@@ -158,16 +172,6 @@ onUnmounted(() => {
             </li>
           </ul>
         </div>
-      </li>
-      <li v-show="route.name !== 'account'">
-        <router-link
-          :to="{ name: 'account' }"
-          class="btn-tertiary circle"
-        >
-          <FontAwesomeIcon
-            :icon="faPlus"
-          />
-        </router-link>
       </li>
     </ul>
   </nav>
@@ -195,9 +199,12 @@ nav {
     > li {
       flex: 0 0 auto;
 
-      &:first-child,
-      &:last-child {
+      &:nth-child(-n + 2) {
         z-index: 3;
+      }
+
+      &#structures > a.router-link-exact-active {
+        color: var(--#{$prefix}primary);
       }
 
       &#tab-list {
