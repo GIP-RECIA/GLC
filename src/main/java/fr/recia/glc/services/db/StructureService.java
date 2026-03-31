@@ -15,19 +15,15 @@
  */
 package fr.recia.glc.services.db;
 
-import fr.recia.glc.db.dto.structure.EtablissementDto;
+import fr.recia.glc.db.dto.structure.StructureDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.db.entities.structure.AStructure;
-import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.entities.structure.QAStructure;
-import fr.recia.glc.db.entities.structure.QEtablissement;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
-import fr.recia.glc.db.repositories.structure.EtablissementRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -43,10 +39,10 @@ public class StructureService {
     private AStructureRepository<AStructure> structureRepository;
 
     @Cacheable(value = "etablissement")
-    public EtablissementDto getEtablissement(Long id) {
+    public StructureDto getEtablissement(Long id) {
         log.trace("getEtablissement for {}", id);
         AStructure aStructure = structureRepository.findById(id).orElse(null);
-        return aStructure != null ? new EtablissementDto(aStructure) : null;
+        return aStructure != null ? new StructureDto(aStructure) : null;
     }
 
     public List<SimpleStructureDto> getStructures(Set<String> allowedSiren) {

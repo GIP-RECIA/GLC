@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.web.rest;
 
-import fr.recia.glc.db.dto.structure.EtablissementDto;
+import fr.recia.glc.db.dto.structure.StructureDto;
 import fr.recia.glc.security.GLCUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ public class CollectiviteController {
      */
     @GetMapping(value = "/{id}")
     // TODO : route spécifique pour récupérer les infos d'une collectivité
-    public ResponseEntity<EtablissementDto> getCollectivite(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
+    public ResponseEntity<StructureDto> getCollectivite(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
