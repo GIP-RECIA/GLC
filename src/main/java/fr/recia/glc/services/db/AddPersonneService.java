@@ -173,6 +173,7 @@ public class AddPersonneService {
         apersonne.setDateNaissance(userCreation.getDateNaissance());
         apersonne.setDisplayName(userCreation.getPrenom());
         apersonne.setCivilite(civilite);
+        apersonne.setDateFin(userCreation.getDateFin());
         Set<AStructure> listeStructures = new HashSet<>();
         listeStructures.add(aStructure);
         apersonne.setListeStructures(listeStructures);
