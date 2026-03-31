@@ -36,6 +36,8 @@ public class FonctionDto {
     private String source;
     private Long structure;
     private Date dateFin;
+    // TODO : date de début pas encore utilisée pour l'instant
+    private Date dateDebut;
 
     public FonctionDto(Long filiere, Long discipline, String source) {
         this.filiere = filiere;
@@ -73,6 +75,15 @@ public class FonctionDto {
         this.structure = structure;
     }
 
+    public FonctionDto(Long personne, Long filiere, Long discipline, String source, Long structure, Date dateFin) {
+        this.personne = personne;
+        this.filiere = filiere;
+        this.discipline = discipline;
+        this.source = source;
+        this.structure = structure;
+        this.dateFin = dateFin;
+    }
+
     public FonctionDto(FonctionDto fonctionDto) {
         this.personne = fonctionDto.getPersonne();
         this.discipline = fonctionDto.getDiscipline();
@@ -80,6 +91,7 @@ public class FonctionDto {
         this.source = fonctionDto.getSource();
         this.structure = fonctionDto.getStructure();
         this.dateFin = fonctionDto.getDateFin();
+        this.dateDebut = fonctionDto.getDateDebut();
     }
 
 }

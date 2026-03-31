@@ -346,7 +346,7 @@ public class FonctionService {
 
         List<FonctionDto> toAddAdditional = new ArrayList<>();
         for (FonctionToModify fonctionToAdd : toAddFunctions) {
-            toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId));
+            toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
         }
         List<FonctionDto> toDeleteAdditional = new ArrayList<>();
         for (FonctionToModify fonctionToDelete : toDeleteFunctions) {
@@ -358,7 +358,7 @@ public class FonctionService {
                 .map(fonction -> {
                     TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
                     Discipline discipline = disciplineRepository.findById(fonction.getDiscipline()).orElse(null);
-                    return new Fonction(discipline, filiere, aStructure, aPersonne, source);
+                    return new Fonction(discipline, filiere, aStructure, aPersonne, source, fonction.getDateFin());
                 })
                 .collect(Collectors.toList()));
         }
