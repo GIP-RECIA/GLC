@@ -20,7 +20,7 @@ import { watchOnce } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
-import TabBar from '@/components/tabbar/TabBar.vue'
+import AccountToolbar from '@/components/accounts/toolbar/AccountToolbar.vue'
 import { useConfigurationStore } from '@/stores/index.ts'
 
 const route = useRoute()
@@ -30,7 +30,6 @@ const { init, initFonctions } = configurationStore
 const {
   configuration,
   isInit,
-  isLoading,
 } = storeToRefs(configurationStore)
 
 init()
@@ -72,29 +71,9 @@ const appName = __APP_NAME__
         v-bind="configuration!.front.extendedUportal?.header?.props"
         navigation-drawer-visible
       />
-      <v-toolbar
+      <AccountToolbar
         v-if="isAccountSection"
-        density="compact"
-        color="rgba(255, 255, 255, 0)"
-      >
-        <v-progress-linear
-          :active="isLoading"
-          :indeterminate="isLoading"
-          absolute
-          bottom
-          color="primary"
-        />
-        <div class="d-flex align-center w-100 px-1">
-          <router-link
-            :to="{ name: 'index' }"
-          >
-            <v-icon
-              icon="fas fa-home"
-            />
-          </router-link>
-          <TabBar />
-        </div>
-      </v-toolbar>
+      />
     </header>
     <div class="d-flex flex-column h-100 overflow-y-auto">
       <v-main class="flex-grow-1">
