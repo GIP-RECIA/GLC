@@ -38,7 +38,7 @@ import java.util.Map;
 
 @Data
 @Slf4j
-public class EtablissementDto {
+public class StructureDto {
 
     private Long id;
     private String uai;
@@ -63,7 +63,7 @@ public class EtablissementDto {
     private List<AlertDto> alerts;
     private String permission;
 
-    public EtablissementDto(AStructure aStructure) {
+    public StructureDto(AStructure aStructure) {
         this.id = aStructure.getId();
         if(aStructure.getCategorie().equals(CategorieStructure.Etablissement)){
             this.uai = ((Etablissement) aStructure).getUai();

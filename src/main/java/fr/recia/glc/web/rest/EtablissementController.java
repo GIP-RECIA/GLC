@@ -19,7 +19,7 @@ import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
-import fr.recia.glc.db.dto.structure.EtablissementDto;
+import fr.recia.glc.db.dto.structure.StructureDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
@@ -76,8 +76,8 @@ public class EtablissementController {
      */
     @GetMapping(value = "/{id}")
     // TODO : une autre route spécifique pour les collectivités
-    public ResponseEntity<EtablissementDto> getEtablissement(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
-        EtablissementDto etablissement = structureService.getEtablissement(id);
+    public ResponseEntity<StructureDto> getEtablissement(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
+        StructureDto etablissement = structureService.getEtablissement(id);
         if (etablissement == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
