@@ -15,6 +15,9 @@
  */
 package fr.recia.glc.web.rest;
 
+import fr.recia.glc.audit.AuditEvent;
+import fr.recia.glc.audit.AuditService;
+import fr.recia.glc.audit.EventType;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
@@ -42,7 +45,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -60,6 +66,8 @@ public class PersonneController {
     private EtablissementRepository<Etablissement> etablissementRepository;
     @Autowired
     private AStructureRepository<AStructure> aStructureRepository;
+    @Autowired
+    private AuditService auditService;
 
     @GetMapping
     public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal, @RequestParam(value = "name") String name, @RequestParam(value = "etab", required = false) Long etabId) {
@@ -136,6 +144,18 @@ public class PersonneController {
         }
         if (canRead) {
             personneService.lockPerson(personne);
+            // Log Audit
+            auditService.log(
+                AuditEvent.builder()
+                    .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                    .eventType(EventType.LOCK_ACCOUNT)
+                    .actor(principal.getUsername())
+                    .target(String.valueOf(id))
+                    .payload(Map.of(
+                        "uid", personne.getUid()
+                    ))
+                    .build()
+            );
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to lock person {}", principal.getUsername(), id);
@@ -161,6 +181,18 @@ public class PersonneController {
         }
         if (canRead) {
             personneService.unlockPerson(personne);
+            // Log Audit
+            auditService.log(
+                AuditEvent.builder()
+                    .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                    .eventType(EventType.UNLOCK_ACCOUNT)
+                    .actor(principal.getUsername())
+                    .target(String.valueOf(id))
+                    .payload(Map.of(
+                        "uid", personne.getUid()
+                    ))
+                    .build()
+            );
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to unlock person {}", principal.getUsername(), id);
@@ -188,6 +220,18 @@ public class PersonneController {
             }
             if (canRead) {
                 personneService.unlockPerson(personne);
+                // Log Audit
+                auditService.log(
+                    AuditEvent.builder()
+                        .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                        .eventType(EventType.UNLOCK_ACCOUNT)
+                        .actor(principal.getUsername())
+                        .target(String.valueOf(id))
+                        .payload(Map.of(
+                            "uid", personne.getUid()
+                        ))
+                        .build()
+                );
             } else {
                 log.warn("User {} is not authorized to unlock person {}", principal.getUsername(), id);
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -204,7 +248,19 @@ public class PersonneController {
         // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
         if (allowedSiren.contains(etablissement.getSiren())) {
-            addPersonneService.addPersonne(userCreation);
+            APersonne apersonne = addPersonneService.addPersonne(userCreation);
+            // Log Audit
+            auditService.log(
+                AuditEvent.builder()
+                    .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                    .eventType(EventType.CREATE_ACCOUNT)
+                    .actor(principal.getUsername())
+                    .target(String.valueOf(apersonne.getId()))
+                    .payload(Map.of(
+                        "uid", apersonne.getUid()
+                    ))
+                    .build()
+            );
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to add person in {}", principal.getUsername(), userCreation.getStructureRattachement());
@@ -226,6 +282,19 @@ public class PersonneController {
                 body.getToAddFunctions(),
                 body.getToDeleteFunctions(),
                 body.getRequiredAction()
+            );
+            // Log Audit
+            auditService.log(
+                AuditEvent.builder()
+                    .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                    .eventType(EventType.MODIFY_FONCTION)
+                    .actor(principal.getUsername())
+                    .target(id.toString())
+                    .payload(Map.of(
+                        "body", body,
+                        "success", success)
+                    )
+                    .build()
             );
             if (!success) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

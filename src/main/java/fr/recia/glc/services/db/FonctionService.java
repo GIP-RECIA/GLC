@@ -82,12 +82,9 @@ public class FonctionService {
     @Autowired
     private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
 
-    @Autowired
-    private PersonneService personneService;
-
     private static final String ALL = "ALL";
-    public static final String FILIERE = "filieres";
-    public static final String DISCIPLINE = "disciplines";
+    private static final String FILIERE = "filieres";
+    private static final String DISCIPLINE = "disciplines";
 
     private final List<CustomConfigProperties.FonctionsProperties> fonctionsProperties;
 

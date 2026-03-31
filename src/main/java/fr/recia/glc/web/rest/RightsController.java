@@ -15,6 +15,9 @@
  */
 package fr.recia.glc.web.rest;
 
+import fr.recia.glc.audit.AuditEvent;
+import fr.recia.glc.audit.AuditService;
+import fr.recia.glc.audit.EventType;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
@@ -37,7 +40,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -51,6 +57,8 @@ public class RightsController {
     private AStructureRepository<AStructure> aStructureRepository;
     @Autowired
     private StructureLoader structureLoader;
+    @Autowired
+    private AuditService auditService;
 
     private String deductBranchFromStructure(AStructure aStructure) {
         log.debug("Retrieving branch for structure {}", aStructure.getId());
@@ -107,6 +115,20 @@ public class RightsController {
                 log.debug("Removing right for member {} in structure {} for service {} for role {}", memberToRemove, id, service, role);
                 rightsService.removeRight(service, role, memberToRemove, branch, etabGroup);
             }
+            // Log Audit
+            auditService.log(
+                AuditEvent.builder()
+                    .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                    .eventType(EventType.UPDATE_RIGHTS)
+                    .actor(principal.getUsername())
+                    .target(String.valueOf(id))
+                    .payload(Map.of(
+                        "service", service,
+                        "role", role,
+                        "request", request
+                    ))
+                    .build()
+            );
             return ResponseEntity.ok().build();
         } else {
             log.warn("User {} is not authorized to update rights in {}", principal.getUsername(), id);

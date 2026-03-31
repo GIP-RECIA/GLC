@@ -116,7 +116,7 @@ public class AddPersonneService {
      * @param userCreation Le DTO venant du front qui contient les informations nécéssaires à la création
      */
     // TODO : gérer l'ajout de classes locales et groupes locaux, et de responsables d'un élève
-    public void addPersonne(UserCreation userCreation) {
+    public APersonne addPersonne(UserCreation userCreation) {
         log.debug("Trying to create local user {}", userCreation);
         // 1. Récupération de la date
         Instant date = new Date().toInstant();
@@ -212,6 +212,7 @@ public class AddPersonneService {
         updateSpecificFields(apersonne, userCreation, aStructure);
         // Vider les caches concernés
         cacheInvalidationService.evictPersonneAndAssociatedStructures(apersonne.getId(), aStructure.getId());
+        return apersonne;
     }
 
     /**

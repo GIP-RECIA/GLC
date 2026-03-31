@@ -1,0 +1,12 @@
+package fr.recia.glc.audit;
+
+public enum EventType {
+    CREATE_ACCOUNT,
+    DELETE_ACCOUNT,
+    MODIFY_ACCOUNT,
+    MODIFY_FONCTION,
+    LOCK_ACCOUNT,
+    UNLOCK_ACCOUNT,
+    UPDATE_RIGHTS,
+    UPDATE_RESTRICTIONS
+}

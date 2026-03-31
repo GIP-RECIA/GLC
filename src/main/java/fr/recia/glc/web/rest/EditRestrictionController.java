@@ -15,6 +15,9 @@
  */
 package fr.recia.glc.web.rest;
 
+import fr.recia.glc.audit.AuditEvent;
+import fr.recia.glc.audit.AuditService;
+import fr.recia.glc.audit.EventType;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
@@ -33,6 +36,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -42,10 +48,12 @@ public class EditRestrictionController {
 
     private final RestrictionService restrictionService;
     private final AStructureRepository<AStructure> aStructureRepository;
+    private final AuditService auditService;
 
-    public EditRestrictionController(RestrictionService restrictionService, AStructureRepository<AStructure> aStructureRepository) {
+    public EditRestrictionController(RestrictionService restrictionService, AStructureRepository<AStructure> aStructureRepository, AuditService auditService) {
         this.restrictionService = restrictionService;
         this.aStructureRepository = aStructureRepository;
+        this.auditService = auditService;
     }
 
     @PostMapping("/etab/{id}")
@@ -55,6 +63,18 @@ public class EditRestrictionController {
         if (allowedSiren.contains(aStructure.getSiren())) {
             // TODO : gérer le cas des collectivités
             restrictionService.setNewRestriction(((Etablissement) aStructure).getUai(), request);
+            // Log Audit
+            auditService.log(
+                AuditEvent.builder()
+                    .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                    .eventType(EventType.UPDATE_RESTRICTIONS)
+                    .actor(principal.getUsername())
+                    .target(String.valueOf(id))
+                    .payload(Map.of(
+                        "request", request
+                    ))
+                    .build()
+            );
             return ResponseEntity.ok().build();
         } else {
             log.warn("User {} is not authorized to edit restriction in {}", principal.getUsername(), id);
