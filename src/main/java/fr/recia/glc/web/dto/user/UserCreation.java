@@ -33,6 +33,9 @@ public class UserCreation {
     private String nom;
     private Date dateNaissance;
     private Civilite civilite;
+    private Date dateFin;
+    // TODO : gérer la date de début
+    private Date dateDebut;
     // Tous sauf élève
     private String courriel;
     // Spécifique élève
