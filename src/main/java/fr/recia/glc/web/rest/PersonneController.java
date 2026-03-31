@@ -27,7 +27,7 @@ import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.db.AddPersonneService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
-import fr.recia.glc.web.dto.function.JsonAdditionalFonctionOldBody;
+import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
 import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,7 +213,7 @@ public class PersonneController {
     }
 
     @PostMapping(value = "/{id}/fonction")
-    public ResponseEntity<Void> setPersonneAdditionalFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody JsonAdditionalFonctionOldBody body) {
+    public ResponseEntity<Void> setPersonneAdditionalFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) {
         // Vérifier qu'on a les droits de modifier la personne = que sur la structure dans laquelle on veut modifier la fonction on a les droits d'écriture
         Etablissement etablissement = etablissementRepository.findById(body.getStructureId()).orElseThrow();
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);

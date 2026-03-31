@@ -17,18 +17,14 @@ package fr.recia.glc.web.dto.function;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class JsonAdditionalFonctionBody {
 
     private Long structureId;
-    private JsonFonction toAdd;
-    private String toDelete;
-
-    public boolean postDataOk() {
-        final boolean add = toAdd != null && toAdd.postDataOk();
-        final boolean delete = toDelete != null && !toDelete.isEmpty();
-
-        return (structureId != null && (add || delete) && !(add && delete));
-    }
+    private List<FonctionToModify> toAddFunctions;
+    private List<FonctionToModify> toDeleteFunctions;
+    private FonctionAction requiredAction;
 
 }
