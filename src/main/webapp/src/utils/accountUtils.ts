@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+import type { IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import type { endInfo, enumValues, FonctionForm, PersonneFonction } from '@/types/index.ts'
+import { faUser as farUser } from '@fortawesome/free-regular-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { differenceInMonths, isPast } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { useConfigurationStore } from '@/stores/index.ts'
@@ -30,6 +33,14 @@ function getIcon(
   source: string,
 ): string {
   return `${isLocal(source) ? 'far' : 'fas'} fa-user`
+}
+
+function getIconDefinition(
+  source: string | undefined,
+): IconDefinition {
+  return source && isLocal(source)
+    ? farUser
+    : faUser
 }
 
 function getEtat(
@@ -242,6 +253,7 @@ export {
   getDateFin,
   getEtat,
   getIcon,
+  getIconDefinition,
   idToFonction,
   isLocal,
 }

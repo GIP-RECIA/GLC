@@ -15,26 +15,30 @@
 -->
 
 <script setup lang="ts">
+import { faLink, faLock, faLockOpen, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
 import { watch } from 'vue'
+// import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import PersonneDialogInfo from '@/components/dialogs/personne/PersonneDialogInfo.vue'
-import PersonneDialogManageAdditional from '@/components/dialogs/personne/PersonneDialogManageAdditional.vue'
+import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
+import UserInformationTab from '@/components/user/tabs/UserInformationTab.vue'
 import { usePersonne } from '@/composables/index.ts'
 import { usePersonneStore } from '@/stores/index.ts'
-import { PersonneDialogState } from '@/types/enums/index.ts'
+import { Etat } from '@/types/enums/index.ts'
 
 const personneStore = usePersonneStore()
 const { initCurrentPersonne } = personneStore
-const {
-  currentPersonne,
-  dialogState,
-  dialogTitle,
-} = storeToRefs(personneStore)
+const { currentPersonne } = storeToRefs(personneStore)
 
-const { canEditAdditionals } = usePersonne()
+const {
+  hasFunctions,
+  canEditAdditionals,
+} = usePersonne()
 
 const route = useRoute()
+
+// const { t } = useI18n()
 
 watch(
   () => route.params.userId,
@@ -49,21 +53,109 @@ watch(
 </script>
 
 <template>
-  <v-container>
-    <h1>{{ dialogTitle }}</h1>
+  <div class="container">
+    <h1>{{ currentPersonne?.cn }}</h1>
 
-    <PersonneDialogInfo
-      v-if="dialogState === PersonneDialogState.Info"
-      :personne="currentPersonne"
-    />
+    <div class="tab-content">
+      <div class="account-actions">
+        <h2 class="sr-only">
+          Actions
+        </h2>
 
-    <PersonneDialogManageAdditional
-      v-if="(dialogState === PersonneDialogState.ManageAdditional
-        || dialogState === PersonneDialogState.ManageAdditionalMultiple)
-        && canEditAdditionals"
-    />
-  </v-container>
+        <ul>
+          <li>
+            <button
+              type="button"
+              class="btn-primary small"
+              :disabled="
+                !currentPersonne?.etat
+                  || ![Etat.Valide.toString(), Etat.Bloque.toString()].includes(currentPersonne.etat)
+              "
+            >
+              {{
+                currentPersonne?.etat === Etat.Bloque.toString()
+                  ? 'Débloquer'
+                  : 'Bloquer'
+              }}
+              <FontAwesomeIcon
+                :icon="
+                  currentPersonne?.etat === Etat.Bloque.toString()
+                    ? faLockOpen
+                    : faLock"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="btn-primary small"
+              :disabled=" !currentPersonne?.etat"
+            >
+              {{
+                currentPersonne?.etat && currentPersonne.etat === Etat.Deleting.toString()
+                  ? 'Forcer la suppression'
+                  : "Supprimer"
+              }}
+              <FontAwesomeIcon
+                :icon="faTrashCan"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="btn-primary small"
+              :disabled="!currentPersonne?.etat || !canEditAdditionals"
+            >
+              Rattacher
+              <FontAwesomeIcon
+                :icon="faLink"
+              />
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <UserInformationTab
+        :user="currentPersonne"
+      />
+
+      <UserAdministrativeTab
+        v-if="hasFunctions"
+        :user="currentPersonne"
+      />
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/functions' as *;
+@use '@gip-recia/ui/mixins' as *;
+
+.container {
+  margin-top: 32px;
+  margin-bottom: 40px;
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    margin-bottom: 60px;
+  }
+}
+
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  > .account-actions {
+    > ul {
+      @include unstyled-list;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: end;
+      gap: 8px;
+    }
+  }
+}
 </style>
