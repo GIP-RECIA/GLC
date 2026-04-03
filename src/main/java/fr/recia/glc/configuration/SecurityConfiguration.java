@@ -26,6 +26,7 @@ import org.jasig.cas.client.validation.Assertion;
 import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -40,6 +41,7 @@ import org.springframework.security.core.userdetails.AuthenticationUserDetailsSe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -187,24 +189,49 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Order(1)
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf()
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+            .csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            )
+            .antMatcher("/api/**")
+            .authorizeHttpRequests(auth -> auth
+                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                .antMatchers("/api/config").permitAll()
+                .anyRequest().authenticated()
+            )
+            .exceptionHandling(e -> e
+                .authenticationEntryPoint(
+                    (request, response, authException) ->
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
+                )
+            );
+
+        return http.build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            )
             // Filtre pour le logout à mettre avant tout
             .addFilterBefore(singleSignOutFilter(), CasAuthenticationFilter.class)
             // La partie exceptionHandling permet de rediriger sur le CAS si on a un 403
-            .exceptionHandling(e -> e.authenticationEntryPoint(casAuthenticationEntryPoint(serviceProperties())))
-            .authorizeHttpRequests(
-                authorizeHttpRequests -> authorizeHttpRequests
-                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .antMatchers("/health-check", "/api/config").permitAll()
-                    .antMatchers("/ui/**", "/").authenticated()
-                    .antMatchers("/api/**").authenticated()
-                    // Cet endpoint doit être accessible car c'est le callback du CAS vers l'appli spring pour faire valider le ticket
-                    .antMatchers(glcProperties.getCas().getCasTicketCallback()).permitAll()
-                    .anyRequest().denyAll());
+            .exceptionHandling(e -> e
+                .authenticationEntryPoint(casAuthenticationEntryPoint(serviceProperties()))
+            )
+            .authorizeHttpRequests(auth -> auth
+                .antMatchers("/health-check").permitAll()
+                .antMatchers("/", "/ui/**").authenticated()
+                // Cet endpoint doit être accessible car c'est le callback du CAS vers l'appli spring pour faire valider le ticket
+                .antMatchers(glcProperties.getCas().getCasTicketCallback()).permitAll()
+                .anyRequest().denyAll()
+            );
+
         return http.build();
     }
 

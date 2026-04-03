@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-export * from './configurationService.ts'
-export * from './fonctionService.ts'
-export * from './personneService.ts'
-export * from './restrictionService.ts'
-export * from './rightService.ts'
-export * from './sessionService.ts'
-export * from './structureService.ts'
+import { instance as axios } from '@/utils/index.ts'
+
+async function checkSession() {
+  return (
+    await axios.get<void>(
+      '/api/session-check',
+    )
+  ).status === 200
+}
+
+export {
+  checkSession,
+}

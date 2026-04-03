@@ -21,6 +21,7 @@ import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
 import AccountToolbar from '@/components/accounts/toolbar/AccountToolbar.vue'
+import { useKeepSession } from '@/composables/index.ts'
 import { useConfigurationStore } from '@/stores/index.ts'
 
 const route = useRoute()
@@ -60,6 +61,8 @@ const isAccountSection = computed(() => (
 ))
 
 const appName = __APP_NAME__
+
+useKeepSession()
 </script>
 
 <template>

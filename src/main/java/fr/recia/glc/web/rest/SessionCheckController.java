@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2023 GIP-RECIA, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package fr.recia.glc.web.rest;
 
-export * from './configurationService.ts'
-export * from './fonctionService.ts'
-export * from './personneService.ts'
-export * from './restrictionService.ts'
-export * from './rightService.ts'
-export * from './sessionService.ts'
-export * from './structureService.ts'
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+@Slf4j
+@RestController
+@RequestMapping(value = "/api/session-check")
+public class SessionCheckController {
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void getSession() {
+    }
+
+}
