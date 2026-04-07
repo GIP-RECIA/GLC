@@ -33,6 +33,8 @@ public class FrontProperties {
     private String templateApiPath;
     private ExtendedUportalProperties extendedUportal;
     private List<LoginOfficeProperties> loginOffices;
+    private String defaultStructureImage;
+    private String defaultUserImage;
 
     @Data
     public static class StaffProperties {
