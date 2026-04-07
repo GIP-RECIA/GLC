@@ -17,10 +17,14 @@ package fr.recia.glc.db.dto.personne;
 
 import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
+import fr.recia.glc.db.dto.structure.SimpleStructureDto;
+import fr.recia.glc.db.entities.common.ExternalId;
 import fr.recia.glc.db.entities.personne.APersonne;
+import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.db.enums.ExternalIdSource;
 import fr.recia.glc.utils.PersonneUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,6 +32,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,32 +65,13 @@ public class PersonneDto {
     private Date dateModification;
     private Date dateAcquittement;
     private Date dateSuppression;
-
-    public PersonneDto(Long id, Etat etat, Date anneeScolaire, CategoriePersonne categorie, Civilite civilite, String source, String cn,
-                       Date dateNaissance, String email, String givenName, String patronyme, String sn, String uid, String login,
-                       Long structure, Date dateFin, Date dateSourceModification, Date dateModification, Date dateAcquittement) {
-        this.id = id;
-        this.etat = etat;
-        this.anneeScolaire = anneeScolaire;
-        this.categorie = categorie;
-        this.civilite = civilite;
-        this.source = source;
-        this.cn = cn;
-        this.dateNaissance = dateNaissance;
-        this.email = email;
-        this.givenName = givenName;
-        this.patronyme = patronyme;
-        this.sn = sn;
-        this.uid = uid;
-        this.login = login;
-        this.structure = structure;
-        this.dateFin = dateFin;
-        this.dateSourceModification = dateSourceModification;
-        if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
-            this.etat = Etat.Deleting;
-            this.dateSuppression = dateModification;
-        }
-    }
+    private String photo;
+    private String idPronote;
+    private boolean listeRouge;
+    private SimpleStructureDto structureRattachement;
+    private List<SimpleStructureDto> listeStructures;
+    // TODO : la structure courante n'est pas dans la base mais que dans le LDAP
+    private SimpleStructureDto structureCourante;
 
     public PersonneDto(APersonne aPersonne, boolean showUid) {
         this.id = aPersonne.getId();
@@ -110,6 +96,21 @@ public class PersonneDto {
             this.etat = Etat.Deleting;
             this.dateSuppression = aPersonne.getDateModification();
         }
+        this.photo = aPersonne.getPhoto();
+        for(ExternalId externalId : aPersonne.getExternalIds()){
+            if(externalId.getDestinataire().equals(ExternalIdSource.PRONOTE)){
+                this.idPronote = externalId.getId();
+            }
+        }
+        this.listeRouge = aPersonne.isListeRouge();
+        this.structureRattachement = new SimpleStructureDto(aPersonne.getStructRattachement());
+        this.listeStructures = new ArrayList<>();
+        for(AStructure aStructure : aPersonne.getListeStructures()){
+            this.listeStructures.add(new SimpleStructureDto(aStructure));
+        }
+        // TODO
+        this.structureCourante = null;
+
     }
 
     public void setAllFonctions(List<FonctionDto> fonctions) {

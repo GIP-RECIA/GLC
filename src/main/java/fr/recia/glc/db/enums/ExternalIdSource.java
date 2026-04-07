@@ -28,5 +28,7 @@ public enum ExternalIdSource {
     YEPS,
     INSTANTSMETIERS,
     WEBGEREST,
-    RENATER
+    RENATER,
+    ELEA,
+    PROCONNECT
 }

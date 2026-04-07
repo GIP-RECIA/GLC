@@ -56,30 +56,4 @@ public class SimpleStructureDto {
         this.siren = aStructure.getSiren();
     }
 
-    public SimpleStructureDto(Etablissement etablissement) {
-        String[] split = etablissement.getNom().split("\\$");
-        if (split.length > 2) {
-            this.type = split[0];
-            this.nom = split[1];
-            this.ville = split[2];
-        } else {
-            this.nom = etablissement.getNom();
-            this.ville = etablissement.getAdresse().getVille();
-        }
-
-        this.id = etablissement.getId();
-        this.uai = etablissement.getUai();
-        this.categorie = etablissement.getCategorie();
-        this.nomCourt = etablissement.getNomCourt();
-        this.siren = etablissement.getSiren();
-    }
-
-    public SimpleStructureDto(CollectiviteLocale collectiviteLocale) {
-        this.id = collectiviteLocale.getId();
-        this.siren = collectiviteLocale.getSiren();
-        this.nom = collectiviteLocale.getNom();
-        this.categorie = collectiviteLocale.getCategorie();
-        this.nomCourt = collectiviteLocale.getNomCourt();
-    }
-
 }
