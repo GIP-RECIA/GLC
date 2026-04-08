@@ -1,50 +1,42 @@
 <script setup lang="ts">
 import type { Personne } from '@/types/index.ts'
-import { format } from 'date-fns'
 import { useI18n } from 'vue-i18n'
-import SafeEmptyData from '../SafeEmptyData.vue'
+import SafeEmptyData from '@/components/SafeEmptyData.vue'
+import { usePersonne } from '@/composables/index.ts'
 
 defineProps<{
   user?: Personne
 }>()
 
 const { t } = useI18n()
+
+const { login } = usePersonne()
 </script>
 
 <template>
   <div class="r-card info-card">
     <header>
-      <h3>Informations personnelles</h3>
+      <h3>Compte & accès</h3>
     </header>
 
     <div class="body">
       <ul>
-        <li>
-          <h4>{{ t('person.information.civility') }}</h4>
+        <li v-show="user?.uid">
+          <h4>UID</h4>
           <SafeEmptyData
-            :value="user?.civilite"
+            :value="user?.uid"
           />
         </li>
         <li>
-          <h4>{{ t('person.information.lastName') }}</h4>
+          <h4>{{ t('person.information.login') }}</h4>
           <SafeEmptyData
-            :value="user?.patronyme"
+            :value="login.i18n"
           />
         </li>
         <li>
-          <h4>{{ t('person.information.firstName') }}</h4>
+          <h4>{{ t('person.information.email') }}</h4>
           <SafeEmptyData
-            :value="user?.givenName"
-          />
-        </li>
-        <li>
-          <h4>{{ t('person.information.birthDate') }}</h4>
-          <SafeEmptyData
-            :value="
-              user?.dateNaissance
-                ? format(user.dateNaissance, 'P')
-                : undefined
-            "
+            :value="user?.email"
           />
         </li>
       </ul>

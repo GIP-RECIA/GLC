@@ -3,9 +3,9 @@ import type { Personne } from '@/types/index.ts'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
+import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import { usePersonne } from '@/composables/index.ts'
 import { getCategoriePersonne } from '@/utils/index.ts'
-import SafeEmptyData from '../SafeEmptyData.vue'
 
 defineProps<{
   user?: Personne

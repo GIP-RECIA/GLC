@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Personne } from '@/types/index.ts'
 // import { useI18n } from 'vue-i18n'
-import UserAccount from '../UserAccount.vue'
-import UserContext from '../UserContext.vue'
-import UserHeader from '../UserHeader.vue'
-import UserIdentity from '../UserIdentity.vue'
+import UserAccount from './information/UserAccount.vue'
+import UserContext from './information/UserContext.vue'
+import UserHeader from './information/UserHeader.vue'
+import UserIdentity from './information/UserIdentity.vue'
 
 defineProps<{
   user?: Personne
