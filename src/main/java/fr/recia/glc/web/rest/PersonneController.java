@@ -30,6 +30,7 @@ import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.db.AddPersonneService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
+import fr.recia.glc.services.db.RelationService;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
 import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +63,8 @@ public class PersonneController {
     private PersonneService personneService;
     @Autowired
     private AddPersonneService addPersonneService;
+    @Autowired
+    private RelationService relationService;
     @Autowired
     private EtablissementRepository<Etablissement> etablissementRepository;
     @Autowired
@@ -118,6 +121,7 @@ public class PersonneController {
             // Booléen qui indique si on affiche l'uid ou non
             PersonneDto personneDto = new PersonneDto(personne, showUid);
             personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
+            personneDto.setRelations(relationService.getPersonneRelations(id));
             return new ResponseEntity<>(personneDto, HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to view person {}", principal.getUsername(), id);

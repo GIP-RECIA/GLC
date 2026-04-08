@@ -38,7 +38,6 @@ public class SimplePersonneDto {
     private String cn;
     private String email;
     private String sn;
-    private String uid;
     private Date dateModification;
     private Date dateAcquittement;
     private Date dateSuppression;
@@ -52,7 +51,6 @@ public class SimplePersonneDto {
         this.cn = cn;
         this.email = email;
         this.sn = sn;
-        this.uid = uid;
         if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
             this.etat = Etat.Deleting;
             this.dateSuppression = dateModification;
@@ -81,8 +79,6 @@ public class SimplePersonneDto {
         this.source = aPersonne.getCleJointure().getSource();
         this.cn = aPersonne.getCn();
         this.sn = aPersonne.getSn();
-        this.uid = aPersonne.getUid();
-
         if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
             this.etat = Etat.Deleting;
             this.dateSuppression = aPersonne.getDateModification();
@@ -97,7 +93,6 @@ public class SimplePersonneDto {
         this.cn = simplePersonneDto.getCn();
         this.email = simplePersonneDto.getEmail();
         this.sn = simplePersonneDto.getSn();
-        this.uid = simplePersonneDto.getUid();
         this.dateSuppression = simplePersonneDto.getDateSuppression();
     }
 

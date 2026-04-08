@@ -17,6 +17,7 @@ package fr.recia.glc.db.dto.personne;
 
 import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
+import fr.recia.glc.db.dto.relation.RelationDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.db.entities.common.ExternalId;
 import fr.recia.glc.db.entities.personne.APersonne;
@@ -66,12 +67,15 @@ public class PersonneDto {
     private Date dateAcquittement;
     private Date dateSuppression;
     private String photo;
+    // TODO : afficher l'id pronote que si la personne est dans le groupe pronote
     private String idPronote;
     private boolean listeRouge;
     private SimpleStructureDto structureRattachement;
     private List<SimpleStructureDto> listeStructures;
     // TODO : la structure courante n'est pas dans la base mais que dans le LDAP
     private SimpleStructureDto structureCourante;
+    // TODO : relations des personnes
+    private List<RelationDto> relations;
 
     public PersonneDto(APersonne aPersonne, boolean showUid) {
         this.id = aPersonne.getId();
@@ -108,9 +112,8 @@ public class PersonneDto {
         for(AStructure aStructure : aPersonne.getListeStructures()){
             this.listeStructures.add(new SimpleStructureDto(aStructure));
         }
-        // TODO
         this.structureCourante = null;
-
+        this.relations = new ArrayList<>();
     }
 
     public void setAllFonctions(List<FonctionDto> fonctions) {
