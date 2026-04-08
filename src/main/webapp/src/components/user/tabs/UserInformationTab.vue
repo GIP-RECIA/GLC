@@ -14,39 +14,41 @@ defineProps<{
 </script>
 
 <template>
-  <div class="general-information">
-    <h2>Informations générales</h2>
+  <div>
+    <div class="general-information">
+      <h2>Informations générales</h2>
 
-    <div class="info-container">
-      <UserHeader
-        :user="user"
-      />
+      <div class="info-container">
+        <UserHeader
+          :user="user"
+        />
 
-      <UserIdentity
-        :user="user"
-      />
+        <UserIdentity
+          :user="user"
+        />
 
-      <UserAccount
-        :user="user"
-      />
+        <UserAccount
+          :user="user"
+        />
 
-      <UserContext
-        :user="user"
-      />
+        <UserContext
+          :user="user"
+        />
+      </div>
     </div>
-  </div>
 
-  <div class="structure-information">
-    <h2>Structures</h2>
+    <div class="structure-information">
+      <h2>Structures</h2>
 
-    <ul v-show="false">
-      <li
-        v-for="item in []"
-        :key="item"
-      >
-        <div class="r-card" />
-      </li>
-    </ul>
+      <ul v-show="false">
+        <li
+          v-for="item in []"
+          :key="item"
+        >
+          <div class="r-card" />
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 

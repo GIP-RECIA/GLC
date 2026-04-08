@@ -24,43 +24,45 @@ const { canEditAdditionals } = usePersonne()
 </script>
 
 <template>
-  <h2>Strcture</h2>
+  <div>
+    <h2>Strcture</h2>
 
-  <h3>{{ t('person.information.function', 2) }}</h3>
+    <h3>{{ t('person.information.function', 2) }}</h3>
 
-  <FonctionsLayout
-    :filieres="allFilieres"
-    :fonctions="personneStructure.fonctions"
-  />
+    <FonctionsLayout
+      :filieres="allFilieres"
+      :fonctions="personneStructure.fonctions"
+    />
 
-  <h3>{{ t('person.information.additionalFunction', 2) }}</h3>
+    <h3>{{ t('person.information.additionalFunction', 2) }}</h3>
 
-  <FonctionsLayout
-    :filieres="allFilieres"
-    :fonctions="personneStructure.additionalFonctions"
-    :clickable="canEditAdditionals"
-  />
+    <FonctionsLayout
+      :filieres="allFilieres"
+      :fonctions="personneStructure.additionalFonctions"
+      :clickable="canEditAdditionals"
+    />
 
-  <button
-    type="button"
-    class="btn-primary small"
-  >
-    {{ t(
-      personneStructure.additionalFonctions
-        && personneStructure.additionalFonctions.length > 0
-        ? 'button.edit'
-        : 'button.add',
-    )
-    }}
-    <FontAwesomeIcon
-      :icon="
+    <button
+      type="button"
+      class="btn-primary small"
+    >
+      {{ t(
         personneStructure.additionalFonctions
           && personneStructure.additionalFonctions.length > 0
-          ? faPen
-          : faPlus
-      "
-    />
-  </button>
+          ? 'button.edit'
+          : 'button.add',
+      )
+      }}
+      <FontAwesomeIcon
+        :icon="
+          personneStructure.additionalFonctions
+            && personneStructure.additionalFonctions.length > 0
+            ? faPen
+            : faPlus
+        "
+      />
+    </button>
+  </div>
 </template>
 
 <style scoped lang="scss">

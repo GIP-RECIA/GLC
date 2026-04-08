@@ -18,7 +18,7 @@
 import { faLink, faLock, faLockOpen, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 // import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
@@ -50,78 +50,170 @@ watch(
     immediate: true,
   },
 )
+
+const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
+
+const tabs = [
+  'Informations',
+  'Référentiel',
+]
+
+const activeTab = ref<number>(0)
+
+function setActiveTab(tab: number, focus: boolean = false): void {
+  activeTab.value = tab
+  if (focus && tabsRefs.value)
+    tabsRefs.value[tab]?.focus()
+}
+
+function changeActiveTab(e: KeyboardEvent): void {
+  let index: number | undefined
+  const active = activeTab.value
+
+  switch (e.key) {
+    case 'ArrowLeft':
+      e.preventDefault()
+      index = active - 1 > -1
+        ? active - 1
+        : tabs.length - 1
+      break
+    case 'ArrowRight':
+      e.preventDefault()
+      index = active + 1 < tabs.length
+        ? active + 1
+        : 0
+      break
+    case 'Home':
+      e.preventDefault()
+      index = 0
+      break
+    case 'End':
+      e.preventDefault()
+      index = tabs.length - 1
+      break
+    default:
+      index = undefined
+      break
+  }
+
+  if (
+    index === undefined
+    || active === index
+  ) {
+    return
+  }
+
+  setActiveTab(index, true)
+}
 </script>
 
 <template>
   <div class="container">
     <h1>{{ currentPersonne?.cn }}</h1>
 
-    <div class="tab-content">
-      <div class="account-actions">
-        <h2 class="sr-only">
-          Actions
-        </h2>
+    <div class="account-actions">
+      <h2 class="sr-only">
+        Actions
+      </h2>
 
-        <ul>
-          <li>
-            <button
-              type="button"
-              class="btn-primary small"
-              :disabled="
-                !currentPersonne?.etat
-                  || ![Etat.Valide.toString(), Etat.Bloque.toString()].includes(currentPersonne.etat)
-              "
-            >
-              {{
+      <ul>
+        <li>
+          <button
+            type="button"
+            class="btn-primary small"
+            :disabled="
+              !currentPersonne?.etat
+                || ![Etat.Valide.toString(), Etat.Bloque.toString()].includes(currentPersonne.etat)
+            "
+          >
+            {{
+              currentPersonne?.etat === Etat.Bloque.toString()
+                ? 'Débloquer'
+                : 'Bloquer'
+            }}
+            <FontAwesomeIcon
+              :icon="
                 currentPersonne?.etat === Etat.Bloque.toString()
-                  ? 'Débloquer'
-                  : 'Bloquer'
-              }}
-              <FontAwesomeIcon
-                :icon="
-                  currentPersonne?.etat === Etat.Bloque.toString()
-                    ? faLockOpen
-                    : faLock"
-              />
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              class="btn-primary small"
-              :disabled=" !currentPersonne?.etat"
-            >
-              {{
-                currentPersonne?.etat && currentPersonne.etat === Etat.Deleting.toString()
-                  ? 'Forcer la suppression'
-                  : "Supprimer"
-              }}
-              <FontAwesomeIcon
-                :icon="faTrashCan"
-              />
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              class="btn-primary small"
-              :disabled="!currentPersonne?.etat || !canEditAdditionals"
-            >
-              Rattacher
-              <FontAwesomeIcon
-                :icon="faLink"
-              />
-            </button>
-          </li>
-        </ul>
-      </div>
+                  ? faLockOpen
+                  : faLock"
+            />
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn-primary small"
+            :disabled=" !currentPersonne?.etat"
+          >
+            {{
+              currentPersonne?.etat && currentPersonne.etat === Etat.Deleting.toString()
+                ? 'Forcer la suppression'
+                : "Supprimer"
+            }}
+            <FontAwesomeIcon
+              :icon="faTrashCan"
+            />
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn-primary small"
+            :disabled="!currentPersonne?.etat || !canEditAdditionals"
+          >
+            Rattacher
+            <FontAwesomeIcon
+              :icon="faLink"
+            />
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="account-tabs">
+      <ul
+        role="tablist"
+        class="tab-selector"
+      >
+        <li
+          v-for="(tab, index) in tabs"
+          :key="index"
+        >
+          <button
+            :id="`user-tab-${index}`"
+            ref="tab-refs"
+            role="tab"
+            :aria-selected="activeTab === index"
+            :aria-controls="`user-tabpanel-${index}`"
+            :tabindex="activeTab === index ? '0' : '-1'"
+            class="tag"
+            :class="{
+              active: activeTab === index,
+            }"
+            @click="setActiveTab(index)"
+            @keydown="changeActiveTab"
+          >
+            {{ tab }}
+          </button>
+        </li>
+      </ul>
 
       <UserInformationTab
+        v-show="activeTab === 0"
+        id="user-tabpanel-0"
+        role="tabpanel"
+        aria-labelledby="user-tab-0"
+        tabindex="0"
         :user="currentPersonne"
       />
 
       <UserAdministrativeTab
+        v-show="activeTab === 1"
         v-if="hasFunctions"
+        id="user-tabpanel-1"
+        role="tabpanel"
+        aria-labelledby="user-tab-1"
+        tabindex="0"
         :user="currentPersonne"
       />
     </div>
@@ -137,16 +229,13 @@ watch(
 .container {
   margin-top: 32px;
   margin-bottom: 40px;
-
-  @media (width >= map.get($grid-breakpoints, md)) {
-    margin-bottom: 60px;
-  }
-}
-
-.tab-content {
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  > h1 {
+    margin-bottom: 0;
+  }
 
   > .account-actions {
     > ul {
@@ -156,6 +245,35 @@ watch(
       justify-content: end;
       gap: 8px;
     }
+  }
+
+  > .account-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    > ul {
+      @include unstyled-list;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    > [role='tabpanel'] {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      &:focus-visible {
+        outline: 2px dotted var(--#{$prefix}system-blue);
+        outline-offset: 8px;
+        border-radius: 10px;
+      }
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    margin-bottom: 60px;
   }
 }
 </style>
