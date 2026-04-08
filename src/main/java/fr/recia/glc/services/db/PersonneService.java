@@ -49,8 +49,12 @@ public class PersonneService {
         return admin ? aPersonneRepository.findByNameLikeAdmin(name) : aPersonneRepository.findByNameLike(name);
     }
 
-    public List<SimplePersonneDto> searchPersonneInEtab(String name, Long structureId) {
-        return aPersonneRepository.findByNameLikeInEtab(name, structureId);
+    public List<SimplePersonneDto> searchPersonneInStaffCategories(String name, boolean admin) {
+        return admin ? aPersonneRepository.findByNameLikeAdminInStaffCategories(name) : aPersonneRepository.findByNameLikeInStaffCategories(name);
+    }
+
+    public List<SimplePersonneDto> searchPersonneInEtabInStaffCategories(String name, Long structureId) {
+        return aPersonneRepository.findByNameLikeInEtabInStaffCategories(name, structureId);
     }
 
     @Cacheable(value = "personnesByEtablissement")
