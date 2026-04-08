@@ -27,6 +27,7 @@ import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.ExternalIdSource;
 import fr.recia.glc.utils.PersonneUtils;
+import fr.recia.glc.web.dto.user.StructureForUserDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,9 +61,6 @@ public class PersonneDto {
     private Date dateFin;
     private Date dateSourceModification;
     private String login;
-    private Long structure;
-    private List<FonctionDto> fonctions;
-    private List<FonctionDto> additionalFonctions;
     private Date dateModification;
     private Date dateAcquittement;
     private Date dateSuppression;
@@ -70,10 +68,8 @@ public class PersonneDto {
     // TODO : afficher l'id pronote que si la personne est dans le groupe pronote
     private String idPronote;
     private boolean listeRouge;
-    private SimpleStructureDto structureRattachement;
-    private List<SimpleStructureDto> listeStructures;
     // TODO : la structure courante n'est pas dans la base mais que dans le LDAP
-    private SimpleStructureDto structureCourante;
+    private List<StructureForUserDto> listeStructures;
     // TODO : relations des personnes
     private List<RelationDto> relations;
 
@@ -107,21 +103,31 @@ public class PersonneDto {
             }
         }
         this.listeRouge = aPersonne.isListeRouge();
-        if(aPersonne.getStructRattachement() != null){
-            this.structureRattachement = new SimpleStructureDto(aPersonne.getStructRattachement());
-        }
         this.listeStructures = new ArrayList<>();
         for(AStructure aStructure : aPersonne.getListeStructures()){
-            this.listeStructures.add(new SimpleStructureDto(aStructure));
+            StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);
+            this.listeStructures.add(structureForUserDto);
+            if(aStructure.getId()==aPersonne.getStructRattachement().getId()){
+                structureForUserDto.setStructureRattachement(true);
+            }
         }
-        this.structureCourante = null;
         this.relations = new ArrayList<>();
     }
 
     public void setAllFonctions(List<FonctionDto> fonctions) {
         if (!fonctions.isEmpty()) {
-            setFonctions(fonctions.stream().filter(fonction -> !fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
-            setAdditionalFonctions(fonctions.stream().filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_)).collect(Collectors.toList()));
+            for(FonctionDto fonctionDto : fonctions){
+                // Ici c'est acceptable de faire une boucle imbriquée car on a peu de structures dans la liste la pluspart du temps
+                for(StructureForUserDto structureForUserDto : this.listeStructures){
+                    if(fonctionDto.getStructure().equals(structureForUserDto.getId())){
+                        if(!fonctionDto.getSource().startsWith(Constants.SARAPISUI_)){
+                            structureForUserDto.getFonctions().add(fonctionDto);
+                        } else {
+                            structureForUserDto.getAdditionalFonctions().add(fonctionDto);
+                        }
+                    }
+                }
+            }
         }
     }
 
