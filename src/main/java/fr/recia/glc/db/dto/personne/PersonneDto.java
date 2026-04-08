@@ -107,7 +107,9 @@ public class PersonneDto {
             }
         }
         this.listeRouge = aPersonne.isListeRouge();
-        this.structureRattachement = new SimpleStructureDto(aPersonne.getStructRattachement());
+        if(aPersonne.getStructRattachement() != null){
+            this.structureRattachement = new SimpleStructureDto(aPersonne.getStructRattachement());
+        }
         this.listeStructures = new ArrayList<>();
         for(AStructure aStructure : aPersonne.getListeStructures()){
             this.listeStructures.add(new SimpleStructureDto(aStructure));
