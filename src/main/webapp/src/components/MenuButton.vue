@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import { computed, ref, useId } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useId, useTemplateRef } from 'vue'
 
 withDefaults(
   defineProps<{
@@ -36,6 +36,9 @@ const emit = defineEmits<{
   'update:model-value': [uid: string | number]
 }>()
 
+const self = useTemplateRef<HTMLElement>('dropdown')
+const dropdownButton = useTemplateRef<HTMLButtonElement>('dropdown-button')
+
 const uid = useId()
 
 const id = computed<string>(() => (
@@ -44,19 +47,59 @@ const id = computed<string>(() => (
 
 const isExpanded = ref<boolean>(false)
 
+onMounted(() => {
+  self.value?.addEventListener('keyup', handleKeyPress)
+  document.addEventListener('keyup', handleOutsideEvents)
+  document.addEventListener('click', handleOutsideEvents)
+})
+
+onUnmounted(() => {
+  self.value?.removeEventListener('keyup', handleKeyPress)
+  document.removeEventListener('keyup', handleOutsideEvents)
+  document.removeEventListener('click', handleOutsideEvents)
+})
+
+function handleKeyPress(e: KeyboardEvent): void {
+  if (isExpanded.value && e.key === 'Escape') {
+    e.preventDefault()
+    close(e)
+  }
+}
+
+function handleOutsideEvents(e: KeyboardEvent | MouseEvent): void {
+  if (
+    isExpanded.value
+    && self.value
+    && e.target instanceof HTMLElement
+    && !(self.value.contains(e.target) || e.composedPath().includes(self.value))
+  ) {
+    close(undefined, false)
+  }
+}
+
 function toggle(): void {
   isExpanded.value = !isExpanded.value
 }
 
+function close(_: Event | undefined = undefined, resetFocus: boolean = true): void {
+  isExpanded.value = false
+  if (resetFocus)
+    dropdownButton.value?.focus()
+}
+
 function handleItemClick(key: string | number) {
-  toggle()
+  close()
   emit('update:model-value', key)
 }
 </script>
 
 <template>
-  <div class="dropdown">
+  <div
+    ref="dropdown"
+    class="dropdown"
+  >
     <button
+      ref="dropdown-button"
       :aria-expanded="isExpanded"
       :aria-controls="id"
       :aria-label="aLabel"

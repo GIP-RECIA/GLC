@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { RouteLocationAsRelativeGeneric } from 'vue-router'
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import TabItem from './TabItem.vue'
 
 interface TabItemT {
@@ -33,16 +33,59 @@ defineEmits<{
   removeItem: [id: string]
 }>()
 
+const self = useTemplateRef<HTMLElement>('dropdown')
+const dropdownButton = useTemplateRef<HTMLButtonElement>('dropdown-button')
+
 const isExpanded = ref<boolean>(false)
+
+onMounted(() => {
+  self.value?.addEventListener('keyup', handleKeyPress)
+  document.addEventListener('keyup', handleOutsideEvents)
+  document.addEventListener('click', handleOutsideEvents)
+})
+
+onUnmounted(() => {
+  self.value?.removeEventListener('keyup', handleKeyPress)
+  document.removeEventListener('keyup', handleOutsideEvents)
+  document.removeEventListener('click', handleOutsideEvents)
+})
+
+function handleKeyPress(e: KeyboardEvent): void {
+  if (isExpanded.value && e.key === 'Escape') {
+    e.preventDefault()
+    close(e)
+  }
+}
+
+function handleOutsideEvents(e: KeyboardEvent | MouseEvent): void {
+  if (
+    isExpanded.value
+    && self.value
+    && e.target instanceof HTMLElement
+    && !(self.value.contains(e.target) || e.composedPath().includes(self.value))
+  ) {
+    close(undefined, false)
+  }
+}
 
 function toggle(): void {
   isExpanded.value = !isExpanded.value
 }
+
+function close(_: Event | undefined = undefined, resetFocus: boolean = true): void {
+  isExpanded.value = false
+  if (resetFocus)
+    dropdownButton.value?.focus()
+}
 </script>
 
 <template>
-  <div class="dropdown">
+  <div
+    ref="dropdown"
+    class="dropdown"
+  >
     <button
+      ref="dropdown-button"
       :aria-expanded="isExpanded"
       aria-controls="dropdown-tab-menu"
       aria-label="Menu onglets"
