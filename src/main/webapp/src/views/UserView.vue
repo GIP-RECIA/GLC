@@ -262,7 +262,7 @@ function changeActiveTab(e: KeyboardEvent): void {
     > [role='tabpanel'] {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 32px;
 
       &:focus-visible {
         outline: 2px dotted var(--#{$prefix}system-blue);
@@ -274,6 +274,10 @@ function changeActiveTab(e: KeyboardEvent): void {
 
   @media (width >= map.get($grid-breakpoints, md)) {
     margin-bottom: 60px;
+
+    > .account-tabs > [role='tabpanel'] {
+      gap: 48px;
+    }
   }
 }
 </style>
