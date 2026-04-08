@@ -17,6 +17,7 @@
 import type { Adresse } from './adresseType.ts'
 import type { Alert } from './alertType.ts'
 import type { Filiere } from './filiereType.ts'
+import type { PersonneFonction } from './fonctionType.ts'
 import type { SimplePersonne } from './personneType.ts'
 
 export interface Etablissement {
@@ -52,4 +53,11 @@ export interface SimpleEtablissement {
   nomCourt?: string
   ville?: string
   siren: string
+}
+
+export type StructureForUser = SimpleEtablissement & {
+  fonctions: PersonneFonction[]
+  additionalFonctions: PersonneFonction[]
+  structureRattachement: boolean
+  structureCourante: boolean
 }

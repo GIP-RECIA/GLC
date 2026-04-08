@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { Personne } from '@/types/index.ts'
+import { faHouseUser, faLandmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { RouterLink } from 'vue-router'
 // import { useI18n } from 'vue-i18n'
 import UserAccount from './information/UserAccount.vue'
 import UserContext from './information/UserContext.vue'
@@ -40,12 +43,59 @@ defineProps<{
     <div class="structure-information">
       <h2>Structures</h2>
 
-      <ul v-show="false">
+      <ul class="info-container">
         <li
-          v-for="item in []"
-          :key="item"
+          v-for="structure in user?.listeStructures"
+          :key="`user-structure-${structure.id}`"
         >
-          <div class="r-card" />
+          <div class="structure-card">
+            <div class="info">
+              <RouterLink
+                :to="{
+                  name: 'structure',
+                  params: { structureId: structure.id },
+                }"
+              >
+                {{ structure.nom }}
+                <span aria-hidden="true" />
+              </RouterLink>
+
+              <p>
+                {{ structure.type }}
+                <span>
+                  {{ structure.uai }}
+                </span>
+              </p>
+            </div>
+
+            <div
+              v-if="
+                structure.structureRattachement
+                  || structure.structureCourante
+              "
+              class="icons"
+            >
+              <span
+                v-show="structure.structureRattachement"
+                title="Structure de rattachement administrative"
+              >
+                <FontAwesomeIcon
+                  :icon="faLandmark"
+                  size="lg"
+                />
+              </span>
+              <span
+                v-show="structure.structureCourante"
+                title="Structure courante"
+                class="current"
+              >
+                <FontAwesomeIcon
+                  :icon="faHouseUser"
+                  size="lg"
+                />
+              </span>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
@@ -69,12 +119,73 @@ defineProps<{
 .structure-information {
   > ul {
     @include unstyled-list;
+    grid-auto-rows: 1fr;
+    align-items: unset;
+
+    > li > .structure-card {
+      display: flex;
+      gap: 8px;
+      height: 100%;
+      padding: 16px;
+      position: relative;
+      border-radius: 10px;
+      height: 100%;
+      box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
+      outline-color: transparent;
+      outline-offset: -1px;
+      transition:
+        outline 0.15s ease-out,
+        box-shadow 0.15s ease-out;
+
+      &:hover,
+      &:has(:focus-visible) {
+        outline: 2px solid var(--#{$prefix}primary);
+        box-shadow: var(--#{$prefix}shadow-hover) HEXToRGBA(var(--#{$prefix}primary), 0.2);
+      }
+
+      > .info {
+        flex: 1 1 auto;
+
+        > a {
+          @include unstyled-link;
+
+          &:focus-visible {
+            outline: none;
+          }
+
+          > span {
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+          }
+        }
+
+        > p {
+          opacity: 0.6;
+        }
+      }
+
+      > .icons {
+        flex: 0 0 auto;
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        align-items: center;
+        gap: 4px;
+
+        > * {
+          z-index: 1;
+        }
+
+        > .current {
+          grid-row: 2;
+        }
+      }
+    }
   }
 }
 
 .info-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 16px;
 
   @media (width >= map.get($grid-breakpoints, md)) {

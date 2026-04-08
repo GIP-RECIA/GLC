@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import type { FonctionForm, PersonneFonction } from './fonctionType.ts'
+import type { StructureForUser } from './etablissementType.ts'
+import type { FonctionForm } from './fonctionType.ts'
 
 export interface Personne {
   id: number
@@ -26,16 +27,27 @@ export interface Personne {
   source: string
   cn: string
   sn: string
-  dateNaissance?: string
-  email?: string
   givenName: string
   patronyme?: string
+  dateNaissance?: string
+  email?: string
   login: string
+  photo?: string
+  idPronote?: string
+  listeRouge: boolean
   dateFin?: string
-  dateSourceModification: string
-  fonctions?: PersonneFonction[]
-  additionalFonctions?: PersonneFonction[]
+  dateModification?: string
+  dateAcquittement?: string
   dateSuppression?: string
+  dateSourceModification: string
+  listeStructures: StructureForUser[]
+  relations: Relation[]
+}
+
+export interface Relation {
+  categorieRelation: string
+  personneEnRelation: SimplePersonne
+  holder: boolean
 }
 
 export interface SimplePersonne {
