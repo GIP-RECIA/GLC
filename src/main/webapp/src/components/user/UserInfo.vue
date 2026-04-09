@@ -19,7 +19,7 @@ const {
 </script>
 
 <template>
-  <div class="header-card">
+  <div class="user-info">
     <div class="user-avatar">
       <img
         :src="user?.photo ?? '/images/icones/noPictureUser.svg'"
@@ -29,9 +29,11 @@ const {
 
     <ul>
       <li>
-        <SafeEmptyData
-          :value="user?.cn"
-        />
+        <h1>
+          <SafeEmptyData
+            :value="user?.cn"
+          />
+        </h1>
       </li>
       <li>
         <SafeEmptyData
@@ -66,7 +68,7 @@ const {
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
 
-.header-card {
+.user-info {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -97,9 +99,8 @@ const {
     gap: 4px;
 
     > li {
-      &:first-child {
-        font-size: var(--#{$prefix}font-size-lg);
-        font-weight: bold;
+      > h1 {
+        margin-bottom: 0;
         line-height: 1em;
       }
 

@@ -25,6 +25,7 @@ import { useRoute } from 'vue-router'
 import ManageAdditionalDialog from '@/components/user/dialogs/ManageAdditionalDialog.vue'
 import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/user/tabs/UserInformationTab.vue'
+import UserInfo from '@/components/user/UserInfo.vue'
 import { usePersonneStore } from '@/stores/index.ts'
 import { Etat } from '@/types/enums/index.ts'
 
@@ -129,117 +130,119 @@ function onAttach(): void {
 
 <template>
   <div class="container">
-    <h1>{{ currentPersonne?.cn }}</h1>
+    <header>
+      <UserInfo
+        :user="currentPersonne"
+      />
 
-    <div class="account-actions">
-      <h2 class="sr-only">
-        Actions
-      </h2>
+      <div class="account-actions">
+        <h2 class="sr-only">
+          Actions
+        </h2>
 
-      <ul>
-        <li>
-          <button
-            type="button"
-            class="btn-primary small"
-            :disabled="
-              !currentPersonne?.etat
-                || ![Etat.Valide.toString(), Etat.Bloque.toString()].includes(currentPersonne.etat)
-            "
-            @click="onToggleLock"
-          >
-            {{
-              currentPersonne?.etat === Etat.Bloque.toString()
-                ? 'Débloquer'
-                : 'Bloquer'
-            }}
-            <FontAwesomeIcon
-              :icon="
+        <ul>
+          <li>
+            <button
+              type="button"
+              class="btn-primary small"
+              :disabled="
+                !currentPersonne?.etat
+                  || ![Etat.Valide.toString(), Etat.Bloque.toString()].includes(currentPersonne.etat)
+              "
+              @click="onToggleLock"
+            >
+              {{
                 currentPersonne?.etat === Etat.Bloque.toString()
-                  ? faLockOpen
-                  : faLock"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="btn-primary small"
-            :disabled=" !currentPersonne?.etat"
-            @click="onDelete"
-          >
-            {{
-              currentPersonne?.etat && currentPersonne.etat === Etat.Deleting.toString()
-                ? 'Forcer la suppression'
-                : "Supprimer"
-            }}
-            <FontAwesomeIcon
-              :icon="faTrashCan"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="btn-primary small"
-            :disabled="!currentPersonne?.etat"
-            @click="onAttach"
-          >
-            Rattacher
-            <FontAwesomeIcon
-              :icon="faLink"
-            />
-          </button>
-        </li>
-      </ul>
-    </div>
+                  ? 'Débloquer'
+                  : 'Bloquer'
+              }}
+              <FontAwesomeIcon
+                :icon="
+                  currentPersonne?.etat === Etat.Bloque.toString()
+                    ? faLockOpen
+                    : faLock"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="btn-primary small"
+              :disabled=" !currentPersonne?.etat"
+              @click="onDelete"
+            >
+              {{
+                currentPersonne?.etat && currentPersonne.etat === Etat.Deleting.toString()
+                  ? 'Forcer la suppression'
+                  : "Supprimer"
+              }}
+              <FontAwesomeIcon
+                :icon="faTrashCan"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="btn-primary small"
+              :disabled="!currentPersonne?.etat"
+              @click="onAttach"
+            >
+              Rattacher
+              <FontAwesomeIcon
+                :icon="faLink"
+              />
+            </button>
+          </li>
+        </ul>
+      </div>
+    </header>
 
-    <div class="account-tabs">
-      <ul
-        role="tablist"
-        class="tab-selector"
+    <ul
+      role="tablist"
+      class="tab-selector"
+    >
+      <li
+        v-for="(tab, index) in tabs"
+        :key="index"
       >
-        <li
-          v-for="(tab, index) in tabs"
-          :key="index"
+        <button
+          :id="`user-tab-${index}`"
+          ref="tab-refs"
+          role="tab"
+          :aria-selected="activeTab === index"
+          :aria-controls="`user-tabpanel-${index}`"
+          :tabindex="activeTab === index ? '0' : '-1'"
+          class="tag"
+          :class="{
+            active: activeTab === index,
+          }"
+          @click="setActiveTab(index)"
+          @keydown="changeActiveTab"
         >
-          <button
-            :id="`user-tab-${index}`"
-            ref="tab-refs"
-            role="tab"
-            :aria-selected="activeTab === index"
-            :aria-controls="`user-tabpanel-${index}`"
-            :tabindex="activeTab === index ? '0' : '-1'"
-            class="tag"
-            :class="{
-              active: activeTab === index,
-            }"
-            @click="setActiveTab(index)"
-            @keydown="changeActiveTab"
-          >
-            {{ tab }}
-          </button>
-        </li>
-      </ul>
+          {{ tab }}
+        </button>
+      </li>
+    </ul>
 
-      <UserInformationTab
-        v-show="activeTab === 0"
-        id="user-tabpanel-0"
-        role="tabpanel"
-        aria-labelledby="user-tab-0"
-        tabindex="0"
-        :user="currentPersonne"
-      />
+    <UserInformationTab
+      v-show="activeTab === 0"
+      id="user-tabpanel-0"
+      role="tabpanel"
+      aria-labelledby="user-tab-0"
+      tabindex="0"
+      :user="currentPersonne"
+    />
 
-      <UserAdministrativeTab
-        v-show="activeTab === 1"
-        id="user-tabpanel-1"
-        role="tabpanel"
-        aria-labelledby="user-tab-1"
-        tabindex="0"
-        :user="currentPersonne"
-        @edit-function="editFunction"
-      />
-    </div>
+    <UserAdministrativeTab
+      v-show="activeTab === 1"
+      id="user-tabpanel-1"
+      role="tabpanel"
+      aria-labelledby="user-tab-1"
+      tabindex="0"
+      :user="currentPersonne"
+      @edit-function="editFunction"
+    />
   </div>
 
   <ManageAdditionalDialog
@@ -266,46 +269,59 @@ function onAttach(): void {
     margin-bottom: 0;
   }
 
-  > .account-actions {
-    > ul {
-      @include unstyled-list;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: end;
-      gap: 8px;
-    }
-  }
-
-  > .account-tabs {
+  > header {
     display: flex;
     flex-direction: column;
     gap: 16px;
 
-    > ul {
-      @include unstyled-list;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    > .user-info {
+      flex: 1 1 auto;
     }
 
-    > [role='tabpanel'] {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
+    > .account-actions {
+      flex: 0 1 auto;
 
-      &:focus-visible {
-        outline: 2px dotted var(--#{$prefix}system-blue);
-        outline-offset: 8px;
-        border-radius: 10px;
+      > ul {
+        @include unstyled-list;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: end;
+        gap: 8px;
       }
+    }
+  }
+
+  > ul {
+    @include unstyled-list;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  > [role='tabpanel'] {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    &:focus-visible {
+      outline: 2px dotted var(--#{$prefix}system-blue);
+      outline-offset: 8px;
+      border-radius: 10px;
     }
   }
 
   @media (width >= map.get($grid-breakpoints, md)) {
     margin-bottom: 60px;
+    gap: 32px;
 
-    > .account-tabs > [role='tabpanel'] {
+    > [role='tabpanel'] {
       gap: 48px;
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, lg)) {
+    > header {
+      flex-direction: row;
     }
   }
 }

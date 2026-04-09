@@ -6,7 +6,6 @@ import { RouterLink } from 'vue-router'
 // import { useI18n } from 'vue-i18n'
 import UserAccount from './information/UserAccount.vue'
 import UserContext from './information/UserContext.vue'
-import UserHeader from './information/UserHeader.vue'
 import UserIdentity from './information/UserIdentity.vue'
 
 defineProps<{
@@ -22,10 +21,6 @@ defineProps<{
       <h2>Informations générales</h2>
 
       <div class="info-container">
-        <UserHeader
-          :user="user"
-        />
-
         <UserIdentity
           :user="user"
         />
@@ -107,14 +102,6 @@ defineProps<{
 @use '@gip-recia/ui/core/variables' as *;
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
-
-.general-information {
-  @media (width >= map.get($grid-breakpoints, md)) {
-    .header-card {
-      grid-column: span 2;
-    }
-  }
-}
 
 .structure-information {
   > ul {
