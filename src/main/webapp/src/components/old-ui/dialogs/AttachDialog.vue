@@ -19,7 +19,7 @@ import type { SimplePersonne } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
+import PersonneSearch from '@/components/old-ui/search/personne/PersonneSearch.vue'
 import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts'
 import { PersonneDialogState } from '@/types/enums/index.ts'
 

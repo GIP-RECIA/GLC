@@ -21,7 +21,7 @@ import { storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
-import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
+import PersonneSearch from '@/components/old-ui/search/personne/PersonneSearch.vue'
 import { useSaveAttachDetach } from '@/composables/index.ts'
 import {
   setPersonneAdditionalWithCode,

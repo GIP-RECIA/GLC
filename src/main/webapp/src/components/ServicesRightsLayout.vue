@@ -20,7 +20,7 @@ import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
 import ServiceRightsCard from '@/components/ServiceRightsCard.vue'
 import { updateRight } from '@/services/api/index.ts'
-import ManageServiceRightsDialog from '../dialogs/ManageServiceRightsDialog.vue'
+import ManageServiceRightsDialog from './ManageServiceRightsDialog.vue'
 
 defineProps<{
   servicesRights: ServiceRights[] | undefined

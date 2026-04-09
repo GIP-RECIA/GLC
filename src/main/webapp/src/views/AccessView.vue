@@ -18,9 +18,9 @@
 import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
-import ServicesRightsLayout from '@/components/layouts/ServicesRightsLayout.vue'
 import PageLayout from '@/components/PageLayout.vue'
-import StructureSearch from '@/components/search/structure/StructureSearch.vue'
+import ServicesRightsLayout from '@/components/ServicesRightsLayout.vue'
+import StructureSearch from '@/components/StructureSearch.vue'
 import { getRights } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 

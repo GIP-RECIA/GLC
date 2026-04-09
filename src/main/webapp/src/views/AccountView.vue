@@ -20,7 +20,7 @@ import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDisplay } from 'vuetify'
-import CustomPagination from '@/components/CustomPagination.vue'
+import CustomPagination from '@/components/old-ui/CustomPagination.vue'
 import { useConfigurationStore, useStructureStore } from '@/stores/index.ts'
 
 const configurationStore = useConfigurationStore()

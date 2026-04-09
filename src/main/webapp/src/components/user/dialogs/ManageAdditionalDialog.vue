@@ -18,7 +18,7 @@
 import type { PersonneFonction } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import FonctionForm from '@/components/forms/FonctionForm.vue'
+import FonctionForm from '@/components/old-ui/forms/FonctionForm.vue'
 import { useManageAdditional } from '@/composables/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 import { fonctionsToId } from '@/utils/index.ts'

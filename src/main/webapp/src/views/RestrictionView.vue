@@ -22,7 +22,7 @@ import PageLayout from '@/components/PageLayout.vue'
 import CloseRestrictions from '@/components/restrictions/CloseRestrictions.vue'
 import GlobalRestrictions from '@/components/restrictions/GlobalRestrictions.vue'
 import OpenRestrictions from '@/components/restrictions/OpenRestrictions.vue'
-import StructureSearch from '@/components/search/structure/StructureSearch.vue'
+import StructureSearch from '@/components/StructureSearch.vue'
 import { getRestrictions } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 

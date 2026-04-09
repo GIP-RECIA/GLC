@@ -19,9 +19,9 @@ import type { Etat, Tabs } from '@/types/enums/index.ts'
 import type { SimplePersonne } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import SelectFilter from '@/components/filter/SelectFilter.vue'
-import FilieresLayout from '@/components/layouts/FilieresLayout.vue'
-import PersonneSearch from '@/components/search/personne/PersonneSearch.vue'
+import SelectFilter from '@/components/old-ui/filter/SelectFilter.vue'
+import FilieresLayout from '@/components/old-ui/layouts/FilieresLayout.vue'
+import PersonneSearch from '@/components/old-ui/search/personne/PersonneSearch.vue'
 import {
   useConfigurationStore,
   usePersonneStore,

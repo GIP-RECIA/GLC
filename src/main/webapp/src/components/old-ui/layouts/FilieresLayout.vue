@@ -19,7 +19,7 @@ import type { Discipline, Filiere } from '@/types/index.ts'
 import { isEmpty } from 'lodash-es'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import PersonneCard from '@/components/PersonneCard.vue'
+import PersonneCard from '@/components/old-ui/PersonneCard.vue'
 
 const props = defineProps<{
   filieres: Filiere[] | undefined
