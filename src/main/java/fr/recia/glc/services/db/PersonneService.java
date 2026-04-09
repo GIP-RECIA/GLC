@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -53,8 +54,36 @@ public class PersonneService {
         return admin ? aPersonneRepository.findByNameLikeAdminInStaffCategories(name) : aPersonneRepository.findByNameLikeInStaffCategories(name);
     }
 
-    public List<SimplePersonneDto> searchPersonneInEtabInStaffCategories(String name, Long structureId) {
-        return aPersonneRepository.findByNameLikeInEtabInStaffCategories(name, structureId);
+    public List<SimplePersonneDto> searchPersonneInEtab(String name, Set<Long> structureIds, boolean admin) {
+        return aPersonneRepository.findByNameLikeInEtab(name, structureIds);
+    }
+
+    public List<SimplePersonneDto> searchPersonneInEtabInStaffCategories(String name, Set<Long> structureIds, boolean admin) {
+        return aPersonneRepository.findByNameLikeInEtabInStaffCategories(name, structureIds);
+    }
+
+    public List<SimplePersonneDto> searchPersonneInEtabBySiren(String name, Set<String> sirens, boolean admin) {
+        return aPersonneRepository.findByNameLikeInEtabBySiren(name, sirens);
+    }
+
+    public List<SimplePersonneDto> searchPersonneInEtabBySirenInStaffCategories(String name, Set<String> sirens, boolean admin) {
+        return aPersonneRepository.findByNameLikeInEtabBySirenInStaffCategories(name, sirens);
+    }
+
+    public List<SimplePersonneDto> searchPersonneNotInEtab(String name, Set<Long> structureIds, boolean admin) {
+        return aPersonneRepository.findByNameLikeNotInEtab(name, structureIds);
+    }
+
+    public List<SimplePersonneDto> searchPersonneNotInEtabInStaffCategories(String name, Set<Long> structureIds, boolean admin) {
+        return aPersonneRepository.findByNameLikeNotInEtabInStaffCategories(name, structureIds);
+    }
+
+    public List<SimplePersonneDto> searchPersonneNotInEtabButInSiren(String name, Set<Long> structureIds, Set<String> sirens, boolean admin) {
+        return aPersonneRepository.findByNameLikeNotInEtabButInSiren(name, structureIds, sirens);
+    }
+
+    public List<SimplePersonneDto> searchPersonneNotInEtabButInSirenInStaffCategories(String name, Set<Long> structureIds, Set<String> sirens, boolean admin) {
+        return aPersonneRepository.findByNameLikeNotInEtabButInSirenInStaffCategories(name, structureIds, sirens);
     }
 
     @Cacheable(value = "personnesByEtablissement")

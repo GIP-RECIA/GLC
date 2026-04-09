@@ -74,34 +74,68 @@ public class PersonneController {
     private AuditService auditService;
 
     @GetMapping
+    // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
     public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
                                                                   @RequestParam(value = "name") String name,
                                                                   @RequestParam(value = "etab", required = false) Long etabId,
-                                                                  @RequestParam(value = "staff", required = false) boolean staff) {
+                                                                  @RequestParam(value = "not_in_etab", required = false) Long notInEtabId,
+                                                                  @RequestParam(value = "staff", required = false, defaultValue = "False") boolean staff,
+                                                                  @RequestParam(value = "check_rights", required = false, defaultValue = "True") boolean checkRights) {
+        List<SimplePersonneDto> personnes;
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+
+        // Cas de la recherche dans un établissement
         if(etabId != null){
             AStructure aStructure = aStructureRepository.getReferenceById(etabId);
-            Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
             if(allowedSiren.contains(aStructure.getSiren())){
-                List<SimplePersonneDto> personnes = personneService.searchPersonneInEtabInStaffCategories(name, etabId);
-                if (personnes.isEmpty()) {
-                    return new ResponseEntity<>(HttpStatus.OK);
+                // Ici pas besoin de revérifier les droits car ils sont déjà véirifiés implicitement comme on recherche uniquement dans l'établissement
+                if(staff){
+                    personnes = personneService.searchPersonneInEtabInStaffCategories(name, Set.of(etabId), !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                } else {
+                    personnes = personneService.searchPersonneInEtab(name, Set.of(etabId), !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
                 }
-                return new ResponseEntity<>(personnes, HttpStatus.OK);
             } else {
                 log.warn("User {} is not authorized to view etab {}", principal.getUsername(), etabId);
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
         }
-        // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
-        List<SimplePersonneDto> personnes;
-        if(staff){
-            personnes = personneService.searchPersonneInStaffCategories(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
-        } else {
-            personnes = personneService.searchPersonne(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+
+        // Cas de la recherche ou on évite un établissement
+        else if(notInEtabId != null){
+            // recherche hors d'un établissement sans vérifier les droits = recherche utilisée pour le rattachement
+            if(!checkRights){
+                if(staff){
+                    personnes = personneService.searchPersonneNotInEtabInStaffCategories(name, Set.of(notInEtabId), !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                } else {
+                    personnes = personneService.searchPersonneNotInEtab(name, Set.of(notInEtabId), !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                }
+            } else {
+                if(staff){
+                    personnes = personneService.searchPersonneNotInEtabButInSirenInStaffCategories(name, Set.of(notInEtabId), allowedSiren, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                } else {
+                    personnes = personneService.searchPersonneNotInEtabButInSiren(name, Set.of(notInEtabId), allowedSiren, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                }
+            }
         }
-        if (personnes.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.OK);
+
+        // Cas de la recherche globale (pas dans un établissement, et on évite pas non plus un établissement)
+        else {
+            if(!checkRights){
+                if(staff){
+                    personnes = personneService.searchPersonneInStaffCategories(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                } else {
+                    personnes = personneService.searchPersonne(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                }
+            } else {
+                // On ne cherche que les personnes dans les sirens autorisés
+                if(staff){
+                    personnes = personneService.searchPersonneInEtabBySirenInStaffCategories(name, allowedSiren, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                } else {
+                    personnes = personneService.searchPersonneInEtabBySiren(name, allowedSiren, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                }
+            }
         }
+
         return new ResponseEntity<>(personnes, HttpStatus.OK);
     }
 
