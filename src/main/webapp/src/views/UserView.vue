@@ -15,26 +15,22 @@
 -->
 
 <script setup lang="ts">
+import type { PersonneFonction } from '@/types'
 import { faLink, faLock, faLockOpen, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
 import { ref, useTemplateRef, watch } from 'vue'
 // import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import ManageAdditionalDialog from '@/components/user/dialogs/ManageAdditionalDialog.vue'
 import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/user/tabs/UserInformationTab.vue'
-import { usePersonne } from '@/composables/index.ts'
 import { usePersonneStore } from '@/stores/index.ts'
 import { Etat } from '@/types/enums/index.ts'
 
 const personneStore = usePersonneStore()
 const { initCurrentPersonne } = personneStore
 const { currentPersonne } = storeToRefs(personneStore)
-
-const {
-  hasFunctions,
-  canEditAdditionals,
-} = usePersonne()
 
 const route = useRoute()
 
@@ -50,6 +46,8 @@ watch(
     immediate: true,
   },
 )
+
+/* Tabs */
 
 const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
 
@@ -105,6 +103,17 @@ function changeActiveTab(e: KeyboardEvent): void {
 
   setActiveTab(index, true)
 }
+
+/* Dialog */
+
+const dialogState = ref<boolean>(false)
+
+const fonction = ref<PersonneFonction>()
+
+function editFunction(payload?: PersonneFonction): void {
+  fonction.value = payload
+  dialogState.value = true
+}
 </script>
 
 <template>
@@ -159,7 +168,7 @@ function changeActiveTab(e: KeyboardEvent): void {
           <button
             type="button"
             class="btn-primary small"
-            :disabled="!currentPersonne?.etat || !canEditAdditionals"
+            :disabled="!currentPersonne?.etat"
           >
             Rattacher
             <FontAwesomeIcon
@@ -209,15 +218,21 @@ function changeActiveTab(e: KeyboardEvent): void {
 
       <UserAdministrativeTab
         v-show="activeTab === 1"
-        v-if="hasFunctions"
         id="user-tabpanel-1"
         role="tabpanel"
         aria-labelledby="user-tab-1"
         tabindex="0"
         :user="currentPersonne"
+        @edit-function="editFunction"
       />
     </div>
   </div>
+
+  <ManageAdditionalDialog
+    v-model="dialogState"
+    :fonction="fonction"
+    @update:model-value="dialogState = false"
+  />
 </template>
 
 <style scoped lang="scss">

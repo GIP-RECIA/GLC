@@ -56,8 +56,10 @@ export interface SimpleEtablissement {
 }
 
 export type StructureForUser = SimpleEtablissement & {
-  fonctions: PersonneFonction[]
-  additionalFonctions: PersonneFonction[]
   structureRattachement: boolean
   structureCourante: boolean
+  fonctions: PersonneFonction[]
+  additionalFonctions: PersonneFonction[]
+  classes: string[]
+  groupesPedagogiques: string[]
 }

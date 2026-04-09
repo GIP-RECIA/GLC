@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Personne } from '@/types/index.ts'
+import type { Personne, PersonneFonction } from '@/types/index.ts'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
@@ -12,12 +12,24 @@ defineProps<{
   user?: Personne
 }>()
 
+const emit = defineEmits<{
+  editFunction: [fonction: PersonneFonction | undefined]
+}>()
+
 const configurationStore = useConfigurationStore()
 const { allFilieres } = storeToRefs(configurationStore)
 
 const { t } = useI18n()
 
 const { canEditAdditionals } = usePersonne()
+
+function addFunction(): void {
+  emit('editFunction', undefined)
+}
+
+function editFunction(fonction: PersonneFonction): void {
+  emit('editFunction', fonction)
+}
 </script>
 
 <template>
@@ -64,6 +76,7 @@ const { canEditAdditionals } = usePersonne()
             :filieres="allFilieres"
             :fonctions="structure.additionalFonctions"
             :clickable="canEditAdditionals"
+            @tag-click="editFunction"
           />
         </div>
 
@@ -71,6 +84,7 @@ const { canEditAdditionals } = usePersonne()
           <button
             type="button"
             class="btn-primary small"
+            @click="addFunction"
           >
             {{ t('button.add') }}
             <FontAwesomeIcon
@@ -88,13 +102,13 @@ const { canEditAdditionals } = usePersonne()
         </header>
 
         <div class="body">
-          <ul v-if="[].length > 0">
+          <ul v-if="structure.classes.length > 0">
             <li
-              v-for="uClass in []"
+              v-for="uClass in structure.classes"
               :key="`class-${uClass}`"
               class="tag-primary"
             >
-              {{ }}
+              {{ uClass }}
             </li>
           </ul>
         </div>
@@ -108,13 +122,15 @@ const { canEditAdditionals } = usePersonne()
         </header>
 
         <div class="body">
-          <ul v-if="[].length > 0">
+          <ul
+            v-if="structure.groupesPedagogiques.length > 0"
+          >
             <li
-              v-for="group in []"
+              v-for="group in structure.groupesPedagogiques"
               :key="`educational-group${group}`"
               class="tag-primary"
             >
-              {{ }}
+              {{ group }}
             </li>
           </ul>
         </div>
@@ -146,6 +162,13 @@ const { canEditAdditionals } = usePersonne()
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    > ul {
+      @include unstyled-list;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 8px;
+    }
   }
 
   @media (width >= map.get($grid-breakpoints, lg)) {

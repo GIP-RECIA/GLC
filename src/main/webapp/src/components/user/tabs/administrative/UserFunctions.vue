@@ -30,41 +30,42 @@ const props = withDefaults(
     clickable: false,
   },
 )
-const emit = defineEmits({
-  itemClic(payload: PersonneFonction | undefined): boolean {
-    return !!payload
-  },
-})
+const emit = defineEmits<{
+  tagClick: [function: PersonneFonction]
+}>()
 
 const filteredFilieres = computed<Filiere[]>(() => {
-  if (!props.filieres)
+  if (!props.filieres?.length || !props.fonctions?.length)
     return []
-  const fonctions = props.fonctions
-    ? props.fonctions
-    : []
-  const filiereIds = [
-    ...new Set(fonctions.map(({ filiere }) => filiere)),
-  ]
+
+  const fonctionsMap = new Map<number, Map<number, PersonneFonction>>()
+
+  for (const fun of props.fonctions) {
+    let disciplineMap = fonctionsMap.get(fun.filiere)
+
+    if (!disciplineMap) {
+      disciplineMap = new Map()
+      fonctionsMap.set(fun.filiere, disciplineMap)
+    }
+
+    if (!disciplineMap.has(fun.discipline))
+      disciplineMap.set(fun.discipline, fun)
+  }
 
   return props.filieres
-    .filter(({ id }) => filiereIds.includes(id))
+    .filter(f => fonctionsMap.has(f.id))
     .map((filiere) => {
-      const filiereFonctions = fonctions
-        .filter(fonction => fonction.filiere === filiere.id)
-      const disciplineIds = filiereFonctions
-        .map(fonction => fonction.discipline)
+      const disciplineMap = fonctionsMap.get(filiere.id)!
 
       const disciplines = filiere.disciplines
-        .filter(({ id }) => disciplineIds.includes(id))
+        .filter(d => disciplineMap.has(d.id))
         .map((discipline) => {
-          const dateFin = filiereFonctions
-            .find(fonction => fonction.discipline === discipline.id)
-            ?.dateFin
+          const fonction = disciplineMap.get(discipline.id)
 
           return {
             ...discipline,
-            endInfo: dateFin
-              ? getDateFin(dateFin)
+            endInfo: fonction?.dateFin
+              ? getDateFin(fonction.dateFin)
               : undefined,
           }
         })
@@ -73,23 +74,22 @@ const filteredFilieres = computed<Filiere[]>(() => {
     })
 })
 
-function onClick(
+function onTagClick(
   filiere: Filiere,
   discipline: Discipline,
 ): void {
-  let fonction = props.fonctions?.find(
-    fonction => (
-      fonction.filiere === filiere.id
-      && fonction.discipline === discipline.id
-    ),
-  )
-  if (fonction) {
-    fonction = {
-      ...fonction,
-      dateFin: discipline.endInfo?.date,
-    }
-  }
-  emit('itemClic', fonction)
+  const fonction = props.fonctions?.find(f => (
+    f.filiere === filiere.id
+    && f.discipline === discipline.id
+  ))
+
+  if (!fonction)
+    return
+
+  emit('tagClick', {
+    ...fonction,
+    dateFin: discipline.endInfo?.date,
+  })
 }
 </script>
 
@@ -99,7 +99,7 @@ function onClick(
     :key="`filiere-card-${filiere.codeFiliere}`"
     :filiere="filiere"
     :clickable="clickable"
-    @tag-click="onClick"
+    @tag-click="onTagClick"
   />
 </template>
 
