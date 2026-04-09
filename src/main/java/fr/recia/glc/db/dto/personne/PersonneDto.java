@@ -35,8 +35,11 @@ import lombok.ToString;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Getter
@@ -69,7 +72,7 @@ public class PersonneDto {
     private String idPronote;
     private boolean listeRouge;
     // TODO : la structure courante n'est pas dans la base mais que dans le LDAP
-    private List<StructureForUserDto> listeStructures;
+    private Set<StructureForUserDto> listeStructures;
     // TODO : relations des personnes
     private List<RelationDto> relations;
 
@@ -103,7 +106,7 @@ public class PersonneDto {
             }
         }
         this.listeRouge = aPersonne.isListeRouge();
-        this.listeStructures = new ArrayList<>();
+        this.listeStructures = new TreeSet<>(Comparator.comparing(StructureForUserDto::getNom));
         this.relations = new ArrayList<>();
     }
 
