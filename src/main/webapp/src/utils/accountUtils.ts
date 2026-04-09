@@ -17,7 +17,12 @@
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import type { endInfo, enumValues, FonctionForm, PersonneFonction } from '@/types/index.ts'
 import { faUser as farUser } from '@fortawesome/free-regular-svg-icons'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import {
+  faHourglassEnd,
+  faHourglassHalf,
+  faHourglassStart,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons'
 import { differenceInMonths, isPast } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { useConfigurationStore } from '@/stores/index.ts'
@@ -165,7 +170,7 @@ function getDateFin(date: string): endInfo {
       isPast: true,
       i18n: 'person.function.hourglass.end',
       color: '',
-      icon: 'fas fa-hourglass-end',
+      icon: faHourglassEnd,
     }
   }
   const months: number = differenceInMonths(date, new Date())
@@ -176,7 +181,7 @@ function getDateFin(date: string): endInfo {
       isPast: false,
       i18n: 'person.function.hourglass.half',
       color: 'warning',
-      icon: 'fas fa-hourglass-half',
+      icon: faHourglassHalf,
     }
   }
 
@@ -186,7 +191,7 @@ function getDateFin(date: string): endInfo {
     isPast: false,
     i18n: 'person.function.hourglass.start',
     color: 'primary',
-    icon: 'fas fa-hourglass-start',
+    icon: faHourglassStart,
   }
 }
 

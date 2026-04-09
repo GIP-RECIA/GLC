@@ -60,9 +60,9 @@ defineProps<{
                 <span aria-hidden="true" />
               </RouterLink>
 
-              <p>
+              <p v-show="structure.type || structure.uai">
                 {{ structure.type }}
-                <span>
+                <span v-show="structure.uai">
                   {{ structure.uai }}
                 </span>
               </p>

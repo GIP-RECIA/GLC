@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Personne } from '@/types/index.ts'
-import { faPen, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import FonctionsLayout from '@/components/layouts/FonctionsLayout.vue'
 import { usePersonne } from '@/composables/index.ts'
 import { useConfigurationStore } from '@/stores/index.ts'
+import UserFunctions from './administrative/UserFunctions.vue'
 
 defineProps<{
   user?: Personne
@@ -25,10 +25,16 @@ const { canEditAdditionals } = usePersonne()
     <div
       v-for="structure in user?.listeStructures"
       :key="`user-administrative-structure-${structure.id}`"
-      class="structure-functions-card"
+      class="structure-functions"
     >
       <h2>
         {{ structure.nom }}
+        <span v-show="structure.type">
+          {{ structure.type }}
+          <span v-show="structure.uai">
+            {{ structure.uai }}
+          </span>
+        </span>
       </h2>
 
       <div class="r-card">
@@ -39,7 +45,7 @@ const { canEditAdditionals } = usePersonne()
         </header>
 
         <div class="body">
-          <FonctionsLayout
+          <UserFunctions
             :filieres="allFilieres"
             :fonctions="structure.fonctions"
           />
@@ -54,7 +60,7 @@ const { canEditAdditionals } = usePersonne()
         </header>
 
         <div class="body">
-          <FonctionsLayout
+          <UserFunctions
             :filieres="allFilieres"
             :fonctions="structure.additionalFonctions"
             :clickable="canEditAdditionals"
@@ -66,18 +72,9 @@ const { canEditAdditionals } = usePersonne()
             type="button"
             class="btn-primary small"
           >
-            {{ t(
-              structure.additionalFonctions.length > 0
-                ? 'button.edit'
-                : 'button.add',
-            )
-            }}
+            {{ t('button.add') }}
             <FontAwesomeIcon
-              :icon="
-                structure.additionalFonctions.length > 0
-                  ? faPen
-                  : faPlus
-              "
+              :icon="faPlus"
             />
           </button>
         </footer>
@@ -92,25 +89,32 @@ const { canEditAdditionals } = usePersonne()
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
 
-.structure-functions-card {
-  display: flex;
-  flex-direction: column;
+.structure-functions {
+  display: grid;
   gap: 16px;
 
   > h2 {
     margin-bottom: 0;
+
+    > span {
+      opacity: 0.6;
+      font-size: var(--#{$prefix}font-size-sm);
+    }
   }
-}
 
-.info-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  > .r-card > .body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 
-  @media (width >= map.get($grid-breakpoints, md)) {
-    display: grid;
+  @media (width >= map.get($grid-breakpoints, lg)) {
     grid-template-columns: repeat(2, 1fr);
     align-items: start;
+
+    > h2 {
+      grid-column: span 2;
+    }
   }
 }
 </style>
