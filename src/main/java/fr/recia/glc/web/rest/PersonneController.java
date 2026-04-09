@@ -48,6 +48,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,9 +73,11 @@ public class PersonneController {
     @Autowired
     private AuditService auditService;
 
-    // TODO : recherche globale
     @GetMapping
-    public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal, @RequestParam(value = "name") String name, @RequestParam(value = "etab", required = false) Long etabId) {
+    public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
+                                                                  @RequestParam(value = "name") String name,
+                                                                  @RequestParam(value = "etab", required = false) Long etabId,
+                                                                  @RequestParam(value = "staff", required = false) boolean staff) {
         if(etabId != null){
             AStructure aStructure = aStructureRepository.getReferenceById(etabId);
             Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
@@ -90,7 +93,12 @@ public class PersonneController {
             }
         }
         // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
-        List<SimplePersonneDto> personnes = personneService.searchPersonneInStaffCategories(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+        List<SimplePersonneDto> personnes;
+        if(staff){
+            personnes = personneService.searchPersonneInStaffCategories(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+        } else {
+            personnes = personneService.searchPersonne(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+        }
         if (personnes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
