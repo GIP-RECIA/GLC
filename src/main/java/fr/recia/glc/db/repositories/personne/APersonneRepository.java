@@ -175,17 +175,49 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
-        "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
-        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
-        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
-        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
-        "AND s.id != :etabId " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') " +
+        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.uid LIKE concat(:name, '%')) " +
+        "AND s.id IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeNotInEtabInStaffCategories(String name, Long etabId);
+    List<SimplePersonneDto> findByNameLikeAdminInEtab(String name, Set<Long> etabId);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "FROM APersonne ap " +
+        "JOIN ap.listeStructures s "+
+        "WHERE (ap.cn LIKE concat('%', :name, '%') " +
+        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.uid LIKE concat(:name, '%')) " +
+        "AND s.id NOT IN :etabId " +
+        "ORDER BY ap.cn, ap.sn")
+    List<SimplePersonneDto> findByNameLikeAdminNotInEtab(String name, Set<Long> etabId);
+
+    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "FROM APersonne ap " +
+        "JOIN ap.listeStructures s "+
+        "WHERE (ap.cn LIKE concat('%', :name, '%') " +
+        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.uid LIKE concat(:name, '%')) " +
+        "AND s.siren IN :sirens " +
+        "ORDER BY ap.cn, ap.sn")
+    List<SimplePersonneDto> findByNameLikeAdminInEtabBySiren(String name, Set<String> sirens);
+
+    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "FROM APersonne ap " +
+        "JOIN ap.listeStructures s "+
+        "WHERE (ap.cn LIKE concat('%', :name, '%') " +
+        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.uid LIKE concat(:name, '%')) " +
+        "AND s.id NOT IN :etabId " +
+        "AND s.siren IN :sirens " +
+        "ORDER BY ap.cn, ap.sn")
+    List<SimplePersonneDto> findByNameLikeAdminNotInEtabButInSiren(String name, Set<Long> etabId, Set<String> sirens);
+
+    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
         "OR ap.email LIKE concat(:name, '%') " +
@@ -196,5 +228,66 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
         "ORDER BY ap.cn, ap.sn")
     List<SimplePersonneDto> findByNameLikeAdminInStaffCategories(String name);
+
+    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "FROM APersonne ap " +
+        "JOIN ap.listeStructures s "+
+        "WHERE (ap.cn LIKE concat('%', :name, '%') " +
+        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.uid LIKE concat(:name, '%')) " +
+        "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
+        "AND s.id IN :etabId " +
+        "ORDER BY ap.cn, ap.sn")
+    List<SimplePersonneDto> findByNameLikeAdminInEtabInStaffCategories(String name, Set<Long> etabId);
+
+    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "FROM APersonne ap " +
+        "JOIN ap.listeStructures s "+
+        "WHERE (ap.cn LIKE concat('%', :name, '%') " +
+        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.uid LIKE concat(:name, '%')) " +
+        "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
+        "AND s.id NOT IN :etabId " +
+        "ORDER BY ap.cn, ap.sn")
+    List<SimplePersonneDto> findByNameLikeAdminNotInEtabInStaffCategories(String name, Set<Long> etabId);
+
+    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "FROM APersonne ap " +
+        "JOIN ap.listeStructures s "+
+        "WHERE (ap.cn LIKE concat('%', :name, '%') " +
+        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.uid LIKE concat(:name, '%')) " +
+        "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
+        "AND s.siren IN :sirens " +
+        "ORDER BY ap.cn, ap.sn")
+    List<SimplePersonneDto> findByNameLikeAdminInEtabBySirenInStaffCategories(String name, Set<String> sirens);
+
+    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "FROM APersonne ap " +
+        "JOIN ap.listeStructures s "+
+        "WHERE (ap.cn LIKE concat('%', :name, '%') " +
+        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.uid LIKE concat(:name, '%')) " +
+        "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
+        "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
+        "AND s.id NOT IN :etabId " +
+        "AND s.siren IN :sirens " +
+        "ORDER BY ap.cn, ap.sn")
+    List<SimplePersonneDto> findByNameLikeAdminNotInEtabButInSirenInStaffCategories(String name, Set<Long> etabId, Set<String> sirens);
 
 }
