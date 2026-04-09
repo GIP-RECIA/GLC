@@ -74,7 +74,7 @@ public class PersonneController {
     private AuditService auditService;
 
     @GetMapping
-    // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
+
     public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
                                                                   @RequestParam(value = "name") String name,
                                                                   @RequestParam(value = "etab", required = false) Long etabId,
@@ -83,6 +83,8 @@ public class PersonneController {
                                                                   @RequestParam(value = "check_rights", required = false, defaultValue = "True") boolean checkRights) {
         List<SimplePersonneDto> personnes;
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
+        boolean canSearchByUid = !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty();
 
         // Cas de la recherche dans un établissement
         if(etabId != null){
@@ -90,9 +92,9 @@ public class PersonneController {
             if(allowedSiren.contains(aStructure.getSiren())){
                 // Ici pas besoin de revérifier les droits car ils sont déjà véirifiés implicitement comme on recherche uniquement dans l'établissement
                 if(staff){
-                    personnes = personneService.searchPersonneInEtabInStaffCategories(name, Set.of(etabId), !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonneInEtabInStaffCategories(name, Set.of(etabId), canSearchByUid);
                 } else {
-                    personnes = personneService.searchPersonneInEtab(name, Set.of(etabId), !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonneInEtab(name, Set.of(etabId), canSearchByUid);
                 }
             } else {
                 log.warn("User {} is not authorized to view etab {}", principal.getUsername(), etabId);
@@ -105,15 +107,15 @@ public class PersonneController {
             // recherche hors d'un établissement sans vérifier les droits = recherche utilisée pour le rattachement
             if(!checkRights){
                 if(staff){
-                    personnes = personneService.searchPersonneNotInEtabInStaffCategories(name, Set.of(notInEtabId), !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonneNotInEtabInStaffCategories(name, Set.of(notInEtabId), canSearchByUid);
                 } else {
-                    personnes = personneService.searchPersonneNotInEtab(name, Set.of(notInEtabId), !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonneNotInEtab(name, Set.of(notInEtabId), canSearchByUid);
                 }
             } else {
                 if(staff){
-                    personnes = personneService.searchPersonneNotInEtabButInSirenInStaffCategories(name, Set.of(notInEtabId), allowedSiren, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonneNotInEtabButInSirenInStaffCategories(name, Set.of(notInEtabId), allowedSiren, canSearchByUid);
                 } else {
-                    personnes = personneService.searchPersonneNotInEtabButInSiren(name, Set.of(notInEtabId), allowedSiren, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonneNotInEtabButInSiren(name, Set.of(notInEtabId), allowedSiren, canSearchByUid);
                 }
             }
         }
@@ -122,16 +124,16 @@ public class PersonneController {
         else {
             if(!checkRights){
                 if(staff){
-                    personnes = personneService.searchPersonneInStaffCategories(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonneInStaffCategories(name, canSearchByUid);
                 } else {
-                    personnes = personneService.searchPersonne(name, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonne(name, canSearchByUid);
                 }
             } else {
                 // On ne cherche que les personnes dans les sirens autorisés
                 if(staff){
-                    personnes = personneService.searchPersonneInEtabBySirenInStaffCategories(name, allowedSiren, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonneInEtabBySirenInStaffCategories(name, allowedSiren, canSearchByUid);
                 } else {
-                    personnes = personneService.searchPersonneInEtabBySiren(name, allowedSiren, !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty());
+                    personnes = personneService.searchPersonneInEtabBySiren(name, allowedSiren, canSearchByUid);
                 }
             }
         }
