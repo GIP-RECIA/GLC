@@ -55,6 +55,15 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
         "AND f.id NOT IN :fonctionIds")
     Long nbAdditionalFonctionsInStructure(Long id, Long structureId, List<Long> fonctionIds);
 
+    @Query("SELECT COUNT(f.id) " +
+        "FROM Fonction f " +
+        "WHERE f.personne.id = :id " +
+        "AND f.structure.id = :structureId " +
+        "AND f.disciplinePoste.id = :disciplineId " +
+        "AND f.filiere.id = :filiereId")
+    Long nbSameFonctionsInStructure(Long id, Long structureId, Long disciplineId, Long filiereId);
+
+
     @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
         "FROM Fonction f " +
         "WHERE f.personne.id = :id " +

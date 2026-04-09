@@ -129,8 +129,7 @@ public class PersonneService {
     }
 
     public boolean hasFunctionsInStructure(Long id, Long structureId, List<Long> fonctionsIds) {
-        return this.hasOfficialFunctionsInStructure(id, structureId) ||
-            this.hasAdditionalFunctionsInStructure(id, structureId, fonctionsIds);
+        return this.hasOfficialFunctionsInStructure(id, structureId) || this.hasAdditionalFunctionsInStructure(id, structureId, fonctionsIds);
     }
 
 }

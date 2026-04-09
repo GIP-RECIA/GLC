@@ -351,13 +351,18 @@ public class FonctionService {
         }
 
         if (!toAddAdditional.isEmpty()) {
-            fonctionRepository.saveAll(toAddAdditional.stream()
-                .map(fonction -> {
-                    TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonction.getFiliere()).orElse(null);
-                    Discipline discipline = disciplineRepository.findById(fonction.getDiscipline()).orElse(null);
-                    return new Fonction(discipline, filiere, aStructure, aPersonne, source, fonction.getDateFin());
-                })
-                .collect(Collectors.toList()));
+            List<Fonction> fonctions = new ArrayList<>();
+            for(FonctionDto fonctionDto : toAddAdditional){
+                // Si on a déjà la fonction qu'on veut ajouter alors il ne faut pas la remettre ça va poser des problèmes de contraintes
+                if(fonctionRepository.nbSameFonctionsInStructure(fonctionDto.getPersonne(), fonctionDto.getStructure(), fonctionDto.getDiscipline(), fonctionDto.getFiliere()) == 0){
+                    TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonctionDto.getFiliere()).orElse(null);
+                    Discipline discipline = disciplineRepository.findById(fonctionDto.getDiscipline()).orElse(null);
+                    fonctions.add(new Fonction(discipline, filiere, aStructure, aPersonne, source, fonctionDto.getDateFin()));
+                } else {
+                    log.warn("Try to add function {}-{} but already added for user {} in etab {}", fonctionDto.getFiliere(), fonctionDto.getDiscipline(), fonctionDto.getPersonne(), fonctionDto.getStructure());
+                }
+            }
+            fonctionRepository.saveAll(fonctions);
         }
 
         if (!toDeleteAdditional.isEmpty()) {
@@ -396,31 +401,6 @@ public class FonctionService {
         }
 
         return true;
-    }
-
-    private Fonction getFonction(FonctionDto fonctionDto) {
-        return fonctionRepository.findOne(
-            QFonction.fonction.filiere.id.eq(fonctionDto.getFiliere())
-                .and(QFonction.fonction.disciplinePoste.id.eq(fonctionDto.getDiscipline()))
-                .and(QFonction.fonction.personne.id.eq(fonctionDto.getPersonne()))
-                .and(QFonction.fonction.structure.id.eq(fonctionDto.getStructure()))
-                .and(QFonction.fonction.source.eq(fonctionDto.getSource()))
-        ).orElse(null);
-    }
-
-    private Fonction getFonctionOrNewFonction(FonctionDto fonctionDto, AStructure aStructure, APersonne aPersonne) {
-        Fonction fonction = getFonction(fonctionDto);
-        if (fonction == null) {
-            fonction = new Fonction(
-                disciplineRepository.findById(fonctionDto.getDiscipline()).orElse(null),
-                typeFonctionFiliereRepository.findById(fonctionDto.getFiliere()).orElse(null),
-                aStructure,
-                aPersonne,
-                fonctionDto.getSource(),
-                fonctionDto.getDateFin()
-            );
-        }
-        return fonction;
     }
 
     public long nbDiscipline(Long structureId, String filiereCode, String disciplineCode) {
