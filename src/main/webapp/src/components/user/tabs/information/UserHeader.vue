@@ -22,7 +22,7 @@ const {
   <div class="header-card">
     <div class="user-avatar">
       <img
-        :src="undefined ?? '/images/icones/noPictureUser.svg'"
+        :src="user?.photo ?? '/images/icones/noPictureUser.svg'"
         alt="Photo de profile"
       >
     </div>
