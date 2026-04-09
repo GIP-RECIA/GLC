@@ -79,6 +79,46 @@ const { canEditAdditionals } = usePersonne()
           </button>
         </footer>
       </div>
+
+      <div class="r-card">
+        <header>
+          <h3>
+            Classes
+          </h3>
+        </header>
+
+        <div class="body">
+          <ul v-if="[].length > 0">
+            <li
+              v-for="uClass in []"
+              :key="`class-${uClass}`"
+              class="tag-primary"
+            >
+              {{ }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="r-card">
+        <header>
+          <h3>
+            Groupes pédagogiques
+          </h3>
+        </header>
+
+        <div class="body">
+          <ul v-if="[].length > 0">
+            <li
+              v-for="group in []"
+              :key="`educational-group${group}`"
+              class="tag-primary"
+            >
+              {{ }}
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>

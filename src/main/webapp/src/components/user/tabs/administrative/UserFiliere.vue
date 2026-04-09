@@ -43,7 +43,7 @@ function tagClick(discipline: Discipline): void {
       {{ filiere.libelleFiliere }}
     </h4>
 
-    <ul>
+    <ul v-if="filiere.disciplines.length > 0">
       <li
         v-for="discipline in filiere.disciplines"
         :key="`discipline-tag-${discipline.code}`"
