@@ -15,7 +15,6 @@
  */
 package fr.recia.glc.db.repositories.personne;
 
-import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.repositories.AbstractRepository;
@@ -172,7 +171,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     List<SimplePersonneDto> findByNameLikeNotInEtabButInSirenInStaffCategories(String name, Set<Long> etabId, Set<String> sirens);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
@@ -183,7 +182,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     List<SimplePersonneDto> findByNameLikeAdminInEtab(String name, Set<Long> etabId);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
@@ -194,7 +193,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     List<SimplePersonneDto> findByNameLikeAdminNotInEtab(String name, Set<Long> etabId);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
@@ -205,7 +204,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     List<SimplePersonneDto> findByNameLikeAdminInEtabBySiren(String name, Set<String> sirens);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
@@ -217,7 +216,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     List<SimplePersonneDto> findByNameLikeAdminNotInEtabButInSiren(String name, Set<Long> etabId, Set<String> sirens);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
         "OR ap.email LIKE concat(:name, '%') " +
@@ -230,7 +229,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     List<SimplePersonneDto> findByNameLikeAdminInStaffCategories(String name);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
@@ -245,7 +244,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     List<SimplePersonneDto> findByNameLikeAdminInEtabInStaffCategories(String name, Set<Long> etabId);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
@@ -260,7 +259,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     List<SimplePersonneDto> findByNameLikeAdminNotInEtabInStaffCategories(String name, Set<Long> etabId);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
@@ -275,7 +274,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     List<SimplePersonneDto> findByNameLikeAdminInEtabBySirenInStaffCategories(String name, Set<String> sirens);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +

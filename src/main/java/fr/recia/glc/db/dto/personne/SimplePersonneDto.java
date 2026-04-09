@@ -38,6 +38,7 @@ public class SimplePersonneDto {
     private String cn;
     private String email;
     private String sn;
+    private String uid;
     private Date dateModification;
     private Date dateAcquittement;
     private Date dateSuppression;
@@ -55,6 +56,7 @@ public class SimplePersonneDto {
             this.etat = Etat.Deleting;
             this.dateSuppression = dateModification;
         }
+        this.uid = uid;
     }
 
     public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
@@ -70,6 +72,7 @@ public class SimplePersonneDto {
             this.etat = Etat.Deleting;
             this.dateSuppression = dateModification;
         }
+        this.uid = "";
     }
 
     public SimplePersonneDto(APersonne aPersonne) {
