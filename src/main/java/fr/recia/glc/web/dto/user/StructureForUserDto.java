@@ -25,6 +25,8 @@ public class StructureForUserDto {
     private List<FonctionDto> additionalFonctions;
     private boolean structureRattachement;
     private boolean structureCourante;
+    private List<String> classes;
+    private List<String> groupesPedagogiques;
 
     public StructureForUserDto(AStructure aStructure) {
         String[] split = aStructure.getNom().split("\\$");
@@ -50,6 +52,8 @@ public class StructureForUserDto {
         this.additionalFonctions = new ArrayList<>();
         this.structureCourante = false;
         this.structureRattachement = false;
+        this.classes = new ArrayList<>();
+        this.groupesPedagogiques = new ArrayList<>();
     }
 
 }

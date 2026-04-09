@@ -33,6 +33,7 @@ import fr.recia.glc.services.db.GroupeService;
 import fr.recia.glc.services.db.PersonneService;
 import fr.recia.glc.services.db.RelationService;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
+import fr.recia.glc.web.dto.user.StructureForUserDto;
 import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,8 +171,15 @@ public class PersonneController {
             personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
             personneDto.setRelations(relationService.getPersonneRelations(id));
             // TODO : ne fonctionne que pour les élèves à faire aussi pour les enseignants via les enseignements
-            personneDto.setClasses(groupeService.getClassesOfPersonne(personne.getId(), personne.getCategorie()));
-            personneDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId(), personne.getCategorie()));
+            for(AStructure aStructure : personne.getListeStructures()){
+                StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);
+                personneDto.getListeStructures().add(structureForUserDto);
+                if(aStructure.getId()==personne.getStructRattachement().getId()){
+                    structureForUserDto.setStructureRattachement(true);
+                }
+                structureForUserDto.setClasses(groupeService.getClassesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
+                structureForUserDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
+            }
             return new ResponseEntity<>(personneDto, HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to view person {}", principal.getUsername(), id);

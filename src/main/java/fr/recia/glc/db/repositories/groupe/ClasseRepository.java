@@ -28,7 +28,8 @@ public interface ClasseRepository<T extends Classe> extends AbstractRepository<T
     @Query("SELECT c.cn as cn " +
         "from Classe c " +
         "join c.membres m " +
-        "where m.pk.personne.id = :personneId"
+        "where m.pk.personne.id = :personneId " +
+        "and c.proprietaire.id = :etablissementId"
     )
-    List<String> findByPersonneId(Long personneId);
+    List<String> findByPersonneId(Long personneId, Long etablissementId);
 }

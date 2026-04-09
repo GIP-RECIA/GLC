@@ -29,8 +29,10 @@ public interface MappingAGroupeAPersonneEnseignementRepository<T extends Mapping
 
     @Query("select m.pk.groupe.cn as cn " +
         "from MappingAGroupeAPersonneEnseignement m " +
+        "join m.pk.groupe g "+
         "where m.pk.enseignant.id = :personneId " +
-        "and m.pk.groupe.categorie = :categorie"
+        "and m.pk.groupe.categorie = :categorie " +
+        "and g.proprietaire.id = :etablissementId"
     )
-    List<String> findByEnseignantIdAndCategorie(Long personneId, CategorieGroupe categorie);
+    List<String> findByEnseignantIdAndCategorie(Long personneId, CategorieGroupe categorie, Long etablissementId);
 }

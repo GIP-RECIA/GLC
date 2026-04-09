@@ -26,22 +26,22 @@ public class GroupeService {
     @Autowired
     private MappingAGroupeAPersonneEnseignementRepository<MappingAGroupeAPersonneEnseignement> mappingAGroupeAPersonneEnseignementRepository;
 
-    public List<String> getClassesOfPersonne(Long personneId, CategoriePersonne categoriePersonne){
+    public List<String> getClassesOfPersonne(Long personneId, CategoriePersonne categoriePersonne, Long structureId){
         if(categoriePersonne.equals(CategoriePersonne.Eleve)){
-            return classeRepository.findByPersonneId(personneId);
+            return classeRepository.findByPersonneId(personneId, structureId);
         }
         if(categoriePersonne.equals(CategoriePersonne.Enseignant)){
-            return mappingAGroupeAPersonneEnseignementRepository.findByEnseignantIdAndCategorie(personneId, CategorieGroupe.Classe);
+            return mappingAGroupeAPersonneEnseignementRepository.findByEnseignantIdAndCategorie(personneId, CategorieGroupe.Classe, structureId);
         }
         return new ArrayList<>();
     }
 
-    public List<String> getGroupesOfPersonne(Long personneId, CategoriePersonne categoriePersonne){
+    public List<String> getGroupesOfPersonne(Long personneId, CategoriePersonne categoriePersonne, Long structureId){
         if(categoriePersonne.equals(CategoriePersonne.Eleve)){
-            return groupeRepository.findByPersonneId(personneId);
+            return groupeRepository.findByPersonneId(personneId, structureId);
         }
         if(categoriePersonne.equals(CategoriePersonne.Enseignant)){
-            return mappingAGroupeAPersonneEnseignementRepository.findByEnseignantIdAndCategorie(personneId, CategorieGroupe.Groupe);
+            return mappingAGroupeAPersonneEnseignementRepository.findByEnseignantIdAndCategorie(personneId, CategorieGroupe.Groupe, structureId);
         }
         return new ArrayList<>();
     }

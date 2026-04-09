@@ -72,9 +72,6 @@ public class PersonneDto {
     private List<StructureForUserDto> listeStructures;
     // TODO : relations des personnes
     private List<RelationDto> relations;
-    // TODO : classes et groupes pédagogiques pour les élèves/enseignants
-    private List<String> classes;
-    private List<String> groupesPedagogiques;
 
     public PersonneDto(APersonne aPersonne, boolean showUid) {
         this.id = aPersonne.getId();
@@ -107,16 +104,7 @@ public class PersonneDto {
         }
         this.listeRouge = aPersonne.isListeRouge();
         this.listeStructures = new ArrayList<>();
-        for(AStructure aStructure : aPersonne.getListeStructures()){
-            StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);
-            this.listeStructures.add(structureForUserDto);
-            if(aStructure.getId()==aPersonne.getStructRattachement().getId()){
-                structureForUserDto.setStructureRattachement(true);
-            }
-        }
         this.relations = new ArrayList<>();
-        this.classes = new ArrayList<>();
-        this.groupesPedagogiques = new ArrayList<>();
     }
 
     public void setAllFonctions(List<FonctionDto> fonctions) {

@@ -28,7 +28,8 @@ public interface GroupeRepository<T extends Groupe> extends AbstractRepository<T
     @Query("SELECT g.cn as cn " +
         "from Groupe g " +
         "join g.membres m " +
-        "where m.pk.personne.id = :personneId"
+        "where m.pk.personne.id = :personneId " +
+        "and g.proprietaire.id = :etablissementId"
     )
-    List<String> findByPersonneId(Long personneId);
+    List<String> findByPersonneId(Long personneId, Long etablissementId);
 }
