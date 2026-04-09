@@ -114,6 +114,17 @@ function editFunction(payload?: PersonneFonction): void {
   fonction.value = payload
   dialogState.value = true
 }
+
+/* Actions */
+
+function onToggleLock(): void {
+}
+
+function onDelete(): void {
+}
+
+function onAttach(): void {
+}
 </script>
 
 <template>
@@ -134,6 +145,7 @@ function editFunction(payload?: PersonneFonction): void {
               !currentPersonne?.etat
                 || ![Etat.Valide.toString(), Etat.Bloque.toString()].includes(currentPersonne.etat)
             "
+            @click="onToggleLock"
           >
             {{
               currentPersonne?.etat === Etat.Bloque.toString()
@@ -153,6 +165,7 @@ function editFunction(payload?: PersonneFonction): void {
             type="button"
             class="btn-primary small"
             :disabled=" !currentPersonne?.etat"
+            @click="onDelete"
           >
             {{
               currentPersonne?.etat && currentPersonne.etat === Etat.Deleting.toString()
@@ -169,6 +182,7 @@ function editFunction(payload?: PersonneFonction): void {
             type="button"
             class="btn-primary small"
             :disabled="!currentPersonne?.etat"
+            @click="onAttach"
           >
             Rattacher
             <FontAwesomeIcon
