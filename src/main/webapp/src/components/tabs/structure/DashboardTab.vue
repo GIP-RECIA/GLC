@@ -24,7 +24,6 @@ import AlertManager from '@/components/AlertManager.vue'
 import CustomPagination from '@/components/CustomPagination.vue'
 import InfoGrid from '@/components/info/InfoGrid.vue'
 import PersonneCard from '@/components/PersonneCard.vue'
-import ReadonlyData from '@/components/ReadonlyData.vue'
 import { useStructureStore } from '@/stores/index.ts'
 import { DashboardPanel, Etat } from '@/types/enums/index.ts'
 
@@ -65,87 +64,6 @@ const panel = ref<DashboardPanel[]>([DashboardPanel.DeletingAccounts])
 <template>
   <v-container fluid class="d-flex flex-column ga-4">
     <AlertManager />
-
-    <v-card
-      v-if="currentEtab"
-      v-dev
-    >
-      <v-card-text class="info-container">
-        <ReadonlyData
-          v-admin
-          label="uai"
-          :value="currentEtab.uai"
-        />
-        <ReadonlyData
-          label="etat"
-          :value="currentEtab.etat"
-        />
-        <ReadonlyData
-          label="etatAlim"
-          :value="currentEtab.etatAlim"
-        />
-        <ReadonlyData
-          label="source"
-          :value="currentEtab.source"
-        />
-        <ReadonlyData
-          label="anneeScolaire"
-          :value="currentEtab.anneeScolaire"
-        />
-        <ReadonlyData
-          label="adresse"
-          :value="currentEtab.adresse.adresse"
-        />
-        <ReadonlyData
-          label="codePostal"
-          :value="currentEtab.adresse.codePostal"
-        />
-        <ReadonlyData
-          label="ville"
-          :value="currentEtab.adresse.ville"
-        />
-        <ReadonlyData
-          label="boitePostale"
-          :value="currentEtab.adresse.boitePostale"
-        />
-        <ReadonlyData
-          label="pays"
-          :value="currentEtab.adresse.pays"
-        />
-        <ReadonlyData
-          label="categorie"
-          :value="currentEtab.categorie"
-        />
-        <ReadonlyData
-          label="mail"
-          :value="currentEtab.mail"
-        />
-        <ReadonlyData
-          label="nom"
-          :value="currentEtab.nom"
-        />
-        <ReadonlyData
-          label="nomCourt"
-          :value="currentEtab.nomCourt"
-        />
-        <ReadonlyData
-          label="siren"
-          :value="currentEtab.siren"
-        />
-        <ReadonlyData
-          label="siteWeb"
-          :value="currentEtab.siteWeb"
-        />
-        <ReadonlyData
-          label="modeleLogin"
-          :value="currentEtab.modeleLogin"
-        />
-        <ReadonlyData
-          label="logo"
-          :value="currentEtab.logo"
-        />
-      </v-card-text>
-    </v-card>
 
     <InfoGrid />
 
