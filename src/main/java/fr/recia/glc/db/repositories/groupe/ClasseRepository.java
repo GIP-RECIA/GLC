@@ -17,8 +17,18 @@ package fr.recia.glc.db.repositories.groupe;
 
 import fr.recia.glc.db.entities.groupe.Classe;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ClasseRepository<T extends Classe> extends AbstractRepository<T, Long> {
+
+    @Query("SELECT c.cn as cn " +
+        "from Classe c " +
+        "join c.membres m " +
+        "where m.pk.personne.id = :personneId"
+    )
+    List<String> findByPersonneId(Long personneId);
 }

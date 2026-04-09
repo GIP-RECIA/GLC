@@ -29,6 +29,7 @@ import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.db.AddPersonneService;
 import fr.recia.glc.services.db.FonctionService;
+import fr.recia.glc.services.db.GroupeService;
 import fr.recia.glc.services.db.PersonneService;
 import fr.recia.glc.services.db.RelationService;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
@@ -64,6 +65,8 @@ public class PersonneController {
     private PersonneService personneService;
     @Autowired
     private AddPersonneService addPersonneService;
+    @Autowired
+    private GroupeService groupeService;
     @Autowired
     private RelationService relationService;
     @Autowired
@@ -167,6 +170,9 @@ public class PersonneController {
             PersonneDto personneDto = new PersonneDto(personne, showUid);
             personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
             personneDto.setRelations(relationService.getPersonneRelations(id));
+            // TODO : ne fonctionne que pour les élèves à faire aussi pour les enseignants via les enseignements
+            personneDto.setClasses(groupeService.getClassesOfPersonne(personne.getId()));
+            personneDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId()));
             return new ResponseEntity<>(personneDto, HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to view person {}", principal.getUsername(), id);
