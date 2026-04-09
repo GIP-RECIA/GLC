@@ -17,9 +17,20 @@ package fr.recia.glc.db.repositories.groupe;
 
 import fr.recia.glc.db.entities.groupe.MappingAGroupeAPersonneEnseignement;
 import fr.recia.glc.db.entities.groupe.MappingAGroupeAPersonneEnseignementId;
+import fr.recia.glc.db.enums.CategorieGroupe;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface MappingAGroupeAPersonneEnseignementRepository<T extends MappingAGroupeAPersonneEnseignement> extends AbstractRepository<T, MappingAGroupeAPersonneEnseignementId> {
+
+    @Query("select m.pk.groupe.cn as cn " +
+        "from MappingAGroupeAPersonneEnseignement m " +
+        "where m.pk.enseignant.id = :personneId " +
+        "and m.pk.groupe.categorie = :categorie"
+    )
+    List<String> findByEnseignantIdAndCategorie(Long personneId, CategorieGroupe categorie);
 }

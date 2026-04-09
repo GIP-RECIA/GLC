@@ -49,7 +49,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -171,8 +170,8 @@ public class PersonneController {
             personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
             personneDto.setRelations(relationService.getPersonneRelations(id));
             // TODO : ne fonctionne que pour les élèves à faire aussi pour les enseignants via les enseignements
-            personneDto.setClasses(groupeService.getClassesOfPersonne(personne.getId()));
-            personneDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId()));
+            personneDto.setClasses(groupeService.getClassesOfPersonne(personne.getId(), personne.getCategorie()));
+            personneDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId(), personne.getCategorie()));
             return new ResponseEntity<>(personneDto, HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to view person {}", principal.getUsername(), id);
