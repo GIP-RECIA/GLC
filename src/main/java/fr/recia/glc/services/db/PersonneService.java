@@ -42,8 +42,6 @@ public class PersonneService {
     @Autowired
     private APersonneRepository<APersonne> aPersonneRepository;
     @Autowired
-    private FonctionRepository<Fonction> fonctionRepository;
-    @Autowired
     private LdapPeopleDao ldapPeopleDao;
 
     public List<SimplePersonneDto> searchPersonne(String name, boolean admin) {
@@ -139,26 +137,6 @@ public class PersonneService {
 
     public SimplePersonneDto getPersonneSimple(Long id) {
         return aPersonneRepository.findByPersonneIdSimple(id);
-    }
-
-    public boolean isInStructure(Long id, Long structureId) {
-        return aPersonneAStructureRepository.isInStructure(id, structureId) > 0;
-    }
-
-    public boolean hasOfficialFunctionsInStructure(Long id, Long structureId) {
-        return fonctionRepository.nbOfficialFonctionsInStructure(id, structureId) > 0;
-    }
-
-    public boolean hasAdditionalFunctionsInStructure(Long id, Long structureId) {
-        return fonctionRepository.nbAdditionalFonctionsInStructure(id, structureId) > 0;
-    }
-
-    public boolean hasAdditionalFunctionsInStructure(Long id, Long structureId, List<Long> fonctionsIds) {
-        return fonctionRepository.nbAdditionalFonctionsInStructure(id, structureId, fonctionsIds) > 0;
-    }
-
-    public boolean hasFunctionsInStructure(Long id, Long structureId, List<Long> fonctionsIds) {
-        return this.hasOfficialFunctionsInStructure(id, structureId) || this.hasAdditionalFunctionsInStructure(id, structureId, fonctionsIds);
     }
 
 }

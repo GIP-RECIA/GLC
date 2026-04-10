@@ -37,48 +37,9 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
         "FROM Fonction f " +
         "WHERE f.personne.id = :id " +
         "AND f.structure.id = :structureId " +
-        "AND f.source NOT LIKE 'SarapisUi_%'")
-    Long nbOfficialFonctionsInStructure(Long id, Long structureId);
-
-    @Query("SELECT COUNT(f.id) " +
-        "FROM Fonction f " +
-        "WHERE f.personne.id = :id " +
-        "AND f.structure.id = :structureId " +
-        "AND f.source LIKE 'SarapisUi_%'")
-    Long nbAdditionalFonctionsInStructure(Long id, Long structureId);
-
-    @Query("SELECT COUNT(f.id) " +
-        "FROM Fonction f " +
-        "WHERE f.personne.id = :id " +
-        "AND f.structure.id = :structureId " +
-        "AND f.source LIKE 'SarapisUi_%' " +
-        "AND f.id NOT IN :fonctionIds")
-    Long nbAdditionalFonctionsInStructure(Long id, Long structureId, List<Long> fonctionIds);
-
-    @Query("SELECT COUNT(f.id) " +
-        "FROM Fonction f " +
-        "WHERE f.personne.id = :id " +
-        "AND f.structure.id = :structureId " +
         "AND f.disciplinePoste.id = :disciplineId " +
         "AND f.filiere.id = :filiereId")
     Long nbSameFonctionsInStructure(Long id, Long structureId, Long disciplineId, Long filiereId);
-
-
-    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
-        "FROM Fonction f " +
-        "WHERE f.personne.id = :id " +
-        "AND f.personne.structRattachement.id = :structure " +
-        "ORDER BY f.filiere.libelleFiliere")
-    List<FonctionDto> findByPersonneIdAndStructure(Long id, Long structure);
-
-    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
-        "FROM Fonction f " +
-        "WHERE f.source = :source OR f.source = CONCAT('SarapisUi_', :source) " +
-        "AND f.disciplinePoste IS NOT NULL " +
-        "AND f.filiere IS NOT NULL " +
-        "AND f.categorie = 'Fonction' " +
-        "ORDER BY f.filiere.libelleFiliere")
-    List<FonctionDto> findBySource(String source);
 
     @Query("SELECT DISTINCT new fr.recia.glc.db.dto.fonction.FonctionDto(f.filiere.id, f.disciplinePoste.id, f.source) " +
         "FROM Fonction f " +
@@ -115,11 +76,6 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
         "and ap.categorie in ('Enseignant', 'Non_enseignant_collectivite_locale', 'Non_enseignant_etablissement', 'Non_enseignant_service_academique')",
         nativeQuery = true)
     List<Long> findPersonnesWithoutFunctions(Long structureId);
-
-    @Query("SELECT DISTINCT f.filiere.id " +
-        "FROM Fonction f " +
-        "WHERE f.structure.id = :id")
-    List<Long> findFilieresByStructureId(Long id);
 
     @Query("SELECT new fr.recia.glc.db.dto.fonction.FonctionDto(f.personne.id, f.filiere.id, f.disciplinePoste.id, " +
         "f.source) " +
