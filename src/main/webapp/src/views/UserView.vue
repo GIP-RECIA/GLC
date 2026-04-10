@@ -142,7 +142,9 @@ async function onToggleLock(): Promise<void> {
   if (!response)
     return
 
-  currentPersonne.value.etat = Etat.Valide.toString()
+  currentPersonne.value.etat = isLocked.value
+    ? Etat.Valide.toString()
+    : Etat.Bloque.toString()
 }
 
 const isDeleting = computed<boolean>(() => (
