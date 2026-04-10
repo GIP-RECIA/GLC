@@ -108,6 +108,8 @@ public class PersonneDto {
         this.listeRouge = aPersonne.isListeRouge();
         this.listeStructures = new TreeSet<>(Comparator.comparing(StructureForUserDto::getNom));
         this.relations = new ArrayList<>();
+        this.dateModification = aPersonne.getDateModification();
+        this.dateAcquittement = aPersonne.getDateAcquittement();
     }
 
     public void setAllFonctions(List<FonctionDto> fonctions) {
