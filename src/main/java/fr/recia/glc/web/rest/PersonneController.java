@@ -205,20 +205,23 @@ public class PersonneController {
             }
         }
         if (canRead) {
-            personneService.lockPerson(personne);
-            // Log Audit
-            auditService.log(
-                AuditEvent.builder()
-                    .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
-                    .eventType(EventType.LOCK_ACCOUNT)
-                    .actor(principal.getUsername())
-                    .target(String.valueOf(id))
-                    .payload(Map.of(
-                        "uid", personne.getUid()
-                    ))
-                    .build()
-            );
-            return new ResponseEntity<>(HttpStatus.OK);
+            boolean ok = personneService.lockPerson(personne);
+            if(ok){
+                // Log Audit
+                auditService.log(
+                    AuditEvent.builder()
+                        .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                        .eventType(EventType.LOCK_ACCOUNT)
+                        .actor(principal.getUsername())
+                        .target(String.valueOf(id))
+                        .payload(Map.of(
+                            "uid", personne.getUid()
+                        ))
+                        .build()
+                );
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             log.warn("User {} is not authorized to lock person {}", principal.getUsername(), id);
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -241,20 +244,23 @@ public class PersonneController {
             }
         }
         if (canRead) {
-            personneService.unlockPerson(personne);
-            // Log Audit
-            auditService.log(
-                AuditEvent.builder()
-                    .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
-                    .eventType(EventType.UNLOCK_ACCOUNT)
-                    .actor(principal.getUsername())
-                    .target(String.valueOf(id))
-                    .payload(Map.of(
-                        "uid", personne.getUid()
-                    ))
-                    .build()
-            );
-            return new ResponseEntity<>(HttpStatus.OK);
+            boolean ok = personneService.unlockPerson(personne);
+            if(ok){
+                // Log Audit
+                auditService.log(
+                    AuditEvent.builder()
+                        .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                        .eventType(EventType.UNLOCK_ACCOUNT)
+                        .actor(principal.getUsername())
+                        .target(String.valueOf(id))
+                        .payload(Map.of(
+                            "uid", personne.getUid()
+                        ))
+                        .build()
+                );
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             log.warn("User {} is not authorized to unlock person {}", principal.getUsername(), id);
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

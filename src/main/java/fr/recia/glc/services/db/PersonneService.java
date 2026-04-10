@@ -182,9 +182,6 @@ public class PersonneService {
      */
     public boolean undoDelete(APersonne aPersonne){
         // On vérifie que la personne est en suppression et pas déjà supprimée
-        log.error("{}", aPersonne.getDateAcquittement());
-        log.error("{}", aPersonne.getDateModification());
-        log.error("{}", aPersonne.getDateAcquittement().equals(aPersonne.getDateModification()));
         if(aPersonne.getEtat().equals(Etat.Delete) && aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
             aPersonne.setEtat(Etat.Valide);
             LocalDate localDate = LocalDate.now().plusDays(14);
