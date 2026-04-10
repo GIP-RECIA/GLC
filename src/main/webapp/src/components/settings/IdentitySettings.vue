@@ -51,7 +51,7 @@ const canSave = computed<boolean>(() => (
 
 function toggleEdit(): void {
   if (isEdit.value)
-    nomCourt.value = props.etab.nomCourt
+    nomCourt.value = props.etab?.nomCourt
   isEdit.value = !isEdit.value
   emit('edit', isEdit.value)
 }
@@ -72,13 +72,17 @@ watch(
 <template>
   <div class="r-card info-card">
     <header>
-      <h3>Identité</h3>
+      <h3>
+        {{ t('page.settings.info.identity.header') }}
+      </h3>
     </header>
 
     <div class="body">
       <ul>
         <li class="full-width">
-          <h4>Nom</h4>
+          <h4>
+            {{ t('page.settings.info.identity.name') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.nom"
           />
@@ -89,7 +93,7 @@ watch(
               'sr-only': isEdit,
             }"
           >
-            Nom court
+            {{ t('page.settings.info.identity.shortName') }}
           </h4>
           <div
             v-if="isEdit"
@@ -101,7 +105,7 @@ watch(
                   <label
                     for="nomCourt"
                   >
-                    Nom court
+                    {{ t('page.settings.info.identity.shortName') }}
                   </label>
                   <input
                     id="nomCourt"
@@ -120,25 +124,33 @@ watch(
           />
         </li>
         <li>
-          <h4>Catégorie</h4>
+          <h4>
+            {{ t('page.settings.info.identity.category') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.categorie"
           />
         </li>
         <li>
-          <h4>Type</h4>
+          <h4>
+            {{ t('page.settings.info.identity.type') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.type"
           />
         </li>
         <li>
-          <h4>UAI</h4>
+          <h4>
+            {{ t('page.settings.info.identity.uai') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.uai"
           />
         </li>
         <li>
-          <h4>Siren</h4>
+          <h4>
+            {{ t('page.settings.info.identity.siren') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.siren"
           />

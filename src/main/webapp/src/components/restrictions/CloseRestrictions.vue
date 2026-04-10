@@ -16,12 +16,15 @@
 
 <script setup lang="ts">
 import type { StructureRestriction } from '@/types/index.ts'
+import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import { formatDateTime } from '@/utils/index.ts'
 
 defineProps<{
   restrictions?: StructureRestriction
 }>()
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -29,7 +32,7 @@ defineProps<{
     <div class="body">
       <div class="item">
         <h3>
-          Fermeture des accès
+          {{ t('page.restriction.section.close.header') }}
         </h3>
         <SafeEmptyData
           :value="formatDateTime(restrictions?.dateDebutBloquage)"

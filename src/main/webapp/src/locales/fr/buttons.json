@@ -7,12 +7,14 @@
     "reinitialize": "Reinitialiser",
     "add": "Ajouter",
     "delete": "Supprimer",
+    "forceDelete": "Forcer la suppression",
     "close": "Fermer",
     "attach": "Rattacher",
     "detach": "Détacher",
     "edit": "Modifier",
     "hideEmpty": "Masquer les séctions vides",
     "showAll": "Tout afficher",
-    "manage": "Gérer"
+    "manage": "Gérer",
+    "restore": "Rétablir"
   }
 }

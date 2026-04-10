@@ -19,6 +19,7 @@ import type { ClassRestriction, LevelRestriction } from '@/types/index.ts'
 import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, useId } from 'vue'
+import { useI18n } from 'vue-i18n'
 import MenuButton from '@/components/MenuButton.vue'
 import ClassRestrictions from '@/components/restrictions/ClassRestrictions.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
@@ -33,6 +34,8 @@ const props = withDefaults(
     isEdit: false,
   },
 )
+
+const { t } = useI18n()
 
 const id = `niveau-${useId()}`
 
@@ -120,7 +123,7 @@ function deleteLevel(): void {
 
       <div v-show="hasClasses">
         <h6 class="h4">
-          Classes
+          {{ t('page.restriction.section.open.class', 2) }}
         </h6>
         <ul>
           <li
@@ -145,7 +148,7 @@ function deleteLevel(): void {
         class="btn-secondary small"
         @click="deleteLevel"
       >
-        Supprimer
+        {{ t('button.delete') }}
         <FontAwesomeIcon
           :icon="faTrashCan"
         />
@@ -157,7 +160,7 @@ function deleteLevel(): void {
         btn-class="btn-secondary small"
         @update:model-value="addClass"
       >
-        Ajouter
+        {{ t('button.add') }}
         <FontAwesomeIcon
           :icon="faPlus"
         />

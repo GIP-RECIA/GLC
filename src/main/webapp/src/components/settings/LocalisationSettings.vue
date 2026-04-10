@@ -16,47 +16,62 @@
 
 <script setup lang="ts">
 import type { Etablissement } from '@/types/index.ts'
+import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
 defineProps<{
   etab?: Etablissement
 }>()
+
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="r-card info-card">
     <header>
-      <h3>Localisation</h3>
+      <h3>
+        {{ t('page.settings.info.location.header') }}
+      </h3>
     </header>
 
     <div class="body">
       <ul>
         <li class="full-width">
-          <h4>Adresse</h4>
+          <h4>
+            {{ t('page.settings.info.location.address') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.adresse.adresse"
           />
         </li>
         <li>
-          <h4>Code postal</h4>
+          <h4>
+            {{ t('page.settings.info.location.zipCode') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.adresse.codePostal"
           />
         </li>
         <li>
-          <h4>Ville</h4>
+          <h4>
+            {{ t('page.settings.info.location.city') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.adresse.ville"
           />
         </li>
         <li>
-          <h4>Boite postal</h4>
+          <h4>
+            {{ t('page.settings.info.location.poBox') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.adresse.boitePostale"
           />
         </li>
         <li>
-          <h4>Pays</h4>
+          <h4>
+            {{ t('page.settings.info.location.country') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.adresse.pays"
           />

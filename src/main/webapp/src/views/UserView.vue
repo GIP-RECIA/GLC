@@ -20,7 +20,7 @@ import { faLink, faLock, faLockOpen, faTrashCan } from '@fortawesome/free-solid-
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
 import { ref, useTemplateRef, watch } from 'vue'
-// import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ManageAdditionalDialog from '@/components/user/dialogs/ManageAdditionalDialog.vue'
 import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
@@ -29,13 +29,13 @@ import UserInfo from '@/components/user/UserInfo.vue'
 import { usePersonneStore } from '@/stores/index.ts'
 import { Etat } from '@/types/enums/index.ts'
 
+const { t } = useI18n()
+
 const personneStore = usePersonneStore()
 const { initCurrentPersonne } = personneStore
 const { currentPersonne } = storeToRefs(personneStore)
 
 const route = useRoute()
-
-// const { t } = useI18n()
 
 watch(
   () => route.params.userId,
@@ -53,8 +53,8 @@ watch(
 const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
 
 const tabs = [
-  'Informations',
-  'Référentiel',
+  'info',
+  'more',
 ]
 
 const activeTab = ref<number>(0)
@@ -137,7 +137,7 @@ function onAttach(): void {
 
       <div class="account-actions">
         <h2 class="sr-only">
-          Actions
+          {{ t('page.user.actions') }}
         </h2>
 
         <ul>
@@ -152,15 +152,18 @@ function onAttach(): void {
               @click="onToggleLock"
             >
               {{
-                currentPersonne?.etat === Etat.Bloque.toString()
-                  ? 'Débloquer'
-                  : 'Bloquer'
+                t(`button.${
+                  currentPersonne?.etat === Etat.Bloque.toString()
+                    ? 'unlock'
+                    : 'lock'
+                }`)
               }}
               <FontAwesomeIcon
                 :icon="
                   currentPersonne?.etat === Etat.Bloque.toString()
                     ? faLockOpen
-                    : faLock"
+                    : faLock
+                "
               />
             </button>
           </li>
@@ -172,9 +175,11 @@ function onAttach(): void {
               @click="onDelete"
             >
               {{
-                currentPersonne?.etat && currentPersonne.etat === Etat.Deleting.toString()
-                  ? 'Forcer la suppression'
-                  : "Supprimer"
+                t(`button.${
+                  currentPersonne?.etat && currentPersonne.etat === Etat.Deleting.toString()
+                    ? 'forceDelete'
+                    : 'delete'
+                }`)
               }}
               <FontAwesomeIcon
                 :icon="faTrashCan"
@@ -188,7 +193,7 @@ function onAttach(): void {
               :disabled="!currentPersonne?.etat"
               @click="onAttach"
             >
-              Rattacher
+              {{ t('button.attach') }}
               <FontAwesomeIcon
                 :icon="faLink"
               />
@@ -220,7 +225,7 @@ function onAttach(): void {
           @click="setActiveTab(index)"
           @keydown="changeActiveTab"
         >
-          {{ tab }}
+          {{ t(`page.user.tab.${tab}`) }}
         </button>
       </li>
     </ul>

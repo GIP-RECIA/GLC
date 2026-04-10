@@ -191,7 +191,7 @@ function addLevel(uid: string | number): void {
             'sr-only': isEdit,
           }"
         >
-          Ouverture des accès
+          {{ t('page.restriction.section.open.header') }}
         </h3>
         <div
           v-if="isEdit"
@@ -201,7 +201,7 @@ function addLevel(uid: string | number): void {
             <div class="field-container">
               <div class="middle">
                 <label for="dateRentreeEtab">
-                  Ouverture des accès
+                  {{ t('page.restriction.section.open.header') }}
                 </label>
                 <input
                   id="dateRentreeEtab"
@@ -222,7 +222,7 @@ function addLevel(uid: string | number): void {
 
       <div v-if="restrictions">
         <h4>
-          Niveaux
+          {{ t('page.restriction.section.open.level', 2) }}
         </h4>
         <div class="niveau-container">
           <LevelRestrictions
@@ -247,7 +247,7 @@ function addLevel(uid: string | number): void {
         btn-class="btn-secondary small"
         @update:model-value="addLevel"
       >
-        Ajouter
+        {{ t('button.add') }}
         <FontAwesomeIcon
           :icon="faPlus"
         />

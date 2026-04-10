@@ -19,6 +19,7 @@ import type { ClassRestriction } from '@/types/index.ts'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useId } from 'vue'
+import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import { formatDateTime } from '@/utils/index.ts'
 
@@ -31,6 +32,8 @@ withDefaults(
     isEdit: false,
   },
 )
+
+const { t } = useI18n()
 
 const id = `niveau-classe-${useId()}`
 
@@ -79,7 +82,7 @@ function deleteClass(): void {
         </div>
       </div>
       <button
-        title="Supprimer"
+        :title="t('button.delete')"
         class="btn-tertiary circle"
         @click="deleteClass"
       >

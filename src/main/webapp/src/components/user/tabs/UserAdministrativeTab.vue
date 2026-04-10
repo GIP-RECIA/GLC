@@ -16,10 +16,10 @@ const emit = defineEmits<{
   editFunction: [fonction: PersonneFonction | undefined]
 }>()
 
+const { t } = useI18n()
+
 const configurationStore = useConfigurationStore()
 const { allFilieres } = storeToRefs(configurationStore)
-
-const { t } = useI18n()
 
 const { canEditAdditionals } = usePersonne()
 
@@ -52,7 +52,7 @@ function editFunction(fonction: PersonneFonction): void {
       <div class="r-card">
         <header>
           <h3>
-            {{ t('person.information.function', 2) }}
+            {{ t('page.user.function', 2) }}
           </h3>
         </header>
 
@@ -67,7 +67,7 @@ function editFunction(fonction: PersonneFonction): void {
       <div class="r-card">
         <header>
           <h3>
-            {{ t('person.information.additionalFunction', 2) }}
+            {{ t('page.user.additionalFunction', 2) }}
           </h3>
         </header>
 
@@ -97,7 +97,7 @@ function editFunction(fonction: PersonneFonction): void {
       <div class="r-card">
         <header>
           <h3>
-            Classes
+            {{ t('page.user.class', 2) }}
           </h3>
         </header>
 
@@ -117,7 +117,7 @@ function editFunction(fonction: PersonneFonction): void {
       <div class="r-card">
         <header>
           <h3>
-            Groupes pédagogiques
+            {{ t('page.user.educationalGroup', 2) }}
           </h3>
         </header>
 

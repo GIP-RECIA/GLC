@@ -18,6 +18,7 @@
 import type { StructureRestriction } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
 import PageLayout from '@/components/PageLayout.vue'
 import CloseRestrictions from '@/components/restrictions/CloseRestrictions.vue'
 import GlobalRestrictions from '@/components/restrictions/GlobalRestrictions.vue'
@@ -25,6 +26,8 @@ import OpenRestrictions from '@/components/restrictions/OpenRestrictions.vue'
 import StructureSearch from '@/components/StructureSearch.vue'
 import { getRestrictions } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
+
+const { t } = useI18n()
 
 const structureStore = useStructureStore()
 structureStore.init()
@@ -65,7 +68,7 @@ function setChildEditState(state: boolean): void {
 <template>
   <div class="container">
     <PageLayout
-      title="Paramétrage des dates"
+      :title="t('page.restriction.h1')"
     >
       <StructureSearch
         v-model="selectedEtab"
@@ -74,7 +77,9 @@ function setChildEditState(state: boolean): void {
       />
 
       <div>
-        <h2>Période de rentrée</h2>
+        <h2>
+          {{ t('page.restriction.section.header') }}
+        </h2>
 
         <div class="info-container">
           <GlobalRestrictions

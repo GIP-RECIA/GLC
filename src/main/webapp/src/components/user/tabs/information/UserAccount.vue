@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Personne } from '@/types/index.ts'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import { usePersonne } from '@/composables/index.ts'
@@ -16,25 +18,44 @@ const { login } = usePersonne()
 <template>
   <div class="r-card info-card">
     <header>
-      <h3>Compte & accès</h3>
+      <h3>
+        {{ t('page.user.info.account.header') }}
+      </h3>
     </header>
 
     <div class="body">
       <ul>
-        <li v-show="user?.uid">
-          <h4>UID</h4>
+        <li v-if="user?.uid">
+          <h4>
+            {{ t('page.user.info.account.uid') }}
+          </h4>
           <SafeEmptyData
             :value="user?.uid"
           />
         </li>
         <li>
-          <h4>{{ t('person.information.login') }}</h4>
-          <SafeEmptyData
-            :value="login.i18n"
-          />
+          <h4>
+            {{ t('page.user.info.account.login') }}
+          </h4>
+          <div class="user-login">
+            <SafeEmptyData
+              :value="login.i18n"
+            />
+            <span
+              v-if="login.info"
+              :title="login.info"
+            >
+              <FontAwesomeIcon
+                :icon="faInfoCircle"
+                size="lg"
+              />
+            </span>
+          </div>
         </li>
         <li>
-          <h4>{{ t('person.information.email') }}</h4>
+          <h4>
+            {{ t('page.user.info.account.email') }}
+          </h4>
           <SafeEmptyData
             :value="user?.email"
           />
@@ -61,6 +82,12 @@ const { login } = usePersonne()
       > li {
         > h4 {
           margin-bottom: 4px;
+        }
+
+        > .user-login {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
         }
       }
     }

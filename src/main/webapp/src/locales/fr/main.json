@@ -12,5 +12,7 @@
   "people": "Personne | Personnes",
   "searchOutOfStructure": "Rechercher hors de la structure",
   "result": "Résultat | Résultats",
-  "withoutFunctions": "Sans fonctions"
+  "withoutFunctions": "Sans fonctions",
+  "enabled": "Activé",
+  "disabled": "Désactivé"
 }

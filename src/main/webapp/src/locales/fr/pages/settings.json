@@ -1,0 +1,38 @@
+{
+  "settings": {
+    "h1": "Paramétrage de l'établissement",
+    "info": {
+      "header": "Informations générales",
+      "logo": "Photo de l'établissement",
+      "identity": {
+        "header": "Identité",
+        "name": "Nom",
+        "shortName": "Nom court",
+        "category": "Catégorie",
+        "type": "Type",
+        "uai": "UAI",
+        "siren": "SIREN"
+      },
+      "location": {
+        "header": "Localisation",
+        "address": "Adresse",
+        "zipCode": "Code postal",
+        "city": "Ville",
+        "poBox": "Boite postal",
+        "country": "Pays"
+      },
+      "contact": {
+        "header": "Contact",
+        "email": "Mail",
+        "website": "Site web"
+      },
+      "administration": {
+        "header": "Administration",
+        "status": "État",
+        "dataStatus": "État d'alimentation",
+        "source": "Source",
+        "schoolYear": "Année scolaire"
+      }
+    }
+  }
+}

@@ -14,31 +14,41 @@ const { t } = useI18n()
 <template>
   <div class="r-card info-card">
     <header>
-      <h3>Informations personnelles</h3>
+      <h3>
+        {{ t('page.user.info.identity.header') }}
+      </h3>
     </header>
 
     <div class="body">
       <ul>
         <li>
-          <h4>{{ t('person.information.civility') }}</h4>
+          <h4>
+            {{ t('page.user.info.identity.civility') }}
+          </h4>
           <SafeEmptyData
             :value="user?.civilite"
           />
         </li>
         <li>
-          <h4>{{ t('person.information.lastName') }}</h4>
+          <h4>
+            {{ t('page.user.info.identity.lastName') }}
+          </h4>
           <SafeEmptyData
             :value="user?.patronyme"
           />
         </li>
         <li>
-          <h4>{{ t('person.information.firstName') }}</h4>
+          <h4>
+            {{ t('page.user.info.identity.firstName') }}
+          </h4>
           <SafeEmptyData
             :value="user?.givenName"
           />
         </li>
         <li>
-          <h4>{{ t('person.information.birthDate') }}</h4>
+          <h4>
+            {{ t('page.user.info.identity.birthDate') }}
+          </h4>
           <SafeEmptyData
             :value="
               user?.dateNaissance

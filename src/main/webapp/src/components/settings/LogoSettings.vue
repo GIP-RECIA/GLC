@@ -18,6 +18,7 @@
 import type { Etablissement } from '@/types/index.ts'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useI18n } from 'vue-i18n'
 
 withDefaults(
   defineProps<{
@@ -30,13 +31,15 @@ withDefaults(
     disableEdit: false,
   },
 )
+
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="r-card logo-card">
     <img
       :src="etab?.logo ?? '/annuaire_images/default_banner_v1.jpg'"
-      alt="Photo de l'établissement"
+      :alt="t('page.settings.info.logo')"
     >
     <footer
       v-if="etab && canEdit"
@@ -46,8 +49,10 @@ withDefaults(
         class="btn-primary small"
         @click="() => {}"
       >
-        Modifier
-        <FontAwesomeIcon :icon="faPen" />
+        {{ t('button.edit') }}
+        <FontAwesomeIcon
+          :icon="faPen"
+        />
       </button>
     </footer>
   </div>

@@ -33,7 +33,9 @@ defineProps<{
             class="btn-tertiary circle"
             title="Retour à l'accueil de l'application"
           >
-            <FontAwesomeIcon :icon="faArrowLeft" />
+            <FontAwesomeIcon
+              :icon="faArrowLeft"
+            />
           </router-link>
         </slot>
         <h1>{{ title }}</h1>

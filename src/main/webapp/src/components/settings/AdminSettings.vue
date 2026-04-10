@@ -18,11 +18,14 @@
 import type { Etablissement } from '@/types/index.ts'
 import { getYear } from 'date-fns'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
 const props = defineProps<{
   etab?: Etablissement
 }>()
+
+const { t } = useI18n()
 
 const schoolYear = computed<string | undefined>(() => {
   if (!props.etab)
@@ -37,31 +40,41 @@ const schoolYear = computed<string | undefined>(() => {
 <template>
   <div class="r-card info-card">
     <header>
-      <h3>Administration</h3>
+      <h3>
+        {{ t('page.settings.info.administration.header') }}
+      </h3>
     </header>
 
     <div class="body">
       <ul>
         <li>
-          <h4>Etat</h4>
+          <h4>
+            {{ t('page.settings.info.administration.status') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.etat"
           />
         </li>
         <li>
-          <h4>Etat alimentation</h4>
+          <h4>
+            {{ t('page.settings.info.administration.dataStatus') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.etatAlim"
           />
         </li>
         <li>
-          <h4>Source</h4>
+          <h4>
+            {{ t('page.settings.info.administration.source') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.source"
           />
         </li>
         <li>
-          <h4>Année scolaire</h4>
+          <h4>
+            {{ t('page.settings.info.administration.schoolYear') }}
+          </h4>
           <SafeEmptyData
             :value="schoolYear"
           />

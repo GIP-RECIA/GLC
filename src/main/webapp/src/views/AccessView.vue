@@ -18,12 +18,15 @@
 import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ManageServiceRightsDialog from '@/components/access/dialogs/ManageServiceRightsDialog.vue'
 import ServiceRightsCard from '@/components/access/ServiceRightsCard.vue'
 import PageLayout from '@/components/PageLayout.vue'
 import StructureSearch from '@/components/StructureSearch.vue'
 import { getRights, updateRight } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
+
+const { t } = useI18n()
 
 const structureStore = useStructureStore()
 structureStore.init()
@@ -128,7 +131,7 @@ async function save(
 <template>
   <div class="container">
     <PageLayout
-      title="Gestion des accès aux services"
+      :title="t('page.access.h1')"
     >
       <StructureSearch
         v-model="selectedEtab"
@@ -137,7 +140,9 @@ async function save(
       />
 
       <div>
-        <h2>Services</h2>
+        <h2>
+          {{ t('page.access.services.header') }}
+        </h2>
 
         <div class="services-grid">
           <ServiceRightsCard

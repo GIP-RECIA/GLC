@@ -16,7 +16,10 @@
 
 <script setup lang="ts">
 import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
+import { faPen } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { alphaSort } from '@/utils/index.ts'
 
 const props = defineProps<{
@@ -26,6 +29,8 @@ const props = defineProps<{
 defineEmits<{
   edit: [service: string, right: ServiceRight]
 }>()
+
+const { t } = useI18n()
 
 const extendedServiceRights = computed<{
   service: string
@@ -113,8 +118,10 @@ const extendedServiceRights = computed<{
             class="btn-primary small"
             @click="$emit('edit', serviceRights.service, right)"
           >
-            Modifier
-            <font-awesome-icon icon="fas fa-pen" />
+            {{ t('button.edit') }}
+            <FontAwesomeIcon
+              :icon="faPen"
+            />
           </button>
         </footer>
       </div>

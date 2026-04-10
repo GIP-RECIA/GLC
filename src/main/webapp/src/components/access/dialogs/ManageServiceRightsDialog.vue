@@ -16,7 +16,10 @@
 
 <script setup lang="ts">
 import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
+import { faFloppyDisk, faRotateLeft, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, ref, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { alphaSort } from '@/utils/index.ts'
 
 const props = defineProps<{
@@ -32,6 +35,8 @@ const emit = defineEmits<{
     toRemove: string [],
   ]
 }>()
+
+const { t } = useI18n()
 
 const modelValue = defineModel<boolean>({ required: true })
 
@@ -151,11 +156,13 @@ watchEffect(
 
       <v-card-text class="pt-0 py-3 manage-service-rights-dialog-container">
         <div>
-          <h2>Groupes</h2>
+          <h2>
+            {{ t('page.access.dialog.group', 2) }}
+          </h2>
 
           <fieldset>
             <legend class="sr-only">
-              Groupes
+              {{ t('page.access.dialog.group', 2) }}
             </legend>
             <ul>
               <li
@@ -169,7 +176,9 @@ watchEffect(
                   type="checkbox"
                   :disabled="disabled.includes(item.id)"
                 >
-                <label :for="item.id">{{ item.displayName }}</label>
+                <label :for="item.id">
+                  {{ item.displayName }}
+                </label>
               </li>
             </ul>
           </fieldset>
@@ -179,14 +188,16 @@ watchEffect(
           v-if="serviceRight.allowPeople"
           class="people-layout"
         >
-          <h2>Personnes</h2>
+          <h2>
+            {{ t('page.access.dialog.people', 2) }}
+          </h2>
 
           <div class="field">
             <div class="field-layout">
               <div class="field-container">
                 <div class="middle">
                   <label for="user">
-                    Ajouter un utilisateur (Nom Prénom)
+                    {{ t('page.access.dialog.addUser') }}
                   </label>
                   <input
                     id="user"
@@ -227,8 +238,20 @@ watchEffect(
                     : addUser(user.id)
                 "
               >
-                {{ currentUsers.includes(user.id) ? 'Supprimer' : 'Rétablir' }}
-                <font-awesome-icon :icon="`fas fa-${currentUsers.includes(user.id) ? 'trash' : 'rotate-left'}`" />
+                {{
+                  t(`button.${
+                    currentUsers.includes(user.id)
+                      ? 'delete'
+                      : 'restore'
+                  }`)
+                }}
+                <FontAwesomeIcon
+                  :icon="
+                    currentUsers.includes(user.id)
+                      ? faTrashCan
+                      : faRotateLeft
+                  "
+                />
               </button>
             </li>
           </ul>
@@ -240,16 +263,20 @@ watchEffect(
           class="btn-secondary"
           @click="close"
         >
-          Annuler
-          <font-awesome-icon icon="fas fa-xmark" />
+          {{ t('button.cancel') }}
+          <FontAwesomeIcon
+            :icon="faXmark"
+          />
         </button>
         <button
           :disabled="!canSave"
           class="btn-primary"
           @click="save"
         >
-          Enregistrer
-          <font-awesome-icon icon="fas fa-floppy-disk" />
+          {{ t('button.save') }}
+          <FontAwesomeIcon
+            :icon="faFloppyDisk"
+          />
         </button>
       </v-card-actions>
     </v-card>

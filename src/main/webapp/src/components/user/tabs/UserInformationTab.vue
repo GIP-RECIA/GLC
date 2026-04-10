@@ -2,8 +2,8 @@
 import type { Personne } from '@/types/index.ts'
 import { faHouseUser, faLandmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
-// import { useI18n } from 'vue-i18n'
 import UserAccount from './information/UserAccount.vue'
 import UserContext from './information/UserContext.vue'
 import UserIdentity from './information/UserIdentity.vue'
@@ -12,13 +12,15 @@ defineProps<{
   user?: Personne
 }>()
 
-// const { t } = useI18n()
+const { t } = useI18n()
 </script>
 
 <template>
   <div>
     <div class="general-information">
-      <h2>Informations générales</h2>
+      <h2>
+        {{ t('page.user.info.header') }}
+      </h2>
 
       <div class="info-container">
         <UserIdentity
@@ -36,7 +38,9 @@ defineProps<{
     </div>
 
     <div class="structure-information">
-      <h2>Structures</h2>
+      <h2>
+        {{ t('page.user.structure.header') }}
+      </h2>
 
       <ul class="info-container">
         <li
@@ -55,9 +59,9 @@ defineProps<{
                 <span aria-hidden="true" />
               </RouterLink>
 
-              <p v-show="structure.type || structure.uai">
+              <p v-if="structure.type || structure.uai">
                 {{ structure.type }}
-                <span v-show="structure.uai">
+                <span v-if="structure.uai">
                   {{ structure.uai }}
                 </span>
               </p>
@@ -72,7 +76,7 @@ defineProps<{
             >
               <span
                 v-show="structure.structureRattachement"
-                title="Structure de rattachement administrative"
+                :title="t('page.user.structure.admin')"
               >
                 <FontAwesomeIcon
                   :icon="faLandmark"
@@ -81,7 +85,7 @@ defineProps<{
               </span>
               <span
                 v-show="structure.structureCourante"
-                title="Structure courante"
+                :title="t('page.user.structure.current')"
                 class="current"
               >
                 <FontAwesomeIcon

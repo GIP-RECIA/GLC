@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Personne } from '@/types/index.ts'
-import { faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
@@ -15,6 +15,7 @@ const { t } = useI18n()
 
 const {
   etat,
+  suppressDate,
 } = usePersonne()
 </script>
 
@@ -44,19 +45,29 @@ const {
           "
         />
       </li>
-      <li>
-        <div class="user-status">
+      <li class="user-status">
+        <span class="sr-only">
+          {{ t('page.user.status.header') }}
+        </span>
+        <FontAwesomeIcon
+          :icon="faCircle"
+          :style="{
+            color: etat.color,
+          }"
+          size="lg"
+        />
+        <SafeEmptyData
+          :value="t(etat.i18n)"
+        />
+        <span
+          v-if="suppressDate"
+          :title="t('page.user.status.deletingDate', { suppressDate })"
+        >
           <FontAwesomeIcon
-            :icon="faCircle"
-            :style="{
-              color: etat.color,
-            }"
+            :icon="faInfoCircle"
             size="lg"
           />
-          <SafeEmptyData
-            :value="t(etat.i18n)"
-          />
-        </div>
+        </span>
       </li>
     </ul>
   </div>
@@ -104,7 +115,7 @@ const {
         line-height: 1em;
       }
 
-      > .user-status {
+      &.user-status {
         display: inline-flex;
         align-items: center;
         gap: 4px;

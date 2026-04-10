@@ -47,7 +47,7 @@ const isEdit = ref<boolean>(false)
 
 const canSave = computed<boolean>(() => (
   // eslint-disable-next-line ts/no-use-before-define
-  enabeled.value !== props.restrictions.enabled
+  enabeled.value !== props.restrictions?.enabled
 ))
 
 const enabeled = ref<boolean>(false)
@@ -58,13 +58,13 @@ watch(
     if (!val)
       return
 
-    enabeled.value = props.restrictions.enabled
+    enabeled.value = props.restrictions?.enabled ?? false
   },
 )
 
 function toggleEdit(): void {
   if (isEdit.value)
-    enabeled.value = props.restrictions.enabled
+    enabeled.value = props.restrictions?.enabled ?? false
   isEdit.value = !isEdit.value
   emit('edit', isEdit.value)
 }
@@ -73,7 +73,7 @@ function save(): void {
   if (!props.etabId)
     return
 
-  const body = {
+  const body: StructureRestriction = { // TODO : fix typing
     ...props.restrictions,
     enabled: enabeled.value,
   }
@@ -92,7 +92,7 @@ function save(): void {
     <div class="body">
       <div class="item">
         <h3>
-          Etat
+          {{ t('page.restriction.section.state.header') }}
         </h3>
         <div
           v-if="isEdit"
@@ -102,11 +102,17 @@ function save(): void {
             v-model="enabeled"
             type="checkbox"
           >
-          <label for="enabled">{{ enabeled ? 'Activé' : 'Desactivé' }}</label>
+          <label for="enabled">
+            {{ t(enabeled ? 'enabled' : 'disabled') }}
+          </label>
         </div>
         <SafeEmptyData
           v-else
-          :value="restrictions ? restrictions.enabled ? 'Activé' : 'Desactivé' : undefined"
+          :value="
+            restrictions
+              ? t(restrictions.enabled ? 'enabled' : 'disabled')
+              : undefined
+          "
         />
       </div>
     </div>

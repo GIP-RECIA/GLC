@@ -1,0 +1,55 @@
+{
+  "user": {
+    "status": {
+      "header": "Etat",
+      "inconnu": "Inconnu !",
+      "invalid": "Inactivé",
+      "valid": "Activé",
+      "unpublished": "Non publié",
+      "locked": "Bloqué",
+      "deleted": "Supprimé",
+      "deleting": "En suppression",
+      "deletingDate": "Définitif le {suppressDate}",
+      "uncertain": "Incertain",
+      "uncertainExportAdd": "Erreur export",
+      "uncertainExportDelete": "Erreur suppression",
+      "uncertainExportModify": "Erreur modification"
+    },
+    "actions": "Actions",
+    "tab": {
+      "info": "Informations",
+      "more": "Référentiel"
+    },
+    "info": {
+      "header": "Informations générales",
+      "identity": {
+        "header": "Informations personnelles",
+        "civility": "Civilité",
+        "lastName": "Nom",
+        "firstName": "Prénom",
+        "birthDate": "Date de naissance"
+      },
+      "account": {
+        "header": "Compte & accès",
+        "uid": "UID",
+        "login": "Login",
+        "email": "Email"
+      },
+      "context": {
+        "header": "Contexte",
+        "schoolYear": "Annnée scolaire",
+        "source": "Source",
+        "sourceModificationDate": "Modification de la source"
+      }
+    },
+    "structure": {
+      "header": "Structures",
+      "admin": "Structure de rattachement administrative",
+      "current": "Structure courante"
+    },
+    "function": "Fonction | Fonctions",
+    "additionalFunction": "Fonction complémentaire | Fonctions complémentaires",
+    "class": "Classe | Classes",
+    "educationalGroup": "Groupe pédagogique | Groupes pédagogiques"
+  }
+}

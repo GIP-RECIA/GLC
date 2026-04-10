@@ -20,6 +20,7 @@ import alerts from './alerts.json'
 import buttons from './buttons.json'
 import main from './main.json'
 import offices from './offices.json'
+import page from './pages/index.ts'
 import persons from './persons.json'
 import searchs from './searchs.json'
 import settings from './settings.json'
@@ -28,6 +29,7 @@ import tabs from './tabs.json'
 import toasts from './toasts.json'
 
 export default {
+  page,
   ...additionals,
   ...alerts,
   ...buttons,

@@ -18,6 +18,7 @@
 import type { Etablissement } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
 import PageLayout from '@/components/PageLayout.vue'
 import AdminSettings from '@/components/settings/AdminSettings.vue'
 import ContactSettings from '@/components/settings/ContactSettings.vue'
@@ -28,9 +29,17 @@ import StructureSearch from '@/components/StructureSearch.vue'
 import { getEtablissement } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 
+const { t } = useI18n()
+
 const structureStore = useStructureStore()
 structureStore.init()
 const { etabs } = storeToRefs(structureStore)
+
+/* Data */
+
+const currentEtab = ref<Etablissement | undefined>()
+
+/* Structure */
 
 const selectedEtab = ref<number | undefined>(
   etabs.value
@@ -38,14 +47,14 @@ const selectedEtab = ref<number | undefined>(
     : undefined,
 )
 
-const currentEtab = ref<Etablissement | undefined>()
-
 watchEffect(async (): Promise<void> => {
   if (selectedEtab.value === undefined)
     return
 
   currentEtab.value = await getEtablissement(selectedEtab.value)
 })
+
+/* Edit state */
 
 const isChildEdit = ref<boolean>(false)
 
@@ -57,7 +66,7 @@ function setChildEditState(state: boolean): void {
 <template>
   <div class="container">
     <PageLayout
-      title="Paramétrage de l'établissement"
+      :title="t('page.settings.h1')"
     >
       <StructureSearch
         v-model="selectedEtab"
@@ -66,7 +75,9 @@ function setChildEditState(state: boolean): void {
       />
 
       <div>
-        <h2>Informations générales</h2>
+        <h2>
+          {{ t('page.settings.info.header') }}
+        </h2>
 
         <div class="info-container">
           <LogoSettings

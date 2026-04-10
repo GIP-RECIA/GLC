@@ -51,7 +51,7 @@ const canSave = computed<boolean>(() => (
 
 function toggleEdit(): void {
   if (isEdit.value)
-    siteWeb.value = props.etab.siteWeb
+    siteWeb.value = props.etab?.siteWeb
   isEdit.value = !isEdit.value
   emit('edit', isEdit.value)
 }
@@ -72,13 +72,17 @@ watch(
 <template>
   <div class="r-card info-card">
     <header>
-      <h3>Contact</h3>
+      <h3>
+        {{ t('page.settings.info.contact.header') }}
+      </h3>
     </header>
 
     <div class="body">
       <ul>
         <li class="full-width">
-          <h4>Mail</h4>
+          <h4>
+            {{ t('page.settings.info.contact.email') }}
+          </h4>
           <SafeEmptyData
             :value="etab?.mail"
           />
@@ -89,7 +93,7 @@ watch(
               'sr-only': isEdit,
             }"
           >
-            Site web
+            {{ t('page.settings.info.contact.website') }}
           </h4>
           <div
             v-if="isEdit"
@@ -101,7 +105,7 @@ watch(
                   <label
                     for="siteWeb"
                   >
-                    Site web
+                    {{ t('page.settings.info.contact.website') }}
                   </label>
                   <input
                     id="siteWeb"

@@ -24,13 +24,16 @@ import {
   faUsersGear,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useI18n } from 'vue-i18n'
 import PageLayout from '@/components/PageLayout.vue'
+
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="container">
     <PageLayout
-      title="Administration de l'ENT"
+      :title="t('page.index.h1')"
     >
       <template #back>
         <a
@@ -39,12 +42,16 @@ import PageLayout from '@/components/PageLayout.vue'
           class="btn-tertiary circle"
           title="Retour à l'accueil"
         >
-          <FontAwesomeIcon :icon="faArrowLeft" />
+          <FontAwesomeIcon
+            :icon="faArrowLeft"
+          />
         </a>
       </template>
 
       <div>
-        <h2>Je veux</h2>
+        <h2>
+          {{ t('page.index.h2') }}
+        </h2>
 
         <ul>
           <li>
@@ -52,8 +59,10 @@ import PageLayout from '@/components/PageLayout.vue'
               :to="{ name: 'account' }"
               class="btn-tertiary"
             >
-              <FontAwesomeIcon :icon="faUserGear" />
-              Gérer les comptes
+              <FontAwesomeIcon
+                :icon="faUserGear"
+              />
+              {{ t('page.index.account') }}
             </router-link>
           </li>
           <li>
@@ -61,8 +70,10 @@ import PageLayout from '@/components/PageLayout.vue'
               :to="{ name: 'access' }"
               class="btn-tertiary"
             >
-              <FontAwesomeIcon :icon="faCubesStacked" />
-              Gérer les accès aux services
+              <FontAwesomeIcon
+                :icon="faCubesStacked"
+              />
+              {{ t('page.index.access') }}
             </router-link>
           </li>
           <li>
@@ -70,8 +81,10 @@ import PageLayout from '@/components/PageLayout.vue'
               href="/portail/api/ExternalURLStats?fname=I2Grouper-UI&service=/grouperUi/"
               class="btn-tertiary"
             >
-              <FontAwesomeIcon :icon="faUsersGear" />
-              Gérer les groupes
+              <FontAwesomeIcon
+                :icon="faUsersGear"
+              />
+              {{ t('page.index.groups') }}
             </a>
           </li>
           <li>
@@ -79,8 +92,10 @@ import PageLayout from '@/components/PageLayout.vue'
               :to="{ name: 'restriction' }"
               class="btn-tertiary"
             >
-              <FontAwesomeIcon :icon="faClock" />
-              Paramétrer les dates
+              <FontAwesomeIcon
+                :icon="faClock"
+              />
+              {{ t('page.index.restriction') }}
             </router-link>
           </li>
           <li>
@@ -88,8 +103,10 @@ import PageLayout from '@/components/PageLayout.vue'
               :to="{ name: 'settings' }"
               class="btn-tertiary"
             >
-              <FontAwesomeIcon :icon="faHouse" />
-              Paramétrer l'établissement
+              <FontAwesomeIcon
+                :icon="faHouse"
+              />
+              {{ t('page.index.settings') }}
             </router-link>
           </li>
         </ul>

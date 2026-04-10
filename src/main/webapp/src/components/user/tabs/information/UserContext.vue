@@ -19,19 +19,25 @@ const { schoolYear } = usePersonne()
 <template>
   <div class="r-card info-card">
     <header>
-      <h3>Contexte</h3>
+      <h3>
+        {{ t('page.user.info.context.header') }}
+      </h3>
     </header>
 
     <div class="body">
       <ul>
         <li>
-          <h4>{{ t('person.information.schoolYear') }}</h4>
+          <h4>
+            {{ t('page.user.info.context.schoolYear') }}
+          </h4>
           <SafeEmptyData
             :value="schoolYear"
           />
         </li>
         <li>
-          <h4>{{ t('person.information.source') }}</h4>
+          <h4>
+            {{ t('page.user.info.context.source') }}
+          </h4>
           <div class="user-account-type">
             <FontAwesomeIcon
               :icon="getIconDefinition(user?.source)"
@@ -47,7 +53,9 @@ const { schoolYear } = usePersonne()
           </div>
         </li>
         <li>
-          <h4>{{ t('person.information.sourceModificationDate') }}</h4>
+          <h4>
+            {{ t('page.user.info.context.sourceModificationDate') }}
+          </h4>
           <SafeEmptyData
             :value="
               user?.dateSourceModification
