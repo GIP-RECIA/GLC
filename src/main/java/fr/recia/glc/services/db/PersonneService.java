@@ -17,18 +17,21 @@ package fr.recia.glc.services.db;
 
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
-import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.db.enums.ForceEtat;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
-import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.ldap.repository.LdapPeopleDao;
+import fr.recia.glc.services.cache.CacheInvalidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +46,9 @@ public class PersonneService {
     private APersonneRepository<APersonne> aPersonneRepository;
     @Autowired
     private LdapPeopleDao ldapPeopleDao;
+    @Autowired
+    private CacheInvalidationService cacheInvalidationService;
+
 
     public List<SimplePersonneDto> searchPersonne(String name, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdmin(name) : aPersonneRepository.findByNameLike(name);
@@ -111,6 +117,7 @@ public class PersonneService {
             aPersonne.setEtat(Etat.Bloque);
             aPersonneRepository.saveAndFlush(aPersonne);
             ldapPeopleDao.lockPerson(aPersonne.getUid());
+            cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
             return true;
         } else {
             log.warn("Try to lock person {} that is already locked", aPersonne.getId());
@@ -128,10 +135,66 @@ public class PersonneService {
             aPersonne.setEtat(Etat.Valide);
             aPersonneRepository.saveAndFlush(aPersonne);
             ldapPeopleDao.unlockPerson(aPersonne.getUid());
+            cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
             return true;
         } else {
             log.warn("Try to unlock person {} that is not locked", aPersonne.getId());
         }
+        return false;
+    }
+
+    /**
+     * Permet de forcer la suppression d'un compte déjà en suppression
+     * Le compte sera supprimé au prochain passage de sarapis
+     */
+    public boolean forceDelete(APersonne aPersonne){
+        if(aPersonne.getEtat().equals(Etat.Delete) && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())){
+            aPersonne.setForceEtat(ForceEtat.Deleted);
+            aPersonneRepository.saveAndFlush(aPersonne);
+            cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
+            return true;
+        }
+        log.warn("Person {} is not in delete state or is already deleted", aPersonne.getId());
+        return false;
+    }
+
+    /**
+     * Permet de passer un compte en suppression
+     * Le compte passera en suppression au prochain passage de sarapis
+     */
+    public boolean putInDeleteState(APersonne aPersonne){
+        // TODO : vérifier qu'il n'y a pas déjà de date de fin
+        if(!aPersonne.getEtat().equals(Etat.Delete) && !ForceEtat.Deleted.equals(aPersonne.getForceEtat())){
+            aPersonne.setEtat(Etat.Delete);
+            aPersonneRepository.saveAndFlush(aPersonne);
+            // TODO : maj de l'état dans le LDAP
+            aPersonne.setDateAcquittement(new Date());
+            aPersonneRepository.saveAndFlush(aPersonne);
+            cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
+            return true;
+        }
+        log.warn("Person {} is already in delete state", aPersonne.getId());
+        return false;
+    }
+
+    /**
+     * Permet de retirer un compte de la supression (temporairement)
+     */
+    public boolean undoDelete(APersonne aPersonne){
+        // On vérifie que la personne est en suppression et pas déjà supprimée
+        log.error("{}", aPersonne.getDateAcquittement());
+        log.error("{}", aPersonne.getDateModification());
+        log.error("{}", aPersonne.getDateAcquittement().equals(aPersonne.getDateModification()));
+        if(aPersonne.getEtat().equals(Etat.Delete) && aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
+            aPersonne.setEtat(Etat.Valide);
+            LocalDate localDate = LocalDate.now().plusDays(14);
+            aPersonne.setDateFin(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            aPersonneRepository.saveAndFlush(aPersonne);
+            cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
+            // TODO : maj de l'état dans le LDAP
+            return true;
+        }
+        log.warn("Person {} is not in delete state or is already deleted", aPersonne.getId());
         return false;
     }
 

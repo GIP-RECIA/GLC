@@ -27,6 +27,7 @@ import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.db.repositories.structure.EtablissementRepository;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
+import fr.recia.glc.services.cache.CacheInvalidationService;
 import fr.recia.glc.services.db.AddPersonneService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.GroupeService;
@@ -40,9 +41,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -157,7 +160,6 @@ public class PersonneController {
         boolean showUid = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
-            // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
             if (allowedSiren.contains(aStructure.getSiren())) {
                 canRead = true;
             }
@@ -186,19 +188,18 @@ public class PersonneController {
         }
     }
 
-    @GetMapping("/lock/{id}")
+    @PutMapping("/{id}/lock")
     public ResponseEntity<Void> lockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
         // TODO : a-t-on besoin de modifier la date de modification de la personne ? à vérifier
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
+        // Vérifier qu'on a les droits de modifier la personne = que sur une des structures dans laquelle est la personne on a les droits de modification
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         boolean canRead = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
-            // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
             if (allowedSiren.contains(aStructure.getSiren())) {
                 canRead = true;
             }
@@ -224,18 +225,17 @@ public class PersonneController {
         }
     }
 
-    @GetMapping("/unlock/{id}")
+    @PutMapping("/{id}/unlock")
     public ResponseEntity<Void> unlockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
+        // Vérifier qu'on a les droits de modifier la personne = que sur une des structures dans laquelle est la personne on a les droits de modification
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         boolean canRead = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
-            // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
             if (allowedSiren.contains(aStructure.getSiren())) {
                 canRead = true;
             }
@@ -261,7 +261,7 @@ public class PersonneController {
         }
     }
 
-    @GetMapping("/unlock")
+    @PutMapping("/unlock")
     public ResponseEntity<Void> unlockPersons(@AuthenticationPrincipal GLCUser principal, @RequestParam List<Long> ids){
         // TODO : débloquage de masse en une seule requête pour être plus efficace
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
@@ -270,11 +270,10 @@ public class PersonneController {
             if (personne == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
+            // Vérifier qu'on a les droits de modifier la personne = que sur une des structures dans laquelle est la personne on a les droits de modification
             boolean canRead = false;
             // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
             for (AStructure aStructure : personne.getListeStructures()) {
-                // TODO : plus propre pour la récupération par UAI -> gérer le cas des collectivités
                 if (allowedSiren.contains(aStructure.getSiren())) {
                     canRead = true;
                 }
@@ -299,6 +298,120 @@ public class PersonneController {
             }
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> putInDeleteState(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        APersonne personne = personneService.getPersonne(id);
+        if (personne == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // Vérifier qu'on a les droits de modifier la personne = que sur une des structures dans laquelle est la personne on a les droits de modification
+        boolean canModify = false;
+        for (AStructure aStructure : personne.getListeStructures()) {
+            if (allowedSiren.contains(aStructure.getSiren())) {
+                canModify = true;
+            }
+        }
+        if (canModify) {
+            boolean ok = personneService.putInDeleteState(personne);
+            if (ok) {
+                // Log Audit
+                auditService.log(
+                    AuditEvent.builder()
+                        .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                        .eventType(EventType.DELETE_ACCOUNT)
+                        .actor(principal.getUsername())
+                        .target(String.valueOf(id))
+                        .payload(Map.of(
+                            "uid", personne.getUid()
+                        ))
+                        .build()
+                );
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            log.warn("User {} is not authorized to put person {} in delete state", principal.getUsername(), id);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @DeleteMapping("/{id}/force")
+    public ResponseEntity<Void> forceDelete(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        APersonne personne = personneService.getPersonne(id);
+        if (personne == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // Vérifier qu'on a les droits de modifier la personne = que sur une des structures dans laquelle est la personne on a les droits de modification
+        boolean canModify = false;
+        for (AStructure aStructure : personne.getListeStructures()) {
+            if (allowedSiren.contains(aStructure.getSiren())) {
+                canModify = true;
+            }
+        }
+        if (canModify) {
+            boolean ok = personneService.forceDelete(personne);
+            if (ok) {
+                // Log Audit
+                auditService.log(
+                    AuditEvent.builder()
+                        .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                        .eventType(EventType.FORCEDELETE_ACCOUNT)
+                        .actor(principal.getUsername())
+                        .target(String.valueOf(id))
+                        .payload(Map.of(
+                            "uid", personne.getUid()
+                        ))
+                        .build()
+                );
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            log.warn("User {} is not authorized to force delete person {}", principal.getUsername(), id);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @DeleteMapping("/{id}/undo")
+    public ResponseEntity<Void> undoDelete(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        APersonne personne = personneService.getPersonne(id);
+        if (personne == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // Vérifier qu'on a les droits de modifier la personne = que sur une des structures dans laquelle est la personne on a les droits de modification
+        boolean canModify = false;
+        for (AStructure aStructure : personne.getListeStructures()) {
+            if (allowedSiren.contains(aStructure.getSiren())) {
+                canModify = true;
+            }
+        }
+        if (canModify) {
+            boolean ok = personneService.undoDelete(personne);
+            if(ok){
+                // Log Audit
+                auditService.log(
+                    AuditEvent.builder()
+                        .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                        .eventType(EventType.UNDODELETE_ACCOUNT)
+                        .actor(principal.getUsername())
+                        .target(String.valueOf(id))
+                        .payload(Map.of(
+                            "uid", personne.getUid()
+                        ))
+                        .build()
+                );
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            log.warn("User {} is not authorized to undo delete for person {}", principal.getUsername(), id);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping

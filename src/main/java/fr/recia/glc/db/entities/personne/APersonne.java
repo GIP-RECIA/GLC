@@ -342,12 +342,9 @@ public abstract class APersonne extends AbstractTimedEntity {
     @Override
     @PreUpdate
     public void preUpdateOps() {
-        if (!Etat.Delete.equals(this.getEtat())) {
-            this.getDateModification().setTime(Calendar.getInstance().getTimeInMillis());
-        }
-        this.dateSourceModification = new Date(Calendar.getInstance().getTimeInMillis());
-
+        this.setDateModification(new Date());
     }
+
     /**
      * Constructeur de l'objet APersonne.java.
      */
