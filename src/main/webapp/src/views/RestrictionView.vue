@@ -30,13 +30,21 @@ const structureStore = useStructureStore()
 structureStore.init()
 const { etabs } = storeToRefs(structureStore)
 
+/* Data */
+
+const data = ref<StructureRestriction | undefined>()
+
+function updateData(restrictions: StructureRestriction): void {
+  data.value = restrictions
+}
+
+/* Structure */
+
 const selectedEtab = ref<number | undefined>(
   etabs.value
     ? etabs.value[0]?.id
     : undefined,
 )
-
-const data = ref<StructureRestriction | undefined>()
 
 watchEffect(async (): Promise<void> => {
   if (selectedEtab.value === undefined)
@@ -45,14 +53,12 @@ watchEffect(async (): Promise<void> => {
   data.value = await getRestrictions(selectedEtab.value)
 })
 
+/* Edit state */
+
 const isChildEdit = ref<boolean>(false)
 
 function setChildEditState(state: boolean): void {
   isChildEdit.value = state
-}
-
-function update(restrictions: StructureRestriction): void {
-  data.value = restrictions
 }
 </script>
 
@@ -76,7 +82,7 @@ function update(restrictions: StructureRestriction): void {
             :restrictions="data"
             :disable-edit="isChildEdit"
             @edit="setChildEditState"
-            @update="update"
+            @update="updateData"
           />
 
           <template v-if="!data || data.enabled">
@@ -90,7 +96,7 @@ function update(restrictions: StructureRestriction): void {
               :disable-edit="isChildEdit"
               class="full-width"
               @edit="setChildEditState"
-              @update="update"
+              @update="updateData"
             />
           </template>
         </div>

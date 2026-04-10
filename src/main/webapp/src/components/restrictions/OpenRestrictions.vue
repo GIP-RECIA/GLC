@@ -22,10 +22,10 @@ import { cloneDeep } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import MenuButton from '@/components/MenuButton.vue'
-import LevelRestrictions from '@/components/restrictions/LevelRestrictions.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import { saveRestrictions } from '@/services/api/index.ts'
 import { formatDateTime, toDateTime, toISOString } from '@/utils/index.ts'
+import LevelRestrictions from './LevelRestrictions.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -98,12 +98,15 @@ watch(
   },
 )
 
-const displayDateRentreeEtab = computed<string>(() => {
-  const isDateRentreeEtab = props.restrictions?.dateRentreeEtab !== null
+const displayDateRentreeEtab = computed<string | undefined>(() => {
+  if (!props.restrictions)
+    return
+
+  const isDateRentreeEtab = props.restrictions.dateRentreeEtab !== null
   const date = formatDateTime(
     isDateRentreeEtab
-      ? props.restrictions?.dateRentreeEtab
-      : props.restrictions?.dateRentreeDefaut,
+      ? props.restrictions.dateRentreeEtab
+      : props.restrictions.dateRentreeDefaut,
   )
 
   return isDateRentreeEtab

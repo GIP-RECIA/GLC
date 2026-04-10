@@ -179,7 +179,7 @@ function deleteLevel(): void {
   border-radius: 6px;
   border: 1px solid var(--#{$prefix}stroke);
   padding: 16px;
-  max-width: calc(100vw - 4 * 16px);
+  max-width: calc(100vw - 4 * 16px); // Need to be fixed
 
   > .body {
     display: flex;
