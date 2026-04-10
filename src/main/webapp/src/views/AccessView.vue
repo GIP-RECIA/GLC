@@ -18,37 +18,27 @@
 import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
+import ManageServiceRightsDialog from '@/components/access/dialogs/ManageServiceRightsDialog.vue'
+import ServiceRightsCard from '@/components/access/ServiceRightsCard.vue'
 import PageLayout from '@/components/PageLayout.vue'
-import ServicesRightsLayout from '@/components/ServicesRightsLayout.vue'
 import StructureSearch from '@/components/StructureSearch.vue'
-import { getRights } from '@/services/api/index.ts'
+import { getRights, updateRight } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 
 const structureStore = useStructureStore()
 structureStore.init()
 const { etabs } = storeToRefs(structureStore)
 
-const selectedEtab = ref<number | undefined>(
-  etabs.value
-    ? etabs.value[0]?.id
-    : undefined,
-)
+/* Data */
 
 const data = ref<ServiceRights[]>()
 
-watchEffect(async (): Promise<void> => {
-  if (selectedEtab.value === undefined)
-    return
-
-  data.value = await getRights(selectedEtab.value)
-})
-
-function update(
+function updateData(
   service: string,
   serviceRight: ServiceRight,
   toAdd: string[],
   toRemove: string[],
-) {
+): void {
   data.value = data.value?.map((d) => {
     if (d.service !== service)
       return d
@@ -75,6 +65,64 @@ function update(
     return { ...d, rights }
   })
 }
+
+/* Structure */
+
+const selectedEtab = ref<number | undefined>(
+  etabs.value
+    ? etabs.value[0]?.id
+    : undefined,
+)
+
+watchEffect(async (): Promise<void> => {
+  if (selectedEtab.value === undefined)
+    return
+
+  data.value = await getRights(selectedEtab.value)
+})
+
+/* Dialog */
+
+const dialogState = ref<boolean>(false)
+
+const serviceRight = ref<Pick<ServiceRights, 'service'> & ServiceRight>()
+
+function edit(
+  service: string,
+  right: ServiceRight,
+): void {
+  serviceRight.value = {
+    service,
+    ...right,
+  }
+  dialogState.value = true
+}
+
+async function save(
+  service: string,
+  serviceRight: ServiceRight,
+  toAdd: string[],
+  toRemove: string[],
+): Promise<void> {
+  if (!selectedEtab.value)
+    return
+
+  const response = await updateRight({
+    id: selectedEtab.value,
+    service,
+    role: serviceRight.role,
+    membersToAdd: toAdd,
+    membersToRemove: toRemove,
+  })
+  if (response) {
+    updateData(
+      service,
+      serviceRight,
+      toAdd,
+      toRemove,
+    )
+  }
+}
 </script>
 
 <template>
@@ -91,14 +139,24 @@ function update(
       <div>
         <h2>Services</h2>
 
-        <ServicesRightsLayout
-          :services-rights="data"
-          loading-state="LOADED"
-          @update="update"
-        />
+        <div class="services-grid">
+          <ServiceRightsCard
+            v-for="serviceRights in data"
+            :key="serviceRights.service"
+            :service-rights="serviceRights"
+            @edit="edit"
+          />
+        </div>
       </div>
     </PageLayout>
   </div>
+
+  <ManageServiceRightsDialog
+    v-model="dialogState"
+    :service-right="serviceRight"
+    @update:model-value="dialogState = false"
+    @save="save"
+  />
 </template>
 
 <style scoped lang="scss">
@@ -113,6 +171,16 @@ function update(
 
   @media (width >= map.get($grid-breakpoints, md)) {
     margin-bottom: 60px;
+  }
+}
+
+.services-grid {
+  display: grid;
+  gap: 24px;
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(512px, 1fr));
   }
 }
 </style>
