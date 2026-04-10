@@ -342,7 +342,9 @@ public abstract class APersonne extends AbstractTimedEntity {
     @Override
     @PreUpdate
     public void preUpdateOps() {
-        this.setDateModification(new Date());
+        if(!this.getEtat().equals(Etat.Delete)){
+            this.setDateModification(new Date());
+        }
     }
 
     /**

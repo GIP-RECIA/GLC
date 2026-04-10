@@ -150,6 +150,8 @@ public class PersonneService {
     public boolean forceDelete(APersonne aPersonne){
         if(aPersonne.getEtat().equals(Etat.Delete) && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())){
             aPersonne.setForceEtat(ForceEtat.Deleted);
+            Date date = new Date();
+            aPersonne.setDateModification(date);
             aPersonneRepository.saveAndFlush(aPersonne);
             cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
             return true;
@@ -166,9 +168,10 @@ public class PersonneService {
         // TODO : vérifier qu'il n'y a pas déjà de date de fin
         if(!aPersonne.getEtat().equals(Etat.Delete) && !ForceEtat.Deleted.equals(aPersonne.getForceEtat())){
             aPersonne.setEtat(Etat.Delete);
-            aPersonneRepository.saveAndFlush(aPersonne);
             // TODO : maj de l'état dans le LDAP
-            aPersonne.setDateAcquittement(new Date());
+            Date date = new Date();
+            aPersonne.setDateAcquittement(date);
+            aPersonne.setDateModification(date);
             aPersonneRepository.saveAndFlush(aPersonne);
             cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
             return true;
@@ -183,12 +186,15 @@ public class PersonneService {
     public boolean undoDelete(APersonne aPersonne){
         // On vérifie que la personne est en suppression et pas déjà supprimée
         if(aPersonne.getEtat().equals(Etat.Delete) && aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
+            // TODO : maj de l'état dans le LDAP
             aPersonne.setEtat(Etat.Valide);
             LocalDate localDate = LocalDate.now().plusDays(14);
             aPersonne.setDateFin(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            Date date = new Date();
+            aPersonne.setDateAcquittement(date);
+            aPersonne.setDateModification(date);
             aPersonneRepository.saveAndFlush(aPersonne);
             cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
-            // TODO : maj de l'état dans le LDAP
             return true;
         }
         log.warn("Person {} is not in delete state or is already deleted", aPersonne.getId());
