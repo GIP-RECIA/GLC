@@ -16,16 +16,17 @@
 
 <script setup lang="ts">
 import type { PersonneFonction } from '@/types'
-import { faLink, faLock, faLockOpen, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faLink, faLock, faLockOpen, faRotateLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
-import { ref, useTemplateRef, watch } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import ManageAdditionalDialog from '@/components/user/dialogs/ManageAdditionalDialog.vue'
 import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/user/tabs/UserInformationTab.vue'
 import UserInfo from '@/components/user/UserInfo.vue'
+import { deletePersonne, lockPersonne, undoDeletePersonne, unlockPersonne } from '@/services/api'
 import { usePersonneStore } from '@/stores/index.ts'
 import { Etat } from '@/types/enums/index.ts'
 
@@ -118,10 +119,58 @@ function editFunction(payload?: PersonneFonction): void {
 
 /* Actions */
 
-function onToggleLock(): void {
+const canToggleLock = computed<boolean>(() => (
+  currentPersonne.value !== undefined
+  && [
+    Etat.Valide.toString(),
+    Etat.Bloque.toString(),
+  ].includes(currentPersonne.value.etat)
+))
+
+const isLocked = computed<boolean>(() => (
+  currentPersonne.value?.etat === Etat.Bloque.toString()
+))
+
+async function onToggleLock(): Promise<void> {
+  if (!currentPersonne.value)
+    return
+
+  const { id } = currentPersonne.value
+  const response = isLocked.value
+    ? await unlockPersonne(id)
+    : await lockPersonne(id)
+  if (!response)
+    return
+
+  currentPersonne.value.etat = Etat.Valide.toString()
 }
 
-function onDelete(): void {
+const isDeleting = computed<boolean>(() => (
+  currentPersonne.value?.etat === Etat.Deleting.toString()
+))
+
+async function onUndoDelete(): Promise<void> {
+  if (!currentPersonne.value)
+    return
+
+  const { id } = currentPersonne.value
+  const response = await undoDeletePersonne(id)
+  if (!response)
+    return
+
+  currentPersonne.value.etat = Etat.Valide.toString()
+}
+
+async function onDelete(): Promise<void> {
+  if (!currentPersonne.value)
+    return
+
+  const { id } = currentPersonne.value
+  const response = await deletePersonne(id)
+  if (!response)
+    return
+
+  currentPersonne.value.etat = Etat.Deleting.toString()
 }
 
 function onAttach(): void {
@@ -145,25 +194,27 @@ function onAttach(): void {
             <button
               type="button"
               class="btn-primary small"
-              :disabled="
-                !currentPersonne?.etat
-                  || ![Etat.Valide.toString(), Etat.Bloque.toString()].includes(currentPersonne.etat)
-              "
+              :disabled="!canToggleLock"
               @click="onToggleLock"
             >
-              {{
-                t(`button.${
-                  currentPersonne?.etat === Etat.Bloque.toString()
-                    ? 'unlock'
-                    : 'lock'
-                }`)
-              }}
+              {{ t(`button.${isLocked ? 'unlock' : 'lock'}`) }}
               <FontAwesomeIcon
-                :icon="
-                  currentPersonne?.etat === Etat.Bloque.toString()
-                    ? faLockOpen
-                    : faLock
-                "
+                :icon="isLocked ? faLockOpen : faLock"
+              />
+            </button>
+          </li>
+          <li
+            v-if="isDeleting"
+          >
+            <button
+              type="button"
+              class="btn-primary small"
+              :disabled="!currentPersonne?.etat"
+              @click="onUndoDelete"
+            >
+              {{ t('button.undoDelete') }}
+              <FontAwesomeIcon
+                :icon="faRotateLeft"
               />
             </button>
           </li>
@@ -171,16 +222,10 @@ function onAttach(): void {
             <button
               type="button"
               class="btn-primary small"
-              :disabled=" !currentPersonne?.etat"
+              :disabled="!currentPersonne?.etat"
               @click="onDelete"
             >
-              {{
-                t(`button.${
-                  currentPersonne?.etat && currentPersonne.etat === Etat.Deleting.toString()
-                    ? 'forceDelete'
-                    : 'delete'
-                }`)
-              }}
+              {{ t(`button.${isDeleting ? 'forceDelete' : 'delete'}`) }}
               <FontAwesomeIcon
                 :icon="faTrashCan"
               />

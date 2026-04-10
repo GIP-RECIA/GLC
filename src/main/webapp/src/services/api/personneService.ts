@@ -31,6 +31,46 @@ async function getPersonne(id: number) {
   ).data
 }
 
+async function deletePersonne(id: number) {
+  return (
+    await axios.delete<void>(
+      `/api/personne/${id}`,
+    )
+  ).status === 200
+}
+
+async function forceDeletePersonne(id: number) {
+  return (
+    await axios.delete<void>(
+      `/api/personne/${id}/force`,
+    )
+  ).status === 200
+}
+
+async function undoDeletePersonne(id: number) {
+  return (
+    await axios.delete<void>(
+      `/api/personne/${id}/undo`,
+    )
+  ).status === 200
+}
+
+async function lockPersonne(id: number) {
+  return (
+    await axios.put<void>(
+      `/api/personne/${id}/lock`,
+    )
+  ).status === 200
+}
+
+async function unlockPersonne(id: number) {
+  return (
+    await axios.put<void>(
+      `/api/personne/${id}/unlock`,
+    )
+  ).status === 200
+}
+
 async function searchPersonne(name: string) {
   return (
     await axios.get<SimplePersonne[]>(
@@ -98,9 +138,14 @@ async function setPersonneAdditionalWithCode({
 }
 
 export {
+  deletePersonne,
+  forceDeletePersonne,
   getPersonne,
+  lockPersonne,
   searchPersonne,
   setPersonneAdditional,
   setPersonneAdditionalWithCode,
   setPersonneAdditionalWithId,
+  undoDeletePersonne,
+  unlockPersonne,
 }

@@ -8,6 +8,7 @@
     "add": "Ajouter",
     "delete": "Supprimer",
     "forceDelete": "Forcer la suppression",
+    "undoDelete": "Annuler la suppression",
     "close": "Fermer",
     "attach": "Rattacher",
     "detach": "Détacher",
