@@ -40,6 +40,7 @@ public class LdapPeopleDao {
     private CustomLdapProperties ldapProperties;
 
     public void lockPerson(String uid) {
+        // TODO : valeurs en dur
         List<Name> dns = ldapTemplate.search(
             "ou=people",
             "(uid=" + uid + ")",
@@ -58,6 +59,45 @@ public class LdapPeopleDao {
     }
 
     public void unlockPerson(String uid) {
+        // TODO : valeurs en dur
+        List<Name> dns = ldapTemplate.search(
+            "ou=people",
+            "(uid=" + uid + ")",
+            (ContextMapper<Name>) ctx -> ((DirContextAdapter) ctx).getDn()
+        );
+        if (!dns.isEmpty()) {
+            Name dn = dns.get(0);
+            ModificationItem[] mods = new ModificationItem[] {
+                new ModificationItem(
+                    DirContext.REPLACE_ATTRIBUTE,
+                    new BasicAttribute("ESCOPersonEtatCompte", "VALIDE")
+                )
+            };
+            ldapTemplate.modifyAttributes(dn, mods);
+        }
+    }
+
+    public void putInDeleteState(String uid){
+        // TODO : valeurs en dur
+        List<Name> dns = ldapTemplate.search(
+            "ou=people",
+            "(uid=" + uid + ")",
+            (ContextMapper<Name>) ctx -> ((DirContextAdapter) ctx).getDn()
+        );
+        if (!dns.isEmpty()) {
+            Name dn = dns.get(0);
+            ModificationItem[] mods = new ModificationItem[] {
+                new ModificationItem(
+                    DirContext.REPLACE_ATTRIBUTE,
+                    new BasicAttribute("ESCOPersonEtatCompte", "DELETE")
+                )
+            };
+            ldapTemplate.modifyAttributes(dn, mods);
+        }
+    }
+
+    public void undoDelete(String uid){
+        // TODO : valeurs en dur
         List<Name> dns = ldapTemplate.search(
             "ou=people",
             "(uid=" + uid + ")",

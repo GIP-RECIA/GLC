@@ -167,8 +167,8 @@ public class PersonneService {
     public boolean putInDeleteState(APersonne aPersonne){
         // TODO : vérifier qu'il n'y a pas déjà de date de fin
         if(!aPersonne.getEtat().equals(Etat.Delete) && !ForceEtat.Deleted.equals(aPersonne.getForceEtat())){
+            ldapPeopleDao.putInDeleteState(aPersonne.getUid());
             aPersonne.setEtat(Etat.Delete);
-            // TODO : maj de l'état dans le LDAP
             Date date = new Date();
             aPersonne.setDateAcquittement(date);
             aPersonne.setDateModification(date);
@@ -186,7 +186,7 @@ public class PersonneService {
     public boolean undoDelete(APersonne aPersonne){
         // On vérifie que la personne est en suppression et pas déjà supprimée
         if(aPersonne.getEtat().equals(Etat.Delete) && aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
-            // TODO : maj de l'état dans le LDAP
+            ldapPeopleDao.undoDelete(aPersonne.getUid());
             aPersonne.setEtat(Etat.Valide);
             LocalDate localDate = LocalDate.now().plusDays(14);
             aPersonne.setDateFin(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
