@@ -31,8 +31,8 @@ const emit = defineEmits<{
   'save': [
     service: string,
     serviceRight: ServiceRight,
-    toAdd: string [],
-    toRemove: string [],
+    toAdd: string[],
+    toRemove: string[],
   ]
 }>()
 

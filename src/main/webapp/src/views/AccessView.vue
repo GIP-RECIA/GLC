@@ -52,13 +52,18 @@ function updateData(
 
       let currentMembers = right.currentMembers
       currentMembers = right.currentMembers.filter(({ id }) => !toRemove.includes(id))
+      const knownGroups = [
+        ...right.mandatoryGroups,
+        ...right.possibleGroups,
+      ]
       const membersToAdd: RightMember[] = toAdd.map((add) => {
-        return {
-          id: add,
-          displayName: add,
-          user: add.startsWith('F'),
-          external: false,
-        }
+        return knownGroups.find(({ id }) => id === add)
+          ?? {
+            id: add,
+            displayName: add,
+            user: add.startsWith('F'),
+            external: false,
+          }
       })
       currentMembers.push(...membersToAdd)
 
