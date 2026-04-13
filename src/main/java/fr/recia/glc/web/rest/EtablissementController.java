@@ -94,7 +94,7 @@ public class EtablissementController {
         }
 
         // Booléen qui indique si on affiche l'uid ou non
-        boolean showUid = principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(etablissement.getSiren());
+        boolean showUid = principal.getRightsForEtabs().get(GLCRole.ADMIN).contains(etablissement.getSiren());
 
         // Récupération de la liste des personnes
         List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id, showUid);

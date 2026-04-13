@@ -92,7 +92,7 @@ public class PersonneController {
         List<SimplePersonneDto> personnes;
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
-        boolean canSearchByUid = !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty();
+        boolean canSearchByUid = !principal.getRightsForEtabs().get(GLCRole.ADMIN).isEmpty();
 
         // Cas de la recherche dans un établissement
         if(etabId != null){
@@ -165,12 +165,12 @@ public class PersonneController {
             if (allowedSiren.contains(aStructure.getSiren())) {
                 canRead = true;
             }
-            if (principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(aStructure.getSiren())) {
+            if (principal.getRightsForEtabs().get(GLCRole.ADMIN).contains(aStructure.getSiren())) {
                 showUid = true;
             }
         }
+        // Booléen qui indique si on affiche l'uid ou non
         if (canRead) {
-            // Booléen qui indique si on affiche l'uid ou non
             PersonneDto personneDto = new PersonneDto(personne, showUid);
             // TODO : dommage de faire une requête LDAP pour ne récupérer qu'un seul attribut mais on a pas l'étab courant en base...
             String sirenCourant = ldapPeopleDao.getSirenCourant(personne.getUid());
