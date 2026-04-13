@@ -23,5 +23,6 @@ public class AdminProperties {
     private String sarapisLocal;
     private String central;
     private String centralColl;
+    private String direction;
     private String groupsAttribute;
 }

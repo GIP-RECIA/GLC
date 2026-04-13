@@ -64,13 +64,14 @@ public class GLCProperties {
 
     @PostConstruct
     private void init() {
-        log.info("Loaded properties: {}", this);
         rights.setDeclaredGroupsMap(rights.getDeclaredGroups().stream()
             .collect(Collectors.toUnmodifiableMap(
                 GroupProperties::getGrouperPath,
                 GroupProperties::getDisplayName
             ))
         );
+        customConfig.loadAdminFonctions();
+        log.info("Loaded properties: {}", this);
     }
 
     @Override

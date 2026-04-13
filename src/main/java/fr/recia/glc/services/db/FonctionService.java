@@ -81,6 +81,8 @@ public class FonctionService {
     private DisciplineRepository<Discipline> disciplineRepository;
     @Autowired
     private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
+    @Autowired
+    private GLCProperties glcProperties;
 
     private static final String ALL = "ALL";
     private static final String FILIERE = "filieres";
@@ -331,7 +333,7 @@ public class FonctionService {
         @CacheEvict(value = "personnesByEtablissement", key = "{#structureId, true}"),
         @CacheEvict(value = "personnesByEtablissement", key = "{#structureId, false}")
     })
-    public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<FonctionToModify> toAddFunctions, List<FonctionToModify> toDeleteFunctions, FonctionAction requiredAction) {
+    public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<FonctionToModify> toAddFunctions, List<FonctionToModify> toDeleteFunctions, FonctionAction requiredAction, boolean isAdmin) {
         final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
         final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
         if (aPersonne == null
@@ -339,15 +341,40 @@ public class FonctionService {
             || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())
         ) return false;
 
-        final String source = Constants.SARAPISUI_ + SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
+        final String sourceOrig = SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
+        final String source = Constants.SARAPISUI_ + sourceOrig;
 
         List<FonctionDto> toAddAdditional = new ArrayList<>();
         for (FonctionToModify fonctionToAdd : toAddFunctions) {
-            toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
+            // TODO : probleme dans la conf ce sont des codes alors qu'ici ce sont des ids
+            TypeFonctionFiliere typeFonctionFiliere = typeFonctionFiliereRepository.findById(fonctionToAdd.getFiliere()).get();
+            if(glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig).contains(typeFonctionFiliere.getCodeFiliere())){
+                log.debug("Admin fonction : check user rights");
+                if(isAdmin){
+                    toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
+                } else {
+                    log.warn("Can't add filiere {} because user is not authorized", typeFonctionFiliere.getLibelleFiliere());
+                }
+            } else {
+                toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
+            }
         }
+
         List<FonctionDto> toDeleteAdditional = new ArrayList<>();
         for (FonctionToModify fonctionToDelete : toDeleteFunctions) {
-            toDeleteAdditional.add(new FonctionDto(personneId, fonctionToDelete.getFiliere(), fonctionToDelete.getDiscipline(), source, structureId));
+            // TODO : probleme dans la conf ce sont des codes alors qu'ici ce sont des ids
+            TypeFonctionFiliere typeFonctionFiliere = typeFonctionFiliereRepository.findById(fonctionToDelete.getFiliere()).get();
+            if(glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig).contains(typeFonctionFiliere.getCodeFiliere())){
+                log.debug("Admin fonction : check user rights");
+                if(isAdmin){
+                    toDeleteAdditional.add(new FonctionDto(personneId, fonctionToDelete.getFiliere(), fonctionToDelete.getDiscipline(), source, structureId));
+                } else {
+                    log.warn("Can't remove filiere {} because user is not authorized", typeFonctionFiliere.getLibelleFiliere());
+                }
+            } else {
+                toDeleteAdditional.add(new FonctionDto(personneId, fonctionToDelete.getFiliere(), fonctionToDelete.getDiscipline(), source, structureId));
+            }
+
         }
 
         if (!toAddAdditional.isEmpty()) {

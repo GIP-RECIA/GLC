@@ -265,7 +265,8 @@ public class AddPersonneService {
      */
     private void updateNonEnsEtablissement(final NonEnseignantEtablissement nonEnseignantEtablissement, final AStructure aStructure, final UserCreation userCreation) {
         log.debug("updating nonEnseignantEtablissement {}", nonEnseignantEtablissement.getUid());
-        fonctionService.saveAdditionalFonctions(nonEnseignantEtablissement.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
+        // TODO : isAdmin en dur a True
+        fonctionService.saveAdditionalFonctions(nonEnseignantEtablissement.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save, true);
     }
 
     /**
@@ -273,7 +274,7 @@ public class AddPersonneService {
      */
     private void updateNonEnsServiceAcad(final NonEnseignantServiceAcademique nonEnseignantServiceAcademique, final AStructure aStructure, final UserCreation userCreation) {
         log.debug("updating nonEnseignantServiceAcademique {}", nonEnseignantServiceAcademique.getUid());
-        fonctionService.saveAdditionalFonctions(nonEnseignantServiceAcademique.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
+        fonctionService.saveAdditionalFonctions(nonEnseignantServiceAcademique.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save, true);
     }
 
     /**
@@ -281,7 +282,7 @@ public class AddPersonneService {
      */
     private void updateEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation) {
         log.debug("updating enseignant {}", enseignant.getUid());
-        fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save);
+        fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save, true);
         List<MappingAGroupeAPersonneEnseignement> personneEnseignements = new ArrayList<>();
         // Ajout de tous les groupes de l'enseignement
         for (Long groupId : userCreation.getGroupesEns()) {

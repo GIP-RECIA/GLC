@@ -18,6 +18,7 @@ package fr.recia.glc.web.rest;
 import fr.recia.glc.audit.AuditEvent;
 import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
+import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
@@ -80,6 +81,8 @@ public class PersonneController {
     private AuditService auditService;
     @Autowired
     private LdapPeopleDao ldapPeopleDao;
+    @Autowired
+    private GLCProperties glcProperties;
 
     @GetMapping
 
@@ -92,7 +95,7 @@ public class PersonneController {
         List<SimplePersonneDto> personnes;
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
-        boolean canSearchByUid = !principal.getRightsForEtabs().get(GLCRole.ADMIN).isEmpty();
+        boolean canSearchByUid = !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty();
 
         // Cas de la recherche dans un établissement
         if(etabId != null){
@@ -165,7 +168,7 @@ public class PersonneController {
             if (allowedSiren.contains(aStructure.getSiren())) {
                 canRead = true;
             }
-            if (principal.getRightsForEtabs().get(GLCRole.ADMIN).contains(aStructure.getSiren())) {
+            if (principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(aStructure.getSiren())) {
                 showUid = true;
             }
         }
@@ -471,7 +474,8 @@ public class PersonneController {
                 body.getStructureId(),
                 body.getToAddFunctions(),
                 body.getToDeleteFunctions(),
-                body.getRequiredAction()
+                body.getRequiredAction(),
+                principal.getRightsForEtabs().get(GLCRole.ADMIN_FONCTIONS).contains(etablissement.getSiren())
             );
             // Log Audit
             auditService.log(

@@ -125,17 +125,20 @@ public class SecurityConfiguration {
             Pattern patternAdminSarapisLocal = Pattern.compile(glcProperties.getAdmin().getSarapisLocal());
             Pattern patternAdminCentral = Pattern.compile(glcProperties.getAdmin().getCentral());
             Pattern patternAdminCentralColl = Pattern.compile(glcProperties.getAdmin().getCentralColl());
+            Pattern patternDirection = Pattern.compile(glcProperties.getAdmin().getDirection());
             // Calcul dynamique des authorities en fonction des groupes
             // TODO : rôle dans le nom du groupe
             Map<GLCRole, Set<String>> rightsForEtabs = new HashMap<>();
             rightsForEtabs.put(GLCRole.WRITE, new HashSet<>());
             rightsForEtabs.put(GLCRole.READ, new HashSet<>());
             rightsForEtabs.put(GLCRole.VIEW_UID, new HashSet<>());
+            rightsForEtabs.put(GLCRole.ADMIN_FONCTIONS, new HashSet<>());
             for (String group : groups) {
                 Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
                 Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
                 Matcher matcherAdminCentral = patternAdminCentral.matcher(group);
                 Matcher matcherAdminCentralColl = patternAdminCentralColl.matcher(group);
+                Matcher matcherDirection = patternDirection.matcher(group);
                 // Droits sur les établissements
                 if (matcherAdminLocal.matches()) {
                     final String uai = matcherAdminLocal.group(2);
@@ -166,6 +169,12 @@ public class SecurityConfiguration {
                         rightsForEtabs.get(GLCRole.READ).add(collectivite.getSiren());
                         rightsForEtabs.get(GLCRole.VIEW_UID).add(collectivite.getSiren());
                     }
+                }
+                // Droits spécifiques sur certaines fonctions
+                if (matcherDirection.matches()) {
+                    final String uai = matcherDirection.group(1);
+                    final String siren = structureLoader.getSirenByUai(uai);
+                    rightsForEtabs.get(GLCRole.ADMIN_FONCTIONS).add(siren);
                 }
             }
             return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs);

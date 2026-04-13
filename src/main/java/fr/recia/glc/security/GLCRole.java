@@ -18,5 +18,6 @@ package fr.recia.glc.security;
 public enum GLCRole {
     READ,
     WRITE,
-    ADMIN
+    VIEW_UID,
+    ADMIN_FONCTIONS
 }

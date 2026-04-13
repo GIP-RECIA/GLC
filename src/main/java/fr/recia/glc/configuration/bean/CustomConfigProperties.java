@@ -18,20 +18,27 @@ package fr.recia.glc.configuration.bean;
 import fr.recia.glc.db.dto.AlertType;
 import fr.recia.glc.utils.ListUtil;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_DELIMITER;
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_PREFIX;
 import static fr.recia.glc.configuration.Constants.JSON_ARRAY_SUFFIX;
 
 @Data
+@Slf4j
 public class CustomConfigProperties {
 
     private Integer suppressDays;
     private List<AlertProperties> alerts;
     private List<FonctionsProperties> fonctions;
+    private Map<String, Set<String>> adminFonctionsBySource;
 
     @Data
     public static class AlertProperties {
@@ -97,11 +104,13 @@ public class CustomConfigProperties {
 
             private String code;
             private List<String> disciplines;
+            private boolean admin;
 
             @Override
             public String toString() {
                 return "{" +
                     "\n\t\t\t\t\t\"code\": \"" + code + "\"," +
+                    "\n\t\t\t\t\t\"admin\": \"" + admin + "\"," +
                     "\n\t\t\t\t\t\"disciplines\": " + ListUtil.toStringList(disciplines, JSON_ARRAY_DELIMITER, JSON_ARRAY_PREFIX, JSON_ARRAY_SUFFIX) +
                     "\n\t\t\t\t}";
             }
@@ -125,7 +134,23 @@ public class CustomConfigProperties {
             "\n\t\"suppressDays\": " + suppressDays + "," +
             "\n\t\"alerts\": " + ListUtil.toStringList(alerts, ",\n\t\t", "[\n\t\t", "\n\t]") +
             "\n\t\"fonctions\": " + ListUtil.toStringList(fonctions, ",\n\t\t", "[\n\t\t", "\n\t]") +
+            "\n\t\"adminFonctionsBySource\": " + adminFonctionsBySource.toString() +
             "\n}";
+    }
+
+    public void loadAdminFonctions(){
+        adminFonctionsBySource = new HashMap<>();
+        for(FonctionsProperties fonctionsProperties : fonctions){
+            final String source = fonctionsProperties.source;
+            if(!adminFonctionsBySource.containsKey(source)){
+                adminFonctionsBySource.put(source, new HashSet<>());
+            }
+            for(FonctionsProperties.FiliereProperties filiereProperties : fonctionsProperties.filieres){
+                if(filiereProperties.admin){
+                    adminFonctionsBySource.get(source).add(filiereProperties.code);
+                }
+            }
+        }
     }
 
 }
