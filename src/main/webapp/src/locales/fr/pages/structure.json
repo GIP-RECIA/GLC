@@ -1,5 +1,10 @@
 {
   "structure": {
-
+    "actions": "Actions",
+    "tab": {
+      "dashboard": "Tableau de bord",
+      "comp": "Composition",
+      "accounts": "Comptes"
+    }
   }
 }

@@ -190,7 +190,7 @@ function onAttach(): void {
         :user="currentPersonne"
       />
 
-      <div class="account-actions">
+      <div class="user-actions">
         <h2 class="sr-only">
           {{ t('page.user.actions') }}
         </h2>
@@ -321,10 +321,6 @@ function onAttach(): void {
   flex-direction: column;
   gap: 16px;
 
-  > h1 {
-    margin-bottom: 0;
-  }
-
   > header {
     display: flex;
     flex-direction: column;
@@ -334,8 +330,9 @@ function onAttach(): void {
       flex: 1 1 auto;
     }
 
-    > .account-actions {
+    > .user-actions {
       flex: 0 1 auto;
+      min-width: 320 - 2 * 16px;
 
       > ul {
         @include unstyled-list;

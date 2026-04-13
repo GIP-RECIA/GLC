@@ -15,8 +15,10 @@
 -->
 
 <script setup lang="ts">
+import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import AttachDialog from '@/components/old-ui/dialogs/AttachDialog.vue'
@@ -24,15 +26,19 @@ import QuickAddDialog from '@/components/old-ui/dialogs/QuickAddDialog.vue'
 import AccountTab from '@/components/old-ui/tabs/structure/AccountTab.vue'
 import CategorieTab from '@/components/old-ui/tabs/structure/CategorieTab.vue'
 import DashboardTab from '@/components/old-ui/tabs/structure/DashboardTab.vue'
+import StructureInfo from '@/components/structure/StructureInfo.vue'
+import StructureAccountsTab from '@/components/structure/tabs/StructureAccountsTab.vue'
+import StructureCompTab from '@/components/structure/tabs/StructureCompTab.vue'
+import StructureDashboardTab from '@/components/structure/tabs/StructureDashboardTab.vue'
 import { useConfigurationStore, useStructureStore } from '@/stores/index.ts'
 import { Tabs } from '@/types/enums/index.ts'
 
 const configurationStore = useConfigurationStore()
-const { structureTab, isAttach } = storeToRefs(configurationStore)
+const { isAttach } = storeToRefs(configurationStore)
 
 const structureStore = useStructureStore()
 const { initCurrentEtab } = structureStore
-const { fonction, filieresByStaff } = storeToRefs(structureStore)
+const { currentEtab, fonction } = storeToRefs(structureStore)
 
 const { t } = useI18n()
 const route = useRoute()
@@ -45,68 +51,184 @@ watch(
   },
   { immediate: true },
 )
+
+const show = ref<boolean>(false)
+
+/* Tabs */
+
+const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
+
+const tabs = [
+  'dashboard',
+  'comp',
+  'accounts',
+]
+
+const activeTab = ref<number>(0)
+
+function setActiveTab(tab: number, focus: boolean = false): void {
+  activeTab.value = tab
+  if (focus && tabsRefs.value)
+    tabsRefs.value[tab]?.focus()
+}
+
+function changeActiveTab(e: KeyboardEvent): void {
+  let index: number | undefined
+  const active = activeTab.value
+
+  switch (e.key) {
+    case 'ArrowLeft':
+      e.preventDefault()
+      index = active - 1 > -1
+        ? active - 1
+        : tabs.length - 1
+      break
+    case 'ArrowRight':
+      e.preventDefault()
+      index = active + 1 < tabs.length
+        ? active + 1
+        : 0
+      break
+    case 'Home':
+      e.preventDefault()
+      index = 0
+      break
+    case 'End':
+      e.preventDefault()
+      index = tabs.length - 1
+      break
+    default:
+      index = undefined
+      break
+  }
+
+  if (
+    index === undefined
+    || active === index
+  ) {
+    return
+  }
+
+  setActiveTab(index, true)
+}
 </script>
 
 <template>
-  <v-tabs
-    v-model="structureTab"
-    align-tabs="center"
-    show-arrows
-    hide-slider
-    selected-class="slide-group-item--activate"
-    class="mt-2"
-  >
-    <v-tab
-      :value="Tabs.Dashboard"
+  <div class="container">
+    <header>
+      <StructureInfo
+        :structure="currentEtab"
+      />
+
+      <div class="structure-actions">
+        <h2 class="sr-only">
+          {{ t('page.structure.actions') }}
+        </h2>
+
+        <ul>
+          <li>
+            <button
+              type="button"
+              class="btn-primary small"
+            >
+              Rattacher
+              <FontAwesomeIcon
+                :icon="faLink"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="btn-primary small"
+            >
+              Créer
+              <FontAwesomeIcon
+                :icon="faPlus"
+              />
+            </button>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <ul
+      role="tablist"
+      class="tab-selector"
+    >
+      <li
+        v-for="(tab, index) in tabs"
+        :key="index"
+      >
+        <button
+          :id="`structure-tab-${index}`"
+          ref="tab-refs"
+          role="tab"
+          :aria-selected="activeTab === index"
+          :aria-controls="`structure-tabpanel-${index}`"
+          :tabindex="activeTab === index ? '0' : '-1'"
+          class="tag"
+          :class="{
+            active: activeTab === index,
+          }"
+          @click="setActiveTab(index)"
+          @keydown="changeActiveTab"
+        >
+          {{ t(`page.structure.tab.${tab}`) }}
+        </button>
+      </li>
+    </ul>
+
+    <StructureDashboardTab
+      v-show="activeTab === 0"
+      id="structure-tabpanel-0"
+      role="tabpanel"
+      aria-labelledby="structure-tab-0"
       tabindex="0"
+      :structure="currentEtab"
+    />
+
+    <StructureCompTab
+      v-show="activeTab === 1"
+      id="structure-tabpanel-1"
+      role="tabpanel"
+      aria-labelledby="structure-tab-1"
+      tabindex="0"
+      :structure="currentEtab"
+    />
+
+    <StructureAccountsTab
+      v-show="activeTab === 2"
+      id="structure-tabpanel-2"
+      role="tabpanel"
+      aria-labelledby="structure-tab-2"
+      tabindex="0"
+      :structure="currentEtab"
+    />
+  </div>
+
+  <div
+    v-dev
+    class="to-remove"
+  >
+    <DashboardTab />
+
+    <input
+      id="showOld"
+      v-model="show"
+      type="checkbox"
     >
-      {{ t('tab.dashboard') }}
-    </v-tab>
-    <v-tab
-      v-if="filieresByStaff.teaching"
-      :value="Tabs.Teaching"
-    >
-      {{ t('tab.teaching') }}
-    </v-tab>
-    <v-tab
-      v-if="filieresByStaff.school"
-      :value="Tabs.School"
-    >
-      {{ t('tab.school') }}
-    </v-tab>
-    <v-tab
-      v-if="filieresByStaff.collectivity"
-      :value="Tabs.Collectivity"
-    >
-      {{ t('tab.collectivity') }}
-    </v-tab>
-    <v-tab
-      v-if="filieresByStaff.academic"
-      :value="Tabs.Academic"
-    >
-      {{ t('tab.academic') }}
-    </v-tab>
-    <v-tab
-      v-dev
-      :value="Tabs.Accounts"
-    >
-      {{ t('tab.accounts') }}
-    </v-tab>
-  </v-tabs>
-  <v-window v-model="structureTab">
-    <v-window-item :value="Tabs.Dashboard">
-      <DashboardTab />
-    </v-window-item>
-    <v-window-item
-      v-if="filieresByStaff.teaching"
-      :value="Tabs.Teaching"
-    >
+    <label for="showOld">Afficher les onglets par catégorie</label>
+
+    <template v-if="show">
+      <h2>
+        {{ t('tab.teaching') }}
+      </h2>
       <CategorieTab :categorie="Tabs.Teaching" />
-    </v-window-item>
-    <v-window-item
-      v-if="filieresByStaff.school"
-      :value="Tabs.School"
-    >
+
+      <h2>
+        {{ t('tab.school') }}
+      </h2>
       <CategorieTab :categorie="Tabs.School">
         <template #actions>
           <v-btn
@@ -131,32 +253,96 @@ watch(
           </div>
         </template>
       </CategorieTab>
-    </v-window-item>
-    <v-window-item
-      v-if="filieresByStaff.collectivity"
-      :value="Tabs.Collectivity"
-    >
+
+      <h2>
+        {{ t('tab.collectivity') }}
+      </h2>
       <CategorieTab :categorie="Tabs.Collectivity" />
-    </v-window-item>
-    <v-window-item
-      v-if="filieresByStaff.academic"
-      :value="Tabs.Academic"
-    >
+
+      <h2>
+        {{ t('tab.academic') }}
+      </h2>
       <CategorieTab :categorie="Tabs.Academic" />
-    </v-window-item>
-    <v-window-item
-      v-dev
-      :value="Tabs.Accounts"
-    >
-      <AccountTab />
-    </v-window-item>
-  </v-window>
-  <AttachDialog />
-  <QuickAddDialog />
+    </template>
+
+    <h2>
+      {{ t('tab.accounts') }}
+    </h2>
+    <AccountTab />
+
+    <AttachDialog />
+    <QuickAddDialog />
+  </div>
 </template>
 
 <style scoped lang="scss">
-.slide-group-item--activate {
-  background-color: rgba(var(--v-theme-primary), var(--v-activated-opacity)) !important;
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/functions' as *;
+@use '@gip-recia/ui/mixins' as *;
+
+.container {
+  margin-top: 32px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  > header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    > .structure-info {
+      flex: 1 1 auto;
+    }
+
+    > .structure-actions {
+      flex: 0 1 auto;
+      min-width: 320 - 2 * 16px;
+
+      > ul {
+        @include unstyled-list;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: end;
+        gap: 8px;
+      }
+    }
+  }
+
+  > ul {
+    @include unstyled-list;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  > [role='tabpanel'] {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    &:focus-visible {
+      outline: 2px dotted var(--#{$prefix}system-blue);
+      outline-offset: 8px;
+      border-radius: 10px;
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    margin-bottom: 60px;
+    gap: 32px;
+
+    > [role='tabpanel'] {
+      gap: 48px;
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, lg)) {
+    > header {
+      flex-direction: row;
+    }
+  }
 }
 </style>
