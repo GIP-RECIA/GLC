@@ -26,7 +26,7 @@ import ManageAdditionalDialog from '@/components/user/dialogs/ManageAdditionalDi
 import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/user/tabs/UserInformationTab.vue'
 import UserInfo from '@/components/user/UserInfo.vue'
-import { deletePersonne, lockPersonne, undoDeletePersonne, unlockPersonne } from '@/services/api'
+import { deletePersonne, forceDeletePersonne, lockPersonne, undoDeletePersonne, unlockPersonne } from '@/services/api'
 import { usePersonneStore } from '@/stores/index.ts'
 import { Etat } from '@/types/enums/index.ts'
 
@@ -168,11 +168,15 @@ async function onDelete(): Promise<void> {
     return
 
   const { id } = currentPersonne.value
-  const response = await deletePersonne(id)
+  const response = isDeleting.value
+    ? await forceDeletePersonne(id)
+    : await deletePersonne(id)
   if (!response)
     return
 
-  currentPersonne.value.etat = Etat.Deleting.toString()
+  currentPersonne.value.etat = isDeleting.value
+    ? Etat.Delete.toString()
+    : Etat.Deleting.toString()
 }
 
 function onAttach(): void {
