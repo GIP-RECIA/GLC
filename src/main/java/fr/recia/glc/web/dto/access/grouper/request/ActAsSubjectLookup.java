@@ -13,17 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.web.dto.access.grouper.request.delete;
+package fr.recia.glc.web.dto.access.grouper.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class WsRestDeleteMemberRequestWrapper {
-    @JsonProperty("WsRestDeleteMemberRequest")
-    private WsRestDeleteMemberRequest wsRestDeleteMemberRequest;
-
-    public WsRestDeleteMemberRequestWrapper(String subjectId, String subjectSourceId, String actAs) {
-        this.wsRestDeleteMemberRequest = new WsRestDeleteMemberRequest(subjectId, subjectSourceId, actAs);
-    }
+@AllArgsConstructor
+public class ActAsSubjectLookup {
+    private String subjectId;
 }

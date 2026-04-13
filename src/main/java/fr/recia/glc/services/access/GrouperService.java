@@ -100,7 +100,7 @@ public class GrouperService {
      * @param isGroup   Un booléen qui indique si c'est un groupe ou une personne qui est à ajouter
      * @return
      */
-    public ResponseEntity<WsAddMemberResponse> addMember(String groupName, String subjectId, boolean isGroup) {
+    public ResponseEntity<WsAddMemberResponse> addMember(String groupName, String subjectId, boolean isGroup, String actAs) {
         String url = glcProperties.getGrouper().getBaseUrl() + "/groups/" + groupName + "/members";
         HttpHeaders headers = createHeaders();
         String sourceId = Constants.GROUPER_SOURCEID_USER;
@@ -108,7 +108,7 @@ public class GrouperService {
             sourceId = Constants.GROUPER_SOURCEID_GROUP;
             subjectId = findGroupId(subjectId);
         }
-        WsRestAddMemberRequestWrapper payload = new WsRestAddMemberRequestWrapper(subjectId, sourceId);
+        WsRestAddMemberRequestWrapper payload = new WsRestAddMemberRequestWrapper(subjectId, sourceId, actAs);
         HttpEntity<?> entity = new HttpEntity<>(payload, headers);
         return restTemplate.exchange(url, HttpMethod.PUT, entity, WsAddMemberResponse.class);
     }
@@ -122,7 +122,7 @@ public class GrouperService {
      * @param isGroup   Un booléen qui indique si c'est un groupe ou une personne qui est à supprimer
      * @return
      */
-    public ResponseEntity<WsDeleteMemberResponse> removeMember(String groupName, String subjectId, boolean isGroup) {
+    public ResponseEntity<WsDeleteMemberResponse> removeMember(String groupName, String subjectId, boolean isGroup, String actAs) {
         String url = glcProperties.getGrouper().getBaseUrl() + "/groups/" + groupName + "/members";
         HttpHeaders headers = createHeaders();
         String sourceId = Constants.GROUPER_SOURCEID_USER;
@@ -130,7 +130,7 @@ public class GrouperService {
             sourceId = Constants.GROUPER_SOURCEID_GROUP;
             subjectId = findGroupId(subjectId);
         }
-        WsRestDeleteMemberRequestWrapper payload = new WsRestDeleteMemberRequestWrapper(subjectId, sourceId);
+        WsRestDeleteMemberRequestWrapper payload = new WsRestDeleteMemberRequestWrapper(subjectId, sourceId, actAs);
         HttpEntity<?> entity = new HttpEntity<>(payload, headers);
         return restTemplate.exchange(url, HttpMethod.DELETE, entity, WsDeleteMemberResponse.class);
     }

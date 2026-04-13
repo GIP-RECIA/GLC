@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.web.dto.access.grouper.request.delete;
 
+import fr.recia.glc.web.dto.access.grouper.request.ActAsSubjectLookup;
 import fr.recia.glc.web.dto.access.grouper.request.SubjectLookup;
 import lombok.Data;
 
@@ -23,8 +24,10 @@ import java.util.List;
 @Data
 public class WsRestDeleteMemberRequest {
     private List<SubjectLookup> subjectLookups;
+    private ActAsSubjectLookup actAsSubjectLookup;
 
-    public WsRestDeleteMemberRequest(String subjectId, String subjectSourceId) {
+    public WsRestDeleteMemberRequest(String subjectId, String subjectSourceId, String actAs) {
         this.subjectLookups = List.of(new SubjectLookup(subjectId, subjectSourceId));
+        this.actAsSubjectLookup = new ActAsSubjectLookup(actAs);
     }
 }

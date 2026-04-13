@@ -23,7 +23,7 @@ public class WsRestAddMemberRequestWrapper {
     @JsonProperty("WsRestAddMemberRequest")
     private WsRestAddMemberRequest wsRestAddMemberRequest;
 
-    public WsRestAddMemberRequestWrapper(String subjectId, String subjectSourceId) {
-        this.wsRestAddMemberRequest = new WsRestAddMemberRequest(subjectId, subjectSourceId);
+    public WsRestAddMemberRequestWrapper(String subjectId, String subjectSourceId, String actAs) {
+        this.wsRestAddMemberRequest = new WsRestAddMemberRequest(subjectId, subjectSourceId, actAs);
     }
 }

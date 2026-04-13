@@ -109,11 +109,11 @@ public class RightsController {
             final String branch = deductBranchFromStructure(aStructure);
             for (String memberToAdd : request.getMembersToAdd()) {
                 log.debug("Adding right for member {} in structure {} for service {} for role {}", memberToAdd, id, service, role);
-                rightsService.addRight(service, role, memberToAdd, branch, etabGroup);
+                rightsService.addRight(service, role, memberToAdd, branch, etabGroup, principal.getUsername());
             }
             for (String memberToRemove : request.getMembersToRemove()) {
                 log.debug("Removing right for member {} in structure {} for service {} for role {}", memberToRemove, id, service, role);
-                rightsService.removeRight(service, role, memberToRemove, branch, etabGroup);
+                rightsService.removeRight(service, role, memberToRemove, branch, etabGroup, principal.getUsername());
             }
             // Log Audit
             auditService.log(

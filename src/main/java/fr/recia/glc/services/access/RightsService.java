@@ -139,7 +139,7 @@ public class RightsService {
     /**
      * Ajoute un droit sur un service pour un membre donné
      */
-    public ResponseEntity<WsAddMemberResponse> addRight(String service, String role, String memberToAdd, String branch, String etabGroup) {
+    public ResponseEntity<WsAddMemberResponse> addRight(String service, String role, String memberToAdd, String branch, String etabGroup, String actAs) {
         // Récupération du targetGroup depuis la conf pour être sûr qu'on ajoute sur le bon
         String targetGroup = GroupPathGenerator.groupPathFromTemplate(glcProperties.getRights().getServices().get(service).get(role).getTargetGroup(), branch, etabGroup);
         // Vérification qu'on a bien le droit d'ajouter le membre en question
@@ -156,13 +156,13 @@ public class RightsService {
                 throw new UnauthorizedPeopleModificationException("Can't add member " + memberToAdd + " for role" + role + " in service " + service);
             }
         }
-        return grouperService.addMember(targetGroup, memberToAdd, isGroup(memberToAdd));
+        return grouperService.addMember(targetGroup, memberToAdd, isGroup(memberToAdd), actAs);
     }
 
     /**
      * Retire un droit sur un service pour un membre donné
      */
-    public ResponseEntity<WsDeleteMemberResponse> removeRight(String service, String role, String memberToRemove, String branch, String etabGroup) {
+    public ResponseEntity<WsDeleteMemberResponse> removeRight(String service, String role, String memberToRemove, String branch, String etabGroup, String actAs) {
         // Récupération du targetGroup depuis la conf pour être sûr qu'on ajoute sur le bon
         String targetGroup = GroupPathGenerator.groupPathFromTemplate(glcProperties.getRights().getServices().get(service).get(role).getTargetGroup(), branch, etabGroup);
         // Vérification qu'on a bien le droit de supprimer le membre en question
@@ -175,6 +175,6 @@ public class RightsService {
                 throw new UnauthorizedPeopleModificationException("Can't remove member " + memberToRemove + " for role" + role + " in service " + service);
             }
         }
-        return grouperService.removeMember(targetGroup, memberToRemove, isGroup(memberToRemove));
+        return grouperService.removeMember(targetGroup, memberToRemove, isGroup(memberToRemove), actAs);
     }
 }
