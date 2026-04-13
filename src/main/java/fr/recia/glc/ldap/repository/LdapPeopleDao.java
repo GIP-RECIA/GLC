@@ -16,8 +16,6 @@
 package fr.recia.glc.ldap.repository;
 
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
-import fr.recia.glc.ldap.StructureSirenDomain;
-import fr.recia.glc.ldap.StructureSirenDomainAttributesMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +24,7 @@ import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.LdapTemplate;
 
 import javax.naming.Name;
+import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
@@ -113,6 +112,16 @@ public class LdapPeopleDao {
             };
             ldapTemplate.modifyAttributes(dn, mods);
         }
+    }
+
+    public String getSirenCourant(String uid){
+        // TODO : valeurs en dur
+        List<String> result = ldapTemplate.search(
+            "ou=people",
+            "(uid=" + uid + ")",
+            (Attributes attrs) -> (String) attrs.get("ESCOSIRENCourant").get()
+        );
+        return result.isEmpty() ? null : result.get(0);
     }
 
 }

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap;
+package fr.recia.glc.ldap.mappers;
 
+import fr.recia.glc.ldap.StructureSirenDomain;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.stereotype.Service;
 

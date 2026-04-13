@@ -25,9 +25,9 @@ import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.db.repositories.structure.EtablissementRepository;
+import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
-import fr.recia.glc.services.cache.CacheInvalidationService;
 import fr.recia.glc.services.db.AddPersonneService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.GroupeService;
@@ -78,6 +78,8 @@ public class PersonneController {
     private AStructureRepository<AStructure> aStructureRepository;
     @Autowired
     private AuditService auditService;
+    @Autowired
+    private LdapPeopleDao ldapPeopleDao;
 
     @GetMapping
 
@@ -170,11 +172,16 @@ public class PersonneController {
         if (canRead) {
             // Booléen qui indique si on affiche l'uid ou non
             PersonneDto personneDto = new PersonneDto(personne, showUid);
+            // TODO : dommage de faire une requête LDAP pour ne récupérer qu'un seul attribut mais on a pas l'étab courant en base...
+            String sirenCourant = ldapPeopleDao.getSirenCourant(personne.getUid());
             for(AStructure aStructure : personne.getListeStructures()){
                 StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);
                 personneDto.getListeStructures().add(structureForUserDto);
                 if(aStructure.getId()==personne.getStructRattachement().getId()){
                     structureForUserDto.setStructureRattachement(true);
+                }
+                if(aStructure.getSiren().equals(sirenCourant)){
+                    structureForUserDto.setStructureCourante(true);
                 }
                 structureForUserDto.setClasses(groupeService.getClassesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
                 structureForUserDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
@@ -190,7 +197,6 @@ public class PersonneController {
 
     @PutMapping("/{id}/lock")
     public ResponseEntity<Void> lockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
-        // TODO : a-t-on besoin de modifier la date de modification de la personne ? à vérifier
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -17,7 +17,7 @@ package fr.recia.glc.configuration;
 
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
-import fr.recia.glc.ldap.StructureSirenDomainAttributesMapper;
+import fr.recia.glc.ldap.mappers.StructureSirenDomainAttributesMapper;
 import fr.recia.glc.ldap.repository.LdapGroupDao;
 import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import fr.recia.glc.ldap.repository.LdapStructureDao;

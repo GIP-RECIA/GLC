@@ -17,7 +17,7 @@ package fr.recia.glc.ldap.repository;
 
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.StructureSirenDomain;
-import fr.recia.glc.ldap.StructureSirenDomainAttributesMapper;
+import fr.recia.glc.ldap.mappers.StructureSirenDomainAttributesMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
