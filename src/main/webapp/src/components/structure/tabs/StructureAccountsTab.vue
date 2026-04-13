@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Etablissement } from '@/types/index.ts'
-import { faFileExport } from '@fortawesome/free-solid-svg-icons'
+import { faFileExport, faLockOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
 import { CategoriePersonne, Etat } from '@/types/enums/index.ts'
@@ -63,6 +63,16 @@ const filters = [
     ],
   },
 ]
+
+/* Actions */
+
+function onUnlock(): void {
+
+}
+
+function onExport(): void {
+
+}
 </script>
 
 <template>
@@ -71,19 +81,38 @@ const filters = [
       :data="filters"
     />
 
-    <ul>
-      <li>
-        <button
-          type="button"
-          class="btn-primary small"
-        >
-          Exporter
-          <FontAwesomeIcon
-            :icon="faFileExport"
-          />
-        </button>
-      </li>
-    </ul>
+    <div class="accounts-actions">
+      <h2 class="sr-only">
+        {{ t('page.structure.actions') }}
+      </h2>
+
+      <ul>
+        <li>
+          <button
+            type="button"
+            class="btn-primary small"
+            @click="onUnlock"
+          >
+            {{ t('button.unlock') }}
+            <FontAwesomeIcon
+              :icon="faLockOpen"
+            />
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="btn-primary small"
+            @click="onExport"
+          >
+            {{ t('button.export') }}
+            <FontAwesomeIcon
+              :icon="faFileExport"
+            />
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -92,4 +121,17 @@ const filters = [
 @use '@gip-recia/ui/core/variables' as *;
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
+
+.accounts-actions {
+  flex: 0 1 auto;
+  min-width: 320 - 2 * 16px;
+
+  > ul {
+    @include unstyled-list;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: 8px;
+  }
+}
 </style>

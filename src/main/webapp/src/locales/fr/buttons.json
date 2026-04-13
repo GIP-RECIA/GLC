@@ -16,6 +16,8 @@
     "hideEmpty": "Masquer les séctions vides",
     "showAll": "Tout afficher",
     "manage": "Gérer",
-    "restore": "Rétablir"
+    "restore": "Rétablir",
+    "create": "Créer",
+    "export": "Exporter"
   }
 }

@@ -111,6 +111,16 @@ function changeActiveTab(e: KeyboardEvent): void {
 
   setActiveTab(index, true)
 }
+
+/* Actions */
+
+function onAttach(): void {
+
+}
+
+function onCreate(): void {
+
+}
 </script>
 
 <template>
@@ -130,8 +140,9 @@ function changeActiveTab(e: KeyboardEvent): void {
             <button
               type="button"
               class="btn-primary small"
+              @click="onAttach"
             >
-              Rattacher
+              {{ t('button.attach') }}
               <FontAwesomeIcon
                 :icon="faLink"
               />
@@ -141,8 +152,9 @@ function changeActiveTab(e: KeyboardEvent): void {
             <button
               type="button"
               class="btn-primary small"
+              @click="onCreate"
             >
-              Créer
+              {{ t('button.create') }}
               <FontAwesomeIcon
                 :icon="faPlus"
               />
