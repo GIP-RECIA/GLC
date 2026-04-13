@@ -118,6 +118,12 @@ public class AddPersonneService {
     // TODO : gérer l'ajout de classes locales et groupes locaux, et de responsables d'un élève
     public APersonne addPersonne(UserCreation userCreation) {
         log.debug("Trying to create local user {}", userCreation);
+        // TODO : limiter le check de l'email à certaines populations
+        if(aPersonneRepository.doesEmailExists(userCreation.getCourriel()) > 0){
+            log.error("Email {} already exists ! Can't create local user", userCreation.getCourriel());
+            // TODO : exception spécifique
+            throw new RuntimeException("Email already exists");
+        }
         // 1. Récupération de la date
         Instant date = new Date().toInstant();
         // 2. Récupération de l'année scolaire actuelle (on suppose que c'est la dernière)

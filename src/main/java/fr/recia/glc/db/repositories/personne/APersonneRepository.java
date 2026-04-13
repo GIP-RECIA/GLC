@@ -27,6 +27,11 @@ import java.util.Set;
 @Repository
 public interface APersonneRepository<T extends APersonne> extends AbstractRepository<T, Long> {
 
+    @Query("SELECT count(*) " +
+        "FROM APersonne ap " +
+        "WHERE ap.email = :email")
+    Long doesEmailExists(String email);
+
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +

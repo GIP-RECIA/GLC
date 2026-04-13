@@ -427,27 +427,31 @@ public class PersonneController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addPersonne(@AuthenticationPrincipal GLCUser principal, @RequestBody UserCreation userCreation) {
+    public ResponseEntity<String> addPersonne(@AuthenticationPrincipal GLCUser principal, @RequestBody UserCreation userCreation) {
         // Vérifier qu'on a les droits d'ajouter la personne = que sur la structure sur laquelle on veut l'ajouter on a les droits d'écriture
         Etablissement etablissement = etablissementRepository.findById(userCreation.getStructureRattachement()).orElseThrow();
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
         if (allowedSiren.contains(etablissement.getSiren())) {
-            APersonne apersonne = addPersonneService.addPersonne(userCreation);
-            // Log Audit
-            auditService.log(
-                AuditEvent.builder()
-                    .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
-                    .eventType(EventType.CREATE_ACCOUNT)
-                    .actor(principal.getUsername())
-                    .target(String.valueOf(apersonne.getId()))
-                    .payload(Map.of(
-                        "uid", apersonne.getUid()
-                    ))
-                    .build()
-            );
-            return new ResponseEntity<>(HttpStatus.OK);
+            try{
+                APersonne apersonne = addPersonneService.addPersonne(userCreation);
+                // Log Audit
+                auditService.log(
+                    AuditEvent.builder()
+                        .timestamp(OffsetDateTime.now(ZoneId.systemDefault()))
+                        .eventType(EventType.CREATE_ACCOUNT)
+                        .actor(principal.getUsername())
+                        .target(String.valueOf(apersonne.getId()))
+                        .payload(Map.of(
+                            "uid", apersonne.getUid()
+                        ))
+                        .build()
+                );
+                return new ResponseEntity<>(HttpStatus.OK);
+            } catch (Exception e){
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
         } else {
             log.warn("User {} is not authorized to add person in {}", principal.getUsername(), userCreation.getStructureRattachement());
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
