@@ -193,8 +193,12 @@ public class PersonneService {
     public boolean undoDelete(APersonne aPersonne){
         // On vérifie que la personne est en suppression et pas déjà supprimée
         if(aPersonne.getEtat().equals(Etat.Delete) && aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
+            Etat etatToRestore = Etat.Invalide;
+            if(aPersonne.getValidationCharte() != null){
+                etatToRestore = Etat.Valide;
+            }
             ldapPeopleDao.undoDelete(aPersonne.getUid());
-            aPersonne.setEtat(Etat.Valide);
+            aPersonne.setEtat(etatToRestore);
             LocalDate localDate = LocalDate.now().plusDays(14);
             aPersonne.setDateFin(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             Date date = new Date();
