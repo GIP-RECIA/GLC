@@ -206,7 +206,6 @@ public class SecurityConfiguration {
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf
-                .ignoringAntMatchers("/**")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             )
             .antMatcher("/api/**")
@@ -230,7 +229,6 @@ public class SecurityConfiguration {
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf
-                .ignoringAntMatchers("/**")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             )
             // Filtre pour le logout à mettre avant tout

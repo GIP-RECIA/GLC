@@ -24,7 +24,7 @@ Controlleur utilisé pour rediriger vers /ui/index.html afin de servir le front 
 @Controller
 public class StaticRedirectionController {
 
-    // TODO : un mapping ou on exclu les assets serait mieux mais aucun ne semble fonctionner correctement
+    // Un mapping ou on exclu les assets serait mieux mais aucun ne semble fonctionner correctement
     @GetMapping({
         "/", "/ui", "/ui/",
         "/ui/account", "/ui/account/**",

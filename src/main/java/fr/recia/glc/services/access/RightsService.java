@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -99,13 +101,22 @@ public class RightsService {
                         roleProperties.getTargetGroup(), branch, etabGroup), showExternal, true, true).getBody();
                     List<WsSubject> wsSubjectList = wsGetMembershipsResponse.getResults().getWsSubjects();
                     log.info("Subjets retrieved for group {} are : {}", roleProperties.getTargetGroup(), wsSubjectList);
+                    // On récupère toutes les infos sur les users avant pour des raisons d'optimisation et éviter de faire une requête par user
+                    List<String> userIds = wsSubjectList.stream()
+                        .filter(wsSubject -> !Constants.GROUPER_SOURCEID_GROUP.equals(wsSubject.getSourceId()))
+                        .map(WsSubject::getId)
+                        .distinct()
+                        .collect(Collectors.toList());
+                    Map<String, APersonne> personneMap = new HashMap<>();
+                    if (!userIds.isEmpty()) {
+                        List<APersonne> personnes = (List<APersonne>) aPersonneRepository.findAll(QAPersonne.aPersonne.uid.in(userIds));
+                        personneMap = personnes.stream().collect(Collectors.toMap(APersonne::getUid, Function.identity()));
+                    }
                     for (WsSubject wsSubject : wsSubjectList) {
                         boolean isUser = !wsSubject.getSourceId().equals(Constants.GROUPER_SOURCEID_GROUP);
                         Member member;
                         if (isUser) {
-                            // TODO : faire une requête pour toutes les personnes d'un coup pour des raisons de performance
-                            Predicate predicate = QAPersonne.aPersonne.uid.eq(wsSubject.getId());
-                            APersonne aPersonne = aPersonneRepository.findOne(predicate).get();
+                            APersonne aPersonne = personneMap.get(wsSubject.getId());
                             member = new Member(wsSubject.getId(), aPersonne.getDisplayName(), aPersonne.getEmail(), true,true);
                         } else {
                             if (invertedTemplateCache.containsKey(wsSubject.getName())) {
@@ -120,7 +131,7 @@ public class RightsService {
                     right.setAllowPeople(rolesByService.get(role).isAllowPeople());
                     right.setAdmin(rolesByService.get(role).isAdmin());
                     if (right.isAdmin() && !showAdmin) {
-
+                        log.debug("Admin right but do not show admin rights, skipping...");
                     } else {
                         rights.add(right);
                     }

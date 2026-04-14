@@ -36,7 +36,7 @@ public class FonctionDto {
     private String source;
     private Long structure;
     private Date dateFin;
-    // TODO : date de début pas encore utilisée pour l'instant
+    // TODO : gérer la date de début
     private Date dateDebut;
 
     public FonctionDto(Long filiere, Long discipline, String source) {
