@@ -77,8 +77,6 @@ public class PersonneController {
     @Autowired
     private AddPersonneService addPersonneService;
     @Autowired
-    private EtablissementRepository<Etablissement> etablissementRepository;
-    @Autowired
     private AStructureRepository<AStructure> aStructureRepository;
     @Autowired
     private AuditService auditService;
@@ -435,10 +433,10 @@ public class PersonneController {
     public ResponseEntity<String> addPersonne(@AuthenticationPrincipal GLCUser principal, @RequestBody UserCreation userCreation) {
         // Vérifier qu'on a les droits d'ajouter la personne = que sur la structure sur laquelle on veut l'ajouter on a les droits d'écriture
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois + passer par un service et pas directement par le repo
-        Etablissement etablissement = etablissementRepository.findById(userCreation.getStructureRattachement()).orElseThrow();
+        AStructure aStructure = aStructureRepository.findById(userCreation.getStructureRattachement()).orElseThrow();
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
-        if (allowedSiren.contains(etablissement.getSiren())) {
-            try{
+        if (allowedSiren.contains(aStructure.getSiren())) {
+            try {
                 APersonne apersonne = addPersonneService.addPersonne(userCreation);
                 // Log Audit
                 auditService.log(
@@ -466,16 +464,16 @@ public class PersonneController {
     public ResponseEntity<Void> setPersonneAdditionalFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) {
         // Vérifier qu'on a les droits de modifier la personne = que sur la structure dans laquelle on veut modifier la fonction on a les droits d'écriture
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois + passer par un service et pas directement par le repo
-        Etablissement etablissement = etablissementRepository.findById(body.getStructureId()).orElseThrow();
+        AStructure aStructure = aStructureRepository.findById(body.getStructureId()).orElseThrow();
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
-        if (allowedSiren.contains(etablissement.getSiren())) {
+        if (allowedSiren.contains(aStructure.getSiren())) {
             boolean success = fonctionService.saveAdditionalFonctions(
                 id,
                 body.getStructureId(),
                 body.getToAddFunctions(),
                 body.getToDeleteFunctions(),
                 body.getRequiredAction(),
-                principal.getRightsForEtabs().get(GLCRole.ADMIN_FONCTIONS).contains(etablissement.getSiren())
+                principal.getRightsForEtabs().get(GLCRole.ADMIN_FONCTIONS).contains(aStructure.getSiren())
             );
             // Log Audit
             auditService.log(
