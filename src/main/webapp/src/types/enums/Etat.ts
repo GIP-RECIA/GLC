@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import type { enumValues } from '../enumValuesType'
+import { faUserClock, faUserLock, faUserSecret } from '@fortawesome/free-solid-svg-icons'
+
 export enum Etat {
   Inconnu = 'Inconnu',
   Invalide = 'Invalide',
@@ -26,4 +29,54 @@ export enum Etat {
   Incertain_Export_Add = 'Incertain_Export_Add',
   Incertain_Export_Delete = 'Incertain_Export_Delete',
   Incertain_Export_Modify = 'Incertain_Export_Modify',
+}
+
+export const etatMap: Record<Etat, enumValues> = {
+  [Etat.Inconnu]: {
+    i18n: 'person.status.inconnu',
+    color: '#9E9E9E',
+    icon: faUserSecret,
+  },
+  [Etat.Invalide]: {
+    i18n: 'person.status.invalid',
+    color: '#A5D6A7',
+  },
+  [Etat.Valide]: {
+    i18n: 'person.status.valid',
+    color: '#4CAF50',
+  },
+  [Etat.Unpublished]: {
+    i18n: 'person.status.unpublished',
+    color: '#607D8B',
+  },
+  [Etat.Bloque]: {
+    i18n: 'person.status.locked',
+    color: '#795548',
+    icon: faUserLock,
+  },
+  [Etat.Delete]: {
+    i18n: 'person.status.deleted',
+    color: '#EF9A9A',
+  },
+  [Etat.Deleting]: {
+    i18n: 'person.status.deleting',
+    color: '#FF5722',
+    icon: faUserClock,
+  },
+  [Etat.Incertain]: {
+    i18n: 'person.status.uncertain',
+    color: '#FFEB3B',
+  },
+  [Etat.Incertain_Export_Add]: {
+    i18n: 'person.status.uncertainExportAdd',
+    color: '#FFEB3B',
+  },
+  [Etat.Incertain_Export_Delete]: {
+    i18n: 'person.status.uncertainExportDelete',
+    color: '#FFEB3B',
+  },
+  [Etat.Incertain_Export_Modify]: {
+    i18n: 'person.status.uncertainExportModify',
+    color: '#FFEB3B',
+  },
 }

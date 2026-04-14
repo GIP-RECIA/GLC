@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
+import type { CategoriePersonne } from './enums/CategoriePersonne.ts'
+import type { Etat } from './enums/Etat.ts'
 import type { StructureForUser } from './etablissementType.ts'
 import type { FonctionForm } from './fonctionType.ts'
 
 export interface Personne {
   id: number
   uid?: string
-  etat: string
+  etat: Etat
   anneeScolaire: string
-  categorie: string
+  categorie: CategoriePersonne
   civilite: string
   source: string
   cn: string
@@ -53,8 +55,8 @@ export interface Relation {
 export interface SimplePersonne {
   id: number
   uid?: string
-  etat: string
-  categorie: string
+  etat: Etat
+  categorie: CategoriePersonne
   source: string
   cn: string
   sn: string

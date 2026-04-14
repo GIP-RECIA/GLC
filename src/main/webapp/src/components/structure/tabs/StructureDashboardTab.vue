@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Etablissement } from '@/types/index.ts'
+import StructureAccountsStates from './dashboard/StructureAccountsStates.vue'
 
 defineProps<{
   structure?: Etablissement
@@ -12,9 +13,9 @@ defineProps<{
       <h2>Alertes</h2>
     </div>
 
-    <div>
-      <h2>Etats des comptes</h2>
-    </div>
+    <StructureAccountsStates
+      :structure="structure"
+    />
   </div>
 </template>
 

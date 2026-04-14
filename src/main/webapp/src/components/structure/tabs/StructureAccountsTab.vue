@@ -3,8 +3,7 @@ import type { Etablissement } from '@/types/index.ts'
 import { faFileExport, faLockOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
-import { CategoriePersonne, Etat } from '@/types/enums/index.ts'
-import { getCategoriePersonne, getEtat } from '@/utils/index.ts'
+import { CategoriePersonne, categoriePersonneMap, Etat, etatMap } from '@/types/enums/index.ts'
 
 defineProps<{
   structure?: Etablissement
@@ -43,7 +42,7 @@ const filters = [
       },
       ...Object.values(CategoriePersonne).map(cat => ({
         key: cat,
-        value: t(getCategoriePersonne(cat).i18n),
+        value: t(categoriePersonneMap[cat].i18n),
       })),
     ],
   },
@@ -58,7 +57,7 @@ const filters = [
       },
       ...Object.values(Etat).map(etat => ({
         key: etat,
-        value: t(getEtat(etat).i18n),
+        value: t(etatMap[etat].i18n),
       })),
     ],
   },
