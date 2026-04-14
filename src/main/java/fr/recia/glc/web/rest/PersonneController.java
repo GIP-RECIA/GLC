@@ -15,6 +15,9 @@
  */
 package fr.recia.glc.web.rest;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import fr.recia.glc.audit.AuditEvent;
 import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
@@ -42,6 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +60,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -145,11 +150,22 @@ public class PersonneController {
     }
 
     @GetMapping(value = "/export")
-    public ResponseEntity<List<PersonneExportDto>> exportPersonnes(@AuthenticationPrincipal GLCUser principal,
+    public ResponseEntity<MappingJacksonValue> exportPersonnes(@AuthenticationPrincipal GLCUser principal,
                                                              @RequestParam List<Long> ids,
                                                              @RequestParam List<String> columns){
-        // TODO : export de la personne avec projection sur les colonnes
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        List<PersonneExportDto> personnesExport = new ArrayList<>();
+        for(Long id : ids){
+            APersonne personne = personneService.getPersonne(id);
+            PersonneDto personneDto = personneService.getFullPersonne(id, personne, true);
+            PersonneExportDto personneExportDto = new PersonneExportDto(personneDto);
+            personnesExport.add(personneExportDto);
+        }
+        // Projection pour garder seulement certaines colonnes
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept(new HashSet<>(columns));
+        FilterProvider filters = new SimpleFilterProvider().addFilter("personneExportFilter", filter);
+        MappingJacksonValue mapping = new MappingJacksonValue(personnesExport);
+        mapping.setFilters(filters);
+        return new ResponseEntity<>(mapping, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")

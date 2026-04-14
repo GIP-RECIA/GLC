@@ -15,17 +15,15 @@
  */
 package fr.recia.glc.db.dto.personne;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
-@EqualsAndHashCode
+@JsonFilter("personneExportFilter")
+@Data
 public class PersonneExportDto {
 
     private String uid;
@@ -38,6 +36,15 @@ public class PersonneExportDto {
     private Etat etat;
     private CategoriePersonne profil;
 
-    public PersonneExportDto(){ }
+    public PersonneExportDto(PersonneDto dto) {
+        this.uid = dto.getUid();
+        this.login = dto.getLogin();
+        this.prenom = dto.getGivenName();
+        this.nom = dto.getSn();
+        this.mail = dto.getEmail();
+        this.etat = dto.getEtat();
+        this.profil = dto.getCategorie();
+        // TODO : classes et groupes
+    }
 
 }
