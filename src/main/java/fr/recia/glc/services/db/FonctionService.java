@@ -37,6 +37,7 @@ import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.services.cache.CacheInvalidationService;
 import fr.recia.glc.utils.SourceUtils;
 import fr.recia.glc.web.dto.function.FonctionAction;
 import fr.recia.glc.web.dto.function.FonctionToModify;
@@ -83,6 +84,8 @@ public class FonctionService {
     private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
     @Autowired
     private GLCProperties glcProperties;
+    @Autowired
+    private CacheInvalidationService cacheInvalidationService;
 
     private static final String ALL = "ALL";
     private static final String FILIERE = "filieres";
@@ -321,18 +324,7 @@ public class FonctionService {
      * @param toAddFunctions    La liste des fonctions à ajouter sous la forme "filière-discipline"
      * @param toDeleteFunctions La liste des fonctions à supprimer sous la forme "filière-discipline"
      * @param requiredAction    Si on doit rattacher une personne à un établissement (attach) ou le détacher (detach)
-     * @return
      */
-    // TODO : evict aussi le cache des alertes
-    // Voir s'il faut evict le cache typesFonctionFiliere et disciplines
-    @Caching(evict = {
-        @CacheEvict(value = "personneFonctions", key = "#personneId"),
-        @CacheEvict(value = "personne", key = "#personneId"),
-        @CacheEvict(value = "personnesWithoutFunctions", key = "#structureId"),
-        @CacheEvict(value = "structureFonctions", key = "#structureId"),
-        @CacheEvict(value = "personnesByEtablissement", key = "{#structureId, true}"),
-        @CacheEvict(value = "personnesByEtablissement", key = "{#structureId, false}")
-    })
     public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<FonctionToModify> toAddFunctions, List<FonctionToModify> toDeleteFunctions, FonctionAction requiredAction, boolean isAdmin) {
         final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
         final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
@@ -426,6 +418,9 @@ public class FonctionService {
             }
             aPersonneRepository.saveAndFlush(aPersonne);
         }
+
+        // Vider les caches
+        cacheInvalidationService.evictPersonneAndAssociatedStructures(personneId, structureId);
 
         return true;
     }

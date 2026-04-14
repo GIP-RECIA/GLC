@@ -29,7 +29,6 @@ public class CacheInvalidationService {
         this.cacheManager = cacheManager;
     }
 
-    // TODO : evict correctement le cache pour le tableau de bord
     public void evictPersonneAndAssociatedStructures(Long personneId, Long structureId) {
         evict("personneFonctions", personneId);
         evict("personne", personneId);
@@ -37,6 +36,7 @@ public class CacheInvalidationService {
         evict("structureFonctions", structureId);
         evict("personnesByEtablissement", new SimpleKey(structureId, true));
         evict("personnesByEtablissement", new SimpleKey(structureId, false));
+        evict("fonctionAlerts", structureId);
     }
 
     private void evict(String cacheName, Object key) {

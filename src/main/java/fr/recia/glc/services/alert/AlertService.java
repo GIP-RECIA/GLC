@@ -62,7 +62,7 @@ public class AlertService {
             .build();
     }
 
-    @Cacheable(value = "fonctionAlerts")
+    @Cacheable(value = "fonctionAlerts", key = "#etablissementId")
     public List<AlertDto> getFonctionAlerts(Long etablissementId, String etablissementSource) {
         log.trace("getFonctionAlerts for {} and {}", etablissementId, etablissementSource);
         List<AlertDto> alerts = new ArrayList<>();
