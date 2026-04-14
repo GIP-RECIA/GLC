@@ -53,6 +53,7 @@ import fr.recia.glc.services.cache.CacheInvalidationService;
 import fr.recia.glc.services.creation.NameCalculator;
 import fr.recia.glc.services.creation.PasswordGenerator;
 import fr.recia.glc.services.creation.UidFactory;
+import fr.recia.glc.services.exceptions.EmailAlreadyExistsException;
 import fr.recia.glc.services.structure.StructureLoader;
 import fr.recia.glc.web.dto.function.FonctionAction;
 import fr.recia.glc.web.dto.user.UserCreation;
@@ -121,8 +122,7 @@ public class AddPersonneService {
         // TODO : limiter le check de l'email à certaines populations
         if(aPersonneRepository.doesEmailExists(userCreation.getCourriel()) > 0){
             log.error("Email {} already exists ! Can't create local user", userCreation.getCourriel());
-            // TODO : exception spécifique
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException("Email already exists");
         }
         // 1. Récupération de la date
         Instant date = new Date().toInstant();

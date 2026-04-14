@@ -18,6 +18,7 @@ package fr.recia.glc.services.db;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.personne.Login;
 import fr.recia.glc.db.repositories.personne.LoginRepository;
+import fr.recia.glc.services.exceptions.LoginTooHighException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -83,8 +84,7 @@ public class LoginService {
                     }
                 }
                 if (nbMax > 100) {
-                    // TODO : throw exception
-                    log.error("Login too high");
+                    throw new LoginTooHighException("Login too high");
                 }
             }
         }

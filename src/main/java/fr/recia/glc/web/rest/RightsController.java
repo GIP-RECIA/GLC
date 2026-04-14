@@ -61,6 +61,7 @@ public class RightsController {
     private AuditService auditService;
 
     private String deductBranchFromStructure(AStructure aStructure) {
+        // TODO : comment gérer le cas des collectivités ? elles n'ont pas d'UAI
         log.debug("Retrieving branch for structure {}", aStructure.getId());
         final String branch = structureLoader.getBranchOfStructure(((Etablissement) aStructure).getUai());
         log.debug("Branch for structure {} is {}", aStructure.getId(), branch);
@@ -68,6 +69,7 @@ public class RightsController {
     }
 
     private String deductGroupNameFromStructure(AStructure aStructure) {
+        // TODO : comment gérer le cas des collectivités ? elles n'ont pas d'UAI
         log.debug("Retrieving group name for structure {}", aStructure.getId());
         final String etabGroupLeft = structureLoader.getGroupNameOfStructure(((Etablissement) aStructure).getUai());
         final String etabGroupRight = ((Etablissement) aStructure).getUai();
