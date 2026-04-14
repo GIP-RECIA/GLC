@@ -42,6 +42,7 @@ public class StructureForUserDto {
     private boolean structureCourante;
     private List<String> classes;
     private List<String> groupesPedagogiques;
+    private boolean authorizedForPrincipal;
 
     public StructureForUserDto(AStructure aStructure) {
         String[] split = aStructure.getNom().split("\\$");
@@ -69,6 +70,7 @@ public class StructureForUserDto {
         this.structureRattachement = false;
         this.classes = new ArrayList<>();
         this.groupesPedagogiques = new ArrayList<>();
+        this.authorizedForPrincipal = false;
     }
 
 }

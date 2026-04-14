@@ -154,10 +154,11 @@ public class PersonneController {
                                                              @RequestParam List<Long> ids,
                                                              @RequestParam Long etab,
                                                              @RequestParam List<String> columns){
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         List<PersonneExportDto> personnesExport = new ArrayList<>();
         for(Long id : ids){
             APersonne personne = personneService.getPersonne(id);
-            PersonneDto personneDto = personneService.getFullPersonne(id, personne, true);
+            PersonneDto personneDto = personneService.getFullPersonne(id, personne, true, allowedSiren);
             PersonneExportDto personneExportDto = new PersonneExportDto(personneDto, etab);
             personnesExport.add(personneExportDto);
         }
@@ -191,7 +192,7 @@ public class PersonneController {
         }
         // Booléen qui indique si on affiche l'uid ou non
         if (canRead) {
-            PersonneDto personneDto = personneService.getFullPersonne(id, personne, showUid);
+            PersonneDto personneDto = personneService.getFullPersonne(id, personne, showUid, allowedSiren);
             return new ResponseEntity<>(personneDto, HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to view person {}", principal.getUsername(), id);
@@ -435,7 +436,6 @@ public class PersonneController {
         // Vérifier qu'on a les droits d'ajouter la personne = que sur la structure sur laquelle on veut l'ajouter on a les droits d'écriture
         Etablissement etablissement = etablissementRepository.findById(userCreation.getStructureRattachement()).orElseThrow();
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
-        // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
         if (allowedSiren.contains(etablissement.getSiren())) {
             try{
@@ -467,7 +467,6 @@ public class PersonneController {
         // Vérifier qu'on a les droits de modifier la personne = que sur la structure dans laquelle on veut modifier la fonction on a les droits d'écriture
         Etablissement etablissement = etablissementRepository.findById(body.getStructureId()).orElseThrow();
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
-        // TODO : gérer la partie des collectivités
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois
         if (allowedSiren.contains(etablissement.getSiren())) {
             boolean success = fonctionService.saveAdditionalFonctions(

@@ -18,29 +18,24 @@ package fr.recia.glc.db.dto.personne;
 import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.relation.RelationDto;
-import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.db.entities.common.ExternalId;
 import fr.recia.glc.db.entities.personne.APersonne;
-import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.ExternalIdSource;
-import fr.recia.glc.utils.PersonneUtils;
 import fr.recia.glc.web.dto.user.StructureForUserDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -71,7 +66,6 @@ public class PersonneDto {
     // TODO : afficher l'id pronote que si la personne est dans le groupe pronote
     private String idPronote;
     private boolean listeRouge;
-    // TODO : la structure courante n'est pas dans la base mais que dans le LDAP
     private Set<StructureForUserDto> listeStructures;
     // TODO : relations des personnes
     private List<RelationDto> relations;
@@ -110,23 +104,6 @@ public class PersonneDto {
         this.relations = new ArrayList<>();
         this.dateModification = aPersonne.getDateModification();
         this.dateAcquittement = aPersonne.getDateAcquittement();
-    }
-
-    public void setAllFonctions(List<FonctionDto> fonctions) {
-        if (!fonctions.isEmpty()) {
-            for(FonctionDto fonctionDto : fonctions){
-                // Ici c'est acceptable de faire une boucle imbriquée car on a peu de structures dans la liste la pluspart du temps
-                for(StructureForUserDto structureForUserDto : this.listeStructures){
-                    if(fonctionDto.getStructure().equals(structureForUserDto.getId())){
-                        if(!fonctionDto.getSource().startsWith(Constants.SARAPISUI_)){
-                            structureForUserDto.getFonctions().add(fonctionDto);
-                        } else {
-                            structureForUserDto.getAdditionalFonctions().add(fonctionDto);
-                        }
-                    }
-                }
-            }
-        }
     }
 
 }

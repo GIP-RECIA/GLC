@@ -15,6 +15,8 @@
  */
 package fr.recia.glc.services.db;
 
+import fr.recia.glc.configuration.Constants;
+import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
@@ -174,7 +176,6 @@ public class PersonneService {
      * Le compte passera en suppression au prochain passage de sarapis
      */
     public boolean putInDeleteState(APersonne aPersonne){
-        // TODO : vérifier qu'il n'y a pas déjà de date de fin
         if(!aPersonne.getEtat().equals(Etat.Delete) && !ForceEtat.Deleted.equals(aPersonne.getForceEtat())){
             ldapPeopleDao.putInDeleteState(aPersonne.getUid());
             aPersonne.setEtat(Etat.Delete);
@@ -210,12 +211,15 @@ public class PersonneService {
         return false;
     }
 
-    public PersonneDto getFullPersonne(Long id, APersonne personne, boolean showUid){
+    public PersonneDto getFullPersonne(Long id, APersonne personne, boolean showUid, Set<String> allowedSirens){
         PersonneDto personneDto = new PersonneDto(personne, showUid);
         // TODO : dommage de faire une requête LDAP pour ne récupérer qu'un seul attribut mais on a pas l'étab courant en base...
         String sirenCourant = ldapPeopleDao.getSirenCourant(personne.getUid());
         for(AStructure aStructure : personne.getListeStructures()){
             StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);
+            if(allowedSirens.contains(aStructure.getSiren())){
+                structureForUserDto.setAuthorizedForPrincipal(true);
+            }
             personneDto.getListeStructures().add(structureForUserDto);
             if(aStructure.getId()==personne.getStructRattachement().getId()){
                 structureForUserDto.setStructureRattachement(true);
@@ -226,9 +230,26 @@ public class PersonneService {
             structureForUserDto.setClasses(groupeService.getClassesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
             structureForUserDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
         }
-        personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
+        setAllFonctions(personneDto, fonctionService.getPersonneFonctions(id));
         personneDto.setRelations(relationService.getPersonneRelations(id));
         return personneDto;
+    }
+
+    private void setAllFonctions(PersonneDto personneDto, List<FonctionDto> fonctions) {
+        if (!fonctions.isEmpty()) {
+            for(FonctionDto fonctionDto : fonctions){
+                // Ici c'est acceptable de faire une boucle imbriquée car on a peu de structures dans la liste la pluspart du temps
+                for(StructureForUserDto structureForUserDto : personneDto.getListeStructures()){
+                    if(fonctionDto.getStructure().equals(structureForUserDto.getId())){
+                        if(!fonctionDto.getSource().startsWith(Constants.SARAPISUI_)){
+                            structureForUserDto.getFonctions().add(fonctionDto);
+                        } else {
+                            structureForUserDto.getAdditionalFonctions().add(fonctionDto);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public SimplePersonneDto getPersonneSimple(Long id) {

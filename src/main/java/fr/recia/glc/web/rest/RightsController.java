@@ -83,7 +83,6 @@ public class RightsController {
         log.debug("Listing rights for structure {}", id);
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
-        // TODO : gérer le cas des collectivités
         if (allowedSiren.contains(aStructure.getSiren())) {
             final String etabGroup = deductGroupNameFromStructure(aStructure);
             final String branch = deductBranchFromStructure(aStructure);
@@ -103,7 +102,6 @@ public class RightsController {
         log.debug("Updating rights for structure {}", id);
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
-        // TODO : gérer le cas des collectivités
         if (allowedSiren.contains(aStructure.getSiren())) {
             final String etabGroup = deductGroupNameFromStructure(aStructure);
             final String branch = deductBranchFromStructure(aStructure);
