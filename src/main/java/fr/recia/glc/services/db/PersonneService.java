@@ -15,15 +15,18 @@
  */
 package fr.recia.glc.services.db;
 
+import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.personne.APersonne;
+import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.ForceEtat;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import fr.recia.glc.services.cache.CacheInvalidationService;
+import fr.recia.glc.web.dto.user.StructureForUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -48,6 +51,12 @@ public class PersonneService {
     private LdapPeopleDao ldapPeopleDao;
     @Autowired
     private CacheInvalidationService cacheInvalidationService;
+    @Autowired
+    private GroupeService groupeService;
+    @Autowired
+    private FonctionService fonctionService;
+    @Autowired
+    private RelationService relationService;
 
 
     public List<SimplePersonneDto> searchPersonne(String name, boolean admin) {
@@ -199,6 +208,27 @@ public class PersonneService {
         }
         log.warn("Person {} is not in delete state or is already deleted", aPersonne.getId());
         return false;
+    }
+
+    public PersonneDto getFullPersonne(Long id, APersonne personne, boolean showUid){
+        PersonneDto personneDto = new PersonneDto(personne, showUid);
+        // TODO : dommage de faire une requête LDAP pour ne récupérer qu'un seul attribut mais on a pas l'étab courant en base...
+        String sirenCourant = ldapPeopleDao.getSirenCourant(personne.getUid());
+        for(AStructure aStructure : personne.getListeStructures()){
+            StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);
+            personneDto.getListeStructures().add(structureForUserDto);
+            if(aStructure.getId()==personne.getStructRattachement().getId()){
+                structureForUserDto.setStructureRattachement(true);
+            }
+            if(aStructure.getSiren().equals(sirenCourant)){
+                structureForUserDto.setStructureCourante(true);
+            }
+            structureForUserDto.setClasses(groupeService.getClassesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
+            structureForUserDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
+        }
+        personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
+        personneDto.setRelations(relationService.getPersonneRelations(id));
+        return personneDto;
     }
 
     public SimplePersonneDto getPersonneSimple(Long id) {

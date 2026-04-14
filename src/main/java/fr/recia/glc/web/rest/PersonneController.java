@@ -72,17 +72,11 @@ public class PersonneController {
     @Autowired
     private AddPersonneService addPersonneService;
     @Autowired
-    private GroupeService groupeService;
-    @Autowired
-    private RelationService relationService;
-    @Autowired
     private EtablissementRepository<Etablissement> etablissementRepository;
     @Autowired
     private AStructureRepository<AStructure> aStructureRepository;
     @Autowired
     private AuditService auditService;
-    @Autowired
-    private LdapPeopleDao ldapPeopleDao;
 
     @GetMapping
     public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
@@ -180,23 +174,7 @@ public class PersonneController {
         }
         // Booléen qui indique si on affiche l'uid ou non
         if (canRead) {
-            PersonneDto personneDto = new PersonneDto(personne, showUid);
-            // TODO : dommage de faire une requête LDAP pour ne récupérer qu'un seul attribut mais on a pas l'étab courant en base...
-            String sirenCourant = ldapPeopleDao.getSirenCourant(personne.getUid());
-            for(AStructure aStructure : personne.getListeStructures()){
-                StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);
-                personneDto.getListeStructures().add(structureForUserDto);
-                if(aStructure.getId()==personne.getStructRattachement().getId()){
-                    structureForUserDto.setStructureRattachement(true);
-                }
-                if(aStructure.getSiren().equals(sirenCourant)){
-                    structureForUserDto.setStructureCourante(true);
-                }
-                structureForUserDto.setClasses(groupeService.getClassesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
-                structureForUserDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
-            }
-            personneDto.setAllFonctions(fonctionService.getPersonneFonctions(id));
-            personneDto.setRelations(relationService.getPersonneRelations(id));
+            PersonneDto personneDto = personneService.getFullPersonne(id, personne, showUid);
             return new ResponseEntity<>(personneDto, HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to view person {}", principal.getUsername(), id);
