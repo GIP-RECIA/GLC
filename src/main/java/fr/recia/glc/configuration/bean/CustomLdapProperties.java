@@ -104,6 +104,7 @@ public class CustomLdapProperties {
 
     @Data
     public static class StructureBranchProperties {
+        private String structuresCollFilter;
         private String allStructuresBySirenFilter;
         private String base;
     }

@@ -17,6 +17,7 @@ package fr.recia.glc.ldap.mappers;
 
 import fr.recia.glc.ldap.StructureSirenDomain;
 import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.naming.NamingEnumeration;
@@ -26,12 +27,11 @@ import javax.naming.directory.Attributes;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Component
 public class StructureSirenDomainAttributesMapper implements AttributesMapper<StructureSirenDomain> {
 
     @Override
     public StructureSirenDomain mapFromAttributes(Attributes attrs) throws NamingException {
-        // TODO : attributs chargé depuis la conf et plus en dur
         StructureSirenDomain entry = new StructureSirenDomain();
         Attribute sirenAttr = attrs.get("ENTStructureSIREN");
         if (sirenAttr != null) {

@@ -75,7 +75,6 @@ public class EtablissementController {
      * Récupère les informations sur un établissement ainsi que toutes les personnes dedans
      */
     @GetMapping(value = "/{id}")
-    // TODO : une autre route spécifique pour les collectivités
     public ResponseEntity<StructureDto> getEtablissement(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
         StructureDto etablissement = structureService.getEtablissement(id);
         if (etablissement == null) {

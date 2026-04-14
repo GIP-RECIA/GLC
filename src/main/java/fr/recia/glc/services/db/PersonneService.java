@@ -122,7 +122,6 @@ public class PersonneService {
     /**
      * Bloque une personne : attention il faut bloquer dans la BD et dans le LDAP aussi
      */
-    // TODO : evict correctement le cache de la personne et de l'établissement pour le tableau de bord
     public boolean lockPerson(APersonne aPersonne){
         if(aPersonne.getEtat() != Etat.Bloque){
             aPersonne.setEtat(Etat.Bloque);
@@ -139,7 +138,6 @@ public class PersonneService {
     /**
      * Débloque une personne : attention il faut débloquer dans la BD et dans le LDAP aussi
      */
-    // TODO : evict correctement le cache de la personne et de l'établissement pour le tableau de bord
     public boolean unlockPerson(APersonne aPersonne){
         // TODO : dans quel état remettre la personne on ne sait pas dans quel état elle était avant
         if(aPersonne.getEtat() == Etat.Bloque){

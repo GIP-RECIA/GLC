@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.ldap.repository;
+package fr.recia.glc.ldap.mappers;
 
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.db.enums.CategorieStructure;
@@ -46,7 +46,7 @@ public class LdapGroupStructureContextMapper implements ContextMapper<StructureF
     }
 
     @Override
-    public StructureFromGroup mapFromContext(Object ctx) throws NamingException {
+    public StructureFromGroup mapFromContext(Object ctx) {
         Assert.notNull(externalGroupHelper, "The externalGroupHelper should not be null !");
         DirContextAdapter context = (DirContextAdapter) ctx;
         final String groupId = context.getStringAttribute(externalGroupHelper.getGroupIdAttribute());

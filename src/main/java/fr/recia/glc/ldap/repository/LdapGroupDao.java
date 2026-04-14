@@ -19,6 +19,7 @@ import com.google.common.collect.Sets;
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
 import fr.recia.glc.ldap.StructureFromGroup;
+import fr.recia.glc.ldap.mappers.LdapGroupStructureContextMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
