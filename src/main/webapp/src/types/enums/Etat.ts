@@ -33,50 +33,50 @@ export enum Etat {
 
 export const etatMap: Record<Etat, enumValues> = {
   [Etat.Inconnu]: {
-    i18n: 'person.status.inconnu',
+    i18n: 'page.user.status.inconnu',
     color: '#9E9E9E',
     icon: faUserSecret,
   },
   [Etat.Invalide]: {
-    i18n: 'person.status.invalid',
+    i18n: 'page.user.status.invalid',
     color: '#A5D6A7',
   },
   [Etat.Valide]: {
-    i18n: 'person.status.valid',
+    i18n: 'page.user.status.valid',
     color: '#4CAF50',
   },
   [Etat.Unpublished]: {
-    i18n: 'person.status.unpublished',
+    i18n: 'page.user.status.unpublished',
     color: '#607D8B',
   },
   [Etat.Bloque]: {
-    i18n: 'person.status.locked',
+    i18n: 'page.user.status.locked',
     color: '#795548',
     icon: faUserLock,
   },
   [Etat.Delete]: {
-    i18n: 'person.status.deleted',
+    i18n: 'page.user.status.deleted',
     color: '#EF9A9A',
   },
   [Etat.Deleting]: {
-    i18n: 'person.status.deleting',
+    i18n: 'page.user.status.deleting',
     color: '#FF5722',
     icon: faUserClock,
   },
   [Etat.Incertain]: {
-    i18n: 'person.status.uncertain',
+    i18n: 'page.user.status.uncertain',
     color: '#FFEB3B',
   },
   [Etat.Incertain_Export_Add]: {
-    i18n: 'person.status.uncertainExportAdd',
+    i18n: 'page.user.status.uncertainExportAdd',
     color: '#FFEB3B',
   },
   [Etat.Incertain_Export_Delete]: {
-    i18n: 'person.status.uncertainExportDelete',
+    i18n: 'page.user.status.uncertainExportDelete',
     color: '#FFEB3B',
   },
   [Etat.Incertain_Export_Modify]: {
-    i18n: 'person.status.uncertainExportModify',
+    i18n: 'page.user.status.uncertainExportModify',
     color: '#FFEB3B',
   },
 }

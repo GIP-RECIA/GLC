@@ -30,30 +30,30 @@ export enum CategoriePersonne {
 
 export const categoriePersonneMap: Record<CategoriePersonne, enumValues> = {
   [CategoriePersonne.Eleve]: {
-    i18n: 'person.category.student',
+    i18n: 'page.user.category.student',
   },
   [CategoriePersonne.Enseignant]: {
-    i18n: 'person.category.teacher',
+    i18n: 'page.user.category.teacher',
   },
   [CategoriePersonne.Non_enseignant_collectivite_locale]: {
-    i18n: 'person.category.nonTeacherLocalCommunity',
+    i18n: 'page.user.category.nonTeacherLocalCommunity',
   },
   [CategoriePersonne.Non_enseignant_etablissement]: {
-    i18n: 'person.category.nonTeacherSchool',
+    i18n: 'page.user.category.nonTeacherSchool',
   },
   [CategoriePersonne.Non_enseignant_service_academique]: {
-    i18n: 'person.category.nonTeacherAcademicService',
+    i18n: 'page.user.category.nonTeacherAcademicService',
   },
   [CategoriePersonne.Personne_relation_eleve]: {
-    i18n: 'person.category.personRelationshipStudent',
+    i18n: 'page.user.category.personRelationshipStudent',
   },
   [CategoriePersonne.Personnel_exterieur]: {
-    i18n: 'person.category.externalStaff',
+    i18n: 'page.user.category.externalStaff',
   },
   [CategoriePersonne.Responsable_Entreprise]: {
-    i18n: 'person.category.companyManager',
+    i18n: 'page.user.category.companyManager',
   },
   [CategoriePersonne.Tuteur_stage]: {
-    i18n: 'person.category.internshipTutor',
+    i18n: 'page.user.category.internshipTutor',
   },
 }

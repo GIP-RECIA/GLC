@@ -15,6 +15,17 @@
       "uncertainExportDelete": "Erreur suppression",
       "uncertainExportModify": "Erreur modification"
     },
+    "category": {
+      "student": "Élève/Apprenti",
+      "teacher": "Enseignant/Formateur",
+      "nonTeacherLocalCommunity": "Agent de la collectivité",
+      "nonTeacherSchool": "Personnel d’établissement",
+      "nonTeacherAcademicService": "Personnel académique",
+      "personRelationshipStudent": "Parent",
+      "externalStaff": "Extérieur",
+      "companyManager": "Responsable d’entreprise",
+      "internshipTutor": "Tuteur de stage"
+    },
     "actions": "Actions",
     "tab": {
       "info": "Informations",
