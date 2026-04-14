@@ -30,6 +30,8 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import java.util.List;
 
+import static org.springframework.ldap.query.LdapQueryBuilder.query;
+
 @Data
 @AllArgsConstructor
 @Slf4j
@@ -39,10 +41,10 @@ public class LdapPeopleDao {
     private CustomLdapProperties ldapProperties;
 
     public void lockPerson(String uid) {
-        // TODO : valeurs en dur
         List<Name> dns = ldapTemplate.search(
-            "ou=people",
-            "(uid=" + uid + ")",
+            query()
+                .base(ldapProperties.getUserBranch().getBaseDN())
+                .where("uid").is(uid),
             (ContextMapper<Name>) ctx -> ((DirContextAdapter) ctx).getDn()
         );
         if (!dns.isEmpty()) {
@@ -58,10 +60,10 @@ public class LdapPeopleDao {
     }
 
     public void unlockPerson(String uid) {
-        // TODO : valeurs en dur
         List<Name> dns = ldapTemplate.search(
-            "ou=people",
-            "(uid=" + uid + ")",
+            query()
+                .base(ldapProperties.getUserBranch().getBaseDN())
+                .where("uid").is(uid),
             (ContextMapper<Name>) ctx -> ((DirContextAdapter) ctx).getDn()
         );
         if (!dns.isEmpty()) {
@@ -77,10 +79,10 @@ public class LdapPeopleDao {
     }
 
     public void putInDeleteState(String uid){
-        // TODO : valeurs en dur
         List<Name> dns = ldapTemplate.search(
-            "ou=people",
-            "(uid=" + uid + ")",
+            query()
+                .base(ldapProperties.getUserBranch().getBaseDN())
+                .where("uid").is(uid),
             (ContextMapper<Name>) ctx -> ((DirContextAdapter) ctx).getDn()
         );
         if (!dns.isEmpty()) {
@@ -96,10 +98,10 @@ public class LdapPeopleDao {
     }
 
     public void undoDelete(String uid){
-        // TODO : valeurs en dur
         List<Name> dns = ldapTemplate.search(
-            "ou=people",
-            "(uid=" + uid + ")",
+            query()
+                .base(ldapProperties.getUserBranch().getBaseDN())
+                .where("uid").is(uid),
             (ContextMapper<Name>) ctx -> ((DirContextAdapter) ctx).getDn()
         );
         if (!dns.isEmpty()) {
@@ -115,10 +117,10 @@ public class LdapPeopleDao {
     }
 
     public String getSirenCourant(String uid){
-        // TODO : valeurs en dur
         List<String> result = ldapTemplate.search(
-            "ou=people",
-            "(uid=" + uid + ")",
+            query()
+                .base(ldapProperties.getUserBranch().getBaseDN())
+                .where("uid").is(uid),
             (Attributes attrs) -> (String) attrs.get("ESCOSIRENCourant").get()
         );
         return result.isEmpty() ? null : result.get(0);
