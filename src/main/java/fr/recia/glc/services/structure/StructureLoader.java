@@ -75,7 +75,7 @@ public class StructureLoader implements InitializingBean {
         loadedCollectivites = ldapStructureDao.structuresCollectivites();
         Set<StructureFromGroup> loadedStructures = groupDao.getStructuresFromGroups();
         loadedStructures.forEach(structure -> {
-            // TODO : pour les collectivités on a pas d'UAI
+            // TODO : gérer la date de début
             branchForLoadedStructures.put(structure.getUAI(), structure.getGroupBranch());
             groupNameForLoadedStructures.put(structure.getUAI(), structure.getDisplayName());
             if (loadedStructuresByBranch.containsKey(structure.getGroupBranch())) {

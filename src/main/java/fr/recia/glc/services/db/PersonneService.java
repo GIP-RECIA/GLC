@@ -123,7 +123,7 @@ public class PersonneService {
      * Bloque une personne : attention il faut bloquer dans la BD et dans le LDAP aussi
      */
     public boolean lockPerson(APersonne aPersonne){
-        if(aPersonne.getEtat() != Etat.Bloque){
+        if(aPersonne.getEtat().equals(Etat.Valide)){
             aPersonne.setEtat(Etat.Bloque);
             aPersonneRepository.saveAndFlush(aPersonne);
             ldapPeopleDao.lockPerson(aPersonne.getUid());
@@ -139,8 +139,7 @@ public class PersonneService {
      * Débloque une personne : attention il faut débloquer dans la BD et dans le LDAP aussi
      */
     public boolean unlockPerson(APersonne aPersonne){
-        // TODO : dans quel état remettre la personne on ne sait pas dans quel état elle était avant
-        if(aPersonne.getEtat() == Etat.Bloque){
+        if(aPersonne.getEtat().equals(Etat.Bloque)){
             aPersonne.setEtat(Etat.Valide);
             aPersonneRepository.saveAndFlush(aPersonne);
             ldapPeopleDao.unlockPerson(aPersonne.getUid());
