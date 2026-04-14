@@ -152,12 +152,13 @@ public class PersonneController {
     @GetMapping(value = "/export")
     public ResponseEntity<MappingJacksonValue> exportPersonnes(@AuthenticationPrincipal GLCUser principal,
                                                              @RequestParam List<Long> ids,
+                                                             @RequestParam Long etab,
                                                              @RequestParam List<String> columns){
         List<PersonneExportDto> personnesExport = new ArrayList<>();
         for(Long id : ids){
             APersonne personne = personneService.getPersonne(id);
             PersonneDto personneDto = personneService.getFullPersonne(id, personne, true);
-            PersonneExportDto personneExportDto = new PersonneExportDto(personneDto);
+            PersonneExportDto personneExportDto = new PersonneExportDto(personneDto, etab);
             personnesExport.add(personneExportDto);
         }
         // Projection pour garder seulement certaines colonnes
