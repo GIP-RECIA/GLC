@@ -90,8 +90,7 @@ public class PersonneController {
                                                                   @RequestParam(value = "check_rights", required = false, defaultValue = "True") boolean checkRights) {
         List<SimplePersonneDto> personnes;
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
-        // TODO : vérification de droits plus propre pour autoriser les admins à chercher par uid
-        boolean canSearchByUid = !principal.getRightsForEtabs().get(GLCRole.VIEW_UID).isEmpty();
+        boolean canSearchByUid = principal.getGlobalRights().contains(GLCRole.SEARCH_UID);
 
         // Cas de la recherche dans un établissement
         if(etabId != null){

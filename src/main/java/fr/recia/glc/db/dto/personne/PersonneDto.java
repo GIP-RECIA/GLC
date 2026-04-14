@@ -67,7 +67,6 @@ public class PersonneDto {
     private String idPronote;
     private boolean listeRouge;
     private Set<StructureForUserDto> listeStructures;
-    // TODO : relations des personnes
     private List<RelationDto> relations;
 
     public PersonneDto(APersonne aPersonne, boolean showUid) {
