@@ -434,9 +434,10 @@ public class PersonneController {
         // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois + passer par un service et pas directement par le repo
         AStructure aStructure = aStructureRepository.findById(userCreation.getStructureRattachement()).orElseThrow();
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        boolean isAdminFonc = principal.getRightsForEtabs().get(GLCRole.ADMIN_FONCTIONS).contains(aStructure.getSiren());
         if (allowedSiren.contains(aStructure.getSiren())) {
             try {
-                APersonne apersonne = addPersonneService.addPersonne(userCreation);
+                APersonne apersonne = addPersonneService.addPersonne(userCreation, isAdminFonc);
                 // Log Audit
                 auditService.log(
                     AuditEvent.builder()

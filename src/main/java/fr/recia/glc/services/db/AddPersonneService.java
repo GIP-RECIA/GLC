@@ -117,7 +117,7 @@ public class AddPersonneService {
      * @param userCreation Le DTO venant du front qui contient les informations nécéssaires à la création
      */
     // TODO : gérer l'ajout de classes locales et groupes locaux, et de responsables d'un élève
-    public APersonne addPersonne(UserCreation userCreation) {
+    public APersonne addPersonne(UserCreation userCreation, boolean isAdminFonc) {
         log.debug("Trying to create local user {}", userCreation);
         // TODO : limiter le check de l'email à certaines populations
         if(aPersonneRepository.doesEmailExists(userCreation.getCourriel()) > 0){
@@ -215,7 +215,7 @@ public class AddPersonneService {
         Login login = loginService.updateLogin(nameCalculator.login(userCreation.getNom(), userCreation.getPrenom()), apersonne);
         loginRepository.saveAndFlush(login);
         // Champs spécfiques pour chaque catégorie de personne
-        updateSpecificFields(apersonne, userCreation, aStructure);
+        updateSpecificFields(apersonne, userCreation, aStructure, isAdminFonc);
         // Vider les caches concernés
         cacheInvalidationService.evictPersonneAndAssociatedStructures(apersonne.getId(), aStructure.getId());
         return apersonne;
@@ -245,44 +245,43 @@ public class AddPersonneService {
     /**
      * Met à jour les champs spécifiques en fonction du profil
      */
-    private void updateSpecificFields(APersonne apersonne, UserCreation userCreation, AStructure aStructure) {
+    private void updateSpecificFields(APersonne apersonne, UserCreation userCreation, AStructure aStructure, boolean isAdminFonc) {
         if (apersonne.getCategorie() == CategoriePersonne.Eleve) {
             updateEleve((Eleve) apersonne, userCreation);
         }
         if (apersonne.getCategorie() == CategoriePersonne.Non_enseignant_etablissement) {
-            updateNonEnsEtablissement((NonEnseignantEtablissement) apersonne, aStructure, userCreation);
+            updateNonEnsEtablissement((NonEnseignantEtablissement) apersonne, aStructure, userCreation, isAdminFonc);
         }
         if (apersonne.getCategorie() == CategoriePersonne.Non_enseignant_service_academique) {
-            updateNonEnsServiceAcad((NonEnseignantServiceAcademique) apersonne, aStructure, userCreation);
+            updateNonEnsServiceAcad((NonEnseignantServiceAcademique) apersonne, aStructure, userCreation, isAdminFonc);
         }
         if (apersonne.getCategorie() == CategoriePersonne.Enseignant) {
-            updateEnseignant((Enseignant) apersonne, aStructure, userCreation);
+            updateEnseignant((Enseignant) apersonne, aStructure, userCreation, isAdminFonc);
         }
     }
 
     /**
      * Ajout des attributs spécifiques à un nonEnseignantEtablissement
      */
-    private void updateNonEnsEtablissement(final NonEnseignantEtablissement nonEnseignantEtablissement, final AStructure aStructure, final UserCreation userCreation) {
+    private void updateNonEnsEtablissement(final NonEnseignantEtablissement nonEnseignantEtablissement, final AStructure aStructure, final UserCreation userCreation, boolean isAdminFonc) {
         log.debug("updating nonEnseignantEtablissement {}", nonEnseignantEtablissement.getUid());
-        // TODO : isAdmin en dur a True
-        fonctionService.saveAdditionalFonctions(nonEnseignantEtablissement.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save, true);
+        fonctionService.saveAdditionalFonctions(nonEnseignantEtablissement.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save, isAdminFonc);
     }
 
     /**
      * Ajout des attributs spécifiques à un nonEnseignantServiceAcademique
      */
-    private void updateNonEnsServiceAcad(final NonEnseignantServiceAcademique nonEnseignantServiceAcademique, final AStructure aStructure, final UserCreation userCreation) {
+    private void updateNonEnsServiceAcad(final NonEnseignantServiceAcademique nonEnseignantServiceAcademique, final AStructure aStructure, final UserCreation userCreation, boolean isAdminFonc) {
         log.debug("updating nonEnseignantServiceAcademique {}", nonEnseignantServiceAcademique.getUid());
-        fonctionService.saveAdditionalFonctions(nonEnseignantServiceAcademique.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save, true);
+        fonctionService.saveAdditionalFonctions(nonEnseignantServiceAcademique.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save, isAdminFonc);
     }
 
     /**
      * Ajout des attributs spécifiques à un enseignant
      */
-    private void updateEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation) {
+    private void updateEnseignant(final Enseignant enseignant, final AStructure aStructure, final UserCreation userCreation, boolean isAdminFonc) {
         log.debug("updating enseignant {}", enseignant.getUid());
-        fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save, true);
+        fonctionService.saveAdditionalFonctions(enseignant.getId(), aStructure.getId(), userCreation.getFonctions(), new ArrayList<>(), FonctionAction.save, isAdminFonc);
         List<MappingAGroupeAPersonneEnseignement> personneEnseignements = new ArrayList<>();
         // Ajout de tous les groupes de l'enseignement
         for (Long groupId : userCreation.getGroupesEns()) {
