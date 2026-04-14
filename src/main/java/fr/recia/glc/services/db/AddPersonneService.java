@@ -127,8 +127,7 @@ public class AddPersonneService {
         // 1. Récupération de la date
         Instant date = new Date().toInstant();
         // 2. Récupération de l'année scolaire actuelle (on suppose que c'est la dernière)
-        AnneeScolaire anneeScolaire = anneeScolaireRepository.findAll().get(anneeScolaireRepository.findAll().size() - 1);
-        // TODO : trouver une manière plus propre de récupérer l'année scolaire
+        AnneeScolaire anneeScolaire = anneeScolaireRepository.findFirstByOrderByDateCreationDesc();
         final String anneeEnCours = anneeScolaire.getAnneeEnCours().toString().split("-")[0];
         final String codeAnnee = uidFactory.codeAnnee(anneeEnCours);
         log.debug("Annee en cours : {}", codeAnnee);

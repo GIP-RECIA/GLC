@@ -21,4 +21,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AnneeScolaireRepository<T extends AnneeScolaire> extends AbstractRepository<T, Long> {
+    AnneeScolaire findFirstByOrderByDateCreationDesc();
 }
