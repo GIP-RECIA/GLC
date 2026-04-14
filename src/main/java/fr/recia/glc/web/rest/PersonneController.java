@@ -20,6 +20,7 @@ import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
 import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.dto.personne.PersonneDto;
+import fr.recia.glc.db.dto.personne.PersonneExportDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
@@ -54,6 +55,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,11 +83,8 @@ public class PersonneController {
     private AuditService auditService;
     @Autowired
     private LdapPeopleDao ldapPeopleDao;
-    @Autowired
-    private GLCProperties glcProperties;
 
     @GetMapping
-
     public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
                                                                   @RequestParam(value = "name") String name,
                                                                   @RequestParam(value = "etab", required = false) Long etabId,
@@ -148,8 +147,15 @@ public class PersonneController {
                 }
             }
         }
-
         return new ResponseEntity<>(personnes, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/export")
+    public ResponseEntity<List<PersonneExportDto>> exportPersonnes(@AuthenticationPrincipal GLCUser principal,
+                                                             @RequestParam List<Long> ids,
+                                                             @RequestParam List<String> columns){
+        // TODO : export de la personne avec projection sur les colonnes
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")

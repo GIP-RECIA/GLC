@@ -160,6 +160,7 @@ public class SecurityConfiguration {
                         rightsForEtabs.get(GLCRole.WRITE).add(siren);
                         rightsForEtabs.get(GLCRole.READ).add(siren);
                         rightsForEtabs.get(GLCRole.VIEW_UID).add(siren);
+                        rightsForEtabs.get(GLCRole.ADMIN_FONCTIONS).add(siren);
                     }
                 }
                 // Droits sur les collectivités
