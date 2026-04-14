@@ -133,6 +133,7 @@ public class SecurityConfiguration {
             rightsForEtabs.put(GLCRole.READ, new HashSet<>());
             rightsForEtabs.put(GLCRole.VIEW_UID, new HashSet<>());
             rightsForEtabs.put(GLCRole.ADMIN_FONCTIONS, new HashSet<>());
+            Set<GLCRole> globalRights = new HashSet<>();
             for (String group : groups) {
                 Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
                 Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
@@ -162,6 +163,8 @@ public class SecurityConfiguration {
                         rightsForEtabs.get(GLCRole.VIEW_UID).add(siren);
                         rightsForEtabs.get(GLCRole.ADMIN_FONCTIONS).add(siren);
                     }
+                    // Si admin de branche = autorisation à faire de la recherche par UID
+                    globalRights.add(GLCRole.SEARCH_UID);
                 }
                 // Droits sur les collectivités
                 if (matcherAdminCentralColl.matches()) {
@@ -178,7 +181,7 @@ public class SecurityConfiguration {
                     rightsForEtabs.get(GLCRole.ADMIN_FONCTIONS).add(siren);
                 }
             }
-            return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs);
+            return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs, globalRights);
         };
     }
 
@@ -203,6 +206,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf
+                .ignoringAntMatchers("/**")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             )
             .antMatcher("/api/**")
@@ -226,6 +230,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf
+                .ignoringAntMatchers("/**")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             )
             // Filtre pour le logout à mettre avant tout
