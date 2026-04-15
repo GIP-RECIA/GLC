@@ -119,11 +119,6 @@ public class AddPersonneService {
     // TODO : gérer l'ajout de classes locales et groupes locaux, et de responsables d'un élève
     public APersonne addPersonne(UserCreation userCreation, boolean isAdminFonc) {
         log.debug("Trying to create local user {}", userCreation);
-        // TODO : limiter le check de l'email à certaines populations
-        if(aPersonneRepository.doesEmailExists(userCreation.getCourriel()) > 0){
-            log.error("Email {} already exists ! Can't create local user", userCreation.getCourriel());
-            throw new EmailAlreadyExistsException("Email already exists");
-        }
         // 1. Récupération de la date
         Instant date = new Date().toInstant();
         // 2. Récupération de l'année scolaire actuelle (on suppose que c'est la dernière)
@@ -135,6 +130,17 @@ public class AddPersonneService {
         AStructure aStructure = aStructureRepository.getReferenceById(userCreation.getStructureRattachement());
         String source = uidFactory.getSource(aStructure.getCleJointure().getSource());
         log.debug("Source : {}", source);
+        // 3.1 Vérification de l'email avant création du compte pour certaines populations
+        if(userCreation.getCategoriePersonne().equals(CategoriePersonne.Enseignant)
+            || userCreation.getCategoriePersonne().equals(CategoriePersonne.Non_enseignant_etablissement)
+            || userCreation.getCategoriePersonne().equals(CategoriePersonne.Non_enseignant_service_academique)){
+            if(source.equals("SarapisUi_AC-ORLEANS-TOURS") || source.equals("SarapisUi_LA-CENTRE")){
+                if(aPersonneRepository.doesEmailExists(userCreation.getCourriel()) > 0){
+                    log.error("Email {} already exists ! Can't create local user", userCreation.getCourriel());
+                    throw new EmailAlreadyExistsException("Email already exists");
+                }
+            }
+        }
         // 4. Génération de l'UID
         // 4.1. Récupération du genUID correspondant en fonction du domaine de l'établissement
         List<String> domainsOfStructure = structureLoader.getDomainsOfStructure(aStructure.getSiren());
