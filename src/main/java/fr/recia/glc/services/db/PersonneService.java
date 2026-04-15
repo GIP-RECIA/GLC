@@ -222,7 +222,7 @@ public class PersonneService {
 
     public PersonneDto getFullPersonne(Long id, APersonne personne, boolean showUid, Set<String> allowedSirens){
         PersonneDto personneDto = new PersonneDto(personne, showUid);
-        LdapUser ldapUser = ldapPeopleDao.getLdapUser(personne.getUid());
+        LdapUser ldapUser = ldapPeopleDao.getLdapUser(personne.getUid(), id);
         String sirenCourant = ldapUser.getSirenCourant();
         for(AStructure aStructure : personne.getListeStructures()){
             StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);

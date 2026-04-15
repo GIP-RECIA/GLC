@@ -432,7 +432,6 @@ public class PersonneController {
     @PostMapping
     public ResponseEntity<String> addPersonne(@AuthenticationPrincipal GLCUser principal, @RequestBody UserCreation userCreation) {
         // Vérifier qu'on a les droits d'ajouter la personne = que sur la structure sur laquelle on veut l'ajouter on a les droits d'écriture
-        // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois + passer par un service et pas directement par le repo
         AStructure aStructure = structureService.getStructureDBFromId(userCreation.getStructureRattachement());
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         boolean isAdminFonc = principal.getRightsForEtabs().get(GLCRole.ADMIN_FONCTIONS).contains(aStructure.getSiren());
@@ -464,7 +463,6 @@ public class PersonneController {
     @PostMapping(value = "/{id}/fonction")
     public ResponseEntity<Void> setPersonneAdditionalFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) {
         // Vérifier qu'on a les droits de modifier la personne = que sur la structure dans laquelle on veut modifier la fonction on a les droits d'écriture
-        // TODO : cache sur l'établissement pour éviter de refaire une nouvelle requête en BD à chaque fois + passer par un service et pas directement par le repo
         AStructure aStructure = structureService.getStructureDBFromId(body.getStructureId());
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         if (allowedSiren.contains(aStructure.getSiren())) {

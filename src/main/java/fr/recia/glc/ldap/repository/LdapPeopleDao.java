@@ -21,6 +21,7 @@ import fr.recia.glc.ldap.mappers.PeopleResponseAttributesMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.LdapTemplate;
@@ -119,8 +120,8 @@ public class LdapPeopleDao {
         }
     }
 
-    // TODO : cache sur cette méthode ?
-    public LdapUser getLdapUser(String uid){
+    @Cacheable(value = "personneLDAPByUid", key = "#id")
+    public LdapUser getLdapUser(String uid, Long id){
         List<LdapUser> result = ldapTemplate.search(
             query()
                 .base(ldapProperties.getUserBranch().getBaseDN())

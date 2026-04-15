@@ -37,6 +37,8 @@ public class CacheInvalidationService {
         evict("personnesByEtablissement", new SimpleKey(structureId, true));
         evict("personnesByEtablissement", new SimpleKey(structureId, false));
         evict("fonctionAlerts", structureId);
+        evict("stuctureDBById", structureId);
+        evict("personneLDAPByUid", personneId);
     }
 
     private void evict(String cacheName, Object key) {

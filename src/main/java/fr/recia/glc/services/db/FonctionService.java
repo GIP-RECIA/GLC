@@ -43,9 +43,7 @@ import fr.recia.glc.web.dto.function.FonctionAction;
 import fr.recia.glc.web.dto.function.FonctionToModify;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
