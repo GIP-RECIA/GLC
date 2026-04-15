@@ -44,7 +44,7 @@ public class StructureService {
     }
 
     @Cacheable(value = "etablissement")
-    public StructureDto getEtablissement(Long id) {
+    public StructureDto getStructureDTOFromId(Long id) {
         log.trace("getEtablissement for {}", id);
         AStructure aStructure = structureRepository.findById(id).orElse(null);
         return aStructure != null ? new StructureDto(aStructure) : null;

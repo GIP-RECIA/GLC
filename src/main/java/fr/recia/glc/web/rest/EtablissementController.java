@@ -76,7 +76,7 @@ public class EtablissementController {
      */
     @GetMapping(value = "/{id}")
     public ResponseEntity<StructureDto> getEtablissement(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
-        StructureDto etablissement = structureService.getEtablissement(id);
+        StructureDto etablissement = structureService.getStructureDTOFromId(id);
         if (etablissement == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
