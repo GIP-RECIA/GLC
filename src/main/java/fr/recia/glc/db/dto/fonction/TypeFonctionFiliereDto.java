@@ -40,7 +40,7 @@ public class TypeFonctionFiliereDto {
     private String source;
     private Set<DisciplineDto> disciplines;
     // Liste des personnes directement dans la filière sans être dans une discipline (pour les CFA)
-    private List<SimplePersonneDto> personnesWithoutDiscipline;
+    private Set<SimplePersonneDto> personnesWithoutDiscipline;
 
     // Constructeur utilisé par la requête en BD
     public TypeFonctionFiliereDto(Long id, String codeFiliere, String libelleFiliere, String source) {
@@ -49,7 +49,10 @@ public class TypeFonctionFiliereDto {
         this.libelleFiliere = libelleFiliere;
         this.source = source;
         this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getDisciplinePoste, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
-        this.personnesWithoutDiscipline = new ArrayList<>();
+        this.personnesWithoutDiscipline = new TreeSet<>(
+            Comparator.comparing(SimplePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(SimplePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(SimplePersonneDto::getId));
     }
 
     public TypeFonctionFiliereDto(TypeFonctionFiliereDto typeFonctionFiliereDto) {
@@ -58,7 +61,10 @@ public class TypeFonctionFiliereDto {
         this.libelleFiliere = typeFonctionFiliereDto.getLibelleFiliere();
         this.source = typeFonctionFiliereDto.getSource();
         this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getDisciplinePoste, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
-        this.personnesWithoutDiscipline = new ArrayList<>();
+        this.personnesWithoutDiscipline = new TreeSet<>(
+            Comparator.comparing(SimplePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(SimplePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(SimplePersonneDto::getId));
     }
 
 }
