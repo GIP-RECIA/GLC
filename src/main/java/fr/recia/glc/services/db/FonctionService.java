@@ -213,9 +213,7 @@ public class FonctionService {
                         .orElse(new ArrayList<>());
 
                     List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(disciplineCodes, source);
-                    disciplines.sort(Comparator.comparingInt(discipline -> disciplineCodes.indexOf(discipline.getCode())));
-                    typeFonctionFiliere.setDisciplines(disciplines);
-
+                    typeFonctionFiliere.setDisciplines(new HashSet<>(disciplines));
                     return typeFonctionFiliere;
                 })
                 .collect(Collectors.toList());
@@ -268,7 +266,7 @@ public class FonctionService {
                 List<DisciplineDto> disciplinesInFiliere = tmpDisciplines.stream()
                     .filter(discipline -> disciplineIds.contains(discipline.getId()) && !disciplinesToNotInclue.contains(discipline.getDisciplinePoste()))
                     .collect(Collectors.toList());
-                typeFonctionFiliere.setDisciplines(disciplinesInFiliere);
+                typeFonctionFiliere.setDisciplines(new HashSet<>(disciplinesInFiliere));
 
                 return typeFonctionFiliere;
             })

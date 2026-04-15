@@ -23,7 +23,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Getter
 @Setter
@@ -35,7 +38,7 @@ public class TypeFonctionFiliereDto {
     private String codeFiliere;
     private String libelleFiliere;
     private String source;
-    private List<DisciplineDto> disciplines;
+    private Set<DisciplineDto> disciplines;
     // Liste des personnes directement dans la filière sans être dans une discipline (pour les CFA)
     private List<SimplePersonneDto> personnesWithoutDiscipline;
 
@@ -45,7 +48,7 @@ public class TypeFonctionFiliereDto {
         this.codeFiliere = codeFiliere;
         this.libelleFiliere = libelleFiliere;
         this.source = source;
-        this.disciplines = new ArrayList<>();
+        this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getDisciplinePoste, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
         this.personnesWithoutDiscipline = new ArrayList<>();
     }
 
@@ -54,7 +57,7 @@ public class TypeFonctionFiliereDto {
         this.codeFiliere = typeFonctionFiliereDto.getCodeFiliere();
         this.libelleFiliere = typeFonctionFiliereDto.getLibelleFiliere();
         this.source = typeFonctionFiliereDto.getSource();
-        this.disciplines = new ArrayList<>();
+        this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getDisciplinePoste, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
         this.personnesWithoutDiscipline = new ArrayList<>();
     }
 
