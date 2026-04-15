@@ -17,6 +17,7 @@ package fr.recia.glc.configuration;
 
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
 import fr.recia.glc.ldap.ExternalGroupHelper;
+import fr.recia.glc.ldap.mappers.PeopleResponseAttributesMapper;
 import fr.recia.glc.ldap.mappers.StructureSirenDomainAttributesMapper;
 import fr.recia.glc.ldap.repository.LdapGroupDao;
 import fr.recia.glc.ldap.repository.LdapPeopleDao;
@@ -113,8 +114,8 @@ public class LDAPConfiguration {
     }
 
     @Bean
-    public LdapPeopleDao ldapPeopleDao(LdapTemplate ldapTemplate) {
-        return new LdapPeopleDao(ldapTemplate, ldapProperties);
+    public LdapPeopleDao ldapPeopleDao(LdapTemplate ldapTemplate, PeopleResponseAttributesMapper peopleResponseAttributesMapper) {
+        return new LdapPeopleDao(ldapTemplate, ldapProperties, peopleResponseAttributesMapper);
     }
 
     @Bean

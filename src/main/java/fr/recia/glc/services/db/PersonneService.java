@@ -16,16 +16,20 @@
 package fr.recia.glc.services.db;
 
 import fr.recia.glc.configuration.Constants;
+import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
+import fr.recia.glc.db.entities.common.ExternalId;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.db.enums.ExternalIdSource;
 import fr.recia.glc.db.enums.ForceEtat;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
+import fr.recia.glc.ldap.LdapUser;
 import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import fr.recia.glc.services.cache.CacheInvalidationService;
 import fr.recia.glc.web.dto.user.StructureForUserDto;
@@ -40,6 +44,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -59,6 +65,8 @@ public class PersonneService {
     private FonctionService fonctionService;
     @Autowired
     private RelationService relationService;
+    @Autowired
+    private GLCProperties glcProperties;
 
 
     public List<SimplePersonneDto> searchPersonne(String name, boolean admin) {
@@ -214,8 +222,8 @@ public class PersonneService {
 
     public PersonneDto getFullPersonne(Long id, APersonne personne, boolean showUid, Set<String> allowedSirens){
         PersonneDto personneDto = new PersonneDto(personne, showUid);
-        // TODO : dommage de faire une requête LDAP pour ne récupérer qu'un seul attribut mais on a pas l'étab courant en base...
-        String sirenCourant = ldapPeopleDao.getSirenCourant(personne.getUid());
+        LdapUser ldapUser = ldapPeopleDao.getLdapUser(personne.getUid());
+        String sirenCourant = ldapUser.getSirenCourant();
         for(AStructure aStructure : personne.getListeStructures()){
             StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);
             if(allowedSirens.contains(aStructure.getSiren())){
@@ -230,6 +238,19 @@ public class PersonneService {
             }
             structureForUserDto.setClasses(groupeService.getClassesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
             structureForUserDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
+        }
+        // Affichage de l'id pronote uniquement si la personne est dans un groupe pronote
+        List<String> groups = ldapUser.getGroups();
+        Pattern patternPronoteGroup = Pattern.compile(glcProperties.getCustomConfig().getPronoteGroupRegex());
+        for(String group : groups){
+            Matcher matcherPronoteGroup = patternPronoteGroup.matcher(group);
+            if(matcherPronoteGroup.matches()){
+                for(ExternalId externalId : personne.getExternalIds()){
+                    if(externalId.getDestinataire().equals(ExternalIdSource.PRONOTE)){
+                        personneDto.setIdPronote(externalId.getId());
+                    }
+                }
+            }
         }
         setAllFonctions(personneDto, fonctionService.getPersonneFonctions(id));
         personneDto.setRelations(relationService.getPersonneRelations(id));

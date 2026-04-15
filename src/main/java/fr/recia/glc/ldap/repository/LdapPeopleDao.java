@@ -16,6 +16,8 @@
 package fr.recia.glc.ldap.repository;
 
 import fr.recia.glc.configuration.bean.CustomLdapProperties;
+import fr.recia.glc.ldap.LdapUser;
+import fr.recia.glc.ldap.mappers.PeopleResponseAttributesMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,7 @@ public class LdapPeopleDao {
 
     private LdapTemplate ldapTemplate;
     private CustomLdapProperties ldapProperties;
+    private PeopleResponseAttributesMapper peopleResponseAttributesMapper;
 
     public void lockPerson(String uid) {
         List<Name> dns = ldapTemplate.search(
@@ -116,12 +119,13 @@ public class LdapPeopleDao {
         }
     }
 
-    public String getSirenCourant(String uid){
-        List<String> result = ldapTemplate.search(
+    // TODO : cache sur cette méthode ?
+    public LdapUser getLdapUser(String uid){
+        List<LdapUser> result = ldapTemplate.search(
             query()
                 .base(ldapProperties.getUserBranch().getBaseDN())
                 .where("uid").is(uid),
-            (Attributes attrs) -> (String) attrs.get("ESCOSIRENCourant").get()
+            peopleResponseAttributesMapper
         );
         return result.isEmpty() ? null : result.get(0);
     }

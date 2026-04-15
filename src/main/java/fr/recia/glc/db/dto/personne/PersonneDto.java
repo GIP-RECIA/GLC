@@ -63,7 +63,6 @@ public class PersonneDto {
     private Date dateAcquittement;
     private Date dateSuppression;
     private String photo;
-    // TODO : afficher l'id pronote que si la personne est dans le groupe pronote
     private String idPronote;
     private boolean listeRouge;
     private Set<StructureForUserDto> listeStructures;
@@ -93,11 +92,7 @@ public class PersonneDto {
             this.dateSuppression = aPersonne.getDateModification();
         }
         this.photo = aPersonne.getPhoto();
-        for(ExternalId externalId : aPersonne.getExternalIds()){
-            if(externalId.getDestinataire().equals(ExternalIdSource.PRONOTE)){
-                this.idPronote = externalId.getId();
-            }
-        }
+        this.idPronote = null;
         this.listeRouge = aPersonne.isListeRouge();
         this.listeStructures = new TreeSet<>(Comparator.comparing(StructureForUserDto::getNom));
         this.relations = new ArrayList<>();
