@@ -38,6 +38,11 @@ public class StructureService {
     @Autowired
     private AStructureRepository<AStructure> structureRepository;
 
+    @Cacheable(value = "stuctureDBById")
+    public AStructure getStructureDBFromId(Long id){
+        return structureRepository.findById(id).orElse(null);
+    }
+
     @Cacheable(value = "etablissement")
     public StructureDto getEtablissement(Long id) {
         log.trace("getEtablissement for {}", id);
