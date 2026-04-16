@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class EtablissementControllerTest {
+class StructureControllerTest {
 
     @Autowired
     private EtablissementRepository<Etablissement> etablissementRepository;
@@ -64,7 +64,7 @@ class EtablissementControllerTest {
     @PostConstruct
     void setup() {
         GLCProperties glcProperties = new GLCProperties();
-        EtablissementController etablissementController = new EtablissementController();
+        StructureController etablissementController = new StructureController();
         setField(etablissementController, "etablissementRepository", etablissementRepository);
         setField(etablissementController, "fonctionRepository", fonctionRepository);
         setField(etablissementController, "aPersonneRepository", aPersonneRepository);
