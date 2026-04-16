@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 /**
  * Classe qui charge au démarrage de l'app des infos sur les structures pour les retrouver efficacement par la suite :
- * - Retrouver la branche d'une structure par son UAI
+ * - Retrouver la branche d'une structure par son UAI (pas pour les collectivités)
  * - Trouver la liste de toutes les structures d'une branche
  * - Retrouver le nom de groupe d'une structure par son UAI
  * - Retrouver les domaines d'une structure depuis son SIREN
@@ -75,7 +75,6 @@ public class StructureLoader implements InitializingBean {
         loadedCollectivites = ldapStructureDao.structuresCollectivites();
         Set<StructureFromGroup> loadedStructures = groupDao.getStructuresFromGroups();
         loadedStructures.forEach(structure -> {
-            // TODO : gérer la date de début
             branchForLoadedStructures.put(structure.getUAI(), structure.getGroupBranch());
             groupNameForLoadedStructures.put(structure.getUAI(), structure.getDisplayName());
             if (loadedStructuresByBranch.containsKey(structure.getGroupBranch())) {
@@ -84,27 +83,13 @@ public class StructureLoader implements InitializingBean {
                 loadedStructuresByBranch.put(structure.getGroupBranch(), Sets.newHashSet(structure));
             }
         });
-        log.debug(
-            "Loaded Structure: {}",
-            loadedStructuresByBranch.keySet().stream()
-                .map(key -> {
-                    List<String> values = loadedStructuresByBranch.get(key).stream()
-                        .map(structure -> "{" +
-                            "\n\t\t\t\"keyId\": \"" + structure.getStructureKey().getKeyId() + "\"" +
-                            ",\n\t\t\t\"keyType\": \"" + structure.getStructureKey().getKeyType() + "\"" +
-                            ",\n\t\t\t\"UAI\": \"" + structure.getUAI() + "\"" +
-                            ",\n\t\t\t\"displayName\": \"" + structure.getDisplayName() + "\"" +
-                            ",\n\t\t\t\"groupBranch\": \"" + structure.getGroupBranch() + "\"" +
-                            "\n\t\t}"
-                        )
-                        .collect(Collectors.toList());
-
-                    return "{" +
-                        "\n\t\"" + key + "\": " + ListUtil.toStringList(values, ",\n\t\t", "[\n\t\t", "\n\t]") +
-                        "\n}";
-                })
-                .collect(Collectors.joining(",\n", "[\n", "\n]"))
-        );
+        List<StructureSirenDomain> structureSirenDomains = ldapStructureDao.structuresFromSiren();
+        for (StructureSirenDomain structureSirenDomain : structureSirenDomains) {
+            domainsBySirenForStructures.put(structureSirenDomain.getSiren(), structureSirenDomain.getDomains());
+            if(structureSirenDomain.getUai()!=null){
+                uaiToSirenForStructures.put(structureSirenDomain.getUai(), structureSirenDomain.getSiren());
+            }
+        }
         log.debug(
             "loadedStructuresByBranch recap: {}",
             loadedStructuresByBranch.keySet().stream()
@@ -123,14 +108,6 @@ public class StructureLoader implements InitializingBean {
                 .map(key -> "\t{ \"" + key + "\": " + groupNameForLoadedStructures.get(key) + " }")
                 .collect(Collectors.joining(",\n", "[\n", "\n]"))
         );
-        List<StructureSirenDomain> structureSirenDomains = ldapStructureDao.structuresFromSiren();
-        for (StructureSirenDomain structureSirenDomain : structureSirenDomains) {
-            log.debug("{}", structureSirenDomain);
-            domainsBySirenForStructures.put(structureSirenDomain.getSiren(), structureSirenDomain.getDomains());
-            if(structureSirenDomain.getUai()!=null){
-                uaiToSirenForStructures.put(structureSirenDomain.getUai(), structureSirenDomain.getSiren());
-            }
-        }
         log.debug(
             "domainsBySirenForStructures recap: {}",
             domainsBySirenForStructures.keySet().stream()
@@ -170,7 +147,6 @@ public class StructureLoader implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-    }
+    public void afterPropertiesSet() throws Exception {}
 
 }
