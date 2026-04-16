@@ -120,7 +120,6 @@ const { t } = useI18n()
       padding: 16px;
       position: relative;
       border-radius: 10px;
-      height: 100%;
       box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
       outline-color: transparent;
       outline-offset: -1px;
