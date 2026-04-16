@@ -19,12 +19,10 @@ import fr.recia.glc.audit.AuditEvent;
 import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
 import fr.recia.glc.db.entities.structure.AStructure;
-import fr.recia.glc.db.entities.structure.Etablissement;
-import fr.recia.glc.db.repositories.structure.AStructureRepository;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.access.RightsService;
-import fr.recia.glc.services.structure.StructureLoader;
+import fr.recia.glc.services.db.StructureService;
 import fr.recia.glc.web.dto.access.rights.AddOrDeleteMemberRequest;
 import fr.recia.glc.web.dto.access.rights.ServiceAccess;
 import lombok.extern.slf4j.Slf4j;
@@ -54,40 +52,20 @@ public class RightsController {
     @Autowired
     private RightsService rightsService;
     @Autowired
-    private AStructureRepository<AStructure> aStructureRepository;
-    @Autowired
-    private StructureLoader structureLoader;
+    private StructureService structureService;
     @Autowired
     private AuditService auditService;
-
-    private String deductBranchFromStructure(AStructure aStructure) {
-        // TODO : comment gérer le cas des collectivités ? elles n'ont pas d'UAI
-        log.debug("Retrieving branch for structure {}", aStructure.getId());
-        final String branch = structureLoader.getBranchOfStructure(((Etablissement) aStructure).getUai());
-        log.debug("Branch for structure {} is {}", aStructure.getId(), branch);
-        return branch;
-    }
-
-    private String deductGroupNameFromStructure(AStructure aStructure) {
-        // TODO : comment gérer le cas des collectivités ? elles n'ont pas d'UAI
-        log.debug("Retrieving group name for structure {}", aStructure.getId());
-        final String etabGroupLeft = structureLoader.getGroupNameOfStructure(((Etablissement) aStructure).getUai());
-        final String etabGroupRight = ((Etablissement) aStructure).getUai();
-        String groupName = etabGroupLeft + "_" + etabGroupRight;
-        log.debug("Group name for structure {} is {}", aStructure.getId(), groupName);
-        return groupName;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<List<ServiceAccess>> listRights(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id,
                                                           @RequestParam(required = false, defaultValue = "false") boolean showExternal,
                                                           @RequestParam(required = false, defaultValue = "true") boolean showAdmin) {
         log.debug("Listing rights for structure {}", id);
-        final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        final AStructure aStructure = structureService.getStructureDBFromId(id);
+        final Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         if (allowedSiren.contains(aStructure.getSiren())) {
-            final String etabGroup = deductGroupNameFromStructure(aStructure);
-            final String branch = deductBranchFromStructure(aStructure);
+            final String etabGroup = rightsService.deductGroupNameFromStructure(aStructure);
+            final String branch = rightsService.deductBranchFromStructure(aStructure);
             final List<ServiceAccess> rights = rightsService.getRights(branch, etabGroup, showExternal, showAdmin);
             log.debug("Rights for structure {} are {}", id, rights);
             return ResponseEntity.ok(rights);
@@ -102,11 +80,11 @@ public class RightsController {
                                              @PathVariable String service, @PathVariable String role,
                                              @RequestBody AddOrDeleteMemberRequest request) {
         log.debug("Updating rights for structure {}", id);
-        final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        final AStructure aStructure = structureService.getStructureDBFromId(id);
+        final Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         if (allowedSiren.contains(aStructure.getSiren())) {
-            final String etabGroup = deductGroupNameFromStructure(aStructure);
-            final String branch = deductBranchFromStructure(aStructure);
+            final String etabGroup = rightsService.deductGroupNameFromStructure(aStructure);
+            final String branch = rightsService.deductBranchFromStructure(aStructure);
             for (String memberToAdd : request.getMembersToAdd()) {
                 log.debug("Adding right for member {} in structure {} for service {} for role {}", memberToAdd, id, service, role);
                 rightsService.addRight(service, role, memberToAdd, branch, etabGroup, principal.getUsername());

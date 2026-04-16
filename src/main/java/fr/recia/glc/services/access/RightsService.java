@@ -21,9 +21,12 @@ import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.configuration.bean.RoleProperties;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.personne.QAPersonne;
+import fr.recia.glc.db.entities.structure.AStructure;
+import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.services.exceptions.UnauthorizedGroupModificationException;
 import fr.recia.glc.services.exceptions.UnauthorizedPeopleModificationException;
+import fr.recia.glc.services.structure.StructureLoader;
 import fr.recia.glc.utils.GroupPathGenerator;
 import fr.recia.glc.web.dto.access.grouper.response.WsSubject;
 import fr.recia.glc.web.dto.access.grouper.response.add.WsAddMemberResponse;
@@ -51,11 +54,13 @@ public class RightsService {
     private final GrouperService grouperService;
     private final Map<String, String> invertedTemplateCache;
     private final APersonneRepository<APersonne> aPersonneRepository;
+    private final StructureLoader structureLoader;
 
-    public RightsService(GLCProperties glcProperties, GrouperService grouperService, APersonneRepository<APersonne> aPersonneRepository) {
+    public RightsService(GLCProperties glcProperties, GrouperService grouperService, APersonneRepository<APersonne> aPersonneRepository, StructureLoader structureLoader) {
         this.glcProperties = glcProperties;
         this.grouperService = grouperService;
         this.aPersonneRepository = aPersonneRepository;
+        this.structureLoader = structureLoader;
         this.invertedTemplateCache = new HashMap<>();
     }
 
@@ -73,6 +78,29 @@ public class RightsService {
     private boolean isGroup(String memberName) {
         return !(memberName.startsWith("F") && memberName.length() == 8);
     }
+
+    /**
+     * Donne la branche d'une structure (pour former un groupe grouper)
+     */
+    public String deductBranchFromStructure(AStructure aStructure) {
+        log.debug("Retrieving branch for structure {}", aStructure.getId());
+        final String branch = structureLoader.getBranchOfStructure(((Etablissement) aStructure).getUai());
+        log.debug("Branch for structure {} is {}", aStructure.getId(), branch);
+        return branch;
+    }
+
+    /**
+     * Donne le nom de grouper d'une structure (pour former un groupe grouper)
+     */
+    public String deductGroupNameFromStructure(AStructure aStructure) {
+        log.debug("Retrieving group name for structure {}", aStructure.getId());
+        final String etabGroupLeft = structureLoader.getGroupNameOfStructure(((Etablissement) aStructure).getUai());
+        final String etabGroupRight = ((Etablissement) aStructure).getUai();
+        String groupName = etabGroupLeft + "_" + etabGroupRight;
+        log.debug("Group name for structure {} is {}", aStructure.getId(), groupName);
+        return groupName;
+    }
+
 
     /**
      * Donne la liste de tous les droits des services pour le front d'après la configuration
