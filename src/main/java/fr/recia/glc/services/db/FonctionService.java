@@ -95,8 +95,21 @@ public class FonctionService {
         this.fonctionsProperties = glcProperties.getCustomConfig().getFonctions();
     }
 
+    @Cacheable(value = "typeFonctionFiliere")
+    public TypeFonctionFiliere getTypeFonctionFiliere(Long id){
+        return typeFonctionFiliereRepository.getReferenceById(id);
+    }
+
+    @Cacheable(value = "discipline")
+    public Discipline getDiscipline(Long id){
+        return disciplineRepository.getReferenceById(id);
+    }
+
     @Cacheable(value = "fonctions")
     public List<Object> getFonctions() {
+        // On récupère deux listes :
+        // - La liste des fonctions dans la base utile pour l'affichage coté utilisateur car on n'a pas préchargé tous ses établissements donc toutes ses fonctions possibles
+        // - La liste des mappings customs utile lors de l'ajout de fonction
         log.trace("getFonctions");
         final List<String> sources = disciplineRepository.findAllNonSarapisSources();
         if (sources.isEmpty()) return Collections.emptyList();

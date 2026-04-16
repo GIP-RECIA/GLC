@@ -22,16 +22,21 @@ import fr.recia.glc.db.dto.personne.PersonneDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.common.ExternalId;
+import fr.recia.glc.db.entities.education.Discipline;
+import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.ExternalIdSource;
 import fr.recia.glc.db.enums.ForceEtat;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
+import fr.recia.glc.db.repositories.education.DisciplineRepository;
+import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.ldap.LdapUser;
 import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import fr.recia.glc.services.cache.CacheInvalidationService;
+import fr.recia.glc.web.dto.function.FonctionDisplayDto;
 import fr.recia.glc.web.dto.user.StructureForUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +72,10 @@ public class PersonneService {
     private RelationService relationService;
     @Autowired
     private GLCProperties glcProperties;
+    @Autowired
+    private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
+    @Autowired
+    private DisciplineRepository<Discipline> disciplineRepository;
 
 
     public List<SimplePersonneDto> searchPersonne(String name, boolean admin) {
@@ -263,10 +272,13 @@ public class PersonneService {
                 // Ici c'est acceptable de faire une boucle imbriquée car on a peu de structures dans la liste la pluspart du temps
                 for(StructureForUserDto structureForUserDto : personneDto.getListeStructures()){
                     if(fonctionDto.getStructure().equals(structureForUserDto.getId())){
+                        TypeFonctionFiliere typeFonctionFiliere = fonctionService.getTypeFonctionFiliere(fonctionDto.getFiliere());
+                        Discipline discipline = fonctionService.getDiscipline(fonctionDto.getDiscipline());
+                        FonctionDisplayDto fonctionDisplayDto = new FonctionDisplayDto(typeFonctionFiliere, discipline, fonctionDto.getDateFin());
                         if(!fonctionDto.getSource().startsWith(Constants.SARAPISUI_)){
-                            structureForUserDto.getFonctions().add(fonctionDto);
+                            structureForUserDto.getFonctions().add(fonctionDisplayDto);
                         } else {
-                            structureForUserDto.getAdditionalFonctions().add(fonctionDto);
+                            structureForUserDto.getAdditionalFonctions().add(fonctionDisplayDto);
                         }
                     }
                 }
