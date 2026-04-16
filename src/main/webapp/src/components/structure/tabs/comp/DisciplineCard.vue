@@ -3,17 +3,23 @@ import type { SimplePersonne } from '@/types/index.ts'
 import { useId } from 'vue'
 import UserLink from './UserLink.vue'
 
-defineProps<{
-  label: string
-  users: SimplePersonne[]
-}>()
+withDefaults(
+  defineProps<{
+    header?: boolean
+    label?: string
+    users: SimplePersonne[]
+  }>(),
+  {
+    header: false,
+  },
+)
 
 const uid = useId()
 </script>
 
 <template>
   <div class="r-card">
-    <header>
+    <header v-if="header">
       <h3>
         {{ label }}
       </h3>

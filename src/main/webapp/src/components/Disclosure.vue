@@ -15,15 +15,9 @@
 -->
 
 <script setup lang="ts">
-import type { Filiere } from '@/types'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, ref, useId } from 'vue'
-import Discipline from './Discipline.vue'
-
-defineProps<{
-  filiere: Filiere
-}>()
 
 const uid = useId()
 
@@ -31,10 +25,14 @@ const id = computed<string>(() => (
   `disclosure-${uid}`
 ))
 
+const isRendered = ref<boolean>(false)
+
 const isExpanded = ref<boolean>(false)
 
 function toggle(): void {
   isExpanded.value = !isExpanded.value
+  if (isExpanded.value)
+    isRendered.value = true
 }
 </script>
 
@@ -46,12 +44,7 @@ function toggle(): void {
         :aria-controls="id"
         @click="toggle"
       >
-        <h2>
-          {{ filiere.libelleFiliere }}
-        </h2>
-        <span class="count">
-          {{ filiere.disciplines.length + (filiere.personnesWithoutDiscipline.length > 0 ? 1 : 0) }}
-        </span>
+        <slot name="heading" />
         <FontAwesomeIcon
           :icon="faChevronDown"
           :style="{
@@ -61,30 +54,15 @@ function toggle(): void {
         />
       </button>
     </header>
-    <ul
-      v-if="isExpanded"
+    <div
       :id="id"
       class="menu"
       :style="{
         display: isExpanded ? undefined : 'none',
       }"
     >
-      <li
-        v-for="discipline in filiere.disciplines"
-        :key="`structure-filiere-${filiere.id}-discipline-${discipline.id}`"
-      >
-        <Discipline
-          :label="discipline.disciplinePoste"
-          :users="discipline.personnes"
-        />
-      </li>
-      <li v-if="filiere.personnesWithoutDiscipline.length > 0">
-        <Discipline
-          label="SANS DISCIPLINE"
-          :users="filiere.personnesWithoutDiscipline"
-        />
-      </li>
-    </ul>
+      <slot v-if="isRendered" />
+    </div>
   </div>
 </template>
 
@@ -96,6 +74,7 @@ function toggle(): void {
 
 .disclosure {
   border-radius: 10px;
+  // box-shadow: var(--#{$prefix}shadow-strong) HEXToRGBA($black, 0.1);
 
   > header {
     > button {
@@ -109,14 +88,6 @@ function toggle(): void {
       font-size: var(--#{$prefix}font-size-md);
       font-weight: bold;
       color: inherit;
-
-      > h2 {
-        margin-bottom: 0;
-      }
-
-      > .count {
-        opacity: 0.6;
-      }
 
       > .folded-indicator {
         font-size: 16px;
@@ -136,52 +107,8 @@ function toggle(): void {
     }
   }
 
-  > .menu {
-    @include unstyled-list;
-    display: grid;
-    gap: 16px;
-    margin-top: 4px;
-  }
-
   &:has(> header > button:focus-visible) {
     outline: 2px solid var(--#{$prefix}primary);
-    outline-offset: 8px;
-  }
-
-  @media (width >= map.get($grid-breakpoints, md)) {
-    > .menu {
-      grid-template-columns: repeat(2, 1fr);
-
-      > li {
-        &:only-child,
-        &:has(> .r-card > .body > ul > li:nth-child(10)) {
-          grid-column: span 2;
-        }
-      }
-    }
-  }
-}
-</style>
-
-<style lang="scss">
-@use 'sass:map';
-@use '@gip-recia/ui/core/variables' as *;
-@use '@gip-recia/ui/functions' as *;
-@use '@gip-recia/ui/mixins' as *;
-
-.disclosure {
-  > .menu > li {
-    &:only-child,
-    &:has(> .r-card > .body > ul > li:nth-child(10)) {
-      > .r-card > .body > ul {
-        @media (width >= map.get($grid-breakpoints, md)) {
-          grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
-        }
-        @media (width >= map.get($grid-breakpoints, xxl)) {
-          grid-template-columns: repeat(auto-fill, minmax(264px, 1fr));
-        }
-      }
-    }
   }
 }
 </style>
