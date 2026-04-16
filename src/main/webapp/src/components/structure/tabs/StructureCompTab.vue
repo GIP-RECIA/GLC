@@ -71,7 +71,10 @@ const filters = [
           {{ filiere.libelleFiliere }}
         </h2>
         <span class="count">
-          {{ filiere.disciplines.length + (filiere.personnesWithoutDiscipline.length > 0 ? 1 : 0) }}
+          {{
+            filiere.disciplines.length
+              + (filiere.personnesWithoutDiscipline.length > 0 ? 1 : 0)
+          }}
         </span>
       </template>
 
@@ -81,12 +84,15 @@ const filters = [
     </Disclosure>
 
     <Disclosure
-      v-if="structure?.withoutFunctions"
+      v-if="
+        structure?.withoutFunctions
+          && structure?.withoutFunctions.length > 0
+      "
       id="withoutFunctions"
     >
       <template #heading>
         <h2>
-          SANS Fonctions
+          {{ t('page.structure.comp.withoutFunctions') }}
         </h2>
         <span class="count">
           {{ structure.withoutFunctions.length }}
@@ -94,7 +100,6 @@ const filters = [
       </template>
 
       <DisciplineCard
-        label="SANS Fonctions"
         :users="structure.withoutFunctions"
       />
     </Disclosure>

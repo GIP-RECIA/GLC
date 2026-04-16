@@ -15,7 +15,7 @@ const { t } = useI18n()
     <div class="structure-logo">
       <img
         :src="structure?.logo ?? '/annuaire_images/default_banner_v1.jpg'"
-        :alt="t('page.structure.')"
+        :alt="t('page.structure.logo')"
       >
     </div>
 

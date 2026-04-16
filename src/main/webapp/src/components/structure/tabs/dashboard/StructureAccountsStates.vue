@@ -35,7 +35,9 @@ const accountStates = computed(() => (
 
 <template>
   <div class="accounts-states">
-    <h2>Etats des comptes</h2>
+    <h2>
+      {{ t('page.structure.dashboard.accountsStates') }}
+    </h2>
 
     <ul>
       <li

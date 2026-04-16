@@ -21,8 +21,6 @@ import { storeToRefs } from 'pinia'
 import { ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import AccountTab from '@/components/old-ui/tabs/structure/AccountTab.vue'
-import DashboardTab from '@/components/old-ui/tabs/structure/DashboardTab.vue'
 import StructureInfo from '@/components/structure/StructureInfo.vue'
 import StructureAccountsTab from '@/components/structure/tabs/StructureAccountsTab.vue'
 import StructureCompTab from '@/components/structure/tabs/StructureCompTab.vue'
@@ -208,18 +206,6 @@ function onCreate(): void {
       tabindex="0"
       :structure="currentEtab"
     />
-  </div>
-
-  <div
-    v-dev
-    class="to-remove"
-  >
-    <DashboardTab />
-
-    <h2>
-      {{ t('tab.accounts') }}
-    </h2>
-    <AccountTab />
   </div>
 </template>
 
