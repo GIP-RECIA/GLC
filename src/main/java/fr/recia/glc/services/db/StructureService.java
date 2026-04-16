@@ -50,6 +50,15 @@ public class StructureService {
         return aStructure != null ? new StructureDto(aStructure) : null;
     }
 
+    // TODO : ne retourner que les établissements
+    public List<SimpleStructureDto> getEtablissements(Set<String> allowedSiren) {
+        return IteratorUtils.toList(
+                structureRepository.findAll(QAStructure.aStructure.siren.isNotNull().and(QAStructure.aStructure.siren.in(allowedSiren))).iterator()).stream()
+            .map(SimpleStructureDto::new)
+            .sorted(Comparator.comparing(SimpleStructureDto::getNom))
+            .collect(Collectors.toList());
+    }
+
     public List<SimpleStructureDto> getStructures(Set<String> allowedSiren) {
         return IteratorUtils.toList(
                 structureRepository.findAll(QAStructure.aStructure.siren.isNotNull().and(QAStructure.aStructure.siren.in(allowedSiren))).iterator()).stream()

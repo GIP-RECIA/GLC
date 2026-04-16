@@ -45,8 +45,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/structure/etablissement")
-public class EtablissementController {
+@RequestMapping(value = "/api/structure")
+public class StructureController {
 
     @Autowired
     private StructureService structureService;
@@ -61,7 +61,7 @@ public class EtablissementController {
      * Récupère la liste de toutes les structures que l'utilisateur à le droit d'administrer
      */
     @GetMapping()
-    public ResponseEntity<List<SimpleStructureDto>> getEtablissements(@AuthenticationPrincipal GLCUser principal) {
+    public ResponseEntity<List<SimpleStructureDto>> getStructures(@AuthenticationPrincipal GLCUser principal) {
         // Ne retourner que les établissements que la personne a le droit de lire
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         List<SimpleStructureDto> etablissements = structureService.getStructures(allowedSiren);
@@ -72,9 +72,23 @@ public class EtablissementController {
     }
 
     /**
-     * Récupère les informations sur un établissement ainsi que toutes les personnes dedans
+     * Récupère la liste de toutes les structures que l'utilisateur à le droit d'administrer (sauf les collectivités)
      */
-    @GetMapping(value = "/{id}")
+    @GetMapping("/etablissement")
+    public ResponseEntity<List<SimpleStructureDto>> getEtablissements(@AuthenticationPrincipal GLCUser principal) {
+        // Ne retourner que les établissements que la personne a le droit de lire
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        List<SimpleStructureDto> etablissements = structureService.getEtablissements(allowedSiren);
+        if (etablissements.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(etablissements, HttpStatus.OK);
+    }
+
+    /**
+     * Récupère les informations sur une structure ainsi que toutes les personnes dedans
+     */
+    @GetMapping(value = "/etablissement/{id}")
     public ResponseEntity<StructureDto> getEtablissement(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
         StructureDto etablissement = structureService.getStructureDTOFromId(id);
         if (etablissement == null) {
