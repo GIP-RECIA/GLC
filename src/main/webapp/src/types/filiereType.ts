@@ -15,6 +15,7 @@
  */
 
 import type { Discipline } from './disciplineType.ts'
+import type { SimplePersonne } from './personneType.ts'
 
 export interface Filiere {
   id: number
@@ -22,4 +23,5 @@ export interface Filiere {
   libelleFiliere: string
   source: string
   disciplines: Discipline[]
+  personnesWithoutDiscipline: SimplePersonne[]
 }

@@ -21,24 +21,17 @@ import { storeToRefs } from 'pinia'
 import { ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import AttachDialog from '@/components/old-ui/dialogs/AttachDialog.vue'
-import QuickAddDialog from '@/components/old-ui/dialogs/QuickAddDialog.vue'
 import AccountTab from '@/components/old-ui/tabs/structure/AccountTab.vue'
-import CategorieTab from '@/components/old-ui/tabs/structure/CategorieTab.vue'
 import DashboardTab from '@/components/old-ui/tabs/structure/DashboardTab.vue'
 import StructureInfo from '@/components/structure/StructureInfo.vue'
 import StructureAccountsTab from '@/components/structure/tabs/StructureAccountsTab.vue'
 import StructureCompTab from '@/components/structure/tabs/StructureCompTab.vue'
 import StructureDashboardTab from '@/components/structure/tabs/StructureDashboardTab.vue'
-import { useConfigurationStore, useStructureStore } from '@/stores/index.ts'
-import { Tabs } from '@/types/enums/index.ts'
-
-const configurationStore = useConfigurationStore()
-const { isAttach } = storeToRefs(configurationStore)
+import { useStructureStore } from '@/stores/index.ts'
 
 const structureStore = useStructureStore()
 const { initCurrentEtab } = structureStore
-const { currentEtab, fonction } = storeToRefs(structureStore)
+const { currentEtab } = storeToRefs(structureStore)
 
 const { t } = useI18n()
 const route = useRoute()
@@ -51,8 +44,6 @@ watch(
   },
   { immediate: true },
 )
-
-const show = ref<boolean>(false)
 
 /* Tabs */
 
@@ -225,65 +216,10 @@ function onCreate(): void {
   >
     <DashboardTab />
 
-    <input
-      id="showOld"
-      v-model="show"
-      type="checkbox"
-    >
-    <label for="showOld">Afficher les onglets par catégorie</label>
-
-    <template v-if="show">
-      <h2>
-        {{ t('tab.teaching') }}
-      </h2>
-      <CategorieTab :categorie="Tabs.Teaching" />
-
-      <h2>
-        {{ t('tab.school') }}
-      </h2>
-      <CategorieTab :categorie="Tabs.School">
-        <template #actions>
-          <v-btn
-            v-if="fonction?.customMapping"
-            variant="tonal"
-            prepend-icon="fas fa-link"
-            class="d-none d-sm-flex me-2 custom-height"
-            @click="isAttach = true"
-          >
-            {{ t('button.attach') }}
-          </v-btn>
-        </template>
-        <template #footer>
-          <div class="fab ma-4 d-sm-none">
-            <v-btn
-              v-if="fonction?.customMapping"
-              variant="tonal"
-              size="x-large"
-              icon="fas fa-link"
-              @click="isAttach = true"
-            />
-          </div>
-        </template>
-      </CategorieTab>
-
-      <h2>
-        {{ t('tab.collectivity') }}
-      </h2>
-      <CategorieTab :categorie="Tabs.Collectivity" />
-
-      <h2>
-        {{ t('tab.academic') }}
-      </h2>
-      <CategorieTab :categorie="Tabs.Academic" />
-    </template>
-
     <h2>
       {{ t('tab.accounts') }}
     </h2>
     <AccountTab />
-
-    <AttachDialog />
-    <QuickAddDialog />
   </div>
 </template>
 

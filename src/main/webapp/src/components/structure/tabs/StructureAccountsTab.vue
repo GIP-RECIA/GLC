@@ -11,6 +11,8 @@ defineProps<{
 
 const { t } = useI18n()
 
+/* Filters */
+
 const filters = [
   {
     id: 'source',

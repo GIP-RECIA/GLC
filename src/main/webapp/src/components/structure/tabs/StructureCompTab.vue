@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import type { Etablissement } from '@/types/index.ts'
 import { useI18n } from 'vue-i18n'
-import { Etat } from '@/types/enums/index.ts'
-import { getEtat } from '@/utils/index.ts'
+import { Etat, etatMap } from '@/types/enums/index.ts'
+import Filiere from './comp/Filiere.vue'
 
 defineProps<{
   structure?: Etablissement
 }>()
 
 const { t } = useI18n()
+
+/* Filters */
 
 enum Staff {
   Teaching = 'teaching',
@@ -44,7 +46,7 @@ const filters = [
       },
       ...Object.values(Etat).map(etat => ({
         key: etat,
-        value: t(getEtat(etat).i18n),
+        value: t(etatMap[etat].i18n),
       })),
     ],
   },
@@ -55,6 +57,12 @@ const filters = [
   <div>
     <r-filters
       :data="filters"
+    />
+
+    <Filiere
+      v-for="filiere in structure?.filieres"
+      :key="`structure-filiere-${filiere.id}`"
+      :filiere="filiere"
     />
   </div>
 </template>
