@@ -29,8 +29,14 @@ export interface CustomMapping {
 }
 
 export interface PersonneFonction {
-  filiere: number
-  discipline: number
+  filiere: {
+    id: number
+    libelle: string
+  }
+  discipline: {
+    id: number
+    libelle: string
+  }
   source: string
   structure: number
   dateFin?: string

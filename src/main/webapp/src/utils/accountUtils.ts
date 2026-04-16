@@ -234,8 +234,8 @@ function fonctionToFonctionForm(
   fonction: PersonneFonction,
 ): FonctionForm {
   return {
-    filiere: fonction.filiere,
-    discipline: fonction.discipline,
+    filiere: fonction.filiere.id,
+    discipline: fonction.discipline.id,
     dateFin: fonction.dateFin,
   }
 }

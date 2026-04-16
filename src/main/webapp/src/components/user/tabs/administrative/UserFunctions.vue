@@ -41,15 +41,15 @@ const filteredFilieres = computed<Filiere[]>(() => {
   const fonctionsMap = new Map<number, Map<number, PersonneFonction>>()
 
   for (const fun of props.fonctions) {
-    let disciplineMap = fonctionsMap.get(fun.filiere)
+    let disciplineMap = fonctionsMap.get(fun.filiere.id)
 
     if (!disciplineMap) {
       disciplineMap = new Map()
-      fonctionsMap.set(fun.filiere, disciplineMap)
+      fonctionsMap.set(fun.filiere.id, disciplineMap)
     }
 
-    if (!disciplineMap.has(fun.discipline))
-      disciplineMap.set(fun.discipline, fun)
+    if (!disciplineMap.has(fun.discipline.id))
+      disciplineMap.set(fun.discipline.id, fun)
   }
 
   return props.filieres
@@ -79,8 +79,8 @@ function onTagClick(
   discipline: Discipline,
 ): void {
   const fonction = props.fonctions?.find(f => (
-    f.filiere === filiere.id
-    && f.discipline === discipline.id
+    f.filiere.id === filiere.id
+    && f.discipline.id === discipline.id
   ))
 
   if (!fonction)
