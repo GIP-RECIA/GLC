@@ -1,11 +1,33 @@
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
-import { faFileExport, faLockOpen } from '@fortawesome/free-solid-svg-icons'
+import type { RowSelectionState, SortingState } from '@tanstack/vue-table'
+import type { Etablissement, SimplePersonne } from '@/types/index.ts'
+import {
+  faAngleDown,
+  faAngleLeft,
+  faAngleRight,
+  faAnglesLeft,
+  faAnglesRight,
+  faAngleUp,
+  faEye,
+  faFileExport,
+  faLockOpen,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {
+  createColumnHelper,
+  FlexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useVueTable,
+} from '@tanstack/vue-table'
+import { h, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
 import { CategoriePersonne, categoriePersonneMap, Etat, etatMap } from '@/types/enums/index.ts'
+import IndeterminateCheckbox from './accounts/IndeterminateCheckbox.vue'
 
-defineProps<{
+const props = defineProps<{
   structure?: Etablissement
 }>()
 
@@ -74,6 +96,114 @@ function onUnlock(): void {
 function onExport(): void {
 
 }
+
+/* Table */
+
+const INITIAL_PAGE_INDEX = 0
+const columnHelper = createColumnHelper<SimplePersonne>()
+const goToPageNumber = ref(INITIAL_PAGE_INDEX + 1)
+const pageSizes = [20, 40]
+const columns = [
+  {
+    id: 'select',
+    header: ({ table }: { table: any }) => h(IndeterminateCheckbox, {
+      checked: table.getIsAllPageRowsSelected(),
+      indeterminate: table.getIsSomePageRowsSelected(),
+      onChange: table.getToggleAllPageRowsSelectedHandler(),
+    }),
+    cell: ({ row }: { row: any }) => h(IndeterminateCheckbox, {
+      checked: row.getIsSelected(),
+      disabled: !row.getCanSelect(),
+      onChange: row.getToggleSelectedHandler(),
+    }),
+  },
+  columnHelper.accessor('etat', {
+    header: 'etat',
+    cell: info => t(etatMap[info.getValue()].i18n),
+  }),
+  columnHelper.accessor('cn', {
+    header: 'cn',
+  }),
+  columnHelper.accessor('categorie', {
+    header: 'categorie',
+    cell: info => t(categoriePersonneMap[info.getValue()].i18n),
+  }),
+  columnHelper.accessor('email', {
+    header: 'email',
+  }),
+  {
+    id: 'select',
+    header: 'Actions',
+    cell: ({ row }: { row: any }) => h(
+      RouterLink,
+      {
+        to: { name: 'user', params: { userId: row.original.id } },
+        class: 'btn-primary circle',
+      },
+      () => [
+        h(
+          'span',
+          {
+            title: 'Voir',
+          },
+          [
+            h(FontAwesomeIcon, {
+              icon: faEye,
+            }),
+          ],
+        ),
+      ],
+    ),
+  },
+]
+const rowSelection = ref<RowSelectionState>({})
+const sorting = ref<SortingState>([])
+
+const table = useVueTable({
+  get data() {
+    return props.structure?.personnes ?? []
+  },
+  columns,
+  state: {
+    get rowSelection() {
+      return rowSelection.value
+    },
+    get sorting() {
+      return sorting.value
+    },
+  },
+  getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+  getSortedRowModel: getSortedRowModel(),
+  initialState: {
+    pagination: {
+      pageSize: pageSizes[0],
+    },
+  },
+  enableRowSelection: true,
+  onRowSelectionChange: (updateOrValue) => {
+    rowSelection.value = typeof updateOrValue === 'function'
+      ? updateOrValue(rowSelection.value)
+      : updateOrValue
+  },
+  enableMultiSort: true,
+  maxMultiSortColCount: 2,
+  onSortingChange: (updaterOrValue) => {
+    sorting.value = typeof updaterOrValue === 'function'
+      ? updaterOrValue(sorting.value)
+      : updaterOrValue
+  },
+})
+
+function handleGoToPage(e: any): void {
+  const page = e.target.value ? Number(e.target.value) - 1 : 0
+  goToPageNumber.value = page + 1
+  table.setPageIndex(page)
+}
+
+function handlePageSizeChange(e: any): void {
+  table.setPageSize(Number(e.target.value))
+}
 </script>
 
 <template>
@@ -113,6 +243,131 @@ function onExport(): void {
           </button>
         </li>
       </ul>
+    </div>
+
+    {{ rowSelection }} {{ sorting }}
+
+    <table>
+      <thead>
+        <tr
+          v-for="headerGroup in table.getHeaderGroups()"
+          :key="headerGroup.id"
+        >
+          <th
+            v-for="header in headerGroup.headers"
+            :key="header.id"
+            :colSpan="header.colSpan"
+            :class="[
+              header.column.getCanSort()
+                ? 'cursor-pointer select-none'
+                : '',
+            ]"
+            @click="header.column.getToggleSortingHandler()?.($event)"
+          >
+            <FlexRender
+              v-if="!header.isPlaceholder"
+              :render="header.column.columnDef.header"
+              :props="header.getContext()"
+            />
+
+            <FontAwesomeIcon
+              v-if="header.column.getIsSorted()"
+              :icon="
+                header.column.getIsSorted() === 'asc'
+                  ? faAngleUp
+                  : faAngleDown
+              "
+            />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="row in table.getRowModel().rows"
+          :key="row.id"
+        >
+          <td
+            v-for="cell in row.getVisibleCells()"
+            :key="cell.id"
+          >
+            <FlexRender
+              :render="cell.column.columnDef.cell"
+              :props="cell.getContext()"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div>
+      <div class="flex items-center gap-2">
+        <button
+          class="btn-secondary circle"
+          :disabled="!table.getCanPreviousPage()"
+          @click="() => table.setPageIndex(0)"
+        >
+          <FontAwesomeIcon
+            :icon="faAnglesLeft"
+          />
+        </button>
+        <button
+          class="btn-secondary circle"
+          :disabled="!table.getCanPreviousPage()"
+          @click="() => table.previousPage()"
+        >
+          <FontAwesomeIcon
+            :icon="faAngleLeft"
+          />
+        </button>
+        <button
+          class="btn-secondary circle"
+          :disabled="!table.getCanNextPage()"
+          @click="() => table.nextPage()"
+        >
+          <FontAwesomeIcon
+            :icon="faAngleRight"
+          />
+        </button>
+        <button
+          class="btn-secondary circle"
+          :disabled="!table.getCanNextPage()"
+          @click="() => table.setPageIndex(table.getPageCount() - 1)"
+        >
+          <FontAwesomeIcon
+            :icon="faAnglesRight"
+          />
+        </button>
+        <span class="flex items-center gap-1">
+          <div>Page</div>
+          <strong>
+            {{ table.getState().pagination.pageIndex + 1 }} of
+            {{ table.getPageCount() }}
+          </strong>
+        </span>
+        <span class="flex items-center gap-1">
+          | Go to page:
+          <input
+            type="number"
+            :value="goToPageNumber"
+            class="border p-1 rounded w-16"
+            @change="handleGoToPage"
+          >
+        </span>
+        <select
+          :value="table.getState().pagination.pageSize"
+          @change="handlePageSizeChange"
+        >
+          <option
+            v-for="pageSize in pageSizes"
+            :key="pageSize"
+            :value="pageSize"
+          >
+            Show {{ pageSize }}
+          </option>
+        </select>
+      </div>
+      <div>{{ table.getRowModel().rows.length }} Rows</div>
+      <pre>{{ JSON.stringify(table.getState().pagination, null, 2) }}</pre>
     </div>
   </div>
 </template>

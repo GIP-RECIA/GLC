@@ -2135,6 +2135,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/table-core@npm:8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/table-core@npm:8.21.3"
+  checksum: 10/aa05e5f80110f0f56d66161e950668ea6ef3e2ea4f3a2ccd5d5980b39b4feea987245b20531aee2c6743e6edd12c0361503413b63090c807f88a61b19bfd04f3
+  languageName: node
+  linkType: hard
+
+"@tanstack/vue-table@npm:^8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/vue-table@npm:8.21.3"
+  dependencies:
+    "@tanstack/table-core": "npm:8.21.3"
+  peerDependencies:
+    vue: ">=3.2"
+  checksum: 10/8e62a2ef329b629b1e49182f56ef8cdd30d9ac6294f40c082f668e8102f11f07ff4e25d1def0efba4be280145cf217ee7eaf507eee48c5f1e68b64eb426e092b
+  languageName: node
+  linkType: hard
+
 "@tsconfig/node24@npm:^24.0.4":
   version: 24.0.4
   resolution: "@tsconfig/node24@npm:24.0.4"
@@ -5601,6 +5619,7 @@ __metadata:
     "@pinia/colada-devtools": "npm:^0.4.5"
     "@pinia/testing": "npm:^1.0.3"
     "@playwright/test": "npm:^1.59.1"
+    "@tanstack/vue-table": "npm:^8.21.3"
     "@tsconfig/node24": "npm:^24.0.4"
     "@types/jsdom": "npm:^28"
     "@types/lodash-es": "npm:^4"
