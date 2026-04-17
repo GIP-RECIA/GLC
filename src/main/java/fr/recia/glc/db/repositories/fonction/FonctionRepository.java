@@ -18,6 +18,7 @@ package fr.recia.glc.db.repositories.fonction;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.repositories.AbstractRepository;
+import fr.recia.glc.web.dto.function.FonctionPossibleDto;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -32,6 +33,13 @@ public interface FonctionRepository<T extends Fonction> extends AbstractReposito
         "WHERE f.personne.id = :id " +
         "ORDER BY f.filiere.libelleFiliere")
     List<FonctionDto> findByPersonne(Long id);
+
+    @Query("SELECT DISTINCT new fr.recia.glc.web.dto.function.FonctionPossibleDto(f.filiere,f.disciplinePoste) " +
+        "FROM Fonction f "+
+        "LEFT JOIN f.disciplinePoste d " +
+        "WHERE f.source = :source " +
+        "ORDER BY f.source, f.filiere.codeFiliere")
+    List<FonctionPossibleDto> findPossibleFonctionsBySource(String source);
 
     @Query("SELECT COUNT(f.id) " +
         "FROM Fonction f " +

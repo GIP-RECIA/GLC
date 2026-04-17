@@ -17,17 +17,27 @@ package fr.recia.glc.services.db;
 
 import fr.recia.glc.db.dto.structure.StructureDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
+import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.QAStructure;
+import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.web.dto.function.DisciplineDisplayDto;
+import fr.recia.glc.web.dto.function.DisciplinePossibleDto;
+import fr.recia.glc.web.dto.function.FiliereDisplayDto;
+import fr.recia.glc.web.dto.function.FonctionDisplayDto;
+import fr.recia.glc.web.dto.function.FonctionPossibleDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,6 +47,9 @@ public class StructureService {
 
     @Autowired
     private AStructureRepository<AStructure> structureRepository;
+
+    @Autowired
+    private FonctionRepository<Fonction> fonctionRepository;
 
     @Cacheable(value = "stuctureDBById")
     public AStructure getStructureDBFromId(Long id){
@@ -65,5 +78,18 @@ public class StructureService {
             .map(SimpleStructureDto::new)
             .sorted(Comparator.comparing(SimpleStructureDto::getNom))
             .collect(Collectors.toList());
+    }
+
+    public Map<Long, DisciplinePossibleDto> getPossibleFonctions(String source){
+        List<FonctionPossibleDto> fonctionPossibleDtos = fonctionRepository.findPossibleFonctionsBySource(source);
+        Map<Long, DisciplinePossibleDto> dtoListMap = new HashMap<>();
+        for(FonctionPossibleDto fonctionPossibleDto : fonctionPossibleDtos){
+            FiliereDisplayDto filiereDisplayDto = fonctionPossibleDto.getFiliere();
+            if(!dtoListMap.containsKey(filiereDisplayDto.getId())){
+                dtoListMap.put(filiereDisplayDto.getId(), new DisciplinePossibleDto(filiereDisplayDto.getLibelle()));
+            }
+            dtoListMap.get(filiereDisplayDto.getId()).getDisciplines().add(fonctionPossibleDto.getDiscipline());
+        }
+        return dtoListMap;
     }
 }

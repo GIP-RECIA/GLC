@@ -27,6 +27,11 @@ import fr.recia.glc.services.alert.AlertService;
 import fr.recia.glc.services.db.StructureService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
+import fr.recia.glc.web.dto.function.DisciplineDisplayDto;
+import fr.recia.glc.web.dto.function.DisciplinePossibleDto;
+import fr.recia.glc.web.dto.function.FiliereDisplayDto;
+import fr.recia.glc.web.dto.function.FonctionDisplayDto;
+import fr.recia.glc.web.dto.function.FonctionPossibleDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,6 +88,12 @@ public class StructureController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(etablissements, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/fonctions")
+    public ResponseEntity<Map<Long, DisciplinePossibleDto>> getPossibleFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+        String source = structureService.getStructureDBFromId(id).getCleJointure().getSource();
+        return new ResponseEntity<>(structureService.getPossibleFonctions(source), HttpStatus.OK);
     }
 
     /**
