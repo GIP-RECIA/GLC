@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RowSelectionState, SortingState } from '@tanstack/vue-table'
-import type { Etablissement, SimplePersonne } from '@/types/index.ts'
+import type { AccountUser, Structure } from '@/types/index.ts'
 import {
   faAngleDown,
   faAngleLeft,
@@ -30,7 +30,7 @@ import IndeterminateCheckbox from './accounts/IndeterminateCheckbox.vue'
 import '@gip-recia/ui-webcomponents/dist/r-filters.js'
 
 const props = defineProps<{
-  structure?: Etablissement
+  structure?: Structure
 }>()
 
 const { t } = useI18n()
@@ -102,7 +102,7 @@ function onExport(): void {
 /* Table */
 
 const INITIAL_PAGE_INDEX = 0
-const columnHelper = createColumnHelper<SimplePersonne>()
+const columnHelper = createColumnHelper<AccountUser>()
 const goToPageNumber = ref(INITIAL_PAGE_INDEX + 1)
 const pageSizes = [20, 40]
 const columns = [
@@ -130,7 +130,7 @@ const columns = [
         h(
           FontAwesomeIcon,
           {
-            icon: etatMap[info.getValue()].icon ?? getIconDefinition(info.row.original.source),
+            icon: etatMap[info.getValue()].icon ?? getIconDefinition(info.row.original.local),
             size: 'lg',
             style: {
               color: etatMap[info.getValue()].color,
@@ -140,31 +140,27 @@ const columns = [
       ],
     ),
   }),
-  columnHelper.accessor('cn', {
+  columnHelper.accessor('nom', {
     header: t('page.user.info.identity.lastName'),
   }),
-  columnHelper.accessor('id', {
+  columnHelper.accessor('prenom', {
     header: t('page.user.info.identity.firstName'),
-    cell: '',
   }),
-  columnHelper.accessor('id', {
+  columnHelper.accessor('uid', {
     header: t('page.user.info.account.uid'),
-    cell: '',
   }),
-  columnHelper.accessor('categorie', {
+  columnHelper.accessor('categoriePersonne', {
     header: t('page.user.category.header'),
     cell: info => t(categoriePersonneMap[info.getValue()].i18n),
   }),
-  columnHelper.accessor('id', {
+  columnHelper.accessor('login', {
     header: t('page.user.info.account.login'),
-    cell: '',
   }),
   columnHelper.accessor('email', {
     header: t('page.user.info.account.email'),
   }),
-  columnHelper.accessor('id', {
+  columnHelper.accessor('dateModification', {
     header: t('page.user.info.context.sourceModificationDate'),
-    cell: '',
   }),
   {
     id: 'select',

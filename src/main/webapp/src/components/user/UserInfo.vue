@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Personne } from '@/types/index.ts'
+import type { User } from '@/types/index.ts'
 import { faCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
@@ -8,7 +8,7 @@ import { usePersonne } from '@/composables/index.ts'
 import { categoriePersonneMap } from '@/types/enums/index.ts'
 
 defineProps<{
-  user?: Personne
+  user?: User
 }>()
 
 const { t } = useI18n()

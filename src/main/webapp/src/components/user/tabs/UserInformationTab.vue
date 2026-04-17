@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Personne } from '@/types/index.ts'
+import type { User } from '@/types/index.ts'
 import { faHouseUser, faLandmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
@@ -9,7 +9,7 @@ import UserContext from './information/UserContext.vue'
 import UserIdentity from './information/UserIdentity.vue'
 
 defineProps<{
-  user?: Personne
+  user?: User
 }>()
 
 const { t } = useI18n()

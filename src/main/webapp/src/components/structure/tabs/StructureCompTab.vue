@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { useI18n } from 'vue-i18n'
 import Disclosure from '@/components/Disclosure.vue'
 import { Etat, etatMap } from '@/types/enums/index.ts'
@@ -8,7 +8,7 @@ import FiliereWithDisciplines from './comp/FiliereWithDisciplines.vue'
 import '@gip-recia/ui-webcomponents/dist/r-filters.js'
 
 defineProps<{
-  structure?: Etablissement
+  structure?: Structure
 }>()
 
 const { t } = useI18n()

@@ -15,14 +15,14 @@
 -->
 
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
 
 withDefaults(
   defineProps<{
-    etab?: Etablissement
+    structure?: Structure
     canEdit?: boolean
     disableEdit?: boolean
   }>(),
@@ -38,11 +38,11 @@ const { t } = useI18n()
 <template>
   <div class="r-card logo-card">
     <img
-      :src="etab?.logo ?? '/annuaire_images/default_banner_v1.jpg'"
+      :src="structure?.logo ?? '/annuaire_images/default_banner_v1.jpg'"
       :alt="t('page.settings.info.logo')"
     >
     <footer
-      v-if="etab && canEdit"
+      v-if="structure && canEdit"
     >
       <button
         :disabled="disableEdit"

@@ -1,22 +1,19 @@
 <script setup lang="ts">
-import type { Alert, Etablissement, Filiere } from '@/types/index.ts'
+import type { Alert, Filiere, Structure } from '@/types/index.ts'
 import { faExclamationTriangle, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { useConfigurationStore, useStructureStore } from '@/stores/index.ts'
+import { useStructureStore } from '@/stores/index.ts'
 
 defineProps<{
-  structure?: Etablissement
+  structure?: Structure
 }>()
 
 const { t } = useI18n()
 
-const configurationStore = useConfigurationStore()
-const { isQuickAdd, requestAdd } = storeToRefs(configurationStore)
-
 const structureStore = useStructureStore()
-const { staff, fonction } = storeToRefs(structureStore)
+const { fonction } = storeToRefs(structureStore)
 
 function getDiscipline(
   filieres: Filiere[] | undefined,
@@ -46,13 +43,6 @@ function formatedAlert(
   if (alert.action && fonction.value?.customMapping) {
     if (alert.title) {
       const doAlert = () => {
-        requestAdd.value = {
-          i18n: t('additional.add', { discipline }),
-          function: data[1],
-          type: 'code',
-          searchList: staff.value.school,
-        }
-        isQuickAdd.value = true
       }
       actions.click = () => doAlert()
     }

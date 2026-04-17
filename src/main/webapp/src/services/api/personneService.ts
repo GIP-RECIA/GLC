@@ -15,17 +15,17 @@
  */
 
 import type {
-  Personne,
+  SearchUser,
   SetPersonneAdditionalParams,
   SetPersonneAdditionalWithCodeParams,
   SetPersonneAdditionalWithIdParams,
-  SimplePersonne,
+  User,
 } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getPersonne(id: number) {
   return (
-    await axios.get<Personne>(
+    await axios.get<User>(
       `/api/personne/${id}`,
     )
   ).data
@@ -73,7 +73,7 @@ async function unlockPersonne(id: number) {
 
 async function searchPersonne(name: string) {
   return (
-    await axios.get<SimplePersonne[]>(
+    await axios.get<SearchUser[]>(
       '/api/personne',
       {
         params: {

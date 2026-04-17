@@ -15,16 +15,13 @@
 -->
 
 <script setup lang="ts">
-import type { PersonneFonction } from '@/types/index.ts'
-import { storeToRefs } from 'pinia'
+import type { UserFunction } from '@/types/index.ts'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
-import FonctionForm from '@/components/old-ui/forms/FonctionForm.vue'
-import { useManageAdditional } from '@/composables/index.ts'
-import { useStructureStore } from '@/stores/index.ts'
-import { fonctionsToId } from '@/utils/index.ts'
 
 defineProps<{
-  fonction?: PersonneFonction
+  fonction?: UserFunction
 }>()
 
 const emit = defineEmits<{
@@ -34,21 +31,7 @@ const emit = defineEmits<{
 
 const modelValue = defineModel<boolean>({ required: true })
 
-const structureStore = useStructureStore()
-const { fonction } = storeToRefs(structureStore)
-
 const { t } = useI18n()
-
-const {
-  data,
-  canSave,
-  saveButton,
-  deleteButton,
-  canDelete,
-  onSave,
-  onCancel,
-  onDelete,
-} = useManageAdditional()
 
 function close() {
   emit('update:modelValue', false)
@@ -79,37 +62,18 @@ function close() {
         </template>
       </v-toolbar>
 
-      <v-card-text class="pt-0 py-3 manage-additional-dialog-container">
-        <FonctionForm
-          v-model="data.selected[0]"
-          :filieres="fonction?.customMapping?.filieres"
-          :disabled="fonctionsToId(data.disabled)"
-          :disable-fonction-edit="!!data.baseSelection[0]"
-        />
-      </v-card-text>
+      <v-card-text class="pt-0 py-3 manage-additional-dialog-container" />
 
       <v-card-actions>
-        <v-btn
-          v-if="canDelete"
-          color="error"
-          :prepend-icon="deleteButton.icon"
-          :text="t(deleteButton.i18n)"
-          @click="onDelete"
-        />
-        <v-spacer />
-        <v-btn
-          color="secondary"
-          prepend-icon="fas fa-xmark"
-          :text="t('button.cancel')"
-          @click="onCancel"
-        />
-        <v-btn
-          :color="saveButton.color"
-          :prepend-icon="saveButton.icon"
-          :text="t(saveButton.i18n)"
-          :disabled="!canSave"
-          @click="onSave"
-        />
+        <button
+          class="btn-secondary"
+          @click="close"
+        >
+          {{ t('button.cancel') }}
+          <FontAwesomeIcon
+            :icon="faXmark"
+          />
+        </button>
       </v-card-actions>
     </v-card>
   </v-dialog>

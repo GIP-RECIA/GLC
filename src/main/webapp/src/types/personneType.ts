@@ -14,61 +14,13 @@
  * limitations under the License.
  */
 
-import type { CategoriePersonne } from './enums/CategoriePersonne.ts'
-import type { Etat } from './enums/Etat.ts'
-import type { StructureForUser } from './etablissementType.ts'
-import type { FonctionForm } from './fonctionType.ts'
-
-export interface Personne {
-  id: number
-  uid?: string
-  etat: Etat
-  anneeScolaire: string
-  categorie: CategoriePersonne
-  civilite: string
-  source: string
-  cn: string
-  sn: string
-  givenName: string
-  patronyme?: string
-  dateNaissance?: string
-  email?: string
-  login: string
-  photo?: string
-  idPronote?: string
-  listeRouge: boolean
-  dateFin?: string
-  dateModification?: string
-  dateAcquittement?: string
-  dateSuppression?: string
-  dateSourceModification: string
-  listeStructures: StructureForUser[]
-  relations: Relation[]
-}
-
-export interface Relation {
-  categorieRelation: string
-  personneEnRelation: SimplePersonne
-  holder: boolean
-}
-
-export interface SimplePersonne {
-  id: number
-  uid?: string
-  etat: Etat
-  categorie: CategoriePersonne
-  source: string
-  cn: string
-  sn: string
-  email?: string
-  dateSuppression?: string
-}
+import type { FunctionForm } from './functionTypes.ts'
 
 export interface SetPersonneAdditionalParams {
   id: number
   structureId: number
-  toAddFunctions: FonctionForm[]
-  toDeleteFunctions: FonctionForm[]
+  toAddFunctions: FunctionForm[]
+  toDeleteFunctions: FunctionForm[]
   requiredAction: string
 }
 
@@ -77,7 +29,7 @@ export type SetPersonneAdditionalWithIdParams = Omit<
   'toAddFunctions'
   | 'toDeleteFunctions'
 > & {
-  toAddFunction: FonctionForm
+  toAddFunction: FunctionForm
 }
 
 export type SetPersonneAdditionalWithCodeParams = Omit<
@@ -85,5 +37,5 @@ export type SetPersonneAdditionalWithCodeParams = Omit<
   'toAddFunctions'
   | 'toDeleteFunctions'
 > & {
-  additionalCode: FonctionForm
+  additionalCode: FunctionForm
 }

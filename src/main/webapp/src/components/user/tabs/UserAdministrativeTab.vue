@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import type { Personne, PersonneFonction } from '@/types/index.ts'
+import type { User, UserFunction } from '@/types/index.ts'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { usePersonne } from '@/composables/index.ts'
 import { useConfigurationStore } from '@/stores/index.ts'
 import UserFunctions from './administrative/UserFunctions.vue'
 
 defineProps<{
-  user?: Personne
+  user?: User
 }>()
 
 const emit = defineEmits<{
-  editFunction: [fonction: PersonneFonction | undefined]
+  editFunction: [fonction: UserFunction | undefined]
 }>()
 
 const { t } = useI18n()
@@ -21,13 +20,11 @@ const { t } = useI18n()
 const configurationStore = useConfigurationStore()
 const { allFilieres } = storeToRefs(configurationStore)
 
-const { canEditAdditionals } = usePersonne()
-
 function addFunction(): void {
   emit('editFunction', undefined)
 }
 
-function editFunction(fonction: PersonneFonction): void {
+function editFunction(fonction: UserFunction): void {
   emit('editFunction', fonction)
 }
 </script>
@@ -71,11 +68,12 @@ function editFunction(fonction: PersonneFonction): void {
           </h3>
         </header>
 
+        <!-- TODO: manage rights click -->
         <div class="body">
           <UserFunctions
             :filieres="allFilieres"
             :fonctions="structure.additionalFonctions"
-            :clickable="canEditAdditionals"
+            :clickable="false"
             @tag-click="editFunction"
           />
         </div>

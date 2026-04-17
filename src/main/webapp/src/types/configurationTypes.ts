@@ -26,7 +26,6 @@ export interface Configuration {
     }
     editAllowedStates: string[]
     filterAccountStates: string[]
-    templateApiPath: string
     extendedUportal: {
       header: {
         componentPath: string

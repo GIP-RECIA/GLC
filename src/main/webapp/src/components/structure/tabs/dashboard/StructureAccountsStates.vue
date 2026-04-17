@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed } from 'vue'
@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n'
 import { Etat, etatMap } from '@/types/enums/index.ts'
 
 const props = defineProps<{
-  structure?: Etablissement
+  structure?: Structure
 }>()
 
 defineEmits<{

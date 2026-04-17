@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { faFloppyDisk, faPen, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, ref, watch } from 'vue'
@@ -24,7 +24,7 @@ import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
 const props = withDefaults(
   defineProps<{
-    etab?: Etablissement
+    structure?: Structure
     canEdit?: boolean
     disableEdit?: boolean
   }>(),
@@ -42,16 +42,16 @@ const { t } = useI18n()
 
 const isEdit = ref<boolean>(false)
 
-const nomCourt = ref<string | undefined>(props.etab?.nomCourt)
+const nomCourt = ref<string | undefined>(props.structure?.nomCourt)
 
 const canSave = computed<boolean>(() => (
   isEdit.value
-  && nomCourt.value !== props.etab?.nomCourt
+  && nomCourt.value !== props.structure?.nomCourt
 ))
 
 function toggleEdit(): void {
   if (isEdit.value)
-    nomCourt.value = props.etab?.nomCourt
+    nomCourt.value = props.structure?.nomCourt
   isEdit.value = !isEdit.value
   emit('edit', isEdit.value)
 }
@@ -62,7 +62,7 @@ function save(): void {
 }
 
 watch(
-  () => props.etab?.nomCourt,
+  () => props.structure?.nomCourt,
   (newValue) => {
     nomCourt.value = newValue
   },
@@ -84,7 +84,7 @@ watch(
             {{ t('page.settings.info.identity.name') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.nom"
+            :value="structure?.nom"
           />
         </li>
         <li class="full-width">
@@ -120,7 +120,7 @@ watch(
           </div>
           <SafeEmptyData
             v-else
-            :value="etab?.nomCourt"
+            :value="structure?.nomCourt"
           />
         </li>
         <li>
@@ -128,7 +128,7 @@ watch(
             {{ t('page.settings.info.identity.category') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.categorie"
+            :value="structure?.categorie"
           />
         </li>
         <li>
@@ -136,7 +136,7 @@ watch(
             {{ t('page.settings.info.identity.type') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.type"
+            :value="structure?.type"
           />
         </li>
         <li>
@@ -144,7 +144,7 @@ watch(
             {{ t('page.settings.info.identity.uai') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.uai"
+            :value="structure?.uai"
           />
         </li>
         <li>
@@ -152,14 +152,14 @@ watch(
             {{ t('page.settings.info.identity.siren') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.siren"
+            :value="structure?.siren"
           />
         </li>
       </ul>
     </div>
 
     <footer
-      v-if="etab && canEdit"
+      v-if="structure && canEdit"
     >
       <button
         :disabled="disableEdit && !isEdit"

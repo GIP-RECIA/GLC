@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import StructureAccountsStates from './dashboard/StructureAccountsStates.vue'
 import StructureAlerts from './dashboard/StructureAlerts.vue'
 
 defineProps<{
-  structure?: Etablissement
+  structure?: Structure
 }>()
 </script>
 

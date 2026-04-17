@@ -15,16 +15,13 @@
 -->
 
 <script setup lang="ts">
-import type { SimpleEtablissement } from '@/types/index.ts'
+import type { SearchStructure } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDisplay } from 'vuetify'
 import CustomPagination from '@/components/old-ui/CustomPagination.vue'
-import { useConfigurationStore, useStructureStore } from '@/stores/index.ts'
-
-const configurationStore = useConfigurationStore()
-const { search } = storeToRefs(configurationStore)
+import { useStructureStore } from '@/stores/index.ts'
 
 const structureStore = useStructureStore()
 structureStore.init()
@@ -33,7 +30,9 @@ const { etabs } = storeToRefs(structureStore)
 const { t } = useI18n()
 const { name } = useDisplay()
 
-const pageItems = ref<SimpleEtablissement[] | undefined>()
+const search = ref<string | undefined>()
+
+const pageItems = ref<SearchStructure[] | undefined>()
 
 const itemsPerPage = computed<number>(() => {
   const defaultItemsPerPage = 10
@@ -56,7 +55,7 @@ const itemsPerPage = computed<number>(() => {
   }
 })
 
-const items = computed<SimpleEtablissement[] | undefined>(() => {
+const items = computed<SearchStructure[] | undefined>(() => {
   if (search.value !== undefined && search.value != null) {
     const searchValue = search.value
       .toLowerCase()

@@ -43,17 +43,17 @@ function updateData(restrictions: StructureRestriction): void {
 
 /* Structure */
 
-const selectedEtab = ref<number | undefined>(
+const selectedStructure = ref<number | undefined>(
   etabs.value
     ? etabs.value[0]?.id
     : undefined,
 )
 
 watchEffect(async (): Promise<void> => {
-  if (selectedEtab.value === undefined)
+  if (selectedStructure.value === undefined)
     return
 
-  data.value = await getRestrictions(selectedEtab.value)
+  data.value = await getRestrictions(selectedStructure.value)
 })
 
 /* Edit state */
@@ -71,7 +71,7 @@ function setChildEditState(state: boolean): void {
       :title="t('page.restriction.h1')"
     >
       <StructureSearch
-        v-model="selectedEtab"
+        v-model="selectedStructure"
         :search-list="etabs"
         variant="solo"
       />
@@ -83,7 +83,7 @@ function setChildEditState(state: boolean): void {
 
         <div class="info-container">
           <GlobalRestrictions
-            :etab-id="selectedEtab"
+            :etab-id="selectedStructure"
             :restrictions="data"
             :disable-edit="isChildEdit"
             @edit="setChildEditState"
@@ -96,7 +96,7 @@ function setChildEditState(state: boolean): void {
             />
 
             <OpenRestrictions
-              :etab-id="selectedEtab"
+              :etab-id="selectedStructure"
               :restrictions="data"
               :disable-edit="isChildEdit"
               class="full-width"

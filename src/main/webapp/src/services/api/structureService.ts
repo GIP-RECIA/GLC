@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import type { Etablissement, SimpleEtablissement } from '@/types/index.ts'
+import type { SearchStructure, Structure } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getEtablissements() {
   return (
-    await axios.get<SimpleEtablissement[]>(
+    await axios.get<SearchStructure[]>(
       '/api/structure/etablissement',
     )
   ).data
@@ -27,7 +27,7 @@ async function getEtablissements() {
 
 async function getEtablissement(id: number) {
   return (
-    await axios.get<Etablissement>(
+    await axios.get<Structure>(
       `/api/structure/etablissement/${id}`,
     )
   ).data

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { enumValues } from '../enumValuesType'
+import type { enumValues } from '../enumValuesTypes'
 
 export enum CategoriePersonne {
   Eleve = 'Eleve',

@@ -14,8 +14,24 @@
  * limitations under the License.
  */
 
-export enum DashboardPanel {
-  DeletingAccounts,
-  DeletedAccounts,
-  WithoutFunctions,
+export interface UserFunction {
+  filiere: {
+    id: number
+    libelle: string
+  }
+  discipline: {
+    id: number
+    libelle: string
+  }
+  source: string
+  structure: number
+  dateFin?: string
+}
+
+export type FunctionForm = Pick<
+  UserFunction,
+  | 'dateFin'
+> & {
+  filiere?: number
+  discipline?: number
 }

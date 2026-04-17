@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import type { Discipline } from './disciplineType.ts'
-import type { Filiere } from './filiereType.ts'
+import type { Discipline } from './disciplineTypes.ts'
+import type { Filiere } from './filiereTypes.ts'
 
 export interface SourceFonction {
   source: string
@@ -26,26 +26,4 @@ export interface SourceFonction {
 export interface CustomMapping {
   filieres: Filiere[]
   disciplines: Discipline[]
-}
-
-export interface PersonneFonction {
-  filiere: {
-    id: number
-    libelle: string
-  }
-  discipline: {
-    id: number
-    libelle: string
-  }
-  source: string
-  structure: number
-  dateFin?: string
-}
-
-export type FonctionForm = Pick<
-  PersonneFonction,
-  | 'dateFin'
-> & {
-  filiere?: number
-  discipline?: number
 }

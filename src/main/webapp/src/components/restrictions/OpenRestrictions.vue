@@ -29,7 +29,7 @@ import LevelRestrictions from './LevelRestrictions.vue'
 
 const props = withDefaults(
   defineProps<{
-    etabId?: number
+    structureId?: number
     restrictions?: StructureRestriction
     canEdit?: boolean
     disableEdit?: boolean
@@ -133,7 +133,7 @@ function toggleEdit(): void {
 }
 
 function save(): void {
-  if (!props.etabId)
+  if (!props.structureId)
     return
 
   const body = {
@@ -158,7 +158,7 @@ function save(): void {
   }
 
   saveRestrictions({
-    id: props.etabId,
+    id: props.structureId,
     body,
   })
   toggleEdit()

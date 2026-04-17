@@ -15,26 +15,22 @@
  */
 
 import type { Ref } from 'vue'
-import type { enumValues, Personne } from '@/types/index.ts'
+import type { enumValues, User } from '@/types/index.ts'
 import { format, getYear } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useConfigurationStore, usePersonneStore, useStructureStore } from '@/stores/index.ts'
-import { CategoriePersonne } from '@/types/enums/index.ts'
-import { getEtat } from '@/utils/index.ts'
+import { useConfigurationStore, usePersonneStore } from '@/stores/index.ts'
+import { CategoriePersonne, etatMap } from '@/types/enums/index.ts'
 
-function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
+function usePersonne(personne: Ref<User | undefined> = ref(undefined)) {
   const configurationStore = useConfigurationStore()
-  const { isEditAllowed, getLoginOffice } = configurationStore
-
-  const structureStore = useStructureStore()
-  const { fonction } = storeToRefs(structureStore)
+  const { getLoginOffice } = configurationStore
 
   const personneStore = usePersonneStore()
   const { currentPersonne } = storeToRefs(personneStore)
 
-  const thisPersonne = computed<Personne | undefined>(
+  const thisPersonne = computed<User | undefined>(
     () => personne.value ?? currentPersonne.value,
   )
 
@@ -43,7 +39,7 @@ function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
   const etat = computed<enumValues>(() => {
     if (!thisPersonne.value)
       return { i18n: '', color: '' }
-    return getEtat(thisPersonne.value.etat)
+    return etatMap[thisPersonne.value.etat]
   })
 
   const schoolYear = computed<string | undefined>(() => {
@@ -84,20 +80,12 @@ function usePersonne(personne: Ref<Personne | undefined> = ref(undefined)) {
     ].includes(thisPersonne.value.categorie)
   })
 
-  const canEditAdditionals = computed<boolean>(
-    () => (
-      (fonction.value?.customMapping ?? false)
-      && isEditAllowed(thisPersonne.value?.etat ?? '')
-    ),
-  )
-
   return {
     etat,
     schoolYear,
     login,
     suppressDate,
     hasFunctions,
-    canEditAdditionals,
   }
 }
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
 defineProps<{
-  structure?: Etablissement
+  structure?: Structure
 }>()
 
 const { t } = useI18n()

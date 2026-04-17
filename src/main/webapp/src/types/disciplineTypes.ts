@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import type { endInfo } from './endInfoType.ts'
-import type { SimplePersonne } from './personneType.ts'
+import type { endInfo } from './endInfoTypes.ts'
+import type { FunctionUser } from './userTypes.ts'
 
 export interface Discipline {
   id: number
   code: string
   disciplinePoste: string
   source: string
-  personnes: SimplePersonne[]
+  personnes: FunctionUser[]
   endInfo?: endInfo
 }

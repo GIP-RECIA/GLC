@@ -15,8 +15,14 @@
 -->
 
 <script setup lang="ts">
-import type { PersonneFonction } from '@/types'
-import { faLink, faLock, faLockOpen, faRotateLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import type { UserFunction } from '@/types/index.ts'
+import {
+  faLink,
+  faLock,
+  faLockOpen,
+  faRotateLeft,
+  faTrashCan,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { storeToRefs } from 'pinia'
 import { computed, ref, useTemplateRef, watch } from 'vue'
@@ -26,7 +32,13 @@ import ManageAdditionalDialog from '@/components/user/dialogs/ManageAdditionalDi
 import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/user/tabs/UserInformationTab.vue'
 import UserInfo from '@/components/user/UserInfo.vue'
-import { deletePersonne, forceDeletePersonne, lockPersonne, undoDeletePersonne, unlockPersonne } from '@/services/api'
+import {
+  deletePersonne,
+  forceDeletePersonne,
+  lockPersonne,
+  undoDeletePersonne,
+  unlockPersonne,
+} from '@/services/api/index.ts'
 import { usePersonneStore } from '@/stores/index.ts'
 import { Etat } from '@/types/enums/index.ts'
 
@@ -110,9 +122,9 @@ function changeActiveTab(e: KeyboardEvent): void {
 
 const dialogState = ref<boolean>(false)
 
-const fonction = ref<PersonneFonction>()
+const fonction = ref<UserFunction>()
 
-function editFunction(payload?: PersonneFonction): void {
+function editFunction(payload?: UserFunction): void {
   fonction.value = payload
   dialogState.value = true
 }
@@ -122,13 +134,13 @@ function editFunction(payload?: PersonneFonction): void {
 const canToggleLock = computed<boolean>(() => (
   currentPersonne.value !== undefined
   && [
-    Etat.Valide.toString(),
-    Etat.Bloque.toString(),
+    Etat.Valide,
+    Etat.Bloque,
   ].includes(currentPersonne.value.etat)
 ))
 
 const isLocked = computed<boolean>(() => (
-  currentPersonne.value?.etat === Etat.Bloque.toString()
+  currentPersonne.value?.etat === Etat.Bloque
 ))
 
 async function onToggleLock(): Promise<void> {
@@ -143,12 +155,12 @@ async function onToggleLock(): Promise<void> {
     return
 
   currentPersonne.value.etat = isLocked.value
-    ? Etat.Valide.toString()
-    : Etat.Bloque.toString()
+    ? Etat.Valide
+    : Etat.Bloque
 }
 
 const isDeleting = computed<boolean>(() => (
-  currentPersonne.value?.etat === Etat.Deleting.toString()
+  currentPersonne.value?.etat === Etat.Deleting
 ))
 
 async function onUndoDelete(): Promise<void> {
@@ -160,7 +172,7 @@ async function onUndoDelete(): Promise<void> {
   if (!response)
     return
 
-  currentPersonne.value.etat = Etat.Valide.toString()
+  currentPersonne.value.etat = Etat.Valide
 }
 
 async function onDelete(): Promise<void> {
@@ -175,8 +187,8 @@ async function onDelete(): Promise<void> {
     return
 
   currentPersonne.value.etat = isDeleting.value
-    ? Etat.Delete.toString()
-    : Etat.Deleting.toString()
+    ? Etat.Delete
+    : Etat.Deleting
 }
 
 function onAttach(): void {

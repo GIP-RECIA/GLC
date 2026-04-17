@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Personne } from '@/types/index.ts'
+import type { User } from '@/types/index.ts'
 import { format } from 'date-fns'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
 defineProps<{
-  user?: Personne
+  user?: User
 }>()
 
 const { t } = useI18n()

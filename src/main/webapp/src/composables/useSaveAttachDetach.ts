@@ -14,41 +14,42 @@
  * limitations under the License.
  */
 
-import { storeToRefs } from 'pinia'
+import type { IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faFloppyDisk, faLink, faLinkSlash } from '@fortawesome/free-solid-svg-icons'
 import { computed, ref } from 'vue'
-import { usePersonneStore } from '@/stores/index.ts'
 import { isEmpty } from '@/utils/index.ts'
 
 function useSaveAttachDetach() {
-  const personneStore = usePersonneStore()
-  const { personneStructure } = storeToRefs(personneStore)
-
   /**
    * Active le bouton de détachement si la personne n'as ni fonction, ni
    * fonctions complémentaires dans la structure et que la valeur est à true
    */
   const isDetach = ref<boolean>(false)
 
-  const saveButton = computed<{ i18n: string, icon: string, color: string }>(() => {
-    if (isEmpty(personneStructure.value.fonctions)) {
-      if (isEmpty(personneStructure.value.additionalFonctions)) {
+  const saveButton = computed<{
+    i18n: string
+    icon: IconDefinition
+    color: string
+  }>(() => {
+    if (isEmpty([])) {
+      if (isEmpty([])) {
         return {
           i18n: 'button.attach',
-          icon: 'fas fa-link',
+          icon: faLink,
           color: 'success',
         }
       }
       if (isDetach.value) {
         return {
           i18n: 'button.detach',
-          icon: 'fas fa-link-slash',
+          icon: faLinkSlash,
           color: 'error',
         }
       }
     }
     return {
       i18n: 'button.save',
-      icon: 'fas fa-floppy-disk',
+      icon: faFloppyDisk,
       color: 'success',
     }
   })

@@ -15,12 +15,12 @@
 -->
 
 <script setup lang="ts">
-import type { SimpleEtablissement } from '@/types/index.ts'
+import type { SearchStructure } from '@/types/index.ts'
 import { useI18n } from 'vue-i18n'
 import { concatenate } from '@/utils'
 
 defineProps<{
-  searchList?: SimpleEtablissement[]
+  searchList?: SearchStructure[]
   variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
   chips?: boolean
 }>()

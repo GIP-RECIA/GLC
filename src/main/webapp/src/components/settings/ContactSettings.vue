@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { faFloppyDisk, faPen, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, ref, watch } from 'vue'
@@ -24,7 +24,7 @@ import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
 const props = withDefaults(
   defineProps<{
-    etab?: Etablissement
+    structure?: Structure
     canEdit?: boolean
     disableEdit?: boolean
   }>(),
@@ -42,16 +42,16 @@ const { t } = useI18n()
 
 const isEdit = ref<boolean>(false)
 
-const siteWeb = ref<string | undefined>(props.etab?.siteWeb)
+const siteWeb = ref<string | undefined>(props.structure?.siteWeb)
 
 const canSave = computed<boolean>(() => (
   isEdit.value
-  && siteWeb.value !== props.etab?.siteWeb
+  && siteWeb.value !== props.structure?.siteWeb
 ))
 
 function toggleEdit(): void {
   if (isEdit.value)
-    siteWeb.value = props.etab?.siteWeb
+    siteWeb.value = props.structure?.siteWeb
   isEdit.value = !isEdit.value
   emit('edit', isEdit.value)
 }
@@ -62,7 +62,7 @@ function save(): void {
 }
 
 watch(
-  () => props.etab?.siteWeb,
+  () => props.structure?.siteWeb,
   (newValue) => {
     siteWeb.value = newValue
   },
@@ -84,7 +84,7 @@ watch(
             {{ t('page.settings.info.contact.email') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.mail"
+            :value="structure?.mail"
           />
         </li>
         <li class="full-width">
@@ -120,14 +120,14 @@ watch(
           </div>
           <SafeEmptyData
             v-else
-            :value="etab?.siteWeb"
+            :value="structure?.siteWeb"
           />
         </li>
       </ul>
     </div>
 
     <footer
-      v-if="etab && canEdit"
+      v-if="structure && canEdit"
     >
       <button
         :disabled="disableEdit && !isEdit"

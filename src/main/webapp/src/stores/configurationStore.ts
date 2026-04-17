@@ -17,18 +17,13 @@
 /* eslint-disable ts/no-use-before-define */
 import type {
   Configuration,
-  enumValues,
   Filiere,
-  SimplePersonne,
   SourceFonction,
-  StructureConfiguration,
 } from '@/types/index.ts'
-import { useSessionStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { getConfiguration, getFonctions } from '@/services/api/index.ts'
-import { Tabs } from '@/types/enums/index.ts'
-import { errorHandler, getEtat } from '@/utils/index.ts'
+import { errorHandler } from '@/utils/index.ts'
 
 export const useConfigurationStore = defineStore('configuration', () => {
   const configuration = ref<Configuration | undefined>()
@@ -68,22 +63,6 @@ export const useConfigurationStore = defineStore('configuration', () => {
       : undefined
   })
 
-  /**
-   * Retourne la liste des types de personnel administratif
-   */
-  const administrativeStaff = computed<string | undefined>(
-    () => configuration.value?.front.staff.school,
-  )
-
-  const isEditAllowed = (
-    etat: string,
-  ): boolean => {
-    if (configuration.value) {
-      return configuration.value.front.editAllowedStates.includes(etat)
-    }
-    return false
-  }
-
   const loginOffices = computed(() => configuration.value?.front.loginOffices)
 
   const getLoginOffice = (
@@ -109,87 +88,6 @@ export const useConfigurationStore = defineStore('configuration', () => {
     return undefined
   }
 
-  const filterAccountStates = computed<
-    (enumValues & { value: string })[] | undefined
-  >(() =>
-    configuration.value?.front.filterAccountStates?.map((state) => {
-      return { ...getEtat(state), value: state }
-    }),
-  )
-
-  /* --- Gestion des onglets de structure --- */
-
-  const structures = useSessionStorage<
-    { id: number, name: string, config: StructureConfiguration }[]
-  >(
-    `${__APP_SLUG__}.tabs`,
-    [],
-  )
-  const appTab = ref<number | undefined>()
-
-  const setAppTab = (value: number): void => {
-    appTab.value = value
-  }
-
-  const currentStructureId = ref<number | undefined>()
-
-  const setCurrentStructureId = (
-    id: number,
-  ): void => {
-    currentStructureId.value = id
-  }
-
-  const currentStructureConfig = computed<StructureConfiguration | undefined>({
-    get() {
-      const index = structures.value
-        .findIndex(structure => structure.id === currentStructureId.value)
-      return index >= 0
-        ? structures.value[index].config
-        : undefined
-    },
-    set(configuration) {
-      if (configuration !== undefined) {
-        const index = structures.value
-          .findIndex(structure => structure.id === currentStructureId.value)
-        if (index >= 0) {
-          structures.value[index].config = configuration
-        }
-      }
-    },
-  })
-
-  /* --- Gestion de la structure courrante --- */
-
-  const structureTab = ref<string>(Tabs.Dashboard)
-
-  const setStructureTab = (
-    value: string,
-  ): void => {
-    structureTab.value = value
-  }
-
-  /* --- Gestion de la home --- */
-
-  const search = ref<string | undefined>()
-
-  /* --- Gestion du spinner --- */
-
-  const isLoading = ref<boolean>(false)
-
-  /* -- Gestion de la modale de rattachement -- */
-
-  const isAttach = ref<boolean>(false)
-
-  /* -- Gestion de la modale des complémentaires -- */
-
-  const isQuickAdd = ref<boolean>(false)
-  const requestAdd = ref<{
-    i18n?: string
-    function?: string
-    type: 'id' | 'code'
-    searchList?: SimplePersonne[]
-  }>()
-
   return {
     configuration,
     fonctions,
@@ -198,22 +96,6 @@ export const useConfigurationStore = defineStore('configuration', () => {
     isInit,
     isInitFonctions,
     allFilieres,
-    administrativeStaff,
-    isEditAllowed,
     getLoginOffice,
-    filterAccountStates,
-    structures,
-    appTab,
-    setAppTab,
-    currentStructureId,
-    setCurrentStructureId,
-    currentStructureConfig,
-    structureTab,
-    setStructureTab,
-    search,
-    isLoading,
-    isAttach,
-    isQuickAdd,
-    requestAdd,
   }
 })

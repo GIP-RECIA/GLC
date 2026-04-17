@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SimplePersonne } from '@/types/index.ts'
+import type { FunctionUser } from '@/types/index.ts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -8,13 +8,13 @@ import { etatMap } from '@/types/enums/index.ts'
 import { getIconDefinition } from '@/utils/index.ts'
 
 const props = defineProps<{
-  user: SimplePersonne
+  user: FunctionUser
 }>()
 
 const { t } = useI18n()
 
 const etat = computed(() => ({
-  icon: getIconDefinition(props.user.source),
+  icon: getIconDefinition(props.user.local),
   ...etatMap[props.user.etat],
 }))
 </script>

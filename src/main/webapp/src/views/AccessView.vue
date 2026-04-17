@@ -76,17 +76,17 @@ function updateData(
 
 /* Structure */
 
-const selectedEtab = ref<number | undefined>(
+const selectedStructure = ref<number | undefined>(
   etabs.value
     ? etabs.value[0]?.id
     : undefined,
 )
 
 watchEffect(async (): Promise<void> => {
-  if (selectedEtab.value === undefined)
+  if (selectedStructure.value === undefined)
     return
 
-  data.value = await getRights(selectedEtab.value)
+  data.value = await getRights(selectedStructure.value)
 })
 
 /* Dialog */
@@ -112,11 +112,11 @@ async function save(
   toAdd: string[],
   toRemove: string[],
 ): Promise<void> {
-  if (!selectedEtab.value)
+  if (!selectedStructure.value)
     return
 
   const response = await updateRight({
-    id: selectedEtab.value,
+    id: selectedStructure.value,
     service,
     role: serviceRight.role,
     membersToAdd: toAdd,
@@ -139,7 +139,7 @@ async function save(
       :title="t('page.access.h1')"
     >
       <StructureSearch
-        v-model="selectedEtab"
+        v-model="selectedStructure"
         :search-list="etabs"
         variant="solo"
       />

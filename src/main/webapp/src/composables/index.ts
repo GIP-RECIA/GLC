@@ -15,6 +15,5 @@
  */
 
 export * from './useKeepSession.ts'
-export * from './useManageAdditional.ts'
 export * from './usePersonne.ts'
 export * from './useSaveAttachDetach.ts'

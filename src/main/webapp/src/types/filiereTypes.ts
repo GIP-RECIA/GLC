@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-export enum Tabs {
-  Dashboard = 'dashboard',
-  Teaching = 'teaching',
-  School = 'school',
-  Collectivity = 'collectivity',
-  Academic = 'academic',
-  Accounts = 'accounts',
+import type { Discipline } from './disciplineTypes.ts'
+import type { FunctionUser } from './userTypes.ts'
+
+export interface Filiere {
+  id: number
+  codeFiliere: string
+  libelleFiliere: string
+  source: string
+  disciplines: Discipline[]
+  personnesWithoutDiscipline: FunctionUser[]
 }

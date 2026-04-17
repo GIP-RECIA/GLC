@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SimplePersonne } from '@/types/index.ts'
+import type { FunctionUser } from '@/types/index.ts'
 import { useId } from 'vue'
 import UserLink from './UserLink.vue'
 
@@ -7,7 +7,7 @@ withDefaults(
   defineProps<{
     header?: boolean
     label?: string
-    users: SimplePersonne[]
+    users: FunctionUser[]
   }>(),
   {
     header: false,

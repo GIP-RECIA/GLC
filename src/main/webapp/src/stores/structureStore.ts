@@ -15,30 +15,24 @@
  */
 
 import type {
+  AccountUser,
   CustomMapping,
-  Etablissement,
-  Filiere,
-  SimpleEtablissement,
-  SimplePersonne,
+  SearchStructure,
   SourceFonction,
+  Structure,
 } from '@/types/index.ts'
 import { isEmpty } from 'lodash-es'
 import { defineStore, storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { getEtablissement, getEtablissements } from '@/services/api/index.ts'
-import { Etat, Tabs } from '@/types/enums/index.ts'
-import { emptyStructureConfiguration } from '@/types/index.ts'
 import { errorHandler } from '@/utils/index.ts'
 import { useConfigurationStore } from './configurationStore.ts'
 
 export const useStructureStore = defineStore('structure', () => {
   const configurationStore = useConfigurationStore()
 
-  const router = useRouter()
-
-  const etabs = ref<SimpleEtablissement[] | undefined>()
-  const currentEtab = ref<Etablissement | undefined>()
+  const etabs = ref<SearchStructure[] | undefined>()
+  const currentEtab = ref<Structure | undefined>()
 
   const isInit = computed<boolean>(() => (
     etabs.value
@@ -51,14 +45,12 @@ export const useStructureStore = defineStore('structure', () => {
    */
   const init = async (): Promise<void> => {
     if (!isInit.value) {
-      configurationStore.isLoading = true
       try {
         etabs.value = await getEtablissements()
       }
       catch (e) {
         errorHandler(e, 'initStructureStore')
       }
-      configurationStore.isLoading = false
     }
   }
 
@@ -69,65 +61,23 @@ export const useStructureStore = defineStore('structure', () => {
   const initCurrentEtab = async (
     id: number,
   ): Promise<void> => {
-    const {
-      structures,
-      setAppTab,
-      setStructureTab,
-      setCurrentStructureId,
-    } = configurationStore
-    configurationStore.isLoading = true
     currentEtab.value = undefined
     try {
-      const etab = await getEtablissement(id)
-
-      // Mise à jour de l'onglet
-      const index = structures.findIndex(structures => structures.id === id)
-      if (index === -1) {
-        setStructureTab(Tabs.Dashboard)
-        structures.push({
-          id,
-          name: etab.type
-            ? `${etab.type} ${etab.nom}`
-            : (etab.nom ?? ''),
-          config: emptyStructureConfiguration,
-        })
-        setAppTab(structures.length - 1)
-      }
-      else {
-        setAppTab(index)
-      }
-      currentEtab.value = etab
-      setCurrentStructureId(id)
+      currentEtab.value = await getEtablissement(id)
     }
     catch (e) {
       errorHandler(e, 'initCurrentEtab')
-      router.replace({ name: 'account' })
-    }
-    configurationStore.isLoading = false
-  }
-
-  const refreshCurrentStructure = async (): Promise<void> => {
-    const structureId = currentEtab.value?.id
-    if (structureId) {
-      configurationStore.isLoading = true
-      try {
-        currentEtab.value = await getEtablissement(structureId)
-      }
-      catch (e) {
-        errorHandler(e, 'refreshCurrentStructure')
-      }
-      configurationStore.isLoading = false
     }
   }
 
-  const personnes = computed<SimplePersonne[] | undefined>(
+  const personnes = computed<AccountUser[] | undefined>(
     () => currentEtab.value?.personnes,
   )
 
   const staff = computed(() => {
     const { configuration } = storeToRefs(configurationStore)
 
-    const getStaff = (categorie?: string): SimplePersonne[] | undefined => {
+    const getStaff = (categorie?: string): AccountUser[] | undefined => {
       return personnes.value
         ?.filter(personne => personne.categorie === categorie)
     }
@@ -138,21 +88,6 @@ export const useStructureStore = defineStore('structure', () => {
       collectivity: getStaff(configuration.value?.front.staff.collectivity),
       academic: getStaff(configuration.value?.front.staff.academic),
     }
-  })
-
-  const personnesByEtat = computed<
-    Map<Etat, SimplePersonne[] | undefined>
-  >(() => {
-    const map = new Map()
-
-    Object.keys(Etat).forEach((etat) => {
-      map.set(
-        etat,
-        personnes.value?.filter(personne => personne.etat === etat),
-      )
-    })
-
-    return map
   })
 
   const fonction = computed<SourceFonction | undefined>(() => {
@@ -170,51 +105,13 @@ export const useStructureStore = defineStore('structure', () => {
       : undefined
   })
 
-  const filieresByStaff = computed<{
-    teaching: Filiere[] | undefined
-    school: Filiere[] | undefined
-    collectivity: Filiere[] | undefined
-    academic: Filiere[] | undefined
-  }>(() => {
-    const { configuration } = storeToRefs(configurationStore)
-
-    const getFiliere = (categorie?: string): Filiere[] | undefined => {
-      const filieres: Filiere[] | undefined = currentEtab.value?.filieres
-        .map((filiere) => {
-          const disciplines = filiere.disciplines
-            .map((discipline) => {
-              const personnes = discipline.personnes
-                .filter(personne => personne.categorie === categorie)
-
-              return { ...discipline, personnes }
-            })
-            .filter(discipline => discipline.personnes.length > 0)
-
-          return { ...filiere, disciplines }
-        })
-        .filter(filiere => filiere.disciplines.length > 0)
-
-      return filieres && filieres.length > 0 ? filieres : undefined
-    }
-
-    return {
-      teaching: getFiliere(configuration.value?.front.staff.teaching),
-      school: getFiliere(configuration.value?.front.staff.school),
-      collectivity: getFiliere(configuration.value?.front.staff.collectivity),
-      academic: getFiliere(configuration.value?.front.staff.academic),
-    }
-  })
-
   return {
     etabs,
     currentEtab,
     init,
     initCurrentEtab,
-    refreshCurrentStructure,
     personnes,
     staff,
-    personnesByEtat,
     fonction,
-    filieresByStaff,
   }
 })

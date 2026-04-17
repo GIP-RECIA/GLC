@@ -15,12 +15,12 @@
 -->
 
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
 defineProps<{
-  etab?: Etablissement
+  structure?: Structure
 }>()
 
 const { t } = useI18n()
@@ -41,7 +41,7 @@ const { t } = useI18n()
             {{ t('page.settings.info.location.address') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.adresse.adresse"
+            :value="structure?.adresse.adresse"
           />
         </li>
         <li>
@@ -49,7 +49,7 @@ const { t } = useI18n()
             {{ t('page.settings.info.location.zipCode') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.adresse.codePostal"
+            :value="structure?.adresse.codePostal"
           />
         </li>
         <li>
@@ -57,7 +57,7 @@ const { t } = useI18n()
             {{ t('page.settings.info.location.city') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.adresse.ville"
+            :value="structure?.adresse.ville"
           />
         </li>
         <li>
@@ -65,7 +65,7 @@ const { t } = useI18n()
             {{ t('page.settings.info.location.poBox') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.adresse.boitePostale"
+            :value="structure?.adresse.boitePostale"
           />
         </li>
         <li>
@@ -73,7 +73,7 @@ const { t } = useI18n()
             {{ t('page.settings.info.location.country') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.adresse.pays"
+            :value="structure?.adresse.pays"
           />
         </li>
       </ul>

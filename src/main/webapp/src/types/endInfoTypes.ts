@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-export interface Adresse {
-  adresse: string
-  codePostal: string
-  ville: string
-  boitePostale: string
-  pays: string
-}
+import type { enumValues } from './enumValuesTypes.ts'
+
+export type endInfo = {
+  date?: string
+  months?: number
+  isPast: boolean
+} & enumValues

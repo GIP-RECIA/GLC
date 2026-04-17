@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Personne } from '@/types/index.ts'
+import type { User } from '@/types/index.ts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format } from 'date-fns'
 import { useI18n } from 'vue-i18n'
@@ -8,7 +8,7 @@ import { usePersonne } from '@/composables/index.ts'
 import { getIconDefinition } from '@/utils/index.ts'
 
 defineProps<{
-  user?: Personne
+  user?: User
 }>()
 
 const { t } = useI18n()
@@ -40,7 +40,7 @@ const { schoolYear } = usePersonne()
           </h4>
           <div class="user-account-type">
             <FontAwesomeIcon
-              :icon="getIconDefinition(user?.source)"
+              :icon="getIconDefinition(user?.local)"
               size="lg"
             />
             <SafeEmptyData

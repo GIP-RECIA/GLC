@@ -19,5 +19,5 @@ import type { IconDefinition } from '@fortawesome/free-solid-svg-icons'
 export interface enumValues {
   i18n: string
   color?: string
-  icon?: string | IconDefinition
+  icon?: IconDefinition
 }

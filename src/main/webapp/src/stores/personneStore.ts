@@ -14,29 +14,14 @@
  * limitations under the License.
  */
 
-import type { Personne, PersonneFonction } from '@/types/index.ts'
-import { debounce } from 'lodash-es'
-import { defineStore, storeToRefs } from 'pinia'
-import { computed, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import type { User } from '@/types/index.ts'
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 import { getPersonne } from '@/services/api/index.ts'
-import { PersonneDialogState } from '@/types/enums/index.ts'
 import { errorHandler } from '@/utils/index.ts'
-import { useConfigurationStore } from './configurationStore.ts'
-import { useStructureStore } from './structureStore.ts'
 
 export const usePersonneStore = defineStore('personne', () => {
-  const configurationStore = useConfigurationStore()
-  const structureStore = useStructureStore()
-
-  const { t } = useI18n()
-
-  const currentPersonne = ref<Personne | undefined>()
-
-  /**
-   * Etat du composant PersonneDialog
-   */
-  const isCurrentPersonne = ref<boolean>(false)
+  const currentPersonne = ref<User | undefined>()
 
   /**
    * Initialise `currentPersonne`
@@ -46,125 +31,17 @@ export const usePersonneStore = defineStore('personne', () => {
    */
   const initCurrentPersonne = async (
     id: number,
-    showModal: boolean = true,
   ): Promise<void> => {
-    configurationStore.isLoading = true
     try {
       currentPersonne.value = await getPersonne(id)
-      isCurrentPersonne.value = showModal
     }
     catch (e) {
       errorHandler(e, 'initCurrentPersonne')
     }
-    configurationStore.isLoading = false
   }
-
-  const refreshCurrentPersonne = async (): Promise<void> => {
-    const personneId = currentPersonne.value?.id
-    if (personneId) {
-      configurationStore.isLoading = true
-      structureStore.refreshCurrentStructure()
-      try {
-        currentPersonne.value = await getPersonne(personneId)
-      }
-      catch (e) {
-        errorHandler(e, 'refreshCurrentPersonne')
-      }
-      configurationStore.isLoading = false
-    }
-  }
-
-  /**
-   * Retourne la liste des fonctions au sein d'une structure.
-   */
-  const fonctionsByStructure = (
-    fonctions: PersonneFonction[] | undefined,
-    structureId: number | undefined,
-  ): PersonneFonction[] => {
-    if (!fonctions || !structureId)
-      return []
-    const result = fonctions.filter(({ structure }) => structure === structureId)
-
-    return result && result.length > 0 ? result : []
-  }
-
-  /**
-   * Retourne un objet contenant la liste des fonctions et fonctions additionnelles pour la structure courrante.
-   */
-  const personneStructure = computed<{
-    fonctions: PersonneFonction[] | undefined
-    additionalFonctions: PersonneFonction[] | undefined
-  }>(() => {
-    const { currentStructureId } = storeToRefs(configurationStore)
-    if (!currentPersonne.value || !currentStructureId.value) {
-      return {
-        fonctions: undefined,
-        additionalFonctions: undefined,
-      }
-    }
-
-    return {
-      fonctions: fonctionsByStructure(
-        currentPersonne.value.fonctions,
-        currentStructureId.value,
-      ),
-      additionalFonctions: fonctionsByStructure(
-        currentPersonne.value.additionalFonctions,
-        currentStructureId.value,
-      ),
-    }
-  })
-
-  const dialogState = ref<PersonneDialogState>(PersonneDialogState.Info)
-
-  const dialogTitle = computed<string>(() => {
-    if (!currentPersonne.value)
-      return ''
-    const { cn } = currentPersonne.value
-    switch (dialogState.value) {
-      case PersonneDialogState.ManageAdditional:
-      case PersonneDialogState.ManageAdditionalMultiple:
-        return `${t('person.information.additionalFunction', 2)} - ${cn}`
-      case PersonneDialogState.Info:
-      default:
-        return cn
-    }
-  })
-
-  const editFunction = ref<PersonneFonction | undefined>()
-
-  /**
-   * Mode de rattachement
-   */
-  const attachMode = ref<boolean>(false)
-
-  /**
-   * Reset lors de la fermeture du dialog
-   */
-  watch(
-    isCurrentPersonne,
-    (newValue) => {
-      if (!newValue) {
-        const reset = debounce(() => {
-          currentPersonne.value = undefined
-          dialogState.value = PersonneDialogState.Info
-          editFunction.value = undefined
-          attachMode.value = false
-        }, 200)
-        reset()
-      }
-    },
-  )
 
   return {
     currentPersonne,
-    isCurrentPersonne,
     initCurrentPersonne,
-    refreshCurrentPersonne,
-    personneStructure,
-    dialogState,
-    dialogTitle,
-    editFunction,
-    attachMode,
   }
 })

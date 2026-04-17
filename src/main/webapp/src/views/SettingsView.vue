@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -37,21 +37,21 @@ const { etabs } = storeToRefs(structureStore)
 
 /* Data */
 
-const currentEtab = ref<Etablissement | undefined>()
+const currentStructure = ref<Structure | undefined>()
 
 /* Structure */
 
-const selectedEtab = ref<number | undefined>(
+const selectedStructure = ref<number | undefined>(
   etabs.value
     ? etabs.value[0]?.id
     : undefined,
 )
 
 watchEffect(async (): Promise<void> => {
-  if (selectedEtab.value === undefined)
+  if (selectedStructure.value === undefined)
     return
 
-  currentEtab.value = await getEtablissement(selectedEtab.value)
+  currentStructure.value = await getEtablissement(selectedStructure.value)
 })
 
 /* Edit state */
@@ -69,7 +69,7 @@ function setChildEditState(state: boolean): void {
       :title="t('page.settings.h1')"
     >
       <StructureSearch
-        v-model="selectedEtab"
+        v-model="selectedStructure"
         :search-list="etabs"
         variant="solo"
       />
@@ -81,28 +81,28 @@ function setChildEditState(state: boolean): void {
 
         <div class="info-container">
           <LogoSettings
-            :etab="currentEtab"
+            :structure="currentStructure"
             :disable-edit="isChildEdit"
           />
 
           <IdentitySettings
-            :etab="currentEtab"
+            :structure="currentStructure"
             :disable-edit="isChildEdit"
             @edit="setChildEditState"
           />
 
           <LocalisationSettings
-            :etab="currentEtab"
+            :structure="currentStructure"
           />
 
           <ContactSettings
-            :etab="currentEtab"
+            :structure="currentStructure"
             :disable-edit="isChildEdit"
             @edit="setChildEditState"
           />
 
           <AdminSettings
-            :etab="currentEtab"
+            :structure="currentStructure"
           />
         </div>
       </div>

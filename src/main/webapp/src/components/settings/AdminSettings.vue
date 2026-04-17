@@ -15,23 +15,23 @@
 -->
 
 <script setup lang="ts">
-import type { Etablissement } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { getYear } from 'date-fns'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
 
 const props = defineProps<{
-  etab?: Etablissement
+  structure?: Structure
 }>()
 
 const { t } = useI18n()
 
 const schoolYear = computed<string | undefined>(() => {
-  if (!props.etab)
+  if (!props.structure)
     return
 
-  const year = getYear(props.etab.anneeScolaire)
+  const year = getYear(props.structure.anneeScolaire)
 
   return `${year}/${year + 1}`
 })
@@ -52,7 +52,7 @@ const schoolYear = computed<string | undefined>(() => {
             {{ t('page.settings.info.administration.status') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.etat"
+            :value="structure?.etat"
           />
         </li>
         <li>
@@ -60,7 +60,7 @@ const schoolYear = computed<string | undefined>(() => {
             {{ t('page.settings.info.administration.dataStatus') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.etatAlim"
+            :value="structure?.etatAlim"
           />
         </li>
         <li>
@@ -68,7 +68,7 @@ const schoolYear = computed<string | undefined>(() => {
             {{ t('page.settings.info.administration.source') }}
           </h4>
           <SafeEmptyData
-            :value="etab?.source"
+            :value="structure?.source"
           />
         </li>
         <li>

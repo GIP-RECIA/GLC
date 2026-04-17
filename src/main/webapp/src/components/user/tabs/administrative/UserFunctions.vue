@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { Discipline, Filiere, PersonneFonction } from '@/types/index.ts'
+import type { Discipline, Filiere, UserFunction } from '@/types/index.ts'
 import { computed } from 'vue'
 import { getDateFin } from '@/utils/index.ts'
 import UserFiliere from './UserFiliere.vue'
@@ -23,7 +23,7 @@ import UserFiliere from './UserFiliere.vue'
 const props = withDefaults(
   defineProps<{
     filieres: Filiere[] | undefined
-    fonctions: PersonneFonction[] | undefined
+    fonctions: UserFunction[] | undefined
     clickable?: boolean
   }>(),
   {
@@ -31,14 +31,14 @@ const props = withDefaults(
   },
 )
 const emit = defineEmits<{
-  tagClick: [function: PersonneFonction]
+  tagClick: [function: UserFunction]
 }>()
 
 const filteredFilieres = computed<Filiere[]>(() => {
   if (!props.filieres?.length || !props.fonctions?.length)
     return []
 
-  const fonctionsMap = new Map<number, Map<number, PersonneFonction>>()
+  const fonctionsMap = new Map<number, Map<number, UserFunction>>()
 
   for (const fun of props.fonctions) {
     let disciplineMap = fonctionsMap.get(fun.filiere.id)

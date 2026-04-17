@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { enumValues } from '../enumValuesType'
+import type { enumValues } from '../enumValuesTypes'
 import { faUserClock, faUserLock, faUserSecret } from '@fortawesome/free-solid-svg-icons'
 
 export enum Etat {
