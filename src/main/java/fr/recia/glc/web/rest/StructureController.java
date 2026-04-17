@@ -116,19 +116,21 @@ public class StructureController {
         // Booléen qui indique si on affiche l'uid ou non
         boolean showUid = principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(etablissement.getSiren());
 
-        // Récupération de la liste des personnes
+        // Récupération de la liste des personnes depuis la database
         List<DatabasePersonneDto> etabPersonnes = personneService.getPersonnes(id, showUid);
-        etablissement.setListePersonnes(etabPersonnes);
-
-        // Récupération de la liste des personnes sans fonction
         List<DatabasePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id, showUid);
-        etablissement.setWithoutFunctions(withoutFunction);
-
-        // Récupération des alertes
-        etablissement.setAlerts(alertService.getFonctionAlerts(etablissement.getId(), etablissement.getSource()));
 
         // Récupération des filières (fonctions, typesFonctionFiliere et disciplines)
         List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);
+
+        // Liste des personnes de l'établissement
+        etablissement.setListePersonnes(etabPersonnes);
+
+        // Liste des personnes sans fonction
+        etablissement.setPersonnesWithoutFonctions(withoutFunction);
+
+        // Récupération des alertes
+        etablissement.setAlerts(alertService.getFonctionAlerts(etablissement.getId(), etablissement.getSource()));
 
         // On créé des maps pour pouvoir récupérer les objets par leur id en O(1)
         List<TypeFonctionFiliereDto> typesFonctionFiliereList = fonctionService.getTypesFonctionFiliere(etablissement.getSource());

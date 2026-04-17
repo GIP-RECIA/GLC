@@ -80,6 +80,7 @@ public class StructureService {
             .collect(Collectors.toList());
     }
 
+    // TODO : ajouter aussi celles du mapping custom
     public Map<Long, DisciplinePossibleDto> getPossibleFonctions(String source){
         List<FonctionPossibleDto> fonctionPossibleDtos = fonctionRepository.findPossibleFonctionsBySource(source);
         Map<Long, DisciplinePossibleDto> dtoListMap = new HashMap<>();

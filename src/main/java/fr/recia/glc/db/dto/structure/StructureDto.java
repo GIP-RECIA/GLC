@@ -61,7 +61,7 @@ public class StructureDto {
 
     private List<TypeFonctionFiliereDto> filieres;
     private List<PersonneInListDto> personnes;
-    private List<DatabasePersonneDto> withoutFunctions;
+    private List<CardPersonneDto> withoutFunctions;
     private List<AlertDto> alerts;
     private String permission;
 
@@ -99,6 +99,13 @@ public class StructureDto {
         this.personnes = new ArrayList<>();
         for(DatabasePersonneDto personneDto : personnes){
             this.personnes.add(new PersonneInListDto(personneDto));
+        }
+    }
+
+    public void setPersonnesWithoutFonctions(List<DatabasePersonneDto> personnes){
+        this.withoutFunctions = new ArrayList<>();
+        for(DatabasePersonneDto personneDto : personnes){
+            this.withoutFunctions.add(new CardPersonneDto(personneDto));
         }
     }
 
