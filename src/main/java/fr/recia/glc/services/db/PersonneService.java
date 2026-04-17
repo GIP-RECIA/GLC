@@ -243,8 +243,12 @@ public class PersonneService {
                 structureForUserDto.setAuthorizedForPrincipal(true);
             }
             personneDetailDto.getListeStructures().add(structureForUserDto);
-            if(aStructure.getId()==personne.getStructRattachement().getId()){
-                structureForUserDto.setStructureRattachement(true);
+            if(personne.getStructRattachement() != null){
+                if(aStructure.getId()==personne.getStructRattachement().getId()){
+                    structureForUserDto.setStructureRattachement(true);
+                }
+            } else {
+                log.warn("structure de rattachement null pour la personne {} !", personne.getUid());
             }
             if(aStructure.getSiren().equals(sirenCourant)){
                 structureForUserDto.setStructureCourante(true);
