@@ -154,7 +154,7 @@ public class StructureController {
             ));
 
         // Logique d'assemblage de l'objet à envoyer au font pour les fillières
-        etablissement.setFilieres(fonctions, typesFonctionFiliereMap, disciplinesMap, personnesMap);
+        etablissement.setComposition(fonctions, typesFonctionFiliereMap, disciplinesMap, personnesMap);
 
         return new ResponseEntity<>(etablissement, HttpStatus.OK);
     }

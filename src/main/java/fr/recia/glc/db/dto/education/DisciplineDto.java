@@ -17,6 +17,7 @@ package fr.recia.glc.db.dto.education;
 
 import com.sun.source.tree.Tree;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.web.dto.user.CardPersonneDto;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class DisciplineDto {
     private String code;
     private String disciplinePoste;
     private String source;
-    private Set<SimplePersonneDto> personnes;
+    private Set<CardPersonneDto> personnes;
 
     // Constructeur utilisé par la requête en BD
     public DisciplineDto(Long id, String code, String disciplinePoste, String source) {
@@ -45,9 +46,8 @@ public class DisciplineDto {
         this.disciplinePoste = disciplinePoste;
         this.source = source;
         this.personnes = new TreeSet<>(
-                Comparator.comparing(SimplePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
-                    .thenComparing(SimplePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
-                    .thenComparing(SimplePersonneDto::getId));
+                Comparator.comparing(CardPersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                    .thenComparing(CardPersonneDto::getId));
     }
 
     public DisciplineDto(DisciplineDto disciplineDto) {
@@ -56,9 +56,8 @@ public class DisciplineDto {
         this.disciplinePoste = disciplineDto.getDisciplinePoste();
         this.source = disciplineDto.getSource();
         this.personnes = new TreeSet<>(
-            Comparator.comparing(SimplePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
-                .thenComparing(SimplePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
-                .thenComparing(SimplePersonneDto::getId));
+            Comparator.comparing(CardPersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(CardPersonneDto::getId));
     }
 
 }

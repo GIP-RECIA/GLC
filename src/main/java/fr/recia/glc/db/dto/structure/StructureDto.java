@@ -27,6 +27,7 @@ import fr.recia.glc.db.entities.structure.ServiceAcademique;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
+import fr.recia.glc.web.dto.user.CardPersonneDto;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -93,7 +94,7 @@ public class StructureDto {
         }
     }
 
-    public void setFilieres(List<FonctionDto> fonctions,
+    public void setComposition(List<FonctionDto> fonctions,
                             Map<Long, TypeFonctionFiliereDto> typesFonctionFiliere,
                             Map<Long, DisciplineDto> disciplines,
                             Map<Long, SimplePersonneDto> personnesMap) {
@@ -143,7 +144,7 @@ public class StructureDto {
                     // Ajout de la personne dans la discipline
                     if (personnesMap.containsKey(fonctionDto.getPersonne())) {
                         SimplePersonneDto simplePersonneDto = personnesMap.get(fonctionDto.getPersonne());
-                        disciplineDto.getPersonnes().add(simplePersonneDto);
+                        disciplineDto.getPersonnes().add(new CardPersonneDto(simplePersonneDto));
                     } else {
                         log.warn("person in functions by not in structure : {}", fonctionDto.getPersonne());
                     }
