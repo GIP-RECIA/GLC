@@ -30,7 +30,6 @@ public class FrontProperties {
     private StaffProperties staff;
     private List<Etat> editAllowedStates;
     private List<Etat> filterAccountStates;
-    private String templateApiPath;
     private ExtendedUportalProperties extendedUportal;
     private List<LoginOfficeProperties> loginOffices;
     private String defaultStructureImage;
@@ -127,7 +126,6 @@ public class FrontProperties {
             "\n\t\"staff\": " + staff + "," +
             "\n\t\"editAllowedStates\": " + ListUtil.toStringList(editAllowedStates) + "," +
             "\n\t\"filterAccountStates\": " + ListUtil.toStringList(filterAccountStates) + "," +
-            "\n\t\"templateApiPath\": \"" + templateApiPath + "\"," +
             "\n\t\"extendedUportal\": " + extendedUportal +
             "\n\t\"loginOffices\": " + ListUtil.toStringList(loginOffices, ",\n", "[\n", "\n\t]") +
             "\n}";
