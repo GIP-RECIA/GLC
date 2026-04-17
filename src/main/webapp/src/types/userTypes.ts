@@ -22,6 +22,7 @@ export type AccountUser = CommonUser & {
   uid?: string
   categoriePersonne: CategoriePersonne
   login: string
+  guichet?: string
   email?: string
   dateModification: string
 }
@@ -41,6 +42,7 @@ export type User = CommonUser & {
   dateFin?: string
   dateSourceModification: string
   login: string
+  guichet?: string
   dateModification?: string
   dateAcquittement?: string
   dateSuppression?: string

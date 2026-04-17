@@ -4,15 +4,12 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
-import { usePersonne } from '@/composables/index.ts'
 
 defineProps<{
   user?: User
 }>()
 
 const { t } = useI18n()
-
-const { login } = usePersonne()
 </script>
 
 <template>
@@ -39,11 +36,15 @@ const { login } = usePersonne()
           </h4>
           <div class="user-login">
             <SafeEmptyData
-              :value="login.i18n"
+              :value="
+                user?.guichet
+                  ? t('externalLogin')
+                  : user?.login
+              "
             />
             <span
-              v-if="login.info"
-              :title="login.info"
+              v-if="user?.guichet"
+              :title="t(`office.${user.guichet}`)"
             >
               <FontAwesomeIcon
                 :icon="faInfoCircle"

@@ -155,6 +155,9 @@ const columns = [
   }),
   columnHelper.accessor('login', {
     header: t('page.user.info.account.login'),
+    cell: info => info.row.original.guichet
+      ? t('externalLogin')
+      : info.getValue(),
   }),
   columnHelper.accessor('email', {
     header: t('page.user.info.account.email'),
