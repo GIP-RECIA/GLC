@@ -1258,6 +1258,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gip-recia/ui-webcomponents@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "@gip-recia/ui-webcomponents@npm:1.13.0"
+  checksum: 10/af2cd18b81fcb0f094a8f06cca89bd398a2fff89ef9877bf407c4e8b413b002a4d58be7064112864a1921b748a68ab77ed38e323abed53330b0455f59a8d1cc1
+  languageName: node
+  linkType: hard
+
 "@gip-recia/ui@npm:^1.0.4":
   version: 1.0.4
   resolution: "@gip-recia/ui@npm:1.0.4"
@@ -5613,6 +5620,7 @@ __metadata:
     "@fortawesome/free-solid-svg-icons": "npm:^7.2.0"
     "@fortawesome/vue-fontawesome": "npm:^3.1.3"
     "@gip-recia/ui": "npm:^1.0.4"
+    "@gip-recia/ui-webcomponents": "npm:^1.13.0"
     "@intlify/unplugin-vue-i18n": "npm:^11.1.1"
     "@juggle/resize-observer": "npm:^3.4.0"
     "@pinia/colada": "npm:^1.0.0"

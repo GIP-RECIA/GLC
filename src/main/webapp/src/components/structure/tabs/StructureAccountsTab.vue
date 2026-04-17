@@ -27,6 +27,7 @@ import { RouterLink } from 'vue-router'
 import { CategoriePersonne, categoriePersonneMap, Etat, etatMap } from '@/types/enums/index.ts'
 import { getIconDefinition } from '@/utils/index.ts'
 import IndeterminateCheckbox from './accounts/IndeterminateCheckbox.vue'
+import '@gip-recia/ui-webcomponents/dist/r-filters.js'
 
 const props = defineProps<{
   structure?: Etablissement

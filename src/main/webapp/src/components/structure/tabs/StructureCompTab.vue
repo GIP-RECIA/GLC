@@ -5,6 +5,7 @@ import Disclosure from '@/components/Disclosure.vue'
 import { Etat, etatMap } from '@/types/enums/index.ts'
 import DisciplineCard from './comp/DisciplineCard.vue'
 import FiliereWithDisciplines from './comp/FiliereWithDisciplines.vue'
+import '@gip-recia/ui-webcomponents/dist/r-filters.js'
 
 defineProps<{
   structure?: Etablissement
