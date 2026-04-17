@@ -19,7 +19,7 @@ import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.web.dto.user.PersonneDetailDto;
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.common.ExternalId;
 import fr.recia.glc.db.entities.education.Discipline;
@@ -78,48 +78,48 @@ public class PersonneService {
     private DisciplineRepository<Discipline> disciplineRepository;
 
 
-    public List<SimplePersonneDto> searchPersonne(String name, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonne(String name, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdmin(name) : aPersonneRepository.findByNameLike(name);
     }
 
-    public List<SimplePersonneDto> searchPersonneInStaffCategories(String name, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonneInStaffCategories(String name, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdminInStaffCategories(name) : aPersonneRepository.findByNameLikeInStaffCategories(name);
     }
 
-    public List<SimplePersonneDto> searchPersonneInEtab(String name, Set<Long> structureIds, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonneInEtab(String name, Set<Long> structureIds, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdminInEtab(name, structureIds) : aPersonneRepository.findByNameLikeInEtab(name, structureIds);
     }
 
-    public List<SimplePersonneDto> searchPersonneInEtabInStaffCategories(String name, Set<Long> structureIds, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonneInEtabInStaffCategories(String name, Set<Long> structureIds, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdminInEtabInStaffCategories(name, structureIds) : aPersonneRepository.findByNameLikeInEtabInStaffCategories(name, structureIds);
     }
 
-    public List<SimplePersonneDto> searchPersonneInEtabBySiren(String name, Set<String> sirens, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonneInEtabBySiren(String name, Set<String> sirens, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdminInEtabBySiren(name, sirens) : aPersonneRepository.findByNameLikeInEtabBySiren(name, sirens);
     }
 
-    public List<SimplePersonneDto> searchPersonneInEtabBySirenInStaffCategories(String name, Set<String> sirens, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonneInEtabBySirenInStaffCategories(String name, Set<String> sirens, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdminInEtabBySirenInStaffCategories(name, sirens) : aPersonneRepository.findByNameLikeInEtabBySirenInStaffCategories(name, sirens);
     }
 
-    public List<SimplePersonneDto> searchPersonneNotInEtab(String name, Set<Long> structureIds, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonneNotInEtab(String name, Set<Long> structureIds, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdminNotInEtab(name, structureIds) : aPersonneRepository.findByNameLikeNotInEtab(name, structureIds);
     }
 
-    public List<SimplePersonneDto> searchPersonneNotInEtabInStaffCategories(String name, Set<Long> structureIds, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonneNotInEtabInStaffCategories(String name, Set<Long> structureIds, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdminNotInEtabInStaffCategories(name, structureIds) : aPersonneRepository.findByNameLikeNotInEtabInStaffCategories(name, structureIds);
     }
 
-    public List<SimplePersonneDto> searchPersonneNotInEtabButInSiren(String name, Set<Long> structureIds, Set<String> sirens, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonneNotInEtabButInSiren(String name, Set<Long> structureIds, Set<String> sirens, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdminNotInEtabButInSiren(name, structureIds, sirens) : aPersonneRepository.findByNameLikeNotInEtabButInSiren(name, structureIds, sirens);
     }
 
-    public List<SimplePersonneDto> searchPersonneNotInEtabButInSirenInStaffCategories(String name, Set<Long> structureIds, Set<String> sirens, boolean admin) {
+    public List<DatabasePersonneDto> searchPersonneNotInEtabButInSirenInStaffCategories(String name, Set<Long> structureIds, Set<String> sirens, boolean admin) {
         return admin ? aPersonneRepository.findByNameLikeAdminNotInEtabButInSirenInStaffCategories(name, structureIds, sirens) : aPersonneRepository.findByNameLikeNotInEtabButInSirenInStaffCategories(name, structureIds, sirens);
     }
 
     @Cacheable(value = "personnesByEtablissement")
-    public List<SimplePersonneDto> getPersonnes(Long structureId, boolean showUid) {
+    public List<DatabasePersonneDto> getPersonnes(Long structureId, boolean showUid) {
         log.trace("getPersonnes for {}", structureId);
         final List<Long> personnesIds = aPersonneAStructureRepository.findPersonneByStructureId(structureId);
         if (personnesIds.isEmpty()) return List.of();
@@ -292,7 +292,7 @@ public class PersonneService {
         }
     }
 
-    public SimplePersonneDto getPersonneSimple(Long id) {
+    public DatabasePersonneDto getPersonneSimple(Long id) {
         return aPersonneRepository.findByPersonneIdSimple(id);
     }
 

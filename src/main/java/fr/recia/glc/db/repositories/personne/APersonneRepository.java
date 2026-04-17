@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.db.repositories.personne;
 
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.repositories.AbstractRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,76 +32,70 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "WHERE ap.email = :email")
     Long doesEmailExists(String email);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.givenName, ap.sn, ap.login.nom, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE ap.id IN :ids " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByPersonneIdsWithUid(Set<Long> ids);
+    List<DatabasePersonneDto> findByPersonneIdsWithUid(Set<Long> ids);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.givenName, ap.sn, ap.login.nom, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE ap.id IN :ids " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByPersonneIdsWithoutUid(Set<Long> ids);
+    List<DatabasePersonneDto> findByPersonneIdsWithoutUid(Set<Long> ids);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie," +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie," +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE ap.id = :id")
-    SimplePersonneDto findByPersonneIdSimple(Long id);
+    DatabasePersonneDto findByPersonneIdSimple(Long id);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie," +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
-        "FROM APersonne ap " +
-        "WHERE ap.uid = :uid")
-    SimplePersonneDto findByPersonneUid(String uid);
-
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLike(String name);
+    List<DatabasePersonneDto> findByNameLike(String name);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
         "OR ap.email LIKE concat(:name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdmin(String name);
+    List<DatabasePersonneDto> findByNameLikeAdmin(String name);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
         "AND s.id IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeInEtab(String name, Set<Long> etabId);
+    List<DatabasePersonneDto> findByNameLikeInEtab(String name, Set<Long> etabId);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
         "AND s.id NOT IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeNotInEtab(String name, Set<Long> etabId);
+    List<DatabasePersonneDto> findByNameLikeNotInEtab(String name, Set<Long> etabId);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeInEtabBySiren(String name, Set<String> sirens);
+    List<DatabasePersonneDto> findByNameLikeInEtabBySiren(String name, Set<String> sirens);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -109,9 +103,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "AND s.id NOT IN :etabId " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeNotInEtabButInSiren(String name, Set<Long> etabId, Set<String> sirens);
+    List<DatabasePersonneDto> findByNameLikeNotInEtabButInSiren(String name, Set<Long> etabId, Set<String> sirens);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
@@ -120,9 +114,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeInStaffCategories(String name);
+    List<DatabasePersonneDto> findByNameLikeInStaffCategories(String name);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -133,9 +127,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
         "AND s.id IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeInEtabInStaffCategories(String name, Set<Long> etabId);
+    List<DatabasePersonneDto> findByNameLikeInEtabInStaffCategories(String name, Set<Long> etabId);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -146,9 +140,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
         "AND s.id NOT IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeNotInEtabInStaffCategories(String name, Set<Long> etabId);
+    List<DatabasePersonneDto> findByNameLikeNotInEtabInStaffCategories(String name, Set<Long> etabId);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -159,9 +153,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeInEtabBySirenInStaffCategories(String name, Set<String> sirens);
+    List<DatabasePersonneDto> findByNameLikeInEtabBySirenInStaffCategories(String name, Set<String> sirens);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -173,9 +167,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "AND s.id NOT IN :etabId " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeNotInEtabButInSirenInStaffCategories(String name, Set<Long> etabId, Set<String> sirens);
+    List<DatabasePersonneDto> findByNameLikeNotInEtabButInSirenInStaffCategories(String name, Set<Long> etabId, Set<String> sirens);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -184,9 +178,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND s.id IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdminInEtab(String name, Set<Long> etabId);
+    List<DatabasePersonneDto> findByNameLikeAdminInEtab(String name, Set<Long> etabId);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -195,9 +189,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND s.id NOT IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdminNotInEtab(String name, Set<Long> etabId);
+    List<DatabasePersonneDto> findByNameLikeAdminNotInEtab(String name, Set<Long> etabId);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -206,9 +200,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdminInEtabBySiren(String name, Set<String> sirens);
+    List<DatabasePersonneDto> findByNameLikeAdminInEtabBySiren(String name, Set<String> sirens);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -218,9 +212,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "AND s.id NOT IN :etabId " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdminNotInEtabButInSiren(String name, Set<Long> etabId, Set<String> sirens);
+    List<DatabasePersonneDto> findByNameLikeAdminNotInEtabButInSiren(String name, Set<Long> etabId, Set<String> sirens);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
@@ -231,9 +225,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdminInStaffCategories(String name);
+    List<DatabasePersonneDto> findByNameLikeAdminInStaffCategories(String name);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -246,9 +240,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
         "AND s.id IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdminInEtabInStaffCategories(String name, Set<Long> etabId);
+    List<DatabasePersonneDto> findByNameLikeAdminInEtabInStaffCategories(String name, Set<Long> etabId);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -261,9 +255,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
         "AND s.id NOT IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdminNotInEtabInStaffCategories(String name, Set<Long> etabId);
+    List<DatabasePersonneDto> findByNameLikeAdminNotInEtabInStaffCategories(String name, Set<Long> etabId);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -276,9 +270,9 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdminInEtabBySirenInStaffCategories(String name, Set<String> sirens);
+    List<DatabasePersonneDto> findByNameLikeAdminInEtabBySirenInStaffCategories(String name, Set<String> sirens);
 
-    @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
+    @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
@@ -292,6 +286,6 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "AND s.id NOT IN :etabId " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
-    List<SimplePersonneDto> findByNameLikeAdminNotInEtabButInSirenInStaffCategories(String name, Set<Long> etabId, Set<String> sirens);
+    List<DatabasePersonneDto> findByNameLikeAdminNotInEtabButInSirenInStaffCategories(String name, Set<Long> etabId, Set<String> sirens);
 
 }

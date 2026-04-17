@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.web.dto.user;
 
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
 import lombok.EqualsAndHashCode;
@@ -40,18 +40,18 @@ public class PersonneInListDto {
     private Date dateModification;
     private boolean local;
 
-    public PersonneInListDto(SimplePersonneDto simplePersonneDto) {
-        this.id = simplePersonneDto.getId();
-        this.etat = simplePersonneDto.getEtat();
-        this.uid = simplePersonneDto.getUid();
-        this.nom = simplePersonneDto.getSn();
-        this.prenom = simplePersonneDto.getGivenName();
-        this.uid = simplePersonneDto.getUid();
-        this.categoriePersonne = simplePersonneDto.getCategorie();
-        this.login = simplePersonneDto.getLogin();
-        this.email = simplePersonneDto.getEmail();
-        this.dateModification = simplePersonneDto.getDateModification();
-        this.local = simplePersonneDto.getSource().startsWith("SarapisUi_");
+    public PersonneInListDto(DatabasePersonneDto databasePersonneDto) {
+        this.id = databasePersonneDto.getId();
+        this.etat = databasePersonneDto.getEtat();
+        this.uid = databasePersonneDto.getUid();
+        this.nom = databasePersonneDto.getSn();
+        this.prenom = databasePersonneDto.getGivenName();
+        this.uid = databasePersonneDto.getUid();
+        this.categoriePersonne = databasePersonneDto.getCategorie();
+        this.login = databasePersonneDto.getLogin();
+        this.email = databasePersonneDto.getEmail();
+        this.dateModification = databasePersonneDto.getDateModification();
+        this.local = databasePersonneDto.getSource().startsWith("SarapisUi_");
     }
 
 }

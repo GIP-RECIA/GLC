@@ -19,7 +19,7 @@ import fr.recia.glc.db.dto.AlertDto;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.entities.common.Adresse;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
@@ -61,7 +61,7 @@ public class StructureDto {
 
     private List<TypeFonctionFiliereDto> filieres;
     private List<PersonneInListDto> personnes;
-    private List<SimplePersonneDto> withoutFunctions;
+    private List<DatabasePersonneDto> withoutFunctions;
     private List<AlertDto> alerts;
     private String permission;
 
@@ -95,9 +95,9 @@ public class StructureDto {
         }
     }
 
-    public void setListePersonnes(List<SimplePersonneDto> personnes){
+    public void setListePersonnes(List<DatabasePersonneDto> personnes){
         this.personnes = new ArrayList<>();
-        for(SimplePersonneDto personneDto : personnes){
+        for(DatabasePersonneDto personneDto : personnes){
             this.personnes.add(new PersonneInListDto(personneDto));
         }
     }
@@ -105,7 +105,7 @@ public class StructureDto {
     public void setComposition(List<FonctionDto> fonctions,
                             Map<Long, TypeFonctionFiliereDto> typesFonctionFiliere,
                             Map<Long, DisciplineDto> disciplines,
-                            Map<Long, SimplePersonneDto> personnesMap) {
+                            Map<Long, DatabasePersonneDto> personnesMap) {
 
         // Si pas de fonctions dans l'établissement on retourne une map vide
         if (fonctions.isEmpty()) {
@@ -137,8 +137,8 @@ public class StructureDto {
             Long disciplineId = fonctionDto.getDiscipline();
             // Cas spécial pour les CFA
             if (disciplineId == null) {
-                SimplePersonneDto simplePersonneDto = personnesMap.get(fonctionDto.getPersonne());
-                typeFonctionFiliereDto.getPersonnesWithoutDiscipline().add(simplePersonneDto);
+                DatabasePersonneDto databasePersonneDto = personnesMap.get(fonctionDto.getPersonne());
+                typeFonctionFiliereDto.getPersonnesWithoutDiscipline().add(databasePersonneDto);
             } else {
                 if (disciplines.containsKey(disciplineId)) {
                     DisciplineDto disciplineDto;
@@ -151,8 +151,8 @@ public class StructureDto {
                     }
                     // Ajout de la personne dans la discipline
                     if (personnesMap.containsKey(fonctionDto.getPersonne())) {
-                        SimplePersonneDto simplePersonneDto = personnesMap.get(fonctionDto.getPersonne());
-                        disciplineDto.getPersonnes().add(new CardPersonneDto(simplePersonneDto));
+                        DatabasePersonneDto databasePersonneDto = personnesMap.get(fonctionDto.getPersonne());
+                        disciplineDto.getPersonnes().add(new CardPersonneDto(databasePersonneDto));
                     } else {
                         log.warn("person in functions by not in structure : {}", fonctionDto.getPersonne());
                     }

@@ -15,7 +15,7 @@
  */
 package fr.recia.glc.services.db;
 
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.web.dto.relation.RelationDto;
 import fr.recia.glc.db.entities.relation.AMappingRelation;
 import fr.recia.glc.db.repositories.relation.AMappingRelationRepository;
@@ -39,11 +39,11 @@ public class RelationService {
         List<RelationDto> relationDtos = new ArrayList<>();
         List<AMappingRelation> relationsDst = amappingRelationRepository.findByPkPersonne1Id(personneId);
         for(AMappingRelation relation : relationsDst){
-            relationDtos.add(new RelationDto(relation.getPk().getCategorie(), new SimplePersonneDto(relation.getPk().getPersonne2()), false));
+            relationDtos.add(new RelationDto(relation.getPk().getCategorie(), new DatabasePersonneDto(relation.getPk().getPersonne2()), false));
         }
         List<AMappingRelation> relationsSrc = amappingRelationRepository.findByPkPersonne2Id(personneId);
         for(AMappingRelation relation : relationsSrc){
-            relationDtos.add(new RelationDto(relation.getPk().getCategorie(), new SimplePersonneDto(relation.getPk().getPersonne1()), true));
+            relationDtos.add(new RelationDto(relation.getPk().getCategorie(), new DatabasePersonneDto(relation.getPk().getPersonne1()), true));
         }
         return relationDtos;
     }

@@ -23,7 +23,7 @@ import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
 import fr.recia.glc.web.dto.user.PersonneDetailDto;
 import fr.recia.glc.web.dto.user.PersonneExportDto;
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.security.GLCRole;
@@ -75,13 +75,13 @@ public class PersonneController {
     private AuditService auditService;
 
     @GetMapping
-    public ResponseEntity<List<SimplePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
-                                                                  @RequestParam(value = "name") String name,
-                                                                  @RequestParam(value = "etab", required = false) Long etabId,
-                                                                  @RequestParam(value = "not_in_etab", required = false) Long notInEtabId,
-                                                                  @RequestParam(value = "staff", required = false, defaultValue = "False") boolean staff,
-                                                                  @RequestParam(value = "check_rights", required = false, defaultValue = "True") boolean checkRights) {
-        List<SimplePersonneDto> personnes;
+    public ResponseEntity<List<DatabasePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
+                                                                    @RequestParam(value = "name") String name,
+                                                                    @RequestParam(value = "etab", required = false) Long etabId,
+                                                                    @RequestParam(value = "not_in_etab", required = false) Long notInEtabId,
+                                                                    @RequestParam(value = "staff", required = false, defaultValue = "False") boolean staff,
+                                                                    @RequestParam(value = "check_rights", required = false, defaultValue = "True") boolean checkRights) {
+        List<DatabasePersonneDto> personnes;
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         boolean canSearchByUid = principal.getGlobalRights().contains(GLCRole.SEARCH_UID);
 

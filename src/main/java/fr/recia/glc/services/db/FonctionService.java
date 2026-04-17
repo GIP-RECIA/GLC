@@ -21,7 +21,7 @@ import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.education.Discipline;
 import fr.recia.glc.db.entities.fonction.Fonction;
@@ -315,7 +315,7 @@ public class FonctionService {
     }
 
     @Cacheable(value = "personnesWithoutFunctions")
-    public List<SimplePersonneDto> getPersonnesWithoutFunctions(Long structureId, boolean showUid) {
+    public List<DatabasePersonneDto> getPersonnesWithoutFunctions(Long structureId, boolean showUid) {
         log.trace("getPersonnesWithoutFunctions for {}", structureId);
         final List<Long> personnesIds = fonctionRepository.findPersonnesWithoutFunctions(structureId);
         if (showUid) {

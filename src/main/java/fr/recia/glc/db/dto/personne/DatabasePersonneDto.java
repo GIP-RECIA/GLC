@@ -18,18 +18,16 @@ package fr.recia.glc.db.dto.personne;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
-import fr.recia.glc.utils.PersonneUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.util.Date;
 
 @Getter
 @Setter
 @EqualsAndHashCode
-public class SimplePersonneDto {
+public class DatabasePersonneDto {
 
     private Long id;
     private Etat etat;
@@ -45,8 +43,8 @@ public class SimplePersonneDto {
     private Date dateAcquittement;
     private Date dateSuppression;
 
-    public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                             String sn, String uid, Date dateModification, Date dateAcquittement) {
+    public DatabasePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
+                               String sn, String uid, Date dateModification, Date dateAcquittement) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -61,8 +59,8 @@ public class SimplePersonneDto {
         this.uid = uid;
     }
 
-    public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                             String givenName, String sn, String login, String uid, Date dateModification, Date dateAcquittement) {
+    public DatabasePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
+                               String givenName, String sn, String login, String uid, Date dateModification, Date dateAcquittement) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -80,8 +78,8 @@ public class SimplePersonneDto {
     }
 
 
-    public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                             String sn, Date dateModification, Date dateAcquittement) {
+    public DatabasePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
+                               String sn, Date dateModification, Date dateAcquittement) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -96,8 +94,8 @@ public class SimplePersonneDto {
         this.uid = "";
     }
 
-    public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                             String givenName, String sn, String login, Date dateModification, Date dateAcquittement) {
+    public DatabasePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
+                               String givenName, String sn, String login, Date dateModification, Date dateAcquittement) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -114,7 +112,7 @@ public class SimplePersonneDto {
         this.uid = "";
     }
 
-    public SimplePersonneDto(APersonne aPersonne) {
+    public DatabasePersonneDto(APersonne aPersonne) {
         this.id = aPersonne.getId();
         this.etat = aPersonne.getEtat();
         this.categorie = aPersonne.getCategorie();

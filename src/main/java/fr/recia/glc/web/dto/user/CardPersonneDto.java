@@ -15,9 +15,7 @@
  */
 package fr.recia.glc.web.dto.user;
 
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
-import fr.recia.glc.db.entities.personne.APersonne;
-import fr.recia.glc.db.enums.CategoriePersonne;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.enums.Etat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,12 +34,12 @@ public class CardPersonneDto {
     private String cn;
     private Date dateSuppression;
 
-    public CardPersonneDto(SimplePersonneDto simplePersonneDto) {
-        this.id = simplePersonneDto.getId();
-        this.etat = simplePersonneDto.getEtat();
-        this.local = simplePersonneDto.getSource().startsWith("SarapisUi_");
-        this.cn = simplePersonneDto.getCn();
-        this.dateSuppression = simplePersonneDto.getDateSuppression();
+    public CardPersonneDto(DatabasePersonneDto databasePersonneDto) {
+        this.id = databasePersonneDto.getId();
+        this.etat = databasePersonneDto.getEtat();
+        this.local = databasePersonneDto.getSource().startsWith("SarapisUi_");
+        this.cn = databasePersonneDto.getCn();
+        this.dateSuppression = databasePersonneDto.getDateSuppression();
     }
 
 }

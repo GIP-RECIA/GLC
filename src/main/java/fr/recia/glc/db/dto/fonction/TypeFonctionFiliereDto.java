@@ -16,15 +16,13 @@
 package fr.recia.glc.db.dto.fonction;
 
 import fr.recia.glc.db.dto.education.DisciplineDto;
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -40,7 +38,7 @@ public class TypeFonctionFiliereDto {
     private String source;
     private Set<DisciplineDto> disciplines;
     // Liste des personnes directement dans la filière sans être dans une discipline (pour les CFA)
-    private Set<SimplePersonneDto> personnesWithoutDiscipline;
+    private Set<DatabasePersonneDto> personnesWithoutDiscipline;
 
     // Constructeur utilisé par la requête en BD
     public TypeFonctionFiliereDto(Long id, String codeFiliere, String libelleFiliere, String source) {
@@ -50,9 +48,9 @@ public class TypeFonctionFiliereDto {
         this.source = source;
         this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getDisciplinePoste, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
         this.personnesWithoutDiscipline = new TreeSet<>(
-            Comparator.comparing(SimplePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
-                .thenComparing(SimplePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
-                .thenComparing(SimplePersonneDto::getId));
+            Comparator.comparing(DatabasePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(DatabasePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(DatabasePersonneDto::getId));
     }
 
     public TypeFonctionFiliereDto(TypeFonctionFiliereDto typeFonctionFiliereDto) {
@@ -62,9 +60,9 @@ public class TypeFonctionFiliereDto {
         this.source = typeFonctionFiliereDto.getSource();
         this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getDisciplinePoste, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
         this.personnesWithoutDiscipline = new TreeSet<>(
-            Comparator.comparing(SimplePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
-                .thenComparing(SimplePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
-                .thenComparing(SimplePersonneDto::getId));
+            Comparator.comparing(DatabasePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(DatabasePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                .thenComparing(DatabasePersonneDto::getId));
     }
 
 }

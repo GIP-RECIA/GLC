@@ -18,7 +18,7 @@ package fr.recia.glc.web.rest;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
+import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.dto.structure.StructureDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.security.GLCRole;
@@ -27,12 +27,7 @@ import fr.recia.glc.services.alert.AlertService;
 import fr.recia.glc.services.db.StructureService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
-import fr.recia.glc.web.dto.function.DisciplineDisplayDto;
 import fr.recia.glc.web.dto.function.DisciplinePossibleDto;
-import fr.recia.glc.web.dto.function.FiliereDisplayDto;
-import fr.recia.glc.web.dto.function.FonctionDisplayDto;
-import fr.recia.glc.web.dto.function.FonctionPossibleDto;
-import fr.recia.glc.web.dto.user.PersonneInListDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -122,11 +117,11 @@ public class StructureController {
         boolean showUid = principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(etablissement.getSiren());
 
         // Récupération de la liste des personnes
-        List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id, showUid);
+        List<DatabasePersonneDto> etabPersonnes = personneService.getPersonnes(id, showUid);
         etablissement.setListePersonnes(etabPersonnes);
 
         // Récupération de la liste des personnes sans fonction
-        List<SimplePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id, showUid);
+        List<DatabasePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id, showUid);
         etablissement.setWithoutFunctions(withoutFunction);
 
         // Récupération des alertes
@@ -148,9 +143,9 @@ public class StructureController {
                 DisciplineDto::getId,
                 Function.identity()
             ));
-        Map<Long, SimplePersonneDto> personnesMap = etabPersonnes.stream()
+        Map<Long, DatabasePersonneDto> personnesMap = etabPersonnes.stream()
             .collect(Collectors.toMap(
-                SimplePersonneDto::getId,
+                DatabasePersonneDto::getId,
                 Function.identity()
             ));
 
