@@ -25,6 +25,7 @@ export type AccountUser = CommonUser & {
   guichet?: string
   email?: string
   dateModification: string
+  dateSuppression?: string
 }
 
 export type User = CommonUser & {

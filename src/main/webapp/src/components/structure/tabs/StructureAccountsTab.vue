@@ -21,6 +21,7 @@ import {
   getSortedRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
+import { format } from 'date-fns'
 import { h, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
@@ -121,24 +122,34 @@ const columns = [
   },
   columnHelper.accessor('etat', {
     header: t('page.user.status.header'),
-    cell: info => h(
-      'span',
-      {
-        title: t(etatMap[info.getValue()].i18n),
-      },
-      [
-        h(
-          FontAwesomeIcon,
-          {
-            icon: etatMap[info.getValue()].icon ?? getIconDefinition(info.row.original.local),
-            size: 'lg',
-            style: {
-              color: etatMap[info.getValue()].color,
+    cell: (info) => {
+      const etat = {
+        icon: getIconDefinition(info.row.original.local),
+        ...etatMap[info.getValue()],
+      }
+      const suppressDate = info.row.original.dateSuppression
+        ? format(info.row.original.dateSuppression, 'P')
+        : undefined
+
+      return h(
+        'span',
+        {
+          title: `${t(etat.i18n)}${suppressDate ? ` (${t('page.user.status.deletingDate', { suppressDate })})` : ''}`,
+        },
+        [
+          h(
+            FontAwesomeIcon,
+            {
+              icon: etat.icon,
+              size: 'lg',
+              style: {
+                color: etat.color,
+              },
             },
-          },
-        ),
-      ],
-    ),
+          ),
+        ],
+      )
+    },
   }),
   columnHelper.accessor('nom', {
     header: t('page.user.info.identity.lastName'),

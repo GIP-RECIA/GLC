@@ -1,22 +1,30 @@
 <script setup lang="ts">
-import type { User } from '@/types/index.ts'
+import type { enumValues, User } from '@/types/index.ts'
 import { faCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { format } from 'date-fns'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
-import { usePersonne } from '@/composables/index.ts'
-import { categoriePersonneMap } from '@/types/enums/index.ts'
+import { categoriePersonneMap, etatMap } from '@/types/enums/index.ts'
 
-defineProps<{
+const props = defineProps<{
   user?: User
 }>()
 
 const { t } = useI18n()
 
-const {
-  etat,
-  suppressDate,
-} = usePersonne()
+const etat = computed<enumValues | undefined>(() => (
+  props.user
+    ? etatMap[props.user.etat]
+    : undefined
+))
+
+const suppressDate = computed<string | undefined>(() => (
+  props.user?.dateSuppression
+    ? format(props.user.dateSuppression, 'P')
+    : undefined
+))
 </script>
 
 <template>
@@ -52,12 +60,12 @@ const {
         <FontAwesomeIcon
           :icon="faCircle"
           :style="{
-            color: etat.color,
+            color: etat?.color,
           }"
           size="lg"
         />
         <SafeEmptyData
-          :value="t(etat.i18n)"
+          :value="etat ? t(etat.i18n) : undefined"
         />
         <span
           v-if="suppressDate"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FunctionUser } from '@/types/index.ts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { format } from 'date-fns'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
@@ -17,12 +18,18 @@ const etat = computed(() => ({
   icon: getIconDefinition(props.user.local),
   ...etatMap[props.user.etat],
 }))
+
+const suppressDate = computed<string | undefined>(() => (
+  props.user?.dateSuppression
+    ? format(props.user.dateSuppression, 'P')
+    : undefined
+))
 </script>
 
 <template>
   <div class="user-link">
     <span
-      :title="t(etat.i18n)"
+      :title="`${t(etat.i18n)}${suppressDate ? ` (${t('page.user.status.deletingDate', { suppressDate })})` : ''}`"
     >
       <FontAwesomeIcon
         :icon="etat.icon"

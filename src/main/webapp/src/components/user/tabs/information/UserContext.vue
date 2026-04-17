@@ -1,19 +1,26 @@
 <script setup lang="ts">
 import type { User } from '@/types/index.ts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { format } from 'date-fns'
+import { format, getYear } from 'date-fns'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
-import { usePersonne } from '@/composables/index.ts'
 import { getIconDefinition } from '@/utils/index.ts'
 
-defineProps<{
+const props = defineProps<{
   user?: User
 }>()
 
 const { t } = useI18n()
 
-const { schoolYear } = usePersonne()
+const schoolYear = computed<string | undefined>(() => {
+  if (!props.user)
+    return
+
+  const year = getYear(props.user.anneeScolaire)
+
+  return `${year}/${year + 1}`
+})
 </script>
 
 <template>
