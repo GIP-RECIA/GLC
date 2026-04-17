@@ -38,6 +38,7 @@ public class PersonneInListDto {
     private String login;
     private String email;
     private Date dateModification;
+    private Date dateSuppression;
     private boolean local;
 
     public PersonneInListDto(DatabasePersonneDto databasePersonneDto) {
@@ -51,6 +52,7 @@ public class PersonneInListDto {
         this.login = databasePersonneDto.getLogin();
         this.email = databasePersonneDto.getEmail();
         this.dateModification = databasePersonneDto.getDateModification();
+        this.dateSuppression = databasePersonneDto.getDateSuppression();
         this.local = databasePersonneDto.getSource().startsWith("SarapisUi_");
     }
 
