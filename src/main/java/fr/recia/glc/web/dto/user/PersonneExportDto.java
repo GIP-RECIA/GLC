@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.dto.personne;
+package fr.recia.glc.web.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
-import fr.recia.glc.web.dto.user.PersonneDetailDto;
-import fr.recia.glc.web.dto.user.StructureForUserDto;
 import lombok.Data;
 
 import java.util.List;

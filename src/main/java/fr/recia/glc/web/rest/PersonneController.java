@@ -22,7 +22,7 @@ import fr.recia.glc.audit.AuditEvent;
 import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
 import fr.recia.glc.web.dto.user.PersonneDetailDto;
-import fr.recia.glc.db.dto.personne.PersonneExportDto;
+import fr.recia.glc.web.dto.user.PersonneExportDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
