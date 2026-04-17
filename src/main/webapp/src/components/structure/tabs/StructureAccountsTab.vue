@@ -25,6 +25,7 @@ import { h, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { CategoriePersonne, categoriePersonneMap, Etat, etatMap } from '@/types/enums/index.ts'
+import { getIconDefinition } from '@/utils/index.ts'
 import IndeterminateCheckbox from './accounts/IndeterminateCheckbox.vue'
 
 const props = defineProps<{
@@ -118,18 +119,51 @@ const columns = [
     }),
   },
   columnHelper.accessor('etat', {
-    header: 'etat',
-    cell: info => t(etatMap[info.getValue()].i18n),
+    header: t('page.user.status.header'),
+    cell: info => h(
+      'span',
+      {
+        title: t(etatMap[info.getValue()].i18n),
+      },
+      [
+        h(
+          FontAwesomeIcon,
+          {
+            icon: etatMap[info.getValue()].icon ?? getIconDefinition(info.row.original.source),
+            size: 'lg',
+            style: {
+              color: etatMap[info.getValue()].color,
+            },
+          },
+        ),
+      ],
+    ),
   }),
   columnHelper.accessor('cn', {
-    header: 'cn',
+    header: t('page.user.info.identity.lastName'),
+  }),
+  columnHelper.accessor('id', {
+    header: t('page.user.info.identity.firstName'),
+    cell: '',
+  }),
+  columnHelper.accessor('id', {
+    header: t('page.user.info.account.uid'),
+    cell: '',
   }),
   columnHelper.accessor('categorie', {
-    header: 'categorie',
+    header: t('page.user.category.header'),
     cell: info => t(categoriePersonneMap[info.getValue()].i18n),
   }),
+  columnHelper.accessor('id', {
+    header: t('page.user.info.account.login'),
+    cell: '',
+  }),
   columnHelper.accessor('email', {
-    header: 'email',
+    header: t('page.user.info.account.email'),
+  }),
+  columnHelper.accessor('id', {
+    header: t('page.user.info.context.sourceModificationDate'),
+    cell: '',
   }),
   {
     id: 'select',
@@ -138,13 +172,13 @@ const columns = [
       RouterLink,
       {
         to: { name: 'user', params: { userId: row.original.id } },
-        class: 'btn-primary circle',
+        class: 'btn-secondary small circle',
       },
       () => [
         h(
           'span',
           {
-            title: 'Voir',
+            title: 'Consulter',
           },
           [
             h(FontAwesomeIcon, {
@@ -245,8 +279,6 @@ function handlePageSizeChange(e: any): void {
       </ul>
     </div>
 
-    {{ rowSelection }} {{ sorting }}
-
     <table>
       <thead>
         <tr
@@ -300,9 +332,9 @@ function handlePageSizeChange(e: any): void {
     </table>
 
     <div>
-      <div class="flex items-center gap-2">
+      <div>
         <button
-          class="btn-secondary circle"
+          class="btn-secondary small circle"
           :disabled="!table.getCanPreviousPage()"
           @click="() => table.setPageIndex(0)"
         >
@@ -311,7 +343,7 @@ function handlePageSizeChange(e: any): void {
           />
         </button>
         <button
-          class="btn-secondary circle"
+          class="btn-secondary small circle"
           :disabled="!table.getCanPreviousPage()"
           @click="() => table.previousPage()"
         >
@@ -320,7 +352,7 @@ function handlePageSizeChange(e: any): void {
           />
         </button>
         <button
-          class="btn-secondary circle"
+          class="btn-secondary small circle"
           :disabled="!table.getCanNextPage()"
           @click="() => table.nextPage()"
         >
@@ -329,7 +361,7 @@ function handlePageSizeChange(e: any): void {
           />
         </button>
         <button
-          class="btn-secondary circle"
+          class="btn-secondary small circle"
           :disabled="!table.getCanNextPage()"
           @click="() => table.setPageIndex(table.getPageCount() - 1)"
         >
@@ -337,19 +369,18 @@ function handlePageSizeChange(e: any): void {
             :icon="faAnglesRight"
           />
         </button>
-        <span class="flex items-center gap-1">
-          <div>Page</div>
+        <span>
+          <span>Page</span>
           <strong>
             {{ table.getState().pagination.pageIndex + 1 }} of
             {{ table.getPageCount() }}
           </strong>
         </span>
-        <span class="flex items-center gap-1">
+        <span>
           | Go to page:
           <input
             type="number"
             :value="goToPageNumber"
-            class="border p-1 rounded w-16"
             @change="handleGoToPage"
           >
         </span>
@@ -366,8 +397,6 @@ function handlePageSizeChange(e: any): void {
           </option>
         </select>
       </div>
-      <div>{{ table.getRowModel().rows.length }} Rows</div>
-      <pre>{{ JSON.stringify(table.getState().pagination, null, 2) }}</pre>
     </div>
   </div>
 </template>

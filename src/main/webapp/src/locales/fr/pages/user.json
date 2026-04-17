@@ -1,7 +1,7 @@
 {
   "user": {
     "status": {
-      "header": "Etat",
+      "header": "État",
       "inconnu": "Inconnu !",
       "invalid": "Inactivé",
       "valid": "Activé",
@@ -16,6 +16,7 @@
       "uncertainExportModify": "Erreur modification"
     },
     "category": {
+      "header": "Catégorie",
       "student": "Élève/Apprenti",
       "teacher": "Enseignant/Formateur",
       "nonTeacherLocalCommunity": "Agent de la collectivité",
