@@ -230,7 +230,7 @@ public class PersonneService {
     }
 
     public PersonneDetailDto getFullPersonne(Long id, APersonne personne, boolean showUid, Set<String> allowedSirens){
-        PersonneDetailDto personneDetailDto = new PersonneDetailDto(personne, showUid);
+        PersonneDetailDto personneDetailDto = new PersonneDetailDto(personne, showUid, glcProperties.getCustomConfig().getLoginOffices());
         LdapUser ldapUser = ldapPeopleDao.getLdapUser(personne.getUid(), id);
         // Dans le cas ou la personne n'est pas dans le LDAP
         String sirenCourant = "";

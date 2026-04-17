@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.web.dto.user;
 
+import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.db.dto.relation.RelationDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategoriePersonne;
@@ -62,8 +63,9 @@ public class PersonneDetailDto {
     private boolean listeRouge;
     private Set<StructureForUserDto> listeStructures;
     private List<RelationDto> relations;
+    private String guichet;
 
-    public PersonneDetailDto(APersonne aPersonne, boolean showUid) {
+    public PersonneDetailDto(APersonne aPersonne, boolean showUid, List<CustomConfigProperties.LoginOfficeProperties> loginOfficeProperties) {
         this.id = aPersonne.getId();
         this.etat = aPersonne.getEtat();
         this.anneeScolaire = aPersonne.getAnneeScolaire();
@@ -93,6 +95,16 @@ public class PersonneDetailDto {
         this.relations = new ArrayList<>();
         this.dateModification = aPersonne.getDateModification();
         this.dateAcquittement = aPersonne.getDateAcquittement();
+        this.guichet = null;
+        for(CustomConfigProperties.LoginOfficeProperties loginOfficeProperty : loginOfficeProperties){
+            if(loginOfficeProperty.getSource().equals(aPersonne.getCleJointure().getSource())){
+                for(CustomConfigProperties.LoginOfficeProperties.GuichetProperties guichetProperty : loginOfficeProperty.getGuichets()){
+                    if(guichetProperty.getCategoriesPersonne().contains(aPersonne.getCategorie())){
+                        this.guichet = guichetProperty.getNom();
+                    }
+                }
+            }
+        }
     }
 
 }
