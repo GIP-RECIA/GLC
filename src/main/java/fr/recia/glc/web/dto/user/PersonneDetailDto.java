@@ -25,6 +25,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,6 +38,7 @@ import java.util.TreeSet;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Slf4j
 public class PersonneDetailDto {
 
     private Long id;
@@ -64,6 +66,7 @@ public class PersonneDetailDto {
     private Set<StructureForUserDto> listeStructures;
     private List<RelationDto> relations;
     private String guichet;
+    private boolean local;
 
     public PersonneDetailDto(APersonne aPersonne, boolean showUid, List<CustomConfigProperties.LoginOfficeProperties> loginOfficeProperties) {
         this.id = aPersonne.getId();
@@ -105,6 +108,7 @@ public class PersonneDetailDto {
                 }
             }
         }
+        this.local = aPersonne.getCleJointure().getSource().startsWith("SarapisUi_");
     }
 
 }
