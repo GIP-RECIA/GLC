@@ -1,5 +1,3 @@
-package fr.recia.glc.web.dto.function;
-
 /*
  * Copyright (C) 2023 GIP-RECIA, Inc.
  *
@@ -15,33 +13,30 @@ package fr.recia.glc.web.dto.function;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package fr.recia.glc.web.dto.function;
 
-import fr.recia.glc.db.entities.education.Discipline;
-import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class FonctionDisplayDto {
+public class DisciplinesInFillierePossiblesDto {
 
-    private FiliereDisplayDto filiere;
-    private DisciplineDisplayDto discipline;
-    private Date dateFin;
-    // TODO : gérer la date de début
-    private Date dateDebut;
+    private String libelle;
+    private List<DisciplinePossibleDto> disciplines;
 
-    public FonctionDisplayDto(TypeFonctionFiliere filiere, Discipline discipline, Date dateFin) {
-        this.filiere = new FiliereDisplayDto(filiere.getId(), filiere.getLibelleFiliere());
-        this.discipline = new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste());
-        this.dateFin = dateFin;
+    public DisciplinesInFillierePossiblesDto(String libelle){
+        this.libelle = libelle;
+        this.disciplines = new ArrayList<>();
     }
+
 }

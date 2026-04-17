@@ -33,10 +33,10 @@ import java.util.Date;
 public class FonctionPossibleDto {
 
     private FiliereDisplayDto filiere;
-    private DisciplineDisplayDto discipline;
+    private DisciplinePossibleDto discipline;
 
     public FonctionPossibleDto(TypeFonctionFiliere filiere, Discipline discipline) {
         this.filiere = new FiliereDisplayDto(filiere.getId(), filiere.getLibelleFiliere());
-        this.discipline = new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste());
+        this.discipline = new DisciplinePossibleDto(discipline.getId(), discipline.getDisciplinePoste());
     }
 }

@@ -22,10 +22,8 @@ import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.QAStructure;
 import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
-import fr.recia.glc.web.dto.function.DisciplineDisplayDto;
-import fr.recia.glc.web.dto.function.DisciplinePossibleDto;
+import fr.recia.glc.web.dto.function.DisciplinesInFillierePossiblesDto;
 import fr.recia.glc.web.dto.function.FiliereDisplayDto;
-import fr.recia.glc.web.dto.function.FonctionDisplayDto;
 import fr.recia.glc.web.dto.function.FonctionPossibleDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IteratorUtils;
@@ -81,13 +79,13 @@ public class StructureService {
     }
 
     // TODO : ajouter aussi celles du mapping custom
-    public Map<Long, DisciplinePossibleDto> getPossibleFonctions(String source){
+    public Map<Long, DisciplinesInFillierePossiblesDto> getPossibleFonctions(String source){
         List<FonctionPossibleDto> fonctionPossibleDtos = fonctionRepository.findPossibleFonctionsBySource(source);
-        Map<Long, DisciplinePossibleDto> dtoListMap = new HashMap<>();
+        Map<Long, DisciplinesInFillierePossiblesDto> dtoListMap = new HashMap<>();
         for(FonctionPossibleDto fonctionPossibleDto : fonctionPossibleDtos){
             FiliereDisplayDto filiereDisplayDto = fonctionPossibleDto.getFiliere();
             if(!dtoListMap.containsKey(filiereDisplayDto.getId())){
-                dtoListMap.put(filiereDisplayDto.getId(), new DisciplinePossibleDto(filiereDisplayDto.getLibelle()));
+                dtoListMap.put(filiereDisplayDto.getId(), new DisciplinesInFillierePossiblesDto(filiereDisplayDto.getLibelle()));
             }
             dtoListMap.get(filiereDisplayDto.getId()).getDisciplines().add(fonctionPossibleDto.getDiscipline());
         }

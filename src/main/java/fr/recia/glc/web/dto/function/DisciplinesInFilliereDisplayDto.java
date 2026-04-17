@@ -16,11 +16,27 @@
 package fr.recia.glc.web.dto.function;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 @AllArgsConstructor
-public class DisciplinePossibleDto {
-    private Long id;
+@EqualsAndHashCode
+@ToString
+public class DisciplinesInFilliereDisplayDto {
+
     private String libelle;
+    private List<DisciplineDisplayDto> disciplines;
+
+    public DisciplinesInFilliereDisplayDto(String libelle){
+        this.libelle = libelle;
+        this.disciplines = new ArrayList<>();
+    }
+
 }

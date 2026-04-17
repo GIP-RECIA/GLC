@@ -18,6 +18,8 @@ package fr.recia.glc.services.db;
 import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
+import fr.recia.glc.web.dto.function.DisciplineDisplayDto;
+import fr.recia.glc.web.dto.function.DisciplinesInFilliereDisplayDto;
 import fr.recia.glc.web.dto.user.PersonneDetailDto;
 import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
@@ -36,7 +38,6 @@ import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.ldap.LdapUser;
 import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import fr.recia.glc.services.cache.CacheInvalidationService;
-import fr.recia.glc.web.dto.function.FonctionDisplayDto;
 import fr.recia.glc.web.dto.user.StructureForUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -288,11 +289,16 @@ public class PersonneService {
                     if(fonctionDto.getStructure().equals(structureForUserDto.getId())){
                         TypeFonctionFiliere typeFonctionFiliere = fonctionService.getTypeFonctionFiliere(fonctionDto.getFiliere());
                         Discipline discipline = fonctionService.getDiscipline(fonctionDto.getDiscipline());
-                        FonctionDisplayDto fonctionDisplayDto = new FonctionDisplayDto(typeFonctionFiliere, discipline, fonctionDto.getDateFin());
                         if(!fonctionDto.getSource().startsWith(Constants.SARAPISUI_)){
-                            structureForUserDto.getFonctions().add(fonctionDisplayDto);
+                            if(!structureForUserDto.getFonctions().containsKey(typeFonctionFiliere.getId())){
+                                structureForUserDto.getFonctions().put(typeFonctionFiliere.getId(), new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getLibelleFiliere()));
+                            }
+                            structureForUserDto.getFonctions().get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
                         } else {
-                            structureForUserDto.getAdditionalFonctions().add(fonctionDisplayDto);
+                            if(!structureForUserDto.getAdditionalFonctions().containsKey(typeFonctionFiliere.getId())){
+                                structureForUserDto.getAdditionalFonctions().put(typeFonctionFiliere.getId(), new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getLibelleFiliere()));
+                            }
+                            structureForUserDto.getAdditionalFonctions().get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
                         }
                     }
                 }

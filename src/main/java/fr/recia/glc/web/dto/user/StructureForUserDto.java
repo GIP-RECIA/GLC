@@ -19,11 +19,13 @@ import fr.recia.glc.db.entities.structure.AStructure;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.entities.structure.ServiceAcademique;
 import fr.recia.glc.db.enums.CategorieStructure;
-import fr.recia.glc.web.dto.function.FonctionDisplayDto;
+import fr.recia.glc.web.dto.function.DisciplinesInFilliereDisplayDto;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class StructureForUserDto {
@@ -34,8 +36,8 @@ public class StructureForUserDto {
     private String nom;
     private String nomCourt;
     private String siren;
-    private List<FonctionDisplayDto> fonctions;
-    private List<FonctionDisplayDto> additionalFonctions;
+    private Map<Long, DisciplinesInFilliereDisplayDto> fonctions;
+    private Map<Long, DisciplinesInFilliereDisplayDto> additionalFonctions;
     private boolean structureRattachement;
     private boolean structureCourante;
     private List<String> classes;
@@ -59,8 +61,8 @@ public class StructureForUserDto {
         }
         this.nomCourt = aStructure.getNomCourt();
         this.siren = aStructure.getSiren();
-        this.fonctions = new ArrayList<>();
-        this.additionalFonctions = new ArrayList<>();
+        this.fonctions = new HashMap<>();
+        this.additionalFonctions = new HashMap<>();
         this.structureCourante = false;
         this.structureRattachement = false;
         this.classes = new ArrayList<>();
