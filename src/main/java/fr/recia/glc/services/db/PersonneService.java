@@ -232,7 +232,11 @@ public class PersonneService {
     public PersonneDto getFullPersonne(Long id, APersonne personne, boolean showUid, Set<String> allowedSirens){
         PersonneDto personneDto = new PersonneDto(personne, showUid);
         LdapUser ldapUser = ldapPeopleDao.getLdapUser(personne.getUid(), id);
-        String sirenCourant = ldapUser.getSirenCourant();
+        // Dans le cas ou la personne n'est pas dans le LDAP
+        String sirenCourant = "";
+        if(ldapUser != null){
+            sirenCourant = ldapUser.getSirenCourant();
+        }
         for(AStructure aStructure : personne.getListeStructures()){
             StructureForUserDto structureForUserDto = new StructureForUserDto(aStructure);
             if(allowedSirens.contains(aStructure.getSiren())){
@@ -249,14 +253,16 @@ public class PersonneService {
             structureForUserDto.setGroupesPedagogiques(groupeService.getGroupesOfPersonne(personne.getId(), personne.getCategorie(), aStructure.getId()));
         }
         // Affichage de l'id pronote uniquement si la personne est dans un groupe pronote
-        List<String> groups = ldapUser.getGroups();
-        Pattern patternPronoteGroup = Pattern.compile(glcProperties.getCustomConfig().getPronoteGroupRegex());
-        for(String group : groups){
-            Matcher matcherPronoteGroup = patternPronoteGroup.matcher(group);
-            if(matcherPronoteGroup.matches()){
-                for(ExternalId externalId : personne.getExternalIds()){
-                    if(externalId.getDestinataire().equals(ExternalIdSource.PRONOTE)){
-                        personneDto.setIdPronote(externalId.getId());
+        if(ldapUser != null){
+            List<String> groups = ldapUser.getGroups();
+            Pattern patternPronoteGroup = Pattern.compile(glcProperties.getCustomConfig().getPronoteGroupRegex());
+            for(String group : groups){
+                Matcher matcherPronoteGroup = patternPronoteGroup.matcher(group);
+                if(matcherPronoteGroup.matches()){
+                    for(ExternalId externalId : personne.getExternalIds()){
+                        if(externalId.getDestinataire().equals(ExternalIdSource.PRONOTE)){
+                            personneDto.setIdPronote(externalId.getId());
+                        }
                     }
                 }
             }
