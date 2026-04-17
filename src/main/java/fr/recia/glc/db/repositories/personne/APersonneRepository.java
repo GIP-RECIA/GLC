@@ -33,14 +33,14 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     Long doesEmailExists(String email);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.givenName, ap.sn, ap.login.nom, ap.uid, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE ap.id IN :ids " +
         "ORDER BY ap.cn, ap.sn")
     List<SimplePersonneDto> findByPersonneIdsWithUid(Set<Long> ids);
 
     @Query("SELECT new fr.recia.glc.db.dto.personne.SimplePersonneDto(ap.id, ap.etat, ap.categorie, " +
-        "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement) " +
+        "ap.cleJointure.source, ap.cn, ap.email, ap.givenName, ap.sn, ap.login.nom, ap.dateModification, ap.dateAcquittement) " +
         "FROM APersonne ap " +
         "WHERE ap.id IN :ids " +
         "ORDER BY ap.cn, ap.sn")

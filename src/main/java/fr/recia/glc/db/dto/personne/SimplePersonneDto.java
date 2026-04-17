@@ -37,7 +37,9 @@ public class SimplePersonneDto {
     private String source;
     private String cn;
     private String email;
+    private String givenName;
     private String sn;
+    private String login;
     private String uid;
     private Date dateModification;
     private Date dateAcquittement;
@@ -60,6 +62,25 @@ public class SimplePersonneDto {
     }
 
     public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
+                             String givenName, String sn, String login, String uid, Date dateModification, Date dateAcquittement) {
+        this.id = id;
+        this.etat = etat;
+        this.categorie = categorie;
+        this.source = source;
+        this.cn = cn;
+        this.email = email;
+        this.givenName = givenName;
+        this.sn = sn;
+        this.login = login;
+        if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
+            this.etat = Etat.Deleting;
+            this.dateSuppression = dateModification;
+        }
+        this.uid = uid;
+    }
+
+
+    public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
                              String sn, Date dateModification, Date dateAcquittement) {
         this.id = id;
         this.etat = etat;
@@ -75,6 +96,24 @@ public class SimplePersonneDto {
         this.uid = "";
     }
 
+    public SimplePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
+                             String givenName, String sn, String login, Date dateModification, Date dateAcquittement) {
+        this.id = id;
+        this.etat = etat;
+        this.categorie = categorie;
+        this.source = source;
+        this.cn = cn;
+        this.email = email;
+        this.givenName = givenName;
+        this.sn = sn;
+        this.login = login;
+        if (etat == Etat.Delete && dateModification.equals(dateAcquittement)) {
+            this.etat = Etat.Deleting;
+            this.dateSuppression = dateModification;
+        }
+        this.uid = "";
+    }
+
     public SimplePersonneDto(APersonne aPersonne) {
         this.id = aPersonne.getId();
         this.etat = aPersonne.getEtat();
@@ -82,6 +121,8 @@ public class SimplePersonneDto {
         this.source = aPersonne.getCleJointure().getSource();
         this.cn = aPersonne.getCn();
         this.sn = aPersonne.getSn();
+        this.login = aPersonne.getLogin().getNom();
+        this.givenName = aPersonne.getGivenName();
         if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
             this.etat = Etat.Deleting;
             this.dateSuppression = aPersonne.getDateModification();

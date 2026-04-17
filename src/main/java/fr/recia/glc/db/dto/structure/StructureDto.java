@@ -28,6 +28,7 @@ import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
 import fr.recia.glc.web.dto.user.CardPersonneDto;
+import fr.recia.glc.web.dto.user.PersonneInListDto;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,7 +60,7 @@ public class StructureDto {
     private String logo;
 
     private List<TypeFonctionFiliereDto> filieres;
-    private List<SimplePersonneDto> personnes;
+    private List<PersonneInListDto> personnes;
     private List<SimplePersonneDto> withoutFunctions;
     private List<AlertDto> alerts;
     private String permission;
@@ -91,6 +92,13 @@ public class StructureDto {
             this.nom = split[1];
         } else {
             this.nom = aStructure.getNom();
+        }
+    }
+
+    public void setListePersonnes(List<SimplePersonneDto> personnes){
+        this.personnes = new ArrayList<>();
+        for(SimplePersonneDto personneDto : personnes){
+            this.personnes.add(new PersonneInListDto(personneDto));
         }
     }
 

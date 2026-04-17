@@ -32,6 +32,7 @@ import fr.recia.glc.web.dto.function.DisciplinePossibleDto;
 import fr.recia.glc.web.dto.function.FiliereDisplayDto;
 import fr.recia.glc.web.dto.function.FonctionDisplayDto;
 import fr.recia.glc.web.dto.function.FonctionPossibleDto;
+import fr.recia.glc.web.dto.user.PersonneInListDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -122,7 +123,7 @@ public class StructureController {
 
         // Récupération de la liste des personnes
         List<SimplePersonneDto> etabPersonnes = personneService.getPersonnes(id, showUid);
-        etablissement.setPersonnes(etabPersonnes);
+        etablissement.setListePersonnes(etabPersonnes);
 
         // Récupération de la liste des personnes sans fonction
         List<SimplePersonneDto> withoutFunction = fonctionService.getPersonnesWithoutFunctions(id, showUid);
