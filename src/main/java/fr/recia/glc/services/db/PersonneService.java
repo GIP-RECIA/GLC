@@ -260,15 +260,19 @@ public class PersonneService {
         if(ldapUser != null){
             List<String> groups = ldapUser.getGroups();
             Pattern patternPronoteGroup = Pattern.compile(glcProperties.getCustomConfig().getPronoteGroupRegex());
-            for(String group : groups){
-                Matcher matcherPronoteGroup = patternPronoteGroup.matcher(group);
-                if(matcherPronoteGroup.matches()){
-                    for(ExternalId externalId : personne.getExternalIds()){
-                        if(externalId.getDestinataire().equals(ExternalIdSource.PRONOTE)){
-                            personneDetailDto.setIdPronote(externalId.getId());
+            if(groups != null){
+                for(String group : groups){
+                    Matcher matcherPronoteGroup = patternPronoteGroup.matcher(group);
+                    if(matcherPronoteGroup.matches()){
+                        for(ExternalId externalId : personne.getExternalIds()){
+                            if(externalId.getDestinataire().equals(ExternalIdSource.PRONOTE)){
+                                personneDetailDto.setIdPronote(externalId.getId());
+                            }
                         }
                     }
                 }
+            } else {
+                log.warn("groupes null pour la personne {} !", personne.getUid());
             }
         }
         setAllFonctions(personneDetailDto, fonctionService.getPersonneFonctions(id));
