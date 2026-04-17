@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { SimplePersonne } from '@/types/index.ts'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { etatMap } from '@/types/enums/index.ts'
+import { getIconDefinition } from '@/utils/index.ts'
 
 const props = defineProps<{
   user: SimplePersonne
@@ -14,7 +14,7 @@ const props = defineProps<{
 const { t } = useI18n()
 
 const etat = computed(() => ({
-  icon: faUser,
+  icon: getIconDefinition(props.user.source),
   ...etatMap[props.user.etat],
 }))
 </script>
