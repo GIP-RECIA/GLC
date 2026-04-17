@@ -16,7 +16,7 @@
 package fr.recia.glc.web.dto.user;
 
 import fr.recia.glc.configuration.bean.CustomConfigProperties;
-import fr.recia.glc.db.dto.relation.RelationDto;
+import fr.recia.glc.web.dto.relation.RelationDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;

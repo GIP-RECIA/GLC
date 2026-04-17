@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.dto.relation;
+package fr.recia.glc.web.dto.relation;
 
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.enums.CategorieRelation;

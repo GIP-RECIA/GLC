@@ -15,8 +15,6 @@
  */
 package fr.recia.glc.db.dto.education;
 
-import com.sun.source.tree.Tree;
-import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.web.dto.user.CardPersonneDto;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

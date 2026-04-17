@@ -16,7 +16,7 @@
 package fr.recia.glc.services.db;
 
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
-import fr.recia.glc.db.dto.relation.RelationDto;
+import fr.recia.glc.web.dto.relation.RelationDto;
 import fr.recia.glc.db.entities.relation.AMappingRelation;
 import fr.recia.glc.db.repositories.relation.AMappingRelationRepository;
 import lombok.extern.slf4j.Slf4j;
