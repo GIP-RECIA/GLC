@@ -16,6 +16,7 @@
 package fr.recia.glc.configuration.bean;
 
 import fr.recia.glc.db.dto.AlertType;
+import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.utils.ListUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,7 @@ public class CustomConfigProperties {
     private List<AlertProperties> alerts;
     private List<FonctionsProperties> fonctions;
     private Map<String, Set<String>> adminFonctionsBySource;
+    private List<LoginOfficeProperties> loginOffices;
 
     @Data
     public static class AlertProperties {
@@ -88,6 +90,38 @@ public class CustomConfigProperties {
             return "{" +
                 "\n\t\t\t\"source\": \"" + source + "\"," +
                 "\n\t\t\t\"fonctionAlerts\": " + ListUtil.toStringList(fonctionAlerts, ",\n\t\t\t\t", "[\n\t\t\t\t", "\n\t\t\t]") +
+                "\n\t\t}";
+        }
+
+    }
+
+    @Data
+    public static class LoginOfficeProperties {
+
+        private String source;
+        private List<GuichetProperties> guichets;
+
+        @Data
+        public static class GuichetProperties {
+
+            private String nom;
+            private List<CategoriePersonne> categoriesPersonne;
+
+            @Override
+            public String toString() {
+                return "\t\t\t\t{" +
+                    "\n\t\t\t\t\t\"nom\": \"" + nom + "\"," +
+                    "\n\t\t\t\t\t\"categoriesPersonne\": " + ListUtil.toStringList(categoriesPersonne) +
+                    "\n\t\t\t\t}";
+            }
+
+        }
+
+        @Override
+        public String toString() {
+            return "\t\t{" +
+                "\n\t\t\t\"source\": \"" + source + "\"," +
+                "\n\t\t\t\"guichets\": " + ListUtil.toStringList(guichets, ",\n", "[\n", "\n\t\t\t]") +
                 "\n\t\t}";
         }
 

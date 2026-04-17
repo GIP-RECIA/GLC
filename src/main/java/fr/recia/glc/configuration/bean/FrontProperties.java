@@ -31,7 +31,6 @@ public class FrontProperties {
     private List<Etat> editAllowedStates;
     private List<Etat> filterAccountStates;
     private ExtendedUportalProperties extendedUportal;
-    private List<LoginOfficeProperties> loginOffices;
     private String defaultStructureImage;
     private String defaultUserImage;
 
@@ -87,38 +86,6 @@ public class FrontProperties {
 
     }
 
-    @Data
-    public static class LoginOfficeProperties {
-
-        private String source;
-        private List<GuichetProperties> guichets;
-
-        @Data
-        public static class GuichetProperties {
-
-            private String nom;
-            private List<CategoriePersonne> categoriesPersonne;
-
-            @Override
-            public String toString() {
-                return "\t\t\t\t{" +
-                    "\n\t\t\t\t\t\"nom\": \"" + nom + "\"," +
-                    "\n\t\t\t\t\t\"categoriesPersonne\": " + ListUtil.toStringList(categoriesPersonne) +
-                    "\n\t\t\t\t}";
-            }
-
-        }
-
-        @Override
-        public String toString() {
-            return "\t\t{" +
-                "\n\t\t\t\"source\": \"" + source + "\"," +
-                "\n\t\t\t\"guichets\": " + ListUtil.toStringList(guichets, ",\n", "[\n", "\n\t\t\t]") +
-                "\n\t\t}";
-        }
-
-    }
-
     @Override
     public String toString() {
         return "\"FrontProperties\": {" +
@@ -127,7 +94,6 @@ public class FrontProperties {
             "\n\t\"editAllowedStates\": " + ListUtil.toStringList(editAllowedStates) + "," +
             "\n\t\"filterAccountStates\": " + ListUtil.toStringList(filterAccountStates) + "," +
             "\n\t\"extendedUportal\": " + extendedUportal +
-            "\n\t\"loginOffices\": " + ListUtil.toStringList(loginOffices, ",\n", "[\n", "\n\t]") +
             "\n}";
     }
 
