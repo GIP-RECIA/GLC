@@ -21,26 +21,18 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import fr.recia.glc.audit.AuditEvent;
 import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
-import fr.recia.glc.configuration.GLCProperties;
-import fr.recia.glc.db.dto.personne.PersonneDto;
+import fr.recia.glc.web.dto.user.PersonneDetailDto;
 import fr.recia.glc.db.dto.personne.PersonneExportDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
-import fr.recia.glc.db.entities.structure.Etablissement;
-import fr.recia.glc.db.repositories.structure.AStructureRepository;
-import fr.recia.glc.db.repositories.structure.EtablissementRepository;
-import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.db.AddPersonneService;
 import fr.recia.glc.services.db.FonctionService;
-import fr.recia.glc.services.db.GroupeService;
 import fr.recia.glc.services.db.PersonneService;
-import fr.recia.glc.services.db.RelationService;
 import fr.recia.glc.services.db.StructureService;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
-import fr.recia.glc.web.dto.user.StructureForUserDto;
 import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,8 +148,8 @@ public class PersonneController {
         List<PersonneExportDto> personnesExport = new ArrayList<>();
         for(Long id : ids){
             APersonne personne = personneService.getPersonne(id);
-            PersonneDto personneDto = personneService.getFullPersonne(id, personne, true, allowedSiren);
-            PersonneExportDto personneExportDto = new PersonneExportDto(personneDto, etab);
+            PersonneDetailDto personneDetailDto = personneService.getFullPersonne(id, personne, true, allowedSiren);
+            PersonneExportDto personneExportDto = new PersonneExportDto(personneDetailDto, etab);
             personnesExport.add(personneExportDto);
         }
         // Projection pour garder seulement certaines colonnes
@@ -169,7 +161,7 @@ public class PersonneController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PersonneDto> getPersonne(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
+    public ResponseEntity<PersonneDetailDto> getPersonne(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
         // TODO : la route est aussi appellée lors du rattachement sauf qu'on a pas forcément les droits sur l'étab duquel la personne est de base
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
@@ -190,8 +182,8 @@ public class PersonneController {
         }
         // Booléen qui indique si on affiche l'uid ou non
         if (canRead) {
-            PersonneDto personneDto = personneService.getFullPersonne(id, personne, showUid, allowedSiren);
-            return new ResponseEntity<>(personneDto, HttpStatus.OK);
+            PersonneDetailDto personneDetailDto = personneService.getFullPersonne(id, personne, showUid, allowedSiren);
+            return new ResponseEntity<>(personneDetailDto, HttpStatus.OK);
         } else {
             log.warn("User {} is not authorized to view person {}", principal.getUsername(), id);
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

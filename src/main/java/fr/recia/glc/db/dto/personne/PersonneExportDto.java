@@ -18,6 +18,7 @@ package fr.recia.glc.db.dto.personne;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.web.dto.user.PersonneDetailDto;
 import fr.recia.glc.web.dto.user.StructureForUserDto;
 import lombok.Data;
 
@@ -37,7 +38,7 @@ public class PersonneExportDto {
     private Etat etat;
     private CategoriePersonne profil;
 
-    public PersonneExportDto(PersonneDto dto, Long etab) {
+    public PersonneExportDto(PersonneDetailDto dto, Long etab) {
         this.uid = dto.getUid();
         this.login = dto.getLogin();
         this.prenom = dto.getGivenName();

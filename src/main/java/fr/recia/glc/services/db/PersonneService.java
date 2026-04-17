@@ -18,7 +18,7 @@ package fr.recia.glc.services.db;
 import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
-import fr.recia.glc.db.dto.personne.PersonneDto;
+import fr.recia.glc.web.dto.user.PersonneDetailDto;
 import fr.recia.glc.db.dto.personne.SimplePersonneDto;
 import fr.recia.glc.db.entities.APersonneAStructure;
 import fr.recia.glc.db.entities.common.ExternalId;
@@ -37,7 +37,6 @@ import fr.recia.glc.ldap.LdapUser;
 import fr.recia.glc.ldap.repository.LdapPeopleDao;
 import fr.recia.glc.services.cache.CacheInvalidationService;
 import fr.recia.glc.web.dto.function.FonctionDisplayDto;
-import fr.recia.glc.web.dto.user.PersonneInListDto;
 import fr.recia.glc.web.dto.user.StructureForUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -231,8 +229,8 @@ public class PersonneService {
         return false;
     }
 
-    public PersonneDto getFullPersonne(Long id, APersonne personne, boolean showUid, Set<String> allowedSirens){
-        PersonneDto personneDto = new PersonneDto(personne, showUid);
+    public PersonneDetailDto getFullPersonne(Long id, APersonne personne, boolean showUid, Set<String> allowedSirens){
+        PersonneDetailDto personneDetailDto = new PersonneDetailDto(personne, showUid);
         LdapUser ldapUser = ldapPeopleDao.getLdapUser(personne.getUid(), id);
         // Dans le cas ou la personne n'est pas dans le LDAP
         String sirenCourant = "";
@@ -244,7 +242,7 @@ public class PersonneService {
             if(allowedSirens.contains(aStructure.getSiren())){
                 structureForUserDto.setAuthorizedForPrincipal(true);
             }
-            personneDto.getListeStructures().add(structureForUserDto);
+            personneDetailDto.getListeStructures().add(structureForUserDto);
             if(aStructure.getId()==personne.getStructRattachement().getId()){
                 structureForUserDto.setStructureRattachement(true);
             }
@@ -263,22 +261,22 @@ public class PersonneService {
                 if(matcherPronoteGroup.matches()){
                     for(ExternalId externalId : personne.getExternalIds()){
                         if(externalId.getDestinataire().equals(ExternalIdSource.PRONOTE)){
-                            personneDto.setIdPronote(externalId.getId());
+                            personneDetailDto.setIdPronote(externalId.getId());
                         }
                     }
                 }
             }
         }
-        setAllFonctions(personneDto, fonctionService.getPersonneFonctions(id));
-        personneDto.setRelations(relationService.getPersonneRelations(id));
-        return personneDto;
+        setAllFonctions(personneDetailDto, fonctionService.getPersonneFonctions(id));
+        personneDetailDto.setRelations(relationService.getPersonneRelations(id));
+        return personneDetailDto;
     }
 
-    private void setAllFonctions(PersonneDto personneDto, List<FonctionDto> fonctions) {
+    private void setAllFonctions(PersonneDetailDto personneDetailDto, List<FonctionDto> fonctions) {
         if (!fonctions.isEmpty()) {
             for(FonctionDto fonctionDto : fonctions){
                 // Ici c'est acceptable de faire une boucle imbriquée car on a peu de structures dans la liste la pluspart du temps
-                for(StructureForUserDto structureForUserDto : personneDto.getListeStructures()){
+                for(StructureForUserDto structureForUserDto : personneDetailDto.getListeStructures()){
                     if(fonctionDto.getStructure().equals(structureForUserDto.getId())){
                         TypeFonctionFiliere typeFonctionFiliere = fonctionService.getTypeFonctionFiliere(fonctionDto.getFiliere());
                         Discipline discipline = fonctionService.getDiscipline(fonctionDto.getDiscipline());

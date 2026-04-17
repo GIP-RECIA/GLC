@@ -128,16 +128,4 @@ public class SimplePersonneDto {
             this.dateSuppression = aPersonne.getDateModification();
         }
     }
-
-    public SimplePersonneDto(SimplePersonneDto simplePersonneDto) {
-        this.id = simplePersonneDto.getId();
-        this.etat = simplePersonneDto.getEtat();
-        this.categorie = simplePersonneDto.getCategorie();
-        this.source = simplePersonneDto.getSource();
-        this.cn = simplePersonneDto.getCn();
-        this.email = simplePersonneDto.getEmail();
-        this.sn = simplePersonneDto.getSn();
-        this.dateSuppression = simplePersonneDto.getDateSuppression();
-    }
-
 }

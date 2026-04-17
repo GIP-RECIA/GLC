@@ -13,18 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.dto.personne;
+package fr.recia.glc.web.dto.user;
 
-import fr.recia.glc.configuration.Constants;
-import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.relation.RelationDto;
-import fr.recia.glc.db.entities.common.ExternalId;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Civilite;
 import fr.recia.glc.db.enums.Etat;
-import fr.recia.glc.db.enums.ExternalIdSource;
-import fr.recia.glc.web.dto.user.StructureForUserDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,7 +36,7 @@ import java.util.TreeSet;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class PersonneDto {
+public class PersonneDetailDto {
 
     private Long id;
     private Etat etat;
@@ -68,7 +63,7 @@ public class PersonneDto {
     private Set<StructureForUserDto> listeStructures;
     private List<RelationDto> relations;
 
-    public PersonneDto(APersonne aPersonne, boolean showUid) {
+    public PersonneDetailDto(APersonne aPersonne, boolean showUid) {
         this.id = aPersonne.getId();
         this.etat = aPersonne.getEtat();
         this.anneeScolaire = aPersonne.getAnneeScolaire();
