@@ -26,7 +26,7 @@ import { h, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { CategoriePersonne, categoriePersonneMap, Etat, etatMap } from '@/types/enums/index.ts'
-import { getIconDefinition } from '@/utils/index.ts'
+import { getIconDefinition, getStateLabel } from '@/utils/index.ts'
 import IndeterminateCheckbox from './accounts/IndeterminateCheckbox.vue'
 import '@gip-recia/ui-webcomponents/dist/r-filters.js'
 
@@ -130,11 +130,16 @@ const columns = [
       const suppressDate = info.row.original.dateSuppression
         ? format(info.row.original.dateSuppression, 'P')
         : undefined
+      const title = getStateLabel(
+        etat.i18n,
+        suppressDate,
+        t,
+      )
 
       return h(
         'span',
         {
-          title: `${t(etat.i18n)}${suppressDate ? ` (${t('page.user.status.deletingDate', { suppressDate })})` : ''}`,
+          title,
         },
         [
           h(

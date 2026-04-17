@@ -6,7 +6,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { etatMap } from '@/types/enums/index.ts'
-import { getIconDefinition } from '@/utils/index.ts'
+import { getIconDefinition, getStateLabel } from '@/utils/index.ts'
 
 const props = defineProps<{
   user: FunctionUser
@@ -24,12 +24,19 @@ const suppressDate = computed<string | undefined>(() => (
     ? format(props.user.dateSuppression, 'P')
     : undefined
 ))
+
+const title = computed<string>(() => (
+  getStateLabel(
+    etat.value.i18n,
+    suppressDate.value,
+    t,
+  )))
 </script>
 
 <template>
   <div class="user-link">
     <span
-      :title="`${t(etat.i18n)}${suppressDate ? ` (${t('page.user.status.deletingDate', { suppressDate })})` : ''}`"
+      :title="title"
     >
       <FontAwesomeIcon
         :icon="etat.icon"

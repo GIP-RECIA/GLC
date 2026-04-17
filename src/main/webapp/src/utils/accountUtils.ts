@@ -70,7 +70,25 @@ function getDateFin(date: string): endInfo {
   }
 }
 
+function getStateLabel(
+  i18n: string,
+  suppressDate: string | undefined,
+  t: (key: string, params?: any) => string,
+): string {
+  const base = t(i18n)
+
+  if (!suppressDate)
+    return base
+
+  return `${base} (${
+    t('page.user.status.deletingDate', {
+      suppressDate,
+    })
+  })`
+}
+
 export {
   getDateFin,
   getIconDefinition,
+  getStateLabel,
 }
