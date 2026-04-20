@@ -25,6 +25,6 @@ import java.util.Date;
 public class DisciplineDisplayDto {
     private Long id;
     private String libelle;
-    private Date dateFin;
     private Date dateDebut;
+    private Date dateFin;
 }
