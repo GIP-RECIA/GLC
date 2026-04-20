@@ -322,7 +322,11 @@ public class PersonneService {
                                 }
                             }
                         } else {
-                            log.warn("No discipline associated with filliere");
+                            if(!fonctionDto.getSource().startsWith(Constants.SARAPISUI_)){
+                                structureForUserDto.getFonctions().add(new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getId(), typeFonctionFiliere.getLibelleFiliere()));
+                            } else {
+                                structureForUserDto.getAdditionalFonctions().add(new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getId(), typeFonctionFiliere.getLibelleFiliere()));
+                            }
                         }
                     }
                 }
