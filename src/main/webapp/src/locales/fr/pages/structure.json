@@ -18,6 +18,14 @@
       "accountsStates": "États des comptes"
     },
     "comp": {
+      "filter": {
+        "staff": {
+          "teaching": "Personnel enseignant",
+          "school": "Personnel etablissement",
+          "collectivity": "Personnel de collectivité",
+          "academic": "Personnel academique"
+        }
+      },
       "withoutFunctions": "SANS FONCTIONS"
     },
     "accounts": {}

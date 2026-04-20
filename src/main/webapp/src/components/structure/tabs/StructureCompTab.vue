@@ -34,7 +34,7 @@ const filters = [
       },
       ...Object.values(Staff).map(staff => ({
         key: staff,
-        value: t(`tab.${staff}`),
+        value: t(`page.structure.comp.filter.staff.${staff}`),
       })),
     ],
   },
