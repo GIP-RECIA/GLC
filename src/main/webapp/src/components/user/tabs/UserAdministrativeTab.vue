@@ -73,6 +73,7 @@ function editFunction(fonction: UserFunction): void {
 
         <footer>
           <button
+            v-if="structure.authorizedForPrincipal"
             type="button"
             class="btn-primary small"
             @click="addFunction"

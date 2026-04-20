@@ -50,6 +50,7 @@ const { t } = useI18n()
           <div class="structure-card">
             <div class="info">
               <RouterLink
+                v-if="structure.authorizedForPrincipal"
                 :to="{
                   name: 'structure',
                   params: { structureId: structure.id },
@@ -58,8 +59,14 @@ const { t } = useI18n()
                 {{ structure.nom }}
                 <span aria-hidden="true" />
               </RouterLink>
+              <p v-else>
+                {{ structure.nom }}
+              </p>
 
-              <p v-if="structure.type || structure.uai">
+              <p
+                v-if="structure.type || structure.uai"
+                class="description"
+              >
                 {{ structure.type }}
                 <span v-if="structure.uai">
                   {{ structure.uai }}
@@ -127,10 +134,12 @@ const { t } = useI18n()
         outline 0.15s ease-out,
         box-shadow 0.15s ease-out;
 
-      &:hover,
-      &:has(:focus-visible) {
-        outline: 2px solid var(--#{$prefix}primary);
-        box-shadow: var(--#{$prefix}shadow-hover) HEXToRGBA(var(--#{$prefix}primary), 0.2);
+      &:has(> .info > a) {
+        &:hover,
+        &:has(:focus-visible) {
+          outline: 2px solid var(--#{$prefix}primary);
+          box-shadow: var(--#{$prefix}shadow-hover) HEXToRGBA(var(--#{$prefix}primary), 0.2);
+        }
       }
 
       > .info {
@@ -150,7 +159,7 @@ const { t } = useI18n()
           }
         }
 
-        > p {
+        > .description {
           opacity: 0.6;
         }
       }
