@@ -15,7 +15,6 @@
       }
     },
     "initConfigurationStore": "Impossible de charger la configuration",
-    "initFonctionStore": "Impossible de charges les fonctions",
     "initCurrentPersonne": "Impossible de charger la personne",
     "refreshCurrentPersonne": "Impossible de raffraichir la personne",
     "initStructureStore": "Impossible de charger les structures",

@@ -15,22 +15,15 @@
  */
 
 import type {
-  AccountUser,
-  CustomMapping,
   SearchStructure,
-  SourceFonction,
   Structure,
 } from '@/types/index.ts'
-import { isEmpty } from 'lodash-es'
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { getEtablissement, getEtablissements } from '@/services/api/index.ts'
 import { errorHandler } from '@/utils/index.ts'
-import { useConfigurationStore } from './configurationStore.ts'
 
 export const useStructureStore = defineStore('structure', () => {
-  const configurationStore = useConfigurationStore()
-
   const etabs = ref<SearchStructure[] | undefined>()
   const currentEtab = ref<Structure | undefined>()
 
@@ -70,48 +63,10 @@ export const useStructureStore = defineStore('structure', () => {
     }
   }
 
-  const personnes = computed<AccountUser[] | undefined>(
-    () => currentEtab.value?.personnes,
-  )
-
-  const staff = computed(() => {
-    const { configuration } = storeToRefs(configurationStore)
-
-    const getStaff = (categorie?: string): AccountUser[] | undefined => {
-      return personnes.value
-        ?.filter(personne => personne.categorie === categorie)
-    }
-
-    return {
-      teaching: getStaff(configuration.value?.front.staff.teaching),
-      school: getStaff(configuration.value?.front.staff.school),
-      collectivity: getStaff(configuration.value?.front.staff.collectivity),
-      academic: getStaff(configuration.value?.front.staff.academic),
-    }
-  })
-
-  const fonction = computed<SourceFonction | undefined>(() => {
-    const { fonctions } = storeToRefs(configurationStore)
-
-    const fonction: SourceFonction | undefined = fonctions.value?.find(
-      fonction => fonction.source === currentEtab.value?.source,
-    )
-    const customMapping: CustomMapping | undefined = isEmpty(fonction?.customMapping)
-      ? undefined
-      : fonction.customMapping
-
-    return fonction
-      ? { ...fonction, customMapping }
-      : undefined
-  })
-
   return {
     etabs,
     currentEtab,
     init,
     initCurrentEtab,
-    personnes,
-    staff,
-    fonction,
   }
 })

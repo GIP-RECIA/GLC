@@ -2,9 +2,7 @@
 import type { User, UserFunction } from '@/types/index.ts'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { useConfigurationStore } from '@/stores/index.ts'
 import UserFunctions from './administrative/UserFunctions.vue'
 
 defineProps<{
@@ -16,9 +14,6 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-
-const configurationStore = useConfigurationStore()
-const { allFilieres } = storeToRefs(configurationStore)
 
 function addFunction(): void {
   emit('editFunction', undefined)
@@ -55,7 +50,7 @@ function editFunction(fonction: UserFunction): void {
 
         <div class="body">
           <UserFunctions
-            :filieres="allFilieres"
+            :filieres="[]"
             :fonctions="structure.fonctions"
           />
         </div>
@@ -71,7 +66,7 @@ function editFunction(fonction: UserFunction): void {
         <!-- TODO: manage rights click -->
         <div class="body">
           <UserFunctions
-            :filieres="allFilieres"
+            :filieres="[]"
             :fonctions="structure.additionalFonctions"
             :clickable="false"
             @tag-click="editFunction"

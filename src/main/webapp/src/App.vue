@@ -27,14 +27,13 @@ import { useConfigurationStore } from '@/stores/index.ts'
 const route = useRoute()
 
 const configurationStore = useConfigurationStore()
-const { init, initFonctions } = configurationStore
+const { init } = configurationStore
 const {
   configuration,
   isInit,
 } = storeToRefs(configurationStore)
 
 init()
-initFonctions()
 
 watchOnce(isInit, (newValue) => {
   if (!newValue || !configuration.value?.front.extendedUportal)

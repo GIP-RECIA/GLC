@@ -18,12 +18,6 @@ export interface Configuration {
   permissionTypes: string[]
   front: {
     endFunctionWarning: number
-    staff: {
-      teaching: string
-      school: string
-      collectivity: string
-      academic: string
-    }
     editAllowedStates: string[]
     filterAccountStates: string[]
     extendedUportal: {
@@ -40,12 +34,5 @@ export interface Configuration {
         }
       }
     }
-    loginOffices: {
-      source: string
-      guichets: {
-        nom: string
-        categoriesPersonne: string[]
-      }[]
-    }[]
   }
 }

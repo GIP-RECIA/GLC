@@ -25,7 +25,6 @@ import persons from './persons.json'
 import searchs from './searchs.json'
 import settings from './settings.json'
 import sources from './sources.json'
-import tabs from './tabs.json'
 import toasts from './toasts.json'
 
 export default {
@@ -39,7 +38,6 @@ export default {
   ...searchs,
   ...sources,
   ...settings,
-  ...tabs,
   ...toasts,
   $vuetify: {
     ...fr,

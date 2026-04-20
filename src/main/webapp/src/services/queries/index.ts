@@ -15,7 +15,6 @@
  */
 
 export * from './configurationQuery.ts'
-export * from './fonctionQuery.ts'
 export * from './personneQuery.ts'
 export * from './restrictionQuery.ts'
 export * from './rightQuery.ts'

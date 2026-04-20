@@ -1,76 +1,14 @@
 <script setup lang="ts">
-import type { Alert, Filiere, Structure } from '@/types/index.ts'
+import type { Structure } from '@/types/index.ts'
 import { faExclamationTriangle, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { useStructureStore } from '@/stores/index.ts'
 
 defineProps<{
   structure?: Structure
 }>()
 
 const { t } = useI18n()
-
-const structureStore = useStructureStore()
-const { fonction } = storeToRefs(structureStore)
-
-function getDiscipline(
-  filieres: Filiere[] | undefined,
-  code: string,
-): string | undefined {
-  const codes = code.split('-')
-  if (!filieres)
-    return undefined
-  return filieres
-    .find(filiere => filiere.codeFiliere === codes[0])
-    ?.disciplines
-    .find(discipline => discipline.code === codes[1])
-    ?.disciplinePoste
-}
-
-function formatedAlert(
-  alert: Alert,
-): Alert & { class?: any, actions?: any } {
-  if (!alert.title)
-    return alert
-  const data = alert.title.split('_')
-  const discipline = getDiscipline(fonction.value?.filieres, data[1])
-    ?? getDiscipline(fonction.value?.customMapping?.filieres, data[1])
-  if (!discipline)
-    return alert
-  const actions: any = {}
-  if (alert.action && fonction.value?.customMapping) {
-    if (alert.title) {
-      const doAlert = () => {
-      }
-      actions.click = () => doAlert()
-    }
-  }
-
-  return {
-    ...alert,
-    title: t(
-      'alert.minMax.title',
-      {
-        discipline,
-        value: data[3],
-      },
-      Number.parseInt(data[3]),
-    ),
-    text: t(
-      'alert.minMax.text',
-      {
-        minMax: t(`alert.minMax.${data[0]}`),
-        required: data[2],
-      },
-    ),
-    class: [{
-      clicable: alert.action && fonction.value?.customMapping,
-    }],
-    actions,
-  }
-}
 </script>
 
 <template>
@@ -83,7 +21,7 @@ function formatedAlert(
       v-if="structure?.alerts"
     >
       <li
-        v-for="(alert, index) in structure.alerts.map(formatedAlert)"
+        v-for="(alert, index) in structure.alerts"
         :key="`alert-${index}`"
         :class="[alert.type]"
       >

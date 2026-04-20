@@ -15,7 +15,6 @@
  */
 
 export * from './configurationService.ts'
-export * from './fonctionService.ts'
 export * from './personneService.ts'
 export * from './restrictionService.ts'
 export * from './rightService.ts'
