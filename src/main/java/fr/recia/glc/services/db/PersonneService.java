@@ -47,8 +47,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -285,6 +287,7 @@ public class PersonneService {
         if (!fonctions.isEmpty()) {
             for(FonctionDto fonctionDto : fonctions){
                 // Ici c'est acceptable de faire une boucle imbriquée car on a peu de structures dans la liste la pluspart du temps
+                // Et peu de fonctions par structure aussi
                 for(StructureForUserDto structureForUserDto : personneDetailDto.getListeStructures()){
                     if(fonctionDto.getStructure().equals(structureForUserDto.getId())){
                         final TypeFonctionFiliere typeFonctionFiliere = fonctionService.getTypeFonctionFiliere(fonctionDto.getFiliere());
@@ -292,15 +295,31 @@ public class PersonneService {
                         if(fonctionDto.getDiscipline() != null){
                             final Discipline discipline = fonctionService.getDiscipline(fonctionDto.getDiscipline());
                             if(!fonctionDto.getSource().startsWith(Constants.SARAPISUI_)){
-                                if(!structureForUserDto.getFonctions().containsKey(typeFonctionFiliere.getId())){
-                                    structureForUserDto.getFonctions().put(typeFonctionFiliere.getId(), new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getLibelleFiliere()));
+                                boolean found = false;
+                                for(DisciplinesInFilliereDisplayDto disciplinesInFilliereDisplayDto : structureForUserDto.getFonctions()){
+                                    if(disciplinesInFilliereDisplayDto.getId().equals(typeFonctionFiliere.getId())){
+                                        disciplinesInFilliereDisplayDto.getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
+                                        found = true;
+                                    }
                                 }
-                                structureForUserDto.getFonctions().get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
+                                if(!found){
+                                    DisciplinesInFilliereDisplayDto newDisciplinesInFilliereDisplayDto = new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getId(), typeFonctionFiliere.getLibelleFiliere());
+                                    newDisciplinesInFilliereDisplayDto.getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
+                                    structureForUserDto.getFonctions().add(newDisciplinesInFilliereDisplayDto);
+                                }
                             } else {
-                                if(!structureForUserDto.getAdditionalFonctions().containsKey(typeFonctionFiliere.getId())){
-                                    structureForUserDto.getAdditionalFonctions().put(typeFonctionFiliere.getId(), new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getLibelleFiliere()));
+                                boolean found = false;
+                                for(DisciplinesInFilliereDisplayDto disciplinesInFilliereDisplayDto : structureForUserDto.getAdditionalFonctions()){
+                                    if(disciplinesInFilliereDisplayDto.getId().equals(typeFonctionFiliere.getId())){
+                                        disciplinesInFilliereDisplayDto.getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
+                                        found = true;
+                                    }
                                 }
-                                structureForUserDto.getAdditionalFonctions().get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
+                                if(!found){
+                                    DisciplinesInFilliereDisplayDto newDisciplinesInFilliereDisplayDto = new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getId(), typeFonctionFiliere.getLibelleFiliere());
+                                    newDisciplinesInFilliereDisplayDto.getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
+                                    structureForUserDto.getAdditionalFonctions().add(newDisciplinesInFilliereDisplayDto);
+                                }
                             }
                         } else {
                             log.warn("No discipline associated with filliere");

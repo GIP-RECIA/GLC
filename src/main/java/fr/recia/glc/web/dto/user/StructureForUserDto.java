@@ -36,8 +36,8 @@ public class StructureForUserDto {
     private String nom;
     private String nomCourt;
     private String siren;
-    private Map<Long, DisciplinesInFilliereDisplayDto> fonctions;
-    private Map<Long, DisciplinesInFilliereDisplayDto> additionalFonctions;
+    private List<DisciplinesInFilliereDisplayDto> fonctions;
+    private List<DisciplinesInFilliereDisplayDto> additionalFonctions;
     private boolean structureRattachement;
     private boolean structureCourante;
     private List<String> classes;
@@ -61,8 +61,8 @@ public class StructureForUserDto {
         }
         this.nomCourt = aStructure.getNomCourt();
         this.siren = aStructure.getSiren();
-        this.fonctions = new HashMap<>();
-        this.additionalFonctions = new HashMap<>();
+        this.fonctions = new ArrayList<>();
+        this.additionalFonctions = new ArrayList<>();
         this.structureCourante = false;
         this.structureRattachement = false;
         this.classes = new ArrayList<>();
