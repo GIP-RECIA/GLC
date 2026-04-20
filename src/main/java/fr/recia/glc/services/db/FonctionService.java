@@ -47,20 +47,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static fr.recia.glc.configuration.Constants.SANS_OBJET;
-import static fr.recia.glc.utils.SourceUtils.areSourcesEquals;
 
 @Slf4j
 @Service
@@ -85,16 +75,6 @@ public class FonctionService {
     @Autowired
     private CacheInvalidationService cacheInvalidationService;
 
-    private static final String ALL = "ALL";
-    private static final String FILIERE = "filieres";
-    private static final String DISCIPLINE = "disciplines";
-
-    private final List<CustomConfigProperties.FonctionsProperties> fonctionsProperties;
-
-    public FonctionService(GLCProperties glcProperties) {
-        this.fonctionsProperties = glcProperties.getCustomConfig().getFonctions();
-    }
-
     @Cacheable(value = "typeFonctionFiliere")
     public TypeFonctionFiliere getTypeFonctionFiliere(Long id){
         return typeFonctionFiliereRepository.getReferenceById(id);
@@ -105,195 +85,10 @@ public class FonctionService {
         return disciplineRepository.getReferenceById(id);
     }
 
-    @Cacheable(value = "fonctions")
-    public List<Object> getFonctions() {
-        // On récupère deux listes :
-        // - La liste des fonctions dans la base utile pour l'affichage coté utilisateur car on n'a pas préchargé tous ses établissements donc toutes ses fonctions possibles
-        // - La liste des mappings customs utile lors de l'ajout de fonction
-        log.trace("getFonctions");
-        final List<String> sources = disciplineRepository.findAllNonSarapisSources();
-        if (sources.isEmpty()) return Collections.emptyList();
-
-        final List<TypeFonctionFiliereDto> typesFonctionFiliere = typeFonctionFiliereRepository.findWithoutSource();
-        final List<DisciplineDto> disciplines = disciplineRepository.findWithoutSource();
-        final List<FonctionDto> fonctions = fonctionRepository.findWithoutSource();
-
-        final ArrayList<Object> data = new ArrayList<>();
-
-        final Map<String, Object> all = new HashMap<>();
-        all.put("source", ALL);
-        all.put(FILIERE, getOfficial(
-            typesFonctionFiliere,
-            disciplines,
-            new ArrayList<>(new LinkedHashSet<>(Stream.concat(
-                fonctions.stream(),
-                getFonctionsFromMapping(typesFonctionFiliere, disciplines).stream()
-            ).collect(Collectors.toList()))),
-            ALL));
-        data.add(all);
-
-        sources.forEach(source -> {
-            final Map<String, Object> object = new HashMap<>();
-            object.put("source", source);
-            object.put(FILIERE, getOfficial(typesFonctionFiliere, disciplines, fonctions, source));
-            object.put("customMapping", getCustomMapping(source));
-            data.add(object);
-        });
-
-        return data;
-    }
-
-    private List<FonctionDto> getFonctionsFromMapping(
-        List<TypeFonctionFiliereDto> typesFonctionFiliere,
-        List<DisciplineDto> disciplines
-    ) {
-        List<FonctionDto> data = new ArrayList<>();
-
-        fonctionsProperties.forEach(file -> file.getFilieres().forEach(filiere -> {
-            TypeFonctionFiliereDto filiereDto = typesFonctionFiliere.stream()
-                .filter(tffdto -> Objects.equals(tffdto.getCodeFiliere(), filiere.getCode()) && areSourcesEquals(tffdto.getSource(), file.getSource(), false))
-                .findAny()
-                .orElse(null);
-
-            filiere.getDisciplines().forEach(discipline -> {
-                DisciplineDto disciplineDto = disciplines.stream()
-                    .filter(ddto -> Objects.equals(ddto.getCode(), discipline) && areSourcesEquals(ddto.getSource(), file.getSource(), false))
-                    .findAny()
-                    .orElse(null);
-
-                if (disciplineDto != null && filiereDto != null)
-                    data.add(new FonctionDto(disciplineDto.getId(), filiereDto.getId(), file.getSource()));
-            });
-        }));
-
-        return data;
-    }
-
-    private List<TypeFonctionFiliereDto> getOfficial(
-        List<TypeFonctionFiliereDto> typesFonctionFiliere,
-        List<DisciplineDto> disciplines,
-        List<FonctionDto> fonctions,
-        String source
-    ) {
-        if (!source.equals(ALL)) {
-            return getDisciplinesByFiliere(
-                typesFonctionFiliere.stream()
-                    .filter(typeFonctionFiliere -> areSourcesEquals(typeFonctionFiliere.getSource(), source))
-                    .collect(Collectors.toList()),
-                disciplines.stream()
-                    .filter(discipline -> areSourcesEquals(discipline.getSource(), source))
-                    .collect(Collectors.toList()),
-                fonctions.stream()
-                    .filter(fonction -> areSourcesEquals(fonction.getSource(), source, false))
-                    .collect(Collectors.toList()),
-                source
-            ).stream()
-                .filter(typeFonctionFiliere -> !typeFonctionFiliere.getDisciplines().isEmpty())
-                .collect(Collectors.toList());
-        }
-
-        return getDisciplinesByFiliere(typesFonctionFiliere, disciplines, fonctions, source);
-    }
-
-    private Map<String, Object> getCustomMapping(String source) {
-        Map<String, Object> data = new HashMap<>();
-
-        // Recherche du mapping
-        CustomConfigProperties.FonctionsProperties fonction = fonctionsProperties.stream()
-            .filter(f -> Objects.equals(f.getSource(), source))
-            .findAny()
-            .orElse(null);
-        if (fonction == null) return data;
-
-        // Recherche des filières
-        List<String> typeFonctionFiliereCodes = fonction.getFilieres().stream()
-            .map(CustomConfigProperties.FonctionsProperties.FiliereProperties::getCode)
-            .collect(Collectors.toList());
-        List<TypeFonctionFiliereDto> typesFonctionFiliere =
-            typeFonctionFiliereRepository.findByCodeAndSourceSarapis(typeFonctionFiliereCodes, source);
-        typesFonctionFiliere.sort(Comparator.comparingInt(tff -> typeFonctionFiliereCodes.indexOf(tff.getCodeFiliere())));
-
-        // Ajout des disciplines aux filières
-        if (!typesFonctionFiliere.isEmpty()) {
-            typesFonctionFiliere = typesFonctionFiliere.stream()
-                .map(typeFonctionFiliere -> {
-                    List<String> disciplineCodes = fonction.getFilieres().stream()
-                        .filter(af -> Objects.equals(af.getCode(), typeFonctionFiliere.getCodeFiliere()))
-                        .findAny()
-                        .map(CustomConfigProperties.FonctionsProperties.FiliereProperties::getDisciplines)
-                        .orElse(new ArrayList<>());
-
-                    List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(disciplineCodes, source);
-                    typeFonctionFiliere.setDisciplines(new HashSet<>(disciplines));
-                    return typeFonctionFiliere;
-                })
-                .collect(Collectors.toList());
-            data.put(FILIERE, typesFonctionFiliere);
-        }
-
-        // Recherche des disciplines sans filières
-        List<DisciplineDto> disciplines = disciplineRepository.findByCodeAndSourceSarapis(fonction.getDisciplines(), source);
-        if (!disciplines.isEmpty()) data.put(DISCIPLINE, disciplines);
-
-        return data;
-    }
-
-    private List<TypeFonctionFiliereDto> getDisciplinesByFiliere(
-        List<TypeFonctionFiliereDto> typesFonctionFiliere,
-        List<DisciplineDto> disciplines,
-        List<FonctionDto> fonctions,
-        String source
-    ) {
-        return getDisciplinesByFiliere(typesFonctionFiliere, disciplines, fonctions, source, List.of(SANS_OBJET), List.of(SANS_OBJET));
-    }
-
-    private List<TypeFonctionFiliereDto> getDisciplinesByFiliere(
-        List<TypeFonctionFiliereDto> typesFonctionFiliere,
-        List<DisciplineDto> disciplines,
-        List<FonctionDto> fonctions,
-        String source,
-        List<String> typesFonctionFiliereToNotInclue,
-        List<String> disciplinesToNotInclue
-    ) {
-        if (fonctions.isEmpty()) return Collections.emptyList();
-
-        final List<TypeFonctionFiliereDto> tmpTypesFonctionFiliere = typesFonctionFiliere.stream()
-            .map(TypeFonctionFiliereDto::new)
-            .collect(Collectors.toList());
-        final List<DisciplineDto> tmpDisciplines = disciplines.stream()
-            .map(DisciplineDto::new)
-            .collect(Collectors.toList());
-        final List<FonctionDto> tmpFonctions = fonctions.stream()
-            .map(FonctionDto::new)
-            .collect(Collectors.toList());
-
-        return tmpTypesFonctionFiliere.stream()
-            .filter(typeFonctionFiliere -> !typesFonctionFiliereToNotInclue.contains(typeFonctionFiliere.getLibelleFiliere()))
-            .map(typeFonctionFiliere -> {
-                Set<Long> disciplineIds = tmpFonctions.stream()
-                    .filter(fonction -> Objects.equals(fonction.getFiliere(), typeFonctionFiliere.getId()))
-                    .map(FonctionDto::getDiscipline)
-                    .collect(Collectors.toSet());
-                List<DisciplineDto> disciplinesInFiliere = tmpDisciplines.stream()
-                    .filter(discipline -> disciplineIds.contains(discipline.getId()) && !disciplinesToNotInclue.contains(discipline.getDisciplinePoste()))
-                    .collect(Collectors.toList());
-                typeFonctionFiliere.setDisciplines(new HashSet<>(disciplinesInFiliere));
-
-                return typeFonctionFiliere;
-            })
-            .collect(Collectors.toList());
-    }
-
     @Cacheable(value = "personneFonctions")
     public List<FonctionDto> getPersonneFonctions(Long personneId) {
         log.trace("getPersonneFonctions for {}", personneId);
         return fonctionRepository.findByPersonne(personneId);
-    }
-
-    public List<FonctionDto> getAdditionalFonctions(Long personneId) {
-        return fonctionRepository.findByPersonne(personneId).stream()
-            .filter(fonction -> fonction.getSource().startsWith(Constants.SARAPISUI_))
-            .collect(Collectors.toList());
     }
 
     @Cacheable(value = "structureFonctions")
@@ -305,13 +100,13 @@ public class FonctionService {
     @Cacheable(value = "typesFonctionFiliere")
     public List<TypeFonctionFiliereDto> getTypesFonctionFiliere(String source) {
         log.trace("getTypesFonctionFiliere for {}", source);
-        return typeFonctionFiliereRepository.findBySourceSarapis(source);
+        return typeFonctionFiliereRepository.findByAnySource();
     }
 
     @Cacheable(value = "disciplines")
     public List<DisciplineDto> getDisciplines(String source) {
         log.trace("getDisciplines for {}", source);
-        return disciplineRepository.findBySourceSarapis(source);
+        return disciplineRepository.findByAnySource();
     }
 
     @Cacheable(value = "personnesWithoutFunctions")

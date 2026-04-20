@@ -87,6 +87,9 @@ public class StructureController {
         return new ResponseEntity<>(etablissements, HttpStatus.OK);
     }
 
+    /**
+     * Récupère la liste de toutes les fonctions qu'on peut ajouter à des personnes dans l'établissement
+     */
     @GetMapping("/{id}/fonctions")
     public ResponseEntity<Map<Long, DisciplinesInFillierePossiblesDto>> getPossibleFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
         String source = structureService.getStructureDBFromId(id).getCleJointure().getSource();

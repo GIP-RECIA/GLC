@@ -130,43 +130,54 @@ public class StructureDto {
         for (FonctionDto fonctionDto : fonctions) {
             // Ajout de la filière si elle n'existe pas
             Long filiereId = fonctionDto.getFiliere();
-            TypeFonctionFiliereDto typeFonctionFiliereDto;
-            if (!filieresMap.containsKey(filiereId)) {
-                typeFonctionFiliereDto = new TypeFonctionFiliereDto(typesFonctionFiliere.get(filiereId));
-                filieresMap.put(filiereId, typeFonctionFiliereDto);
-                disciplinesMap.put(filiereId, new HashMap<>());
-                filieresWithDisciplines.add(typeFonctionFiliereDto);
+            if(typesFonctionFiliere.containsKey(filiereId)){
+                if(!typesFonctionFiliere.get(filiereId).getSource().equals(this.source)){
+                    log.debug("Filiere {} source and etab {} source are different", typesFonctionFiliere.get(filiereId).getSource(), this.source);
+                }
+                TypeFonctionFiliereDto typeFonctionFiliereDto;
+                if (!filieresMap.containsKey(filiereId)) {
+                    typeFonctionFiliereDto = new TypeFonctionFiliereDto(typesFonctionFiliere.get(filiereId));
+                    filieresMap.put(filiereId, typeFonctionFiliereDto);
+                    disciplinesMap.put(filiereId, new HashMap<>());
+                    filieresWithDisciplines.add(typeFonctionFiliereDto);
+                } else {
+                    typeFonctionFiliereDto = filieresMap.get(filiereId);
+                }
+
+                // Ajout de la discipline si elle n'existe pas
+                Long disciplineId = fonctionDto.getDiscipline();
+                // Cas spécial pour les CFA
+                if (disciplineId == null) {
+                    DatabasePersonneDto databasePersonneDto = personnesMap.get(fonctionDto.getPersonne());
+                    typeFonctionFiliereDto.getPersonnesWithoutDiscipline().add(databasePersonneDto);
+                } else {
+                    if (disciplines.containsKey(disciplineId)) {
+                        if(!disciplines.get(disciplineId).getSource().equals(this.source)){
+                            log.debug("Discipline {} source and etab {} source are different", disciplines.get(disciplineId).getSource(), this.source);
+                        }
+                        DisciplineDto disciplineDto;
+                        if (!disciplinesMap.get(filiereId).containsKey(disciplineId)) {
+                            disciplineDto = new DisciplineDto(disciplines.get(disciplineId));
+                            disciplinesMap.get(filiereId).put(disciplineId, disciplineDto);
+                            typeFonctionFiliereDto.getDisciplines().add(disciplineDto);
+                        } else {
+                            disciplineDto = disciplinesMap.get(filiereId).get(disciplineId);
+                        }
+                        // Ajout de la personne dans la discipline
+                        if (personnesMap.containsKey(fonctionDto.getPersonne())) {
+                            DatabasePersonneDto databasePersonneDto = personnesMap.get(fonctionDto.getPersonne());
+                            disciplineDto.getPersonnes().add(new CardPersonneDto(databasePersonneDto));
+                        } else {
+                            log.warn("person in functions by not in structure : {}", fonctionDto.getPersonne());
+                        }
+                    } else {
+                        log.warn("discipline {} is not in known in disciplines for {}", disciplineId, this.source);
+                    }
+                }
             } else {
-                typeFonctionFiliereDto = filieresMap.get(filiereId);
+                log.warn("filiere {} is not in known in filieres for {}", filiereId, this.source);
             }
 
-            // Ajout de la discipline si elle n'existe pas
-            Long disciplineId = fonctionDto.getDiscipline();
-            // Cas spécial pour les CFA
-            if (disciplineId == null) {
-                DatabasePersonneDto databasePersonneDto = personnesMap.get(fonctionDto.getPersonne());
-                typeFonctionFiliereDto.getPersonnesWithoutDiscipline().add(databasePersonneDto);
-            } else {
-                if (disciplines.containsKey(disciplineId)) {
-                    DisciplineDto disciplineDto;
-                    if (!disciplinesMap.get(filiereId).containsKey(disciplineId)) {
-                        disciplineDto = new DisciplineDto(disciplines.get(disciplineId));
-                        disciplinesMap.get(filiereId).put(disciplineId, disciplineDto);
-                        typeFonctionFiliereDto.getDisciplines().add(disciplineDto);
-                    } else {
-                        disciplineDto = disciplinesMap.get(filiereId).get(disciplineId);
-                    }
-                    // Ajout de la personne dans la discipline
-                    if (personnesMap.containsKey(fonctionDto.getPersonne())) {
-                        DatabasePersonneDto databasePersonneDto = personnesMap.get(fonctionDto.getPersonne());
-                        disciplineDto.getPersonnes().add(new CardPersonneDto(databasePersonneDto));
-                    } else {
-                        log.warn("person in functions by not in structure : {}", fonctionDto.getPersonne());
-                    }
-                } else {
-                    log.warn("discipline {} is not in known disciplines for {}", disciplineId, fonctionDto.getSource());
-                }
-            }
         }
 
         setFilieres(filieresWithDisciplines);

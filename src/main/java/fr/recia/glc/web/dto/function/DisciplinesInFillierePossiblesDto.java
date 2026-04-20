@@ -21,8 +21,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Getter
 @Setter
@@ -32,11 +33,11 @@ import java.util.List;
 public class DisciplinesInFillierePossiblesDto {
 
     private String libelle;
-    private List<DisciplinePossibleDto> disciplines;
+    private Set<DisciplinePossibleDto> disciplines;
 
     public DisciplinesInFillierePossiblesDto(String libelle){
         this.libelle = libelle;
-        this.disciplines = new ArrayList<>();
+        this.disciplines = new TreeSet<>(Comparator.comparing(DisciplinePossibleDto::getLibelle));
     }
 
 }

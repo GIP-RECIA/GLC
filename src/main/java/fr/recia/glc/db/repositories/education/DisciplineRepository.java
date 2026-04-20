@@ -29,31 +29,23 @@ public interface DisciplineRepository<T extends Discipline> extends AbstractRepo
     @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
         "FROM Discipline d " +
         "WHERE d.code IN :codes " +
-        "AND d.source = :source " +
-        "ORDER BY d.disciplinePoste")
-    List<DisciplineDto> findByCodeAndSource(List<String> codes, String source);
-
-    @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
-        "FROM Discipline d " +
-        "WHERE d.code IN :codes " +
         "AND (d.source = :source " +
         "OR d.source = CONCAT('SarapisUi_', :source)) " +
         "ORDER BY d.disciplinePoste")
-    List<DisciplineDto> findByCodeAndSourceSarapis(List<String> codes, String source);
+    List<DisciplineDto> findByCodesAndSourceSarapis(List<String> codes, String source);
 
     @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
         "FROM Discipline d " +
-        "WHERE d.source = :source " +
+        "WHERE d.code = :code " +
+        "AND (d.source = :source " +
+        "OR d.source = CONCAT('SarapisUi_', :source)) " +
         "ORDER BY d.disciplinePoste")
-    List<DisciplineDto> findBySource(String source);
+    DisciplineDto findByCodeAndSourceSarapis(String code, String source);
 
     @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
         "FROM Discipline d " +
-        "WHERE d.source = :source " +
-        "OR d.source = CONCAT('SarapisUi_', :source) " +
-        "OR d.source LIKE 'COLL-%' " +
         "ORDER BY d.disciplinePoste")
-    List<DisciplineDto> findBySourceSarapis(String source);
+    List<DisciplineDto> findByAnySource();
 
     @Query("SELECT DISTINCT new fr.recia.glc.db.dto.education.DisciplineDto(d.id, d.code, d.disciplinePoste, d.source) " +
         "FROM Discipline d " +
@@ -65,13 +57,5 @@ public interface DisciplineRepository<T extends Discipline> extends AbstractRepo
         "WHERE d.source NOT LIKE 'SarapisUi_%'" +
         "ORDER BY d.source")
     List<String> findAllNonSarapisSources();
-
-    @Query(value = "SELECT d.id " +
-        "FROM discipline d " +
-        "WHERE d.code = :code " +
-        "AND (d.source = :source " +
-        "OR d.source = CONCAT('SarapisUi_', :source))",
-        nativeQuery = true)
-    Long findByCode(String code, String source);
 
 }
