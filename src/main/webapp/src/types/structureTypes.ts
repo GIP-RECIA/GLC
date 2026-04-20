@@ -1,6 +1,5 @@
 import type { Alert } from './alertTypes.ts'
-import type { Filiere } from './filiereTypes.ts'
-import type { UserFunction } from './functionTypes.ts'
+import type { Composition, UserFunction } from './functionTypes.ts'
 import type { AccountUser, FunctionUser } from './userTypes.ts'
 
 export interface CommonStructure {
@@ -44,7 +43,7 @@ export type Structure = CommonStructure & {
   modeleLogin: string
   logo: string
   personnes: AccountUser[]
-  filieres: Filiere[]
+  filieres: Composition[]
   withoutFunctions?: FunctionUser[]
   alerts: Alert[]
   permission?: string

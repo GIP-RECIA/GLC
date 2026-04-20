@@ -69,7 +69,7 @@ const filters = [
     >
       <template #heading>
         <h2>
-          {{ filiere.libelleFiliere }}
+          {{ filiere.libelle }}
         </h2>
         <span class="count">
           {{

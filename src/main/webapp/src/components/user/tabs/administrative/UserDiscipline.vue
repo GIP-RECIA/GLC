@@ -15,7 +15,10 @@
 -->
 
 <script setup lang="ts">
-import type { Discipline } from '@/types/index.ts'
+import type {
+  UserDisciplineWithDate,
+  UserDisciplineWithDateAndEndInfo,
+} from '@/types/index.ts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format } from 'date-fns'
 import { computed } from 'vue'
@@ -23,7 +26,7 @@ import { useI18n } from 'vue-i18n'
 
 const props = withDefaults(
   defineProps<{
-    discipline: Discipline
+    discipline: UserDisciplineWithDateAndEndInfo
     clickable?: boolean
   }>(),
   {
@@ -32,7 +35,7 @@ const props = withDefaults(
 )
 
 defineEmits<{
-  tagClick: [discipline: Discipline]
+  tagClick: [discipline: UserDisciplineWithDate]
 }>()
 
 const { t } = useI18n()
@@ -69,7 +72,7 @@ const title = computed<string | undefined>(() => {
     }"
     @click="$emit('tagClick', discipline)"
   >
-    {{ discipline.disciplinePoste }}
+    {{ discipline.libelle }}
     <span
       v-if="discipline.endInfo"
       :title="title"
@@ -87,7 +90,7 @@ const title = computed<string | undefined>(() => {
       color: discipline.endInfo?.color,
     }"
   >
-    {{ discipline.disciplinePoste }}
+    {{ discipline.libelle }}
     <span
       v-if="discipline.endInfo"
       :title="title"

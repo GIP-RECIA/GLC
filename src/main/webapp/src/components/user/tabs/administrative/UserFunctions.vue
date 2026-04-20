@@ -15,14 +15,13 @@
 -->
 
 <script setup lang="ts">
-import type { Discipline, Filiere, UserFunction } from '@/types/index.ts'
+import type { UserFunction, UserFunctionExtended } from '@/types/index.ts'
 import { computed } from 'vue'
 import { getDateFin } from '@/utils/index.ts'
 import UserFiliere from './UserFiliere.vue'
 
 const props = withDefaults(
   defineProps<{
-    filieres: Filiere[] | undefined
     fonctions: UserFunction[] | undefined
     clickable?: boolean
   }>(),
@@ -30,74 +29,43 @@ const props = withDefaults(
     clickable: false,
   },
 )
+
 const emit = defineEmits<{
   tagClick: [function: UserFunction]
 }>()
 
-const filteredFilieres = computed<Filiere[]>(() => {
-  if (!props.filieres?.length || !props.fonctions?.length)
-    return []
+const data = computed<UserFunctionExtended[] | undefined>(() => (
+  props.fonctions?.map((fun) => {
+    const disciplines = fun.disciplines.map((dis) => {
+      const endInfo = dis.dateFin
+        ? getDateFin(dis.dateFin)
+        : undefined
 
-  const fonctionsMap = new Map<number, Map<number, UserFunction>>()
-
-  for (const fun of props.fonctions) {
-    let disciplineMap = fonctionsMap.get(fun.filiere.id)
-
-    if (!disciplineMap) {
-      disciplineMap = new Map()
-      fonctionsMap.set(fun.filiere.id, disciplineMap)
-    }
-
-    if (!disciplineMap.has(fun.discipline.id))
-      disciplineMap.set(fun.discipline.id, fun)
-  }
-
-  return props.filieres
-    .filter(f => fonctionsMap.has(f.id))
-    .map((filiere) => {
-      const disciplineMap = fonctionsMap.get(filiere.id)!
-
-      const disciplines = filiere.disciplines
-        .filter(d => disciplineMap.has(d.id))
-        .map((discipline) => {
-          const fonction = disciplineMap.get(discipline.id)
-
-          return {
-            ...discipline,
-            endInfo: fonction?.dateFin
-              ? getDateFin(fonction.dateFin)
-              : undefined,
-          }
-        })
-
-      return { ...filiere, disciplines }
+      return {
+        ...dis,
+        endInfo,
+      }
     })
-})
+
+    return {
+      ...fun,
+      disciplines,
+    }
+  })
+))
 
 function onTagClick(
-  filiere: Filiere,
-  discipline: Discipline,
+  payload: UserFunction,
 ): void {
-  const fonction = props.fonctions?.find(f => (
-    f.filiere.id === filiere.id
-    && f.discipline.id === discipline.id
-  ))
-
-  if (!fonction)
-    return
-
-  emit('tagClick', {
-    ...fonction,
-    dateFin: discipline.endInfo?.date,
-  })
+  emit('tagClick', payload)
 }
 </script>
 
 <template>
   <UserFiliere
-    v-for="filiere in filteredFilieres"
-    :key="`filiere-card-${filiere.codeFiliere}`"
-    :filiere="filiere"
+    v-for="fonction in data"
+    :key="`function-${fonction.id}`"
+    :fonction="fonction"
     :clickable="clickable"
     @tag-click="onTagClick"
   />

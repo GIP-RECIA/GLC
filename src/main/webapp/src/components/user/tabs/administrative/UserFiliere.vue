@@ -15,12 +15,16 @@
 -->
 
 <script setup lang="ts">
-import type { Discipline, Filiere } from '@/types/index.ts'
+import type {
+  UserDisciplineWithDate,
+  UserFunction,
+  UserFunctionExtended,
+} from '@/types/index.ts'
 import UserDiscipline from './UserDiscipline.vue'
 
 const props = withDefaults(
   defineProps<{
-    filiere: Filiere
+    fonction: UserFunctionExtended
     clickable?: boolean
   }>(),
   {
@@ -29,24 +33,27 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  tagClick: [filiere: Filiere, discipline: Discipline]
+  tagClick: [UserFunction]
 }>()
 
-function tagClick(discipline: Discipline): void {
-  emit('tagClick', props.filiere, discipline)
+function tagClick(discipline: UserDisciplineWithDate): void {
+  emit('tagClick', {
+    ...props.fonction,
+    disciplines: [discipline],
+  })
 }
 </script>
 
 <template>
   <div class="filiere-card">
     <h4>
-      {{ filiere.libelleFiliere }}
+      {{ fonction.libelle }}
     </h4>
 
-    <ul v-if="filiere.disciplines.length > 0">
+    <ul v-if="fonction.disciplines.length > 0">
       <li
-        v-for="discipline in filiere.disciplines"
-        :key="`discipline-tag-${discipline.code}`"
+        v-for="discipline in fonction.disciplines"
+        :key="`discipline-tag-${discipline.id}`"
       >
         <UserDiscipline
           :discipline="discipline"

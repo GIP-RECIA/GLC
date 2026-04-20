@@ -14,24 +14,50 @@
  * limitations under the License.
  */
 
-export interface UserFunction {
-  filiere: {
-    id: number
-    libelle: string
-  }
-  discipline: {
-    id: number
-    libelle: string
-  }
-  source: string
-  structure: number
+import type { endInfo } from './endInfoTypes.ts'
+import type { FunctionUser } from './userTypes.ts'
+
+export interface FunctionDate {
   dateFin?: string
+  dateDebut?: string
 }
 
-export type FunctionForm = Pick<
-  UserFunction,
-  | 'dateFin'
-> & {
+export interface CommonFiliere {
+  id: number
+  libelle: string
+}
+
+export interface CommonDiscipline {
+  id: number
+  libelle: string
+}
+
+export type Composition = CommonFiliere & {
+  disciplines: DisciplineWithUsers[]
+  personnesWithoutDiscipline: FunctionUser[]
+}
+
+export type DisciplineWithUsers = CommonDiscipline & {
+  personnes: FunctionUser[]
+}
+
+export type UserDisciplineWithDate = CommonDiscipline
+  & FunctionDate
+
+export type UserDisciplineWithDateAndEndInfo = CommonDiscipline
+  & FunctionDate & {
+    endInfo?: endInfo
+  }
+
+export type UserFunction = CommonFiliere & {
+  disciplines: UserDisciplineWithDate[]
+}
+
+export type UserFunctionExtended = CommonFiliere & {
+  disciplines: UserDisciplineWithDateAndEndInfo[]
+}
+
+export type FunctionForm = {
   filiere?: number
   discipline?: number
-}
+} & FunctionDate

@@ -50,7 +50,6 @@ function editFunction(fonction: UserFunction): void {
 
         <div class="body">
           <UserFunctions
-            :filieres="[]"
             :fonctions="structure.fonctions"
           />
         </div>
@@ -66,7 +65,6 @@ function editFunction(fonction: UserFunction): void {
         <!-- TODO: manage rights click -->
         <div class="body">
           <UserFunctions
-            :filieres="[]"
             :fonctions="structure.additionalFonctions"
             :clickable="false"
             @tag-click="editFunction"

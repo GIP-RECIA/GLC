@@ -15,11 +15,11 @@
 -->
 
 <script setup lang="ts">
-import type { Filiere } from '@/types/index.ts'
+import type { Composition } from '@/types/index.ts'
 import DisciplineCard from './DisciplineCard.vue'
 
 defineProps<{
-  filiere: Filiere
+  filiere: Composition
 }>()
 </script>
 
@@ -31,7 +31,7 @@ defineProps<{
     >
       <DisciplineCard
         header
-        :label="discipline.disciplinePoste"
+        :label="discipline.libelle"
         :users="discipline.personnes"
       />
     </li>
