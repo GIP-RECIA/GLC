@@ -108,6 +108,7 @@ const suppressDate = computed<string | undefined>(() => (
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
   }
 

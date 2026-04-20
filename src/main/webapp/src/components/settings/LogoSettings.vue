@@ -82,6 +82,7 @@ const { t } = useI18n()
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
   }
 
   > footer {
