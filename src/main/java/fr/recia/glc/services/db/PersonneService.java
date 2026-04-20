@@ -287,18 +287,23 @@ public class PersonneService {
                 // Ici c'est acceptable de faire une boucle imbriquée car on a peu de structures dans la liste la pluspart du temps
                 for(StructureForUserDto structureForUserDto : personneDetailDto.getListeStructures()){
                     if(fonctionDto.getStructure().equals(structureForUserDto.getId())){
-                        TypeFonctionFiliere typeFonctionFiliere = fonctionService.getTypeFonctionFiliere(fonctionDto.getFiliere());
-                        Discipline discipline = fonctionService.getDiscipline(fonctionDto.getDiscipline());
-                        if(!fonctionDto.getSource().startsWith(Constants.SARAPISUI_)){
-                            if(!structureForUserDto.getFonctions().containsKey(typeFonctionFiliere.getId())){
-                                structureForUserDto.getFonctions().put(typeFonctionFiliere.getId(), new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getLibelleFiliere()));
+                        final TypeFonctionFiliere typeFonctionFiliere = fonctionService.getTypeFonctionFiliere(fonctionDto.getFiliere());
+                        // TODO : Dans le cas des CFA il n'y a pas de discipline
+                        if(fonctionDto.getDiscipline() != null){
+                            final Discipline discipline = fonctionService.getDiscipline(fonctionDto.getDiscipline());
+                            if(!fonctionDto.getSource().startsWith(Constants.SARAPISUI_)){
+                                if(!structureForUserDto.getFonctions().containsKey(typeFonctionFiliere.getId())){
+                                    structureForUserDto.getFonctions().put(typeFonctionFiliere.getId(), new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getLibelleFiliere()));
+                                }
+                                structureForUserDto.getFonctions().get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
+                            } else {
+                                if(!structureForUserDto.getAdditionalFonctions().containsKey(typeFonctionFiliere.getId())){
+                                    structureForUserDto.getAdditionalFonctions().put(typeFonctionFiliere.getId(), new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getLibelleFiliere()));
+                                }
+                                structureForUserDto.getAdditionalFonctions().get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
                             }
-                            structureForUserDto.getFonctions().get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
                         } else {
-                            if(!structureForUserDto.getAdditionalFonctions().containsKey(typeFonctionFiliere.getId())){
-                                structureForUserDto.getAdditionalFonctions().put(typeFonctionFiliere.getId(), new DisciplinesInFilliereDisplayDto(typeFonctionFiliere.getLibelleFiliere()));
-                            }
-                            structureForUserDto.getAdditionalFonctions().get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplineDisplayDto(discipline.getId(), discipline.getDisciplinePoste(), fonctionDto.getDateDebut(), fonctionDto.getDateFin()));
+                            log.warn("No discipline associated with filliere");
                         }
                     }
                 }
