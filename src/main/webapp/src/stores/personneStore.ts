@@ -14,34 +14,9 @@
  * limitations under the License.
  */
 
-import type { User } from '@/types/index.ts'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import { getPersonne } from '@/services/api/index.ts'
-import { errorHandler } from '@/utils/index.ts'
 
 export const usePersonneStore = defineStore('personne', () => {
-  const currentPersonne = ref<User | undefined>()
-
-  /**
-   * Initialise `currentPersonne`
-   *
-   * @param id        Identifiant de la personne
-   * @param showModal Ouvre ou non la modale un fois les données chargées
-   */
-  const initCurrentPersonne = async (
-    id: number,
-  ): Promise<void> => {
-    try {
-      currentPersonne.value = await getPersonne(id)
-    }
-    catch (e) {
-      errorHandler(e, 'initCurrentPersonne')
-    }
-  }
-
   return {
-    currentPersonne,
-    initCurrentPersonne,
   }
 })

@@ -24,10 +24,9 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { storeToRefs } from 'pinia'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import ManageAdditionalDialog from '@/components/user/dialogs/ManageAdditionalDialog.vue'
 import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/user/tabs/UserInformationTab.vue'
@@ -39,25 +38,23 @@ import {
   undoDeletePersonne,
   unlockPersonne,
 } from '@/services/api/index.ts'
-import { usePersonneStore } from '@/stores/index.ts'
+import { usePersonneQuery } from '@/services/queries/index.ts'
 import { Etat } from '@/types/enums/index.ts'
+import { errorHandler } from '@/utils'
 
 const { t } = useI18n()
 
-const personneStore = usePersonneStore()
-const { initCurrentPersonne } = personneStore
-const { currentPersonne } = storeToRefs(personneStore)
+const router = useRouter()
 
-const route = useRoute()
+const { data, error } = usePersonneQuery()
 
 watch(
-  () => route.params.userId,
-  (userId) => {
-    if (userId && typeof userId === 'string')
-      initCurrentPersonne(Number(userId))
-  },
-  {
-    immediate: true,
+  error,
+  (e) => {
+    if (e) {
+      errorHandler(e, 'initdata')
+      router.replace({ name: 'account' })
+    }
   },
 )
 
@@ -132,61 +129,61 @@ function editFunction(payload?: UserFunction): void {
 /* Actions */
 
 const canToggleLock = computed<boolean>(() => (
-  currentPersonne.value !== undefined
+  data.value !== undefined
   && [
     Etat.Valide,
     Etat.Bloque,
-  ].includes(currentPersonne.value.etat)
+  ].includes(data.value.etat)
 ))
 
 const isLocked = computed<boolean>(() => (
-  currentPersonne.value?.etat === Etat.Bloque
+  data.value?.etat === Etat.Bloque
 ))
 
 async function onToggleLock(): Promise<void> {
-  if (!currentPersonne.value)
+  if (!data.value)
     return
 
-  const { id } = currentPersonne.value
+  const { id } = data.value
   const response = isLocked.value
     ? await unlockPersonne(id)
     : await lockPersonne(id)
   if (!response)
     return
 
-  currentPersonne.value.etat = isLocked.value
+  data.value.etat = isLocked.value
     ? Etat.Valide
     : Etat.Bloque
 }
 
 const isDeleting = computed<boolean>(() => (
-  currentPersonne.value?.etat === Etat.Deleting
+  data.value?.etat === Etat.Deleting
 ))
 
 async function onUndoDelete(): Promise<void> {
-  if (!currentPersonne.value)
+  if (!data.value)
     return
 
-  const { id } = currentPersonne.value
+  const { id } = data.value
   const response = await undoDeletePersonne(id)
   if (!response)
     return
 
-  currentPersonne.value.etat = Etat.Valide
+  data.value.etat = Etat.Valide
 }
 
 async function onDelete(): Promise<void> {
-  if (!currentPersonne.value)
+  if (!data.value)
     return
 
-  const { id } = currentPersonne.value
+  const { id } = data.value
   const response = isDeleting.value
     ? await forceDeletePersonne(id)
     : await deletePersonne(id)
   if (!response)
     return
 
-  currentPersonne.value.etat = isDeleting.value
+  data.value.etat = isDeleting.value
     ? Etat.Delete
     : Etat.Deleting
 }
@@ -199,7 +196,7 @@ function onAttach(): void {
   <div class="container">
     <header>
       <UserInfo
-        :user="currentPersonne"
+        :user="data"
       />
 
       <div class="user-actions">
@@ -227,7 +224,7 @@ function onAttach(): void {
             <button
               type="button"
               class="btn-primary small"
-              :disabled="!currentPersonne?.etat"
+              :disabled="!data?.etat"
               @click="onUndoDelete"
             >
               {{ t('button.undoDelete') }}
@@ -240,7 +237,7 @@ function onAttach(): void {
             <button
               type="button"
               class="btn-primary small"
-              :disabled="!currentPersonne?.etat"
+              :disabled="!data?.etat"
               @click="onDelete"
             >
               {{ t(`button.${isDeleting ? 'forceDelete' : 'delete'}`) }}
@@ -253,7 +250,7 @@ function onAttach(): void {
             <button
               type="button"
               class="btn-primary small"
-              :disabled="!currentPersonne?.etat"
+              :disabled="!data?.etat"
               @click="onAttach"
             >
               {{ t('button.attach') }}
@@ -299,7 +296,7 @@ function onAttach(): void {
       role="tabpanel"
       aria-labelledby="user-tab-0"
       tabindex="0"
-      :user="currentPersonne"
+      :user="data"
     />
 
     <UserAdministrativeTab
@@ -308,7 +305,7 @@ function onAttach(): void {
       role="tabpanel"
       aria-labelledby="user-tab-1"
       tabindex="0"
-      :user="currentPersonne"
+      :user="data"
       @edit-function="editFunction"
     />
   </div>

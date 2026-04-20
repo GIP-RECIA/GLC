@@ -16,16 +16,13 @@
 
 <script setup lang="ts">
 import type { SearchStructure } from '@/types/index.ts'
-import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDisplay } from 'vuetify'
 import CustomPagination from '@/components/old-ui/CustomPagination.vue'
-import { useStructureStore } from '@/stores/index.ts'
+import { useStructuresQuery } from '@/services/queries/index.ts'
 
-const structureStore = useStructureStore()
-structureStore.init()
-const { etabs } = storeToRefs(structureStore)
+const { data } = useStructuresQuery()
 
 const { t } = useI18n()
 const { name } = useDisplay()
@@ -62,7 +59,7 @@ const items = computed<SearchStructure[] | undefined>(() => {
       .normalize('NFD')
       .replace(/\p{Diacritic}/gu, '')
 
-    return etabs.value?.filter((etablissement) => {
+    return data.value?.filter((etablissement) => {
       let filters = etablissement.nom.toLowerCase().includes(searchValue)
         || etablissement.siren.toString().includes(searchValue)
       if (etablissement.uai) {
@@ -76,7 +73,7 @@ const items = computed<SearchStructure[] | undefined>(() => {
     })
   }
   else {
-    return etabs.value
+    return data.value
   }
 })
 </script>

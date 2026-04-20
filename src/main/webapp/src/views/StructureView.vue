@@ -17,30 +17,30 @@
 <script setup lang="ts">
 import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { storeToRefs } from 'pinia'
 import { ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import StructureInfo from '@/components/structure/StructureInfo.vue'
 import StructureAccountsTab from '@/components/structure/tabs/StructureAccountsTab.vue'
 import StructureCompTab from '@/components/structure/tabs/StructureCompTab.vue'
 import StructureDashboardTab from '@/components/structure/tabs/StructureDashboardTab.vue'
-import { useStructureStore } from '@/stores/index.ts'
-
-const structureStore = useStructureStore()
-const { initCurrentEtab } = structureStore
-const { currentEtab } = storeToRefs(structureStore)
+import { useEtablissementQuery } from '@/services/queries/index.ts'
+import { errorHandler } from '@/utils/index.ts'
 
 const { t } = useI18n()
-const route = useRoute()
+
+const router = useRouter()
+
+const { data, error } = useEtablissementQuery()
 
 watch(
-  () => route.params.structureId,
-  (newValue) => {
-    if (typeof newValue !== 'undefined' && newValue !== null)
-      initCurrentEtab(Number(newValue))
+  error,
+  (e) => {
+    if (e) {
+      errorHandler(e, 'initCurrentEtab')
+      router.replace({ name: 'account' })
+    }
   },
-  { immediate: true },
 )
 
 /* Tabs */
@@ -116,7 +116,7 @@ function onCreate(): void {
   <div class="container">
     <header>
       <StructureInfo
-        :structure="currentEtab"
+        :structure="data"
       />
 
       <div class="structure-actions">
@@ -186,7 +186,7 @@ function onCreate(): void {
       role="tabpanel"
       aria-labelledby="structure-tab-0"
       tabindex="0"
-      :structure="currentEtab"
+      :structure="data"
     />
 
     <StructureCompTab
@@ -195,7 +195,7 @@ function onCreate(): void {
       role="tabpanel"
       aria-labelledby="structure-tab-1"
       tabindex="0"
-      :structure="currentEtab"
+      :structure="data"
     />
 
     <StructureAccountsTab
@@ -204,7 +204,7 @@ function onCreate(): void {
       role="tabpanel"
       aria-labelledby="structure-tab-2"
       tabindex="0"
-      :structure="currentEtab"
+      :structure="data"
     />
   </div>
 </template>

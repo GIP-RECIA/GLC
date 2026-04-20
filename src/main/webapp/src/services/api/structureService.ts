@@ -17,6 +17,14 @@
 import type { SearchStructure, Structure } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
+async function getStructures() {
+  return (
+    await axios.get<SearchStructure[]>(
+      '/api/structure',
+    )
+  ).data
+}
+
 async function getEtablissements() {
   return (
     await axios.get<SearchStructure[]>(
@@ -36,4 +44,5 @@ async function getEtablissement(id: number) {
 export {
   getEtablissement,
   getEtablissements,
+  getStructures,
 }

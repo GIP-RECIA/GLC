@@ -16,16 +16,14 @@
 
 import type {
   SearchStructure,
-  Structure,
 } from '@/types/index.ts'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { getEtablissement, getEtablissements } from '@/services/api/index.ts'
+import { getEtablissements } from '@/services/api/index.ts'
 import { errorHandler } from '@/utils/index.ts'
 
 export const useStructureStore = defineStore('structure', () => {
   const etabs = ref<SearchStructure[] | undefined>()
-  const currentEtab = ref<Structure | undefined>()
 
   const isInit = computed<boolean>(() => (
     etabs.value
@@ -47,26 +45,8 @@ export const useStructureStore = defineStore('structure', () => {
     }
   }
 
-  /**
-   * Initialise `currentEtab`
-   * @param id Identifiant de la structure
-   */
-  const initCurrentEtab = async (
-    id: number,
-  ): Promise<void> => {
-    currentEtab.value = undefined
-    try {
-      currentEtab.value = await getEtablissement(id)
-    }
-    catch (e) {
-      errorHandler(e, 'initCurrentEtab')
-    }
-  }
-
   return {
     etabs,
-    currentEtab,
     init,
-    initCurrentEtab,
   }
 })

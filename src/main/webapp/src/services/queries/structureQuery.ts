@@ -17,7 +17,19 @@
 import { defineQuery, useQuery } from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { getEtablissement, getEtablissements } from '@/services/api/index.ts'
+import {
+  getEtablissement,
+  getEtablissements,
+  getStructures,
+} from '@/services/api/index.ts'
+
+function useStructuresQuery() {
+  return useQuery({
+    key: ['structures'],
+    query: () => getStructures(),
+    staleTime: Infinity,
+  })
+}
 
 function useEtablissementsQuery() {
   return useQuery({
@@ -43,4 +55,5 @@ const useEtablissementQuery = defineQuery(() => {
 export {
   useEtablissementQuery,
   useEtablissementsQuery,
+  useStructuresQuery,
 }

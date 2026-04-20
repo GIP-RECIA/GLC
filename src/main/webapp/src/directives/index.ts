@@ -16,11 +16,9 @@
 
 import type { App } from 'vue'
 import { dev } from './devDirective.ts'
-import { permission } from './permissionDirective.ts'
 import { admin, role } from './roleDirective.ts'
 
 function register(app: App): void {
-  app.directive('permission', permission)
   app.directive('admin', admin)
   app.directive('role', role)
   app.directive('dev', dev)
