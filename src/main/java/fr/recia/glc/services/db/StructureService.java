@@ -25,11 +25,14 @@ import fr.recia.glc.db.entities.education.Discipline;
 import fr.recia.glc.db.entities.fonction.Fonction;
 import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.entities.structure.AStructure;
+import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.entities.structure.QAStructure;
+import fr.recia.glc.db.entities.structure.QEtablissement;
 import fr.recia.glc.db.repositories.education.DisciplineRepository;
 import fr.recia.glc.db.repositories.fonction.FonctionRepository;
 import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.structure.AStructureRepository;
+import fr.recia.glc.db.repositories.structure.EtablissementRepository;
 import fr.recia.glc.web.dto.function.DisciplinePossibleDto;
 import fr.recia.glc.web.dto.function.DisciplinesInFillierePossiblesDto;
 import fr.recia.glc.web.dto.function.FiliereDisplayDto;
@@ -57,6 +60,9 @@ public class StructureService {
     private AStructureRepository<AStructure> structureRepository;
 
     @Autowired
+    private EtablissementRepository<Etablissement> etablissementRepository;
+
+    @Autowired
     private FonctionRepository<Fonction> fonctionRepository;
 
     @Autowired
@@ -80,9 +86,8 @@ public class StructureService {
         return aStructure != null ? new StructureDto(aStructure) : null;
     }
 
-    // TODO : ne retourner que les établissements
     public List<SimpleStructureDto> getEtablissements(Set<String> allowedSiren) {
-        return IteratorUtils.toList(structureRepository.findAll(QAStructure.aStructure.siren.isNotNull().and(QAStructure.aStructure.siren.in(allowedSiren))).iterator()).stream()
+        return IteratorUtils.toList(etablissementRepository.findAll(QEtablissement.etablissement.siren.isNotNull().and(QEtablissement.etablissement.siren.in(allowedSiren))).iterator()).stream()
             .map(SimpleStructureDto::new)
             .sorted(Comparator.comparing(SimpleStructureDto::getNom))
             .collect(Collectors.toList());
