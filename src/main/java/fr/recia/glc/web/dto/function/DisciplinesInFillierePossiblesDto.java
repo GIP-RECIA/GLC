@@ -32,10 +32,12 @@ import java.util.TreeSet;
 @ToString
 public class DisciplinesInFillierePossiblesDto {
 
+    private Long id;
     private String libelle;
     private Set<DisciplinePossibleDto> disciplines;
 
-    public DisciplinesInFillierePossiblesDto(String libelle){
+    public DisciplinesInFillierePossiblesDto(Long id, String libelle){
+        this.id = id;
         this.libelle = libelle;
         this.disciplines = new TreeSet<>(Comparator.comparing(DisciplinePossibleDto::getLibelle));
     }

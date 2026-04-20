@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +96,7 @@ public class StructureService {
     }
 
     // TODO : ajouter aussi celles du mapping custom
-    public Map<Long, DisciplinesInFillierePossiblesDto> getPossibleFonctions(String source){
+    public List<DisciplinesInFillierePossiblesDto> getPossibleFonctions(String source){
         List<FonctionPossibleDto> fonctionPossibleDtos = fonctionRepository.findPossibleFonctionsBySource(source);
         Map<Long, DisciplinesInFillierePossiblesDto> dtoListMap = new HashMap<>();
 
@@ -103,7 +104,7 @@ public class StructureService {
         for(FonctionPossibleDto fonctionPossibleDto : fonctionPossibleDtos){
             FiliereDisplayDto filiereDisplayDto = fonctionPossibleDto.getFiliere();
             if(!dtoListMap.containsKey(filiereDisplayDto.getId())){
-                dtoListMap.put(filiereDisplayDto.getId(), new DisciplinesInFillierePossiblesDto(filiereDisplayDto.getLibelle()));
+                dtoListMap.put(filiereDisplayDto.getId(), new DisciplinesInFillierePossiblesDto(filiereDisplayDto.getId(), filiereDisplayDto.getLibelle()));
             }
             dtoListMap.get(filiereDisplayDto.getId()).getDisciplines().add(fonctionPossibleDto.getDiscipline());
         }
@@ -121,13 +122,13 @@ public class StructureService {
                 for(String disciplineCode : filiereProperties.getDisciplines()){
                     DisciplineDto discipline = disciplineRepository.findByCodeAndSourceSarapis(disciplineCode, source);
                     if(!dtoListMap.containsKey(typeFonctionFiliere.getId())){
-                        dtoListMap.put(typeFonctionFiliere.getId(), new DisciplinesInFillierePossiblesDto(typeFonctionFiliere.getLibelleFiliere()));
+                        dtoListMap.put(typeFonctionFiliere.getId(), new DisciplinesInFillierePossiblesDto(typeFonctionFiliere.getId(), typeFonctionFiliere.getLibelleFiliere()));
                     }
                     dtoListMap.get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplinePossibleDto(discipline.getId(), disciplineCode));
                 }
             }
         }
 
-        return dtoListMap;
+        return new ArrayList<>(dtoListMap.values());
     }
 }
