@@ -89,9 +89,14 @@ const accountStates = computed(() => (
       gap: 8px;
       border-radius: 10px;
       box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
+      outline-color: transparent;
+      outline-offset: -1px;
       padding: 12px;
       width: 100%;
       height: 100%;
+      transition:
+        outline 0.15s ease-out,
+        box-shadow 0.15s ease-out;
 
       > div {
         flex: 1 1 auto;
@@ -110,6 +115,12 @@ const accountStates = computed(() => (
 
       > svg {
         flex: 0 0 auto;
+      }
+
+      &:hover,
+      &:focus-visible {
+        outline: 2px solid var(--#{$prefix}primary);
+        box-shadow: var(--#{$prefix}shadow-hover) HEXToRGBA(var(--#{$prefix}primary), 0.2);
       }
     }
   }
