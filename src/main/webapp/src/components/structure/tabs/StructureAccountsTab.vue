@@ -22,7 +22,7 @@ import {
   useVueTable,
 } from '@tanstack/vue-table'
 import { format } from 'date-fns'
-import { h, ref } from 'vue'
+import { h, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { CategoriePersonne, categoriePersonneMap, Etat, etatMap } from '@/types/enums/index.ts'
@@ -101,6 +101,16 @@ function onExport(): void {
 }
 
 /* Table */
+
+const data = ref<AccountUser[]>([])
+
+watch(
+  () => props.structure?.personnes,
+  (val) => {
+    data.value = val ?? []
+  },
+  { immediate: true },
+)
 
 const INITIAL_PAGE_INDEX = 0
 const columnHelper = createColumnHelper<AccountUser>()
@@ -211,7 +221,7 @@ const sorting = ref<SortingState>([])
 
 const table = useVueTable({
   get data() {
-    return props.structure?.personnes ?? []
+    return data.value
   },
   columns,
   state: {
