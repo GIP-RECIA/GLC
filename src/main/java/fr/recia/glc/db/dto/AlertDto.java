@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.db.dto;
 
+import fr.recia.glc.services.alert.FonctionAlertType;
 import fr.recia.glc.web.dto.function.DisciplineAlertDto;
 import fr.recia.glc.web.dto.function.DisciplineDisplayDto;
 import fr.recia.glc.web.dto.function.FiliereAlertDto;
@@ -31,7 +32,8 @@ public class AlertDto {
     private int min;
     private int max;
     private int nbActuel;
-    private AlertType type;
+    private AlertType level;
+    private FonctionAlertType type;
     private boolean action;
 
 }
