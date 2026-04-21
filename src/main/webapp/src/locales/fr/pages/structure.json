@@ -10,6 +10,12 @@
     "dashboard": {
       "alert": {
         "header": "Alertes",
+        "minMax": {
+          "title": "Fonction {fun} affectée à aucune personne | Fonction {fun} affectée à une personne | Fonction {fun} affectée à {count} personnes",
+          "text": "Le nombre {minMax} requis est de {required}.",
+          "min": "minimum",
+          "max": "maximum"
+        },
         "withoutFunctions": {
           "title": "Utilisateur sans fonctions | Utilisateurs sans fonctions",
           "text": "Un utilisetur est sans fonctions. | {count} utilisateurs sont sans fonctions."

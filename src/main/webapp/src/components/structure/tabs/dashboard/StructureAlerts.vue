@@ -23,15 +23,36 @@ const { t } = useI18n()
       <li
         v-for="(alert, index) in structure.alerts"
         :key="`alert-${index}`"
-        :class="[alert.type]"
+        :class="[alert.level]"
       >
         <FontAwesomeIcon
           :icon="faExclamationTriangle"
           size="lg"
         />
         <div>
-          <h3>{{ alert.title }}</h3>
-          <p>{{ alert.text }}</p>
+          <h3>
+            {{
+              t(
+                'page.structure.dashboard.alert.minMax.title',
+                {
+                  fun: `${alert.filiere.libelle} > ${alert.discipline.libelle}`,
+                  count: alert.nbActuel,
+                },
+                alert.nbActuel,
+              )
+            }}
+          </h3>
+          <p>
+            {{
+              t(
+                'page.structure.dashboard.alert.minMax.text',
+                {
+                  minMax: t(`page.structure.dashboard.alert.minMax.${alert.type}`),
+                  required: alert[alert.type],
+                },
+              )
+            }}
+          </p>
 
           <footer>
             <button
@@ -69,7 +90,9 @@ const { t } = useI18n()
             {{
               t(
                 'page.structure.dashboard.alert.withoutFunctions.text',
-                { count: structure.withoutFunctions.length },
+                {
+                  count: structure.withoutFunctions.length,
+                },
                 structure.withoutFunctions.length,
               )
             }}

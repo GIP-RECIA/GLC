@@ -16,7 +16,6 @@
 
 import { fr } from 'vuetify/locale'
 import additionals from './additionals.json'
-import alerts from './alerts.json'
 import buttons from './buttons.json'
 import main from './main.json'
 import offices from './offices.json'
@@ -30,7 +29,6 @@ import toasts from './toasts.json'
 export default {
   page,
   ...additionals,
-  ...alerts,
   ...buttons,
   ...main,
   ...offices,

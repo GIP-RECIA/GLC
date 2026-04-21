@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
+import type { CommonDiscipline, CommonFiliere } from './functionTypes.ts'
+
 export interface Alert {
-  title?: string
-  text?: string
-  type: 'success' | 'info' | 'warning' | 'error'
+  level: 'success' | 'info' | 'warning' | 'error'
+  filiere: CommonFiliere
+  discipline: CommonDiscipline
+  min?: number
+  max?: number
+  nbActuel: number
+  type: 'min' | 'max'
   action: boolean
 }
