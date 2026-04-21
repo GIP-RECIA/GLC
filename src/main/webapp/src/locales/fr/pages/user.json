@@ -52,7 +52,11 @@
         "header": "Compte & accès",
         "uid": "UID",
         "login": "Login",
-        "email": "Email"
+        "email": "Email",
+        "pronote": {
+          "header": "ID Pronote",
+          "info": "Le compte n'a pas accès au service Pronote"
+        }
       },
       "context": {
         "header": "Contexte",

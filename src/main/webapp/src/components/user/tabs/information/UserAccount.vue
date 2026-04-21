@@ -61,6 +61,25 @@ const { t } = useI18n()
             :value="user?.email"
           />
         </li>
+        <li class="full-width">
+          <h4>
+            {{ t('page.user.info.account.pronote.header') }}
+          </h4>
+          <div class="user-pronote">
+            <SafeEmptyData
+              :value="user?.idPronote"
+            />
+            <span
+              v-if="!user?.idPronote"
+              :title="t('page.user.info.account.pronote.info')"
+            >
+              <FontAwesomeIcon
+                :icon="faInfoCircle"
+                size="lg"
+              />
+            </span>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -85,7 +104,8 @@ const { t } = useI18n()
           margin-bottom: 4px;
         }
 
-        > .user-login {
+        > .user-login,
+        > .user-pronote {
           display: inline-flex;
           align-items: center;
           gap: 4px;
