@@ -13,25 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.recia.glc.db.dto;
+package fr.recia.glc.web.dto.function;
 
-import fr.recia.glc.web.dto.function.DisciplineAlertDto;
-import fr.recia.glc.web.dto.function.DisciplineDisplayDto;
-import fr.recia.glc.web.dto.function.FiliereAlertDto;
-import fr.recia.glc.web.dto.function.FiliereDisplayDto;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Builder
 @Data
-public class AlertDto {
-
-    private FiliereAlertDto filiere;
-    private DisciplineAlertDto discipline;
-    private int min;
-    private int max;
-    private int nbActuel;
-    private AlertType type;
-    private boolean action;
-
+@AllArgsConstructor
+public class FiliereAlertDto {
+    private Long id;
+    private String libelle;
 }

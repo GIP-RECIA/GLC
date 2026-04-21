@@ -18,7 +18,16 @@ package fr.recia.glc.services.alert;
 import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.db.dto.AlertDto;
+import fr.recia.glc.db.dto.AlertType;
+import fr.recia.glc.db.dto.education.DisciplineDto;
+import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
+import fr.recia.glc.db.entities.education.Discipline;
+import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
+import fr.recia.glc.db.repositories.education.DisciplineRepository;
+import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.services.db.FonctionService;
+import fr.recia.glc.web.dto.function.DisciplineAlertDto;
+import fr.recia.glc.web.dto.function.FiliereAlertDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,9 +35,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import static fr.recia.glc.services.alert.AlertStatics.SPLIT_CHARTER;
 
 @Slf4j
 @Service
@@ -37,28 +43,27 @@ public class AlertService {
     @Autowired
     private FonctionService fonctionService;
 
+    @Autowired
+    private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
+
+    @Autowired
+    private DisciplineRepository<Discipline> disciplineRepository;
+
     private final List<CustomConfigProperties.AlertProperties> alertProperties;
 
     public AlertService(GLCProperties glcProperties) {
         this.alertProperties = glcProperties.getCustomConfig().getAlerts();
     }
 
-    private AlertDto buildMinFonctionAlert(CustomConfigProperties.AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
-        return buildFonctionAlert(FonctionAlertType.min, data.getCode(), data.getMin(), nbDiscipline);
-    }
-
-    private AlertDto buildMaxFonctionAlert(CustomConfigProperties.AlertProperties.FonctionAlertProperties data, long nbDiscipline) {
-        return buildFonctionAlert(FonctionAlertType.max, data.getCode(), data.getMax(), nbDiscipline);
-    }
-
-    private AlertDto buildFonctionAlert(
-        FonctionAlertType type, String code,
-        CustomConfigProperties.AlertProperties.FonctionAlertProperties.ValueProperties value, long nbDiscipline
-    ) {
+    private AlertDto buildFonctionAlert(TypeFonctionFiliereDto filiere, DisciplineDto discipline, int min, int max, int nbActuel, AlertType type, boolean action) {
         return AlertDto.builder()
-            .title(type + SPLIT_CHARTER + code + SPLIT_CHARTER + value.getValue() + SPLIT_CHARTER + nbDiscipline)
-            .type(value.getType())
-            .action(value.isAction())
+            .filiere(new FiliereAlertDto(filiere.getId(), filiere.getLibelle()))
+            .discipline(new DisciplineAlertDto(discipline.getId(), discipline.getLibelle()))
+            .min(min)
+            .max(max)
+            .nbActuel(nbActuel)
+            .type(type)
+            .action(action)
             .build();
     }
 
@@ -66,19 +71,32 @@ public class AlertService {
     public List<AlertDto> getFonctionAlerts(Long etablissementId, String etablissementSource) {
         log.trace("getFonctionAlerts for {} and {}", etablissementId, etablissementSource);
         List<AlertDto> alerts = new ArrayList<>();
-        alertProperties.stream()
-            .filter(alert -> Objects.equals(etablissementSource, alert.getSource()))
-            .findAny().ifPresent(sourceAlerts -> sourceAlerts.getFonctionAlerts().forEach(fonctionAlert -> {
-                String[] codes = fonctionAlert.getCode().split("-");
-                long nbDiscipline = fonctionService.nbDiscipline(etablissementId, codes[0], codes[1]);
-                if (fonctionAlert.getMin() != null && fonctionAlert.getMin().getValue() > 0
-                    && nbDiscipline < fonctionAlert.getMin().getValue())
-                    alerts.add(buildMinFonctionAlert(fonctionAlert, nbDiscipline));
-                if (fonctionAlert.getMax() != null && fonctionAlert.getMax().getValue() > 0
-                    && nbDiscipline > fonctionAlert.getMax().getValue())
-                    alerts.add(buildMaxFonctionAlert(fonctionAlert, nbDiscipline));
-            }));
-
+        for (CustomConfigProperties.AlertProperties alert : alertProperties) {
+            // On ne regarde que les alertes de la même source que celle de l'établissement
+            if (etablissementSource.equals(alert.getSource())) {
+                List<CustomConfigProperties.AlertProperties.FonctionAlertProperties> fonctionAlerts = alert.getFonctionAlerts();
+                if (fonctionAlerts != null) {
+                    // Pour chaque alerte de cette source on regarde si on est dans ce cas
+                    for (CustomConfigProperties.AlertProperties.FonctionAlertProperties fonctionAlert : fonctionAlerts) {
+                        long nbDiscipline = fonctionService.nbDiscipline(etablissementId, fonctionAlert.getFiliere(), fonctionAlert.getDiscipline());
+                        if (fonctionAlert.getMin() != null && fonctionAlert.getMin().getValue() > 0 && nbDiscipline < fonctionAlert.getMin().getValue()) {
+                            // TODO : cache
+                            final TypeFonctionFiliereDto filiere = typeFonctionFiliereRepository.findByCodeAndSourceSarapis(fonctionAlert.getFiliere(), etablissementSource);
+                            final DisciplineDto discipline = disciplineRepository.findByCodeAndSourceSarapis(fonctionAlert.getDiscipline(), etablissementSource);
+                            alerts.add(buildFonctionAlert(filiere, discipline, fonctionAlert.getMin().getValue(),
+                                fonctionAlert.getMax().getValue(), (int) nbDiscipline, fonctionAlert.getMin().getType(), fonctionAlert.getMin().isAction()));
+                        }
+                        if (fonctionAlert.getMax() != null && fonctionAlert.getMax().getValue() > 0 && nbDiscipline > fonctionAlert.getMax().getValue()) {
+                            final TypeFonctionFiliereDto filiere = typeFonctionFiliereRepository.findByCodeAndSourceSarapis(fonctionAlert.getFiliere(), etablissementSource);
+                            final DisciplineDto discipline = disciplineRepository.findByCodeAndSourceSarapis(fonctionAlert.getDiscipline(), etablissementSource);
+                            alerts.add(buildFonctionAlert(filiere, discipline, fonctionAlert.getMin().getValue(),
+                                fonctionAlert.getMax().getValue(), (int) nbDiscipline, fonctionAlert.getMax().getType(), fonctionAlert.getMax().isAction()));
+                        }
+                    }
+                }
+                break;
+            }
+        }
         return alerts;
     }
 

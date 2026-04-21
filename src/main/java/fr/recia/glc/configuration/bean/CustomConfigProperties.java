@@ -53,7 +53,8 @@ public class CustomConfigProperties {
         @Data
         public static class FonctionAlertProperties {
 
-            private String code;
+            private String filiere;
+            private String discipline;
             private ValueProperties min;
             private ValueProperties max;
 
@@ -77,7 +78,8 @@ public class CustomConfigProperties {
             @Override
             public String toString() {
                 return "{" +
-                    "\n\t\t\t\t\t\"code\": \"" + code + "\"," +
+                    "\n\t\t\t\t\t\"filiere\": \"" + filiere + "\"," +
+                    "\n\t\t\t\t\t\"discipline\": \"" + discipline + "\"," +
                     "\n\t\t\t\t\t\"min\": " + min + "," +
                     "\n\t\t\t\t\t\"max\": " + max +
                     "\n\t\t\t\t}";
