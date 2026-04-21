@@ -7,6 +7,7 @@ import { RouterLink } from 'vue-router'
 import UserAccount from './information/UserAccount.vue'
 import UserContext from './information/UserContext.vue'
 import UserIdentity from './information/UserIdentity.vue'
+import UserRelation from './information/UserRelation.vue'
 
 defineProps<{
   user?: User
@@ -35,6 +36,25 @@ const { t } = useI18n()
           :user="user"
         />
       </div>
+    </div>
+
+    <div
+      v-if="user?.relations && user.relations.length > 0"
+      class="relations"
+    >
+      <h2>
+        {{ t('page.user.relation.header') }}
+      </h2>
+      <ul class="info-container">
+        <li
+          v-for="(relation, index) in user.relations"
+          :key="`relation-${index}`"
+        >
+          <UserRelation
+            :relation="relation"
+          />
+        </li>
+      </ul>
     </div>
 
     <div class="structure-information">
@@ -113,6 +133,14 @@ const { t } = useI18n()
 @use '@gip-recia/ui/core/variables' as *;
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
+
+.relations {
+  > ul {
+    @include unstyled-list;
+    grid-auto-rows: 1fr;
+    align-items: unset;
+  }
+}
 
 .structure-information {
   > ul {

@@ -1,4 +1,8 @@
-import type { CategoriePersonne, Etat } from './enums/index.ts'
+import type {
+  CategoriePersonne,
+  CategorieRelation,
+  Etat,
+} from './enums/index.ts'
 import type { UserStructure } from './structureTypes.ts'
 
 export interface CommonUser {
@@ -55,7 +59,7 @@ export type User = CommonUser & {
 }
 
 export interface UserRelation {
-  categorieRelation: string
+  categorieRelation: CategorieRelation
   personneEnRelation: RelationUser
   holder: boolean
 }

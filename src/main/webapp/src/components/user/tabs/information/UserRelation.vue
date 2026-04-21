@@ -1,0 +1,126 @@
+<script setup lang="ts">
+import type { UserRelation } from '@/types/index.ts'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { format } from 'date-fns'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
+import { categorieRelationMap, etatMap } from '@/types/enums/index.ts'
+import { getIconDefinition, getStateLabel } from '@/utils/index.ts'
+
+const props = defineProps<{
+  relation: UserRelation
+}>()
+
+const { t } = useI18n()
+
+const etat = computed(() => ({
+  icon: getIconDefinition(props.relation.personneEnRelation.local),
+  ...etatMap[props.relation.personneEnRelation.etat],
+}))
+
+const suppressDate = computed<string | undefined>(() => (
+  props.relation.personneEnRelation?.dateSuppression
+    ? format(props.relation.personneEnRelation.dateSuppression, 'P')
+    : undefined
+))
+
+const title = computed<string>(() => (
+  getStateLabel(
+    etat.value.i18n,
+    suppressDate.value,
+    t,
+  )))
+</script>
+
+<template>
+  <div class="user-relation">
+    <span
+      :title="title"
+    >
+      <FontAwesomeIcon
+        :icon="etat.icon"
+        size="lg"
+        :style="{
+          color: etat.color,
+        }"
+      />
+    </span>
+    <div>
+      <RouterLink
+        :to="{
+          name: 'user',
+          params: { userId: relation.personneEnRelation.id } }"
+      >
+        {{ relation.personneEnRelation.cn }}
+        <span aria-hidden="true" />
+      </RouterLink>
+
+      <p class="description">
+        {{
+          t(
+            categorieRelationMap[relation.categorieRelation].i18n,
+            +relation.holder,
+          )
+        }}
+      </p>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss">
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/functions' as *;
+@use '@gip-recia/ui/mixins' as *;
+
+.user-relation {
+  display: flex;
+  gap: 8px;
+  height: 100%;
+  padding: 16px;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
+  outline-color: transparent;
+  outline-offset: -1px;
+  transition:
+    outline 0.15s ease-out,
+    box-shadow 0.15s ease-out;
+
+  &:has(> div > a) {
+    &:hover,
+    &:has(:focus-visible) {
+      outline: 2px solid var(--#{$prefix}primary);
+    }
+  }
+
+  > span {
+    z-index: 2;
+  }
+
+  > div {
+    > a {
+      @include unstyled-link;
+      flex: 1 1 auto;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      &:focus-visible {
+        outline: none;
+      }
+
+      > span {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+      }
+    }
+
+    > .description {
+      opacity: 0.6;
+    }
+  }
+}
+</style>

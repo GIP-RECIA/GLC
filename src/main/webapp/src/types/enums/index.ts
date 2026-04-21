@@ -15,5 +15,6 @@
  */
 
 export * from './CategoriePersonne.ts'
+export * from './CategorieRelation.ts'
 export * from './Etat.ts'
 export * from './Theme.ts'

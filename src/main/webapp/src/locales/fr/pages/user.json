@@ -27,6 +27,13 @@
       "companyManager": "Responsable d’entreprise",
       "internshipTutor": "Tuteur de stage"
     },
+    "relation": {
+      "header": "Relations",
+      "internshipSupervisor": "Tuteur de stage | Stagiaire",
+      "internshipCoordinator": "Responsable de stage | Stagiaire",
+      "internshipAdvisor": "Maître de stage | Stagiaire",
+      "legalGuardian": "Sous responsabilité | Responsable légal"
+    },
     "actions": "Actions",
     "tab": {
       "info": "Informations",
