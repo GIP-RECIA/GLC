@@ -131,9 +131,6 @@ public class StructureDto {
             // Ajout de la filière si elle n'existe pas
             Long filiereId = fonctionDto.getFiliere();
             if(typesFonctionFiliere.containsKey(filiereId)){
-                if(!typesFonctionFiliere.get(filiereId).getSource().equals(this.source)){
-                    log.debug("Filiere {} source and etab {} source are different", typesFonctionFiliere.get(filiereId).getSource(), this.source);
-                }
                 TypeFonctionFiliereDto typeFonctionFiliereDto;
                 if (!filieresMap.containsKey(filiereId)) {
                     typeFonctionFiliereDto = new TypeFonctionFiliereDto(typesFonctionFiliere.get(filiereId));
@@ -152,9 +149,6 @@ public class StructureDto {
                     typeFonctionFiliereDto.getPersonnesWithoutDiscipline().add(databasePersonneDto);
                 } else {
                     if (disciplines.containsKey(disciplineId)) {
-                        if(!disciplines.get(disciplineId).getSource().equals(this.source)){
-                            log.debug("Discipline {} source and etab {} source are different", disciplines.get(disciplineId).getSource(), this.source);
-                        }
                         DisciplineDto disciplineDto;
                         if (!disciplinesMap.get(filiereId).containsKey(disciplineId)) {
                             disciplineDto = new DisciplineDto(disciplines.get(disciplineId));

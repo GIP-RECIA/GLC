@@ -33,20 +33,16 @@ import java.util.TreeSet;
 public class TypeFonctionFiliereDto {
 
     private Long id;
-    private String codeFiliere;
-    private String libelleFiliere;
-    private String source;
+    private String libelle;
     private Set<DisciplineDto> disciplines;
     // Liste des personnes directement dans la filière sans être dans une discipline (pour les CFA)
     private Set<DatabasePersonneDto> personnesWithoutDiscipline;
 
     // Constructeur utilisé par la requête en BD
-    public TypeFonctionFiliereDto(Long id, String codeFiliere, String libelleFiliere, String source) {
+    public TypeFonctionFiliereDto(Long id, String codeFiliere, String libelle, String source) {
         this.id = id;
-        this.codeFiliere = codeFiliere;
-        this.libelleFiliere = libelleFiliere;
-        this.source = source;
-        this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getDisciplinePoste, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
+        this.libelle = libelle;
+        this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getLibelle, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
         this.personnesWithoutDiscipline = new TreeSet<>(
             Comparator.comparing(DatabasePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
                 .thenComparing(DatabasePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
@@ -55,10 +51,8 @@ public class TypeFonctionFiliereDto {
 
     public TypeFonctionFiliereDto(TypeFonctionFiliereDto typeFonctionFiliereDto) {
         this.id = typeFonctionFiliereDto.getId();
-        this.codeFiliere = typeFonctionFiliereDto.getCodeFiliere();
-        this.libelleFiliere = typeFonctionFiliereDto.getLibelleFiliere();
-        this.source = typeFonctionFiliereDto.getSource();
-        this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getDisciplinePoste, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
+        this.libelle = typeFonctionFiliereDto.getLibelle();
+        this.disciplines = new TreeSet<>(Comparator.comparing(DisciplineDto::getLibelle, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
         this.personnesWithoutDiscipline = new TreeSet<>(
             Comparator.comparing(DatabasePersonneDto::getSn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
                 .thenComparing(DatabasePersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))

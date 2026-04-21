@@ -100,7 +100,6 @@ public class StructureService {
             .collect(Collectors.toList());
     }
 
-    // TODO : ajouter aussi celles du mapping custom
     public List<DisciplinesInFillierePossiblesDto> getPossibleFonctions(String source){
         List<FonctionPossibleDto> fonctionPossibleDtos = fonctionRepository.findPossibleFonctionsBySource(source);
         Map<Long, DisciplinesInFillierePossiblesDto> dtoListMap = new HashMap<>();
@@ -127,7 +126,7 @@ public class StructureService {
                 for(String disciplineCode : filiereProperties.getDisciplines()){
                     DisciplineDto discipline = disciplineRepository.findByCodeAndSourceSarapis(disciplineCode, source);
                     if(!dtoListMap.containsKey(typeFonctionFiliere.getId())){
-                        dtoListMap.put(typeFonctionFiliere.getId(), new DisciplinesInFillierePossiblesDto(typeFonctionFiliere.getId(), typeFonctionFiliere.getLibelleFiliere()));
+                        dtoListMap.put(typeFonctionFiliere.getId(), new DisciplinesInFillierePossiblesDto(typeFonctionFiliere.getId(), typeFonctionFiliere.getLibelle()));
                     }
                     dtoListMap.get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplinePossibleDto(discipline.getId(), disciplineCode));
                 }

@@ -32,17 +32,13 @@ import java.util.TreeSet;
 public class DisciplineDto {
 
     private Long id;
-    private String code;
-    private String disciplinePoste;
-    private String source;
+    private String libelle;
     private Set<CardPersonneDto> personnes;
 
     // Constructeur utilisé par la requête en BD
-    public DisciplineDto(Long id, String code, String disciplinePoste, String source) {
+    public DisciplineDto(Long id, String code, String libelle, String source) {
         this.id = id;
-        this.code = code;
-        this.disciplinePoste = disciplinePoste;
-        this.source = source;
+        this.libelle = libelle;
         this.personnes = new TreeSet<>(
                 Comparator.comparing(CardPersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
                     .thenComparing(CardPersonneDto::getId));
@@ -50,9 +46,7 @@ public class DisciplineDto {
 
     public DisciplineDto(DisciplineDto disciplineDto) {
         this.id = disciplineDto.getId();
-        this.code = disciplineDto.getCode();
-        this.disciplinePoste = disciplineDto.getDisciplinePoste();
-        this.source = disciplineDto.getSource();
+        this.libelle = disciplineDto.getLibelle();
         this.personnes = new TreeSet<>(
             Comparator.comparing(CardPersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
                 .thenComparing(CardPersonneDto::getId));
