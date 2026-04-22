@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { isEmpty } from 'lodash-es'
-
 function capitalize(
   value: string,
 ): string {
@@ -24,18 +22,11 @@ function capitalize(
 
 function concatenate(
   values: (string | undefined)[],
-  separator?: string,
+  separator = ' ',
 ): string {
-  let result: string = ''
-  values.forEach((value, index) => {
-    if (!isEmpty(value)) {
-      result += value
-      if (!isEmpty(separator) && !isEmpty(values[index + 1]))
-        result += separator
-    }
-  })
-
-  return result
+  return values
+    .filter((v): v is string => !!v && v.trim() !== '')
+    .join(separator)
 }
 
 function slugify(
@@ -51,8 +42,11 @@ function slugify(
     .replace(/-+/g, '-') // remove consecutive hyphens
 }
 
-function normalize(value: string): string {
-  return value.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '')
+function normalize(value?: string): string {
+  return (value ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
 }
 
 function alphaSort(a: string, b: string, order: 'asc' | 'desc'): 0 | 1 | -1 {

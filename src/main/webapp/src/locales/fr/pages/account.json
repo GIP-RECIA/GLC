@@ -1,5 +1,13 @@
 {
   "account": {
-
+    "h1": "Gestion des comptes",
+    "user": {
+      "header": "Utilisateurs",
+      "search": "Nom, prénom ou email"
+    },
+    "structure": {
+      "header": "Structures",
+      "search": "Nom, uai, siren ou ville"
+    }
   }
 }
