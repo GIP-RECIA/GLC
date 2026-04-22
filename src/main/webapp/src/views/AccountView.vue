@@ -18,14 +18,6 @@
 import type { FilterFn } from '@tanstack/vue-table'
 import type { SearchStructure } from '@/types/index.ts'
 import {
-  faAngleLeft,
-  faAngleRight,
-  faAnglesLeft,
-  faAnglesRight,
-} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import {
-
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -34,6 +26,7 @@ import {
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
+import Pagination from '@/components/Pagination.vue'
 import { useStructuresQuery } from '@/services/queries/index.ts'
 import { concatenate, normalize } from '@/utils/index.ts'
 
@@ -95,9 +88,6 @@ const table = useVueTable({
       return globalFilter.value
     },
   },
-  onGlobalFilterChange: (val) => {
-    globalFilter.value = val as string
-  },
   getCoreRowModel: getCoreRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
@@ -105,6 +95,9 @@ const table = useVueTable({
     pagination: {
       pageSize: 20,
     },
+  },
+  onGlobalFilterChange: (val) => {
+    globalFilter.value = val as string
   },
   globalFilterFn: fuzzyFilter,
 })
@@ -198,58 +191,9 @@ const table = useVueTable({
         </li>
       </ul>
 
-      <div
-        v-show="table.getPageCount() > 1"
-        class="pagination"
-      >
-        <button
-          class="btn-secondary small circle"
-          :disabled="!table.getCanPreviousPage()"
-          @click="() => table.setPageIndex(0)"
-        >
-          <FontAwesomeIcon
-            :icon="faAnglesLeft"
-          />
-        </button>
-
-        <button
-          class="btn-secondary small circle"
-          :disabled="!table.getCanPreviousPage()"
-          @click="() => table.previousPage()"
-        >
-          <FontAwesomeIcon
-            :icon="faAngleLeft"
-          />
-        </button>
-
-        <p>
-          <span class="sr-only">page</span>
-          {{ table.getState().pagination.pageIndex + 1 }}
-          <span class="sr-only">sur</span>
-          <span aria-hidden="true">/</span>
-          {{ table.getPageCount() }}
-        </p>
-
-        <button
-          class="btn-secondary small circle"
-          :disabled="!table.getCanNextPage()"
-          @click="() => table.nextPage()"
-        >
-          <FontAwesomeIcon
-            :icon="faAngleRight"
-          />
-        </button>
-
-        <button
-          class="btn-secondary small circle"
-          :disabled="!table.getCanNextPage()"
-          @click="() => table.setPageIndex(table.getPageCount() - 1)"
-        >
-          <FontAwesomeIcon
-            :icon="faAnglesRight"
-          />
-        </button>
-      </div>
+      <Pagination
+        :table="table"
+      />
     </div>
   </div>
 </template>
@@ -287,19 +231,6 @@ const table = useVueTable({
       @include unstyled-list;
       grid-auto-rows: 1fr;
       align-items: unset;
-    }
-
-    > .pagination {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 20px;
-
-      > p {
-        width: 6em;
-        text-align: center;
-      }
     }
   }
 

@@ -34,6 +34,8 @@
       },
       "withoutFunctions": "SANS FONCTIONS"
     },
-    "accounts": {}
+    "accounts": {
+      "search": "Nom, prénom, Login ou email"
+    }
   }
 }

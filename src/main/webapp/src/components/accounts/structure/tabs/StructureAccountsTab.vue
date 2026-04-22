@@ -19,10 +19,6 @@ import type { RowSelectionState, SortingState } from '@tanstack/vue-table'
 import type { AccountUser, Structure } from '@/types/index.ts'
 import {
   faAngleDown,
-  faAngleLeft,
-  faAngleRight,
-  faAnglesLeft,
-  faAnglesRight,
   faAngleUp,
   faEye,
   faFileExport,
@@ -33,6 +29,7 @@ import {
   createColumnHelper,
   FlexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useVueTable,
@@ -41,7 +38,13 @@ import { format } from 'date-fns'
 import { h, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
-import { CategoriePersonne, categoriePersonneMap, Etat, etatMap } from '@/types/enums/index.ts'
+import Pagination from '@/components/Pagination.vue'
+import {
+  CategoriePersonne,
+  categoriePersonneMap,
+  Etat,
+  etatMap,
+} from '@/types/enums/index.ts'
 import { getIconDefinition, getStateLabel } from '@/utils/index.ts'
 import IndeterminateCheckbox from './accounts/IndeterminateCheckbox.vue'
 import '@gip-recia/ui-webcomponents/dist/r-filters.js'
@@ -128,10 +131,8 @@ watch(
   { immediate: true },
 )
 
-const INITIAL_PAGE_INDEX = 0
 const columnHelper = createColumnHelper<AccountUser>()
-const goToPageNumber = ref(INITIAL_PAGE_INDEX + 1)
-const pageSizes = [20, 40]
+const globalFilter = ref<string>()
 const columns = [
   {
     id: 'select',
@@ -145,6 +146,7 @@ const columns = [
       disabled: !row.getCanSelect(),
       onChange: row.getToggleSelectedHandler(),
     }),
+    enableGlobalFilter: false,
   },
   columnHelper.accessor('etat', {
     header: t('page.user.status.header'),
@@ -181,6 +183,7 @@ const columns = [
         ],
       )
     },
+    enableGlobalFilter: false,
   }),
   columnHelper.accessor('nom', {
     header: t('page.user.info.identity.lastName'),
@@ -194,6 +197,7 @@ const columns = [
   columnHelper.accessor('categoriePersonne', {
     header: t('page.user.category.header'),
     cell: info => t(categoriePersonneMap[info.getValue()].i18n),
+    enableGlobalFilter: false,
   }),
   columnHelper.accessor('login', {
     header: t('page.user.info.account.login'),
@@ -206,6 +210,7 @@ const columns = [
   }),
   columnHelper.accessor('dateModification', {
     header: t('page.user.info.context.sourceModificationDate'),
+    enableGlobalFilter: false,
   }),
   {
     id: 'select',
@@ -230,6 +235,7 @@ const columns = [
         ),
       ],
     ),
+    enableGlobalFilter: false,
   },
 ]
 const rowSelection = ref<RowSelectionState>({})
@@ -244,16 +250,20 @@ const table = useVueTable({
     get rowSelection() {
       return rowSelection.value
     },
+    get globalFilter() {
+      return globalFilter.value
+    },
     get sorting() {
       return sorting.value
     },
   },
   getCoreRowModel: getCoreRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
   initialState: {
     pagination: {
-      pageSize: pageSizes[0],
+      pageSize: 20,
     },
   },
   enableRowSelection: true,
@@ -261,6 +271,9 @@ const table = useVueTable({
     rowSelection.value = typeof updateOrValue === 'function'
       ? updateOrValue(rowSelection.value)
       : updateOrValue
+  },
+  onGlobalFilterChange: (val) => {
+    globalFilter.value = val as string
   },
   enableMultiSort: true,
   maxMultiSortColCount: 2,
@@ -270,16 +283,6 @@ const table = useVueTable({
       : updaterOrValue
   },
 })
-
-function handleGoToPage(e: any): void {
-  const page = e.target.value ? Number(e.target.value) - 1 : 0
-  goToPageNumber.value = page + 1
-  table.setPageIndex(page)
-}
-
-function handlePageSizeChange(e: any): void {
-  table.setPageSize(Number(e.target.value))
-}
 </script>
 
 <template>
@@ -319,6 +322,27 @@ function handlePageSizeChange(e: any): void {
           </button>
         </li>
       </ul>
+    </div>
+
+    <div class="field">
+      <div class="field-layout">
+        <div class="field-container">
+          <div class="middle">
+            <label
+              for="structure-search"
+            >
+              {{ t('page.structure.accounts.search') }}
+            </label>
+            <input
+              id="structure-search"
+              v-model.trim="globalFilter"
+              type="text"
+              placeholder=""
+            >
+          </div>
+        </div>
+        <div class="active-indicator" />
+      </div>
     </div>
 
     <table>
@@ -373,73 +397,9 @@ function handlePageSizeChange(e: any): void {
       </tbody>
     </table>
 
-    <div>
-      <div>
-        <button
-          class="btn-secondary small circle"
-          :disabled="!table.getCanPreviousPage()"
-          @click="() => table.setPageIndex(0)"
-        >
-          <FontAwesomeIcon
-            :icon="faAnglesLeft"
-          />
-        </button>
-        <button
-          class="btn-secondary small circle"
-          :disabled="!table.getCanPreviousPage()"
-          @click="() => table.previousPage()"
-        >
-          <FontAwesomeIcon
-            :icon="faAngleLeft"
-          />
-        </button>
-        <button
-          class="btn-secondary small circle"
-          :disabled="!table.getCanNextPage()"
-          @click="() => table.nextPage()"
-        >
-          <FontAwesomeIcon
-            :icon="faAngleRight"
-          />
-        </button>
-        <button
-          class="btn-secondary small circle"
-          :disabled="!table.getCanNextPage()"
-          @click="() => table.setPageIndex(table.getPageCount() - 1)"
-        >
-          <FontAwesomeIcon
-            :icon="faAnglesRight"
-          />
-        </button>
-        <span>
-          <span>Page</span>
-          <strong>
-            {{ table.getState().pagination.pageIndex + 1 }} of
-            {{ table.getPageCount() }}
-          </strong>
-        </span>
-        <span>
-          | Go to page:
-          <input
-            type="number"
-            :value="goToPageNumber"
-            @change="handleGoToPage"
-          >
-        </span>
-        <select
-          :value="table.getState().pagination.pageSize"
-          @change="handlePageSizeChange"
-        >
-          <option
-            v-for="pageSize in pageSizes"
-            :key="pageSize"
-            :value="pageSize"
-          >
-            Show {{ pageSize }}
-          </option>
-        </select>
-      </div>
-    </div>
+    <Pagination
+      :table="table"
+    />
   </div>
 </template>
 
