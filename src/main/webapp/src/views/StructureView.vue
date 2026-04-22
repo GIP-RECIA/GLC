@@ -17,13 +17,14 @@
 <script setup lang="ts">
 import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { ref, useTemplateRef, watch } from 'vue'
+import { useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import StructureInfo from '@/components/accounts/structure/StructureInfo.vue'
 import StructureAccountsTab from '@/components/accounts/structure/tabs/StructureAccountsTab.vue'
 import StructureCompTab from '@/components/accounts/structure/tabs/StructureCompTab.vue'
 import StructureDashboardTab from '@/components/accounts/structure/tabs/StructureDashboardTab.vue'
+import { useTabs } from '@/composables/index.ts'
 import { useStructureQuery } from '@/services/queries/index.ts'
 import { errorHandler } from '@/utils/index.ts'
 
@@ -45,61 +46,22 @@ watch(
 
 /* Tabs */
 
-const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
-
 const tabs = [
   'dashboard',
   'comp',
   'accounts',
 ]
 
-const activeTab = ref<number>(0)
+const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
 
-function setActiveTab(tab: number, focus: boolean = false): void {
-  activeTab.value = tab
-  if (focus && tabsRefs.value)
-    tabsRefs.value[tab]?.focus()
-}
-
-function changeActiveTab(e: KeyboardEvent): void {
-  let index: number | undefined
-  const active = activeTab.value
-
-  switch (e.key) {
-    case 'ArrowLeft':
-      e.preventDefault()
-      index = active - 1 > -1
-        ? active - 1
-        : tabs.length - 1
-      break
-    case 'ArrowRight':
-      e.preventDefault()
-      index = active + 1 < tabs.length
-        ? active + 1
-        : 0
-      break
-    case 'Home':
-      e.preventDefault()
-      index = 0
-      break
-    case 'End':
-      e.preventDefault()
-      index = tabs.length - 1
-      break
-    default:
-      index = undefined
-      break
-  }
-
-  if (
-    index === undefined
-    || active === index
-  ) {
-    return
-  }
-
-  setActiveTab(index, true)
-}
+const {
+  activeTab,
+  changeActiveTab,
+  setActiveTab,
+} = useTabs({
+  tabs,
+  tabsRefs,
+})
 
 /* Actions */
 

@@ -31,6 +31,7 @@ import ManageAdditionalDialog from '@/components/accounts/user/dialogs/ManageAdd
 import UserAdministrativeTab from '@/components/accounts/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/accounts/user/tabs/UserInformationTab.vue'
 import UserInfo from '@/components/accounts/user/UserInfo.vue'
+import { useTabs } from '@/composables/index.ts'
 import {
   deleteUser,
   forceDeleteUser,
@@ -40,7 +41,7 @@ import {
 } from '@/services/api/index.ts'
 import { useUserQuery } from '@/services/queries/index.ts'
 import { Etat } from '@/types/enums/index.ts'
-import { errorHandler } from '@/utils'
+import { errorHandler } from '@/utils/index.ts'
 
 const { t } = useI18n()
 
@@ -60,60 +61,21 @@ watch(
 
 /* Tabs */
 
-const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
-
 const tabs = [
   'info',
   'more',
 ]
 
-const activeTab = ref<number>(0)
+const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
 
-function setActiveTab(tab: number, focus: boolean = false): void {
-  activeTab.value = tab
-  if (focus && tabsRefs.value)
-    tabsRefs.value[tab]?.focus()
-}
-
-function changeActiveTab(e: KeyboardEvent): void {
-  let index: number | undefined
-  const active = activeTab.value
-
-  switch (e.key) {
-    case 'ArrowLeft':
-      e.preventDefault()
-      index = active - 1 > -1
-        ? active - 1
-        : tabs.length - 1
-      break
-    case 'ArrowRight':
-      e.preventDefault()
-      index = active + 1 < tabs.length
-        ? active + 1
-        : 0
-      break
-    case 'Home':
-      e.preventDefault()
-      index = 0
-      break
-    case 'End':
-      e.preventDefault()
-      index = tabs.length - 1
-      break
-    default:
-      index = undefined
-      break
-  }
-
-  if (
-    index === undefined
-    || active === index
-  ) {
-    return
-  }
-
-  setActiveTab(index, true)
-}
+const {
+  activeTab,
+  changeActiveTab,
+  setActiveTab,
+} = useTabs({
+  tabs,
+  tabsRefs,
+})
 
 /* Dialog */
 
