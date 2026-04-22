@@ -16,16 +16,13 @@
 
 <script setup lang="ts">
 import type { SearchStructure } from '@/types/index.ts'
-import { useI18n } from 'vue-i18n'
-import { concatenate } from '@/utils'
+import { concatenate } from '@/utils/index.ts'
 
 defineProps<{
   searchList?: SearchStructure[]
   variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
   chips?: boolean
 }>()
-
-const { t } = useI18n()
 
 const modelValue = defineModel<number | undefined>()
 </script>
@@ -37,8 +34,6 @@ const modelValue = defineModel<number | undefined>()
     item-value="id"
     item-title="nom"
     :filter-keys="['raw.nom', 'raw.type', 'raw.uai']"
-    no-data-text="search.noResults"
-    :placeholder="t('')"
     density="compact"
     :variant="variant"
     rounded="xl"

@@ -1,0 +1,39 @@
+{
+  "structure": {
+    "logo": "Institution photo",
+    "actions": "Actions",
+    "tab": {
+      "dashboard": "Dashboard",
+      "comp": "Composition",
+      "accounts": "Accounts"
+    },
+    "dashboard": {
+      "alert": {
+        "header": "Alerts",
+        "minMax": {
+          "title": "Function {fun} assigned to no one | Function {fun} assigned to one person | Function {fun} assigned to {count} people",
+          "text": "The required {minMax} is {required}.",
+          "min": "minimum",
+          "max": "maximum"
+        },
+        "withoutFunctions": {
+          "title": "User without functions | Users without functions",
+          "text": "One user has no functions. | {count} users have no functions."
+        }
+      },
+      "accountsStatuses": "Account statuses"
+    },
+    "comp": {
+      "filter": {
+        "staff": {
+          "teaching": "Teaching staff",
+          "school": "School staff",
+          "collectivity": "Local authority staff",
+          "academic": "Academic staff"
+        }
+      },
+      "withoutFunctions": "NO FUNCTIONS"
+    },
+    "accounts": {}
+  }
+}

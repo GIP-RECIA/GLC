@@ -4,15 +4,20 @@
     "cancel": "Cancel",
     "lock": "Lock",
     "unlock": "Unlock",
-    "reinitialize": "Reinitialize",
+    "reset": "Reset",
     "add": "Add",
     "delete": "Delete",
+    "forceDelete": "Force delete",
+    "undoDelete": "Undo delete",
     "close": "Close",
     "attach": "Attach",
     "detach": "Detach",
     "edit": "Edit",
-    "hideEmpty": "Hide empty",
+    "hideEmpty": "Hide empty sections",
     "showAll": "Show all",
-    "manage": "Manage"
+    "manage": "Manage",
+    "restore": "Restore",
+    "create": "Create",
+    "export": "Export"
   }
 }

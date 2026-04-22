@@ -15,25 +15,15 @@
  */
 
 import { en } from 'vuetify/locale'
-import additionals from './additionals.json'
-import alerts from './alerts.json'
 import buttons from './buttons.json'
 import main from './main.json'
-import persons from './persons.json'
-import searchs from './searchs.json'
-import settings from './settings.json'
-import tabs from './tabs.json'
+import page from './pages/index.ts'
 import toasts from './toasts.json'
 
 export default {
-  ...additionals,
-  ...alerts,
+  page,
   ...buttons,
   ...main,
-  ...persons,
-  ...searchs,
-  ...settings,
-  ...tabs,
   ...toasts,
   $vuetify: {
     ...en,

@@ -52,7 +52,7 @@ const accountStates = computed(() => (
 <template>
   <div class="accounts-states">
     <h2>
-      {{ t('page.structure.dashboard.accountsStates') }}
+      {{ t('page.structure.dashboard.accountsStatuses') }}
     </h2>
 
     <ul>

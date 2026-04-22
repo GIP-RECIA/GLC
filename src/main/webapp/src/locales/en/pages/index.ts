@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-import { fr } from 'vuetify/locale'
-import buttons from './buttons.json'
-import main from './main.json'
-import page from './pages/index.ts'
-import toasts from './toasts.json'
+import access from './access.json'
+import account from './account.json'
+import index from './index.json'
+import restriction from './restriction.json'
+import settings from './settings.json'
+import structure from './structure.json'
+import user from './user.json'
 
 export default {
-  page,
-  ...buttons,
-  ...main,
-  ...toasts,
-  $vuetify: {
-    ...fr,
-  },
+  ...access,
+  ...account,
+  ...index,
+  ...restriction,
+  ...settings,
+  ...structure,
+  ...user,
 }

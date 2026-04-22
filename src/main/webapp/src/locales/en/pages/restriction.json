@@ -1,0 +1,19 @@
+{
+  "restriction": {
+    "h1": "Back-to-School Configuration",
+    "section": {
+      "header": "Back-to-school period",
+      "state": {
+        "header": "Status"
+      },
+      "close": {
+        "header": "Access closing"
+      },
+      "open": {
+        "header": "Access opening",
+        "level": "Level | Levels",
+        "class": "Class | Classes"
+      }
+    }
+  }
+}

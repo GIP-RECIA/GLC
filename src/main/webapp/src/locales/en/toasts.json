@@ -15,7 +15,6 @@
       }
     },
     "initConfigurationStore": "Unable to load configuration",
-    "initFonctionStore": "Unable to load functions",
     "initCurrentPersonne": "Unable to load people",
     "refreshCurrentPersonne": "Unable to refresh people",
     "initStructureStore": "Unable to load structures",

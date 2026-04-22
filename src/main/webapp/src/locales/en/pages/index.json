@@ -1,0 +1,11 @@
+{
+  "index": {
+    "h1": "ENT Administration",
+    "h2": "I want to",
+    "account": "Manage accounts",
+    "access": "Manage service access",
+    "groups": "Manage groups",
+    "restriction": "Configure back-to-school period",
+    "settings": "Configure institution"
+  }
+}

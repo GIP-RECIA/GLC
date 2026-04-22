@@ -60,7 +60,7 @@ function editFunction(fonction: UserFunction): void {
       <div class="r-card">
         <header>
           <h3>
-            {{ t('page.user.function', 2) }}
+            {{ t('page.user.administrative.function.header', 2) }}
           </h3>
         </header>
 
@@ -74,7 +74,7 @@ function editFunction(fonction: UserFunction): void {
       <div class="r-card">
         <header>
           <h3>
-            {{ t('page.user.additionalFunction', 2) }}
+            {{ t('page.user.administrative.function.additional', 2) }}
           </h3>
         </header>
 
@@ -105,7 +105,7 @@ function editFunction(fonction: UserFunction): void {
       <div class="r-card">
         <header>
           <h3>
-            {{ t('page.user.class', 2) }}
+            {{ t('page.user.administrative.class', 2) }}
           </h3>
         </header>
 
@@ -125,7 +125,7 @@ function editFunction(fonction: UserFunction): void {
       <div class="r-card">
         <header>
           <h3>
-            {{ t('page.user.educationalGroup', 2) }}
+            {{ t('page.user.administrative.educationalGroup', 2) }}
           </h3>
         </header>
 

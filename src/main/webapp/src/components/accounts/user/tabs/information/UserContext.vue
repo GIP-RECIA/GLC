@@ -69,7 +69,7 @@ const schoolYear = computed<string | undefined>(() => {
             <SafeEmptyData
               :value="
                 user?.source
-                  ? t(`source.${user.source}`)
+                  ? t(`page.user.source.${user.source}`)
                   : undefined
               "
             />

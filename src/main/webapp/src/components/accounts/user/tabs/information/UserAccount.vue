@@ -54,13 +54,13 @@ const { t } = useI18n()
             <SafeEmptyData
               :value="
                 user?.guichet
-                  ? t('externalLogin')
+                  ? t('page.user.office.external')
                   : user?.login
               "
             />
             <span
               v-if="user?.guichet"
-              :title="t(`office.${user.guichet}`)"
+              :title="t(`page.user.office.${user.guichet}`)"
             >
               <FontAwesomeIcon
                 :icon="faInfoCircle"

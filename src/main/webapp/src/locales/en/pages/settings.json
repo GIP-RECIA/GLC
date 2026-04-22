@@ -1,0 +1,38 @@
+{
+  "settings": {
+    "h1": "Institution Settings",
+    "info": {
+      "header": "General Information",
+      "logo": "Institution logo",
+      "identity": {
+        "header": "Identity",
+        "name": "Name",
+        "shortName": "Short name",
+        "category": "Category",
+        "type": "Type",
+        "uai": "UAI",
+        "siren": "SIREN"
+      },
+      "location": {
+        "header": "Location",
+        "address": "Address",
+        "zipCode": "ZIP code",
+        "city": "City",
+        "poBox": "PO Box",
+        "country": "Country"
+      },
+      "contact": {
+        "header": "Contact",
+        "email": "Email",
+        "website": "Website"
+      },
+      "administration": {
+        "header": "Administration",
+        "status": "Status",
+        "dataStatus": "Data status",
+        "source": "Source",
+        "schoolYear": "School year"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "access": {
+    "h1": "Service Access Management",
+    "services": {
+      "header": "Services"
+    },
+    "dialog": {
+      "group": "Group | Groups",
+      "people": "Person | People",
+      "addUser": "Add a user (Last name First name)"
+    }
+  }
+}

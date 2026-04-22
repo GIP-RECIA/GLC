@@ -21,7 +21,7 @@
           "text": "Un utilisetur est sans fonctions. | {count} utilisateurs sont sans fonctions."
         }
       },
-      "accountsStates": "États des comptes"
+      "accountsStatuses": "États des comptes"
     },
     "comp": {
       "filter": {

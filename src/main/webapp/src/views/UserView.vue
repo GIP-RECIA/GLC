@@ -63,7 +63,7 @@ watch(
 
 const tabs = [
   'info',
-  'more',
+  'administrative',
 ]
 
 const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')

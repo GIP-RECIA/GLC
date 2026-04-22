@@ -1,0 +1,111 @@
+{
+  "user": {
+    "status": {
+      "header": "Status",
+      "inconnu": "Unknown!",
+      "invalid": "Inactive",
+      "valid": "Active",
+      "unpublished": "Unpublished",
+      "locked": "Locked",
+      "deleted": "Deleted",
+      "deleting": "Deleting",
+      "deletingDate": "Final on {suppressDate}",
+      "uncertain": "Uncertain",
+      "uncertainExportAdd": "Export error",
+      "uncertainExportDelete": "Deletion error",
+      "uncertainExportModify": "Update error"
+    },
+    "category": {
+      "header": "Category",
+      "student": "Student/Apprentice",
+      "teacher": "Teacher/Instructor",
+      "nonTeacherLocalCommunity": "Local authority staff",
+      "nonTeacherSchool": "School staff",
+      "nonTeacherAcademicService": "Academic staff",
+      "personRelationshipStudent": "Parent",
+      "externalStaff": "External",
+      "companyManager": "Company manager",
+      "internshipTutor": "Internship tutor"
+    },
+    "relation": {
+      "header": "Relations",
+      "internshipSupervisor": "Internship supervisor | Intern",
+      "internshipCoordinator": "Internship coordinator | Intern",
+      "internshipAdvisor": "Internship advisor | Intern",
+      "legalGuardian": "Dependent | Legal guardian"
+    },
+    "office": {
+      "external": "National Education ID",
+      "en": "National Education staff information system (Orléans-Tours academy)",
+      "eduConnect": "EduConnect account management",
+      "eduAgri": "Agricultural Education staff information system",
+      "keycloack": "Centre-Val de Loire regional information system"
+    },
+    "source": {
+      "AC-DEMO": "Demo source",
+      "AC-ORLEANS-TOURS": "Academic Directory (AAF)",
+      "CFA-CENTRE": "Institution information system",
+      "COLL-CD18": "Department 18",
+      "COLL-CD41": "Department 41",
+      "COLL-CVDL": "Centre-Val de Loire Region",
+      "EF2S-CENTRE": "Institution information system",
+      "GIP-RECIA": "GIP RECIA",
+      "LA-CENTRE": "Agricultural Education Directory",
+      "SarapisUi_AC-DEMO": "Local demo account",
+      "SarapisUi_AC-ORLEANS-TOURS": "Local academic account",
+      "SarapisUi_CFA-CENTRE": "Local institution account",
+      "SarapisUi_EF2S-CENTRE": "Local institution account",
+      "SarapisUi_GIP-RECIA": "Local GIP RECIA account",
+      "SarapisUi_LA-CENTRE": "Local agricultural education account"
+    },
+    "actions": "Actions",
+    "tab": {
+      "info": "Information",
+      "administrative": "Administrative"
+    },
+    "info": {
+      "header": "General information",
+      "identity": {
+        "header": "Personal information",
+        "civility": "Title",
+        "lastName": "Last name",
+        "firstName": "First name",
+        "birthDate": "Birth date"
+      },
+      "account": {
+        "header": "Account & access",
+        "uid": "UID",
+        "login": "Login",
+        "email": "Email",
+        "pronote": {
+          "header": "Pronote ID",
+          "info": "This account does not have access to the Pronote service"
+        }
+      },
+      "context": {
+        "header": "Context",
+        "schoolYear": "School year",
+        "source": "Source",
+        "sourceModificationDate": "Source last updated"
+      }
+    },
+    "structure": {
+      "header": "Structures",
+      "admin": "Administrative attachment structure",
+      "current": "Current structure"
+    },
+    "administrative": {
+      "function": {
+        "header": "Function | Functions",
+        "additional": "Additional function | Additional functions",
+        "hourglass": {
+          "start": "Expires in {months} months ({date})",
+          "half": "Expires in less than one month ({date}) | Expires in less than {months} months ({date})",
+          "end": "Expired on {date}"
+        }
+      },
+      "class": "Class | Classes",
+      "educationalGroup": "Educational group | Educational groups"
+    }
+  }
+}

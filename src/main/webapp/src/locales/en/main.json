@@ -1,16 +1,10 @@
 {
-  "lessons": "Lesson | Lessons",
-  "externalLogin": "EN identifier",
   "discipline": "Discipline",
-  "classOrEducationalGroup": "Class or educational group",
-  "warning": "Warning | Warnings",
-  "deletingAccounts": "Deleting accounts",
-  "deletedAccounts": "Deleted accounts",
   "filter": "Filter",
   "all": "All",
   "used": "Used",
-  "people": "People",
-  "searchOutOfStructure": "search out of structure",
+  "searchOutOfStructure": "Search outside the structure",
   "result": "Result | Results",
-  "withoutFunctions": "Without functions"
+  "enabled": "Enabled",
+  "disabled": "Disabled"
 }

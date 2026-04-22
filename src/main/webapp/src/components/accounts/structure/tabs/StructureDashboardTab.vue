@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { Structure } from '@/types/index.ts'
-import StructureAccountsStates from './dashboard/StructureAccountsStates.vue'
+import StructureAccountsStatuses from './dashboard/StructureAccountsStatuses.vue'
 import StructureAlerts from './dashboard/StructureAlerts.vue'
 
 defineProps<{
@@ -30,7 +30,7 @@ defineProps<{
       :structure="structure"
     />
 
-    <StructureAccountsStates
+    <StructureAccountsStatuses
       :structure="structure"
     />
   </div>
