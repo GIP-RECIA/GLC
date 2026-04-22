@@ -19,6 +19,7 @@ import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.web.dto.relation.RelationDto;
 import fr.recia.glc.db.entities.relation.AMappingRelation;
 import fr.recia.glc.db.repositories.relation.AMappingRelationRepository;
+import fr.recia.glc.web.dto.user.CardPersonneDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -39,11 +40,11 @@ public class RelationService {
         List<RelationDto> relationDtos = new ArrayList<>();
         List<AMappingRelation> relationsDst = amappingRelationRepository.findByPkPersonne1Id(personneId);
         for(AMappingRelation relation : relationsDst){
-            relationDtos.add(new RelationDto(relation.getPk().getCategorie(), new DatabasePersonneDto(relation.getPk().getPersonne2()), false));
+            relationDtos.add(new RelationDto(relation.getPk().getCategorie(), new CardPersonneDto(new DatabasePersonneDto(relation.getPk().getPersonne2())), false));
         }
         List<AMappingRelation> relationsSrc = amappingRelationRepository.findByPkPersonne2Id(personneId);
         for(AMappingRelation relation : relationsSrc){
-            relationDtos.add(new RelationDto(relation.getPk().getCategorie(), new DatabasePersonneDto(relation.getPk().getPersonne1()), true));
+            relationDtos.add(new RelationDto(relation.getPk().getCategorie(), new CardPersonneDto(new DatabasePersonneDto(relation.getPk().getPersonne1())), true));
         }
         return relationDtos;
     }

@@ -15,8 +15,8 @@
  */
 package fr.recia.glc.web.dto.relation;
 
-import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.enums.CategorieRelation;
+import fr.recia.glc.web.dto.user.CardPersonneDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -24,6 +24,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class RelationDto {
     private CategorieRelation categorieRelation;
-    private DatabasePersonneDto personneEnRelation;
+    private CardPersonneDto personneEnRelation;
     private boolean holder;
 }

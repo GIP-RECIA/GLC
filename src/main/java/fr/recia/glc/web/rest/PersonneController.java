@@ -170,6 +170,7 @@ public class PersonneController {
         // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
         boolean canRead = false;
+        // Booléen qui indique si on affiche l'uid ou non
         boolean showUid = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
@@ -180,7 +181,6 @@ public class PersonneController {
                 showUid = true;
             }
         }
-        // Booléen qui indique si on affiche l'uid ou non
         if (canRead) {
             PersonneDetailDto personneDetailDto = personneService.getFullPersonne(id, personne, showUid, allowedSiren);
             return new ResponseEntity<>(personneDetailDto, HttpStatus.OK);
