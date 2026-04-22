@@ -161,6 +161,7 @@ public class StructureDto {
                         if (personnesMap.containsKey(fonctionDto.getPersonne())) {
                             DatabasePersonneDto databasePersonneDto = personnesMap.get(fonctionDto.getPersonne());
                             disciplineDto.getPersonnes().add(new CardPersonneDto(databasePersonneDto));
+                            disciplineDto.getCategories().add(databasePersonneDto.getCategorie());
                         } else {
                             log.warn("person in functions by not in structure : {}", fonctionDto.getPersonne());
                         }

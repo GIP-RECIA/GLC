@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.db.dto.education;
 
+import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.web.dto.user.CardPersonneDto;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -22,6 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -34,6 +36,7 @@ public class DisciplineDto {
     private Long id;
     private String libelle;
     private Set<CardPersonneDto> personnes;
+    private Set<CategoriePersonne> categories;
 
     // Constructeur utilisé par la requête en BD
     public DisciplineDto(Long id, String code, String libelle, String source) {
@@ -42,6 +45,7 @@ public class DisciplineDto {
         this.personnes = new TreeSet<>(
                 Comparator.comparing(CardPersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
                     .thenComparing(CardPersonneDto::getId));
+        this.categories = new HashSet<>();
     }
 
     public DisciplineDto(DisciplineDto disciplineDto) {
@@ -50,6 +54,7 @@ public class DisciplineDto {
         this.personnes = new TreeSet<>(
             Comparator.comparing(CardPersonneDto::getCn, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
                 .thenComparing(CardPersonneDto::getId));
+        this.categories = new HashSet<>();
     }
 
 }
