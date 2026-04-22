@@ -27,10 +27,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import ManageAdditionalDialog from '@/components/user/dialogs/ManageAdditionalDialog.vue'
-import UserAdministrativeTab from '@/components/user/tabs/UserAdministrativeTab.vue'
-import UserInformationTab from '@/components/user/tabs/UserInformationTab.vue'
-import UserInfo from '@/components/user/UserInfo.vue'
+import ManageAdditionalDialog from '@/components/accounts/user/dialogs/ManageAdditionalDialog.vue'
+import UserAdministrativeTab from '@/components/accounts/user/tabs/UserAdministrativeTab.vue'
+import UserInformationTab from '@/components/accounts/user/tabs/UserInformationTab.vue'
+import UserInfo from '@/components/accounts/user/UserInfo.vue'
 import {
   deletePersonne,
   forceDeletePersonne,
