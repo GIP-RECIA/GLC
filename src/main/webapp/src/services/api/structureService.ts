@@ -33,7 +33,7 @@ async function getEtablissements() {
   ).data
 }
 
-async function getEtablissement(id: number) {
+async function getStructure(id: number) {
   return (
     await axios.get<Structure>(
       `/api/structure/etablissement/${id}`,
@@ -42,7 +42,7 @@ async function getEtablissement(id: number) {
 }
 
 export {
-  getEtablissement,
   getEtablissements,
+  getStructure,
   getStructures,
 }

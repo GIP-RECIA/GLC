@@ -24,14 +24,14 @@ import StructureInfo from '@/components/accounts/structure/StructureInfo.vue'
 import StructureAccountsTab from '@/components/accounts/structure/tabs/StructureAccountsTab.vue'
 import StructureCompTab from '@/components/accounts/structure/tabs/StructureCompTab.vue'
 import StructureDashboardTab from '@/components/accounts/structure/tabs/StructureDashboardTab.vue'
-import { useEtablissementQuery } from '@/services/queries/index.ts'
+import { useStructureQuery } from '@/services/queries/index.ts'
 import { errorHandler } from '@/utils/index.ts'
 
 const { t } = useI18n()
 
 const router = useRouter()
 
-const { data, error } = useEtablissementQuery()
+const { data, error } = useStructureQuery()
 
 watch(
   error,

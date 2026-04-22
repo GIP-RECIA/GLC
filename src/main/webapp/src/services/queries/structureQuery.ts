@@ -18,8 +18,8 @@ import { defineQuery, useQuery } from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
-  getEtablissement,
   getEtablissements,
+  getStructure,
   getStructures,
 } from '@/services/api/index.ts'
 
@@ -39,21 +39,21 @@ function useEtablissementsQuery() {
   })
 }
 
-const useEtablissementQuery = defineQuery(() => {
+const useStructureQuery = defineQuery(() => {
   const route = useRoute()
 
   const structureId = computed(() => Number(route.params.structureId))
 
   return useQuery(() => ({
-    key: ['etablissement', structureId.value],
-    query: () => getEtablissement(structureId.value),
+    key: ['structure', structureId.value],
+    query: () => getStructure(structureId.value),
     enabled: !Number.isNaN(structureId.value),
     staleTime: 1000 * 60 * 60,
   }))
 })
 
 export {
-  useEtablissementQuery,
   useEtablissementsQuery,
+  useStructureQuery,
   useStructuresQuery,
 }

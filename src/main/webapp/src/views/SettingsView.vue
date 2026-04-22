@@ -26,7 +26,7 @@ import IdentitySettings from '@/components/settings/IdentitySettings.vue'
 import LocalisationSettings from '@/components/settings/LocalisationSettings.vue'
 import LogoSettings from '@/components/settings/LogoSettings.vue'
 import StructureSearch from '@/components/StructureSearch.vue'
-import { getEtablissement } from '@/services/api/index.ts'
+import { getStructure } from '@/services/api/index.ts'
 import { useStructureStore } from '@/stores/index.ts'
 
 const { t } = useI18n()
@@ -51,7 +51,7 @@ watchEffect(async (): Promise<void> => {
   if (selectedStructure.value === undefined)
     return
 
-  currentStructure.value = await getEtablissement(selectedStructure.value)
+  currentStructure.value = await getStructure(selectedStructure.value)
 })
 
 /* Edit state */

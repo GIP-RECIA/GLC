@@ -49,7 +49,7 @@ const router = createRouter({
           component: () => import('@/views/AccountView.vue'),
         },
         {
-          path: 'etab/:structureId(\\d+)',
+          path: 'structure/:structureId(\\d+)',
           name: 'structure',
           component: () => import('@/views/StructureView.vue'),
         },

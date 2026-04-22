@@ -83,7 +83,7 @@ function setChildEditState(state: boolean): void {
 
         <div class="info-container">
           <GlobalRestrictions
-            :etab-id="selectedStructure"
+            :structure-id="selectedStructure"
             :restrictions="data"
             :disable-edit="isChildEdit"
             @edit="setChildEditState"
@@ -96,7 +96,7 @@ function setChildEditState(state: boolean): void {
             />
 
             <OpenRestrictions
-              :etab-id="selectedStructure"
+              :structure-id="selectedStructure"
               :restrictions="data"
               :disable-edit="isChildEdit"
               class="full-width"
