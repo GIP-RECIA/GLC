@@ -15,8 +15,8 @@
  */
 
 export * from './configurationService.ts'
-export * from './personneService.ts'
 export * from './restrictionService.ts'
 export * from './rightService.ts'
 export * from './sessionService.ts'
 export * from './structureService.ts'
+export * from './userService.ts'

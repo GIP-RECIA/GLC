@@ -16,14 +16,14 @@
 
 import type {
   SearchUser,
-  SetPersonneAdditionalParams,
-  SetPersonneAdditionalWithCodeParams,
-  SetPersonneAdditionalWithIdParams,
+  SetUserAdditionalParams,
+  SetUserAdditionalWithCodeParams,
+  SetUserAdditionalWithIdParams,
   User,
 } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
-async function getPersonne(id: number) {
+async function getUser(id: number) {
   return (
     await axios.get<User>(
       `/api/personne/${id}`,
@@ -31,7 +31,7 @@ async function getPersonne(id: number) {
   ).data
 }
 
-async function deletePersonne(id: number) {
+async function deleteUser(id: number) {
   return (
     await axios.delete<void>(
       `/api/personne/${id}`,
@@ -39,7 +39,7 @@ async function deletePersonne(id: number) {
   ).status === 200
 }
 
-async function forceDeletePersonne(id: number) {
+async function forceDeleteUser(id: number) {
   return (
     await axios.delete<void>(
       `/api/personne/${id}/force`,
@@ -47,7 +47,7 @@ async function forceDeletePersonne(id: number) {
   ).status === 200
 }
 
-async function undoDeletePersonne(id: number) {
+async function undoDeleteUser(id: number) {
   return (
     await axios.delete<void>(
       `/api/personne/${id}/undo`,
@@ -55,7 +55,7 @@ async function undoDeletePersonne(id: number) {
   ).status === 200
 }
 
-async function lockPersonne(id: number) {
+async function lockUser(id: number) {
   return (
     await axios.put<void>(
       `/api/personne/${id}/lock`,
@@ -63,7 +63,7 @@ async function lockPersonne(id: number) {
   ).status === 200
 }
 
-async function unlockPersonne(id: number) {
+async function unlockUser(id: number) {
   return (
     await axios.put<void>(
       `/api/personne/${id}/unlock`,
@@ -71,7 +71,7 @@ async function unlockPersonne(id: number) {
   ).status === 200
 }
 
-async function searchPersonne(name: string) {
+async function searchUser(name: string) {
   return (
     await axios.get<SearchUser[]>(
       '/api/personne',
@@ -84,13 +84,13 @@ async function searchPersonne(name: string) {
   ).data
 }
 
-async function setPersonneAdditional({
+async function setUserAdditional({
   id,
   structureId,
   toAddFunctions,
   toDeleteFunctions,
   requiredAction,
-}: SetPersonneAdditionalParams) {
+}: SetUserAdditionalParams) {
   return !!(
     await axios.post<void>(
       `/api/personne/${id}/fonction`,
@@ -104,13 +104,13 @@ async function setPersonneAdditional({
   )
 }
 
-function setPersonneAdditionalWithId({
+function setUserAdditionalWithId({
   id,
   structureId,
   toAddFunction,
   requiredAction,
-}: SetPersonneAdditionalWithIdParams) {
-  return setPersonneAdditional({
+}: SetUserAdditionalWithIdParams) {
+  return setUserAdditional({
     id,
     structureId,
     toAddFunctions: [toAddFunction],
@@ -119,12 +119,12 @@ function setPersonneAdditionalWithId({
   })
 }
 
-async function setPersonneAdditionalWithCode({
+async function setUserAdditionalWithCode({
   id,
   structureId,
   additionalCode,
   requiredAction,
-}: SetPersonneAdditionalWithCodeParams) {
+}: SetUserAdditionalWithCodeParams) {
   return !!(
     await axios.post<void>(
       `/api/personne/${id}/fonction`,
@@ -138,14 +138,14 @@ async function setPersonneAdditionalWithCode({
 }
 
 export {
-  deletePersonne,
-  forceDeletePersonne,
-  getPersonne,
-  lockPersonne,
-  searchPersonne,
-  setPersonneAdditional,
-  setPersonneAdditionalWithCode,
-  setPersonneAdditionalWithId,
-  undoDeletePersonne,
-  unlockPersonne,
+  deleteUser,
+  forceDeleteUser,
+  getUser,
+  lockUser,
+  searchUser,
+  setUserAdditional,
+  setUserAdditionalWithCode,
+  setUserAdditionalWithId,
+  undoDeleteUser,
+  unlockUser,
 }

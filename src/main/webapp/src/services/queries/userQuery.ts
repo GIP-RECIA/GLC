@@ -18,56 +18,56 @@ import { defineQuery, useMutation, useQuery } from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
-  getPersonne,
-  searchPersonne,
-  setPersonneAdditional,
-  setPersonneAdditionalWithCode,
-  setPersonneAdditionalWithId,
+  getUser,
+  searchUser,
+  setUserAdditional,
+  setUserAdditionalWithCode,
+  setUserAdditionalWithId,
 } from '@/services/api/index.ts'
 
-const usePersonneQuery = defineQuery(() => {
+const useUserQuery = defineQuery(() => {
   const route = useRoute()
 
   const userId = computed(() => Number(route.params.userId))
 
   return useQuery(() => ({
-    key: ['personne', userId.value],
-    query: () => getPersonne(userId.value),
+    key: ['user', userId.value],
+    query: () => getUser(userId.value),
     enabled: !Number.isNaN(userId.value),
     staleTime: 1000 * 60 * 30,
   }))
 })
 
-function useSearchPersonneQuery(name: string) {
+function useSearchUserQuery(name: string) {
   return useQuery({
-    key: ['personne', 'search', name],
-    query: () => searchPersonne(name),
+    key: ['user', 'search', name],
+    query: () => searchUser(name),
     staleTime: Infinity,
   })
 }
 
-function useSetPersonneAdditionalMutation() {
+function useSetUserAdditionalMutation() {
   return useMutation({
-    mutation: setPersonneAdditional,
+    mutation: setUserAdditional,
   })
 }
 
-function useSetPersonneAdditionalWithIdMutation() {
+function useSetUserAdditionalWithIdMutation() {
   return useMutation({
-    mutation: setPersonneAdditionalWithId,
+    mutation: setUserAdditionalWithId,
   })
 }
 
-function useSetPersonneAdditionalWithCodeMutation() {
+function useSetUserAdditionalWithCodeMutation() {
   return useMutation({
-    mutation: setPersonneAdditionalWithCode,
+    mutation: setUserAdditionalWithCode,
   })
 }
 
 export {
-  usePersonneQuery,
-  useSearchPersonneQuery,
-  useSetPersonneAdditionalMutation,
-  useSetPersonneAdditionalWithCodeMutation,
-  useSetPersonneAdditionalWithIdMutation,
+  useSearchUserQuery,
+  useSetUserAdditionalMutation,
+  useSetUserAdditionalWithCodeMutation,
+  useSetUserAdditionalWithIdMutation,
+  useUserQuery,
 }

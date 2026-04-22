@@ -15,5 +15,5 @@
  */
 
 export * from './configurationStore.ts'
-export * from './personneStore.ts'
 export * from './structureStore.ts'
+export * from './userStore.ts'

@@ -17,15 +17,15 @@
 import { acceptHMRUpdate, createPinia } from 'pinia'
 import {
   useConfigurationStore,
-  usePersonneStore,
   useStructureStore,
+  useUserStore,
 } from '@/stores/index.ts'
 
 const { hot } = import.meta
 
 if (hot) {
   hot.accept(acceptHMRUpdate(useConfigurationStore, hot))
-  hot.accept(acceptHMRUpdate(usePersonneStore, hot))
+  hot.accept(acceptHMRUpdate(useUserStore, hot))
   hot.accept(acceptHMRUpdate(useStructureStore, hot))
 }
 

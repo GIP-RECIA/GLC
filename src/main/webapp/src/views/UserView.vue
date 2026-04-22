@@ -32,13 +32,13 @@ import UserAdministrativeTab from '@/components/accounts/user/tabs/UserAdministr
 import UserInformationTab from '@/components/accounts/user/tabs/UserInformationTab.vue'
 import UserInfo from '@/components/accounts/user/UserInfo.vue'
 import {
-  deletePersonne,
-  forceDeletePersonne,
-  lockPersonne,
-  undoDeletePersonne,
-  unlockPersonne,
+  deleteUser,
+  forceDeleteUser,
+  lockUser,
+  undoDeleteUser,
+  unlockUser,
 } from '@/services/api/index.ts'
-import { usePersonneQuery } from '@/services/queries/index.ts'
+import { useUserQuery } from '@/services/queries/index.ts'
 import { Etat } from '@/types/enums/index.ts'
 import { errorHandler } from '@/utils'
 
@@ -46,7 +46,7 @@ const { t } = useI18n()
 
 const router = useRouter()
 
-const { data, error } = usePersonneQuery()
+const { data, error } = useUserQuery()
 
 watch(
   error,
@@ -146,8 +146,8 @@ async function onToggleLock(): Promise<void> {
 
   const { id } = data.value
   const response = isLocked.value
-    ? await unlockPersonne(id)
-    : await lockPersonne(id)
+    ? await unlockUser(id)
+    : await lockUser(id)
   if (!response)
     return
 
@@ -165,7 +165,7 @@ async function onUndoDelete(): Promise<void> {
     return
 
   const { id } = data.value
-  const response = await undoDeletePersonne(id)
+  const response = await undoDeleteUser(id)
   if (!response)
     return
 
@@ -178,8 +178,8 @@ async function onDelete(): Promise<void> {
 
   const { id } = data.value
   const response = isDeleting.value
-    ? await forceDeletePersonne(id)
-    : await deletePersonne(id)
+    ? await forceDeleteUser(id)
+    : await deleteUser(id)
   if (!response)
     return
 
