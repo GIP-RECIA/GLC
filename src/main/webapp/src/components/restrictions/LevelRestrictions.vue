@@ -145,6 +145,7 @@ function deleteLevel(): void {
       v-if="isEdit"
     >
       <button
+        :aria-label="`${t('button.delete')} - ${levelRestriction.niveau}`"
         class="btn-secondary small"
         @click="deleteLevel"
       >
@@ -156,6 +157,7 @@ function deleteLevel(): void {
       <MenuButton
         v-show="isEdit"
         :items="addableClasses"
+        :btn-title="`${t('button.add')} (${t('page.restriction.section.open.class', 2)})`"
         :disabled="addableClasses.length === 0"
         btn-class="btn-secondary small"
         @update:model-value="addClass"

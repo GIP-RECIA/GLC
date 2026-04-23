@@ -243,6 +243,7 @@ function addLevel(uid: string | number): void {
       <MenuButton
         v-show="isEdit"
         :items="addableLevels"
+        :btn-title="`${t('button.add')} (${t('page.restriction.section.open.level', 2)})`"
         :disabled="addableLevels.length === 0"
         btn-class="btn-secondary small"
         @update:model-value="addLevel"
@@ -253,6 +254,7 @@ function addLevel(uid: string | number): void {
         />
       </MenuButton>
       <button
+        :aria-label="`${t(`button.${isEdit ? 'cancel' : 'edit'}`)} - ${t('page.restriction.section.open.header')}`"
         :disabled="disableEdit && !isEdit"
         class="small"
         :class="[isEdit ? 'btn-secondary' : 'btn-primary']"
@@ -265,6 +267,7 @@ function addLevel(uid: string | number): void {
       </button>
       <button
         v-show="isEdit"
+        :aria-label="`${t('button.save')} - ${t('page.restriction.section.open.header')}`"
         :disabled="!canSave"
         class="btn-primary small"
         @click="save"

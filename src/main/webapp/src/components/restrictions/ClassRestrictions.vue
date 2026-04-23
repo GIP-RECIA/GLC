@@ -82,6 +82,7 @@ function deleteClass(): void {
         </div>
       </div>
       <button
+        :aria-label="`${t('button.delete')} - ${classRestriction.classe}`"
         :title="t('button.delete')"
         class="btn-tertiary circle"
         @click="deleteClass"

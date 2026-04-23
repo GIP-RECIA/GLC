@@ -130,6 +130,7 @@ watch(
       v-if="structure && canEdit"
     >
       <button
+        :aria-label="`${t(`button.${isEdit ? 'cancel' : 'edit'}`)} - ${t('page.settings.info.contact.header')}`"
         :disabled="disableEdit && !isEdit"
         class="small"
         :class="[isEdit ? 'btn-secondary' : 'btn-primary']"
@@ -142,6 +143,7 @@ watch(
       </button>
       <button
         v-show="isEdit"
+        :aria-label="`${t('button.save')} - ${t('page.settings.info.contact.header')}`"
         :disabled="!canSave"
         class="btn-primary small"
         @click="save"

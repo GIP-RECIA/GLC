@@ -45,6 +45,7 @@ const { t } = useI18n()
       v-if="structure && canEdit"
     >
       <button
+        :aria-label="`${t('button.edit')} - ${t('page.settings.info.logo')}`"
         :disabled="disableEdit"
         class="btn-primary small"
         @click="() => {}"

@@ -121,6 +121,7 @@ function save(): void {
       v-if="restrictions && canEdit"
     >
       <button
+        :aria-label="`${t(`button.${isEdit ? 'cancel' : 'edit'}`)} - ${t('page.restriction.section.state.header')}`"
         :disabled="disableEdit && !isEdit"
         class="small"
         :class="[isEdit ? 'btn-secondary' : 'btn-primary']"
@@ -133,6 +134,7 @@ function save(): void {
       </button>
       <button
         v-show="isEdit"
+        :aria-label="`${t('button.save')} - ${t('page.restriction.section.state.header')}`"
         :disabled="!canSave"
         class="btn-primary small"
         @click="save"

@@ -25,6 +25,7 @@ withDefaults(
     }[]
     disabled?: boolean
     aLabel?: string
+    btnTitle?: string
     btnClass?: string
   }>(),
   {
@@ -103,6 +104,7 @@ function handleItemClick(key: string | number) {
       :aria-expanded="isExpanded"
       :aria-controls="id"
       :aria-label="aLabel"
+      :title="btnTitle"
       :disabled="disabled"
       :class="btnClass"
       @click="toggle"
