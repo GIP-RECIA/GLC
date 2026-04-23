@@ -15,6 +15,8 @@
  */
 package fr.recia.glc.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import fr.recia.glc.configuration.bean.AdminProperties;
 import fr.recia.glc.configuration.bean.CASProperties;
 import fr.recia.glc.configuration.bean.CorsProperties;
@@ -28,14 +30,20 @@ import fr.recia.glc.configuration.bean.GrouperProperties;
 import fr.recia.glc.configuration.bean.IpRangeProperties;
 import fr.recia.glc.configuration.bean.RestrictionRentreeProperties;
 import fr.recia.glc.configuration.bean.RightsProperties;
+import fr.recia.glc.configuration.bean.ServiceConfigProperties;
 import fr.recia.glc.configuration.bean.UIDFactoryProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -70,6 +78,21 @@ public class GLCProperties {
                 GroupProperties::getDisplayName
             ))
         );
+        // Chargement des properties des services pour les droits d'accès
+        Map<String, ServiceConfigProperties> services = new HashMap<>();
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        try {
+            Resource[] resources = resolver.getResources(rights.getServicesPath());
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            for (Resource resource : resources) {
+                String serviceId = resource.getFilename().replace(".yml", "");
+                ServiceConfigProperties service = mapper.readValue(resource.getInputStream(), ServiceConfigProperties.class);
+                services.put(serviceId, service);
+            }
+            rights.setServices(services);
+        } catch (IOException e) {
+            log.error("Couldn't load service rights properties !", e);
+        }
         customConfig.loadAdminFonctions();
         log.info("Loaded properties: {}", this);
     }

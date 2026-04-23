@@ -120,9 +120,15 @@ public class RightsService {
                     right.setDescription(roleProperties.getDescription());
                     right.setRole(role);
                     // Ajout des groupes par configuration
-                    List<Member> possibleGroups = new ArrayList<>(getGroupsFullPathAndCache(roleProperties.getPossibleGroups(), branch, etabGroup));
+                    List<Member> possibleGroups = new ArrayList<>();
+                    if(roleProperties.getPossibleGroups() != null){
+                        possibleGroups.addAll(getGroupsFullPathAndCache(roleProperties.getPossibleGroups(), branch, etabGroup));
+                    }
                     right.setPossibleGroups(possibleGroups);
-                    List<Member> mandatoryGroups = new ArrayList<>(getGroupsFullPathAndCache(roleProperties.getMandatoryGroups(), branch, etabGroup));
+                    List<Member> mandatoryGroups = new ArrayList<>();
+                    if(roleProperties.getMandatoryGroups() != null){
+                        mandatoryGroups.addAll(getGroupsFullPathAndCache(roleProperties.getMandatoryGroups(), branch, etabGroup));
+                    }
                     right.setMandatoryGroups(mandatoryGroups);
                     // Ajout des membres déjà présents via grouper
                     List<Member> currentMembers = new ArrayList<>();
@@ -165,7 +171,7 @@ public class RightsService {
                         rights.add(right);
                     }
                 } catch (Exception e) {
-                    log.warn("Could not add right because grouper returned an error", e);
+                    log.warn("Could not get right because an error occured", e);
                 }
             }
             serviceAccess.setRights(rights);

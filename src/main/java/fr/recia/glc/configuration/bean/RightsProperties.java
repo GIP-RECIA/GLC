@@ -22,6 +22,7 @@ import java.util.Map;
 
 @Data
 public class RightsProperties {
+    private String servicesPath;
     private Map<String, ServiceConfigProperties> services;
     private List<GroupProperties> declaredGroups;
     private Map<String, String> declaredGroupsMap;
