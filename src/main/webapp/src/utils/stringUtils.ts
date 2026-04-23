@@ -22,7 +22,7 @@ function capitalize(
 
 function concatenate(
   values: (string | undefined)[],
-  separator = ' ',
+  separator = '',
 ): string {
   return values
     .filter((v): v is string => !!v && v.trim() !== '')

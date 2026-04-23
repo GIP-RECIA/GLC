@@ -18,6 +18,7 @@ else
   ./scripts/license.sh 2
 fi
 
+yarn run test:unit run
 yarn exec lint-staged
 
 # Vérification des erreurs
