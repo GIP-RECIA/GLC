@@ -35,7 +35,7 @@ import {
   useVueTable,
 } from '@tanstack/vue-table'
 import { format } from 'date-fns'
-import { h, ref, watch } from 'vue'
+import { computed, h, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import Pagination from '@/components/Pagination.vue'
@@ -57,7 +57,14 @@ const { t } = useI18n()
 
 /* Filters */
 
-const filters = [
+const categoriesPersonne = computed<CategoriePersonne[]>(() => (
+  [...new Set(
+    props.structure?.personnes
+      .map(user => user.categoriePersonne),
+  )]
+))
+
+const filters = computed(() => [
   {
     id: 'source',
     name: 'Source',
@@ -77,21 +84,27 @@ const filters = [
       },
     ],
   },
-  {
-    id: 'profil',
-    name: 'Profil',
-    type: 'checkbox',
-    items: [
-      {
-        key: 'profil-all',
-        value: 'Tous les profils',
-      },
-      ...Object.values(CategoriePersonne).map(cat => ({
-        key: cat,
-        value: t(categoriePersonneMap[cat].i18n),
-      })),
-    ],
-  },
+  ...(categoriesPersonne.value.length > 1
+    ? [{
+        id: 'profil',
+        name: 'Profil',
+        type: 'checkbox',
+        items: [
+          {
+            key: 'profil-all',
+            value: 'Tous les profils',
+          },
+          ...Object.values(CategoriePersonne)
+            .filter(cat => (
+              categoriesPersonne.value.includes(cat)
+            ))
+            .map(cat => ({
+              key: cat,
+              value: t(categoriePersonneMap[cat].i18n),
+            })),
+        ],
+      }]
+    : []),
   {
     id: 'state',
     name: 'État',
@@ -107,7 +120,7 @@ const filters = [
       })),
     ],
   },
-]
+])
 
 /* Actions */
 
@@ -129,6 +142,10 @@ watch(
     data.value = val ?? []
   },
   { immediate: true },
+)
+
+const hasUid = computed<boolean>(() =>
+  data.value.some(row => row.uid != null),
 )
 
 const columnHelper = createColumnHelper<AccountUser>()
@@ -191,9 +208,15 @@ const columns = [
   columnHelper.accessor('prenom', {
     header: t('page.user.info.identity.firstName'),
   }),
-  columnHelper.accessor('uid', {
-    header: t('page.user.info.account.uid'),
-  }),
+  ...(
+    hasUid.value
+      ? [
+          columnHelper.accessor('uid', {
+            header: t('page.user.info.account.uid'),
+          }),
+        ]
+      : []
+  ),
   columnHelper.accessor('categoriePersonne', {
     header: t('page.user.category.header'),
     cell: info => t(categoriePersonneMap[info.getValue()].i18n),
