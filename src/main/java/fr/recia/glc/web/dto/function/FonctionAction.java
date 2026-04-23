@@ -16,7 +16,10 @@
 package fr.recia.glc.web.dto.function;
 
 public enum FonctionAction {
+    /* Attacher une personne */
     attach,
+    /* Détacher une personne */
     detach,
+    /* Ajout simple d'une fonction */
     save
 }

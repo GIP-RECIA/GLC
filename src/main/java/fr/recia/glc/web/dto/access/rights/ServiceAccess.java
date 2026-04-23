@@ -24,5 +24,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ServiceAccess {
     private String service;
+    private String name;
     private List<Right> rights;
 }

@@ -122,30 +122,23 @@ public class FonctionService {
 
     /**
      * Modifie les fonctions d'une personne sur une stucture
-     *
-     * @param personneId        L'id de la personne
-     * @param structureId       L'id de la stucture
-     * @param toAddFunctions    La liste des fonctions à ajouter sous la forme "filière-discipline"
-     * @param toDeleteFunctions La liste des fonctions à supprimer sous la forme "filière-discipline"
-     * @param requiredAction    Si on doit rattacher une personne à un établissement (attach) ou le détacher (detach)
      */
     public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<FonctionToModify> toAddFunctions, List<FonctionToModify> toDeleteFunctions, FonctionAction requiredAction, boolean isAdmin) {
         final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
         final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
-        if (aPersonne == null
-            || aStructure == null
-            || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())
-        ) return false;
+        if (aPersonne == null || aStructure == null || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())) {
+            return false;
+        }
 
         final String sourceOrig = SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
         final String source = Constants.SARAPISUI_ + sourceOrig;
 
         List<FonctionDto> toAddAdditional = new ArrayList<>();
         for (FonctionToModify fonctionToAdd : toAddFunctions) {
-            // TODO : probleme dans la conf ce sont des codes alors qu'ici ce sont des ids
-            TypeFonctionFiliere typeFonctionFiliere = typeFonctionFiliereRepository.findById(fonctionToAdd.getFiliere()).get();
+            // On récupère le code à partir de l'id pour pouvoir comparer à ce qu'on a dans la config pour les fonctions limitées aux admins
+            TypeFonctionFiliere typeFonctionFiliere = this.getTypeFonctionFiliere(fonctionToAdd.getFiliere());
             if(glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig).contains(typeFonctionFiliere.getCodeFiliere())){
-                log.debug("Admin fonction : check user rights");
+                log.debug("Admin fonction add : check user rights");
                 if(isAdmin){
                     toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
                 } else {
@@ -158,10 +151,10 @@ public class FonctionService {
 
         List<FonctionDto> toDeleteAdditional = new ArrayList<>();
         for (FonctionToModify fonctionToDelete : toDeleteFunctions) {
-            // TODO : probleme dans la conf ce sont des codes alors qu'ici ce sont des ids
-            TypeFonctionFiliere typeFonctionFiliere = typeFonctionFiliereRepository.findById(fonctionToDelete.getFiliere()).get();
+            // On récupère le code à partir de l'id pour pouvoir comparer à ce qu'on a dans la config pour les fonctions limitées aux admins
+            TypeFonctionFiliere typeFonctionFiliere = this.getTypeFonctionFiliere(fonctionToDelete.getFiliere());
             if(glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig).contains(typeFonctionFiliere.getCodeFiliere())){
-                log.debug("Admin fonction : check user rights");
+                log.debug("Admin fonction delete : check user rights");
                 if(isAdmin){
                     toDeleteAdditional.add(new FonctionDto(personneId, fonctionToDelete.getFiliere(), fonctionToDelete.getDiscipline(), source, structureId));
                 } else {
@@ -170,7 +163,6 @@ public class FonctionService {
             } else {
                 toDeleteAdditional.add(new FonctionDto(personneId, fonctionToDelete.getFiliere(), fonctionToDelete.getDiscipline(), source, structureId));
             }
-
         }
 
         if (!toAddAdditional.isEmpty()) {
@@ -211,8 +203,8 @@ public class FonctionService {
                     aPersonneAStructureRepository2.insertInStructure(personneId, structureId);
                     break;
                 case detach:
-                    if (!isInStructure || !toAddAdditional.isEmpty() || toDeleteAdditional.isEmpty() || officialFonctionsInStructure > 0) {
-                        log.error("Unable to detach user {} to structure {}", aPersonne.getId(), aStructure.getId());
+                    if (!isInStructure || toDeleteAdditional.isEmpty() || officialFonctionsInStructure > 0) {
+                        log.error("Unable to detach user {} of structure {}", aPersonne.getId(), aStructure.getId());
                         break;
                     }
                     aPersonneAStructureRepository2.deleteFromStructure(personneId, structureId);

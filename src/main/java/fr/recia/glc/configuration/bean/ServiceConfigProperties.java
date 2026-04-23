@@ -17,12 +17,10 @@ package fr.recia.glc.configuration.bean;
 
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
-public class RightsProperties {
-    private Map<String, ServiceConfigProperties> services;
-    private List<GroupProperties> declaredGroups;
-    private Map<String, String> declaredGroupsMap;
+public class ServiceConfigProperties {
+    private String name;
+    private Map<String, RoleProperties> roles;
 }

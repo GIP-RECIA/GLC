@@ -110,8 +110,9 @@ public class RightsService {
         for (String service : glcProperties.getRights().getServices().keySet()) {
             ServiceAccess serviceAccess = new ServiceAccess();
             serviceAccess.setService(service);
+            serviceAccess.setName(glcProperties.getRights().getServices().get(service).getName());
             List<Right> rights = new ArrayList<>();
-            final Map<String, RoleProperties> rolesByService = glcProperties.getRights().getServices().get(service);
+            final Map<String, RoleProperties> rolesByService = glcProperties.getRights().getServices().get(service).getRoles();
             for (String role : rolesByService.keySet()) {
                 try {
                     final RoleProperties roleProperties = rolesByService.get(role);
@@ -180,18 +181,18 @@ public class RightsService {
      */
     public ResponseEntity<WsAddMemberResponse> addRight(String service, String role, String memberToAdd, String branch, String etabGroup, String actAs) {
         // Récupération du targetGroup depuis la conf pour être sûr qu'on ajoute sur le bon
-        String targetGroup = GroupPathGenerator.groupPathFromTemplate(glcProperties.getRights().getServices().get(service).get(role).getTargetGroup(), branch, etabGroup);
+        String targetGroup = GroupPathGenerator.groupPathFromTemplate(glcProperties.getRights().getServices().get(service).getRoles().get(role).getTargetGroup(), branch, etabGroup);
         // Vérification qu'on a bien le droit d'ajouter le membre en question
         // Le défaut de ce sytème de vérification c'est qu'il faut les avoir chargé dans le cache d'abord (donc avec un GET) mais normalement
         // on est pas censé faire des POST directement si on passe par l'UI
         if (isGroup(memberToAdd)) {
-            if (!glcProperties.getRights().getServices().get(service).get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToAdd))
-                && !glcProperties.getRights().getServices().get(service).get(role).getMandatoryGroups().contains(invertedTemplateCache.get(memberToAdd))) {
+            if (!glcProperties.getRights().getServices().get(service).getRoles().get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToAdd))
+                && !glcProperties.getRights().getServices().get(service).getRoles().get(role).getMandatoryGroups().contains(invertedTemplateCache.get(memberToAdd))) {
                 throw new UnauthorizedGroupModificationException("Can't add member " + memberToAdd + " for role " + role + " in service " + service);
             }
 
         } else {
-            if (!glcProperties.getRights().getServices().get(service).get(role).isAllowPeople()) {
+            if (!glcProperties.getRights().getServices().get(service).getRoles().get(role).isAllowPeople()) {
                 throw new UnauthorizedPeopleModificationException("Can't add member " + memberToAdd + " for role" + role + " in service " + service);
             }
         }
@@ -203,14 +204,14 @@ public class RightsService {
      */
     public ResponseEntity<WsDeleteMemberResponse> removeRight(String service, String role, String memberToRemove, String branch, String etabGroup, String actAs) {
         // Récupération du targetGroup depuis la conf pour être sûr qu'on ajoute sur le bon
-        String targetGroup = GroupPathGenerator.groupPathFromTemplate(glcProperties.getRights().getServices().get(service).get(role).getTargetGroup(), branch, etabGroup);
+        String targetGroup = GroupPathGenerator.groupPathFromTemplate(glcProperties.getRights().getServices().get(service).getRoles().get(role).getTargetGroup(), branch, etabGroup);
         // Vérification qu'on a bien le droit de supprimer le membre en question
         if (isGroup(memberToRemove)) {
-            if (!glcProperties.getRights().getServices().get(service).get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToRemove))) {
+            if (!glcProperties.getRights().getServices().get(service).getRoles().get(role).getPossibleGroups().contains(invertedTemplateCache.get(memberToRemove))) {
                 throw new UnauthorizedGroupModificationException("Can't remove member " + memberToRemove + " for role" + role + " in service " + service);
             }
         } else {
-            if (!glcProperties.getRights().getServices().get(service).get(role).isAllowPeople()) {
+            if (!glcProperties.getRights().getServices().get(service).getRoles().get(role).isAllowPeople()) {
                 throw new UnauthorizedPeopleModificationException("Can't remove member " + memberToRemove + " for role" + role + " in service " + service);
             }
         }
