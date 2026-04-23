@@ -30,33 +30,51 @@ const { t } = useI18n()
 
 <template>
   <div class="structure-card">
-    <div class="info">
-      <RouterLink
-        v-if="structure.authorizedForPrincipal"
-        :to="{
-          name: 'structure',
-          params: { structureId: structure.id },
+    <RouterLink
+      v-if="structure.authorizedForPrincipal"
+      :to="{
+        name: 'structure',
+        params: { structureId: structure.id },
+      }"
+    >
+      <span>
+        {{ structure.nom }}
+      </span>
+      <span
+        :style="{
+          visibility: (structure.type || structure.uai)
+            ? undefined
+            : 'hidden',
         }"
-      >
-        {{ structure.nom }}
-        <span aria-hidden="true" />
-      </RouterLink>
-      <p v-else>
-        {{ structure.nom }}
-      </p>
-
-      <p
-        v-if="structure.type || structure.uai"
         class="description"
       >
         {{ structure.type }}
         <span v-if="structure.uai">
           {{ structure.uai }}
         </span>
-      </p>
-    </div>
+        <span aria-hidden="true" />
+      </span>
+    </RouterLink>
+    <p v-else>
+      <span>
+        {{ structure.nom }}
+      </span>
+      <span
+        :style="{
+          visibility: (structure.type || structure.uai)
+            ? undefined
+            : 'hidden',
+        }"
+        class="description"
+      >
+        {{ structure.type }}
+        <span v-if="structure.uai">
+          {{ structure.uai }}
+        </span>
+      </span>
+    </p>
 
-    <div
+    <p
       v-if="
         structure.structureRattachement
           || structure.structureCourante
@@ -82,7 +100,7 @@ const { t } = useI18n()
           size="lg"
         />
       </span>
-    </div>
+    </p>
   </div>
 </template>
 
@@ -106,7 +124,7 @@ const { t } = useI18n()
     outline 0.15s ease-out,
     box-shadow 0.15s ease-out;
 
-  &:has(> .info > a) {
+  &:has(> a) {
     &:hover,
     &:has(:focus-visible) {
       outline: 2px solid var(--#{$prefix}primary);
@@ -114,25 +132,24 @@ const { t } = useI18n()
     }
   }
 
-  > .info {
+  > a {
+    @include unstyled-link;
     flex: 1 1 auto;
-
-    > a {
-      @include unstyled-link;
-
-      &:focus-visible {
-        outline: none;
-      }
-
-      > span {
-        position: absolute;
-        z-index: 1;
-        inset: 0;
-      }
-    }
+    display: flex;
+    flex-direction: column;
 
     > .description {
       opacity: 0.6;
+    }
+
+    > span[aria-hidden='true'] {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+    }
+
+    &:focus-visible {
+      outline: none;
     }
   }
 
@@ -142,6 +159,8 @@ const { t } = useI18n()
     grid-template-rows: repeat(2, 1fr);
     align-items: center;
     gap: 4px;
+    margin-top: -2px;
+    margin-bottom: -2px;
 
     > * {
       z-index: 1;

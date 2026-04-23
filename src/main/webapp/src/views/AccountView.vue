@@ -167,27 +167,30 @@ const table = useVueTable({
           v-for="row in table.getRowModel().rows"
           :key="row.id"
         >
-          <div class="structure-card">
-            <RouterLink
-              :to="{
-                name: 'structure',
-                params: { structureId: row.original.id },
-              }"
-            >
+          <RouterLink
+            :to="{
+              name: 'structure',
+              params: { structureId: row.original.id },
+            }"
+            class="structure-link"
+          >
+            <span>
               {{ row.original.nom }}
-              <span aria-hidden="true" />
-            </RouterLink>
-
-            <p
-              v-if="row.original.type || row.original.uai"
+            </span>
+            <span
+              :style="{
+                visibility: (row.original.type || row.original.uai)
+                  ? undefined
+                  : 'hidden',
+              }"
               class="description"
             >
               {{ row.original.type }}
               <span v-if="row.original.uai">
                 {{ row.original.uai }}
               </span>
-            </p>
-          </div>
+            </span>
+          </RouterLink>
         </li>
       </ul>
 
@@ -229,7 +232,6 @@ const table = useVueTable({
   .structures {
     > ul {
       @include unstyled-list;
-      grid-auto-rows: 1fr;
       align-items: unset;
     }
   }
@@ -251,10 +253,11 @@ const table = useVueTable({
   }
 }
 
-.structure-card {
-  height: 100%;
+.structure-link {
+  @include unstyled-link;
+  display: flex;
+  flex-direction: column;
   padding: 16px;
-  position: relative;
   border-radius: 10px;
   box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
   outline-color: transparent;
@@ -263,30 +266,15 @@ const table = useVueTable({
     outline 0.15s ease-out,
     box-shadow 0.15s ease-out;
 
-  &:has(> a) {
-    &:hover,
-    &:has(:focus-visible) {
-      outline: 2px solid var(--#{$prefix}primary);
-      box-shadow: var(--#{$prefix}shadow-hover) HEXToRGBA(var(--#{$prefix}primary), 0.2);
-    }
-  }
-
-  > a {
-    @include unstyled-link;
-
-    &:focus-visible {
-      outline: none;
-    }
-
-    > span {
-      position: absolute;
-      z-index: 1;
-      inset: 0;
-    }
-  }
-
   > .description {
     opacity: 0.6;
+    min-height: 1.5em;
+  }
+
+  &:hover,
+  &:focus-visible {
+    outline: 2px solid var(--#{$prefix}primary);
+    box-shadow: var(--#{$prefix}shadow-hover) HEXToRGBA(var(--#{$prefix}primary), 0.2);
   }
 }
 </style>
