@@ -115,6 +115,7 @@ const extendedServiceRights = computed<{
 
         <footer>
           <button
+            type="button"
             :aria-label="`${t('button.edit')} - ${right.description}`"
             class="btn-primary small"
             @click="$emit('edit', serviceRights.service, right)"

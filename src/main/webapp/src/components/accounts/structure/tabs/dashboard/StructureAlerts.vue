@@ -72,6 +72,7 @@ const { t } = useI18n()
 
           <footer>
             <button
+              type="button"
               class="btn-tertiary"
             >
               {{ t('button.add') }}

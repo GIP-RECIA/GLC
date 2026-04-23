@@ -40,6 +40,7 @@ function toggle(): void {
   <div class="disclosure">
     <header>
       <button
+        type="button"
         :aria-expanded="isExpanded"
         :aria-controls="id"
         @click="toggle"

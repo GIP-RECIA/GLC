@@ -145,6 +145,7 @@ function deleteLevel(): void {
       v-if="isEdit"
     >
       <button
+        type="button"
         :aria-label="`${t('button.delete')} - ${levelRestriction.niveau}`"
         class="btn-secondary small"
         @click="deleteLevel"

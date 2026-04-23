@@ -236,6 +236,7 @@ function onAttach(): void {
         <button
           :id="`user-tab-${index}`"
           ref="tab-refs"
+          type="button"
           role="tab"
           :aria-selected="activeTab === index"
           :aria-controls="`user-tabpanel-${index}`"

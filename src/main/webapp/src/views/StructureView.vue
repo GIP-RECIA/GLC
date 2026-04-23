@@ -126,6 +126,7 @@ function onCreate(): void {
         <button
           :id="`structure-tab-${index}`"
           ref="tab-refs"
+          type="button"
           role="tab"
           :aria-selected="activeTab === index"
           :aria-controls="`structure-tabpanel-${index}`"

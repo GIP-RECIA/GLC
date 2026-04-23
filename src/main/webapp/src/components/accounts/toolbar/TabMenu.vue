@@ -86,6 +86,7 @@ function close(_: Event | undefined = undefined, resetFocus: boolean = true): vo
   >
     <button
       ref="dropdown-button"
+      type="button"
       :aria-expanded="isExpanded"
       aria-controls="dropdown-tab-menu"
       aria-label="Menu onglets"

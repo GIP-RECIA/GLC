@@ -66,6 +66,7 @@ function close() {
 
       <v-card-actions>
         <button
+          type="button"
           class="btn-secondary"
           @click="close"
         >

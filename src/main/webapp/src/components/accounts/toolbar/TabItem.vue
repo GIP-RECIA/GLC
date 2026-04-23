@@ -40,6 +40,7 @@ defineEmits<{
       <span />
     </router-link>
     <button
+      type="button"
       :aria-label="`Fermer l'onglet ${name}`"
       @click="$emit('close', id)"
     >

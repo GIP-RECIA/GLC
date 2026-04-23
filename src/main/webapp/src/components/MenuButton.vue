@@ -101,6 +101,7 @@ function handleItemClick(key: string | number) {
   >
     <button
       ref="dropdown-button"
+      type="button"
       :aria-expanded="isExpanded"
       :aria-controls="id"
       :aria-label="aLabel"
@@ -122,6 +123,7 @@ function handleItemClick(key: string | number) {
         :key="item.uid"
       >
         <button
+          type="button"
           @click="handleItemClick(item.uid)"
         >
           {{ item.name }}

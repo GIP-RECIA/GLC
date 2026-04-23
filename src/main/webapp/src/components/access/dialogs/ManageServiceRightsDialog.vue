@@ -231,6 +231,7 @@ watchEffect(
               </div>
 
               <button
+                type="button"
                 class="btn-secondary small"
                 @click="
                   currentUsers.includes(user.id)
@@ -260,6 +261,7 @@ watchEffect(
 
       <v-card-actions>
         <button
+          type="button"
           class="btn-secondary"
           @click="close"
         >
@@ -269,6 +271,7 @@ watchEffect(
           />
         </button>
         <button
+          type="button"
           :disabled="!canSave"
           class="btn-primary"
           @click="save"

@@ -35,6 +35,7 @@ defineProps<{
     class="pagination"
   >
     <button
+      type="button"
       class="btn-secondary small circle"
       :disabled="!table.getCanPreviousPage()"
       @click="() => table.setPageIndex(0)"
@@ -45,6 +46,7 @@ defineProps<{
     </button>
 
     <button
+      type="button"
       class="btn-secondary small circle"
       :disabled="!table.getCanPreviousPage()"
       @click="() => table.previousPage()"
@@ -63,6 +65,7 @@ defineProps<{
     </p>
 
     <button
+      type="button"
       class="btn-secondary small circle"
       :disabled="!table.getCanNextPage()"
       @click="() => table.nextPage()"
@@ -73,6 +76,7 @@ defineProps<{
     </button>
 
     <button
+      type="button"
       class="btn-secondary small circle"
       :disabled="!table.getCanNextPage()"
       @click="() => table.setPageIndex(table.getPageCount() - 1)"

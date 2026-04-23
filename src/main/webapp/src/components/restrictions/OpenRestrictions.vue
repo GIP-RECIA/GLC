@@ -254,6 +254,7 @@ function addLevel(uid: string | number): void {
         />
       </MenuButton>
       <button
+        type="button"
         :aria-label="`${t(`button.${isEdit ? 'cancel' : 'edit'}`)} - ${t('page.restriction.section.open.header')}`"
         :disabled="disableEdit && !isEdit"
         class="small"
@@ -267,6 +268,7 @@ function addLevel(uid: string | number): void {
       </button>
       <button
         v-show="isEdit"
+        type="button"
         :aria-label="`${t('button.save')} - ${t('page.restriction.section.open.header')}`"
         :disabled="!canSave"
         class="btn-primary small"
