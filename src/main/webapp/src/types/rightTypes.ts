@@ -16,6 +16,7 @@
 
 export interface ServiceRights {
   service: string
+  name: string
   rights: ServiceRight[]
 }
 

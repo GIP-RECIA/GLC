@@ -72,7 +72,7 @@ const extendedServiceRights = computed<{
   <div class="service-card">
     <header>
       <h3>
-        {{ serviceRights.service }}
+        {{ serviceRights.name }}
       </h3>
     </header>
 
@@ -139,19 +139,16 @@ const extendedServiceRights = computed<{
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
-  padding: 16px;
 
   > .body {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    display: grid;
+    gap: 24px;
 
     > .role-card {
       display: flex;
       flex-direction: column;
-      border-radius: 6px;
-      border: 1px solid var(--#{$prefix}stroke);
+      border-radius: 10px;
+      box-shadow: var(--#{$prefix}shadow-neutral) HEXToRGBA($black, 0.1);
       padding: 16px;
 
       > ul {
@@ -174,6 +171,13 @@ const extendedServiceRights = computed<{
         justify-content: flex-end;
         margin-top: 24px;
       }
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    > .body {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
   }
 }

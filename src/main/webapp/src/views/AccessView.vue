@@ -186,11 +186,10 @@ async function save(
 
 .services-grid {
   display: grid;
-  gap: 24px;
+  gap: 32px;
 
   @media (width >= map.get($grid-breakpoints, md)) {
-    gap: 16px;
-    grid-template-columns: repeat(auto-fill, minmax(512px, 1fr));
+    gap: 48px;
   }
 }
 </style>
