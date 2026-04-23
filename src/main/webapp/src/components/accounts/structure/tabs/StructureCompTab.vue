@@ -128,15 +128,8 @@ const filters = [
 @use '@gip-recia/ui/core/variables' as *;
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
-</style>
 
-<style lang="scss">
-@use 'sass:map';
-@use '@gip-recia/ui/core/variables' as *;
-@use '@gip-recia/ui/functions' as *;
-@use '@gip-recia/ui/mixins' as *;
-
-.disclosure {
+:deep(.disclosure) {
   > header > button {
     > h2 {
       margin-bottom: 0;
