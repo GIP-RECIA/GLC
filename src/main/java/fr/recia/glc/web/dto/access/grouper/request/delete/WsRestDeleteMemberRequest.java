@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package fr.recia.glc.web.dto.access.grouper.request.delete;
 
 import fr.recia.glc.web.dto.access.grouper.request.ActAsSubjectLookup;
