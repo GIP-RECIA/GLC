@@ -31,6 +31,15 @@ export enum Etat {
   Incertain_Export_Modify = 'Incertain_Export_Modify',
 }
 
+export const etatFilters: Etat[] = [
+  Etat.Invalide,
+  Etat.Valide,
+  Etat.Bloque,
+  Etat.Delete,
+  Etat.Deleting,
+  Etat.Incertain,
+]
+
 export const etatMap: Record<Etat, enumValues> = {
   [Etat.Inconnu]: {
     i18n: 'page.user.status.inconnu',

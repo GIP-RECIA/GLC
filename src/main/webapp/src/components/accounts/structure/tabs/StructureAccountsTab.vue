@@ -42,7 +42,7 @@ import Pagination from '@/components/Pagination.vue'
 import {
   CategoriePersonne,
   categoriePersonneMap,
-  Etat,
+  etatFilters,
   etatMap,
 } from '@/types/enums/index.ts'
 import { getIconDefinition, getStateLabel } from '@/utils/index.ts'
@@ -101,7 +101,7 @@ const filters = [
         key: 'state-all',
         value: 'Tous les états',
       },
-      ...Object.values(Etat).map(etat => ({
+      ...etatFilters.map(etat => ({
         key: etat,
         value: t(etatMap[etat].i18n),
       })),

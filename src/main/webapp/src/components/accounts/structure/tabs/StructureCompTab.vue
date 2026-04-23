@@ -18,7 +18,7 @@
 import type { Structure } from '@/types/index.ts'
 import { useI18n } from 'vue-i18n'
 import Disclosure from '@/components/Disclosure.vue'
-import { Etat, etatMap } from '@/types/enums/index.ts'
+import { etatFilters, etatMap } from '@/types/enums/index.ts'
 import DisciplineCard from './comp/DisciplineCard.vue'
 import FiliereWithDisciplines from './comp/FiliereWithDisciplines.vue'
 import '@gip-recia/ui-webcomponents/dist/r-filters.js'
@@ -63,7 +63,7 @@ const filters = [
         key: 'state-all',
         value: 'Tous les états',
       },
-      ...Object.values(Etat).map(etat => ({
+      ...etatFilters.map(etat => ({
         key: etat,
         value: t(etatMap[etat].i18n),
       })),

@@ -15,12 +15,13 @@
 -->
 
 <script setup lang="ts">
+import type { Etat } from '@/types/enums/index.ts'
 import type { Structure } from '@/types/index.ts'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Etat, etatMap } from '@/types/enums/index.ts'
+import { etatFilters, etatMap } from '@/types/enums/index.ts'
 
 const props = defineProps<{
   structure?: Structure
@@ -33,14 +34,7 @@ defineEmits<{
 const { t } = useI18n()
 
 const accountStates = computed(() => (
-  [
-    Etat.Invalide,
-    Etat.Valide,
-    Etat.Bloque,
-    Etat.Delete,
-    Etat.Deleting,
-    Etat.Incertain,
-  ].map(etat => ({
+  etatFilters.map(etat => ({
     etat,
     icon: faUser,
     count: props.structure?.personnes.filter(personne => personne.etat === etat).length ?? 0,
