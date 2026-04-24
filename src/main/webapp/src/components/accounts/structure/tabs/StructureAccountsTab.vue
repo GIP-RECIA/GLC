@@ -150,7 +150,7 @@ const hasUid = computed<boolean>(() =>
 
 const columnHelper = createColumnHelper<AccountUser>()
 const globalFilter = ref<string>()
-const columns = [
+const columns = computed(() => [
   {
     id: 'select',
     header: ({ table }: { table: any }) => h(IndeterminateCheckbox, {
@@ -260,7 +260,7 @@ const columns = [
     ),
     enableGlobalFilter: false,
   },
-]
+])
 const rowSelection = ref<RowSelectionState>({})
 const sorting = ref<SortingState>([])
 
@@ -268,7 +268,9 @@ const table = useVueTable({
   get data() {
     return data.value
   },
-  columns,
+  get columns() {
+    return columns.value
+  },
   state: {
     get rowSelection() {
       return rowSelection.value
