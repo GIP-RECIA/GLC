@@ -20,4 +20,5 @@ import lombok.Data;
 @Data
 public class RestrictionRentreeProperties {
     private String url;
+    private String apiKey;
 }

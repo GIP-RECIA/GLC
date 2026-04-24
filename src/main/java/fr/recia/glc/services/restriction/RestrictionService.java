@@ -18,7 +18,9 @@ package fr.recia.glc.services.restriction;
 import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.web.dto.restriction.RestrictionEtab;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,6 +29,7 @@ public class RestrictionService {
 
     private final RestTemplate restTemplate;
     private final GLCProperties glcProperties;
+    private final static String API_KEY_HEADER = "x-api-key";
 
     public RestrictionService(RestTemplate restTemplateRestriction, GLCProperties glcProperties) {
         this.restTemplate = restTemplateRestriction;
@@ -34,11 +37,16 @@ public class RestrictionService {
     }
 
     public RestrictionEtab getRestrictions(String uai) {
-        return restTemplate.exchange(glcProperties.getRestrictionRentree().getUrl() + "/" + uai, HttpMethod.GET, null, RestrictionEtab.class).getBody();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(API_KEY_HEADER, glcProperties.getRestrictionRentree().getApiKey());
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        return restTemplate.exchange(glcProperties.getRestrictionRentree().getUrl() + "/" + uai, HttpMethod.GET, entity, RestrictionEtab.class).getBody();
     }
 
     public void setNewRestriction(String uai, RestrictionEtab restrictionEtab) {
-        HttpEntity<?> entity = new HttpEntity<>(restrictionEtab);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(API_KEY_HEADER, glcProperties.getRestrictionRentree().getApiKey());
+        HttpEntity<?> entity = new HttpEntity<>(restrictionEtab, headers);
         restTemplate.exchange(glcProperties.getRestrictionRentree().getUrl() + "/" + uai, HttpMethod.POST, entity, RestrictionEtab.class);
     }
 
