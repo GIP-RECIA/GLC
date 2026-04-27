@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-import { defineQuery, useMutation, useQuery } from '@pinia/colada'
+import {
+  defineQuery,
+  useMutation,
+  useQuery,
+  useQueryCache,
+} from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   getUser,
+  removeUserOneAdditional,
   searchUser,
   setUserAdditional,
-  setUserAdditionalWithCode,
-  setUserAdditionalWithId,
+  setUserOneAdditional,
 } from '@/services/api/index.ts'
+
+const queryCache = useQueryCache()
 
 const useUserQuery = defineQuery(() => {
   const route = useRoute()
@@ -49,25 +56,34 @@ function useSearchUserQuery(name: string) {
 function useSetUserAdditionalMutation() {
   return useMutation({
     mutation: setUserAdditional,
+    onSettled: (_data, _error, vars) => {
+      queryCache.invalidateQueries({ key: ['user', vars.id] })
+    },
   })
 }
 
-function useSetUserAdditionalWithIdMutation() {
+function useSetUserOneAdditionalMutation() {
   return useMutation({
-    mutation: setUserAdditionalWithId,
+    mutation: setUserOneAdditional,
+    onSettled: (_data, _error, vars) => {
+      queryCache.invalidateQueries({ key: ['user', vars.id] })
+    },
   })
 }
 
-function useSetUserAdditionalWithCodeMutation() {
+function useRemoveUserOneAdditionalMutation() {
   return useMutation({
-    mutation: setUserAdditionalWithCode,
+    mutation: removeUserOneAdditional,
+    onSettled: (_data, _error, vars) => {
+      queryCache.invalidateQueries({ key: ['user', vars.id] })
+    },
   })
 }
 
 export {
+  useRemoveUserOneAdditionalMutation,
   useSearchUserQuery,
   useSetUserAdditionalMutation,
-  useSetUserAdditionalWithCodeMutation,
-  useSetUserAdditionalWithIdMutation,
+  useSetUserOneAdditionalMutation,
   useUserQuery,
 }

@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { UserFunction } from '@/types/index.ts'
+import type { FunctionForm, UserStructure } from '@/types/index.ts'
 import {
   faLink,
   faLock,
@@ -81,10 +81,13 @@ const {
 
 const dialogState = ref<boolean>(false)
 
-const fonction = ref<UserFunction>()
+const structure = ref<UserStructure>()
 
-function editFunction(payload?: UserFunction): void {
-  fonction.value = payload
+const fonction = ref<FunctionForm>()
+
+function editFunction(struct: UserStructure, fun?: FunctionForm): void {
+  structure.value = struct
+  fonction.value = fun
   dialogState.value = true
 }
 
@@ -275,6 +278,8 @@ function onAttach(): void {
 
   <ManageAdditionalDialog
     v-model="dialogState"
+    :user="data"
+    :structure="structure"
     :fonction="fonction"
     @update:model-value="dialogState = false"
   />

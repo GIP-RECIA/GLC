@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+import type { Ref } from 'vue'
 import { defineQuery, useQuery } from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   getEtablissements,
+  getPossibleFunctions,
   getStructure,
   getStructures,
 } from '@/services/api/index.ts'
@@ -52,8 +54,18 @@ const useStructureQuery = defineQuery(() => {
   }))
 })
 
+function usePossibleFunctionsQuery(structureId: Ref<number>) {
+  return useQuery(() => ({
+    key: ['possible-functions', structureId.value],
+    query: () => getPossibleFunctions(structureId.value),
+    enabled: !Number.isNaN(structureId.value),
+    staleTime: 1000 * 60 * 60,
+  }))
+}
+
 export {
   useEtablissementsQuery,
+  usePossibleFunctionsQuery,
   useStructureQuery,
   useStructuresQuery,
 }

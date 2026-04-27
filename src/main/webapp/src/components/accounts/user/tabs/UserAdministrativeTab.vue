@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { User, UserFunction } from '@/types/index.ts'
+import type { FunctionForm, User, UserStructure } from '@/types/index.ts'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
@@ -26,17 +26,23 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  editFunction: [fonction: UserFunction | undefined]
+  editFunction: [
+    structure: UserStructure,
+    fonction: FunctionForm | undefined,
+  ]
 }>()
 
 const { t } = useI18n()
 
-function addFunction(): void {
-  emit('editFunction', undefined)
+function addFunction(structure: UserStructure): void {
+  emit('editFunction', structure, undefined)
 }
 
-function editFunction(fonction: UserFunction): void {
-  emit('editFunction', fonction)
+function editFunction(
+  structure: UserStructure,
+  fonction: FunctionForm,
+): void {
+  emit('editFunction', structure, fonction)
 }
 </script>
 
@@ -78,12 +84,11 @@ function editFunction(fonction: UserFunction): void {
           </h3>
         </header>
 
-        <!-- TODO: manage rights click -->
         <div class="body">
           <UserFunctions
             :fonctions="structure.additionalFonctions"
-            :clickable="false"
-            @tag-click="editFunction"
+            :clickable="structure.authorizedForPrincipal"
+            @tag-click="(fun) => editFunction(structure, fun)"
           />
         </div>
 
@@ -92,7 +97,7 @@ function editFunction(fonction: UserFunction): void {
             v-if="structure.authorizedForPrincipal"
             type="button"
             class="btn-primary small"
-            @click="addFunction"
+            @click="addFunction(structure)"
           >
             {{ t('button.add') }}
             <FontAwesomeIcon

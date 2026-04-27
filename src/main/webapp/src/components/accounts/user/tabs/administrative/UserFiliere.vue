@@ -16,8 +16,8 @@
 
 <script setup lang="ts">
 import type {
+  FunctionForm,
   UserDisciplineWithDate,
-  UserFunction,
   UserFunctionExtended,
 } from '@/types/index.ts'
 import UserDiscipline from './UserDiscipline.vue'
@@ -33,13 +33,15 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  tagClick: [UserFunction]
+  tagClick: [FunctionForm]
 }>()
 
 function tagClick(discipline: UserDisciplineWithDate): void {
   emit('tagClick', {
-    ...props.fonction,
-    disciplines: [discipline],
+    filiere: props.fonction.id,
+    discipline: discipline.id,
+    dateDebut: discipline.dateDebut,
+    dateFin: discipline.dateFin,
   })
 }
 </script>

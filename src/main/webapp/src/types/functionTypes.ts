@@ -18,8 +18,8 @@ import type { endInfo } from './endInfoTypes.ts'
 import type { FunctionUser } from './userTypes.ts'
 
 export interface FunctionDate {
-  dateFin?: string
   dateDebut?: string
+  dateFin?: string
 }
 
 export interface CommonFiliere {
@@ -49,6 +49,10 @@ export type UserDisciplineWithDateAndEndInfo = CommonDiscipline
     endInfo?: endInfo
   }
 
+export type PossibleFunction = CommonFiliere & {
+  disciplines: CommonDiscipline[]
+}
+
 export type UserFunction = CommonFiliere & {
   disciplines: UserDisciplineWithDate[]
 }
@@ -70,7 +74,7 @@ export interface SetUserAdditionalParams {
   requiredAction: string
 }
 
-export type SetUserAdditionalWithIdParams = Omit<
+export type SetUserOneAdditionalParams = Omit<
   SetUserAdditionalParams,
   'toAddFunctions'
   | 'toDeleteFunctions'
@@ -78,10 +82,10 @@ export type SetUserAdditionalWithIdParams = Omit<
   toAddFunction: FunctionForm
 }
 
-export type SetUserAdditionalWithCodeParams = Omit<
+export type RemoveUserOneAdditionalParams = Omit<
   SetUserAdditionalParams,
   'toAddFunctions'
   | 'toDeleteFunctions'
 > & {
-  additionalCode: FunctionForm
+  toDeleteFunction: FunctionForm
 }

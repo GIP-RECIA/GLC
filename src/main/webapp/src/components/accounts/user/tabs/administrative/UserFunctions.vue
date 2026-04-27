@@ -15,7 +15,11 @@
 -->
 
 <script setup lang="ts">
-import type { UserFunction, UserFunctionExtended } from '@/types/index.ts'
+import type {
+  FunctionForm,
+  UserFunction,
+  UserFunctionExtended,
+} from '@/types/index.ts'
 import { computed } from 'vue'
 import { getDateFin } from '@/utils/index.ts'
 import UserFiliere from './UserFiliere.vue'
@@ -31,7 +35,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  tagClick: [function: UserFunction]
+  tagClick: [function: FunctionForm]
 }>()
 
 const data = computed<UserFunctionExtended[] | undefined>(() => (
@@ -55,7 +59,7 @@ const data = computed<UserFunctionExtended[] | undefined>(() => (
 ))
 
 function onTagClick(
-  payload: UserFunction,
+  payload: FunctionForm,
 ): void {
   emit('tagClick', payload)
 }

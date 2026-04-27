@@ -15,10 +15,10 @@
  */
 
 import type {
+  RemoveUserOneAdditionalParams,
   SearchUser,
   SetUserAdditionalParams,
-  SetUserAdditionalWithCodeParams,
-  SetUserAdditionalWithIdParams,
+  SetUserOneAdditionalParams,
   User,
 } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
@@ -104,12 +104,12 @@ async function setUserAdditional({
   )
 }
 
-function setUserAdditionalWithId({
+function setUserOneAdditional({
   id,
   structureId,
   toAddFunction,
   requiredAction,
-}: SetUserAdditionalWithIdParams) {
+}: SetUserOneAdditionalParams) {
   return setUserAdditional({
     id,
     structureId,
@@ -119,22 +119,19 @@ function setUserAdditionalWithId({
   })
 }
 
-async function setUserAdditionalWithCode({
+function removeUserOneAdditional({
   id,
   structureId,
-  additionalCode,
+  toDeleteFunction,
   requiredAction,
-}: SetUserAdditionalWithCodeParams) {
-  return !!(
-    await axios.post<void>(
-      `/api/personne/${id}/fonction`,
-      {
-        structureId,
-        additionalCode,
-        requiredAction,
-      },
-    )
-  )
+}: RemoveUserOneAdditionalParams) {
+  return setUserAdditional({
+    id,
+    structureId,
+    toAddFunctions: [],
+    toDeleteFunctions: [toDeleteFunction],
+    requiredAction,
+  })
 }
 
 export {
@@ -142,10 +139,10 @@ export {
   forceDeleteUser,
   getUser,
   lockUser,
+  removeUserOneAdditional,
   searchUser,
   setUserAdditional,
-  setUserAdditionalWithCode,
-  setUserAdditionalWithId,
+  setUserOneAdditional,
   undoDeleteUser,
   unlockUser,
 }

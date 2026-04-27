@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import type { SearchStructure, Structure } from '@/types/index.ts'
+import type {
+  PossibleFunction,
+  SearchStructure,
+  Structure,
+} from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
 async function getStructures() {
@@ -41,8 +45,17 @@ async function getStructure(id: number) {
   ).data
 }
 
+async function getPossibleFunctions(id: number) {
+  return (
+    await axios.get<PossibleFunction[]>(
+      `/api/structure/${id}/fonctions`,
+    )
+  ).data
+}
+
 export {
   getEtablissements,
+  getPossibleFunctions,
   getStructure,
   getStructures,
 }
