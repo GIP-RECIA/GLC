@@ -15,7 +15,12 @@
 -->
 
 <script setup lang="ts">
-import type { RowSelectionState, SortingState } from '@tanstack/vue-table'
+import type {
+  ExpandedState,
+  Row,
+  RowSelectionState,
+  SortingState,
+} from '@tanstack/vue-table'
 import type { AccountUser, Structure } from '@/types/index.ts'
 import {
   faAngleDown,
@@ -144,9 +149,61 @@ watch(
   { immediate: true },
 )
 
-const hasUid = computed<boolean>(() =>
-  data.value.some(row => row.uid != null),
-)
+// const hasUid = computed<boolean>(() =>
+//   data.value.some(row => row.uid != null),
+// )
+
+function renderActions(row: Row<AccountUser>) {
+  return [
+    h(
+      RouterLink,
+      {
+        to: { name: 'user', params: { userId: row.original.id } },
+        class: 'btn-secondary small circle',
+      },
+      () => [
+        h(
+          'span',
+          {
+            title: 'Consulter',
+          },
+          [
+            h(FontAwesomeIcon, {
+              icon: faEye,
+            }),
+          ],
+        ),
+      ],
+    ),
+    h(
+      'button',
+      {
+        type: 'button',
+        ariaExpanded: row.getIsExpanded(),
+        ariaControls: `user-menu-${row.original.id}`,
+        class: 'btn-secondary small circle',
+        onClick: row.getToggleExpandedHandler(),
+      },
+      [
+        h(
+          'span',
+          {
+            title: 'Développer',
+          },
+          [
+            h(FontAwesomeIcon, {
+              icon: faAngleDown,
+              style: {
+                rotate: row.getIsExpanded() ? '180deg' : undefined,
+              },
+            }),
+          ],
+        ),
+      ],
+    ),
+
+  ]
+}
 
 const columnHelper = createColumnHelper<AccountUser>()
 const globalFilter = ref<string>()
@@ -166,6 +223,7 @@ const columns = computed(() => [
     enableGlobalFilter: false,
   },
   columnHelper.accessor('etat', {
+    id: 'etat',
     header: t('page.user.status.header'),
     cell: (info) => {
       const etat = {
@@ -203,66 +261,50 @@ const columns = computed(() => [
     enableGlobalFilter: false,
   }),
   columnHelper.accessor('nom', {
+    id: 'nom',
     header: t('page.user.info.identity.lastName'),
   }),
   columnHelper.accessor('prenom', {
+    id: 'prenom',
     header: t('page.user.info.identity.firstName'),
   }),
-  ...(
-    hasUid.value
-      ? [
-          columnHelper.accessor('uid', {
-            header: t('page.user.info.account.uid'),
-          }),
-        ]
-      : []
-  ),
-  columnHelper.accessor('categoriePersonne', {
-    header: t('page.user.category.header'),
-    cell: info => t(categoriePersonneMap[info.getValue()].i18n),
-    enableGlobalFilter: false,
-  }),
-  columnHelper.accessor('login', {
-    header: t('page.user.info.account.login'),
-    cell: info => info.row.original.guichet
-      ? t('externalLogin')
-      : info.getValue(),
-  }),
-  columnHelper.accessor('email', {
-    header: t('page.user.info.account.email'),
-  }),
-  columnHelper.accessor('dateModification', {
-    header: t('page.user.info.context.sourceModificationDate'),
-    enableGlobalFilter: false,
-  }),
-  {
-    id: 'select',
+  // columnHelper.accessor('categoriePersonne', {
+  //   header: t('page.user.category.header'),
+  //   cell: info => t(categoriePersonneMap[info.getValue()].i18n),
+  //   enableGlobalFilter: false,
+  // }),
+  // ...(
+  //   hasUid.value
+  //     ? [
+  //         columnHelper.accessor('uid', {
+  //           header: t('page.user.info.account.uid'),
+  //         }),
+  //       ]
+  //     : []
+  // ),
+  // columnHelper.accessor('login', {
+  //   header: t('page.user.info.account.login'),
+  //   cell: info => info.row.original.guichet
+  //     ? t('externalLogin')
+  //     : info.getValue(),
+  // }),
+  // columnHelper.accessor('email', {
+  //   header: t('page.user.info.account.email'),
+  // }),
+  // columnHelper.accessor('dateModification', {
+  //   header: t('page.user.info.context.sourceModificationDate'),
+  //   enableGlobalFilter: false,
+  // }),
+  columnHelper.display({
+    id: 'actions',
     header: 'Actions',
-    cell: ({ row }: { row: any }) => h(
-      RouterLink,
-      {
-        to: { name: 'user', params: { userId: row.original.id } },
-        class: 'btn-secondary small circle',
-      },
-      () => [
-        h(
-          'span',
-          {
-            title: 'Consulter',
-          },
-          [
-            h(FontAwesomeIcon, {
-              icon: faEye,
-            }),
-          ],
-        ),
-      ],
-    ),
+    cell: ({ row }) => renderActions(row),
     enableGlobalFilter: false,
-  },
+  }),
 ])
 const rowSelection = ref<RowSelectionState>({})
 const sorting = ref<SortingState>([])
+const expanded = ref<ExpandedState>({})
 
 const table = useVueTable({
   get data() {
@@ -281,11 +323,15 @@ const table = useVueTable({
     get sorting() {
       return sorting.value
     },
+    get expanded() {
+      return expanded.value
+    },
   },
   getCoreRowModel: getCoreRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
+  getRowCanExpand: () => true,
   initialState: {
     pagination: {
       pageSize: 20,
@@ -305,6 +351,11 @@ const table = useVueTable({
   onSortingChange: (updaterOrValue) => {
     sorting.value = typeof updaterOrValue === 'function'
       ? updaterOrValue(sorting.value)
+      : updaterOrValue
+  },
+  onExpandedChange: (updaterOrValue) => {
+    expanded.value = typeof updaterOrValue === 'function'
+      ? updaterOrValue(expanded.value)
       : updaterOrValue
   },
 })
@@ -370,57 +421,78 @@ const table = useVueTable({
       </div>
     </div>
 
-    <table>
-      <thead>
-        <tr
-          v-for="headerGroup in table.getHeaderGroups()"
-          :key="headerGroup.id"
-        >
-          <th
-            v-for="header in headerGroup.headers"
-            :key="header.id"
-            :colSpan="header.colSpan"
-            :class="[
-              header.column.getCanSort()
-                ? 'cursor-pointer select-none'
-                : '',
-            ]"
-            @click="header.column.getToggleSortingHandler()?.($event)"
+    <div class="accounts-data">
+      <table>
+        <thead>
+          <tr
+            v-for="headerGroup in table.getHeaderGroups()"
+            :key="headerGroup.id"
           >
-            <FlexRender
-              v-if="!header.isPlaceholder"
-              :render="header.column.columnDef.header"
-              :props="header.getContext()"
-            />
+            <th
+              v-for="header in headerGroup.headers"
+              :key="header.id"
+              :colSpan="header.colSpan"
+              :class="[
+                header.column.getCanSort()
+                  ? 'cursor-pointer select-none'
+                  : '',
+                header.column.columnDef.id,
+              ]"
+              @click="header.column.getToggleSortingHandler()?.($event)"
+            >
+              <FlexRender
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
+                :props="header.getContext()"
+              />
 
-            <FontAwesomeIcon
-              v-if="header.column.getIsSorted()"
-              :icon="
-                header.column.getIsSorted() === 'asc'
-                  ? faAngleUp
-                  : faAngleDown
-              "
-            />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="row in table.getRowModel().rows"
-          :key="row.id"
-        >
-          <td
-            v-for="cell in row.getVisibleCells()"
-            :key="cell.id"
+              <FontAwesomeIcon
+                v-if="header.column.getIsSorted()"
+                :icon="
+                  header.column.getIsSorted() === 'asc'
+                    ? faAngleUp
+                    : faAngleDown
+                "
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <template
+            v-for="row in table.getRowModel().rows"
+            :key="row.id"
           >
-            <FlexRender
-              :render="cell.column.columnDef.cell"
-              :props="cell.getContext()"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <tr class="contentLine">
+              <td
+                v-for="cell in row.getVisibleCells()"
+                :key="cell.id"
+                :class="cell.column.columnDef.id"
+              >
+                <FlexRender
+                  :render="cell.column.columnDef.cell"
+                  :props="cell.getContext()"
+                />
+              </td>
+            </tr>
+            <tr
+              v-show="row.getIsExpanded()"
+              :id="`user-menu-${row.original.id}`"
+              class="expandedLine"
+            >
+              <td :colspan="row.getAllCells().length">
+                <div>
+                  <div>{{ t(categoriePersonneMap[row.original.categoriePersonne].i18n) }}</div>
+                  <div>{{ row.original.uid }}</div>
+                  <div>{{ row.original.guichet ? t('externalLogin') : row.original.login }}</div>
+                  <div>{{ row.original.email }}</div>
+                  <div>{{ row.original.dateModification }}</div>
+                </div>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
 
     <Pagination
       :table="table"
@@ -444,6 +516,159 @@ const table = useVueTable({
     flex-wrap: wrap;
     justify-content: end;
     gap: 8px;
+  }
+}
+
+.accounts-data {
+  overflow-x: auto;
+
+  > table {
+    display: grid;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+
+    > thead > tr > th,
+    > tbody > tr > td {
+      &.select,
+      &.etat {
+        padding: 12px;
+        width: 40px;
+        text-align: center;
+      }
+    }
+
+    > thead {
+      position: sticky;
+      top: 0;
+      background-color: var(--#{$prefix}body-bg);
+
+      > tr > th {
+        padding: 12px;
+      }
+    }
+
+    > tbody {
+      > tr {
+        border-radius: 10px;
+        transition: background-color 0.15s ease;
+
+        &.contentLine {
+          display: grid;
+          grid-template-columns: 40px 1fr auto;
+          grid-template-areas:
+            'select nom    actions'
+            'etat   prenom actions';
+          align-items: center;
+          white-space: nowrap;
+          border-top: 1px solid var(--#{$prefix}stroke);
+
+          > td {
+            &:not(.select, .etat, .actions) {
+              padding: 12px 16px;
+            }
+
+            &.select {
+              grid-area: select;
+              padding-bottom: 0;
+            }
+
+            &.etat {
+              grid-area: etat;
+              padding-top: 0;
+            }
+
+            &.nom {
+              grid-area: nom;
+              padding-bottom: 0;
+            }
+
+            &.prenom {
+              grid-area: prenom;
+              padding-top: 0;
+            }
+
+            &.actions {
+              grid-area: actions;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+              padding: 8px;
+
+              > :deep(button) > span > svg {
+                transition: rotate 0.2s ease-in-out;
+              }
+            }
+          }
+        }
+
+        &.expandedLine {
+          > td > div {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: 1fr;
+
+            > div {
+              padding: 12px 16px;
+            }
+          }
+        }
+
+        > td {
+          vertical-align: middle;
+        }
+
+        &:hover,
+        &:has(:focus-visible) {
+          background-color: HEXToRGBA(var(--#{$prefix}btn-secondary-hover), 0.4);
+        }
+      }
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, sm)) {
+    > table {
+      display: table;
+
+      > thead > tr > th,
+      > tbody > tr > td {
+        &.actions {
+          width: 100px;
+        }
+      }
+
+      > thead > tr > th {
+        padding: 12px 16px;
+      }
+
+      > tbody > tr.contentLine {
+        display: table-row;
+
+        > td {
+          &.select {
+            padding-bottom: 12px;
+          }
+
+          &.etat {
+            padding-top: 12px;
+          }
+
+          &.nom {
+            padding-bottom: 12px;
+          }
+
+          &.prenom {
+            padding-top: 12px;
+          }
+
+          &.actions {
+            flex-direction: row;
+          }
+        }
+      }
+    }
   }
 }
 </style>
