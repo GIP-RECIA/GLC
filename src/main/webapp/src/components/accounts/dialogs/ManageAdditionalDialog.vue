@@ -19,8 +19,9 @@ import type {
   CommonDiscipline,
   FunctionForm,
   PossibleFunction,
-  User,
-  UserStructure,
+  SearchStructure,
+  SearchUser,
+  UserFunction,
 } from '@/types/index.ts'
 import {
   faFloppyDisk,
@@ -29,19 +30,32 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { debounce } from 'lodash-es'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, toRefs, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { searchUser } from '@/services/api/index.ts'
 import {
   usePossibleFunctionsQuery,
   useRemoveUserOneAdditionalMutation,
   useSetUserOneAdditionalMutation,
+  useStructuresQuery,
 } from '@/services/queries/index.ts'
+import { toISODate } from '@/utils/index.ts'
+import FunctionSelect from './manageAdditional/FunctionSelect.vue'
+import StructureSelect from './manageAdditional/StructureSelect.vue'
+import UserSelect from './manageAdditional/UserSelect.vue'
 
-const props = defineProps<{
-  user?: User
-  structure?: UserStructure
-  fonction?: FunctionForm
-}>()
+const props = withDefaults(
+  defineProps<{
+    title: string
+    userId?: number
+    structureId?: number
+    disabledFonctions?: UserFunction[]
+    editFonction?: FunctionForm
+  }>(),
+  {
+    structureId: Number.NaN,
+  },
+)
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -52,12 +66,10 @@ const modelValue = defineModel<boolean>({ required: true })
 
 const { t } = useI18n()
 
-const structureId = computed<number>(() => (
-  props.structure?.id ?? Number.NaN
-))
+const { structureId: structureIdRef } = toRefs(props)
 
 const disableFonctionEdit = computed<boolean>(() => (
-  !!props.fonction
+  !!props.editFonction
 ))
 
 const canSave = computed<boolean>(() => (
@@ -74,7 +86,7 @@ const EMPTY_FUNCTION: FunctionForm = {
 const fields = ref<FunctionForm>(EMPTY_FUNCTION)
 
 watch(
-  () => props.fonction,
+  () => props.editFonction,
   (val) => {
     if (!val) {
       fields.value = EMPTY_FUNCTION
@@ -82,20 +94,20 @@ watch(
       return
     }
 
-    fields.value = val
+    fields.value = {
+      ...val,
+      dateDebut: toISODate(val.dateDebut),
+      dateFin: toISODate(val.dateFin),
+    }
   },
 )
 
 const disabled = computed<FunctionForm[]>(() => {
   const data: FunctionForm[] = []
-  if (!props.structure || disableFonctionEdit.value) {
+  if (disableFonctionEdit.value)
     return data
-  }
 
-  [
-    ...props.structure.fonctions,
-    ...props.structure.additionalFonctions,
-  ].forEach(({ id, disciplines }) => {
+  props.disabledFonctions?.forEach(({ id, disciplines }) => {
     data.push(...disciplines.map(discipline => ({
       filiere: id,
       discipline: discipline.id,
@@ -107,7 +119,7 @@ const disabled = computed<FunctionForm[]>(() => {
   return data
 })
 
-const { data } = usePossibleFunctionsQuery(structureId)
+const { data } = usePossibleFunctionsQuery(structureIdRef)
 
 const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
   if (!disabled.value)
@@ -129,47 +141,49 @@ const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
     .filter(({ disciplines }) => disciplines.length > 0)
 })
 
-const filteredDisciplines = computed<CommonDiscipline[] | undefined>(() => {
-  return filteredFilieres.value
-    ?.find(({ id }) => id === fields.value.filiere)
-    ?.disciplines
-})
+const selectedUser = ref<SearchUser>()
 
-const isReady = ref<boolean>(false)
+const searchUserValue = ref<string>()
+
+const searchUsers = ref<SearchUser[]>()
 
 watch(
-  data,
+  searchUserValue,
   (val) => {
-    if (val)
-      debounce(() => (isReady.value = true), 500)()
+    if (!val)
+      return
+
+    debounce(() => getSearchUsers(val), 500)()
   },
 )
 
-/*
- * reset discipline when filiere change
- */
-watch(
-  () => fields.value.filiere,
-  (newValue): void => {
-    if (newValue && isReady.value)
-      fields.value.discipline = undefined
-  },
-)
+async function getSearchUsers(q: string): Promise<void> {
+  const response = await searchUser(q, {
+    staff: true,
+    check_rights: false,
+  })
+
+  searchUsers.value = response
+}
+
+const selectedStructure = ref<SearchStructure>()
+
+const { data: searchStructures } = useStructuresQuery()
 
 /* Actions */
 
 async function remove(): Promise<void> {
   const {
-    user,
-    structure,
+    userId,
+    structureId,
   } = props
-  if (!user || !structure)
+  if (!userId || !structureId)
     return
 
   const { mutate } = useRemoveUserOneAdditionalMutation()
   mutate({
-    id: user.id,
-    structureId: structure.id,
+    id: userId,
+    structureId,
     toDeleteFunction: fields.value,
     requiredAction: 'save',
   })
@@ -182,16 +196,16 @@ function close(): void {
 
 async function save(): Promise<void> {
   const {
-    user,
-    structure,
+    userId,
+    structureId,
   } = props
-  if (!user || !structure)
+  if (!userId || !structureId)
     return
 
   const { mutate } = useSetUserOneAdditionalMutation()
   mutate({
-    id: user.id,
-    structureId: structure.id,
+    id: userId,
+    structureId,
     toAddFunction: fields.value,
     requiredAction: 'save',
   })
@@ -209,7 +223,7 @@ async function save(): Promise<void> {
       <v-toolbar color="rgba(255, 255, 255, 0)">
         <v-toolbar-title>
           <h1>
-            {{ }}
+            {{ title }}
           </h1>
         </v-toolbar-title>
         <template #append>
@@ -223,57 +237,31 @@ async function save(): Promise<void> {
         </template>
       </v-toolbar>
 
-      <v-card-text class="pt-0 py-3 manage-additional-dialog-container">
-        <v-autocomplete
-          v-model="fields.filiere"
-          :label="t('person.function.type')"
-          :items="filteredFilieres"
-          item-title="libelle"
-          item-value="id"
-          :disabled="disableFonctionEdit"
-          variant="solo-filled"
-          class="w-100"
-          hide-details
-          required
-          flat
+      <v-card-text class="pt-0 py-3">
+        <UserSelect
+          v-if="!userId"
+          v-model="selectedUser"
+          v-model:search="searchUserValue"
+          :users="searchUsers"
         />
-        <v-autocomplete
-          v-model="fields.discipline"
-          :label="t('person.function.discipline')"
-          :items="filteredDisciplines"
-          item-title="libelle"
-          item-value="id"
-          :disabled="!fields.filiere || disableFonctionEdit"
-          variant="solo-filled"
-          class="w-100"
-          hide-details
-          required
-          flat
+
+        <StructureSelect
+          v-if="!structureId"
+          v-model="selectedStructure"
+          :structures="searchStructures"
         />
-        <v-text-field
-          v-model="fields.dateDebut"
-          :label="t('person.function.startDate')"
-          type="date"
-          variant="solo-filled"
-          hide-details
-          required
-          flat
-        />
-        <v-text-field
-          v-model="fields.dateFin"
-          :label="t('person.function.endDate')"
-          type="date"
-          variant="solo-filled"
-          hide-details
-          required
-          flat
+
+        <FunctionSelect
+          v-model="fields"
+          :possible="filteredFilieres"
+          :disable-fonction-edit="!!editFonction"
         />
       </v-card-text>
 
       <v-card-actions>
         <button
           type="button"
-          :disabled="!fonction"
+          :disabled="!editFonction"
           class="btn-secondary"
           @click="remove"
         >
@@ -308,3 +296,10 @@ async function save(): Promise<void> {
     </v-card>
   </v-dialog>
 </template>
+
+<style scoped lang="scss">
+@use 'sass:map';
+@use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/functions' as *;
+@use '@gip-recia/ui/mixins' as *;
+</style>

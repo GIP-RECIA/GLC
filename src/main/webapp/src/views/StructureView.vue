@@ -17,9 +17,10 @@
 <script setup lang="ts">
 import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { useTemplateRef, watch } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import ManageAdditionalDialog from '@/components/accounts/dialogs/ManageAdditionalDialog.vue'
 import StructureInfo from '@/components/accounts/structure/StructureInfo.vue'
 import StructureAccountsTab from '@/components/accounts/structure/tabs/StructureAccountsTab.vue'
 import StructureCompTab from '@/components/accounts/structure/tabs/StructureCompTab.vue'
@@ -63,10 +64,14 @@ const {
   tabsRefs,
 })
 
+/* Dialog */
+
+const dialogState = ref<boolean>(false)
+
 /* Actions */
 
 function onAttach(): void {
-
+  dialogState.value = true
 }
 
 function onCreate(): void {
@@ -170,6 +175,13 @@ function onCreate(): void {
       :structure="structure"
     />
   </div>
+
+  <ManageAdditionalDialog
+    v-model="dialogState"
+    title="Rattacher from struct"
+    :structure-id="structure?.id"
+    @update:model-value="dialogState = false"
+  />
 </template>
 
 <style scoped lang="scss">

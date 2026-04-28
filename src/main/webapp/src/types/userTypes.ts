@@ -34,7 +34,12 @@ export type FunctionUser = CommonUser & {
 
 export type RelationUser = FunctionUser
 
-export type SearchUser = CommonUser
+export type SearchUser = CommonUser & {
+  cn: string
+  uid?: string
+  email?: string
+  dateSuppression: string
+}
 
 export type AccountUser = CommonUser & {
   nom: string

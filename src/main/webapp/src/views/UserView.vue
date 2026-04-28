@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { FunctionForm, UserStructure } from '@/types/index.ts'
+import type { FunctionForm, UserFunction, UserStructure } from '@/types/index.ts'
 import {
   faLink,
   faLock,
@@ -27,7 +27,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import ManageAdditionalDialog from '@/components/accounts/user/dialogs/ManageAdditionalDialog.vue'
+import ManageAdditionalDialog from '@/components/accounts/dialogs/ManageAdditionalDialog.vue'
 import UserAdministrativeTab from '@/components/accounts/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/accounts/user/tabs/UserInformationTab.vue'
 import UserInfo from '@/components/accounts/user/UserInfo.vue'
@@ -81,13 +81,22 @@ const {
 
 const dialogState = ref<boolean>(false)
 
-const structure = ref<UserStructure>()
+const manageAdditionalTitle = ref<string>('')
 
-const fonction = ref<FunctionForm>()
+const structureId = ref<number>()
+
+const disabledFonctions = ref<UserFunction[]>()
+
+const editFonction = ref<FunctionForm>()
 
 function editFunction(struct: UserStructure, fun?: FunctionForm): void {
-  structure.value = struct
-  fonction.value = fun
+  manageAdditionalTitle.value = `${struct.nom} ${fun ? 'editer' : 'ajouter'}`
+  disabledFonctions.value = [
+    ...struct.fonctions,
+    ...struct.additionalFonctions,
+  ]
+  structureId.value = struct.id
+  editFonction.value = fun
   dialogState.value = true
 }
 
@@ -154,6 +163,11 @@ async function onDelete(): Promise<void> {
 }
 
 function onAttach(): void {
+  manageAdditionalTitle.value = 'Rattacher from user'
+  disabledFonctions.value = undefined
+  structureId.value = undefined
+  editFonction.value = undefined
+  dialogState.value = true
 }
 </script>
 
@@ -278,9 +292,11 @@ function onAttach(): void {
 
   <ManageAdditionalDialog
     v-model="dialogState"
-    :user="user"
-    :structure="structure"
-    :fonction="fonction"
+    :title="manageAdditionalTitle"
+    :user-id="user?.id"
+    :structure-id="structureId"
+    :disabled-fonctions="disabledFonctions"
+    :edit-fonction="editFonction"
     @update:model-value="dialogState = false"
   />
 </template>

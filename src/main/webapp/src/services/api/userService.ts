@@ -71,13 +71,22 @@ async function unlockUser(id: number) {
   ).status === 200
 }
 
-async function searchUser(name: string) {
+async function searchUser(
+  name: string,
+  params?: {
+    etab?: string
+    not_in_etab?: string
+    staff?: boolean
+    check_rights?: boolean
+  },
+) {
   return (
     await axios.get<SearchUser[]>(
       '/api/personne',
       {
         params: {
           name,
+          ...params,
         },
       },
     )

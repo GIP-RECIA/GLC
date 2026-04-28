@@ -17,6 +17,7 @@
 import type { Duration } from 'date-fns'
 import {
   format,
+  formatISO,
   intervalToDuration,
   isAfter,
   isBefore,
@@ -83,6 +84,12 @@ function toISOString(date: string | null): string | null {
     : null
 }
 
+function toISODate(date: string | undefined): string | undefined {
+  return date && date.trim().length > 1
+    ? formatISO(date, { representation: 'date' })
+    : undefined
+}
+
 export {
   dateToDuration,
   formatDateTime,
@@ -90,5 +97,6 @@ export {
   isBeforeOrEqual,
   isBetween,
   toDateTime,
+  toISODate,
   toISOString,
 }
