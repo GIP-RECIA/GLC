@@ -490,7 +490,7 @@ const table = useVueTable({
                 <div>
                   <div>{{ t(categoriePersonneMap[row.original.categoriePersonne].i18n) }}</div>
                   <div>{{ row.original.uid }}</div>
-                  <div>{{ row.original.guichet ? t('externalLogin') : row.original.login }}</div>
+                  <div>{{ row.original.guichet ? t('page.user.office.external') : row.original.login }}</div>
                   <div>{{ row.original.email }}</div>
                   <div>{{ row.original.dateModification }}</div>
                 </div>
