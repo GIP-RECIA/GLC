@@ -15,6 +15,8 @@
  */
 package fr.recia.glc.configuration;
 
+import fr.recia.glc.configuration.cas.CustomCas30ServiceTicketValidator;
+import fr.recia.glc.configuration.cas.CustomCasAuthenticationEntryPoint;
 import fr.recia.glc.ldap.StructureFromGroup;
 import fr.recia.glc.ldap.StructureSirenDomain;
 import fr.recia.glc.security.GLCRole;
@@ -80,7 +82,7 @@ public class SecurityConfiguration {
      */
     @Bean
     public CasAuthenticationEntryPoint casAuthenticationEntryPoint(ServiceProperties serviceProperties) {
-        CasAuthenticationEntryPoint entryPoint = new CasAuthenticationEntryPoint();
+        CasAuthenticationEntryPoint entryPoint = new CustomCasAuthenticationEntryPoint();
         entryPoint.setLoginUrl(glcProperties.getCas().getCasServerUrl() + "/login");
         entryPoint.setServiceProperties(serviceProperties);
         return entryPoint;
@@ -101,10 +103,10 @@ public class SecurityConfiguration {
      * Fournisseur d'authentitication qui va faire la requête au CAS pour valider le ticket reçu
      */
     @Bean
-    public CasAuthenticationProvider casAuthenticationProvider(ServiceProperties serviceProperties) {
+    public CasAuthenticationProvider casAuthenticationProvider(ServiceProperties serviceProperties, GLCProperties glcProperties) {
         CasAuthenticationProvider provider = new CasAuthenticationProvider();
         provider.setServiceProperties(serviceProperties);
-        provider.setTicketValidator(new Cas30ServiceTicketValidator(glcProperties.getCas().getCasServerUrl()));
+        provider.setTicketValidator(new CustomCas30ServiceTicketValidator(glcProperties.getCas().getCasServerUrl(), false, glcProperties));
         provider.setAuthenticationUserDetailsService(customUserDetailsService());
         provider.setKey(glcProperties.getCas().getCasProviderKey());
         return provider;
