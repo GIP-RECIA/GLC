@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.web.dto.user;
 
+import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
@@ -23,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,11 +39,12 @@ public class PersonneInListDto {
     private CategoriePersonne categoriePersonne;
     private String login;
     private String email;
-    private Date dateModification;
+    private Date dateModificationSource;
     private Date dateSuppression;
+    private String guichet;
     private boolean local;
 
-    public PersonneInListDto(DatabasePersonneDto databasePersonneDto) {
+    public PersonneInListDto(DatabasePersonneDto databasePersonneDto, List<CustomConfigProperties.LoginOfficeProperties> loginOfficeProperties) {
         this.id = databasePersonneDto.getId();
         this.etat = databasePersonneDto.getEtat();
         this.uid = databasePersonneDto.getUid();
@@ -51,9 +54,19 @@ public class PersonneInListDto {
         this.categoriePersonne = databasePersonneDto.getCategorie();
         this.login = databasePersonneDto.getLogin();
         this.email = databasePersonneDto.getEmail();
-        this.dateModification = databasePersonneDto.getDateModification();
+        this.dateModificationSource = databasePersonneDto.getDateModificationSource();
         this.dateSuppression = databasePersonneDto.getDateSuppression();
         this.local = databasePersonneDto.getSource().startsWith("SarapisUi_");
+        this.guichet = null;
+        for(CustomConfigProperties.LoginOfficeProperties loginOfficeProperty : loginOfficeProperties){
+            if(loginOfficeProperty.getSource().equals(databasePersonneDto.getSource())){
+                for(CustomConfigProperties.LoginOfficeProperties.GuichetProperties guichetProperty : loginOfficeProperty.getGuichets()){
+                    if(guichetProperty.getCategoriesPersonne().contains(databasePersonneDto.getCategorie())){
+                        this.guichet = guichetProperty.getNom();
+                    }
+                }
+            }
+        }
     }
 
 }

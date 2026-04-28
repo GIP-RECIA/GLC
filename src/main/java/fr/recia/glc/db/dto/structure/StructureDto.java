@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.db.dto.structure;
 
+import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.db.dto.AlertDto;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
@@ -95,10 +96,10 @@ public class StructureDto {
         }
     }
 
-    public void setListePersonnes(List<DatabasePersonneDto> personnes){
+    public void setListePersonnes(List<DatabasePersonneDto> personnes, List<CustomConfigProperties.LoginOfficeProperties> loginOfficeProperties){
         this.personnes = new ArrayList<>();
         for(DatabasePersonneDto personneDto : personnes){
-            this.personnes.add(new PersonneInListDto(personneDto));
+            this.personnes.add(new PersonneInListDto(personneDto, loginOfficeProperties));
         }
     }
 

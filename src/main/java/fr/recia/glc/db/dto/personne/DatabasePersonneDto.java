@@ -42,9 +42,10 @@ public class DatabasePersonneDto {
     private Date dateModification;
     private Date dateAcquittement;
     private Date dateSuppression;
+    private Date dateModificationSource;
 
     public DatabasePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                               String sn, String uid, Date dateModification, Date dateAcquittement) {
+                               String sn, String uid, Date dateModification, Date dateAcquittement, Date dateModificationSource) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -57,10 +58,13 @@ public class DatabasePersonneDto {
             this.dateSuppression = dateModification;
         }
         this.uid = uid;
+        this.dateModification = dateModification;
+        this.dateAcquittement = dateAcquittement;
+        this.dateModificationSource = dateModificationSource;
     }
 
     public DatabasePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                               String givenName, String sn, String login, String uid, Date dateModification, Date dateAcquittement) {
+                               String givenName, String sn, String login, String uid, Date dateModification, Date dateAcquittement, Date dateModificationSource) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -75,11 +79,14 @@ public class DatabasePersonneDto {
             this.dateSuppression = dateModification;
         }
         this.uid = uid;
+        this.dateModification = dateModification;
+        this.dateAcquittement = dateAcquittement;
+        this.dateModificationSource = dateModificationSource;
     }
 
 
     public DatabasePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                               String sn, Date dateModification, Date dateAcquittement) {
+                               String sn, Date dateModification, Date dateAcquittement, Date dateModificationSource) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -92,10 +99,13 @@ public class DatabasePersonneDto {
             this.dateSuppression = dateModification;
         }
         this.uid = "";
+        this.dateModification = dateModification;
+        this.dateAcquittement = dateAcquittement;
+        this.dateModificationSource = dateModificationSource;
     }
 
     public DatabasePersonneDto(Long id, Etat etat, CategoriePersonne categorie, String source, String cn, String email,
-                               String givenName, String sn, String login, Date dateModification, Date dateAcquittement) {
+                               String givenName, String sn, String login, Date dateModification, Date dateAcquittement, Date dateModificationSource) {
         this.id = id;
         this.etat = etat;
         this.categorie = categorie;
@@ -110,6 +120,9 @@ public class DatabasePersonneDto {
             this.dateSuppression = dateModification;
         }
         this.uid = "";
+        this.dateModification = dateModification;
+        this.dateAcquittement = dateAcquittement;
+        this.dateModificationSource = dateModificationSource;
     }
 
     public DatabasePersonneDto(APersonne aPersonne) {
@@ -125,5 +138,8 @@ public class DatabasePersonneDto {
             this.etat = Etat.Deleting;
             this.dateSuppression = aPersonne.getDateModification();
         }
+        this.dateModification = aPersonne.getDateModification();
+        this.dateAcquittement = aPersonne.getDateAcquittement();
+        this.dateModificationSource = aPersonne.getDateSourceModification();
     }
 }

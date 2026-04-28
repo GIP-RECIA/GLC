@@ -15,6 +15,7 @@
  */
 package fr.recia.glc.web.rest;
 
+import fr.recia.glc.configuration.GLCProperties;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
@@ -58,6 +59,8 @@ public class StructureController {
     private PersonneService personneService;
     @Autowired
     private AlertService alertService;
+    @Autowired
+    private GLCProperties glcProperties;
 
     /**
      * Récupère la liste de toutes les structures que l'utilisateur à le droit d'administrer
@@ -128,7 +131,8 @@ public class StructureController {
         List<FonctionDto> fonctions = fonctionService.getStructureFonctions(id);
 
         // Liste des personnes de l'établissement
-        etablissement.setListePersonnes(etabPersonnes);
+        // TODO : externaliser la logique dans un service
+        etablissement.setListePersonnes(etabPersonnes, glcProperties.getCustomConfig().getLoginOffices());
 
         // Liste des personnes sans fonction
         etablissement.setPersonnesWithoutFonctions(withoutFunction);
