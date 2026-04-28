@@ -22,6 +22,7 @@ import fr.recia.glc.audit.AuditEvent;
 import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
 import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.web.dto.user.CardPersonneDto;
 import fr.recia.glc.web.dto.user.PersonneDetailDto;
 import fr.recia.glc.web.dto.user.PersonneExportDto;
 import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
@@ -34,6 +35,7 @@ import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
 import fr.recia.glc.services.db.StructureService;
 import fr.recia.glc.web.dto.function.JsonAdditionalFonctionBody;
+import fr.recia.glc.web.dto.user.SearchedPersonneDto;
 import fr.recia.glc.web.dto.user.UserCreation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +79,7 @@ public class PersonneController {
     private AuditService auditService;
 
     @GetMapping
-    public ResponseEntity<List<DatabasePersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
+    public ResponseEntity<List<SearchedPersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
                                                                     @RequestParam(value = "name") String name,
                                                                     @RequestParam(value = "etab", required = false) Long etabId,
                                                                     @RequestParam(value = "not_in_etab", required = false) Long notInEtabId,
@@ -138,7 +140,12 @@ public class PersonneController {
                 }
             }
         }
-        return new ResponseEntity<>(personnes, HttpStatus.OK);
+
+        List<SearchedPersonneDto> searchedPersonnes = new ArrayList<>();
+        for(DatabasePersonneDto databasePersonneDto : personnes){
+            searchedPersonnes.add(new SearchedPersonneDto(databasePersonneDto));
+        }
+        return new ResponseEntity<>(searchedPersonnes, HttpStatus.OK);
     }
 
     @GetMapping(value = "/export")

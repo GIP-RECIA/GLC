@@ -164,7 +164,8 @@ public class StructureDto {
                             disciplineDto.getPersonnes().add(new CardPersonneDto(databasePersonneDto));
                             disciplineDto.getCategories().add(databasePersonneDto.getCategorie());
                         } else {
-                            log.warn("person in functions by not in structure : {}", fonctionDto.getPersonne());
+                            // TODO : que faire dans ce cas si on se retrouve avec une discipline sans personne dedans ?
+                            log.warn("person in functions but not in structure for {} : {}", disciplineDto.getId(), fonctionDto.getPersonne());
                         }
                     } else {
                         log.warn("discipline {} is not in known in disciplines for {}", disciplineId, this.source);
