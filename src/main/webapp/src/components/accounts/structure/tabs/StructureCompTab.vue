@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import type { Structure } from '@/types/index.ts'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Disclosure from '@/components/Disclosure.vue'
 import { etatFilters, etatMap } from '@/types/enums/index.ts'
@@ -38,7 +39,7 @@ enum Staff {
   Academic = 'academic',
 }
 
-const filters = [
+const filters = computed(() => [
   {
     id: 'staff',
     name: 'Personnel',
@@ -69,13 +70,19 @@ const filters = [
       })),
     ],
   },
-]
+])
+
+function updateFilters(e: CustomEvent): void {
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  const { activeFilters } = e.detail
+}
 </script>
 
 <template>
   <div>
     <r-filters
       :data="filters"
+      @update-filters="updateFilters"
     />
 
     <Disclosure

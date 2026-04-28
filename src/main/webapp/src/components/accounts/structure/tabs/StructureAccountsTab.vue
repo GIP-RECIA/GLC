@@ -127,6 +127,11 @@ const filters = computed(() => [
   },
 ])
 
+function updateFilters(e: CustomEvent): void {
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  const { activeFilters } = e.detail
+}
+
 /* Actions */
 
 function onUnlock(): void {
@@ -139,26 +144,60 @@ function onExport(): void {
 
 /* Table */
 
-const data = ref<AccountUser[]>([])
+const accounts = ref<AccountUser[]>([])
 
 watch(
   () => props.structure?.personnes,
   (val) => {
-    data.value = val ?? []
+    accounts.value = val ?? []
   },
   { immediate: true },
 )
 
 // const hasUid = computed<boolean>(() =>
-//   data.value.some(row => row.uid != null),
+//   accounts.value.some(row => row.uid != null),
 // )
+
+function renderEtat(row: Row<AccountUser>) {
+  const etat = {
+    icon: getIconDefinition(row.original.local),
+    ...etatMap[row.original.etat],
+  }
+  const suppressDate = row.original.dateSuppression
+    ? format(row.original.dateSuppression, 'P')
+    : undefined
+  const title = getStateLabel(
+    etat.i18n,
+    suppressDate,
+    t,
+  )
+
+  return h(
+    'span',
+    {
+      title,
+    },
+    [
+      h(FontAwesomeIcon, {
+        icon: etat.icon,
+        size: 'lg',
+        style: {
+          color: etat.color,
+        },
+      }),
+    ],
+  )
+}
 
 function renderActions(row: Row<AccountUser>) {
   return [
     h(
       RouterLink,
       {
-        to: { name: 'user', params: { userId: row.original.id } },
+        to: {
+          name: 'user',
+          params: { userId: row.original.id },
+        },
         class: 'btn-secondary small circle',
       },
       () => [
@@ -201,7 +240,6 @@ function renderActions(row: Row<AccountUser>) {
         ),
       ],
     ),
-
   ]
 }
 
@@ -225,39 +263,7 @@ const columns = computed(() => [
   columnHelper.accessor('etat', {
     id: 'etat',
     header: t('page.user.status.header'),
-    cell: (info) => {
-      const etat = {
-        icon: getIconDefinition(info.row.original.local),
-        ...etatMap[info.getValue()],
-      }
-      const suppressDate = info.row.original.dateSuppression
-        ? format(info.row.original.dateSuppression, 'P')
-        : undefined
-      const title = getStateLabel(
-        etat.i18n,
-        suppressDate,
-        t,
-      )
-
-      return h(
-        'span',
-        {
-          title,
-        },
-        [
-          h(
-            FontAwesomeIcon,
-            {
-              icon: etat.icon,
-              size: 'lg',
-              style: {
-                color: etat.color,
-              },
-            },
-          ),
-        ],
-      )
-    },
+    cell: ({ row }) => renderEtat(row),
     enableGlobalFilter: false,
   }),
   columnHelper.accessor('nom', {
@@ -308,7 +314,7 @@ const expanded = ref<ExpandedState>({})
 
 const table = useVueTable({
   get data() {
-    return data.value
+    return accounts.value
   },
   get columns() {
     return columns.value
@@ -365,6 +371,7 @@ const table = useVueTable({
   <div>
     <r-filters
       :data="filters"
+      @update-filters="updateFilters"
     />
 
     <div class="accounts-actions">
@@ -520,8 +527,6 @@ const table = useVueTable({
 }
 
 .accounts-data {
-  overflow-x: auto;
-
   > table {
     display: grid;
     border-collapse: collapse;

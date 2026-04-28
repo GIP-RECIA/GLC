@@ -23,7 +23,7 @@ import {
   getPaginationRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import Pagination from '@/components/Pagination.vue'
@@ -37,16 +37,6 @@ const userSearch = ref<string>()
 /* Table */
 
 const { data: structures } = useStructuresQuery()
-
-const data = ref<SearchStructure[]>([])
-
-watch(
-  structures,
-  (val) => {
-    data.value = val ?? []
-  },
-  { immediate: true },
-)
 
 const globalFilter = ref<string>()
 const columns = [
@@ -80,7 +70,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value) => {
 
 const table = useVueTable({
   get data() {
-    return data.value
+    return structures.value ?? []
   },
   columns,
   state: {

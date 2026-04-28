@@ -289,6 +289,7 @@ watchEffect(
 <style scoped lang="scss">
 @use 'sass:map';
 @use '@gip-recia/ui/core/variables' as *;
+@use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
 
 .manage-service-rights-dialog-container {

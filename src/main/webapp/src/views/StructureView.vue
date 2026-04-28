@@ -32,7 +32,7 @@ const { t } = useI18n()
 
 const router = useRouter()
 
-const { data, error } = useStructureQuery()
+const { data: structure, error } = useStructureQuery()
 
 watch(
   error,
@@ -78,7 +78,7 @@ function onCreate(): void {
   <div class="container">
     <header>
       <StructureInfo
-        :structure="data"
+        :structure="structure"
       />
 
       <div class="structure-actions">
@@ -149,7 +149,7 @@ function onCreate(): void {
       role="tabpanel"
       aria-labelledby="structure-tab-0"
       tabindex="0"
-      :structure="data"
+      :structure="structure"
     />
 
     <StructureCompTab
@@ -158,7 +158,7 @@ function onCreate(): void {
       role="tabpanel"
       aria-labelledby="structure-tab-1"
       tabindex="0"
-      :structure="data"
+      :structure="structure"
     />
 
     <StructureAccountsTab
@@ -167,7 +167,7 @@ function onCreate(): void {
       role="tabpanel"
       aria-labelledby="structure-tab-2"
       tabindex="0"
-      :structure="data"
+      :structure="structure"
     />
   </div>
 </template>

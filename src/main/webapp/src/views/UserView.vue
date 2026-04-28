@@ -47,7 +47,7 @@ const { t } = useI18n()
 
 const router = useRouter()
 
-const { data, error } = useUserQuery()
+const { data: user, error } = useUserQuery()
 
 watch(
   error,
@@ -94,61 +94,61 @@ function editFunction(struct: UserStructure, fun?: FunctionForm): void {
 /* Actions */
 
 const canToggleLock = computed<boolean>(() => (
-  data.value !== undefined
+  user.value !== undefined
   && [
     Etat.Valide,
     Etat.Bloque,
-  ].includes(data.value.etat)
+  ].includes(user.value.etat)
 ))
 
 const isLocked = computed<boolean>(() => (
-  data.value?.etat === Etat.Bloque
+  user.value?.etat === Etat.Bloque
 ))
 
 async function onToggleLock(): Promise<void> {
-  if (!data.value)
+  if (!user.value)
     return
 
-  const { id } = data.value
+  const { id } = user.value
   const response = isLocked.value
     ? await unlockUser(id)
     : await lockUser(id)
   if (!response)
     return
 
-  data.value.etat = isLocked.value
+  user.value.etat = isLocked.value
     ? Etat.Valide
     : Etat.Bloque
 }
 
 const isDeleting = computed<boolean>(() => (
-  data.value?.etat === Etat.Deleting
+  user.value?.etat === Etat.Deleting
 ))
 
 async function onUndoDelete(): Promise<void> {
-  if (!data.value)
+  if (!user.value)
     return
 
-  const { id } = data.value
+  const { id } = user.value
   const response = await undoDeleteUser(id)
   if (!response)
     return
 
-  data.value.etat = Etat.Valide
+  user.value.etat = Etat.Valide
 }
 
 async function onDelete(): Promise<void> {
-  if (!data.value)
+  if (!user.value)
     return
 
-  const { id } = data.value
+  const { id } = user.value
   const response = isDeleting.value
     ? await forceDeleteUser(id)
     : await deleteUser(id)
   if (!response)
     return
 
-  data.value.etat = isDeleting.value
+  user.value.etat = isDeleting.value
     ? Etat.Delete
     : Etat.Deleting
 }
@@ -161,7 +161,7 @@ function onAttach(): void {
   <div class="container">
     <header>
       <UserInfo
-        :user="data"
+        :user="user"
       />
 
       <div class="user-actions">
@@ -189,7 +189,7 @@ function onAttach(): void {
             <button
               type="button"
               class="btn-primary small"
-              :disabled="!data?.etat"
+              :disabled="!user?.etat"
               @click="onUndoDelete"
             >
               {{ t('button.undoDelete') }}
@@ -202,7 +202,7 @@ function onAttach(): void {
             <button
               type="button"
               class="btn-primary small"
-              :disabled="!data?.etat"
+              :disabled="!user?.etat"
               @click="onDelete"
             >
               {{ t(`button.${isDeleting ? 'forceDelete' : 'delete'}`) }}
@@ -215,7 +215,7 @@ function onAttach(): void {
             <button
               type="button"
               class="btn-primary small"
-              :disabled="!data?.etat"
+              :disabled="!user?.etat"
               @click="onAttach"
             >
               {{ t('button.attach') }}
@@ -262,7 +262,7 @@ function onAttach(): void {
       role="tabpanel"
       aria-labelledby="user-tab-0"
       tabindex="0"
-      :user="data"
+      :user="user"
     />
 
     <UserAdministrativeTab
@@ -271,14 +271,14 @@ function onAttach(): void {
       role="tabpanel"
       aria-labelledby="user-tab-1"
       tabindex="0"
-      :user="data"
+      :user="user"
       @edit-function="editFunction"
     />
   </div>
 
   <ManageAdditionalDialog
     v-model="dialogState"
-    :user="data"
+    :user="user"
     :structure="structure"
     :fonction="fonction"
     @update:model-value="dialogState = false"
