@@ -169,12 +169,23 @@ public class FonctionService {
             List<Fonction> fonctions = new ArrayList<>();
             for(FonctionDto fonctionDto : toAddAdditional){
                 // Si on a déjà la fonction qu'on veut ajouter alors il ne faut pas la remettre ça va poser des problèmes de contraintes
-                if(fonctionRepository.nbSameFonctionsInStructure(fonctionDto.getPersonne(), fonctionDto.getStructure(), fonctionDto.getDiscipline(), fonctionDto.getFiliere()) == 0){
+                Long nbExistingFonctions = fonctionRepository.nbSameFonctionsInStructure(fonctionDto.getPersonne(), fonctionDto.getStructure(), fonctionDto.getDiscipline(), fonctionDto.getFiliere());
+                if(nbExistingFonctions == 0){
                     TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonctionDto.getFiliere()).orElse(null);
                     Discipline discipline = disciplineRepository.findById(fonctionDto.getDiscipline()).orElse(null);
                     fonctions.add(new Fonction(discipline, filiere, aStructure, aPersonne, source, fonctionDto.getDateFin()));
+                } else if (nbExistingFonctions == 1){
+                    // Par contre si on a une date de début/fin il faut mettre à jour la fonction avec les nouvelles dates
+                    Fonction fonction = fonctionRepository.findSameFonctionsInStructure(fonctionDto.getPersonne(), fonctionDto.getStructure(), fonctionDto.getDiscipline(), fonctionDto.getFiliere()).get(0);
+                    if(fonctionDto.getDateFin() != null && !fonctionDto.getDateFin().equals(fonction.getDateFin())){
+                        log.debug("Function {}-{} already added for user {} in etab {}, updating dates...", fonctionDto.getFiliere(), fonctionDto.getDiscipline(), fonctionDto.getPersonne(), fonctionDto.getStructure());
+                        fonction.setDateFin(fonctionDto.getDateFin());
+                        fonctions.add(fonction);
+                    } else {
+                        log.warn("Try to add function {}-{} but already added for user {} in etab {}", fonctionDto.getFiliere(), fonctionDto.getDiscipline(), fonctionDto.getPersonne(), fonctionDto.getStructure());
+                    }
                 } else {
-                    log.warn("Try to add function {}-{} but already added for user {} in etab {}", fonctionDto.getFiliere(), fonctionDto.getDiscipline(), fonctionDto.getPersonne(), fonctionDto.getStructure());
+                    log.warn("Try to add function {}-{} but there are already more than one function for user {} in etab {}", fonctionDto.getFiliere(), fonctionDto.getDiscipline(), fonctionDto.getPersonne(), fonctionDto.getStructure());
                 }
             }
             fonctionRepository.saveAll(fonctions);
