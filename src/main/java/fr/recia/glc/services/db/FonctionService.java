@@ -124,6 +124,8 @@ public class FonctionService {
      * Modifie les fonctions d'une personne sur une stucture
      */
     public boolean saveAdditionalFonctions(Long personneId, Long structureId, List<FonctionToModify> toAddFunctions, List<FonctionToModify> toDeleteFunctions, FonctionAction requiredAction, boolean isAdmin) {
+        // Permet de savoir si tous les ajouts ont échoué ou si il y a au moins 1 ajout qui a réussi
+        boolean ok = false;
         final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
         final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
         if (aPersonne == null || aStructure == null || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())) {
@@ -174,13 +176,16 @@ public class FonctionService {
                     TypeFonctionFiliere filiere = typeFonctionFiliereRepository.findById(fonctionDto.getFiliere()).orElse(null);
                     Discipline discipline = disciplineRepository.findById(fonctionDto.getDiscipline()).orElse(null);
                     fonctions.add(new Fonction(discipline, filiere, aStructure, aPersonne, source, fonctionDto.getDateFin()));
+                    ok = true;
                 } else if (nbExistingFonctions == 1){
                     // Par contre si on a une date de début/fin il faut mettre à jour la fonction avec les nouvelles dates
                     Fonction fonction = fonctionRepository.findSameFonctionsInStructure(fonctionDto.getPersonne(), fonctionDto.getStructure(), fonctionDto.getDiscipline(), fonctionDto.getFiliere()).get(0);
+                    // TODO : date de début sur les fonctions
                     if(fonctionDto.getDateFin() != null && !fonctionDto.getDateFin().equals(fonction.getDateFin())){
                         log.debug("Function {}-{} already added for user {} in etab {}, updating dates...", fonctionDto.getFiliere(), fonctionDto.getDiscipline(), fonctionDto.getPersonne(), fonctionDto.getStructure());
                         fonction.setDateFin(fonctionDto.getDateFin());
                         fonctions.add(fonction);
+                        ok = true;
                     } else {
                         log.warn("Try to add function {}-{} but already added for user {} in etab {}", fonctionDto.getFiliere(), fonctionDto.getDiscipline(), fonctionDto.getPersonne(), fonctionDto.getStructure());
                     }
@@ -195,6 +200,7 @@ public class FonctionService {
             fonctionRepository.deleteAllById(toDeleteAdditional.stream()
                 .map(fonction -> fonctionRepository.findId(fonction.getFiliere(), fonction.getDiscipline(), personneId, fonction.getStructure(), fonction.getSource()))
                 .collect(Collectors.toList()));
+            ok = true;
         }
 
         if (!toAddAdditional.isEmpty() || !toDeleteAdditional.isEmpty()) {
@@ -229,7 +235,7 @@ public class FonctionService {
         // Vider les caches
         cacheInvalidationService.evictPersonneAndAssociatedStructures(personneId, structureId);
 
-        return true;
+        return ok;
     }
 
     public long nbDiscipline(Long structureId, String filiereCode, String disciplineCode) {
