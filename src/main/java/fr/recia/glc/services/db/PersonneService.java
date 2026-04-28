@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -210,7 +211,7 @@ public class PersonneService {
     /**
      * Permet de retirer un compte de la supression (temporairement)
      */
-    public boolean undoDelete(APersonne aPersonne){
+    public Optional<Etat> undoDelete(APersonne aPersonne){
         // On vérifie que la personne est en suppression et pas déjà supprimée
         if(aPersonne.getEtat().equals(Etat.Delete) && aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
             Etat etatToRestore = Etat.Invalide;
@@ -226,10 +227,10 @@ public class PersonneService {
             aPersonne.setDateModification(date);
             aPersonneRepository.saveAndFlush(aPersonne);
             cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
-            return true;
+            return Optional.of(etatToRestore);
         }
         log.warn("Person {} is not in delete state or is already deleted", aPersonne.getId());
-        return false;
+        return Optional.empty();
     }
 
     public PersonneDetailDto getFullPersonne(Long id, APersonne personne, boolean showUid, Set<String> allowedSirens){

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import fr.recia.glc.audit.AuditEvent;
 import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
+import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.web.dto.user.PersonneDetailDto;
 import fr.recia.glc.web.dto.user.PersonneExportDto;
 import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
@@ -56,6 +57,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -384,7 +386,7 @@ public class PersonneController {
     }
 
     @DeleteMapping("/{id}/undo")
-    public ResponseEntity<Void> undoDelete(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+    public ResponseEntity<Etat> undoDelete(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
@@ -398,8 +400,8 @@ public class PersonneController {
             }
         }
         if (canModify) {
-            boolean ok = personneService.undoDelete(personne);
-            if(ok){
+            Optional<Etat> restoredEtat = personneService.undoDelete(personne);
+            if(restoredEtat.isPresent()){
                 // Log Audit
                 auditService.log(
                     AuditEvent.builder()
@@ -412,7 +414,7 @@ public class PersonneController {
                         ))
                         .build()
                 );
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(restoredEtat.get(), HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
