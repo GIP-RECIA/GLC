@@ -55,7 +55,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "ORDER BY ap.cn, ap.sn")
     List<DatabasePersonneDto> findByNameLike(String name);
 
@@ -63,7 +63,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "ORDER BY ap.cn, ap.sn")
     List<DatabasePersonneDto> findByNameLikeAdmin(String name);
@@ -72,7 +72,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND s.id IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
     List<DatabasePersonneDto> findByNameLikeInEtab(String name, Set<Long> etabId);
@@ -81,7 +81,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND s.id NOT IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
     List<DatabasePersonneDto> findByNameLikeNotInEtab(String name, Set<Long> etabId);
@@ -90,7 +90,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
     List<DatabasePersonneDto> findByNameLikeInEtabBySiren(String name, Set<String> sirens);
@@ -99,7 +99,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND s.id NOT IN :etabId " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
@@ -108,7 +108,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
@@ -120,7 +120,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
@@ -133,7 +133,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
@@ -146,7 +146,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
@@ -159,7 +159,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
-        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat(:name, '%')) " +
+        "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
@@ -174,7 +174,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND s.id IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
@@ -185,7 +185,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND s.id NOT IN :etabId " +
         "ORDER BY ap.cn, ap.sn")
@@ -196,7 +196,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND s.siren IN :sirens " +
         "ORDER BY ap.cn, ap.sn")
@@ -207,7 +207,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND s.id NOT IN :etabId " +
         "AND s.siren IN :sirens " +
@@ -218,7 +218,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
@@ -232,7 +232,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
@@ -247,7 +247,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
@@ -262,7 +262,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
@@ -277,7 +277,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "FROM APersonne ap " +
         "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
-        "OR ap.email LIKE concat(:name, '%') " +
+        "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
