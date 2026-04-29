@@ -48,7 +48,7 @@ const suppressDate = computed<string | undefined>(() => (
     <div class="user-avatar">
       <img
         :src="user?.photo ?? '/images/icones/noPictureUser.svg'"
-        alt="Photo de profile"
+        :alt="t('page.user.photo')"
       >
     </div>
 
