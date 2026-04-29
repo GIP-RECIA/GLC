@@ -15,76 +15,42 @@
 -->
 
 <script setup lang="ts">
-import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
-import { ref, watchEffect } from 'vue'
+import type { ServiceRight, ServiceRights } from '@/types/index.ts'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ManageServiceRightsDialog from '@/components/access/dialogs/ManageServiceRightsDialog.vue'
 import ServiceRightsCard from '@/components/access/ServiceRightsCard.vue'
 import PageLayout from '@/components/PageLayout.vue'
 import StructureSearch from '@/components/StructureSearch.vue'
-import { getRights, updateRight } from '@/services/api/index.ts'
-import { useEtablissementsQuery } from '@/services/queries/index.ts'
+import {
+  useEtablissementsQuery,
+  useRightsQuery,
+  useUpdateRightMutation,
+} from '@/services/queries/index.ts'
 
 const { t } = useI18n()
 
 const { data: etabs } = useEtablissementsQuery()
 
-/* Data */
-
-const data = ref<ServiceRights[]>()
-
-function updateData(
-  service: string,
-  serviceRight: ServiceRight,
-  toAdd: string[],
-  toRemove: string[],
-): void {
-  data.value = data.value?.map((d) => {
-    if (d.service !== service)
-      return d
-
-    const rights = d.rights.map((right) => {
-      if (right.role !== serviceRight.role)
-        return right
-
-      let currentMembers = right.currentMembers
-      currentMembers = right.currentMembers.filter(({ id }) => !toRemove.includes(id))
-      const knownGroups = [
-        ...right.mandatoryGroups,
-        ...right.possibleGroups,
-      ]
-      const membersToAdd: RightMember[] = toAdd.map((add) => {
-        return knownGroups.find(({ id }) => id === add)
-          ?? {
-            id: add,
-            displayName: add,
-            user: add.startsWith('F'),
-            external: false,
-          }
-      })
-      currentMembers.push(...membersToAdd)
-
-      return { ...right, currentMembers }
-    })
-
-    return { ...d, rights }
-  })
-}
-
-/* Structure */
-
-const selectedStructure = ref<number | undefined>(
-  etabs.value
-    ? etabs.value[0]?.id
-    : undefined,
+const selectedStructure = ref<number>(
+  etabs.value && etabs.value.length > 0
+    ? etabs.value[0].id
+    : -1,
 )
 
-watchEffect(async (): Promise<void> => {
-  if (selectedStructure.value === undefined)
-    return
+watch(
+  etabs,
+  (val) => {
+    if (!val || val.length === 0)
+      return
 
-  data.value = await getRights(selectedStructure.value)
-})
+    selectedStructure.value = val[0].id
+  },
+)
+
+const { data: servicesRights } = useRightsQuery(selectedStructure)
+
+const { mutate } = useUpdateRightMutation()
 
 /* Dialog */
 
@@ -112,21 +78,13 @@ async function save(
   if (!selectedStructure.value)
     return
 
-  const response = await updateRight({
+  mutate({
     id: selectedStructure.value,
     service,
     role: serviceRight.role,
     membersToAdd: toAdd,
     membersToRemove: toRemove,
   })
-  if (response) {
-    updateData(
-      service,
-      serviceRight,
-      toAdd,
-      toRemove,
-    )
-  }
 }
 </script>
 
@@ -148,7 +106,7 @@ async function save(
 
         <div class="services-grid">
           <ServiceRightsCard
-            v-for="serviceRights in data"
+            v-for="serviceRights in servicesRights"
             :key="serviceRights.service"
             :service-rights="serviceRights"
             @edit="edit"
