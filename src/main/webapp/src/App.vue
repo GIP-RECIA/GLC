@@ -42,11 +42,13 @@ watchOnce(isInit, (newValue) => {
   if (header) {
     const extendedUportalHeaderScript = document.createElement('script')
     extendedUportalHeaderScript.setAttribute('src', header.componentPath)
+    extendedUportalHeaderScript.setAttribute('charset', 'utf-8')
     document.head.appendChild(extendedUportalHeaderScript)
   }
   if (footer) {
     const extendedUportalFooterScript = document.createElement('script')
     extendedUportalFooterScript.setAttribute('src', footer.componentPath)
+    extendedUportalFooterScript.setAttribute('charset', 'utf-8')
     document.head.appendChild(extendedUportalFooterScript)
   }
 })
