@@ -35,7 +35,7 @@
       "withoutFunctions": "SANS FONCTIONS"
     },
     "accounts": {
-      "search": "Nom, prénom, Login ou email"
+      "search": "Nom, prénom, login ou email"
     }
   }
 }

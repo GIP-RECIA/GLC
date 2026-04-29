@@ -8,6 +8,21 @@
     "structure": {
       "header": "Structures",
       "search": "Nom, uai, siren ou ville"
+    },
+    "dialog": {
+      "manageAdditional": {
+        "title": {
+          "edit": "Edition à {structre}",
+          "add": "Ajout à {structre}",
+          "attach": "Rattacher à une structure"
+        },
+        "user": "Utilisateur",
+        "structure": "Structure",
+        "type": "Filière",
+        "discipline": "Discipline",
+        "startDate": "Date de début",
+        "endDate": "Date de fin"
+      }
     }
   }
 }

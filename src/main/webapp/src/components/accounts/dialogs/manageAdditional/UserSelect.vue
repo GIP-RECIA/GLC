@@ -69,6 +69,7 @@ function renderEtat(user: SearchUser) {
   <v-autocomplete
     v-model="modelValue"
     v-model:search="modelValueSearch"
+    :label="t('page.account.dialog.manageAdditional.user')"
     :items="users"
     item-value="id"
     item-title="cn"

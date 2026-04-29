@@ -90,7 +90,12 @@ const disabledFonctions = ref<UserFunction[]>()
 const editFonction = ref<FunctionForm>()
 
 function editFunction(struct: UserStructure, fun?: FunctionForm): void {
-  manageAdditionalTitle.value = `${struct.nom} ${fun ? 'editer' : 'ajouter'}`
+  manageAdditionalTitle.value = t(
+    `page.account.dialog.manageAdditional.title.${fun ? 'edit' : 'add'}`,
+    {
+      structre: struct.nom,
+    },
+  )
   disabledFonctions.value = [
     ...struct.fonctions,
     ...struct.additionalFonctions,
@@ -163,7 +168,7 @@ async function onDelete(): Promise<void> {
 }
 
 function onAttach(): void {
-  manageAdditionalTitle.value = 'Rattacher from user'
+  manageAdditionalTitle.value = t('page.account.dialog.manageAdditional.title.attach')
   disabledFonctions.value = undefined
   structureId.value = undefined
   editFonction.value = undefined

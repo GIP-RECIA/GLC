@@ -88,7 +88,7 @@ watch(
   <div class="function-select">
     <v-autocomplete
       v-model="modelValue.filiere"
-      :label="t('person.function.type')"
+      :label="t('page.account.dialog.manageAdditional.type')"
       :items="possible"
       item-title="libelle"
       item-value="id"
@@ -103,7 +103,7 @@ watch(
 
     <v-autocomplete
       v-model="modelValue.discipline"
-      :label="t('person.function.discipline')"
+      :label="t('page.account.dialog.manageAdditional.discipline')"
       :items="filteredDisciplines"
       item-title="libelle"
       item-value="id"
@@ -121,7 +121,7 @@ watch(
         <div class="field-container">
           <div class="middle">
             <label for="startDate">
-              {{ t('person.function.startDate') }}
+              {{ t('page.account.dialog.manageAdditional.startDate') }}
             </label>
             <input
               id="startDate"
@@ -141,7 +141,7 @@ watch(
         <div class="field-container">
           <div class="middle">
             <label for="endDate">
-              {{ t('person.function.endDate') }}
+              {{ t('page.account.dialog.manageAdditional.endDate') }}
             </label>
             <input
               id="endDate"

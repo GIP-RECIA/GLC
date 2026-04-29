@@ -260,6 +260,7 @@ async function save(): Promise<void> {
 
       <v-card-actions>
         <button
+          v-show="userId && structureId"
           type="button"
           :disabled="!editFonction"
           class="btn-secondary"
@@ -302,4 +303,8 @@ async function save(): Promise<void> {
 @use '@gip-recia/ui/core/variables' as *;
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
+
+h1 {
+  margin-bottom: 0;
+}
 </style>

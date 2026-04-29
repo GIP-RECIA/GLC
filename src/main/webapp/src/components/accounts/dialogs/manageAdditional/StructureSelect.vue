@@ -25,13 +25,13 @@ defineProps<{
 
 const modelValue = defineModel<SearchStructure | undefined>()
 
-// eslint-disable-next-line unused-imports/no-unused-vars
 const { t } = useI18n()
 </script>
 
 <template>
   <v-autocomplete
     v-model="modelValue"
+    :label="t('page.account.dialog.manageAdditional.structure')"
     :items="structures"
     item-value="id"
     item-title="nom"

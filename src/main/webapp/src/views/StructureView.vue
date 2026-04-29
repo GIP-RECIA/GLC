@@ -178,7 +178,7 @@ function onCreate(): void {
 
   <ManageAdditionalDialog
     v-model="dialogState"
-    title="Rattacher from struct"
+    :title="t('page.account.dialog.manageAdditional.title.attach')"
     :structure-id="structure?.id"
     @update:model-value="dialogState = false"
   />
