@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import type { RightMember, ServiceRight, ServiceRights } from '@/types/index.ts'
-import { storeToRefs } from 'pinia'
 import { ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ManageServiceRightsDialog from '@/components/access/dialogs/ManageServiceRightsDialog.vue'
@@ -24,13 +23,11 @@ import ServiceRightsCard from '@/components/access/ServiceRightsCard.vue'
 import PageLayout from '@/components/PageLayout.vue'
 import StructureSearch from '@/components/StructureSearch.vue'
 import { getRights, updateRight } from '@/services/api/index.ts'
-import { useStructureStore } from '@/stores/index.ts'
+import { useEtablissementsQuery } from '@/services/queries/index.ts'
 
 const { t } = useI18n()
 
-const structureStore = useStructureStore()
-structureStore.init()
-const { etabs } = storeToRefs(structureStore)
+const { data: etabs } = useEtablissementsQuery()
 
 /* Data */
 

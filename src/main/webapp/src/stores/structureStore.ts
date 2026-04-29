@@ -14,39 +14,9 @@
  * limitations under the License.
  */
 
-import type {
-  SearchStructure,
-} from '@/types/index.ts'
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
-import { getEtablissements } from '@/services/api/index.ts'
-import { errorHandler } from '@/utils/index.ts'
 
 export const useStructureStore = defineStore('structure', () => {
-  const etabs = ref<SearchStructure[] | undefined>()
-
-  const isInit = computed<boolean>(() => (
-    etabs.value
-      ? etabs.value.length > 0
-      : false
-  ))
-
-  /**
-   * Initialise `etabs`
-   */
-  const init = async (): Promise<void> => {
-    if (!isInit.value) {
-      try {
-        etabs.value = await getEtablissements()
-      }
-      catch (e) {
-        errorHandler(e, 'initStructureStore')
-      }
-    }
-  }
-
   return {
-    etabs,
-    init,
   }
 })
