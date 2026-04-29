@@ -132,7 +132,8 @@ const { t } = useI18n()
     }
   }
 
-  > a {
+  > a,
+  > p {
     @include unstyled-link;
     flex: 1 1 auto;
     display: flex;
