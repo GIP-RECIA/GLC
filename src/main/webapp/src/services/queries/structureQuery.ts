@@ -41,6 +41,15 @@ function useEtablissementsQuery() {
   })
 }
 
+function useEtablissementQuery(id: Ref<number>) {
+  return useQuery(() => ({
+    key: ['etablissement', id.value],
+    query: () => getStructure(id.value),
+    enabled: !!id.value && id.value !== -1,
+    staleTime: 1000 * 60 * 10,
+  }))
+}
+
 const useStructureQuery = defineQuery(() => {
   const route = useRoute()
 
@@ -64,6 +73,7 @@ function usePossibleFunctionsQuery(structureId: Ref<number>) {
 }
 
 export {
+  useEtablissementQuery,
   useEtablissementsQuery,
   usePossibleFunctionsQuery,
   useStructureQuery,

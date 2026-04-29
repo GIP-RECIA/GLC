@@ -15,8 +15,7 @@
 -->
 
 <script setup lang="ts">
-import type { Structure } from '@/types/index.ts'
-import { ref, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PageLayout from '@/components/PageLayout.vue'
 import AdminSettings from '@/components/settings/AdminSettings.vue'
@@ -25,31 +24,32 @@ import IdentitySettings from '@/components/settings/IdentitySettings.vue'
 import LocalisationSettings from '@/components/settings/LocalisationSettings.vue'
 import LogoSettings from '@/components/settings/LogoSettings.vue'
 import StructureSearch from '@/components/StructureSearch.vue'
-import { getStructure } from '@/services/api/index.ts'
-import { useEtablissementsQuery } from '@/services/queries/index.ts'
+import {
+  useEtablissementQuery,
+  useEtablissementsQuery,
+} from '@/services/queries/index.ts'
 
 const { t } = useI18n()
 
 const { data: etabs } = useEtablissementsQuery()
 
-/* Data */
-
-const currentStructure = ref<Structure | undefined>()
-
-/* Structure */
-
-const selectedStructure = ref<number | undefined>(
-  etabs.value
-    ? etabs.value[0]?.id
-    : undefined,
+const selectedStructure = ref<number>(
+  etabs.value && etabs.value.length > 0
+    ? etabs.value[0].id
+    : -1,
 )
 
-watchEffect(async (): Promise<void> => {
-  if (selectedStructure.value === undefined)
-    return
+watch(
+  etabs,
+  (val) => {
+    if (!val || val.length === 0)
+      return
 
-  currentStructure.value = await getStructure(selectedStructure.value)
-})
+    selectedStructure.value = val[0].id
+  },
+)
+
+const { data: structure } = useEtablissementQuery(selectedStructure)
 
 /* Edit state */
 
@@ -78,28 +78,28 @@ function setChildEditState(state: boolean): void {
 
         <div class="info-container">
           <LogoSettings
-            :structure="currentStructure"
+            :structure="structure"
             :disable-edit="isChildEdit"
           />
 
           <IdentitySettings
-            :structure="currentStructure"
+            :structure="structure"
             :disable-edit="isChildEdit"
             @edit="setChildEditState"
           />
 
           <LocalisationSettings
-            :structure="currentStructure"
+            :structure="structure"
           />
 
           <ContactSettings
-            :structure="currentStructure"
+            :structure="structure"
             :disable-edit="isChildEdit"
             @edit="setChildEditState"
           />
 
           <AdminSettings
-            :structure="currentStructure"
+            :structure="structure"
           />
         </div>
       </div>
