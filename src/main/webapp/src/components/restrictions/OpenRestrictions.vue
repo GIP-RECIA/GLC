@@ -23,7 +23,7 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import MenuButton from '@/components/MenuButton.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
-import { saveRestrictions } from '@/services/api/index.ts'
+import { useSaveRestrictionsMutation } from '@/services/queries/index.ts'
 import { formatDateTime, toDateTime, toISOString } from '@/utils/index.ts'
 import LevelRestrictions from './LevelRestrictions.vue'
 
@@ -42,10 +42,11 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   edit: [boolean]
-  update: [restrictions: StructureRestriction]
 }>()
 
 const { t } = useI18n()
+
+const { mutate } = useSaveRestrictionsMutation()
 
 const isEdit = ref<boolean>(false)
 
@@ -157,12 +158,11 @@ function save(): void {
     }),
   }
 
-  saveRestrictions({
+  mutate({
     id: props.structureId,
     body,
   })
   toggleEdit()
-  emit('update', body)
 }
 
 const addableLevels = computed<{ uid: string, name: string }[]>(() => (

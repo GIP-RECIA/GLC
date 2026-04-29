@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
-import { saveRestrictions } from '@/services/api'
+import { useSaveRestrictionsMutation } from '@/services/queries/index.ts'
 
 const props = withDefaults(
   defineProps<{
@@ -38,10 +38,11 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   edit: [boolean]
-  update: [restrictions: StructureRestriction]
 }>()
 
 const { t } = useI18n()
+
+const { mutate } = useSaveRestrictionsMutation()
 
 const isEdit = ref<boolean>(false)
 
@@ -70,20 +71,23 @@ function toggleEdit(): void {
 }
 
 function save(): void {
-  if (!props.structureId)
+  if (
+    !props.structureId
+    || !props.restrictions
+  ) {
     return
+  }
 
-  const body: StructureRestriction = { // TODO : fix typing
+  const body: StructureRestriction = {
     ...props.restrictions,
     enabled: enabeled.value,
   }
 
-  saveRestrictions({
+  mutate({
     id: props.structureId,
     body,
   })
   toggleEdit()
-  emit('update', body)
 }
 </script>
 

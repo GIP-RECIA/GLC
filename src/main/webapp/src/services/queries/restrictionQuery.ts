@@ -14,22 +14,33 @@
  * limitations under the License.
  */
 
-import { useMutation, useQuery } from '@pinia/colada'
+import type { Ref } from 'vue'
+import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import {
   getRestrictions,
   saveRestrictions,
 } from '@/services/api/index.ts'
 
-function useRestrictionsQuery(id: number) {
-  return useQuery({
-    key: ['restrictions', id],
-    query: () => getRestrictions(id),
-  })
+const queryCache = useQueryCache()
+
+function useRestrictionsQuery(id: Ref<number>) {
+  return useQuery(() => ({
+    key: ['restrictions', id.value],
+    query: () => getRestrictions(id.value),
+    enabled: !!id.value && id.value !== -1,
+    staleTime: 1000 * 60 * 10,
+  }))
 }
 
 function useSaveRestrictionsMutation() {
   return useMutation({
     mutation: saveRestrictions,
+    onMutate: (vars) => {
+      queryCache.setQueryData(['restrictions', vars.id], vars.body)
+    },
+    onError: (_error, vars) => {
+      queryCache.invalidateQueries({ key: ['restrictions', vars.id] })
+    },
   })
 }
 

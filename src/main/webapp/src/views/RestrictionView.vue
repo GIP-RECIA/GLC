@@ -15,43 +15,39 @@
 -->
 
 <script setup lang="ts">
-import type { StructureRestriction } from '@/types/index.ts'
-import { ref, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PageLayout from '@/components/PageLayout.vue'
 import CloseRestrictions from '@/components/restrictions/CloseRestrictions.vue'
 import GlobalRestrictions from '@/components/restrictions/GlobalRestrictions.vue'
 import OpenRestrictions from '@/components/restrictions/OpenRestrictions.vue'
 import StructureSearch from '@/components/StructureSearch.vue'
-import { getRestrictions } from '@/services/api/index.ts'
-import { useEtablissementsQuery } from '@/services/queries/index.ts'
+import {
+  useEtablissementsQuery,
+  useRestrictionsQuery,
+} from '@/services/queries/index.ts'
 
 const { t } = useI18n()
 
 const { data: etabs } = useEtablissementsQuery()
 
-/* Data */
-
-const data = ref<StructureRestriction | undefined>()
-
-function updateData(restrictions: StructureRestriction): void {
-  data.value = restrictions
-}
-
-/* Structure */
-
-const selectedStructure = ref<number | undefined>(
-  etabs.value
-    ? etabs.value[0]?.id
-    : undefined,
+const selectedStructure = ref<number>(
+  etabs.value && etabs.value.length > 0
+    ? etabs.value[0].id
+    : -1,
 )
 
-watchEffect(async (): Promise<void> => {
-  if (selectedStructure.value === undefined)
-    return
+watch(
+  etabs,
+  (val) => {
+    if (!val || val.length === 0)
+      return
 
-  data.value = await getRestrictions(selectedStructure.value)
-})
+    selectedStructure.value = val[0].id
+  },
+)
+
+const { data: restrictions } = useRestrictionsQuery(selectedStructure)
 
 /* Edit state */
 
@@ -81,24 +77,22 @@ function setChildEditState(state: boolean): void {
         <div class="info-container">
           <GlobalRestrictions
             :structure-id="selectedStructure"
-            :restrictions="data"
+            :restrictions="restrictions"
             :disable-edit="isChildEdit"
             @edit="setChildEditState"
-            @update="updateData"
           />
 
-          <template v-if="!data || data.enabled">
+          <template v-if="!restrictions || restrictions.enabled">
             <CloseRestrictions
-              :restrictions="data"
+              :restrictions="restrictions"
             />
 
             <OpenRestrictions
               :structure-id="selectedStructure"
-              :restrictions="data"
+              :restrictions="restrictions"
               :disable-edit="isChildEdit"
               class="full-width"
               @edit="setChildEditState"
-              @update="updateData"
             />
           </template>
         </div>
