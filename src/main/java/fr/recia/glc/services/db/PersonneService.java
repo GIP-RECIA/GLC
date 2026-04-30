@@ -195,7 +195,7 @@ public class PersonneService {
      * Le compte passera en suppression au prochain passage de sarapis
      */
     public boolean putInDeleteState(APersonne aPersonne){
-        if(!aPersonne.getEtat().equals(Etat.Delete) && !ForceEtat.Deleted.equals(aPersonne.getForceEtat())){
+        if(!aPersonne.getEtat().equals(Etat.Delete) && !ForceEtat.Deleted.equals(aPersonne.getForceEtat()) && aPersonne.getCleJointure().getSource().startsWith("SarapisUi_")){
             ldapPeopleDao.putInDeleteState(aPersonne.getUid());
             aPersonne.setEtat(Etat.Delete);
             Date date = new Date();
@@ -211,7 +211,7 @@ public class PersonneService {
 
     /**
      * Permet de retirer un compte de la suppression (temporairement)
-     * Possible pour un compte en suppression ou pour un donc supprimé (à la prochaine synchro)
+     * Possible pour un compte en suppression (immédiat) ou pour un compte supprimé (à la prochaine synchro)
      */
     public Optional<Etat> undoDelete(APersonne aPersonne){
         if(aPersonne.getEtat().equals(Etat.Delete)){
