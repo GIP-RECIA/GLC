@@ -20,8 +20,7 @@ import { concatenate } from '@/utils/index.ts'
 
 defineProps<{
   searchList?: SearchStructure[]
-  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
-  chips?: boolean
+  disabled?: boolean
 }>()
 
 const modelValue = defineModel<number | undefined>()
@@ -35,9 +34,10 @@ const modelValue = defineModel<number | undefined>()
     item-title="nom"
     :filter-keys="['raw.nom', 'raw.type', 'raw.uai']"
     density="compact"
-    :variant="variant"
+    variant="solo"
     rounded="xl"
     hide-details
+    :disabled="disabled"
   >
     <template #item="{ props: itemProps, item }">
       <v-list-item

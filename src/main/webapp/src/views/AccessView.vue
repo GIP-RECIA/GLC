@@ -96,7 +96,6 @@ async function save(
       <StructureSearch
         v-model="selectedStructure"
         :search-list="etabs"
-        variant="solo"
       />
 
       <div>

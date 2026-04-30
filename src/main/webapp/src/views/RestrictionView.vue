@@ -66,7 +66,7 @@ function setChildEditState(state: boolean): void {
       <StructureSearch
         v-model="selectedStructure"
         :search-list="etabs"
-        variant="solo"
+        :disabled="isChildEdit"
       />
 
       <div>
