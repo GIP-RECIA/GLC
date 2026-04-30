@@ -29,6 +29,7 @@ import fr.recia.glc.configuration.bean.FrontProperties;
 import fr.recia.glc.configuration.bean.GroupProperties;
 import fr.recia.glc.configuration.bean.GrouperProperties;
 import fr.recia.glc.configuration.bean.IpRangeProperties;
+import fr.recia.glc.configuration.bean.RedisProperties;
 import fr.recia.glc.configuration.bean.RestrictionRentreeProperties;
 import fr.recia.glc.configuration.bean.RightsProperties;
 import fr.recia.glc.configuration.bean.ServiceConfigProperties;
@@ -70,6 +71,7 @@ public class GLCProperties {
     private GrouperProperties grouper;
     private RestrictionRentreeProperties restrictionRentree;
     private UIDFactoryProperties uidFactory;
+    private RedisProperties redis;
 
     @PostConstruct
     private void init() {
@@ -113,6 +115,7 @@ public class GLCProperties {
             restrictionRentree + ",\n" +
             admin + ",\n" +
             grouper + ",\n" +
+            redis + ",\n" +
             "\n}";
     }
 
