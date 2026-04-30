@@ -210,27 +210,31 @@ public class PersonneService {
     }
 
     /**
-     * Permet de retirer un compte de la supression (temporairement)
+     * Permet de retirer un compte de la suppression (temporairement)
+     * Possible pour un compte en suppression ou pour un donc supprimé (à la prochaine synchro)
      */
     public Optional<Etat> undoDelete(APersonne aPersonne){
-        // On vérifie que la personne est en suppression et pas déjà supprimée
-        if(aPersonne.getEtat().equals(Etat.Delete) && aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
+        if(aPersonne.getEtat().equals(Etat.Delete)){
             Etat etatToRestore = Etat.Invalide;
             if(aPersonne.getValidationCharte() != null){
                 etatToRestore = Etat.Valide;
             }
-            ldapPeopleDao.undoDelete(aPersonne.getUid());
+            if(aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
+                ldapPeopleDao.undoDelete(aPersonne.getUid());
+            }
             aPersonne.setEtat(etatToRestore);
             LocalDate localDate = LocalDate.now().plusDays(14);
             aPersonne.setDateFin(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             Date date = new Date();
-            aPersonne.setDateAcquittement(date);
+            if(aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
+                aPersonne.setDateAcquittement(date);
+            }
             aPersonne.setDateModification(date);
             aPersonneRepository.saveAndFlush(aPersonne);
             cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
             return Optional.of(etatToRestore);
         }
-        log.warn("Person {} is not in delete state or is already deleted", aPersonne.getId());
+        log.warn("Person {} is not in delete state", aPersonne.getId());
         return Optional.empty();
     }
 
