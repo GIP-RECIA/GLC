@@ -11,6 +11,8 @@
       },
       "open": {
         "header": "Ouverture des accès",
+        "default": "Par défaut",
+        "custom": "Personalisée",
         "level": "Niveau | Niveaux",
         "class": "Classe | Classes"
       }

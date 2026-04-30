@@ -16,7 +16,13 @@
 
 <script setup lang="ts">
 import type { LevelRestriction, StructureRestriction } from '@/types/index.ts'
-import { faFloppyDisk, faPen, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
+import {
+  faFloppyDisk,
+  faPen,
+  faPlus,
+  faTrashCan,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { cloneDeep } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
@@ -88,7 +94,11 @@ watch(
 
     initalFields = {
       ...val,
-      dateRentreeEtab: toDateTime(val.dateRentreeEtab),
+      dateRentreeEtab: toDateTime(
+        val.dateRentreeEtab !== null
+          ? val.dateRentreeEtab
+          : val.dateRentreeDefaut,
+      ),
       niveaux,
     }
     fields.value = cloneDeep(initalFields)
@@ -98,22 +108,6 @@ watch(
     deep: true,
   },
 )
-
-const displayDateRentreeEtab = computed<string | undefined>(() => {
-  if (!props.restrictions)
-    return
-
-  const isDateRentreeEtab = props.restrictions.dateRentreeEtab !== null
-  const date = formatDateTime(
-    isDateRentreeEtab
-      ? props.restrictions.dateRentreeEtab
-      : props.restrictions.dateRentreeDefaut,
-  )
-
-  return isDateRentreeEtab
-    ? date
-    : `${date} (defaut)`
-})
 
 const isLevel = computed<boolean>(() => {
   if (!props.restrictions)
@@ -195,44 +189,72 @@ function addLevel(uid: string | number): void {
   if (level)
     level.dateRentreeNiveau = ''
 }
+
+function deleteCustom(): void {
+  fields.value.dateRentreeEtab = ''
+}
 </script>
 
 <template>
   <div class="r-card open-restrictions-card">
     <div class="body">
       <div class="item">
-        <h3
-          :class="{
-            'sr-only': isEdit,
-          }"
-        >
+        <h3>
           {{ t('page.restriction.section.open.header') }}
         </h3>
-        <div
-          v-if="isEdit"
-          class="field"
-        >
-          <div class="field-layout">
-            <div class="field-container">
-              <div class="middle">
-                <label for="dateRentreeEtab">
-                  {{ t('page.restriction.section.open.header') }}
-                </label>
-                <input
-                  id="dateRentreeEtab"
-                  v-model="fields.dateRentreeEtab"
-                  type="datetime-local"
-                  placeholder=""
-                >
+        <div class="item-container">
+          <div>
+            <p>{{ t('page.restriction.section.open.default') }}</p>
+            <SafeEmptyData
+              :value="formatDateTime(props.restrictions?.dateRentreeDefaut)"
+            />
+          </div>
+          <div
+            v-if="isEdit"
+            class="input-container"
+          >
+            <div class="field">
+              <div class="field-layout">
+                <div class="field-container">
+                  <div class="middle">
+                    <label for="dateRentreeEtab">
+                      {{ t('page.restriction.section.open.custom') }}
+                    </label>
+                    <input
+                      id="dateRentreeEtab"
+                      v-model="fields.dateRentreeEtab"
+                      type="datetime-local"
+                      placeholder=""
+                    >
+                  </div>
+                </div>
+                <div class="active-indicator" />
               </div>
             </div>
-            <div class="active-indicator" />
+            <button
+              type="button"
+              :aria-label="`${t('button.delete')} - ${t('page.restriction.section.open.custom')}`"
+              :title="t('button.delete')"
+              class="btn-tertiary circle"
+              @click="deleteCustom"
+            >
+              <FontAwesomeIcon
+                :icon="faTrashCan"
+              />
+            </button>
+          </div>
+          <div
+            v-else-if="
+              restrictions
+                && restrictions.dateRentreeEtab !== restrictions.dateRentreeDefaut
+            "
+          >
+            <p>{{ t('page.restriction.section.open.custom') }}</p>
+            <SafeEmptyData
+              :value="formatDateTime(restrictions.dateRentreeEtab)"
+            />
           </div>
         </div>
-        <SafeEmptyData
-          v-else
-          :value="displayDateRentreeEtab"
-        />
       </div>
 
       <div
@@ -313,12 +335,29 @@ function addLevel(uid: string | number): void {
     flex-direction: column;
     gap: 16px;
 
-    .item {
+    > .item {
       > h3 {
         margin-bottom: 4px;
       }
+
+      > .item-container {
+        > div > p {
+          font-weight: bold;
+        }
+
+        > .input-container {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          > .field {
+            flex: 1 1 auto;
+          }
+        }
+      }
     }
 
+    > .item > .item-container,
     > div > .niveau-container {
       display: grid;
       gap: 16px;
@@ -328,8 +367,9 @@ function addLevel(uid: string | number): void {
 
   @media (width >= map.get($grid-breakpoints, md)) {
     > .body {
+      > .item > .item-container,
       > div > .niveau-container {
-        grid-template-columns: repeat(auto-fill, minmax(512px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   }
