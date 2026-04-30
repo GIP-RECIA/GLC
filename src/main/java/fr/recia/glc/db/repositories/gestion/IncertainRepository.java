@@ -20,6 +20,9 @@ import fr.recia.glc.db.entities.gestion.Incertain;
 import fr.recia.glc.db.repositories.AbstractRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IncertainRepository<T extends Incertain> extends AbstractRepository<T, Long> {
+    List<Incertain> findDistinctByIncertainPersStructRattachementId(Long structureId);
 }

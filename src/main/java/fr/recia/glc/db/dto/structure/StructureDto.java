@@ -21,6 +21,8 @@ import fr.recia.glc.db.dto.AlertDto;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
+import fr.recia.glc.db.dto.gestion.IncertainDto;
+import fr.recia.glc.db.dto.gestion.IncertainPersonneDto;
 import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.entities.common.Adresse;
 import fr.recia.glc.db.entities.structure.AStructure;
@@ -35,6 +37,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +68,7 @@ public class StructureDto {
     private List<PersonneInListDto> personnes;
     private List<CardPersonneDto> withoutFunctions;
     private List<AlertDto> alerts;
+    private Collection<IncertainPersonneDto> incertains;
     private String permission;
 
     public StructureDto(AStructure aStructure) {

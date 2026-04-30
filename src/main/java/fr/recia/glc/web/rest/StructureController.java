@@ -26,6 +26,7 @@ import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.alert.AlertService;
+import fr.recia.glc.services.db.IncertainService;
 import fr.recia.glc.services.db.StructureService;
 import fr.recia.glc.services.db.FonctionService;
 import fr.recia.glc.services.db.PersonneService;
@@ -60,6 +61,8 @@ public class StructureController {
     private PersonneService personneService;
     @Autowired
     private AlertService alertService;
+    @Autowired
+    private IncertainService incertainService;
     @Autowired
     private GLCProperties glcProperties;
 
@@ -140,6 +143,9 @@ public class StructureController {
 
         // Récupération des alertes
         etablissement.setAlerts(alertService.getFonctionAlerts(etablissement.getId(), etablissement.getSource()));
+
+        // Récupération des incertains
+        etablissement.setIncertains(incertainService.getIncertains(etablissement.getId()));
 
         // On créé des maps pour pouvoir récupérer les objets par leur id en O(1)
         List<TypeFonctionFiliereDto> typesFonctionFiliereList = fonctionService.getTypesFonctionFiliere(etablissement.getSource());
