@@ -115,7 +115,22 @@ const displayDateRentreeEtab = computed<string | undefined>(() => {
     : `${date} (defaut)`
 })
 
-function hasLevel(level: LevelRestriction, index: number) {
+const isLevel = computed<boolean>(() => {
+  if (!props.restrictions)
+    return false
+
+  const levels = isEdit.value
+    ? fields.value.niveaux
+    : props.restrictions.niveaux
+
+  return levels
+    .some(level => (
+      level.dateRentreeNiveau !== null
+      || level.classes.some(c => c.dateRentreeClasse !== null)
+    ))
+})
+
+function hasLevel(level: LevelRestriction, index: number): boolean {
   const l = isEdit.value
     ? fields.value.niveaux[index]
     : level
@@ -220,7 +235,10 @@ function addLevel(uid: string | number): void {
         />
       </div>
 
-      <div v-if="restrictions">
+      <div
+        v-if="restrictions"
+        v-show="isLevel"
+      >
         <h4>
           {{ t('page.restriction.section.open.level', 2) }}
         </h4>
