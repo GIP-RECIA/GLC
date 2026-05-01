@@ -27,7 +27,7 @@
     "vuetify": "^3.12.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^8.0.0",
+    "@antfu/eslint-config": "^8.2.0",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
     "@date-io/date-fns": "^3.2.1",
