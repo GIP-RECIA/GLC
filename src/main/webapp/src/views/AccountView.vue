@@ -99,7 +99,7 @@ const table = useVueTable({
       {{ t('page.account.h1') }}
     </h1>
 
-    <div class="users">
+    <div v-dev class="users">
       <h2>
         {{ t('page.account.user.header') }}
       </h2>

@@ -104,7 +104,7 @@ function onCreate(): void {
               />
             </button>
           </li>
-          <li>
+          <li v-dev>
             <button
               type="button"
               class="btn-primary small"

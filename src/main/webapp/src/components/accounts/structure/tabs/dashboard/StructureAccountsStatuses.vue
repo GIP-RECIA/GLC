@@ -31,6 +31,8 @@ defineEmits<{
   selectedState: [Etat]
 }>()
 
+const isDev = import.meta.env.DEV
+
 const { t } = useI18n()
 
 const accountStates = computed(() => (
@@ -56,6 +58,7 @@ const accountStates = computed(() => (
       >
         <button
           type="button"
+          :disabled="!isDev"
           @click="$emit('selectedState', etat.etat)"
         >
           <div>
@@ -127,10 +130,12 @@ const accountStates = computed(() => (
         flex: 0 0 auto;
       }
 
-      &:hover,
-      &:focus-visible {
-        outline: 2px solid var(--#{$prefix}primary);
-        box-shadow: var(--#{$prefix}shadow-hover) HEXToRGBA(var(--#{$prefix}primary), 0.2);
+      &:not(:disabled) {
+        &:hover,
+        &:focus-visible {
+          outline: 2px solid var(--#{$prefix}primary);
+          box-shadow: var(--#{$prefix}shadow-hover) HEXToRGBA(var(--#{$prefix}primary), 0.2);
+        }
       }
     }
   }

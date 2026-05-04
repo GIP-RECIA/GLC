@@ -65,7 +65,7 @@ const { t } = useI18n()
               {{ t('page.index.account') }}
             </router-link>
           </li>
-          <li>
+          <li v-dev>
             <router-link
               :to="{ name: 'access' }"
               class="btn-tertiary"
@@ -87,7 +87,7 @@ const { t } = useI18n()
               {{ t('page.index.groups') }}
             </a>
           </li>
-          <li>
+          <li v-dev>
             <router-link
               :to="{ name: 'restriction' }"
               class="btn-tertiary"
@@ -98,7 +98,7 @@ const { t } = useI18n()
               {{ t('page.index.restriction') }}
             </router-link>
           </li>
-          <li>
+          <li v-dev>
             <router-link
               :to="{ name: 'settings' }"
               class="btn-tertiary"
@@ -108,6 +108,17 @@ const { t } = useI18n()
               />
               {{ t('page.index.settings') }}
             </router-link>
+          </li>
+          <li>
+            <a
+              href="/portail/p/ESCO-ParamEtab"
+              class="btn-tertiary"
+            >
+              <FontAwesomeIcon
+                :icon="faHouse"
+              />
+              {{ t('page.index.settings') }}
+            </a>
           </li>
         </ul>
       </div>

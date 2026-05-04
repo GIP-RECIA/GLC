@@ -370,6 +370,7 @@ const table = useVueTable({
 <template>
   <div>
     <r-filters
+      v-dev
       :data="filters"
       @update-filters="updateFilters"
     />
