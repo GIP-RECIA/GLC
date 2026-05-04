@@ -35,7 +35,6 @@ import {
   usePossibleFunctionsQuery,
   useRemoveUserOneAdditionalMutation,
   useSetUserOneAdditionalMutation,
-  useStructuresQuery,
 } from '@/services/queries/index.ts'
 import { toISODate } from '@/utils/index.ts'
 import FunctionSelect from './manageAdditional/FunctionSelect.vue'
@@ -147,8 +146,6 @@ const selectedUser = ref<SearchUser>()
 
 const selectedStructure = ref<SearchStructure>()
 
-const { data: searchStructures } = useStructuresQuery()
-
 /* Actions */
 
 async function remove(): Promise<void> {
@@ -226,6 +223,7 @@ async function save(): Promise<void> {
         <StructureSelect
           v-if="!structureId"
           v-model="selectedStructure"
+          :user-id="userId"
         />
 
         <FunctionSelect

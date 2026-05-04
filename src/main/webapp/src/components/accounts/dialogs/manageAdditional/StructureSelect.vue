@@ -15,31 +15,75 @@
 -->
 
 <script setup lang="ts">
-import type { SearchStructure } from '@/types/index.ts'
+import type { SearchStructure, User } from '@/types/index.ts'
+import { useQueryCache } from '@pinia/colada'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { concatenate } from '@/utils/index.ts'
+import { useStructuresQuery } from '@/services/queries/index.ts'
+import { concatenate, normalize } from '@/utils/index.ts'
 
-defineProps<{
-  structures?: SearchStructure[]
+const props = defineProps<{
+  userId?: number
 }>()
 
 const modelValue = defineModel<SearchStructure | undefined>()
 
 const { t } = useI18n()
+
+const queryCache = useQueryCache()
+
+const structureIds = computed<number[]>(() => {
+  if (!props.userId)
+    return []
+
+  return queryCache.getQueryData<User>(['user', props.userId])
+    ?.listeStructures
+    .map(({ id }) => id)
+    ?? []
+})
+
+const search = ref<string>('')
+
+const { data, isLoading } = useStructuresQuery()
+
+const items = computed<SearchStructure[]>(() => {
+  const q = normalize(search.value)
+
+  if (!data.value || q.length < 3)
+    return []
+
+  return data.value.filter((structure) => {
+    let filter = !structureIds.value.includes(structure.id)
+      && structure.nom.toLowerCase().includes(q)
+    if (structure.type)
+      filter = filter || structure.type.toLowerCase().includes(q)
+    if (structure.uai)
+      filter = filter || structure.uai.toLowerCase().includes(q)
+    if (structure.siren)
+      filter = filter || structure.siren.toLowerCase().includes(q)
+
+    return filter
+  })
+})
 </script>
 
 <template>
   <v-autocomplete
     v-model="modelValue"
+    v-model:search.trim="search"
     :label="t('page.account.dialog.manageAdditional.structure')"
-    :items="structures"
+    :items="items"
     item-value="id"
     item-title="nom"
-    :filter-keys="['raw.nom', 'raw.type', 'raw.uai', 'raw.siren']"
+    :loading="isLoading"
+    autocomplete="off"
     variant="solo-filled"
     hide-details
+    :hide-no-data="isLoading || search.length < 3"
     return-object
     flat
+    :custom-filter="() => true"
+    no-filter
   >
     <template #item="{ props: itemProps, item }">
       <v-list-item
