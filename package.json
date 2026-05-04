@@ -47,7 +47,7 @@
     "@types/lodash-es": "^4",
     "@types/node": "^24",
     "@types/xml2js": "^0",
-    "@vitejs/plugin-vue": "^6.0.5",
+    "@vitejs/plugin-vue": "^6.0.6",
     "@vue/test-utils": "^2.4.10",
     "@vue/tsconfig": "^0.9.1",
     "commit-and-tag-version": "^12.7.1",
