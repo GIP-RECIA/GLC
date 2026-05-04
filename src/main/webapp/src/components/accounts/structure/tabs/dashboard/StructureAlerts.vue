@@ -16,7 +16,10 @@
 
 <script setup lang="ts">
 import type { Structure } from '@/types/index.ts'
-import { faExclamationTriangle, faPlus } from '@fortawesome/free-solid-svg-icons'
+import {
+  faExclamationTriangle,
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
 
@@ -70,7 +73,7 @@ const { t } = useI18n()
             }}
           </p>
 
-          <footer>
+          <footer v-if="alert.type === 'min'" v-dev>
             <button
               type="button"
               class="btn-tertiary"
