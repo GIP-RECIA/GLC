@@ -1,14 +1,7 @@
 server:
-  port: 8090
+  port: 8080
   servlet:
     context-path: /
-  error:
-    whitelabel.enabled: true
-    include-binding-errors: always
-    include-exception: true
-    include-message: always
-    include-stacktrace: always
-  forward-headers-strategy: NATIVE
 
 logging:
   config: 'classpath:logback-dev.xml'
@@ -17,6 +10,12 @@ spring:
   config:
     activate:
       on-profile: dev
+
+  cache:
+    type: caffeine
+    cache-names: fonctionAlerts, collectivites, etablissement, fonctions, personneFonctions, structureFonctions, typesFonctionFiliere, disciplines, personnesWithoutFunctions, personnesByEtablissement, personne, relations, stuctureDBById, personneLDAPByUid, typeFonctionFiliere, discipline, incertains
+    caffeine:
+      spec: maximumSize=10000,expireAfterWrite=30m
 
   jpa:
     show-sql: true
@@ -27,41 +26,61 @@ spring:
     password:
 
 app:
-  security:
-    # auth-uri-filter-path: j_spring_cas_security_check
-    # redirect-param-name: spring-security-redirect
-    # security: http://URL:PORT/j_spring_cas_security_check
-    authorized-domain-names:
-      - http://localhost:8090
-    protocol: http://
-    id-key-provider:
+  restriction-rentree:
+    url: http://HOST
+    apiKey:
+
+  grouper:
+    base-url: http://HOST
+    username:
+    password:
+
+  rights:
+    services-path: 'file:'
+    declared-groups:
+      - grouper-path:
+        display-name:
+
+  admin:
+    local:
+    sarapis-local:
+    central:
+    central-coll:
+    direction:
+    groups-attribute:
 
   cas:
-    url-prefix:
-    url-login:
-    url-logout:
+    cas-service-id:
+    cas-server-url: http://HOST
+    cas-provider-key: casProviderKey
+    cas-ticket-callback: /login/cas
 
   cors:
     allowed-origins:
       - http://localhost:5173
 
-  admins:
-    user-name:
-    group-name: ''
-
-  users:
-    group-name: ''
-
   mail:
-    base-url: http://localhost:8090
+    base-url: http://localhost:8080
     from: glc@localhost
 
   authorized-services:
     ip-ranges:
+      -
 
   metrics:
     prometeus-authorized-acess:
       ip-ranges:
+        -
+
+  uid-factory:
+    default-code-generateur:
+    domain-to-code-generateur:
+      '':
+    code-region:
+    nom-source:
+    nb-lettre-ann:
+    nb-lettre-total:
+    nb-lettre-inc:
 
   ldap:
     context-source:
@@ -81,6 +100,11 @@ app:
       other-displayed-attributes:
       other-backend-attributes:
 
+    structure-branch:
+      base:
+      all-structures-by-siren-filter:
+      structures-coll-filter:
+
     group-branch:
       dn-contains-display-name:
       other-displayed-attributes:
@@ -91,41 +115,6 @@ app:
       group-display-name-pattern: ''
       resolve-user-members:
       resolve-user-members-by-user-attributes:
-      # designers can be commented - used to attach groups that are not in the tree root or membrers on
-      designers:
-        - group-root-pattern: ''
-          group-attach-end-match: ''
-          group-to-attach-end-pattern: ''
-        - group-root-pattern: ''
-          group-attach-end-match: ''
-          group-to-attach-end-pattern: ''
-        - group-root-pattern: ''
-          group-attach-end-match: ''
-          group-to-attach-end-pattern: ''
-      # for formatters can be commented
-      name-formatters:
-        - group-matcher: ''
-          group-name-regex: ''
-          group-name-index: ''
-          group-recomposer-separator: ''
-        - group-matcher: ''
-          group-name-regex: ''
-          group-name-index: ''
-          group-recomposer-separator: ''
-        - group-matcher: ''
-          group-name-regex: ''
-          group-name-index: ''
-          group-recomposer-separator: ''
-        - group-matcher: ''
-          group-name-regex: ''
-          group-name-index: ''
-          group-recomposer-separator: ''
-          group-suffixe-to-append: ''
-        - group-matcher: ''
-          group-name-regex: ''
-          group-name-index: ''
-          group-recomposer-separator: ''
-          group-suffixe-to-append: ''
       dont-resolve-members-with-group-pattern: ''
       structure-properties:
         structure-from-group-pattern: ''
@@ -137,6 +126,8 @@ app:
         uai-pattern: ''
 
   front:
+    default-structure-image:
+    default-user-image:
     end-function-warning:
 
     staff:
@@ -151,53 +142,28 @@ app:
     filter-account-states:
       -
 
-    template-api-path: ''
-
     extended-uportal:
       header:
         component-path: ''
         props:
-          context-api-url: ''
-          sign-out-url: ''
-          default-org-logo-path: ''
-          default-avatar-path: ''
-          default-org-icon-path: ''
-          favorite-api-url: ''
-          layout-api-url: ''
-          organization-api-url: ''
-          portlet-api-url: ''
-          user-info-api-url: ''
-          user-info-portlet-url: ''
-          session-api-url: ''
           template-api-path: ''
-          switch-org-portlet-url: ''
-          favorites-portlet-card-size: ''
-          grid-portlet-card-size: ''
-          hide-action-mode: ''
-          show-favorites-in-slider: ''
-          return-home-title: ''
-          return-home-target: ''
-          icon-type: ''
+          fname: ''
+          dnma-url: ''
 
       footer:
         component-path: ''
         props:
           template-api-path: ''
 
-    login-offices:
-      - source: ''
-        guichets:
-          - nom: ''
-            categories-personne:
-              -
-
   custom-config:
+    pronote-group-regex:
     suppress-days:
 
     alerts:
       - source: ''
         fonction-alerts:
-          - code: ''
+          - filiere: ''
+            discipline: ''
             min:
               value:
               type: error
@@ -207,11 +173,19 @@ app:
               type: error
               action: false
 
+    login-offices:
+      - source: ''
+        guichets:
+          - nom: ''
+            categoriesPersonne:
+              -
+
     fonctions:
       - source: ''
         filieres:
           - code: ''
             disciplines:
               - ''
+            admin: true
         disciplines:
           - ''
