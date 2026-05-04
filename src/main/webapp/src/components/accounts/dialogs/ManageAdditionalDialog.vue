@@ -29,7 +29,7 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { computed, ref, toRefs, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   usePossibleFunctionsQuery,
@@ -41,18 +41,13 @@ import FunctionSelect from './manageAdditional/FunctionSelect.vue'
 import StructureSelect from './manageAdditional/StructureSelect.vue'
 import UserSelect from './manageAdditional/UserSelect.vue'
 
-const props = withDefaults(
-  defineProps<{
-    title: string
-    userId?: number
-    structureId?: number
-    disabledFonctions?: UserFunction[]
-    editFonction?: FunctionForm
-  }>(),
-  {
-    structureId: Number.NaN,
-  },
-)
+const props = defineProps<{
+  title: string
+  userId?: number
+  structureId?: number
+  disabledFonctions?: UserFunction[]
+  editFonction?: FunctionForm
+}>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -63,14 +58,12 @@ const modelValue = defineModel<boolean>({ required: true })
 
 const { t } = useI18n()
 
-const { structureId: structureIdRef } = toRefs(props)
+const { mutate: removeOneAdditional } = useRemoveUserOneAdditionalMutation()
+
+const { mutate: setOneAdditional } = useSetUserOneAdditionalMutation()
 
 const disableFonctionEdit = computed<boolean>(() => (
   !!props.editFonction
-))
-
-const canSave = computed<boolean>(() => (
-  true
 ))
 
 const EMPTY_FUNCTION: FunctionForm = {
@@ -116,6 +109,41 @@ const disabled = computed<FunctionForm[]>(() => {
   return data
 })
 
+const selectedUser = ref<SearchUser>()
+
+const selectedStructure = ref<SearchStructure>()
+
+const mandatory = computed(() => ({
+  userId: selectedUser.value?.id ?? props.userId,
+  structureId: selectedStructure.value?.id ?? props.structureId,
+}))
+
+const structureIdRef = computed<number>(() => (
+  mandatory.value.structureId ?? Number.NaN
+))
+
+const canSave = computed<boolean>(() => {
+  const {
+    userId,
+    structureId,
+  } = mandatory.value
+  const {
+    filiere,
+    discipline,
+    dateDebut,
+    dateFin,
+  } = fields.value
+
+  return !!(
+    userId
+    && structureId
+    && filiere
+    && discipline
+    && dateDebut
+    && dateFin
+  )
+})
+
 const { data } = usePossibleFunctionsQuery(structureIdRef)
 
 const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
@@ -138,26 +166,17 @@ const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
     .filter(({ disciplines }) => disciplines.length > 0)
 })
 
-/* User seacrh */
-
-const selectedUser = ref<SearchUser>()
-
-/* Structure search */
-
-const selectedStructure = ref<SearchStructure>()
-
 /* Actions */
 
 async function remove(): Promise<void> {
   const {
     userId,
     structureId,
-  } = props
+  } = mandatory.value
   if (!userId || !structureId)
     return
 
-  const { mutate } = useRemoveUserOneAdditionalMutation()
-  mutate({
+  removeOneAdditional({
     id: userId,
     structureId,
     toDeleteFunction: fields.value,
@@ -174,12 +193,11 @@ async function save(): Promise<void> {
   const {
     userId,
     structureId,
-  } = props
+  } = mandatory.value
   if (!userId || !structureId)
     return
 
-  const { mutate } = useSetUserOneAdditionalMutation()
-  mutate({
+  setOneAdditional({
     id: userId,
     structureId,
     toAddFunction: fields.value,
