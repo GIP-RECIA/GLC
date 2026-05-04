@@ -17,8 +17,8 @@
           "max": "maximum"
         },
         "withoutFunctions": {
-          "title": "Utilisateur sans fonctions | Utilisateurs sans fonctions",
-          "text": "Un utilisetur est sans fonctions. | {count} utilisateurs sont sans fonctions."
+          "title": "Utilisateur sans fonction | Utilisateurs sans fonction",
+          "text": "Un utilisetur est sans fonction. | {count} utilisateurs sont sans fonction."
         }
       },
       "accountsStatuses": "États des comptes"
