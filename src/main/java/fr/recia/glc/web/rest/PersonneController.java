@@ -23,6 +23,7 @@ import fr.recia.glc.audit.AuditEvent;
 import fr.recia.glc.audit.AuditService;
 import fr.recia.glc.audit.EventType;
 import fr.recia.glc.db.enums.Etat;
+import fr.recia.glc.web.dto.function.FonctionAction;
 import fr.recia.glc.web.dto.user.CardPersonneDto;
 import fr.recia.glc.web.dto.user.PersonneDetailDto;
 import fr.recia.glc.web.dto.user.PersonneExportDto;
@@ -468,6 +469,10 @@ public class PersonneController {
         AStructure aStructure = structureService.getStructureDBFromId(body.getStructureId());
         Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
         if (allowedSiren.contains(aStructure.getSiren())) {
+            if(body.getRequiredAction().equals(FonctionAction.attach) && !principal.getGlobalRights().contains(GLCRole.ATTACH)){
+                log.warn("User {} is not authorized to attach funtion for user {} in {}", principal.getUsername(), id, body.getStructureId());
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
             boolean success = fonctionService.saveAdditionalFonctions(
                 id,
                 body.getStructureId(),

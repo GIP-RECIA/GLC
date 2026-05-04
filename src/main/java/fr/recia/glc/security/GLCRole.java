@@ -21,5 +21,6 @@ public enum GLCRole {
     WRITE,
     VIEW_UID,
     SEARCH_UID,
-    ADMIN_FONCTIONS
+    ADMIN_FONCTIONS,
+    ATTACH
 }

@@ -151,53 +151,60 @@ public class SecurityConfiguration {
             rightsForEtabs.put(GLCRole.VIEW_UID, new HashSet<>());
             rightsForEtabs.put(GLCRole.ADMIN_FONCTIONS, new HashSet<>());
             Set<GLCRole> globalRights = new HashSet<>();
-            for (String group : groups) {
-                Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
-                Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
-                Matcher matcherAdminCentral = patternAdminCentral.matcher(group);
-                Matcher matcherAdminCentralColl = patternAdminCentralColl.matcher(group);
-                Matcher matcherDirection = patternDirection.matcher(group);
-                // Droits sur les établissements
-                if (matcherAdminLocal.matches()) {
-                    final String uai = matcherAdminLocal.group(2);
-                    final String siren = structureLoader.getSirenByUai(uai);
-                    rightsForEtabs.get(GLCRole.WRITE).add(siren);
-                    rightsForEtabs.get(GLCRole.READ).add(siren);
-                }
-                if (matcherAdminSarapisLocal.matches()) {
-                    final String uai = matcherAdminSarapisLocal.group(2);
-                    final String siren = structureLoader.getSirenByUai(uai);
-                    rightsForEtabs.get(GLCRole.WRITE).add(siren);
-                    rightsForEtabs.get(GLCRole.READ).add(siren);
-                }
-                // Droits sur les branches
-                if (matcherAdminCentral.matches()) {
-                    for (StructureFromGroup structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))) {
-                        final String uai = structureFromGroup.getUAI();
+            if(groups != null){
+                for (String group : groups) {
+                    Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
+                    Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
+                    Matcher matcherAdminCentral = patternAdminCentral.matcher(group);
+                    Matcher matcherAdminCentralColl = patternAdminCentralColl.matcher(group);
+                    Matcher matcherDirection = patternDirection.matcher(group);
+                    // Droits sur les établissements
+                    if (matcherAdminLocal.matches()) {
+                        final String uai = matcherAdminLocal.group(2);
                         final String siren = structureLoader.getSirenByUai(uai);
                         rightsForEtabs.get(GLCRole.WRITE).add(siren);
                         rightsForEtabs.get(GLCRole.READ).add(siren);
-                        rightsForEtabs.get(GLCRole.VIEW_UID).add(siren);
+                    }
+                    if (matcherAdminSarapisLocal.matches()) {
+                        final String uai = matcherAdminSarapisLocal.group(2);
+                        final String siren = structureLoader.getSirenByUai(uai);
+                        rightsForEtabs.get(GLCRole.WRITE).add(siren);
+                        rightsForEtabs.get(GLCRole.READ).add(siren);
+                    }
+                    // Droits sur les branches
+                    if (matcherAdminCentral.matches()) {
+                        for (StructureFromGroup structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))) {
+                            final String uai = structureFromGroup.getUAI();
+                            final String siren = structureLoader.getSirenByUai(uai);
+                            rightsForEtabs.get(GLCRole.WRITE).add(siren);
+                            rightsForEtabs.get(GLCRole.READ).add(siren);
+                            rightsForEtabs.get(GLCRole.VIEW_UID).add(siren);
+                            rightsForEtabs.get(GLCRole.ADMIN_FONCTIONS).add(siren);
+                        }
+                        // Si admin de branche = autorisation à faire de la recherche par UID
+                        globalRights.add(GLCRole.SEARCH_UID);
+                        // Si admin de branche = autorisation à faire des rattachements
+                        globalRights.add(GLCRole.ATTACH);
+                    }
+                    // Droits sur les collectivités
+                    if (matcherAdminCentralColl.matches()) {
+                        for(StructureSirenDomain collectivite : structureLoader.getAllCollectivites()){
+                            rightsForEtabs.get(GLCRole.WRITE).add(collectivite.getSiren());
+                            rightsForEtabs.get(GLCRole.READ).add(collectivite.getSiren());
+                            rightsForEtabs.get(GLCRole.VIEW_UID).add(collectivite.getSiren());
+                        }
+                    }
+                    // Droits spécifiques sur certaines fonctions
+                    if (matcherDirection.matches()) {
+                        final String uai = matcherDirection.group(1);
+                        final String siren = structureLoader.getSirenByUai(uai);
                         rightsForEtabs.get(GLCRole.ADMIN_FONCTIONS).add(siren);
                     }
-                    // Si admin de branche = autorisation à faire de la recherche par UID
-                    globalRights.add(GLCRole.SEARCH_UID);
                 }
-                // Droits sur les collectivités
-                if (matcherAdminCentralColl.matches()) {
-                    for(StructureSirenDomain collectivite : structureLoader.getAllCollectivites()){
-                        rightsForEtabs.get(GLCRole.WRITE).add(collectivite.getSiren());
-                        rightsForEtabs.get(GLCRole.READ).add(collectivite.getSiren());
-                        rightsForEtabs.get(GLCRole.VIEW_UID).add(collectivite.getSiren());
-                    }
-                }
-                // Droits spécifiques sur certaines fonctions
-                if (matcherDirection.matches()) {
-                    final String uai = matcherDirection.group(1);
-                    final String siren = structureLoader.getSirenByUai(uai);
-                    rightsForEtabs.get(GLCRole.ADMIN_FONCTIONS).add(siren);
-                }
+            } else {
+                log.warn("No groups for user {} !", username);
             }
+
             return new GLCUser(username, "", new ArrayList<>(), rightsForEtabs, globalRights);
         };
     }
