@@ -68,6 +68,7 @@ function useSetUserAdditionalMutation() {
     mutation: setUserAdditional,
     onSettled: (_data, _error, vars) => {
       queryCache.invalidateQueries({ key: ['user', vars.id] })
+      queryCache.invalidateQueries({ key: ['structure', vars.structureId] })
     },
   })
 }
@@ -77,6 +78,7 @@ function useSetUserOneAdditionalMutation() {
     mutation: setUserOneAdditional,
     onSettled: (_data, _error, vars) => {
       queryCache.invalidateQueries({ key: ['user', vars.id] })
+      queryCache.invalidateQueries({ key: ['structure', vars.structureId] })
     },
   })
 }
@@ -86,6 +88,7 @@ function useRemoveUserOneAdditionalMutation() {
     mutation: removeUserOneAdditional,
     onSettled: (_data, _error, vars) => {
       queryCache.invalidateQueries({ key: ['user', vars.id] })
+      queryCache.invalidateQueries({ key: ['structure', vars.structureId] })
     },
   })
 }
