@@ -63,7 +63,7 @@
     "npm-run-all2": "^8.0.4",
     "ress": "^5.0.2",
     "sass": "^1.99.0",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "vite": "^8.0.5",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vite-plugin-vuetify": "^2.1.3",
