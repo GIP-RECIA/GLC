@@ -18,20 +18,58 @@
 import type { SearchUser } from '@/types/index.ts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { format } from 'date-fns'
-import { h } from 'vue'
+import { computed, h, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useSearchUserQuery } from '@/services/queries/index.ts'
 import { etatMap } from '@/types/enums/index.ts'
-import { concatenate, getIconDefinition, getStateLabel } from '@/utils/index.ts'
+import {
+  concatenate,
+  getIconDefinition,
+  getStateLabel,
+  normalize,
+} from '@/utils/index.ts'
 
-defineProps<{
-  users?: SearchUser[]
+const props = defineProps<{
+  structureId?: number
 }>()
 
 const modelValue = defineModel<SearchUser | undefined>()
 
-const modelValueSearch = defineModel<string | undefined>('search')
-
 const { t } = useI18n()
+
+const search = ref<string>('')
+
+const shortSearch = computed<string>(() => (
+  search.value.length >= 3
+    ? normalize(search.value).slice(0, 3)
+    : ''
+))
+
+const { data, isLoading } = useSearchUserQuery(
+  shortSearch,
+  {
+    staff: true,
+    check_rights: false,
+    not_in_etab: props.structureId,
+  },
+)
+
+const items = computed<SearchUser[]>(() => {
+  const q = normalize(search.value)
+
+  if (!data.value || q.length < 3)
+    return []
+
+  return data.value.filter((user) => {
+    let filter = user.cn.toLowerCase().includes(q)
+    if (user.email)
+      filter = filter || user.email.toLowerCase().includes(q)
+    if (user.uid)
+      filter = filter || user.uid.toLowerCase().includes(q)
+
+    return filter
+  })
+})
 
 function renderEtat(user: SearchUser) {
   const etat = {
@@ -68,16 +106,20 @@ function renderEtat(user: SearchUser) {
 <template>
   <v-autocomplete
     v-model="modelValue"
-    v-model:search="modelValueSearch"
+    v-model:search.trim="search"
     :label="t('page.account.dialog.manageAdditional.user')"
-    :items="users"
+    :items="items"
     item-value="id"
     item-title="cn"
-    :filter-keys="['raw.cn', 'raw.email', 'raw.uid']"
+    :loading="isLoading"
+    autocomplete="off"
     variant="solo-filled"
     hide-details
+    :hide-no-data="isLoading || search.length < 3"
     return-object
     flat
+    :custom-filter="() => true"
+    no-filter
   >
     <template #item="{ props: itemProps, item }">
       <v-list-item

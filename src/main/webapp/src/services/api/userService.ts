@@ -75,7 +75,7 @@ async function searchUser(
   name: string,
   params?: {
     etab?: string
-    not_in_etab?: string
+    not_in_etab?: number
     staff?: boolean
     check_rights?: boolean
   },

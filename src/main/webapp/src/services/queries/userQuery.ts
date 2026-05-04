@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import type { Ref } from 'vue'
 import {
   defineQuery,
   useMutation,
@@ -45,12 +46,21 @@ const useUserQuery = defineQuery(() => {
   }))
 })
 
-function useSearchUserQuery(name: string) {
-  return useQuery({
-    key: ['user', 'search', name],
-    query: () => searchUser(name),
-    staleTime: Infinity,
-  })
+function useSearchUserQuery(
+  name: Ref<string>,
+  params?: {
+    etab?: string
+    not_in_etab?: number
+    staff?: boolean
+    check_rights?: boolean
+  },
+) {
+  return useQuery(() => ({
+    key: ['user', 'search', name.value],
+    query: () => searchUser(name.value, params),
+    enabled: !!name.value,
+    staleTime: 1000 * 60 * 5,
+  }))
 }
 
 function useSetUserAdditionalMutation() {

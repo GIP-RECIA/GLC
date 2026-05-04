@@ -29,10 +29,8 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { debounce } from 'lodash-es'
 import { computed, ref, toRefs, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { searchUser } from '@/services/api/index.ts'
 import {
   usePossibleFunctionsQuery,
   useRemoveUserOneAdditionalMutation,
@@ -141,30 +139,11 @@ const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
     .filter(({ disciplines }) => disciplines.length > 0)
 })
 
+/* User seacrh */
+
 const selectedUser = ref<SearchUser>()
 
-const searchUserValue = ref<string>()
-
-const searchUsers = ref<SearchUser[]>()
-
-watch(
-  searchUserValue,
-  (val) => {
-    if (!val)
-      return
-
-    debounce(() => getSearchUsers(val), 500)()
-  },
-)
-
-async function getSearchUsers(q: string): Promise<void> {
-  const response = await searchUser(q, {
-    staff: true,
-    check_rights: false,
-  })
-
-  searchUsers.value = response
-}
+/* Structure search */
 
 const selectedStructure = ref<SearchStructure>()
 
@@ -241,14 +220,12 @@ async function save(): Promise<void> {
         <UserSelect
           v-if="!userId"
           v-model="selectedUser"
-          v-model:search="searchUserValue"
-          :users="searchUsers"
+          :structure-id="structureId"
         />
 
         <StructureSelect
           v-if="!structureId"
           v-model="selectedStructure"
-          :structures="searchStructures"
         />
 
         <FunctionSelect
