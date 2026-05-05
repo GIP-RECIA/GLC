@@ -15,11 +15,9 @@
  */
 
 import type { Ref } from 'vue'
+import type { StructureRestriction } from '@/types/index.ts'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
-import {
-  getRestrictions,
-  saveRestrictions,
-} from '@/services/api/index.ts'
+import { getRestrictions, saveRestrictions } from '@/services/api/index.ts'
 
 const queryCache = useQueryCache()
 
@@ -35,10 +33,13 @@ function useRestrictionsQuery(id: Ref<number>) {
 function useSaveRestrictionsMutation() {
   return useMutation({
     mutation: saveRestrictions,
-    onMutate: (vars) => {
-      queryCache.setQueryData(['restrictions', vars.id], vars.body)
+    onMutate: (vars, _context) => {
+      queryCache.setQueryData<StructureRestriction>(
+        ['restrictions', vars.id],
+        vars.body,
+      )
     },
-    onError: (_error, vars) => {
+    onError: (_error, vars, _context) => {
       queryCache.invalidateQueries({ key: ['restrictions', vars.id] })
     },
   })

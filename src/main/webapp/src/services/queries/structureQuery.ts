@@ -15,7 +15,7 @@
  */
 
 import type { Ref } from 'vue'
-import { defineQuery, useQuery } from '@pinia/colada'
+import { useQuery } from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
@@ -50,9 +50,8 @@ function useEtablissementQuery(id: Ref<number>) {
   }))
 }
 
-const useStructureQuery = defineQuery(() => {
+function useStructureQuery() {
   const route = useRoute()
-
   const structureId = computed(() => Number(route.params.structureId))
 
   return useQuery(() => ({
@@ -61,7 +60,7 @@ const useStructureQuery = defineQuery(() => {
     enabled: !Number.isNaN(structureId.value),
     staleTime: 1000 * 60 * 60,
   }))
-})
+}
 
 function usePossibleFunctionsQuery(structureId: Ref<number>) {
   return useQuery(() => ({

@@ -33,7 +33,7 @@ function useRightsQuery(id: Ref<number>) {
 function useUpdateRightMutation() {
   return useMutation({
     mutation: updateRight,
-    onMutate: (vars) => {
+    onMutate: (vars, _context) => {
       const {
         service,
         role,
@@ -74,9 +74,12 @@ function useUpdateRightMutation() {
         return { ...d, rights }
       })
 
-      queryCache.setQueryData(['rights', vars.id], newData)
+      queryCache.setQueryData<ServiceRights[] | undefined>(
+        ['rights', vars.id],
+        newData,
+      )
     },
-    onError: (_error, vars) => {
+    onError: (_error, vars, _context) => {
       queryCache.invalidateQueries({ key: ['rights', vars.id] })
     },
   })

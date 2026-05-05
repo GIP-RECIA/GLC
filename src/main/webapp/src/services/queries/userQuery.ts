@@ -15,12 +15,7 @@
  */
 
 import type { Ref } from 'vue'
-import {
-  defineQuery,
-  useMutation,
-  useQuery,
-  useQueryCache,
-} from '@pinia/colada'
+import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
@@ -33,9 +28,8 @@ import {
 
 const queryCache = useQueryCache()
 
-const useUserQuery = defineQuery(() => {
+function useUserQuery() {
   const route = useRoute()
-
   const userId = computed(() => Number(route.params.userId))
 
   return useQuery(() => ({
@@ -44,7 +38,7 @@ const useUserQuery = defineQuery(() => {
     enabled: !Number.isNaN(userId.value),
     staleTime: 1000 * 60 * 30,
   }))
-})
+}
 
 function useSearchUserQuery(
   name: Ref<string>,
@@ -66,9 +60,11 @@ function useSearchUserQuery(
 function useSetUserAdditionalMutation() {
   return useMutation({
     mutation: setUserAdditional,
-    onSettled: (_data, _error, vars) => {
-      queryCache.invalidateQueries({ key: ['user', vars.id] })
+    onSuccess(_data, vars, _context) {
       queryCache.invalidateQueries({ key: ['structure', vars.structureId] })
+    },
+    onSettled: (_data, _error, vars, _context) => {
+      queryCache.invalidateQueries({ key: ['user', vars.id] })
     },
   })
 }
@@ -76,9 +72,11 @@ function useSetUserAdditionalMutation() {
 function useSetUserOneAdditionalMutation() {
   return useMutation({
     mutation: setUserOneAdditional,
-    onSettled: (_data, _error, vars) => {
-      queryCache.invalidateQueries({ key: ['user', vars.id] })
+    onSuccess(_data, vars, _context) {
       queryCache.invalidateQueries({ key: ['structure', vars.structureId] })
+    },
+    onSettled: (_data, _error, vars, _context) => {
+      queryCache.invalidateQueries({ key: ['user', vars.id] })
     },
   })
 }
@@ -86,9 +84,11 @@ function useSetUserOneAdditionalMutation() {
 function useRemoveUserOneAdditionalMutation() {
   return useMutation({
     mutation: removeUserOneAdditional,
-    onSettled: (_data, _error, vars) => {
-      queryCache.invalidateQueries({ key: ['user', vars.id] })
+    onSuccess(_data, vars, _context) {
       queryCache.invalidateQueries({ key: ['structure', vars.structureId] })
+    },
+    onSettled: (_data, _error, vars, _context) => {
+      queryCache.invalidateQueries({ key: ['user', vars.id] })
     },
   })
 }
