@@ -281,23 +281,27 @@ async function save(): Promise<void> {
       </v-toolbar>
 
       <v-card-text class="pt-0 py-3">
-        <UserSelect
-          v-if="!user"
-          v-model="selectedUser"
-          :structure-id="structureId"
-        />
+        <div class="form-layout">
+          <UserSelect
+            v-if="!user"
+            v-model="selectedUser"
+            :structure-id="structureId"
+            class="full-width"
+          />
 
-        <StructureSelect
-          v-if="!structureId"
-          v-model="selectedStructure"
-          :exclude="userStuctures"
-        />
+          <StructureSelect
+            v-if="!structureId"
+            v-model="selectedStructure"
+            :exclude="userStuctures"
+            class="full-width"
+          />
 
-        <FunctionSelect
-          v-model="fields"
-          :possible="filteredFilieres"
-          :disable-fonction-edit="!!editFonction"
-        />
+          <FunctionSelect
+            v-model="fields"
+            :possible="filteredFilieres"
+            :disable-fonction-edit="!!editFonction"
+          />
+        </div>
       </v-card-text>
 
       <v-card-actions>
@@ -348,5 +352,18 @@ async function save(): Promise<void> {
 
 h1 {
   margin-bottom: 0;
+}
+
+.form-layout {
+  display: grid;
+  gap: 16px;
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    grid-template-columns: repeat(2, 1fr);
+
+    > .full-width {
+      grid-column: span 2;
+    }
+  }
 }
 </style>

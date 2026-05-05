@@ -85,75 +85,73 @@ watch(
 </script>
 
 <template>
-  <div class="function-select">
-    <v-autocomplete
-      v-model="modelValue.filiere"
-      :label="t('page.account.dialog.manageAdditional.type')"
-      :items="possible"
-      item-title="libelle"
-      item-value="id"
-      :disabled="disableFonctionEdit"
-      variant="solo-filled"
-      class="w-100"
-      hide-details
-      required
-      flat
-      v-bind="config.filiere"
-    />
+  <v-autocomplete
+    v-model="modelValue.filiere"
+    :label="t('page.account.dialog.manageAdditional.type')"
+    :items="possible"
+    item-title="libelle"
+    item-value="id"
+    :disabled="disableFonctionEdit"
+    variant="solo-filled"
+    class="w-100"
+    hide-details
+    required
+    flat
+    v-bind="config.filiere"
+  />
 
-    <v-autocomplete
-      v-model="modelValue.discipline"
-      :label="t('page.account.dialog.manageAdditional.discipline')"
-      :items="filteredDisciplines"
-      item-title="libelle"
-      item-value="id"
-      :disabled="!modelValue.filiere || disableFonctionEdit"
-      variant="solo-filled"
-      class="w-100"
-      hide-details
-      required
-      flat
-      v-bind="config.discipline"
-    />
+  <v-autocomplete
+    v-model="modelValue.discipline"
+    :label="t('page.account.dialog.manageAdditional.discipline')"
+    :items="filteredDisciplines"
+    item-title="libelle"
+    item-value="id"
+    :disabled="!modelValue.filiere || disableFonctionEdit"
+    variant="solo-filled"
+    class="w-100"
+    hide-details
+    required
+    flat
+    v-bind="config.discipline"
+  />
 
-    <div class="field">
-      <div class="field-layout">
-        <div class="field-container">
-          <div class="middle">
-            <label for="startDate">
-              {{ t('page.account.dialog.manageAdditional.startDate') }}
-            </label>
-            <input
-              id="startDate"
-              v-model="modelValue.dateDebut"
-              type="date"
-              placeholder=""
-              v-bind="config.startDate"
-            >
-          </div>
+  <div class="field">
+    <div class="field-layout">
+      <div class="field-container">
+        <div class="middle">
+          <label for="startDate">
+            {{ t('page.account.dialog.manageAdditional.startDate') }}
+          </label>
+          <input
+            id="startDate"
+            v-model="modelValue.dateDebut"
+            type="date"
+            placeholder=""
+            v-bind="config.startDate"
+          >
         </div>
-        <div class="active-indicator" />
       </div>
+      <div class="active-indicator" />
     </div>
+  </div>
 
-    <div class="field">
-      <div class="field-layout">
-        <div class="field-container">
-          <div class="middle">
-            <label for="endDate">
-              {{ t('page.account.dialog.manageAdditional.endDate') }}
-            </label>
-            <input
-              id="endDate"
-              v-model="modelValue.dateFin"
-              type="date"
-              placeholder=""
-              v-bind="config.endDate"
-            >
-          </div>
+  <div class="field">
+    <div class="field-layout">
+      <div class="field-container">
+        <div class="middle">
+          <label for="endDate">
+            {{ t('page.account.dialog.manageAdditional.endDate') }}
+          </label>
+          <input
+            id="endDate"
+            v-model="modelValue.dateFin"
+            type="date"
+            placeholder=""
+            v-bind="config.endDate"
+          >
         </div>
-        <div class="active-indicator" />
       </div>
+      <div class="active-indicator" />
     </div>
   </div>
 </template>
@@ -163,13 +161,4 @@ watch(
 @use '@gip-recia/ui/core/variables' as *;
 @use '@gip-recia/ui/functions' as *;
 @use '@gip-recia/ui/mixins' as *;
-
-.function-select {
-  display: grid;
-  gap: 16px;
-
-  @media (width >= map.get($grid-breakpoints, md)) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 </style>
