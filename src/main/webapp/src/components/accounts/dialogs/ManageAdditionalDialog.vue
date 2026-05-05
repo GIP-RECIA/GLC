@@ -58,10 +58,6 @@ const modelValue = defineModel<boolean>({ required: true })
 
 const { t } = useI18n()
 
-const { mutate: removeOneAdditional } = useRemoveUserOneAdditionalMutation()
-
-const { mutate: setOneAdditional } = useSetUserOneAdditionalMutation()
-
 const disableFonctionEdit = computed<boolean>(() => (
   !!props.editFonction
 ))
@@ -168,6 +164,10 @@ const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
 
 /* Actions */
 
+const {
+  mutate: removeOneAdditional,
+} = useRemoveUserOneAdditionalMutation()
+
 async function remove(): Promise<void> {
   const {
     userId,
@@ -188,6 +188,10 @@ async function remove(): Promise<void> {
 function close(): void {
   emit('update:modelValue', false)
 }
+
+const {
+  mutate: setOneAdditional,
+} = useSetUserOneAdditionalMutation()
 
 async function save(): Promise<void> {
   const {

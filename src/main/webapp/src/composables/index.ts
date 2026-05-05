@@ -15,5 +15,4 @@
  */
 
 export * from './useKeepSession.ts'
-export * from './useSaveAttachDetach.ts'
 export * from './useTabs.ts'

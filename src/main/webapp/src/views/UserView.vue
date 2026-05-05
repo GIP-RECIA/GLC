@@ -15,7 +15,11 @@
 -->
 
 <script setup lang="ts">
-import type { FunctionForm, UserFunction, UserStructure } from '@/types/index.ts'
+import type {
+  FunctionForm,
+  UserFunction,
+  UserStructure,
+} from '@/types/index.ts'
 import {
   faLink,
   faLock,
