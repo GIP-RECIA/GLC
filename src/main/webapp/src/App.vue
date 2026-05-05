@@ -67,29 +67,27 @@ useKeepSession()
 </script>
 
 <template>
-  <v-app class="app-container">
-    <header>
-      <extended-uportal-header
+  <header>
+    <extended-uportal-header
+      v-if="isInit"
+      :service-name="appName"
+      v-bind="configuration!.front.extendedUportal?.header?.props"
+    />
+    <AccountToolbar
+      v-if="isAccountSection"
+    />
+  </header>
+  <div>
+    <main>
+      <router-view />
+    </main>
+    <footer>
+      <extended-uportal-footer
         v-if="isInit"
-        :service-name="appName"
-        v-bind="configuration!.front.extendedUportal?.header?.props"
+        v-bind="configuration!.front.extendedUportal?.footer?.props"
       />
-      <AccountToolbar
-        v-if="isAccountSection"
-      />
-    </header>
-    <div class="d-flex flex-column h-100 overflow-y-auto">
-      <v-main class="flex-grow-1">
-        <router-view />
-      </v-main>
-      <footer>
-        <extended-uportal-footer
-          v-if="isInit"
-          v-bind="configuration!.front.extendedUportal?.footer?.props"
-        />
-      </footer>
-    </div>
-  </v-app>
+    </footer>
+  </div>
 
   <PiniaColadaDevtools />
 </template>
