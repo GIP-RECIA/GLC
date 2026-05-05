@@ -15,32 +15,19 @@
 -->
 
 <script setup lang="ts">
-import type { SearchStructure, User } from '@/types/index.ts'
-import { useQueryCache } from '@pinia/colada'
+import type { SearchStructure } from '@/types/index.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStructuresQuery } from '@/services/queries/index.ts'
 import { concatenate, normalize } from '@/utils/index.ts'
 
 const props = defineProps<{
-  userId?: number
+  exclude?: number[]
 }>()
 
 const modelValue = defineModel<SearchStructure | undefined>()
 
 const { t } = useI18n()
-
-const queryCache = useQueryCache()
-
-const structureIds = computed<number[]>(() => {
-  if (!props.userId)
-    return []
-
-  return queryCache.getQueryData<User>(['user', props.userId])
-    ?.listeStructures
-    .map(({ id }) => id)
-    ?? []
-})
 
 const search = ref<string>('')
 
@@ -53,8 +40,11 @@ const items = computed<SearchStructure[]>(() => {
     return []
 
   return data.value.filter((structure) => {
-    let filter = !structureIds.value.includes(structure.id)
-      && structure.nom.toLowerCase().includes(q)
+    let filter
+
+    if (props.exclude)
+      filter = !props.exclude.includes(structure.id)
+    filter = filter && structure.nom.toLowerCase().includes(q)
     if (structure.type)
       filter = filter || structure.type.toLowerCase().includes(q)
     if (structure.uai)

@@ -302,7 +302,7 @@ function onAttach(): void {
   <ManageAdditionalDialog
     v-model="dialogState"
     :title="manageAdditionalTitle"
-    :user-id="user?.id"
+    :user="user"
     :structure-id="structureId"
     :disabled-fonctions="disabledFonctions"
     :edit-fonction="editFonction"

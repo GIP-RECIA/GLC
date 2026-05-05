@@ -21,6 +21,7 @@ import type {
   PossibleFunction,
   SearchStructure,
   SearchUser,
+  User,
   UserFunction,
 } from '@/types/index.ts'
 import {
@@ -43,7 +44,7 @@ import UserSelect from './manageAdditional/UserSelect.vue'
 
 const props = defineProps<{
   title: string
-  userId?: number
+  user?: User
   structureId?: number
   disabledFonctions?: UserFunction[]
   editFonction?: FunctionForm
@@ -57,6 +58,10 @@ const emit = defineEmits<{
 const modelValue = defineModel<boolean>({ required: true })
 
 const { t } = useI18n()
+
+const userStuctures = computed<number[] | undefined>(() => (
+  props.user?.listeStructures.map(({ id }) => id)
+))
 
 const disableFonctionEdit = computed<boolean>(() => (
   !!props.editFonction
@@ -110,7 +115,7 @@ const selectedUser = ref<SearchUser>()
 const selectedStructure = ref<SearchStructure>()
 
 const mandatory = computed(() => ({
-  userId: selectedUser.value?.id ?? props.userId,
+  userId: selectedUser.value?.id ?? props.user?.id,
   structureId: selectedStructure.value?.id ?? props.structureId,
 }))
 
@@ -237,7 +242,7 @@ async function save(): Promise<void> {
 
       <v-card-text class="pt-0 py-3">
         <UserSelect
-          v-if="!userId"
+          v-if="!user"
           v-model="selectedUser"
           :structure-id="structureId"
         />
@@ -245,7 +250,7 @@ async function save(): Promise<void> {
         <StructureSelect
           v-if="!structureId"
           v-model="selectedStructure"
-          :user-id="userId"
+          :exclude="userStuctures"
         />
 
         <FunctionSelect
@@ -257,7 +262,7 @@ async function save(): Promise<void> {
 
       <v-card-actions>
         <button
-          v-show="userId && structureId"
+          v-show="user && structureId"
           type="button"
           :disabled="!editFonction"
           class="btn-secondary"
