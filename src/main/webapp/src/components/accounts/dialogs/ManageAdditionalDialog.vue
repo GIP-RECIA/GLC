@@ -26,6 +26,8 @@ import type {
 } from '@/types/index.ts'
 import {
   faFloppyDisk,
+  faLink,
+  faLinkSlash,
   faTrashCan,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
@@ -59,13 +61,21 @@ const modelValue = defineModel<boolean>({ required: true })
 
 const { t } = useI18n()
 
+/* User and structure */
+
+const selectedUser = ref<SearchUser>()
+const selectedStructure = ref<SearchStructure>()
+
 const userStuctures = computed<number[] | undefined>(() => (
   props.user?.listeStructures.map(({ id }) => id)
 ))
 
-const disableFonctionEdit = computed<boolean>(() => (
-  !!props.editFonction
-))
+const mandatory = computed(() => ({
+  userId: selectedUser.value?.id ?? props.user?.id,
+  structureId: selectedStructure.value?.id ?? props.structureId,
+}))
+
+/* Filiere, discipline and dates */
 
 const EMPTY_FUNCTION: FunctionForm = {
   filiere: undefined,
@@ -93,9 +103,19 @@ watch(
   },
 )
 
+/* Filieres */
+
+const structureIdRef = computed<number>(() => (
+  mandatory.value.structureId ?? Number.NaN
+))
+
+const {
+  data: filieres,
+} = usePossibleFunctionsQuery(structureIdRef)
+
 const disabled = computed<FunctionForm[]>(() => {
   const data: FunctionForm[] = []
-  if (disableFonctionEdit.value)
+  if (props.editFonction)
     return data
 
   props.disabledFonctions?.forEach(({ id, disciplines }) => {
@@ -110,17 +130,61 @@ const disabled = computed<FunctionForm[]>(() => {
   return data
 })
 
-const selectedUser = ref<SearchUser>()
+const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
+  if (!disabled.value)
+    return filieres.value
 
-const selectedStructure = ref<SearchStructure>()
+  return filieres.value
+    ?.map((filiere) => {
+      const disciplines: CommonDiscipline[] = filiere.disciplines.filter(
+        discipline => !disabled.value
+          .map(({ filiere: fi, discipline: di }) => (
+            `${fi}-${di}`
+          ))
+          .includes(
+            `${filiere.id}-${discipline.id}`,
+          ),
+      )
 
-const mandatory = computed(() => ({
-  userId: selectedUser.value?.id ?? props.user?.id,
-  structureId: selectedStructure.value?.id ?? props.structureId,
-}))
+      return { ...filiere, disciplines }
+    })
+    .filter(({ disciplines }) => disciplines.length > 0)
+})
 
-const structureIdRef = computed<number>(() => (
-  mandatory.value.structureId ?? Number.NaN
+/* Actions */
+
+const isAttach = computed<boolean>(() => (
+  !props.user
+  || !props.structureId
+))
+
+function functionsCount(functions: UserFunction[]): number {
+  return functions.reduce(
+    (acc, value) => acc + value.disciplines.length,
+    0,
+  )
+}
+
+const isDetach = computed<boolean>(() => {
+  if (isAttach.value || !props.editFonction)
+    return false
+
+  const structure = props.user!.listeStructures
+    .find(({ id }) => id === props.structureId)
+
+  return (
+    !!structure
+    && functionsCount(structure.fonctions) === 0
+    && functionsCount(structure.additionalFonctions) === 1
+  )
+})
+
+const requiredAction = computed<string>(() => (
+  isAttach.value
+    ? 'attach'
+    : isDetach.value
+      ? 'detach'
+      : 'save'
 ))
 
 const canSave = computed<boolean>(() => {
@@ -145,30 +209,6 @@ const canSave = computed<boolean>(() => {
   )
 })
 
-const { data } = usePossibleFunctionsQuery(structureIdRef)
-
-const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
-  if (!disabled.value)
-    return data.value
-  return data.value
-    ?.map((filiere) => {
-      const disciplines: CommonDiscipline[] = filiere.disciplines.filter(
-        discipline => !disabled.value
-          .map(({ filiere: fi, discipline: di }) => (
-            `${fi}-${di}`
-          ))
-          .includes(
-            `${filiere.id}-${discipline.id}`,
-          ),
-      )
-
-      return { ...filiere, disciplines }
-    })
-    .filter(({ disciplines }) => disciplines.length > 0)
-})
-
-/* Actions */
-
 const {
   mutate: removeOneAdditional,
 } = useRemoveUserOneAdditionalMutation()
@@ -185,7 +225,7 @@ async function remove(): Promise<void> {
     id: userId,
     structureId,
     toDeleteFunction: fields.value,
-    requiredAction: 'save',
+    requiredAction: requiredAction.value,
   })
   emit('update:modelValue', false)
 }
@@ -210,7 +250,7 @@ async function save(): Promise<void> {
     id: userId,
     structureId,
     toAddFunction: fields.value,
-    requiredAction: 'save',
+    requiredAction: requiredAction.value,
   })
   emit('update:modelValue', false)
 }
@@ -268,9 +308,9 @@ async function save(): Promise<void> {
           class="btn-secondary"
           @click="remove"
         >
-          {{ t('button.delete') }}
+          {{ t(`button.${isDetach ? 'detach' : 'delete'}`) }}
           <FontAwesomeIcon
-            :icon="faTrashCan"
+            :icon="isDetach ? faLinkSlash : faTrashCan"
           />
         </button>
         <div class="grow-1" />
@@ -290,9 +330,9 @@ async function save(): Promise<void> {
           class="btn-primary"
           @click="save"
         >
-          {{ t('button.save') }}
+          {{ t(`button.${isAttach ? 'attach' : 'save'}`) }}
           <FontAwesomeIcon
-            :icon="faFloppyDisk"
+            :icon="isAttach ? faLink : faFloppyDisk"
           />
         </button>
       </v-card-actions>
