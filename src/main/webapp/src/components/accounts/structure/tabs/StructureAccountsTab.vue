@@ -49,6 +49,7 @@ import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import {
   CategoriePersonne,
   categoriePersonneMap,
+  Etat,
   etatFilters,
   etatMap,
 } from '@/types/enums/index.ts'
@@ -141,16 +142,6 @@ const filters = computed(() => [
 function updateFilters(e: CustomEvent): void {
   // eslint-disable-next-line unused-imports/no-unused-vars
   const { activeFilters } = e.detail
-}
-
-/* Actions */
-
-function onUnlock(): void {
-
-}
-
-function onExport(): void {
-
 }
 
 /* Table */
@@ -374,6 +365,27 @@ const table = useVueTable({
       : updaterOrValue
   },
 })
+
+/* Actions */
+
+const selected = computed<number[]>(() => (
+  table.getSelectedRowModel().rows.map(({ original: { id } }) => id)
+))
+
+const toUnlock = computed<number[]>(() => (
+  table.getSelectedRowModel()
+    .rows
+    .filter(({ original: { etat } }) => etat === Etat.Bloque)
+    .map(({ original: { id } }) => id)
+))
+
+function onUnlock(): void {
+
+}
+
+function onExport(): void {
+
+}
 </script>
 
 <template>
@@ -393,6 +405,7 @@ const table = useVueTable({
         <li>
           <button
             type="button"
+            :disabled="toUnlock.length === 0"
             class="btn-primary small"
             @click="onUnlock"
           >
@@ -402,9 +415,10 @@ const table = useVueTable({
             />
           </button>
         </li>
-        <li>
+        <li v-dev>
           <button
             type="button"
+            :disabled="selected.length === 0"
             class="btn-primary small"
             @click="onExport"
           >
