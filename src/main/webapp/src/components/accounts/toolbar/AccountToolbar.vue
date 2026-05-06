@@ -15,144 +15,18 @@
 -->
 
 <script setup lang="ts">
-import type { RouteLocationAsRelativeGeneric } from 'vue-router'
 import { faArrowLeft, faHome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { useQueryCache } from '@pinia/colada'
-import { useSessionStorage } from '@vueuse/core'
-import { computed, onMounted, onUnmounted, useTemplateRef } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import {
-  useStructureQueryOptions,
-  useUserQueryOptions,
-} from '@/services/queries/index.ts'
-import { concatenate, errorHandler } from '@/utils/index.ts'
+import { onMounted, onUnmounted, useTemplateRef } from 'vue'
+import { useNavigationTabs } from '@/composables/index.ts'
 import TabItem from './TabItem.vue'
 import TabMenu from './TabMenu.vue'
 
-interface TabItemT {
-  id: string
-  name: string
-  to: RouteLocationAsRelativeGeneric
-}
-
-const route = useRoute()
-const router = useRouter()
-
-const items = useSessionStorage<TabItemT[]>(
-  `${__APP_SLUG__}.account.tabs`,
-  [],
-)
-
-const isItems = computed<boolean>(() => items.value.length > 0)
-
-router.beforeEach(async (to, from) => {
-  const queryCache = useQueryCache()
-  const { structureId, userId } = to.params
-
-  if (structureId || userId) {
-    const fromIndex = items.value.findIndex(i =>
-      from.fullPath === router.resolve(i.to).fullPath,
-    )
-
-    try {
-      if (structureId && typeof structureId === 'string') {
-        const { data, error } = await queryCache.refresh(
-          queryCache.ensure(
-            useStructureQueryOptions(Number(structureId)),
-          ),
-        )
-        if (error)
-          throw error
-
-        addItem({
-          id: `structure-${structureId}`,
-          name: concatenate(
-            [data!.nom, data!.type, data!.uai],
-            ' ',
-          ),
-          to: {
-            name: 'structure',
-            params: { structureId },
-          },
-        }, fromIndex)
-      }
-
-      if (userId && typeof userId === 'string') {
-        const { data, error } = await queryCache.refresh(
-          queryCache.ensure(
-            useUserQueryOptions(Number(userId)),
-          ),
-        )
-        if (error)
-          throw error
-
-        addItem({
-          id: `user-${userId}`,
-          name: data!.cn,
-          to: {
-            name: 'user',
-            params: { userId },
-          },
-        }, fromIndex)
-      }
-    }
-    catch (e) {
-      errorHandler(e)
-
-      return {
-        name: 'account',
-      }
-    }
-  }
-
-  return true
-})
-
-function addItem(item: TabItemT, index: number = -1): void {
-  const exists = items.value.some(i => i.id === item.id)
-  if (exists)
-    return
-
-  if (index === -1) {
-    items.value.push(item)
-    return
-  }
-
-  items.value.splice(index + 1, 0, item)
-}
-
-function removeItem(id: string): void {
-  const index = items.value.findIndex(i => i.id === id)
-
-  if (index === -1)
-    return
-
-  const itemToRemove = items.value[index]
-
-  const isActive
-    = route.fullPath === router.resolve(itemToRemove.to).fullPath
-
-  items.value.splice(index, 1)
-
-  if (!isActive)
-    return
-
-  if (items.value.length === 0) {
-    router.push({ name: 'account' })
-
-    return
-  }
-
-  const nextIndex
-    = index < items.value.length
-      ? index
-      : items.value.length - 1
-
-  const nextItem = items.value[nextIndex]
-
-  router.push(nextItem.to)
-}
+const {
+  items,
+  isItems,
+  removeItem,
+} = useNavigationTabs()
 
 /* Gestion du scroll */
 

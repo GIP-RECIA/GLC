@@ -19,10 +19,11 @@ import { PiniaColadaDevtools } from '@pinia/colada-devtools'
 import { watchOnce } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import AccountToolbar from '@/components/accounts/toolbar/AccountToolbar.vue'
-import { useKeepSession } from '@/composables/index.ts'
+import { useKeepSession, useNavigationTabs } from '@/composables/index.ts'
 import { useConfigurationStore } from '@/stores/index.ts'
+import { errorHandler } from '@/utils/index.ts'
 
 const route = useRoute()
 
@@ -63,6 +64,55 @@ const isAccountSection = computed(() => (
 
 const appName = __APP_NAME__
 
+useNavigationTabs()
+
+const router = useRouter()
+
+const {
+  loadStructure,
+  loadUser,
+} = useNavigationTabs()
+
+router.beforeEach(async (to, from) => {
+  const { structureId, userId } = to.params
+
+  if (structureId || userId) {
+    if (
+      structureId
+      && typeof structureId === 'string'
+    ) {
+      try {
+        await loadStructure(from, Number(structureId))
+      }
+      catch (e) {
+        errorHandler(e, 'initCurrentEtab')
+
+        return {
+          name: 'account',
+        }
+      }
+    }
+
+    if (
+      userId
+      && typeof userId === 'string'
+    ) {
+      try {
+        await loadUser(from, Number(userId))
+      }
+      catch (e) {
+        errorHandler(e, 'initCurrentPersonne')
+
+        return {
+          name: 'account',
+        }
+      }
+    }
+  }
+
+  return true
+})
+
 useKeepSession()
 </script>
 
@@ -74,7 +124,7 @@ useKeepSession()
       v-bind="configuration!.front.extendedUportal?.header?.props"
     />
     <AccountToolbar
-      v-show="isAccountSection"
+      v-if="isAccountSection"
     />
   </header>
   <div>
