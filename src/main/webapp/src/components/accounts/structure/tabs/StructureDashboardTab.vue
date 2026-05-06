@@ -18,6 +18,7 @@
 import type { Structure } from '@/types/index.ts'
 import StructureAccountsStatuses from './dashboard/StructureAccountsStatuses.vue'
 import StructureAlerts from './dashboard/StructureAlerts.vue'
+import StructureIncertains from './dashboard/StructureIncertains.vue'
 
 defineProps<{
   structure?: Structure
@@ -31,6 +32,11 @@ defineProps<{
     />
 
     <StructureAccountsStatuses
+      :structure="structure"
+    />
+
+    <StructureIncertains
+      v-dev
       :structure="structure"
     />
   </div>

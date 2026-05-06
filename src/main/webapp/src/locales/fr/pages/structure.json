@@ -21,7 +21,8 @@
           "text": "Un utilisetur est sans fonction. | {count} utilisateurs sont sans fonction."
         }
       },
-      "accountsStatuses": "États des comptes"
+      "accountsStatuses": "États des comptes",
+      "incertains": "Alertes Sarapis"
     },
     "comp": {
       "filter": {

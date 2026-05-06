@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-export * from './alertTypes.ts'
-export * from './configurationTypes.ts'
-export * from './confirmationTypes.ts'
-export * from './endInfoTypes.ts'
-export * from './enumValuesTypes.ts'
-export * from './functionTypes.ts'
-export * from './incertainTypes.ts'
-export * from './restrictionTypes.ts'
-export * from './rightTypes.ts'
-export * from './structureTypes.ts'
-export * from './userTypes.ts'
+import type { IncertainUser } from './userTypes'
+
+export interface Incertain {
+  personne: IncertainUser
+  incertains: IncertainData[]
+}
+
+export interface IncertainData {
+  attribut: string
+  value?: string
+  texte: string
+  obligatoire: boolean
+}

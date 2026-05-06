@@ -16,6 +16,7 @@
 
 import type { Alert } from './alertTypes.ts'
 import type { Composition, UserFunction } from './functionTypes.ts'
+import type { Incertain } from './incertainTypes.ts'
 import type { AccountUser, FunctionUser } from './userTypes.ts'
 
 export interface CommonStructure {
@@ -62,5 +63,6 @@ export type Structure = CommonStructure & {
   filieres: Composition[]
   withoutFunctions?: FunctionUser[]
   alerts: Alert[]
+  incertains: Incertain[]
   permission?: string
 }

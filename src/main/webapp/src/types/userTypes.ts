@@ -41,6 +41,8 @@ export type SearchUser = CommonUser & {
   dateSuppression: string
 }
 
+export type IncertainUser = SearchUser
+
 export type AccountUser = CommonUser & {
   nom: string
   prenom: string
