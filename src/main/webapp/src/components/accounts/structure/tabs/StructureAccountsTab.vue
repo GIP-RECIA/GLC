@@ -39,18 +39,20 @@ import {
   getSortedRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
+import { useBreakpoints } from '@vueuse/core'
 import { format } from 'date-fns'
 import { computed, h, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import Pagination from '@/components/Pagination.vue'
+import SafeEmptyData from '@/components/SafeEmptyData.vue'
 import {
   CategoriePersonne,
   categoriePersonneMap,
   etatFilters,
   etatMap,
 } from '@/types/enums/index.ts'
-import { getIconDefinition, getStateLabel } from '@/utils/index.ts'
+import { concatenate, getIconDefinition, getStateLabel } from '@/utils/index.ts'
 import IndeterminateCheckbox from './accounts/IndeterminateCheckbox.vue'
 import '@gip-recia/ui-webcomponents/dist/r-filters.js'
 
@@ -59,6 +61,15 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+
+const breakpoints = useBreakpoints({
+  xs: 0,
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
+  xxl: 1400,
+})
 
 /* Filters */
 
@@ -154,9 +165,9 @@ watch(
   { immediate: true },
 )
 
-// const hasUid = computed<boolean>(() =>
-//   accounts.value.some(row => row.uid != null),
-// )
+const hasUid = computed<boolean>(() =>
+  accounts.value.some(row => row.uid != null),
+)
 
 function renderEtat(row: Row<AccountUser>) {
   const etat = {
@@ -190,6 +201,16 @@ function renderEtat(row: Row<AccountUser>) {
 }
 
 function renderActions(row: Row<AccountUser>) {
+  const userName = concatenate([row.original.nom, row.original.prenom], ' ')
+  const viewTitle = t('page.structure.accounts.table.action.view')
+  const expendCollapseTitle = t(
+    `page.structure.accounts.table.action.${
+      row.getIsExpanded()
+        ? 'collapse'
+        : 'expand'
+    }`,
+  )
+
   return [
     h(
       RouterLink,
@@ -204,7 +225,8 @@ function renderActions(row: Row<AccountUser>) {
         h(
           'span',
           {
-            title: 'Consulter',
+            title: viewTitle,
+            ariaLabel: `${viewTitle} - ${userName}`,
           },
           [
             h(FontAwesomeIcon, {
@@ -227,7 +249,8 @@ function renderActions(row: Row<AccountUser>) {
         h(
           'span',
           {
-            title: 'Développer',
+            title: expendCollapseTitle,
+            ariaLabel: `${expendCollapseTitle} - ${userName}`,
           },
           [
             h(FontAwesomeIcon, {
@@ -246,64 +269,50 @@ function renderActions(row: Row<AccountUser>) {
 const columnHelper = createColumnHelper<AccountUser>()
 const globalFilter = ref<string>()
 const columns = computed(() => [
-  {
+  columnHelper.display({
     id: 'select',
     header: ({ table }: { table: any }) => h(IndeterminateCheckbox, {
       checked: table.getIsAllPageRowsSelected(),
       indeterminate: table.getIsSomePageRowsSelected(),
       onChange: table.getToggleAllPageRowsSelectedHandler(),
+      ariaLabel: t('page.structure.accounts.table.selectAll'),
     }),
     cell: ({ row }: { row: any }) => h(IndeterminateCheckbox, {
       checked: row.getIsSelected(),
       disabled: !row.getCanSelect(),
       onChange: row.getToggleSelectedHandler(),
+      ariaLabel: concatenate([row.original.nom, row.original.prenom], ' '),
     }),
     enableGlobalFilter: false,
-  },
+  }),
   columnHelper.accessor('etat', {
     id: 'etat',
-    header: t('page.user.status.header'),
+    header: t('page.structure.accounts.table.status'),
     cell: ({ row }) => renderEtat(row),
     enableGlobalFilter: false,
   }),
   columnHelper.accessor('nom', {
     id: 'nom',
-    header: t('page.user.info.identity.lastName'),
+    header: t('page.structure.accounts.table.lastName'),
   }),
   columnHelper.accessor('prenom', {
     id: 'prenom',
-    header: t('page.user.info.identity.firstName'),
+    header: t('page.structure.accounts.table.firstName'),
   }),
-  // columnHelper.accessor('categoriePersonne', {
-  //   header: t('page.user.category.header'),
-  //   cell: info => t(categoriePersonneMap[info.getValue()].i18n),
-  //   enableGlobalFilter: false,
-  // }),
-  // ...(
-  //   hasUid.value
-  //     ? [
-  //         columnHelper.accessor('uid', {
-  //           header: t('page.user.info.account.uid'),
-  //         }),
-  //       ]
-  //     : []
-  // ),
-  // columnHelper.accessor('login', {
-  //   header: t('page.user.info.account.login'),
-  //   cell: info => info.row.original.guichet
-  //     ? t('externalLogin')
-  //     : info.getValue(),
-  // }),
-  // columnHelper.accessor('email', {
-  //   header: t('page.user.info.account.email'),
-  // }),
-  // columnHelper.accessor('dateModification', {
-  //   header: t('page.user.info.context.sourceModificationDate'),
-  //   enableGlobalFilter: false,
-  // }),
+  ...(
+    breakpoints.greaterOrEqual('md').value
+      ? [
+          columnHelper.accessor('categoriePersonne', {
+            header: t('page.structure.accounts.table.category'),
+            cell: info => t(categoriePersonneMap[info.getValue()].i18n),
+            enableGlobalFilter: false,
+          }),
+        ]
+      : []
+  ),
   columnHelper.display({
     id: 'actions',
-    header: 'Actions',
+    header: t('page.structure.accounts.table.action.header'),
     cell: ({ row }) => renderActions(row),
     enableGlobalFilter: false,
   }),
@@ -430,7 +439,7 @@ const table = useVueTable({
     </div>
 
     <div class="accounts-data">
-      <table>
+      <table :aria-label="t('page.structure.accounts.table.label')">
         <thead>
           <tr
             v-for="headerGroup in table.getHeaderGroups()"
@@ -446,6 +455,7 @@ const table = useVueTable({
                   : '',
                 header.column.columnDef.id,
               ]"
+              scope="col"
               @click="header.column.getToggleSortingHandler()?.($event)"
             >
               <FlexRender
@@ -486,14 +496,57 @@ const table = useVueTable({
               v-show="row.getIsExpanded()"
               :id="`user-menu-${row.original.id}`"
               class="expandedLine"
+              role="none"
             >
-              <td :colspan="row.getAllCells().length">
+              <td
+                :colspan="row.getAllCells().length"
+                role="none"
+              >
                 <div>
-                  <div>{{ t(categoriePersonneMap[row.original.categoriePersonne].i18n) }}</div>
-                  <div>{{ row.original.uid }}</div>
-                  <div>{{ row.original.guichet ? t('page.user.office.external') : row.original.login }}</div>
-                  <div>{{ row.original.email }}</div>
-                  <div>{{ row.original.dateModification }}</div>
+                  <p v-if="!breakpoints.greaterOrEqual('md').value">
+                    <span class="sr-only">
+                      {{ t('page.structure.accounts.table.category') }}
+                    </span>
+                    <SafeEmptyData
+                      :value="t(categoriePersonneMap[row.original.categoriePersonne].i18n)"
+                    />
+                  </p>
+                  <p v-if="hasUid">
+                    <span class="sr-only">
+                      {{ t('page.structure.accounts.table.uid') }}
+                    </span>
+                    <SafeEmptyData
+                      :value="row.original.uid"
+                    />
+                  </p>
+                  <p>
+                    <span class="sr-only">
+                      {{ t('page.structure.accounts.table.login') }}
+                    </span>
+                    <SafeEmptyData
+                      :value="
+                        row.original.guichet
+                          ? t('page.structure.accounts.table.officeExternal')
+                          : row.original.login
+                      "
+                    />
+                  </p>
+                  <p>
+                    <span class="sr-only">
+                      {{ t('page.structure.accounts.table.email') }}
+                    </span>
+                    <SafeEmptyData
+                      :value="row.original.email"
+                    />
+                  </p>
+                  <p>
+                    <span class="sr-only">
+                      {{ t('page.structure.accounts.table.sourceModificationDate') }}
+                    </span>
+                    <SafeEmptyData
+                      :value="row.original.dateModification"
+                    />
+                  </p>
                 </div>
               </td>
             </tr>
@@ -539,8 +592,15 @@ const table = useVueTable({
       &.select,
       &.etat {
         padding: 12px;
-        width: 40px;
         text-align: center;
+      }
+
+      &.select {
+        width: 40px;
+      }
+
+      &.etat {
+        width: 70px;
       }
     }
 
@@ -556,7 +616,6 @@ const table = useVueTable({
 
     > tbody {
       > tr {
-        border-radius: 10px;
         transition: background-color 0.15s ease;
 
         &.contentLine {
@@ -611,12 +670,14 @@ const table = useVueTable({
         }
 
         &.expandedLine {
+          display: grid;
+
           > td > div {
             display: grid;
-            grid-auto-flow: column;
-            grid-auto-columns: 1fr;
+            align-items: center;
+            grid-auto-rows: 1fr;
 
-            > div {
+            > p {
               padding: 12px 16px;
             }
           }
@@ -627,7 +688,10 @@ const table = useVueTable({
         }
 
         &:hover,
-        &:has(:focus-visible) {
+        &:has(:focus-visible),
+        &:hover + tr.expandedLine,
+        &:has(:focus-visible) + tr.expandedLine,
+        &:has(+ tr.expandedLine:hover) {
           background-color: HEXToRGBA(var(--#{$prefix}btn-secondary-hover), 0.4);
         }
       }
@@ -649,31 +713,48 @@ const table = useVueTable({
         padding: 12px 16px;
       }
 
-      > tbody > tr.contentLine {
-        display: table-row;
+      > tbody > tr {
+        &.contentLine {
+          display: table-row;
 
-        > td {
-          &.select {
-            padding-bottom: 12px;
+          > td {
+            &.select {
+              padding-bottom: 12px;
+            }
+
+            &.etat {
+              padding-top: 12px;
+            }
+
+            &.nom {
+              padding-bottom: 12px;
+            }
+
+            &.prenom {
+              padding-top: 12px;
+            }
+
+            &.actions {
+              flex-direction: row;
+            }
           }
+        }
 
-          &.etat {
-            padding-top: 12px;
-          }
+        &.expandedLine {
+          display: table-row;
 
-          &.nom {
-            padding-bottom: 12px;
-          }
-
-          &.prenom {
-            padding-top: 12px;
-          }
-
-          &.actions {
-            flex-direction: row;
+          > td > div {
+            grid-template-columns: repeat(2, 1fr);
           }
         }
       }
+    }
+  }
+
+  @media (width >= map.get($grid-breakpoints, md)) {
+    > table > tbody > tr.expandedLine > td > div {
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
     }
   }
 }

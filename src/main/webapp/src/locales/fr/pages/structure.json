@@ -35,7 +35,26 @@
       "withoutFunctions": "SANS FONCTIONS"
     },
     "accounts": {
-      "search": "Nom, prénom, login ou email"
+      "search": "Nom, prénom, login ou email",
+      "table": {
+        "label": "Liste des comptes",
+        "selectAll": "Tous les comptes",
+        "status": "@:page.user.status.header",
+        "lastName": "@:page.user.info.identity.lastName",
+        "firstName": "@:page.user.info.identity.firstName",
+        "category": "@:page.user.category.header",
+        "uid": "@:page.user.info.account.uid",
+        "login": "@:page.user.info.account.login",
+        "officeExternal": "@:page.user.office.external",
+        "email": "@:page.user.info.account.email",
+        "sourceModificationDate": "@:page.user.info.context.sourceModificationDate",
+        "action": {
+          "header": "Actions",
+          "view": "Consulter",
+          "expand": "Déplier",
+          "collapse": "Plier"
+        }
+      }
     }
   }
 }
