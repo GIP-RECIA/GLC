@@ -36,13 +36,13 @@ import UserInformationTab from '@/components/accounts/user/tabs/UserInformationT
 import UserInfo from '@/components/accounts/user/UserInfo.vue'
 import { useTabs } from '@/composables/index.ts'
 import {
-  deleteUser,
-  forceDeleteUser,
-  lockUser,
-  undoDeleteUser,
-  unlockUser,
-} from '@/services/api/index.ts'
-import { useUserQuery } from '@/services/queries/index.ts'
+  useDeleteUserMutation,
+  useForceDeleteUserMutation,
+  useLockUserMutation,
+  useUndoDeleteUserMutation,
+  useUnlockUserMutation,
+  useUserQuery,
+} from '@/services/queries/index.ts'
 import { Etat } from '@/types/enums/index.ts'
 
 const { t } = useI18n()
@@ -109,52 +109,54 @@ const isLocked = computed<boolean>(() => (
   user.value?.etat === Etat.Bloque
 ))
 
-async function onToggleLock(): Promise<void> {
+const {
+  mutate: lock,
+} = useLockUserMutation()
+const {
+  mutate: unlock,
+} = useUnlockUserMutation()
+
+function onToggleLock(): void {
   if (!user.value)
     return
 
   const { id } = user.value
-  const response = isLocked.value
-    ? await unlockUser(id)
-    : await lockUser(id)
-  if (!response)
-    return
-
-  user.value.etat = isLocked.value
-    ? Etat.Valide
-    : Etat.Bloque
+  isLocked.value
+    ? unlock(id)
+    : lock(id)
 }
 
 const isDeleting = computed<boolean>(() => (
   user.value?.etat === Etat.Deleting
 ))
 
-async function onUndoDelete(): Promise<void> {
+const {
+  mutate: undoDelete,
+} = useUndoDeleteUserMutation()
+
+function onUndoDelete(): void {
   if (!user.value)
     return
 
   const { id } = user.value
-  const response = await undoDeleteUser(id)
-  if (!response)
-    return
-
-  user.value.etat = Etat.Valide
+  undoDelete(id)
 }
 
-async function onDelete(): Promise<void> {
+const {
+  mutate: deleteU,
+} = useDeleteUserMutation()
+const {
+  mutate: forceDelete,
+} = useForceDeleteUserMutation()
+
+function onDelete(): void {
   if (!user.value)
     return
 
   const { id } = user.value
-  const response = isDeleting.value
-    ? await forceDeleteUser(id)
-    : await deleteUser(id)
-  if (!response)
-    return
-
-  user.value.etat = isDeleting.value
-    ? Etat.Delete
-    : Etat.Deleting
+  isDeleting.value
+    ? forceDelete(id)
+    : deleteU(id)
 }
 
 function onAttach(): void {

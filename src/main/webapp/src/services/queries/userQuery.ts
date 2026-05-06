@@ -15,6 +15,7 @@
  */
 
 import type { Ref } from 'vue'
+import type { User } from '@/types/index.ts'
 import {
   defineQueryOptions,
   useMutation,
@@ -24,12 +25,19 @@ import {
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
+  deleteUser,
+  forceDeleteUser,
   getUser,
+  lockUser,
   removeUserOneAdditional,
   searchUser,
   setUserAdditional,
   setUserOneAdditional,
+  undoDeleteUser,
+  unlockUser,
+  unlockUsers,
 } from '@/services/api/index.ts'
+import { Etat } from '@/types/enums'
 
 function useUserQuery() {
   const route = useRoute()
@@ -49,6 +57,165 @@ function useUserQueryOptions(userId: number) {
     query: () => getUser(userId),
     enabled: !Number.isNaN(userId),
     staleTime: 1000 * 60 * 30,
+  })
+}
+
+function useDeleteUserMutation() {
+  const queryCache = useQueryCache()
+
+  return useMutation({
+    mutation: deleteUser,
+    onMutate(vars, _context) {
+      const oldUser = queryCache.getQueryData<User>(['user', vars])
+
+      if (oldUser) {
+        const newData = oldUser
+        newData.etat = Etat.Delete
+
+        queryCache.setQueryData<User | undefined>(
+          ['user', vars],
+          newData,
+        )
+      }
+
+      return { oldUser }
+    },
+    onSettled(_data, _error, vars, context) {
+      queryCache.invalidateQueries({ key: ['user', vars] })
+      context.oldUser?.listeStructures.forEach((structure) => {
+        queryCache.invalidateQueries({ key: ['structure', structure.id] })
+      })
+    },
+  })
+}
+
+function useForceDeleteUserMutation() {
+  const queryCache = useQueryCache()
+
+  return useMutation({
+    mutation: forceDeleteUser,
+    onMutate(vars, _context) {
+      const oldUser = queryCache.getQueryData<User>(['user', vars])
+
+      if (oldUser) {
+        const newData = oldUser
+        newData.etat = Etat.Delete
+
+        queryCache.setQueryData<User | undefined>(
+          ['user', vars],
+          newData,
+        )
+      }
+
+      return { oldUser }
+    },
+    onSettled(_data, _error, vars, context) {
+      queryCache.invalidateQueries({ key: ['user', vars] })
+      context.oldUser?.listeStructures.forEach((structure) => {
+        queryCache.invalidateQueries({ key: ['structure', structure.id] })
+      })
+    },
+  })
+}
+
+function useUndoDeleteUserMutation() {
+  const queryCache = useQueryCache()
+
+  return useMutation({
+    mutation: undoDeleteUser,
+    onMutate(vars, _context) {
+      const oldUser = queryCache.getQueryData<User>(['user', vars])
+
+      if (oldUser) {
+        const newData = oldUser
+        newData.etat = Etat.Valide
+
+        queryCache.setQueryData<User | undefined>(
+          ['user', vars],
+          newData,
+        )
+      }
+
+      return { oldUser }
+    },
+    onSettled(_data, _error, vars, context) {
+      queryCache.invalidateQueries({ key: ['user', vars] })
+      context.oldUser?.listeStructures.forEach((structure) => {
+        queryCache.invalidateQueries({ key: ['structure', structure.id] })
+      })
+    },
+  })
+}
+
+function useLockUserMutation() {
+  const queryCache = useQueryCache()
+
+  return useMutation({
+    mutation: lockUser,
+    onMutate(vars, _context) {
+      const oldUser = queryCache.getQueryData<User>(['user', vars])
+
+      if (oldUser) {
+        const newData = oldUser
+        newData.etat = Etat.Bloque
+
+        queryCache.setQueryData<User | undefined>(
+          ['user', vars],
+          newData,
+        )
+      }
+
+      return { oldUser }
+    },
+    onSettled(_data, _error, vars, context) {
+      queryCache.invalidateQueries({ key: ['user', vars] })
+      context.oldUser?.listeStructures.forEach((structure) => {
+        queryCache.invalidateQueries({ key: ['structure', structure.id] })
+      })
+    },
+  })
+}
+
+function useUnlockUserMutation() {
+  const queryCache = useQueryCache()
+
+  return useMutation({
+    mutation: unlockUser,
+    onMutate(vars, _context) {
+      const oldUser = queryCache.getQueryData<User>(['user', vars])
+
+      if (oldUser) {
+        const newData = oldUser
+        newData.etat = Etat.Valide
+
+        queryCache.setQueryData<User | undefined>(
+          ['user', vars],
+          newData,
+        )
+      }
+
+      return { oldUser }
+    },
+    onSettled(_data, _error, vars, context) {
+      queryCache.invalidateQueries({ key: ['user', vars] })
+      context.oldUser?.listeStructures.forEach((structure) => {
+        queryCache.invalidateQueries({ key: ['structure', structure.id] })
+      })
+    },
+  })
+}
+
+function useUnlockUsersMutation() {
+  const queryCache = useQueryCache()
+
+  return useMutation({
+    mutation: unlockUsers,
+    onSettled: (_data, _error, vars, _context) => {
+      vars.forEach((userId) => {
+        queryCache.invalidateQueries({ key: ['user', userId] })
+        queryCache.invalidateQueries({ key: ['structure'] })
+      })
+    },
   })
 }
 
@@ -112,10 +279,16 @@ function useRemoveUserOneAdditionalMutation() {
 }
 
 export {
+  useDeleteUserMutation,
+  useForceDeleteUserMutation,
+  useLockUserMutation,
   useRemoveUserOneAdditionalMutation,
   useSearchUserQuery,
   useSetUserAdditionalMutation,
   useSetUserOneAdditionalMutation,
+  useUndoDeleteUserMutation,
+  useUnlockUserMutation,
+  useUnlockUsersMutation,
   useUserQuery,
   useUserQueryOptions,
 }

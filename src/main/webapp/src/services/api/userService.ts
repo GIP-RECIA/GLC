@@ -71,6 +71,19 @@ async function unlockUser(id: number) {
   ).status === 200
 }
 
+async function unlockUsers(ids: number[]) {
+  return (
+    await axios.put<void>(
+      `/api/personne/unlock`,
+      {
+        params: {
+          ids,
+        },
+      },
+    )
+  ).status === 200
+}
+
 async function searchUser(
   name: string,
   params?: {
@@ -154,4 +167,5 @@ export {
   setUserOneAdditional,
   undoDeleteUser,
   unlockUser,
+  unlockUsers,
 }
