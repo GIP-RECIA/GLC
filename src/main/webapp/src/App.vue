@@ -74,7 +74,7 @@ useKeepSession()
       v-bind="configuration!.front.extendedUportal?.header?.props"
     />
     <AccountToolbar
-      v-if="isAccountSection"
+      v-show="isAccountSection"
     />
   </header>
   <div>

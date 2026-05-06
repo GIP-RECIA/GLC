@@ -19,8 +19,6 @@ import type { RightMember, ServiceRights } from '@/types/index.ts'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { getRights, updateRight } from '@/services/api/index.ts'
 
-const queryCache = useQueryCache()
-
 function useRightsQuery(id: Ref<number>) {
   return useQuery(() => ({
     key: ['rights', id.value],
@@ -31,6 +29,8 @@ function useRightsQuery(id: Ref<number>) {
 }
 
 function useUpdateRightMutation() {
+  const queryCache = useQueryCache()
+
   return useMutation({
     mutation: updateRight,
     onMutate: (vars, _context) => {

@@ -15,7 +15,7 @@
  */
 
 import type { Ref } from 'vue'
-import { useQuery } from '@pinia/colada'
+import { defineQueryOptions, useQuery } from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
@@ -62,6 +62,15 @@ function useStructureQuery() {
   }))
 }
 
+function useStructureQueryOptions(structureId: number) {
+  return defineQueryOptions({
+    key: ['structure', structureId],
+    query: () => getStructure(structureId),
+    enabled: !Number.isNaN(structureId),
+    staleTime: 1000 * 60 * 60,
+  })
+}
+
 function usePossibleFunctionsQuery(structureId: Ref<number>) {
   return useQuery(() => ({
     key: ['possible-functions', structureId.value],
@@ -76,5 +85,6 @@ export {
   useEtablissementsQuery,
   usePossibleFunctionsQuery,
   useStructureQuery,
+  useStructureQueryOptions,
   useStructuresQuery,
 }

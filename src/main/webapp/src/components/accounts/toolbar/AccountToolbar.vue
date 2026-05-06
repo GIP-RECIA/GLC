@@ -18,9 +18,15 @@
 import type { RouteLocationAsRelativeGeneric } from 'vue-router'
 import { faArrowLeft, faHome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useQueryCache } from '@pinia/colada'
 import { useSessionStorage } from '@vueuse/core'
 import { computed, onMounted, onUnmounted, useTemplateRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import {
+  useStructureQueryOptions,
+  useUserQueryOptions,
+} from '@/services/queries/index.ts'
+import { concatenate, errorHandler } from '@/utils/index.ts'
 import TabItem from './TabItem.vue'
 import TabMenu from './TabMenu.vue'
 
@@ -40,34 +46,67 @@ const items = useSessionStorage<TabItemT[]>(
 
 const isItems = computed<boolean>(() => items.value.length > 0)
 
-router.afterEach((to, from) => {
-  const fromIndex = items.value.findIndex(i =>
-    from.fullPath === router.resolve(i.to).fullPath,
-  )
-
+router.beforeEach(async (to, from) => {
+  const queryCache = useQueryCache()
   const { structureId, userId } = to.params
 
-  if (structureId && typeof structureId === 'string') {
-    addItem({
-      id: `structure-${structureId}`,
-      name: `structure-${structureId}`,
-      to: {
-        name: 'structure',
-        params: { structureId },
-      },
-    }, fromIndex)
+  if (structureId || userId) {
+    const fromIndex = items.value.findIndex(i =>
+      from.fullPath === router.resolve(i.to).fullPath,
+    )
+
+    try {
+      if (structureId && typeof structureId === 'string') {
+        const { data, error } = await queryCache.refresh(
+          queryCache.ensure(
+            useStructureQueryOptions(Number(structureId)),
+          ),
+        )
+        if (error)
+          throw error
+
+        addItem({
+          id: `structure-${structureId}`,
+          name: concatenate(
+            [data!.nom, data!.type, data!.uai],
+            ' ',
+          ),
+          to: {
+            name: 'structure',
+            params: { structureId },
+          },
+        }, fromIndex)
+      }
+
+      if (userId && typeof userId === 'string') {
+        const { data, error } = await queryCache.refresh(
+          queryCache.ensure(
+            useUserQueryOptions(Number(userId)),
+          ),
+        )
+        if (error)
+          throw error
+
+        addItem({
+          id: `user-${userId}`,
+          name: data!.cn,
+          to: {
+            name: 'user',
+            params: { userId },
+          },
+        }, fromIndex)
+      }
+    }
+    catch (e) {
+      errorHandler(e)
+
+      return {
+        name: 'account',
+      }
+    }
   }
 
-  if (userId && typeof userId === 'string') {
-    addItem({
-      id: `user-${userId}`,
-      name: `user-${userId}`,
-      to: {
-        name: 'user',
-        params: { userId },
-      },
-    }, fromIndex)
-  }
+  return true
 })
 
 function addItem(item: TabItemT, index: number = -1): void {

@@ -19,8 +19,6 @@ import type { StructureRestriction } from '@/types/index.ts'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { getRestrictions, saveRestrictions } from '@/services/api/index.ts'
 
-const queryCache = useQueryCache()
-
 function useRestrictionsQuery(id: Ref<number>) {
   return useQuery(() => ({
     key: ['restrictions', id.value],
@@ -31,6 +29,8 @@ function useRestrictionsQuery(id: Ref<number>) {
 }
 
 function useSaveRestrictionsMutation() {
+  const queryCache = useQueryCache()
+
   return useMutation({
     mutation: saveRestrictions,
     onMutate: (vars, _context) => {

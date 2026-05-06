@@ -15,7 +15,12 @@
  */
 
 import type { Ref } from 'vue'
-import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
+import {
+  defineQueryOptions,
+  useMutation,
+  useQuery,
+  useQueryCache,
+} from '@pinia/colada'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
@@ -25,8 +30,6 @@ import {
   setUserAdditional,
   setUserOneAdditional,
 } from '@/services/api/index.ts'
-
-const queryCache = useQueryCache()
 
 function useUserQuery() {
   const route = useRoute()
@@ -38,6 +41,15 @@ function useUserQuery() {
     enabled: !Number.isNaN(userId.value),
     staleTime: 1000 * 60 * 30,
   }))
+}
+
+function useUserQueryOptions(userId: number) {
+  return defineQueryOptions({
+    key: ['user', userId],
+    query: () => getUser(userId),
+    enabled: !Number.isNaN(userId),
+    staleTime: 1000 * 60 * 30,
+  })
 }
 
 function useSearchUserQuery(
@@ -58,6 +70,8 @@ function useSearchUserQuery(
 }
 
 function useSetUserAdditionalMutation() {
+  const queryCache = useQueryCache()
+
   return useMutation({
     mutation: setUserAdditional,
     onSuccess(_data, vars, _context) {
@@ -70,6 +84,8 @@ function useSetUserAdditionalMutation() {
 }
 
 function useSetUserOneAdditionalMutation() {
+  const queryCache = useQueryCache()
+
   return useMutation({
     mutation: setUserOneAdditional,
     onSuccess(_data, vars, _context) {
@@ -82,6 +98,8 @@ function useSetUserOneAdditionalMutation() {
 }
 
 function useRemoveUserOneAdditionalMutation() {
+  const queryCache = useQueryCache()
+
   return useMutation({
     mutation: removeUserOneAdditional,
     onSuccess(_data, vars, _context) {
@@ -99,4 +117,5 @@ export {
   useSetUserAdditionalMutation,
   useSetUserOneAdditionalMutation,
   useUserQuery,
+  useUserQueryOptions,
 }

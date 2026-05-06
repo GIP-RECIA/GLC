@@ -28,9 +28,8 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { computed, ref, useTemplateRef, watch } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import ManageAdditionalDialog from '@/components/accounts/dialogs/ManageAdditionalDialog.vue'
 import UserAdministrativeTab from '@/components/accounts/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/accounts/user/tabs/UserInformationTab.vue'
@@ -45,23 +44,10 @@ import {
 } from '@/services/api/index.ts'
 import { useUserQuery } from '@/services/queries/index.ts'
 import { Etat } from '@/types/enums/index.ts'
-import { errorHandler } from '@/utils/index.ts'
 
 const { t } = useI18n()
 
-const router = useRouter()
-
-const { data: user, error } = useUserQuery()
-
-watch(
-  error,
-  (e) => {
-    if (e) {
-      errorHandler(e, 'initdata')
-      router.replace({ name: 'account' })
-    }
-  },
-)
+const { data: user } = useUserQuery()
 
 /* Tabs */
 
