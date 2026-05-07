@@ -558,7 +558,7 @@ function onExport(): void {
                       {{ t('page.structure.accounts.table.sourceModificationDate') }}
                     </span>
                     <SafeEmptyData
-                      :value="row.original.dateModification"
+                      :value="format(row.original.dateModificationSource, 'P')"
                     />
                   </p>
                 </div>

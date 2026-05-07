@@ -51,8 +51,8 @@ export type AccountUser = CommonUser & {
   login: string
   guichet?: string
   email?: string
-  dateModification: string
   dateSuppression?: string
+  dateModificationSource: string
 }
 
 export type User = CommonUser & {
