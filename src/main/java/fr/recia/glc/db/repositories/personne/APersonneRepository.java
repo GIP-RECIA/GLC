@@ -33,6 +33,8 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "WHERE ap.email = :email")
     Long doesEmailExists(String email);
 
+    // TODO : fix la recherche pour tous les autres types de recherche (doublons)
+
     @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.givenName, ap.sn, ap.login.nom, ap.uid, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
@@ -133,13 +135,12 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
-        "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') OR ap.email LIKE concat('%', :name, '%')) " +
         "AND ap.categorie in (fr.recia.glc.db.enums.CategoriePersonne.Enseignant, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
-        "AND s.id NOT IN :etabId " +
+        "AND NOT EXISTS ( SELECT 1 FROM ap.listeStructures s WHERE s.id IN :etabId) " +
         "ORDER BY ap.cn, ap.sn")
     List<DatabasePersonneDto> findByNameLikeNotInEtabInStaffCategories(String name, Set<Long> etabId);
 
@@ -246,7 +247,6 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
     @Query("SELECT new fr.recia.glc.db.dto.personne.DatabasePersonneDto(ap.id, ap.etat, ap.categorie, " +
         "ap.cleJointure.source, ap.cn, ap.email, ap.sn, ap.uid, ap.dateModification, ap.dateAcquittement, ap.dateSourceModification) " +
         "FROM APersonne ap " +
-        "JOIN ap.listeStructures s "+
         "WHERE (ap.cn LIKE concat('%', :name, '%') " +
         "OR ap.email LIKE concat('%', :name, '%') " +
         "OR ap.uid LIKE concat(:name, '%')) " +
@@ -254,7 +254,7 @@ public interface APersonneRepository<T extends APersonne> extends AbstractReposi
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_collectivite_locale, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_etablissement, " +
         "fr.recia.glc.db.enums.CategoriePersonne.Non_enseignant_service_academique) " +
-        "AND s.id NOT IN :etabId " +
+        "AND NOT EXISTS (SELECT 1 FROM ap.listeStructures s WHERE s.id IN :etabId) " +
         "ORDER BY ap.cn, ap.sn")
     List<DatabasePersonneDto> findByNameLikeAdminNotInEtabInStaffCategories(String name, Set<Long> etabId);
 
