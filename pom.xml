@@ -37,7 +37,7 @@
 
   <repositories>
     <repository>
-      <id>central</id>
+      <id>recia</id>
       <url>https://nexus.recia.dev/repository/public/</url>
       <releases>
         <enabled>true</enabled>
