@@ -223,7 +223,7 @@ public class PersonneService {
                 ldapPeopleDao.undoDelete(aPersonne.getUid());
             }
             aPersonne.setEtat(etatToRestore);
-            LocalDate localDate = LocalDate.now().plusDays(14);
+            LocalDate localDate = LocalDate.now().plusDays(10);
             aPersonne.setDateFin(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             Date date = new Date();
             if(aPersonne.getDateAcquittement().equals(aPersonne.getDateModification())){
