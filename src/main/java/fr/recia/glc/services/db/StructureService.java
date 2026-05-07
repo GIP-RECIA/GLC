@@ -129,7 +129,7 @@ public class StructureService {
                     if(!dtoListMap.containsKey(typeFonctionFiliere.getId())){
                         dtoListMap.put(typeFonctionFiliere.getId(), new DisciplinesInFillierePossiblesDto(typeFonctionFiliere.getId(), typeFonctionFiliere.getLibelle()));
                     }
-                    dtoListMap.get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplinePossibleDto(discipline.getId(), disciplineCode));
+                    dtoListMap.get(typeFonctionFiliere.getId()).getDisciplines().add(new DisciplinePossibleDto(discipline.getId(), discipline.getLibelle()));
                 }
             }
         }
