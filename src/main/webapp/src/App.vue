@@ -113,6 +113,15 @@ router.beforeEach(async (to, from) => {
   return true
 })
 
+router.afterEach(() => {
+  requestAnimationFrame(() => {
+    document.querySelector('#content')?.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  })
+})
+
 useKeepSession()
 </script>
 
@@ -127,7 +136,7 @@ useKeepSession()
       v-if="isAccountSection"
     />
   </header>
-  <div>
+  <div id="content">
     <main>
       <router-view />
     </main>
