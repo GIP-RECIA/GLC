@@ -91,6 +91,7 @@ This project includes:
   JUnit Platform Engine API under Eclipse Public License v2.0
   lang under The Apache Software License, Version 2.0
   LatencyUtils under Public Domain, per Creative Commons CC0
+  Lettuce under Apache License, Version 2.0
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   mariadb-java-client under LGPL-2.1
@@ -99,6 +100,14 @@ This project includes:
   mockito-inline under The MIT License
   mockito-junit-jupiter under The MIT License
   MySQL Connector/J under The GNU General Public License, v2 with Universal FOSS Exception, v1.0
+  Netty/Buffer under Apache License, Version 2.0
+  Netty/Codec under Apache License, Version 2.0
+  Netty/Common under Apache License, Version 2.0
+  Netty/Handler under Apache License, Version 2.0
+  Netty/Resolver under Apache License, Version 2.0
+  Netty/Transport under Apache License, Version 2.0
+  Netty/Transport/Native/Unix/Common under Apache License, Version 2.0
+  Non-Blocking Reactive Foundation for the JVM under Apache License, Version 2.0
   Objenesis under Apache License, Version 2.0
   org.apiguardian:apiguardian-api under The Apache License, Version 2.0
   org.opentest4j:opentest4j under The Apache License, Version 2.0
@@ -114,6 +123,8 @@ This project includes:
   Querydsl - Codegen utils under Apache License, Version 2.0
   Querydsl - Core module under Apache License, Version 2.0
   Querydsl - JPA support under Apache License, Version 2.0
+  reactive-streams under MIT-0
+  redis-session-cleanup-lib under Apache License, Version 2.0
   SLF4J API Module under MIT License
   SnakeYAML under Apache License, Version 2.0
   Spring AOP under Apache License, Version 2.0
@@ -125,12 +136,15 @@ This project includes:
   Spring Core under Apache License, Version 2.0
   Spring Data Core under Apache License, Version 2.0
   Spring Data JPA under Apache License, Version 2.0
+  Spring Data KeyValue under Apache License, Version 2.0
   Spring Data LDAP under Apache License, Version 2.0
+  Spring Data Redis under Apache License, Version 2.0
   Spring Data REST - Core under Apache License, Version 2.0
   Spring Expression Language (SpEL) under Apache License, Version 2.0
   Spring HATEOAS under Apache License, Version 2.0
   Spring JDBC under Apache License, Version 2.0
   Spring Object/Relational Mapping under Apache License, Version 2.0
+  Spring Object/XML Marshalling under Apache License, Version 2.0
   Spring Plugin - Core under Apache License, Version 2.0
   Spring TestContext Framework under Apache License, Version 2.0
   Spring Transaction under Apache License, Version 2.0
@@ -151,6 +165,7 @@ This project includes:
   spring-boot-starter-cache under Apache License, Version 2.0
   spring-boot-starter-data-jpa under Apache License, Version 2.0
   spring-boot-starter-data-ldap under Apache License, Version 2.0
+  spring-boot-starter-data-redis under Apache License, Version 2.0
   spring-boot-starter-jdbc under Apache License, Version 2.0
   spring-boot-starter-json under Apache License, Version 2.0
   spring-boot-starter-logging under Apache License, Version 2.0
@@ -168,6 +183,8 @@ This project includes:
   spring-security-crypto under Apache License, Version 2.0
   spring-security-test under Apache License, Version 2.0
   spring-security-web under Apache License, Version 2.0
+  spring-session-core under Apache License, Version 2.0
+  spring-session-data-redis under Apache License, Version 2.0
   springdoc-openapi-common under The Apache License, Version 2.0
   springdoc-openapi-data-rest under The Apache License, Version 2.0
   springdoc-openapi-hateoas under The Apache License, Version 2.0
