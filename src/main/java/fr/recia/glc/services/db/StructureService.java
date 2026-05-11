@@ -102,7 +102,13 @@ public class StructureService {
     }
 
     public List<DisciplinesInFillierePossiblesDto> getPossibleFonctions(String source){
-        List<FonctionPossibleDto> fonctionPossibleDtos = fonctionRepository.findPossibleFonctionsBySource(source);
+        List<FonctionPossibleDto> fonctionPossibleDtos;
+        // Cas spécial pour le GIP
+        if(source.equals("GIP-RECIA")){
+            fonctionPossibleDtos = fonctionRepository.findPossibleFonctionsBySource("SarapisUI_GIP-RECIA");
+        } else {
+            fonctionPossibleDtos = fonctionRepository.findPossibleFonctionsBySource(source);
+        }
         Map<Long, DisciplinesInFillierePossiblesDto> dtoListMap = new HashMap<>();
 
         // Fonctions déjà existantes sur cette source

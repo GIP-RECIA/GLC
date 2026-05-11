@@ -30,8 +30,6 @@ import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.ExternalIdSource;
 import fr.recia.glc.db.enums.ForceEtat;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
-import fr.recia.glc.db.repositories.education.DisciplineRepository;
-import fr.recia.glc.db.repositories.fonction.TypeFonctionFiliereRepository;
 import fr.recia.glc.db.repositories.personne.APersonneRepository;
 import fr.recia.glc.ldap.LdapUser;
 import fr.recia.glc.ldap.repository.LdapPeopleDao;
@@ -75,10 +73,6 @@ public class PersonneService {
     private RelationService relationService;
     @Autowired
     private GLCProperties glcProperties;
-    @Autowired
-    private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
-    @Autowired
-    private DisciplineRepository<Discipline> disciplineRepository;
 
 
     public List<DatabasePersonneDto> searchPersonne(String name, boolean admin) {
@@ -337,10 +331,6 @@ public class PersonneService {
                 }
             }
         }
-    }
-
-    public DatabasePersonneDto getPersonneSimple(Long id) {
-        return aPersonneRepository.findByPersonneIdSimple(id);
     }
 
 }
