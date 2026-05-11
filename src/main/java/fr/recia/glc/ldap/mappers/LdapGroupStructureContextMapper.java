@@ -26,7 +26,6 @@ import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.util.Assert;
 
-import javax.naming.NamingException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

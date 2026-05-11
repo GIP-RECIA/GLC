@@ -18,7 +18,6 @@ package fr.recia.glc.services.db;
 
 import fr.recia.glc.configuration.Constants;
 import fr.recia.glc.configuration.GLCProperties;
-import fr.recia.glc.configuration.bean.CustomConfigProperties;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;

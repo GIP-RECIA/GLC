@@ -17,7 +17,6 @@
 package fr.recia.glc.db.dto.gestion;
 
 import fr.recia.glc.db.entities.gestion.Incertain;
-import fr.recia.glc.web.dto.user.AlertPersonneDto;
 import lombok.Data;
 
 

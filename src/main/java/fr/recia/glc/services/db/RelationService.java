@@ -17,9 +17,9 @@
 package fr.recia.glc.services.db;
 
 import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
-import fr.recia.glc.web.dto.relation.RelationDto;
 import fr.recia.glc.db.entities.relation.AMappingRelation;
 import fr.recia.glc.db.repositories.relation.AMappingRelationRepository;
+import fr.recia.glc.web.dto.relation.RelationDto;
 import fr.recia.glc.web.dto.user.CardPersonneDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

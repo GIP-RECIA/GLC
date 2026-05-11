@@ -16,13 +16,13 @@
 
 package fr.recia.glc.db.entities.personne;
 
+import fr.recia.glc.db.utils.IntConst;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import fr.recia.glc.db.utils.IntConst;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;

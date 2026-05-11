@@ -17,7 +17,6 @@
 package fr.recia.glc.configuration.cas;
 
 import fr.recia.glc.configuration.GLCProperties;
-import fr.recia.glc.configuration.bean.RedisProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

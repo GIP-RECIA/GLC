@@ -17,7 +17,6 @@
 package fr.recia.glc.db.dto.structure;
 
 import fr.recia.glc.db.entities.structure.AStructure;
-import fr.recia.glc.db.entities.structure.CollectiviteLocale;
 import fr.recia.glc.db.entities.structure.Etablissement;
 import fr.recia.glc.db.entities.structure.ServiceAcademique;
 import fr.recia.glc.db.enums.CategorieStructure;

@@ -16,8 +16,8 @@
 
 package fr.recia.glc.services.cache;
 
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.stereotype.Component;
 

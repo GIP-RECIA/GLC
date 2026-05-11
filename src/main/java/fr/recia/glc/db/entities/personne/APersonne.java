@@ -71,8 +71,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static fr.recia.glc.configuration.Constants.SARAPISUI_;
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "apersonne", indexes = {

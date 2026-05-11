@@ -17,7 +17,6 @@
 package fr.recia.glc.ldap.mappers;
 
 import fr.recia.glc.ldap.LdapUser;
-import fr.recia.glc.ldap.StructureSirenDomain;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.stereotype.Component;
 

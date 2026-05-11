@@ -21,7 +21,6 @@ import fr.recia.glc.db.dto.AlertDto;
 import fr.recia.glc.db.dto.education.DisciplineDto;
 import fr.recia.glc.db.dto.fonction.FonctionDto;
 import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
-import fr.recia.glc.db.dto.gestion.IncertainDto;
 import fr.recia.glc.db.dto.gestion.IncertainPersonneDto;
 import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.entities.common.Adresse;
