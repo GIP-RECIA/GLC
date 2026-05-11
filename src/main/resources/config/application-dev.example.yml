@@ -26,6 +26,20 @@ spring:
     password:
 
 app:
+  redis:
+    hostName:
+    port:
+    userName:
+    password:
+    databaseIndex: "0"
+    mappingPrefix: "${spring.redis.namespace}:mapping"
+    indexPrefix: "${spring.redis.namespace}:index"
+
+  session:
+    cron-allowed-hostname: ""
+    cron-expression: 0 0 10 * * *
+
+
   restriction-rentree:
     url: http://HOST
     apiKey:
