@@ -97,17 +97,48 @@ function editFunction(struct: UserStructure, fun?: FunctionForm): void {
 
 /* Actions */
 
-const canToggleLock = computed<boolean>(() => (
-  user.value !== undefined
-  && [
-    Etat.Valide,
-    Etat.Bloque,
-  ].includes(user.value.etat)
-))
+const rights = computed<{
+  canToggleLock: boolean
+  canDelete: boolean
+  canUndoDelete: boolean
+  canForceDelete: boolean
+  canAttach: boolean
+  isLocked: boolean
+  isDeleting: boolean
+}>(() => {
+  if (!user.value) {
+    return {
+      canToggleLock: false,
+      canDelete: false,
+      canUndoDelete: false,
+      canForceDelete: false,
+      canAttach: false,
+      isLocked: false,
+      isDeleting: false,
+    }
+  }
 
-const isLocked = computed<boolean>(() => (
-  user.value?.etat === Etat.Bloque
-))
+  const { etat, local } = user.value
+
+  return {
+    canToggleLock: [
+      Etat.Valide,
+      Etat.Bloque,
+    ].includes(etat),
+    canDelete: local && !(
+      etat === Etat.Deleting
+      || etat === Etat.Delete
+    ),
+    canUndoDelete: etat === Etat.Deleting
+      || etat === Etat.Delete,
+    canForceDelete: etat === Etat.Deleting,
+    canAttach: etat === Etat.Invalide
+      || etat === Etat.Valide
+      || etat === Etat.Bloque,
+    isLocked: etat === Etat.Bloque,
+    isDeleting: etat === Etat.Deleting,
+  }
+})
 
 const {
   mutate: lock,
@@ -121,14 +152,10 @@ function onToggleLock(): void {
     return
 
   const { id } = user.value
-  isLocked.value
+  rights.value.isLocked
     ? unlock(id)
     : lock(id)
 }
-
-const isDeleting = computed<boolean>(() => (
-  user.value?.etat === Etat.Deleting
-))
 
 const {
   mutate: undoDelete,
@@ -145,18 +172,25 @@ function onUndoDelete(): void {
 const {
   mutate: deleteU,
 } = useDeleteUserMutation()
-const {
-  mutate: forceDelete,
-} = useForceDeleteUserMutation()
 
 function onDelete(): void {
   if (!user.value)
     return
 
   const { id } = user.value
-  isDeleting.value
-    ? forceDelete(id)
-    : deleteU(id)
+  deleteU(id)
+}
+
+const {
+  mutate: forceDelete,
+} = useForceDeleteUserMutation()
+
+function onForceDelete(): void {
+  if (!user.value)
+    return
+
+  const { id } = user.value
+  forceDelete(id)
 }
 
 function onAttach(): void {
@@ -181,26 +215,46 @@ function onAttach(): void {
         </h2>
 
         <ul>
-          <li>
+          <li v-if="rights.canToggleLock">
             <button
               type="button"
               class="btn-primary small"
-              :disabled="!canToggleLock"
               @click="onToggleLock"
             >
-              {{ t(`button.${isLocked ? 'unlock' : 'lock'}`) }}
+              {{ t(`button.${rights.isLocked ? 'unlock' : 'lock'}`) }}
               <FontAwesomeIcon
-                :icon="isLocked ? faLockOpen : faLock"
+                :icon="rights.isLocked ? faLockOpen : faLock"
               />
             </button>
           </li>
-          <li
-            v-if="isDeleting"
-          >
+          <li v-if="rights.canDelete">
             <button
               type="button"
               class="btn-primary small"
-              :disabled="!user?.etat"
+              @click="onDelete"
+            >
+              {{ t('button.delete') }}
+              <FontAwesomeIcon
+                :icon="faTrashCan"
+              />
+            </button>
+          </li>
+          <li v-if="rights.canForceDelete">
+            <button
+              type="button"
+              class="btn-primary small"
+              @click="onForceDelete"
+            >
+              {{ t('button.forceDelete') }}
+              <FontAwesomeIcon
+                :icon="faTrashCan"
+              />
+            </button>
+          </li>
+          <li v-if="rights.canUndoDelete">
+            <button
+              type="button"
+              class="btn-primary small"
               @click="onUndoDelete"
             >
               {{ t('button.undoDelete') }}
@@ -209,20 +263,7 @@ function onAttach(): void {
               />
             </button>
           </li>
-          <li>
-            <button
-              type="button"
-              class="btn-primary small"
-              :disabled="!user?.etat"
-              @click="onDelete"
-            >
-              {{ t(`button.${isDeleting ? 'forceDelete' : 'delete'}`) }}
-              <FontAwesomeIcon
-                :icon="faTrashCan"
-              />
-            </button>
-          </li>
-          <li>
+          <li v-if="rights.canAttach">
             <button
               type="button"
               class="btn-primary small"
