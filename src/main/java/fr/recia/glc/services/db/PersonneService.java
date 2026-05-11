@@ -216,6 +216,8 @@ public class PersonneService {
                 ldapPeopleDao.undoDelete(aPersonne.getUid());
             }
             aPersonne.setEtat(etatToRestore);
+            // Si on sort de la suppression juste après l'avoir forcée
+            aPersonne.setForceEtat(ForceEtat.NONE);
             LocalDate localDate = LocalDate.now().plusDays(10);
             aPersonne.setDateFin(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             Date date = new Date();
