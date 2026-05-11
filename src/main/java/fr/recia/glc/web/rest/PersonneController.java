@@ -241,7 +241,7 @@ public class PersonneController {
     }
 
     @PutMapping("/{id}/unlock")
-    public ResponseEntity<Void> unlockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+    public ResponseEntity<Etat> unlockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -256,8 +256,8 @@ public class PersonneController {
             }
         }
         if (canRead) {
-            boolean ok = personneService.unlockPerson(personne);
-            if(ok){
+            Optional<Etat> restoredEtat = personneService.unlockPerson(personne);
+            if(restoredEtat.isPresent()){
                 // Log Audit
                 auditService.log(
                     AuditEvent.builder()
@@ -270,7 +270,7 @@ public class PersonneController {
                         ))
                         .build()
                 );
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(restoredEtat.get(), HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {

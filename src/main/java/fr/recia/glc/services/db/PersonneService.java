@@ -160,17 +160,18 @@ public class PersonneService {
     /**
      * Débloque une personne : attention il faut débloquer dans la BD et dans le LDAP aussi
      */
-    public boolean unlockPerson(APersonne aPersonne){
+    public Optional<Etat> unlockPerson(APersonne aPersonne){
         if(aPersonne.getEtat().equals(Etat.Bloque)){
-            aPersonne.setEtat(Etat.Valide);
+            final Etat etatToRestore = Etat.Valide;
+            aPersonne.setEtat(etatToRestore);
             aPersonneRepository.saveAndFlush(aPersonne);
             ldapPeopleDao.unlockPerson(aPersonne.getUid());
             cacheInvalidationService.evictPersonneAndAssociatedStructures(aPersonne.getId(), aPersonne.getStructRattachement().getId());
-            return true;
+            return Optional.of(etatToRestore);
         } else {
             log.warn("Try to unlock person {} that is not locked", aPersonne.getId());
         }
-        return false;
+        return Optional.empty();
     }
 
     /**
