@@ -41,7 +41,7 @@ const { t } = useI18n()
     >
       <li
         v-for="(alert, index) in structure.alerts"
-        :key="`alert-${index}`"
+        :key="`alert-${structure.id}-${index}`"
         :class="[alert.level]"
       >
         <FontAwesomeIcon
