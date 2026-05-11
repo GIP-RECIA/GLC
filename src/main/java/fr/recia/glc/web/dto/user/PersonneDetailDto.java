@@ -28,6 +28,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -90,7 +92,8 @@ public class PersonneDetailDto {
         this.dateSourceModification = aPersonne.getDateSourceModification();
         if (aPersonne.getEtat() == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
             this.etat = Etat.Deleting;
-            this.dateSuppression = aPersonne.getDateModification();
+            final LocalDateTime dateSuppression = aPersonne.getDateModification().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().plusDays(20);
+            this.dateSuppression = Date.from(dateSuppression.atZone(ZoneId.systemDefault()).toInstant());
         }
         this.photo = aPersonne.getPhoto();
         this.idPronote = null;
