@@ -29,6 +29,7 @@ import fr.recia.glc.db.entities.fonction.QFonction;
 import fr.recia.glc.db.entities.fonction.TypeFonctionFiliere;
 import fr.recia.glc.db.entities.personne.APersonne;
 import fr.recia.glc.db.entities.structure.AStructure;
+import fr.recia.glc.db.enums.CategoriePersonne;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository;
 import fr.recia.glc.db.repositories.APersonneAStructureRepository2;
@@ -128,7 +129,9 @@ public class FonctionService {
         boolean ok = false;
         final APersonne aPersonne = aPersonneRepository.findById(personneId).orElse(null);
         final AStructure aStructure = aStructureRepository.findById(structureId).orElse(null);
-        if (aPersonne == null || aStructure == null || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())) {
+        if (aPersonne == null || aStructure == null || !List.of(Etat.Invalide, Etat.Valide, Etat.Bloque).contains(aPersonne.getEtat())
+            || List.of(CategoriePersonne.Eleve, CategoriePersonne.Personne_relation_eleve, CategoriePersonne.Tuteur_stage, CategoriePersonne.Responsable_Entreprise).contains(aPersonne.getCategorie())) {
+            log.warn("Etat or Categorie is invalid for personne {} !", personneId);
             return false;
         }
 
