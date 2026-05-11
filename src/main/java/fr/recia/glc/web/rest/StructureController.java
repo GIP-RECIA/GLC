@@ -117,10 +117,16 @@ public class StructureController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        // Check si la personne à le droit d'écrire sur l'établissement
-        if (principal.getRightsForEtabs().get(GLCRole.WRITE).contains(etablissement.getSiren())) {
-            // Droit spécifique pour le front pour qu'il affiche les boutons de modification
-            etablissement.setPermission("ADMIN");
+        // Donner les rôles au front pour affichage correct des actions faisables par l'utilisateur
+        if(etablissement.getPermissions().isEmpty()){
+            for(GLCRole glcRole : principal.getRightsForEtabs().keySet()){
+                if(principal.getRightsForEtabs().get(glcRole).contains(etablissement.getSiren())){
+                    etablissement.addPermission(glcRole);
+                }
+            }
+            for(GLCRole glcRole : principal.getGlobalRights()){
+                etablissement.addPermission(glcRole);
+            }
         }
 
         // Booléen qui indique si on affiche l'uid ou non

@@ -30,6 +30,7 @@ import fr.recia.glc.db.entities.structure.ServiceAcademique;
 import fr.recia.glc.db.enums.CategorieStructure;
 import fr.recia.glc.db.enums.Etat;
 import fr.recia.glc.db.enums.EtatAlim;
+import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.web.dto.user.CardPersonneDto;
 import fr.recia.glc.web.dto.user.PersonneInListDto;
 import lombok.Data;
@@ -68,7 +69,7 @@ public class StructureDto {
     private List<CardPersonneDto> withoutFunctions;
     private List<AlertDto> alerts;
     private Collection<IncertainPersonneDto> incertains;
-    private String permission;
+    private List<GLCRole> permissions;
 
     public StructureDto(AStructure aStructure) {
         this.id = aStructure.getId();
@@ -90,7 +91,7 @@ public class StructureDto {
         this.siteWeb = aStructure.getSiteWeb();
         this.modeleLogin = aStructure.getModeleLogin();
         this.logo = aStructure.getLogo();
-
+        this.permissions = new ArrayList<>();
         String[] split = aStructure.getNom().split("\\$");
         if (split.length > 1) {
             this.type = split[0];
@@ -98,6 +99,10 @@ public class StructureDto {
         } else {
             this.nom = aStructure.getNom();
         }
+    }
+
+    public void addPermission(GLCRole glcRole){
+        this.permissions.add(glcRole);
     }
 
     public void setListePersonnes(List<DatabasePersonneDto> personnes, List<CustomConfigProperties.LoginOfficeProperties> loginOfficeProperties){
