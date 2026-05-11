@@ -132,22 +132,29 @@ public class FonctionService {
             return false;
         }
 
+        boolean isInStructure = aPersonneAStructureRepository.isInStructure(personneId, structureId) > 0;
+
         final String sourceOrig = SourceUtils.getOfficialSource(aStructure.getCleJointure().getSource());
         final String source = Constants.SARAPISUI_ + sourceOrig;
 
         List<FonctionDto> toAddAdditional = new ArrayList<>();
         for (FonctionToModify fonctionToAdd : toAddFunctions) {
-            // On récupère le code à partir de l'id pour pouvoir comparer à ce qu'on a dans la config pour les fonctions limitées aux admins
-            TypeFonctionFiliere typeFonctionFiliere = this.getTypeFonctionFiliere(fonctionToAdd.getFiliere());
-            if(glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig).contains(typeFonctionFiliere.getCodeFiliere())){
-                log.debug("Admin fonction add : check user rights");
-                if(isAdmin){
-                    toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
-                } else {
-                    log.warn("Can't add filiere {} because user is not authorized", typeFonctionFiliere.getLibelleFiliere());
-                }
+            // Si c'est un ajout, on vérifie que la personne est bien rattachée à l'établissemt si on ne demande pas le rattachement
+            if(!isInStructure && !requiredAction.equals(FonctionAction.attach)){
+                log.warn("Try to add function in an etab {} the user {} does not belong !", structureId, personneId);
             } else {
-                toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
+                // On récupère le code à partir de l'id pour pouvoir comparer à ce qu'on a dans la config pour les fonctions limitées aux admins
+                TypeFonctionFiliere typeFonctionFiliere = this.getTypeFonctionFiliere(fonctionToAdd.getFiliere());
+                if(glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig).contains(typeFonctionFiliere.getCodeFiliere())){
+                    log.debug("Admin fonction add : check user rights");
+                    if(isAdmin){
+                        toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
+                    } else {
+                        log.warn("Can't add filiere {} because user is not authorized", typeFonctionFiliere.getLibelleFiliere());
+                    }
+                } else {
+                    toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
+                }
             }
         }
 
@@ -206,7 +213,6 @@ public class FonctionService {
         if (!toAddAdditional.isEmpty() || !toDeleteAdditional.isEmpty()) {
             fonctionRepository.flush();
 
-            boolean isInStructure = aPersonneAStructureRepository.isInStructure(personneId, structureId) > 0;
             int officialFonctionsInStructure = (int) fonctionRepository.findByPersonne(personneId).stream()
                 .filter(fonction -> !SourceUtils.isSourceOfficial(fonction.getSource()) && Objects.equals(fonction.getStructure(), structureId))
                 .count();
