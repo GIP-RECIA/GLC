@@ -43,12 +43,12 @@ const emit = defineEmits<{
 const { t } = useI18n()
 
 function addFunction(structure: UserStructure): void {
-  emit('editFunction', structure, undefined)
+  editFunction(structure, undefined)
 }
 
 function editFunction(
   structure: UserStructure,
-  fonction: FunctionForm,
+  fonction: FunctionForm | undefined,
 ): void {
   emit('editFunction', structure, fonction)
 }

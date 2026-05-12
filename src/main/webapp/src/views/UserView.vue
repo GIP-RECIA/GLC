@@ -71,27 +71,36 @@ const {
 
 const dialogState = ref<boolean>(false)
 
-const manageAdditionalTitle = ref<string>('')
+const dialogData = ref<{
+  title: string
+  structureId: number | undefined
+  disabledFonctions: UserFunction[] | undefined
+  editFonction: FunctionForm | undefined
+}>({
+  title: '',
+  structureId: undefined,
+  disabledFonctions: undefined,
+  editFonction: undefined,
+})
 
-const structureId = ref<number>()
-
-const disabledFonctions = ref<UserFunction[]>()
-
-const editFonction = ref<FunctionForm>()
-
-function editFunction(struct: UserStructure, fun?: FunctionForm): void {
-  manageAdditionalTitle.value = t(
-    `page.account.dialog.manageAdditional.title.${fun ? 'edit' : 'add'}`,
-    {
-      structre: struct.nom,
-    },
-  )
-  disabledFonctions.value = [
-    ...struct.fonctions,
-    ...struct.additionalFonctions,
-  ]
-  structureId.value = struct.id
-  editFonction.value = fun
+function editFunction(
+  struct: UserStructure,
+  fun: FunctionForm | undefined,
+): void {
+  dialogData.value = {
+    title: t(
+      `page.account.dialog.manageAdditional.title.${fun ? 'edit' : 'add'}`,
+      {
+        structre: struct.nom,
+      },
+    ),
+    structureId: struct.id,
+    disabledFonctions: [
+      ...struct.fonctions,
+      ...struct.additionalFonctions,
+    ],
+    editFonction: fun,
+  }
   dialogState.value = true
 }
 
@@ -194,10 +203,12 @@ function onForceDelete(): void {
 }
 
 function onAttach(): void {
-  manageAdditionalTitle.value = t('page.account.dialog.manageAdditional.title.attach')
-  disabledFonctions.value = undefined
-  structureId.value = undefined
-  editFonction.value = undefined
+  dialogData.value = {
+    title: t('page.account.dialog.manageAdditional.title.attach'),
+    structureId: undefined,
+    disabledFonctions: undefined,
+    editFonction: undefined,
+  }
   dialogState.value = true
 }
 </script>
@@ -330,11 +341,11 @@ function onAttach(): void {
 
   <ManageAdditionalDialog
     v-model="dialogState"
-    :title="manageAdditionalTitle"
+    :title="dialogData.title"
     :user="user"
-    :structure-id="structureId"
-    :disabled-fonctions="disabledFonctions"
-    :edit-fonction="editFonction"
+    :structure-id="dialogData.structureId"
+    :disabled-fonctions="dialogData.disabledFonctions"
+    :edit-fonction="dialogData.editFonction"
   />
 </template>
 
