@@ -20,7 +20,6 @@ import type {
   FunctionForm,
   PossibleFunction,
 } from '@/types/index.ts'
-import { debounce } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -70,9 +69,14 @@ const isReady = ref<boolean>(false)
 watch(
   () => props.possible,
   (val) => {
-    if (val)
-      debounce(() => (isReady.value = true), 500)()
+    if (!val)
+      return
+
+    setTimeout(() => {
+      isReady.value = true
+    }, 500)
   },
+  { immediate: true },
 )
 
 watch(
@@ -91,7 +95,7 @@ watch(
     :items="possible"
     item-title="libelle"
     item-value="id"
-    :disabled="disableFonctionEdit"
+    :disabled="!possible || disableFonctionEdit"
     variant="solo-filled"
     class="w-100"
     hide-details
@@ -106,7 +110,7 @@ watch(
     :items="filteredDisciplines"
     item-title="libelle"
     item-value="id"
-    :disabled="!modelValue.filiere || disableFonctionEdit"
+    :disabled="!filteredDisciplines || !modelValue.filiere || disableFonctionEdit"
     variant="solo-filled"
     class="w-100"
     hide-details
