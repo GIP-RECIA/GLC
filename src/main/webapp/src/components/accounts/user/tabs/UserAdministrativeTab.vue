@@ -16,11 +16,13 @@
 
 <script setup lang="ts">
 import type { FunctionForm, User, UserStructure } from '@/types/index.ts'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { CategoriePersonne } from '@/types/enums'
 import UserAdditional from './administrative/UserAdditional.vue'
 import UserFunctions from './administrative/UserFunctions.vue'
 
-defineProps<{
+const props = defineProps<{
   user?: User
 }>()
 
@@ -32,6 +34,29 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
+
+const rights = computed<{
+  canSeeClassesAndGroups: boolean
+  canSeeFunctions: boolean
+}>(() => {
+  if (!props.user) {
+    return {
+      canSeeClassesAndGroups: false,
+      canSeeFunctions: false,
+    }
+  }
+
+  const { categorie } = props.user
+
+  return {
+    canSeeClassesAndGroups: categorie === CategoriePersonne.Eleve
+      || categorie === CategoriePersonne.Enseignant,
+    canSeeFunctions: categorie === CategoriePersonne.Enseignant
+      || categorie === CategoriePersonne.Non_enseignant_collectivite_locale
+      || categorie === CategoriePersonne.Non_enseignant_etablissement
+      || categorie === CategoriePersonne.Non_enseignant_service_academique,
+  }
+})
 
 function editFunction(
   structure: UserStructure,
@@ -58,66 +83,70 @@ function editFunction(
         </span>
       </h2>
 
-      <div class="r-card">
-        <header>
-          <h3>
-            {{ t('page.user.administrative.function.header', 2) }}
-          </h3>
-        </header>
+      <template v-if="rights.canSeeFunctions">
+        <div class="r-card">
+          <header>
+            <h3>
+              {{ t('page.user.administrative.function.header', 2) }}
+            </h3>
+          </header>
 
-        <div class="body">
-          <UserFunctions
-            :fonctions="structure.fonctions"
-          />
+          <div class="body">
+            <UserFunctions
+              :fonctions="structure.fonctions"
+            />
+          </div>
         </div>
-      </div>
 
-      <UserAdditional
-        :structure="structure"
-        @edit-function="editFunction"
-      />
+        <UserAdditional
+          :structure="structure"
+          @edit-function="editFunction"
+        />
+      </template>
 
-      <div class="r-card">
-        <header>
-          <h3>
-            {{ t('page.user.administrative.class', 2) }}
-          </h3>
-        </header>
+      <template v-if="rights.canSeeClassesAndGroups">
+        <div class="r-card">
+          <header>
+            <h3>
+              {{ t('page.user.administrative.class', 2) }}
+            </h3>
+          </header>
 
-        <div class="body">
-          <ul v-if="structure.classes.length > 0">
-            <li
-              v-for="uClass in structure.classes"
-              :key="`class-${uClass}`"
-              class="tag-primary"
+          <div class="body">
+            <ul v-if="structure.classes.length > 0">
+              <li
+                v-for="uClass in structure.classes"
+                :key="`class-${uClass}`"
+                class="tag-primary"
+              >
+                {{ uClass }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="r-card">
+          <header>
+            <h3>
+              {{ t('page.user.administrative.educationalGroup', 2) }}
+            </h3>
+          </header>
+
+          <div class="body">
+            <ul
+              v-if="structure.groupesPedagogiques.length > 0"
             >
-              {{ uClass }}
-            </li>
-          </ul>
+              <li
+                v-for="group in structure.groupesPedagogiques"
+                :key="`educational-group${group}`"
+                class="tag-primary"
+              >
+                {{ group }}
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-
-      <div class="r-card">
-        <header>
-          <h3>
-            {{ t('page.user.administrative.educationalGroup', 2) }}
-          </h3>
-        </header>
-
-        <div class="body">
-          <ul
-            v-if="structure.groupesPedagogiques.length > 0"
-          >
-            <li
-              v-for="group in structure.groupesPedagogiques"
-              :key="`educational-group${group}`"
-              class="tag-primary"
-            >
-              {{ group }}
-            </li>
-          </ul>
-        </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
