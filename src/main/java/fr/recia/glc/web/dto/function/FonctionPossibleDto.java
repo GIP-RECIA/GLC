@@ -36,6 +36,9 @@ public class FonctionPossibleDto {
 
     public FonctionPossibleDto(TypeFonctionFiliere filiere, Discipline discipline) {
         this.filiere = new FiliereDisplayDto(filiere.getId(), filiere.getLibelleFiliere());
-        this.discipline = new DisciplinePossibleDto(discipline.getId(), discipline.getDisciplinePoste());
+        // Pour les CFA
+        if(discipline != null){
+            this.discipline = new DisciplinePossibleDto(discipline.getId(), discipline.getDisciplinePoste());
+        }
     }
 }

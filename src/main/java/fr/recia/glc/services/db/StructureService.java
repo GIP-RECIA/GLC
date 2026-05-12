@@ -117,7 +117,10 @@ public class StructureService {
             if(!dtoListMap.containsKey(filiereDisplayDto.getId())){
                 dtoListMap.put(filiereDisplayDto.getId(), new DisciplinesInFillierePossiblesDto(filiereDisplayDto.getId(), filiereDisplayDto.getLibelle()));
             }
-            dtoListMap.get(filiereDisplayDto.getId()).getDisciplines().add(fonctionPossibleDto.getDiscipline());
+            // Vérification du null cas spécial pour les CFA
+            if(fonctionPossibleDto.getDiscipline() != null){
+                dtoListMap.get(filiereDisplayDto.getId()).getDisciplines().add(fonctionPossibleDto.getDiscipline());
+            }
         }
 
         // Fonctions ajoutées via le mapping custom

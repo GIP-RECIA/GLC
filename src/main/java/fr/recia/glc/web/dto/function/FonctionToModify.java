@@ -24,7 +24,6 @@ import java.util.Date;
 public class FonctionToModify {
     private Long filiere;
     private Long discipline;
-    // TODO : gérer la date de début
     private Date dateDebut;
     private Date dateFin;
 }
