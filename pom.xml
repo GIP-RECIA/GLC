@@ -35,20 +35,6 @@
     </snapshotRepository>
   </distributionManagement>
 
-  <repositories>
-    <repository>
-      <id>recia</id>
-      <url>https://nexus.recia.dev/repository/public/</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <properties>
     <check.java.version>11</check.java.version>
     <java.version>11</java.version>
@@ -105,6 +91,11 @@
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>fr.recia</groupId>
+      <artifactId>redis-session-cleanup-lib</artifactId>
+      <version>0.0.2</version>
     </dependency>
     <dependency>
       <groupId>joda-time</groupId>
@@ -197,6 +188,10 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-logging</artifactId>
     </dependency>
     <dependency>
@@ -238,24 +233,29 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.zalando</groupId>
-      <artifactId>problem-spring-web</artifactId>
-      <version>0.29.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-redis</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.session</groupId>
       <artifactId>spring-session-data-redis</artifactId>
     </dependency>
     <dependency>
-      <groupId>fr.recia</groupId>
-      <artifactId>redis-session-cleanup-lib</artifactId>
-      <version>0.0.2</version>
+      <groupId>org.zalando</groupId>
+      <artifactId>problem-spring-web</artifactId>
+      <version>0.29.1</version>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>recia</id>
+      <url>https://nexus.recia.dev/repository/public/</url>
+    </repository>
+  </repositories>
 
   <pluginRepositories>
     <pluginRepository>
