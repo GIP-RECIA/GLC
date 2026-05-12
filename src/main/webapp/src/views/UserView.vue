@@ -335,7 +335,6 @@ function onAttach(): void {
     :structure-id="structureId"
     :disabled-fonctions="disabledFonctions"
     :edit-fonction="editFonction"
-    @update:model-value="dialogState = false"
   />
 </template>
 

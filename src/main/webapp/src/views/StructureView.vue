@@ -166,7 +166,6 @@ function onCreate(): void {
     v-model="dialogState"
     :title="t('page.account.dialog.manageAdditional.title.attach')"
     :structure-id="structure?.id"
-    @update:model-value="dialogState = false"
   />
 </template>
 
