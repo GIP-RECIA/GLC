@@ -54,7 +54,7 @@ onUnmounted(() => {
 <template>
   <nav>
     <ul>
-      <li>
+      <li v-dev>
         <router-link
           :to="{ name: 'index' }"
           class="btn-tertiary circle"

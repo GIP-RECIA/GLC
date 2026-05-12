@@ -16,62 +16,115 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 
+const isDev = import.meta.env.DEV
+
+const devRoutes = [
+  {
+    path: '/',
+    name: 'index',
+    component: () => import('@/views/IndexView.vue'),
+  },
+  {
+    path: '/access',
+    name: 'access',
+    component: () => import('@/views/AccessView.vue'),
+  },
+  {
+    path: '/restriction',
+    name: 'restriction',
+    component: () => import('@/views/RestrictionView.vue'),
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@/views/SettingsView.vue'),
+  },
+  {
+    path: '/account',
+    name: 'accountRoot',
+    children: [
+      {
+        path: '',
+        name: 'account',
+        component: () => import('@/views/AccountView.vue'),
+      },
+      {
+        path: 'structure/:structureId(\\d+)',
+        name: 'structure',
+        component: () => import('@/views/StructureView.vue'),
+      },
+      {
+        path: 'user/:userId(\\d+)',
+        name: 'user',
+        component: () => import('@/views/UserView.vue'),
+      },
+      {
+        path: ':pathName(.*)',
+        redirect: () => {
+          return { name: 'account' }
+        },
+      },
+    ],
+  },
+  {
+    path: '/:pathName(.*)',
+    redirect: () => {
+      return { name: 'index' }
+    },
+  },
+]
+
+const prodRoutes = [
+  {
+    path: '/',
+    name: 'index',
+    redirect: () => {
+      return { name: 'account' }
+    },
+  },
+  {
+    path: '/account',
+    name: 'accountRoot',
+    children: [
+      {
+        path: '',
+        name: 'account',
+        component: () => import('@/views/AccountView.vue'),
+      },
+      {
+        path: 'structure/:structureId(\\d+)',
+        name: 'structure',
+        component: () => import('@/views/StructureView.vue'),
+      },
+      {
+        path: 'user/:userId(\\d+)',
+        name: 'user',
+        component: () => import('@/views/UserView.vue'),
+      },
+      {
+        path: ':pathName(.*)',
+        redirect: () => {
+          return { name: 'account' }
+        },
+      },
+    ],
+  },
+  {
+    path: '/:pathName(.*)',
+    redirect: () => {
+      return { name: 'account' }
+    },
+  },
+]
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      name: 'index',
-      component: () => import('@/views/IndexView.vue'),
-    },
-    {
-      path: '/access',
-      name: 'access',
-      component: () => import('@/views/AccessView.vue'),
-    },
-    {
-      path: '/restriction',
-      name: 'restriction',
-      component: () => import('@/views/RestrictionView.vue'),
-    },
-    {
-      path: '/settings',
-      name: 'settings',
-      component: () => import('@/views/SettingsView.vue'),
-    },
-    {
-      path: '/account',
-      name: 'accountRoot',
-      children: [
-        {
-          path: '',
-          name: 'account',
-          component: () => import('@/views/AccountView.vue'),
-        },
-        {
-          path: 'structure/:structureId(\\d+)',
-          name: 'structure',
-          component: () => import('@/views/StructureView.vue'),
-        },
-        {
-          path: 'user/:userId(\\d+)',
-          name: 'user',
-          component: () => import('@/views/UserView.vue'),
-        },
-        {
-          path: ':pathName(.*)',
-          redirect: () => {
-            return { name: 'account' }
-          },
-        },
-      ],
-    },
-    {
-      path: '/:pathName(.*)',
-      redirect: () => {
-        return { name: 'index' }
-      },
-    },
+    ...(
+      isDev
+        ? devRoutes
+        : prodRoutes
+    ),
   ],
 })
 
