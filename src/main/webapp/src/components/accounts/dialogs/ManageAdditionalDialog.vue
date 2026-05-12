@@ -61,6 +61,8 @@ const modelValue = defineModel<boolean>({ required: true })
 
 const { t } = useI18n()
 
+const isDev = import.meta.env.DEV
+
 /* User and structure */
 
 const selectedUser = ref<SearchUser>()
@@ -204,7 +206,7 @@ const canSave = computed<boolean>(() => {
     && structureId
     && filiere
     && discipline
-    && dateDebut
+    && (isDev ? dateDebut : true)
     && dateFin
   )
 })

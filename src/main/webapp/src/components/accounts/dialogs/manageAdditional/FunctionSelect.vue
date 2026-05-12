@@ -115,7 +115,7 @@ watch(
     v-bind="config.discipline"
   />
 
-  <div class="field">
+  <div v-dev class="field">
     <div class="field-layout">
       <div class="field-container">
         <div class="middle">
