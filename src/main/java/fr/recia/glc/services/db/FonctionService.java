@@ -104,6 +104,12 @@ public class FonctionService {
         return typeFonctionFiliereRepository.findByAnySource();
     }
 
+    @Cacheable(value = "typeFonctionFiliereByCode")
+    public TypeFonctionFiliereDto getTypeFonctionFiliereByCode(String code, String source) {
+        log.trace("getTypeFonctionFiliereByCode for {}", source);
+        return typeFonctionFiliereRepository.findByCodeAndSourceSarapis(code, source);
+    }
+
     @Cacheable(value = "disciplines")
     public List<DisciplineDto> getDisciplines(String source) {
         log.trace("getDisciplines for {}", source);

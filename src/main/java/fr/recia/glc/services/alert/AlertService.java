@@ -45,9 +45,6 @@ public class AlertService {
     private FonctionService fonctionService;
 
     @Autowired
-    private TypeFonctionFiliereRepository<TypeFonctionFiliere> typeFonctionFiliereRepository;
-
-    @Autowired
     private DisciplineRepository<Discipline> disciplineRepository;
 
     private final List<CustomConfigProperties.AlertProperties> alertProperties;
@@ -83,13 +80,13 @@ public class AlertService {
                         long nbDiscipline = fonctionService.nbDiscipline(etablissementId, fonctionAlert.getFiliere(), fonctionAlert.getDiscipline());
                         if (fonctionAlert.getMin() != null && fonctionAlert.getMin().getValue() > 0 && nbDiscipline < fonctionAlert.getMin().getValue()) {
                             // TODO : cache + min/max à null
-                            final TypeFonctionFiliereDto filiere = typeFonctionFiliereRepository.findByCodeAndSourceSarapis(fonctionAlert.getFiliere(), etablissementSource);
+                            final TypeFonctionFiliereDto filiere = fonctionService.getTypeFonctionFiliereByCode(fonctionAlert.getFiliere(), etablissementSource);
                             final DisciplineDto discipline = disciplineRepository.findByCodeAndSourceSarapis(fonctionAlert.getDiscipline(), etablissementSource);
                             alerts.add(buildFonctionAlert(filiere, discipline, fonctionAlert.getMin().getValue(),
                                 fonctionAlert.getMax().getValue(), (int) nbDiscipline, fonctionAlert.getMin().getType(), FonctionAlertType.min, fonctionAlert.getMin().isAction()));
                         }
                         if (fonctionAlert.getMax() != null && fonctionAlert.getMax().getValue() > 0 && nbDiscipline > fonctionAlert.getMax().getValue()) {
-                            final TypeFonctionFiliereDto filiere = typeFonctionFiliereRepository.findByCodeAndSourceSarapis(fonctionAlert.getFiliere(), etablissementSource);
+                            final TypeFonctionFiliereDto filiere = fonctionService.getTypeFonctionFiliereByCode(fonctionAlert.getFiliere(), etablissementSource);
                             final DisciplineDto discipline = disciplineRepository.findByCodeAndSourceSarapis(fonctionAlert.getDiscipline(), etablissementSource);
                             alerts.add(buildFonctionAlert(filiere, discipline, fonctionAlert.getMin().getValue(),
                                 fonctionAlert.getMax().getValue(), (int) nbDiscipline, fonctionAlert.getMax().getType(), FonctionAlertType.max, fonctionAlert.getMax().isAction()));
