@@ -16,9 +16,8 @@
 
 <script setup lang="ts">
 import type { FunctionForm, User, UserStructure } from '@/types/index.ts'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useI18n } from 'vue-i18n'
+import UserAdditional from './administrative/UserAdditional.vue'
 import UserFunctions from './administrative/UserFunctions.vue'
 
 defineProps<{
@@ -34,13 +33,9 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-function addFunction(structure: UserStructure): void {
-  emit('editFunction', structure, undefined)
-}
-
 function editFunction(
   structure: UserStructure,
-  fonction: FunctionForm,
+  fonction: FunctionForm | undefined,
 ): void {
   emit('editFunction', structure, fonction)
 }
@@ -77,35 +72,10 @@ function editFunction(
         </div>
       </div>
 
-      <div class="r-card">
-        <header>
-          <h3>
-            {{ t('page.user.administrative.function.additional', 2) }}
-          </h3>
-        </header>
-
-        <div class="body">
-          <UserFunctions
-            :fonctions="structure.additionalFonctions"
-            :clickable="structure.authorizedForPrincipal"
-            @tag-click="(fun) => editFunction(structure, fun)"
-          />
-        </div>
-
-        <footer>
-          <button
-            v-if="structure.authorizedForPrincipal"
-            type="button"
-            class="btn-primary small"
-            @click="addFunction(structure)"
-          >
-            {{ t('button.add') }}
-            <FontAwesomeIcon
-              :icon="faPlus"
-            />
-          </button>
-        </footer>
-      </div>
+      <UserAdditional
+        :structure="structure"
+        @edit-function="editFunction"
+      />
 
       <div class="r-card">
         <header>
@@ -171,7 +141,7 @@ function editFunction(
     }
   }
 
-  > .r-card > .body {
+  > :deep(.r-card) > .body {
     display: flex;
     flex-direction: column;
     gap: 16px;
