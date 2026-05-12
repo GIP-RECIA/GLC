@@ -86,22 +86,33 @@ const EMPTY_FUNCTION: FunctionForm = {
   dateFin: undefined,
 }
 
-const fields = ref<FunctionForm>(EMPTY_FUNCTION)
+const fields = ref<FunctionForm>({ ...EMPTY_FUNCTION })
 
 watch(
   () => props.editFonction,
   (val) => {
-    if (!val) {
-      fields.value = EMPTY_FUNCTION
-
+    if (!val)
       return
-    }
 
     fields.value = {
       ...val,
       dateDebut: toISODate(val.dateDebut),
       dateFin: toISODate(val.dateFin),
     }
+  },
+)
+
+watch(
+  () => modelValue.value,
+  (val) => {
+    if (val)
+      return
+
+    setTimeout(() => {
+      selectedUser.value = undefined
+      selectedStructure.value = undefined
+      fields.value = { ...EMPTY_FUNCTION }
+    }, 300)
   },
 )
 
