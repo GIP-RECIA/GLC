@@ -68,6 +68,8 @@ app:
     cas-server-url: http://HOST
     cas-provider-key: casProviderKey
     cas-ticket-callback: /login/cas
+    authorized-domains:
+      - http://HOST
 
   cors:
     allowed-origins:

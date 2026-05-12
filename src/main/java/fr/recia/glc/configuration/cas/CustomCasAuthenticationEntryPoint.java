@@ -37,7 +37,13 @@ public class CustomCasAuthenticationEntryPoint extends CasAuthenticationEntryPoi
     protected String createServiceUrl(HttpServletRequest request, HttpServletResponse response) {
         final String url = request.getRequestURL().toString();
         final String uri = request.getRequestURI();
-        return url.substring(0, url.length() - uri.length()) + glcProperties.getCas().getCasServiceId();
+        final String domain = url.substring(0, url.length() - uri.length());
+        if(glcProperties.getCas().getAuthorizedDomains().contains(domain)){
+            return domain + glcProperties.getCas().getCasServiceId();
+        } else {
+            // TODO : custom exception
+            throw new RuntimeException("Domain is not authorized !");
+        }
     }
 
 }

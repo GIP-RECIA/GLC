@@ -28,7 +28,6 @@ import fr.recia.glc.services.structure.StructureLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.validation.Assertion;
-import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

@@ -19,6 +19,8 @@ package fr.recia.glc.configuration.bean;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Set;
+
 @Data
 @Validated
 public class CASProperties {
@@ -27,5 +29,6 @@ public class CASProperties {
     private String casServerUrl;
     private String casProviderKey;
     private String casTicketCallback;
+    private Set<String> authorizedDomains;
 
 }
