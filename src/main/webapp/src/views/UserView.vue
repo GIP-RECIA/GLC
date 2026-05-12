@@ -28,13 +28,13 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ManageAdditionalDialog from '@/components/accounts/dialogs/ManageAdditionalDialog.vue'
 import UserAdministrativeTab from '@/components/accounts/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/accounts/user/tabs/UserInformationTab.vue'
 import UserInfo from '@/components/accounts/user/UserInfo.vue'
-import { useTabs } from '@/composables/index.ts'
+import { useNavigationTabs, useTabs } from '@/composables/index.ts'
 import {
   useDeleteUserMutation,
   useForceDeleteUserMutation,
@@ -65,6 +65,29 @@ const {
 } = useTabs({
   tabs,
   tabsRefs,
+})
+
+const {
+  currentTabParams,
+  setTabParams,
+} = useNavigationTabs()
+
+watch(
+  activeTab,
+  (val) => {
+    setTabParams({
+      currentTab: val,
+    })
+  },
+)
+
+watchEffect(() => {
+  if (
+    currentTabParams.value?.currentTab !== undefined
+    && currentTabParams.value.currentTab !== activeTab.value
+  ) {
+    setActiveTab(currentTabParams.value.currentTab)
+  }
 })
 
 /* Dialog */

@@ -29,6 +29,11 @@ interface TabItemT {
   id: string
   name: string
   to: RouteLocationAsRelativeGeneric
+  params: TabItemParams
+}
+
+interface TabItemParams {
+  currentTab: number
 }
 
 const items = useSessionStorage<TabItemT[]>(
@@ -119,6 +124,9 @@ export function useNavigationTabs() {
         name: 'structure',
         params: { structureId },
       },
+      params: {
+        currentTab: 0,
+      },
     }, getFromIndex(from))
   }
 
@@ -142,7 +150,41 @@ export function useNavigationTabs() {
         name: 'user',
         params: { userId },
       },
+      params: {
+        currentTab: 0,
+      },
     }, getFromIndex(from))
+  }
+
+  const currentTab = computed<TabItemT | undefined>(() => {
+    const { structureId, userId } = route.params
+    let tabId: string
+
+    if (structureId)
+      tabId = `structure-${structureId}`
+
+    if (userId)
+      tabId = `user-${userId}`
+
+    return items.value
+      .find(({ id }) => id === tabId)
+  })
+
+  const currentTabParams = computed<TabItemParams | undefined>(() => (
+    currentTab.value?.params
+  ))
+
+  function setTabParams(
+    params: TabItemParams,
+  ): void {
+    const tab = currentTab.value
+    if (!tab)
+      return
+
+    tab.params = {
+      ...tab.params,
+      ...params,
+    }
   }
 
   return {
@@ -153,5 +195,7 @@ export function useNavigationTabs() {
     getFromIndex,
     loadStructure,
     loadUser,
+    currentTabParams,
+    setTabParams,
   }
 }

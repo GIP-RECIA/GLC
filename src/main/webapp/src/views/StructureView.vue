@@ -17,14 +17,14 @@
 <script setup lang="ts">
 import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { ref, useTemplateRef } from 'vue'
+import { ref, useTemplateRef, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ManageAdditionalDialog from '@/components/accounts/dialogs/ManageAdditionalDialog.vue'
 import StructureInfo from '@/components/accounts/structure/StructureInfo.vue'
 import StructureAccountsTab from '@/components/accounts/structure/tabs/StructureAccountsTab.vue'
 import StructureCompTab from '@/components/accounts/structure/tabs/StructureCompTab.vue'
 import StructureDashboardTab from '@/components/accounts/structure/tabs/StructureDashboardTab.vue'
-import { useTabs } from '@/composables/index.ts'
+import { useNavigationTabs, useTabs } from '@/composables/index.ts'
 import { useStructureQuery } from '@/services/queries/index.ts'
 
 const { t } = useI18n()
@@ -48,6 +48,29 @@ const {
 } = useTabs({
   tabs,
   tabsRefs,
+})
+
+const {
+  currentTabParams,
+  setTabParams,
+} = useNavigationTabs()
+
+watch(
+  activeTab,
+  (val) => {
+    setTabParams({
+      currentTab: val,
+    })
+  },
+)
+
+watchEffect(() => {
+  if (
+    currentTabParams.value?.currentTab !== undefined
+    && currentTabParams.value.currentTab !== activeTab.value
+  ) {
+    setActiveTab(currentTabParams.value.currentTab)
+  }
 })
 
 /* Dialog */
