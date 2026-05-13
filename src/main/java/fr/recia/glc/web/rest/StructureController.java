@@ -23,6 +23,8 @@ import fr.recia.glc.db.dto.fonction.TypeFonctionFiliereDto;
 import fr.recia.glc.db.dto.personne.DatabasePersonneDto;
 import fr.recia.glc.db.dto.structure.SimpleStructureDto;
 import fr.recia.glc.db.dto.structure.StructureDto;
+import fr.recia.glc.db.entities.gestion.AnneeScolaire;
+import fr.recia.glc.db.repositories.gestion.AnneeScolaireRepository;
 import fr.recia.glc.security.GLCRole;
 import fr.recia.glc.security.GLCUser;
 import fr.recia.glc.services.alert.AlertService;
@@ -31,6 +33,7 @@ import fr.recia.glc.services.db.IncertainService;
 import fr.recia.glc.services.db.PersonneService;
 import fr.recia.glc.services.db.StructureService;
 import fr.recia.glc.web.dto.function.DisciplinesInFillierePossiblesDto;
+import fr.recia.glc.web.dto.function.ListFonctionPossibleDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,6 +67,8 @@ public class StructureController {
     private IncertainService incertainService;
     @Autowired
     private GLCProperties glcProperties;
+    @Autowired
+    private AnneeScolaireRepository<AnneeScolaire> anneeScolaireRepository;
 
     /**
      * Récupère la liste de toutes les structures que l'utilisateur à le droit d'administrer
@@ -97,9 +102,11 @@ public class StructureController {
      * Récupère la liste de toutes les fonctions qu'on peut ajouter à des personnes dans l'établissement
      */
     @GetMapping("/{id}/fonctions")
-    public ResponseEntity<List<DisciplinesInFillierePossiblesDto>> getPossibleFonctions(@PathVariable Long id){
+    public ResponseEntity<ListFonctionPossibleDto> getPossibleFonctions(@PathVariable Long id){
         String source = structureService.getStructureDBFromId(id).getCleJointure().getSource();
-        return new ResponseEntity<>(structureService.getPossibleFonctions(source), HttpStatus.OK);
+        AnneeScolaire anneeScolaire = anneeScolaireRepository.findFirstByOrderByDateCreationDesc();
+        List<DisciplinesInFillierePossiblesDto> fonctionPossibles = structureService.getPossibleFonctions(source);
+        return new ResponseEntity<>(new ListFonctionPossibleDto(anneeScolaire.getPassageAnneeSuivante(), fonctionPossibles), HttpStatus.OK);
     }
 
     /**
