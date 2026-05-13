@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.0](https://github.com/GIP-RECIA/GLC/compare/2.0.0...2.1.0) (2026-05-13)
+
+
+### Features
+
+* cache sur la récupération des disciplines dans le calcul des alertes ([4a79c3e](https://github.com/GIP-RECIA/GLC/commit/4a79c3e9c250a5f0546dae681134d66b054c1299))
+* cache sur la récupération des fillières dans le calcul des alertes ([822cfa4](https://github.com/GIP-RECIA/GLC/commit/822cfa4c10b6ecc623290e582851d896aba382c3))
+* date de fin par défaut sur les fonctions ([82d42da](https://github.com/GIP-RECIA/GLC/commit/82d42daa3ddbfa8cfc58d3faebe65cfca3e58d1a))
+* filières triées par ordre alphabétique dans la liste des fonctions possibles ([4b78f0c](https://github.com/GIP-RECIA/GLC/commit/4b78f0cf08b6a5ed0a931fca9a563c3f37c24c2a))
+* **ui:** add function default end date ([f6df2d7](https://github.com/GIP-RECIA/GLC/commit/f6df2d7dedf8442d46ddb0a58e726e63a7e3b06a))
+* **ui:** add mutations toasts ([8d4ecb7](https://github.com/GIP-RECIA/GLC/commit/8d4ecb7a5cb0bb668d4ca33b322963cd2326efeb))
+* **ui:** add no session message ([bd5fc97](https://github.com/GIP-RECIA/GLC/commit/bd5fc97f2ed7a89524bd7bdacddbeb144a044357))
+* **ui:** add translations for accounts filter ([66678d6](https://github.com/GIP-RECIA/GLC/commit/66678d6d5c0f0d76eea6ad5d40f3e63ffeeadb65))
+* **ui:** conditional source accounts filter ([a4c039d](https://github.com/GIP-RECIA/GLC/commit/a4c039d128728d3d3bf9625d50ea39a7c1077b65))
+* **ui:** dynamic user tab ([847f907](https://github.com/GIP-RECIA/GLC/commit/847f907571091b2efd8a1e19c8c6c705b48254c5))
+* **ui:** enable accounts filter ([57d0293](https://github.com/GIP-RECIA/GLC/commit/57d0293837aec6b0fe5d73d0ca4e9478038f26cb))
+* **ui:** memorize accounts filters ([0611943](https://github.com/GIP-RECIA/GLC/commit/0611943135a22ba7cc29a1e64891ce61075167cb))
+* **ui:** memorize accounts search ([9ef4967](https://github.com/GIP-RECIA/GLC/commit/9ef4967de7330abbd513ccef1433655ad715d314))
+* **ui:** memorize current tab ([9d82f2c](https://github.com/GIP-RECIA/GLC/commit/9d82f2c975d229a0611a148539e36be05ec18b79))
+* **ui:** no session default state ([abffeab](https://github.com/GIP-RECIA/GLC/commit/abffeabb46df2acceaaa5a75fad10b03d3dace2e))
+* **ui:** structure accounts filters ([0559a45](https://github.com/GIP-RECIA/GLC/commit/0559a45a82236a23aafd728f7be680b12de9c597))
+* **ui:** use page layout in accounts ([fe6d7a9](https://github.com/GIP-RECIA/GLC/commit/fe6d7a9591c9d3f65c93f3e418061b319bb88e10))
+* vérification du domaine lors de la redirection CAS ([2f9400e](https://github.com/GIP-RECIA/GLC/commit/2f9400e7d0ae48e3d7c0d7c9dc73035d3022b54d))
+
+
+### Bug Fixes
+
+* NPE quand il n'y a pas de fonctions admin pour une source ([fbb5820](https://github.com/GIP-RECIA/GLC/commit/fbb582064dcc8ce006960461196dfb57c2d9246a))
+* NPE sur la route fonctions pour les CFA ([5e014be](https://github.com/GIP-RECIA/GLC/commit/5e014be1c4900d44e01d9b9effb86e148a28297c))
+* **ui:** error init toast ([bf748ef](https://github.com/GIP-RECIA/GLC/commit/bf748ef6c1c6687a2efaa1bf26cf13f0e3a75cca))
+* **ui:** manageAdditional dialog title ([f6b7a97](https://github.com/GIP-RECIA/GLC/commit/f6b7a9752dcba6708d0af4d03a77a2d6e2ee0267))
+* **ui:** missing translations ([963851c](https://github.com/GIP-RECIA/GLC/commit/963851cd392a81f272e92c4ad3093300e181b026))
+* **ui:** translations ([c216180](https://github.com/GIP-RECIA/GLC/commit/c21618051923eb3bdf5543cb72944abc92b1cdde))
+
 ## [2.0.0](https://github.com/GIP-RECIA/GLC/compare/1.0.2...2.0.0) (2026-05-12)
 
 
