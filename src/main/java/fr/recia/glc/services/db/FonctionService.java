@@ -110,6 +110,12 @@ public class FonctionService {
         return typeFonctionFiliereRepository.findByCodeAndSourceSarapis(code, source);
     }
 
+    @Cacheable(value = "disciplineByCode")
+    public DisciplineDto getDisciplineByCode(String code, String source) {
+        log.trace("getDisciplineByCode for {}", source);
+        return disciplineRepository.findByCodeAndSourceSarapis(code, source);
+    }
+
     @Cacheable(value = "disciplines")
     public List<DisciplineDto> getDisciplines(String source) {
         log.trace("getDisciplines for {}", source);
