@@ -26,11 +26,16 @@ import {
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
+import PageLayout from '@/components/PageLayout.vue'
 import Pagination from '@/components/Pagination.vue'
 import { useStructuresQuery } from '@/services/queries/index.ts'
 import { concatenate, normalize } from '@/utils/index.ts'
 
 const { t } = useI18n()
+
+const isDev = import.meta.env.DEV
+
+const linkDisplay = isDev ? undefined : 'none'
 
 const userSearch = ref<string>()
 
@@ -95,99 +100,99 @@ const table = useVueTable({
 
 <template>
   <div class="container">
-    <h1>
-      {{ t('page.account.h1') }}
-    </h1>
+    <PageLayout
+      :title="t('page.account.h1')"
+    >
+      <div v-dev class="users">
+        <h2>
+          {{ t('page.account.user.header') }}
+        </h2>
 
-    <div v-dev class="users">
-      <h2>
-        {{ t('page.account.user.header') }}
-      </h2>
-
-      <div class="field">
-        <div class="field-layout">
-          <div class="field-container">
-            <div class="middle">
-              <label
-                for="user-search"
-              >
-                {{ t('page.account.user.search') }}
-              </label>
-              <input
-                id="user-search"
-                v-model.trim="userSearch"
-                type="text"
-                placeholder=""
-              >
+        <div class="field">
+          <div class="field-layout">
+            <div class="field-container">
+              <div class="middle">
+                <label
+                  for="user-search"
+                >
+                  {{ t('page.account.user.search') }}
+                </label>
+                <input
+                  id="user-search"
+                  v-model.trim="userSearch"
+                  type="text"
+                  placeholder=""
+                >
+              </div>
             </div>
+            <div class="active-indicator" />
           </div>
-          <div class="active-indicator" />
-        </div>
-      </div>
-    </div>
-
-    <div class="structures">
-      <h2>
-        {{ t('page.account.structure.header') }}
-      </h2>
-
-      <div class="field">
-        <div class="field-layout">
-          <div class="field-container">
-            <div class="middle">
-              <label
-                for="structure-search"
-              >
-                {{ t('page.account.structure.search') }}
-              </label>
-              <input
-                id="structure-search"
-                v-model.trim="globalFilter"
-                type="text"
-                placeholder=""
-              >
-            </div>
-          </div>
-          <div class="active-indicator" />
         </div>
       </div>
 
-      <ul class="info-container">
-        <li
-          v-for="row in table.getRowModel().rows"
-          :key="row.id"
-        >
-          <RouterLink
-            :to="{
-              name: 'structure',
-              params: { structureId: row.original.id },
-            }"
-            class="structure-link"
+      <div class="structures">
+        <h2>
+          {{ t('page.account.structure.header') }}
+        </h2>
+
+        <div class="field">
+          <div class="field-layout">
+            <div class="field-container">
+              <div class="middle">
+                <label
+                  for="structure-search"
+                >
+                  {{ t('page.account.structure.search') }}
+                </label>
+                <input
+                  id="structure-search"
+                  v-model.trim="globalFilter"
+                  type="text"
+                  placeholder=""
+                >
+              </div>
+            </div>
+            <div class="active-indicator" />
+          </div>
+        </div>
+
+        <ul class="info-container">
+          <li
+            v-for="row in table.getRowModel().rows"
+            :key="row.id"
           >
-            <span>
-              {{ row.original.nom }}
-            </span>
-            <span
-              :style="{
-                visibility: (row.original.type || row.original.uai)
-                  ? undefined
-                  : 'hidden',
+            <RouterLink
+              :to="{
+                name: 'structure',
+                params: { structureId: row.original.id },
               }"
-              class="description"
+              class="structure-link"
             >
-              {{ row.original.type }}
-              <span v-if="row.original.uai">
-                {{ row.original.uai }}
+              <span>
+                {{ row.original.nom }}
               </span>
-            </span>
-          </RouterLink>
-        </li>
-      </ul>
+              <span
+                :style="{
+                  visibility: (row.original.type || row.original.uai)
+                    ? undefined
+                    : 'hidden',
+                }"
+                class="description"
+              >
+                {{ row.original.type }}
+                <span v-if="row.original.uai">
+                  {{ row.original.uai }}
+                </span>
+              </span>
+            </RouterLink>
+          </li>
+        </ul>
 
-      <Pagination
-        :table="table"
-      />
-    </div>
+        <Pagination
+          :table="table"
+        />
+      </div>
+    </PageLayout>
   </div>
 </template>
 
@@ -200,35 +205,31 @@ const table = useVueTable({
 .container {
   margin-top: 32px;
   margin-bottom: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-
-  > h1 {
-    margin-bottom: 0;
-  }
-
-  > .users,
-  > .structures {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    > h2 {
-      margin-bottom: 0;
-    }
-  }
-
-  .structures {
-    > ul {
-      @include unstyled-list;
-      align-items: unset;
-    }
-  }
 
   @media (width >= map.get($grid-breakpoints, md)) {
     margin-bottom: 60px;
-    gap: 48px;
+  }
+}
+
+:deep(.page-layout) > header > .heading > a {
+  display: v-bind(linkDisplay);
+}
+
+.users,
+.structures {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  > h2 {
+    margin-bottom: 0;
+  }
+}
+
+.structures {
+  > ul {
+    @include unstyled-list;
+    align-items: unset;
   }
 }
 

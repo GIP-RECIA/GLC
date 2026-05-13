@@ -15,7 +15,7 @@
 -->
 
 <script setup lang="ts">
-import { faArrowLeft, faHome } from '@fortawesome/free-solid-svg-icons'
+import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { onMounted, onUnmounted, useTemplateRef } from 'vue'
 import { useNavigationTabs } from '@/composables/index.ts'
@@ -54,17 +54,6 @@ onUnmounted(() => {
 <template>
   <nav>
     <ul>
-      <li v-dev>
-        <router-link
-          :to="{ name: 'index' }"
-          class="btn-tertiary circle"
-          title="Retour à l'accueil de l'application"
-        >
-          <FontAwesomeIcon
-            :icon="faArrowLeft"
-          />
-        </router-link>
-      </li>
       <li id="structures">
         <router-link
           :to="{ name: 'account' }"
