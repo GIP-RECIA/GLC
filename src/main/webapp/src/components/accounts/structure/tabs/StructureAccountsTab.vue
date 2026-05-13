@@ -82,26 +82,37 @@ const categoriesPersonne = computed<CategoriePersonne[]>(() => (
   )]
 ))
 
+const sameSource = computed<boolean>(() => {
+  const personnes = props.structure?.personnes
+
+  return !!personnes?.length
+    && personnes.length > 0
+    && personnes.every(user => user.local === personnes[0].local)
+})
+
 const filters = computed(() => [
-  {
-    id: 'source',
-    name: 'Source',
-    type: 'checkbox',
-    items: [
-      {
-        key: 'source-all',
-        value: 'Toutes les sources',
-      },
-      {
-        key: 'annu',
-        value: 'Annuaire',
-      },
-      {
-        key: 'local',
-        value: 'Comple local',
-      },
-    ],
-  },
+  ...(!sameSource.value
+    ? [{
+        id: 'source',
+        name: 'Source',
+        type: 'radio',
+        items: [
+          {
+            key: 'source-all',
+            value: 'Toutes les sources',
+          },
+          {
+            key: 'annu',
+            value: 'Annuaire',
+          },
+          {
+            key: 'local',
+            value: 'Comple local',
+          },
+        ],
+      }]
+    : []
+  ),
   ...(categoriesPersonne.value.length > 1
     ? [{
         id: 'profil',
