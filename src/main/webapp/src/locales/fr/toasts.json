@@ -1,25 +1,47 @@
 {
   "toast": {
+    "deleteUser": {
+      "success": "Utilisateur passé en suppression avec succès",
+      "error": "Impossible de passer en suppression l'utilisateur"
+    },
+    "forceDeleteUser": {
+      "success": "Utilisateur supprimé avec succès",
+      "error": "Impossible de supprimer l'utilisateur"
+    },
+    "undoDeleteUser": {
+      "success": "Utilisateur réactivé avec succès",
+      "error": "Impossible de réactiver l'utilisateur"
+    },
+    "lockUser": {
+      "success": "Utilisateur bloqué avec succès",
+      "error": "Impossible de bloquer l'utilisateur"
+    },
+    "unlockUser": {
+      "success": "Utilisateur débloqué avec succès",
+      "error": "Impossible de débloquer l'utilisateur"
+    },
+    "unlockUsers": {
+      "success": "Utilisateurs débloqués avec succès",
+      "error": "Impossible de débloquer les utilisateurs"
+    },
     "additional": {
       "success": {
         "save": "Modifications appliqués avec succès",
         "attach": "Rattachement effectué avec succès",
         "detach": "Détachement effectué avec succès",
-        "delete": "Suppression effectué avec succès"
+        "delete": "Fonction supprimé avec succès"
       },
       "error": {
         "save": "Impossible d'appliquer les modifications",
-        "attach": "Impossible de rattacher la personne",
-        "detach": "Impossible de détacher la personne",
+        "attach": "Impossible de rattacher l'utilisateur",
+        "detach": "Impossible de détacher l'utilisateur",
         "delete": "Impossible de supprimer la fonction"
       }
     },
     "initConfigurationStore": "Impossible de charger la configuration",
     "initCurrentPersonne": "Impossible de charger la personne",
-    "refreshCurrentPersonne": "Impossible de raffraichir la personne",
     "initStructureStore": "Impossible de charger les structures",
     "initCurrentEtab": "Impossible de charger la structure",
-    "refreshCurrentStructure": "Impossible de raffraichir la structure",
     "error": {
       "401": "Vous n'êtes pas autorisé à consulter la ressource",
       "404": "La ressource demandé n'as pas pu être trouvée",
@@ -27,7 +49,6 @@
       "unmanaged": "Une erreur non géré est survenue",
       "stock": "Une erreur est survenue",
       "unknown": "Une erreur inconnue est survenue"
-    },
-    "editStatusDenied": "Impossible d'agir sur cet état de compte"
+    }
   }
 }

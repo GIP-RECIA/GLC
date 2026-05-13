@@ -54,7 +54,7 @@ app.use(
   {
     limit: 0,
     newestOnTop: true,
-    theme: 'colored',
+    theme: 'auto',
   } as ToastContainerOptions,
 )
 

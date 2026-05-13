@@ -18,8 +18,11 @@
 import type { Configuration } from '@/types/index.ts'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import i18n from '@/plugins/i18n.ts'
 import { getConfiguration } from '@/services/api/index.ts'
 import { errorHandler } from '@/utils/index.ts'
+
+const { t } = i18n.global
 
 export const useConfigurationStore = defineStore('configuration', () => {
   const configuration = ref<Configuration | undefined>()
@@ -33,7 +36,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
         configuration.value = await getConfiguration()
       }
       catch (e) {
-        errorHandler(e, 'initConfigurationStore')
+        errorHandler(e, t('initConfigurationStore'))
       }
     }
   }

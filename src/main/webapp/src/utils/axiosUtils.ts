@@ -45,30 +45,31 @@ function errorHandler(
       typeof toastOrI18n == 'string'
       && toastOrI18n.trim().length > 0
     ) {
-      message = `toast.${toastOrI18n}`
+      message = toastOrI18n
       showToast = true
     }
     else {
-      message = i18nHandled.includes(e.response?.status ?? -1)
-        ? `toast.error.${e.response!.status}`
-        : 'toast.error.unmanaged'
+      message = t(
+        i18nHandled.includes(e.response?.status ?? -1)
+          ? `toast.error.${e.response!.status}`
+          : 'toast.error.unmanaged',
+      )
     }
     error = e.message
   }
   else if (e instanceof Error) {
-    message = 'toast.error.stock'
+    message = t('toast.error.stock')
     error = e.message
   }
   else {
-    message = 'toast.error.unknown'
+    message = t('toast.error.unknown')
     error = e
   }
 
   if (showToast) {
     toast.error(
-      t(message),
+      message,
       {
-        clearOnUrlChange: false,
       } as ToastContainerOptions,
     )
   }

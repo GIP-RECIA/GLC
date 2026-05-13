@@ -81,6 +81,16 @@ body {
       }
     }
   }
+
+  > .Toastify {
+    > .Toastify {
+      &__toast-container {
+        &--top-right {
+          top: calc(var(--#{$prefix}header-height) + 1em);
+        }
+      }
+    }
+  }
 }
 
 .r-card {

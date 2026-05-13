@@ -15,6 +15,7 @@
  */
 
 import type { Ref } from 'vue'
+import type { ToastContainerOptions } from 'vue3-toastify'
 import type { User } from '@/types/index.ts'
 import {
   defineQueryOptions,
@@ -23,7 +24,9 @@ import {
   useQueryCache,
 } from '@pinia/colada'
 import { computed } from 'vue'
+import { toast } from 'vue3-toastify'
 import { useRoute } from 'vue-router'
+import i18n from '@/plugins/i18n.ts'
 import {
   deleteUser,
   forceDeleteUser,
@@ -38,6 +41,9 @@ import {
   unlockUsers,
 } from '@/services/api/index.ts'
 import { Etat } from '@/types/enums'
+import { errorHandler } from '@/utils/index.ts'
+
+const { t } = i18n.global
 
 function useUserQuery() {
   const route = useRoute()
@@ -80,6 +86,16 @@ function useDeleteUserMutation() {
 
       return { oldUser }
     },
+    onSuccess(_data, _vars, _context) {
+      toast.success(
+        t('toast.deleteUser.success'),
+        {
+        } as ToastContainerOptions,
+      )
+    },
+    onError(error, _vars, _context) {
+      errorHandler(error, t('toast.deleteUser.error'))
+    },
     onSettled(_data, _error, vars, context) {
       queryCache.invalidateQueries({ key: ['user', vars] })
       context.oldUser?.listeStructures.forEach((structure) => {
@@ -108,6 +124,16 @@ function useForceDeleteUserMutation() {
       }
 
       return { oldUser }
+    },
+    onSuccess(_data, _vars, _context) {
+      toast.success(
+        t('toast.forceDeleteUser.success'),
+        {
+        } as ToastContainerOptions,
+      )
+    },
+    onError(error, _vars, _context) {
+      errorHandler(error, t('toast.forceDeleteUser.error'))
     },
     onSettled(_data, _error, vars, context) {
       queryCache.invalidateQueries({ key: ['user', vars] })
@@ -138,6 +164,16 @@ function useUndoDeleteUserMutation() {
 
       return { oldUser }
     },
+    onSuccess(_data, _vars, _context) {
+      toast.success(
+        t('toast.undoDeleteUser.success'),
+        {
+        } as ToastContainerOptions,
+      )
+    },
+    onError(error, _vars, _context) {
+      errorHandler(error, t('toast.undoDeleteUser.error'))
+    },
     onSettled(_data, _error, vars, context) {
       queryCache.invalidateQueries({ key: ['user', vars] })
       context.oldUser?.listeStructures.forEach((structure) => {
@@ -166,6 +202,16 @@ function useLockUserMutation() {
       }
 
       return { oldUser }
+    },
+    onSuccess(_data, _vars, _context) {
+      toast.success(
+        t('toast.lockUser.success'),
+        {
+        } as ToastContainerOptions,
+      )
+    },
+    onError(error, _vars, _context) {
+      errorHandler(error, t('toast.lockUser.error'))
     },
     onSettled(_data, _error, vars, context) {
       queryCache.invalidateQueries({ key: ['user', vars] })
@@ -196,6 +242,16 @@ function useUnlockUserMutation() {
 
       return { oldUser }
     },
+    onSuccess(_data, _vars, _context) {
+      toast.success(
+        t('toast.unlockUser.success'),
+        {
+        } as ToastContainerOptions,
+      )
+    },
+    onError(error, _vars, _context) {
+      errorHandler(error, t('toast.unlockUser.error'))
+    },
     onSettled(_data, _error, vars, context) {
       queryCache.invalidateQueries({ key: ['user', vars] })
       context.oldUser?.listeStructures.forEach((structure) => {
@@ -210,6 +266,16 @@ function useUnlockUsersMutation() {
 
   return useMutation({
     mutation: unlockUsers,
+    onSuccess(_data, _vars, _context) {
+      toast.success(
+        t('toast.unlockUsers.success'),
+        {
+        } as ToastContainerOptions,
+      )
+    },
+    onError(error, _vars, _context) {
+      errorHandler(error, t('toast.unlockUsers.error'))
+    },
     onSettled: (_data, _error, vars, _context) => {
       vars.forEach((userId) => {
         queryCache.invalidateQueries({ key: ['user', userId] })
@@ -243,6 +309,14 @@ function useSetUserAdditionalMutation() {
     mutation: setUserAdditional,
     onSuccess(_data, vars, _context) {
       queryCache.invalidateQueries({ key: ['structure', vars.structureId] })
+      toast.success(
+        t(`toast.additional.success.${vars.requiredAction}`),
+        {
+        } as ToastContainerOptions,
+      )
+    },
+    onError(error, vars, _context) {
+      errorHandler(error, `toast.additional.error.${vars.requiredAction}`)
     },
     onSettled: (_data, _error, vars, _context) => {
       queryCache.invalidateQueries({ key: ['user', vars.id] })
@@ -257,6 +331,14 @@ function useSetUserOneAdditionalMutation() {
     mutation: setUserOneAdditional,
     onSuccess(_data, vars, _context) {
       queryCache.invalidateQueries({ key: ['structure', vars.structureId] })
+      toast.success(
+        t(`toast.additional.success.${vars.requiredAction}`),
+        {
+        } as ToastContainerOptions,
+      )
+    },
+    onError(error, vars, _context) {
+      errorHandler(error, `toast.additional.error.${vars.requiredAction}`)
     },
     onSettled: (_data, _error, vars, _context) => {
       queryCache.invalidateQueries({ key: ['user', vars.id] })
@@ -271,6 +353,20 @@ function useRemoveUserOneAdditionalMutation() {
     mutation: removeUserOneAdditional,
     onSuccess(_data, vars, _context) {
       queryCache.invalidateQueries({ key: ['structure', vars.structureId] })
+      const key = vars.requiredAction === 'save'
+        ? 'delete'
+        : vars.requiredAction
+      toast.success(
+        t(`toast.additional.success.${key}`),
+        {
+        } as ToastContainerOptions,
+      )
+    },
+    onError(error, vars, _context) {
+      const key = vars.requiredAction === 'save'
+        ? 'delete'
+        : vars.requiredAction
+      errorHandler(error, `toast.additional.error.${key}`)
     },
     onSettled: (_data, _error, vars, _context) => {
       queryCache.invalidateQueries({ key: ['user', vars.id] })

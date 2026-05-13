@@ -19,11 +19,14 @@ import { PiniaColadaDevtools } from '@pinia/colada-devtools'
 import { watchOnce } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeMount } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import AccountToolbar from '@/components/accounts/toolbar/AccountToolbar.vue'
 import { useKeepSession, useNavigationTabs } from '@/composables/index.ts'
 import { useConfigurationStore } from '@/stores/index.ts'
 import { errorHandler } from '@/utils/index.ts'
+
+const { t } = useI18n()
 
 const route = useRoute()
 
@@ -85,7 +88,7 @@ router.beforeEach(async (to, from) => {
         await loadStructure(from, Number(structureId))
       }
       catch (e) {
-        errorHandler(e, 'initCurrentEtab')
+        errorHandler(e, t('initCurrentEtab'))
 
         return {
           name: 'account',
@@ -101,7 +104,7 @@ router.beforeEach(async (to, from) => {
         await loadUser(from, Number(userId))
       }
       catch (e) {
-        errorHandler(e, 'initCurrentPersonne')
+        errorHandler(e, t('initCurrentPersonne'))
 
         return {
           name: 'account',

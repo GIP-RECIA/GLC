@@ -1,25 +1,47 @@
 {
   "toast": {
+    "deleteUser": {
+      "success": "User marked for deletion",
+      "error": "Unable to mark user for deletion"
+    },
+    "forceDeleteUser": {
+      "success": "User deleted",
+      "error": "Unable to delete the user"
+    },
+    "undoDeleteUser": {
+      "success": "User reactivated",
+      "error": "Unable to reactivate the user"
+    },
+    "lockUser": {
+      "success": "User locked",
+      "error": "Unable to lock the user"
+    },
+    "unlockUser": {
+      "success": "User unlocked",
+      "error": "Unable to unlock the user"
+    },
+    "unlockUsers": {
+      "success": "Users unlocked",
+      "error": "Unable to unlock the users"
+    },
     "additional": {
       "success": {
-        "save": "Changes applied",
-        "attach": "Attach done successfully",
-        "detach": "Detach done successfully",
-        "delete": "Delete done successfully"
+        "save": "Changes successfully applied",
+        "attach": "Attachment successful",
+        "detach": "Detachment successful",
+        "delete": "Function deleted"
       },
       "error": {
         "save": "Unable to apply changes",
-        "attach": "Unable to attach people",
-        "detach": "Unable to detach people",
-        "delete": "Unable to delete function"
+        "attach": "Unable to attach user",
+        "detach": "Unable to detach user",
+        "delete": "Unable to delete role"
       }
     },
     "initConfigurationStore": "Unable to load configuration",
     "initCurrentPersonne": "Unable to load people",
-    "refreshCurrentPersonne": "Unable to refresh people",
     "initStructureStore": "Unable to load structures",
     "initCurrentEtab": "Unable to load structure",
-    "refreshCurrentStructure": "Unable to refresh structure",
     "error": {
       "401": "You are not allowed to access this ressource",
       "404": "Ressource can not be found",
@@ -27,7 +49,6 @@
       "unmanaged": "An unmanaged error has occurred",
       "stock": "An error has occurred",
       "unknown": "An unknown error has occurred"
-    },
-    "editStatusDenied": "Unable to edit this account status"
+    }
   }
 }
