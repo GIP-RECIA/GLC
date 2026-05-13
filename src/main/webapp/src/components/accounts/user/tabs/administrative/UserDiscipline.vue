@@ -47,7 +47,7 @@ const title = computed<string | undefined>(() => {
     months,
   } = props.discipline.endInfo ?? {}
 
-  return i18n && date && months
+  return i18n && date
     ? t(
         i18n,
         {

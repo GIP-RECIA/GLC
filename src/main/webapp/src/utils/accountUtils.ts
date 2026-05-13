@@ -43,7 +43,7 @@ function getDateFin(date: string): endInfo {
     return {
       date,
       isPast: true,
-      i18n: 'person.function.hourglass.end',
+      i18n: 'page.user.administrative.function.hourglass.end',
       color: '',
       icon: faHourglassEnd,
     }
@@ -54,7 +54,7 @@ function getDateFin(date: string): endInfo {
       date,
       months: months + 1,
       isPast: false,
-      i18n: 'person.function.hourglass.half',
+      i18n: 'page.user.administrative.function.hourglass.half',
       color: 'warning',
       icon: faHourglassHalf,
     }
@@ -64,7 +64,7 @@ function getDateFin(date: string): endInfo {
     date,
     months,
     isPast: false,
-    i18n: 'person.function.hourglass.start',
+    i18n: 'page.user.administrative.function.hourglass.start',
     color: 'primary',
     icon: faHourglassStart,
   }
