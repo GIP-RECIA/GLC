@@ -6,5 +6,6 @@
   "searchOutOfStructure": "Rechercher hors de la structure",
   "result": "Résultat | Résultats",
   "enabled": "Activé",
-  "disabled": "Désactivé"
+  "disabled": "Désactivé",
+  "noSession": "Vous n'avez plus de session\nVeuillez rafraichir la page"
 }

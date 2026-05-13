@@ -125,7 +125,9 @@ router.afterEach(() => {
   })
 })
 
-useKeepSession()
+const {
+  sessionState,
+} = useKeepSession()
 </script>
 
 <template>
@@ -136,12 +138,20 @@ useKeepSession()
       v-bind="configuration!.front.extendedUportal?.header?.props"
     />
     <AccountToolbar
-      v-if="isAccountSection"
+      v-if="sessionState && isAccountSection"
     />
   </header>
   <div id="content">
     <main>
-      <router-view />
+      <router-view
+        v-if="sessionState"
+      />
+      <p
+        v-else
+        class="no-session"
+      >
+        {{ t('noSession') }}
+      </p>
     </main>
     <footer>
       <extended-uportal-footer
@@ -158,5 +168,9 @@ useKeepSession()
 extended-uportal-header {
   display: block;
   height: var(--recia-header-height);
+}
+
+.no-session {
+  white-space: pre;
 }
 </style>

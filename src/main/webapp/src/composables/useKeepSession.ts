@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { checkSession } from '@/services/api/index.ts'
 
 const { VITE_KEEP_SESSION_INTERVAL } = import.meta.env
+
+const sessionState = ref<boolean>(false)
 
 export function useKeepSession() {
   let interval: ReturnType<typeof setInterval> | null = null
 
   const check = async (): Promise<void> => {
     try {
-      await checkSession()
+      sessionState.value = await checkSession()
     }
     // eslint-disable-next-line unused-imports/no-unused-vars
     catch (_) {
       console.warn('No session')
+      sessionState.value = false
       // eslint-disable-next-line ts/no-use-before-define
       stop()
     }
@@ -62,6 +65,7 @@ export function useKeepSession() {
   }
 
   onMounted(() => {
+    check()
     document.addEventListener('visibilitychange', handleVisibilityChange)
     if (document.visibilityState === 'visible')
       start()
@@ -75,5 +79,6 @@ export function useKeepSession() {
   return {
     start,
     stop,
+    sessionState,
   }
 }

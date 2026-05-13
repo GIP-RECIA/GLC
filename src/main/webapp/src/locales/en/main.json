@@ -6,5 +6,6 @@
   "searchOutOfStructure": "Search outside the structure",
   "result": "Result | Results",
   "enabled": "Enabled",
-  "disabled": "Disabled"
+  "disabled": "Disabled",
+  "noSession": "You are no longer logged in\nPlease refresh the page"
 }
