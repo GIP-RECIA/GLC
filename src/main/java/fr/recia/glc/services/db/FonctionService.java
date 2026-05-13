@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -160,7 +161,8 @@ public class FonctionService {
             } else {
                 // On récupère le code à partir de l'id pour pouvoir comparer à ce qu'on a dans la config pour les fonctions limitées aux admins
                 TypeFonctionFiliere typeFonctionFiliere = this.getTypeFonctionFiliere(fonctionToAdd.getFiliere());
-                if(glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig).contains(typeFonctionFiliere.getCodeFiliere())){
+                final Set<String> adminFilieres  = glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig);
+                if(adminFilieres != null && adminFilieres.contains(typeFonctionFiliere.getCodeFiliere())){
                     log.debug("Admin fonction add : check user rights");
                     if(isAdmin){
                         toAddAdditional.add(new FonctionDto(personneId, fonctionToAdd.getFiliere(), fonctionToAdd.getDiscipline(), source, structureId, fonctionToAdd.getDateFin()));
@@ -177,7 +179,8 @@ public class FonctionService {
         for (FonctionToModify fonctionToDelete : toDeleteFunctions) {
             // On récupère le code à partir de l'id pour pouvoir comparer à ce qu'on a dans la config pour les fonctions limitées aux admins
             TypeFonctionFiliere typeFonctionFiliere = this.getTypeFonctionFiliere(fonctionToDelete.getFiliere());
-            if(glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig).contains(typeFonctionFiliere.getCodeFiliere())){
+            final Set<String> adminFilieres  = glcProperties.getCustomConfig().getAdminFonctionsBySource().get(sourceOrig);
+            if(adminFilieres != null && adminFilieres.contains(typeFonctionFiliere.getCodeFiliere())){
                 log.debug("Admin fonction delete : check user rights");
                 if(isAdmin){
                     toDeleteAdditional.add(new FonctionDto(personneId, fonctionToDelete.getFiliere(), fonctionToDelete.getDiscipline(), source, structureId));
