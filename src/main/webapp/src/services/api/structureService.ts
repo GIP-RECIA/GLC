@@ -15,9 +15,9 @@
  */
 
 import type {
-  PossibleFunction,
   SearchStructure,
   Structure,
+  StructurePossibleFunctions,
 } from '@/types/index.ts'
 import { instance as axios } from '@/utils/index.ts'
 
@@ -47,7 +47,7 @@ async function getStructure(id: number) {
 
 async function getPossibleFunctions(id: number) {
   return (
-    await axios.get<PossibleFunction[]>(
+    await axios.get<StructurePossibleFunctions>(
       `/api/structure/${id}/fonctions`,
     )
   ).data

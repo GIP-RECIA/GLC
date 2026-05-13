@@ -58,7 +58,7 @@ const structureIdRef = computed<number>(() => (
 ))
 
 const {
-  data: filieres,
+  data: possibleFunctions,
 } = usePossibleFunctionsQuery(structureIdRef)
 
 const disabledFonctions = computed<UserFunction[]>(() => (
@@ -83,7 +83,8 @@ const disabled = computed<FunctionForm[]>(() => {
 })
 
 const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
-  return filieres.value
+  return possibleFunctions.value
+    ?.fonctions
     ?.map((filiere) => {
       const disciplines: CommonDiscipline[] = filiere.disciplines.filter(
         discipline => !disabled.value
@@ -123,8 +124,8 @@ const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
     <footer
       v-if="
         structure.authorizedForPrincipal
-          && filieres
-          && filieres.length > 0
+          && possibleFunctions?.fonctions
+          && possibleFunctions.fonctions.length > 0
       "
     >
       <button

@@ -49,6 +49,11 @@ export type UserDisciplineWithDateAndEndInfo = CommonDiscipline
     endInfo?: endInfo
   }
 
+export interface StructurePossibleFunctions {
+  dateFinDefaut: string
+  fonctions: PossibleFunction[]
+}
+
 export type PossibleFunction = CommonFiliere & {
   disciplines: CommonDiscipline[]
 }

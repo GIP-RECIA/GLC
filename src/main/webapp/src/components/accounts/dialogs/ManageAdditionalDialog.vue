@@ -77,6 +77,16 @@ const mandatory = computed(() => ({
   structureId: selectedStructure.value?.id ?? props.structureId,
 }))
 
+/* Possible functions */
+
+const structureIdRef = computed<number>(() => (
+  mandatory.value.structureId ?? Number.NaN
+))
+
+const {
+  data: possibleFunctions,
+} = usePossibleFunctionsQuery(structureIdRef)
+
 /* Filiere, discipline and dates */
 
 const EMPTY_FUNCTION: FunctionForm = {
@@ -105,6 +115,14 @@ watch(
 watch(
   () => modelValue.value,
   (val) => {
+    if (val && !props.editFonction && possibleFunctions.value) {
+      fields.value = {
+        ...fields.value,
+        dateFin: possibleFunctions.value.dateFinDefaut,
+      }
+      return
+    }
+
     if (val)
       return
 
@@ -116,15 +134,21 @@ watch(
   },
 )
 
+watch(
+  possibleFunctions,
+  (val) => {
+    if (!val || props.editFonction)
+      return
+
+    fields.value = {
+      ...fields.value,
+      dateFin: val.dateFinDefaut,
+    }
+  },
+  { immediate: true },
+)
+
 /* Filieres */
-
-const structureIdRef = computed<number>(() => (
-  mandatory.value.structureId ?? Number.NaN
-))
-
-const {
-  data: filieres,
-} = usePossibleFunctionsQuery(structureIdRef)
 
 const disabled = computed<FunctionForm[]>(() => {
   const data: FunctionForm[] = []
@@ -145,9 +169,10 @@ const disabled = computed<FunctionForm[]>(() => {
 
 const filteredFilieres = computed<PossibleFunction[] | undefined>(() => {
   if (!disabled.value)
-    return filieres.value
+    return possibleFunctions.value?.fonctions
 
-  return filieres.value
+  return possibleFunctions.value
+    ?.fonctions
     ?.map((filiere) => {
       const disciplines: CommonDiscipline[] = filiere.disciplines.filter(
         discipline => !disabled.value
