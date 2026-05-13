@@ -104,22 +104,22 @@ const filters = computed(() => [
   ...(!sameSource.value
     ? [{
         id: 'source',
-        name: 'Source',
+        name: t('page.structure.accounts.filter.source.header'),
         type: 'radio',
         items: [
           {
             key: 'source-all',
-            value: 'Toutes les sources',
+            value: t('page.structure.accounts.filter.source.all'),
             checked: isItemChecked('source', 'source-all'),
           },
           {
-            key: 'annu',
-            value: 'Annuaire',
-            checked: isItemChecked('source', 'annu'),
+            key: 'external',
+            value: t('page.structure.accounts.filter.source.external'),
+            checked: isItemChecked('source', 'external'),
           },
           {
             key: 'local',
-            value: 'Comple local',
+            value: t('page.structure.accounts.filter.source.local'),
             checked: isItemChecked('source', 'local'),
           },
         ],
@@ -129,12 +129,12 @@ const filters = computed(() => [
   ...(categoriesPersonne.value.length > 1
     ? [{
         id: 'profil',
-        name: 'Profil',
+        name: t('page.structure.accounts.filter.profil.header'),
         type: 'checkbox',
         items: [
           {
             key: 'profil-all',
-            value: 'Tous les profils',
+            value: t('page.structure.accounts.filter.profil.all'),
             checked: isItemChecked('profil', 'profil-all'),
           },
           ...Object.values(CategoriePersonne)
@@ -152,12 +152,12 @@ const filters = computed(() => [
   ),
   {
     id: 'state',
-    name: 'État',
+    name: t('page.structure.accounts.filter.state.header'),
     type: 'checkbox',
     items: [
       {
         key: 'state-all',
-        value: 'Tous les états',
+        value: t('page.structure.accounts.filter.state.all'),
         checked: isItemChecked('state', 'state-all'),
       },
       ...etatFilters.map(etat => ({
@@ -196,7 +196,7 @@ const filteredAccounts = computed<AccountUser[]>(() => {
 
     switch (id) {
       case 'source':
-        result = result.filter(user => checked.includes(user.local ? 'local' : 'annu'))
+        result = result.filter(user => checked.includes(user.local ? 'local' : 'external'))
         break
       case 'profil':
         result = result.filter(user => checked.includes(user.categoriePersonne))

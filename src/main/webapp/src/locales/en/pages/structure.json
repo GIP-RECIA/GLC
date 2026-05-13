@@ -36,6 +36,22 @@
       "withoutFunctions": "NO FUNCTIONS"
     },
     "accounts": {
+      "filter": {
+        "source": {
+          "header": "Source",
+          "all": "All sources",
+          "external": "External",
+          "local": "Local account"
+        },
+        "profile": {
+          "header": "Profile",
+          "all": "All profiles"
+        },
+        "state": {
+          "header": "State",
+          "all": "All states"
+        }
+      },
       "search": "Last name, first name, username, or email address",
       "table": {
         "label": "List of accounts",

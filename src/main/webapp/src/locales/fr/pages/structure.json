@@ -36,6 +36,22 @@
       "withoutFunctions": "SANS FONCTIONS"
     },
     "accounts": {
+      "filter": {
+        "source": {
+          "header": "Source",
+          "all": "Toutes les sources",
+          "external": "Externe",
+          "local": "Comple local"
+        },
+        "profil": {
+          "header": "Profil",
+          "all": "Tous les profils"
+        },
+        "state": {
+          "header": "État",
+          "all": "Tous les états"
+        }
+      },
       "search": "Nom, prénom, login ou email",
       "table": {
         "label": "Liste des comptes",
