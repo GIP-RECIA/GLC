@@ -36,7 +36,7 @@ export const useConfigurationStore = defineStore('configuration', () => {
         configuration.value = await getConfiguration()
       }
       catch (e) {
-        errorHandler(e, t('initConfigurationStore'))
+        errorHandler(e, t('toast.initConfigurationStore'))
       }
     }
   }

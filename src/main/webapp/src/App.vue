@@ -88,7 +88,7 @@ router.beforeEach(async (to, from) => {
         await loadStructure(from, Number(structureId))
       }
       catch (e) {
-        errorHandler(e, t('initCurrentEtab'))
+        errorHandler(e, t('toast.initCurrentEtab'))
 
         return {
           name: 'account',
@@ -104,7 +104,7 @@ router.beforeEach(async (to, from) => {
         await loadUser(from, Number(userId))
       }
       catch (e) {
-        errorHandler(e, t('initCurrentPersonne'))
+        errorHandler(e, t('toast.initCurrentPersonne'))
 
         return {
           name: 'account',
