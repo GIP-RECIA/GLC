@@ -489,7 +489,6 @@ function onExport(): void {
 <template>
   <div>
     <r-filters
-      v-dev
       :data="filters"
       @update-filters="updateFilters"
     />
