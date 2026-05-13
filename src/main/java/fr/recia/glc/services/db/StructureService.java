@@ -143,6 +143,6 @@ public class StructureService {
             }
         }
 
-        return new ArrayList<>(dtoListMap.values());
+        return dtoListMap.values().stream().sorted(Comparator.comparing(DisciplinesInFillierePossiblesDto::getLibelle)).collect(Collectors.toCollection(ArrayList::new));
     }
 }
