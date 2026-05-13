@@ -11,6 +11,8 @@
       },
       "open": {
         "header": "Access opening",
+        "default": "By default",
+        "custom": "Custom",
         "level": "Level | Levels",
         "class": "Class | Classes"
       }

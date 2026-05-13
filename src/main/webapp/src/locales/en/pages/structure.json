@@ -21,7 +21,8 @@
           "text": "One user has no functions. | {count} users have no functions."
         }
       },
-      "accountsStatuses": "Account statuses"
+      "accountsStatuses": "Account statuses",
+      "incertains": "Sarapis alerts"
     },
     "comp": {
       "filter": {
@@ -34,6 +35,27 @@
       },
       "withoutFunctions": "NO FUNCTIONS"
     },
-    "accounts": {}
+    "accounts": {
+      "search": "Last name, first name, username, or email address",
+      "table": {
+        "label": "List of accounts",
+        "selectAll": "All accounts",
+        "status": "@:page.user.status.header",
+        "lastName": "@:page.user.info.identity.lastName",
+        "firstName": "@:page.user.info.identity.firstName",
+        "category": "@:page.user.category.header",
+        "uid": "@:page.user.info.account.uid",
+        "login": "@:page.user.info.account.login",
+        "officeExternal": "@:page.user.office.external",
+        "email": "@:page.user.info.account.email",
+        "sourceModificationDate": "@:page.user.info.context.sourceModificationDate",
+        "action": {
+          "header": "Actions",
+          "view": "View",
+          "expand": "Expand",
+          "collapse": "Collapse"
+        }
+      }
+    }
   }
 }

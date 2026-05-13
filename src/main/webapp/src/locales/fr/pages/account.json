@@ -16,8 +16,8 @@
           "add": "Ajout à {structre}",
           "attach": "Rattacher à une structure"
         },
-        "user": "Utilisateur",
-        "structure": "Structure",
+        "user": "Utilisateur (Nom prénom ou email)",
+        "structure": "Structure (Nom ou uai)",
         "type": "Filière",
         "discipline": "Discipline",
         "startDate": "Date de début",

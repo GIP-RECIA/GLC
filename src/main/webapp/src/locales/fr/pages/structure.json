@@ -18,7 +18,7 @@
         },
         "withoutFunctions": {
           "title": "Utilisateur sans fonction | Utilisateurs sans fonction",
-          "text": "Un utilisetur est sans fonction. | {count} utilisateurs sont sans fonction."
+          "text": "Un utilisateur est sans fonction. | {count} utilisateurs sont sans fonction."
         }
       },
       "accountsStatuses": "États des comptes",

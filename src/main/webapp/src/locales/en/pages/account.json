@@ -1,5 +1,28 @@
 {
   "account": {
-
+    "h1": "Account Management",
+    "user": {
+      "header": "Users",
+      "search": "Last name, first name, or email"
+    },
+    "structure": {
+      "header": "Structures",
+      "search": "Last name, UAI, SIREN, or city"
+    },
+    "dialog": {
+      "manageAdditional": {
+        "title": {
+          "edit": "Edit {structure}",
+          "add": "Add to {structure}",
+          "attach": "Attach to a structure"
+        },
+        "user": "User (Last name first name or email)",
+        "structure": "Structure (Last name or UAI)",
+        "type": "Field of study",
+        "discipline": "Discipline",
+        "startDate": "Start Date",
+        "endDate": "End Date"
+      }
+    }
   }
 }
