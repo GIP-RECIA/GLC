@@ -19,7 +19,7 @@ import { checkSession } from '@/services/api/index.ts'
 
 const { VITE_KEEP_SESSION_INTERVAL } = import.meta.env
 
-const sessionState = ref<boolean>(false)
+const sessionState = ref<boolean>(true)
 
 export function useKeepSession() {
   let interval: ReturnType<typeof setInterval> | null = null
