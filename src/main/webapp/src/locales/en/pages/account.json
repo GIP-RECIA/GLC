@@ -12,9 +12,9 @@
     "dialog": {
       "manageAdditional": {
         "title": {
-          "edit": "Edit {structure}",
-          "add": "Add to {structure}",
-          "attach": "Attach to a structure"
+          "edit": "{structure} - Edit function",
+          "add": "{structure} - Add function",
+          "attach": "Attach to structure"
         },
         "user": "User (Last name first name or email)",
         "structure": "Structure (Last name or UAI)",

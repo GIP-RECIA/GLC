@@ -12,8 +12,8 @@
     "dialog": {
       "manageAdditional": {
         "title": {
-          "edit": "Edition à {structre}",
-          "add": "Ajout à {structre}",
+          "edit": "{structre} - Édition de la fonction",
+          "add": "{structre} - Ajout d'une fonction",
           "attach": "Rattacher à une structure"
         },
         "user": "Utilisateur (Nom prénom ou email)",
