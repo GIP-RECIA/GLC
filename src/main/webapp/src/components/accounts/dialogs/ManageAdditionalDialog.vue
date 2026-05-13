@@ -98,33 +98,40 @@ const EMPTY_FUNCTION: FunctionForm = {
 
 const fields = ref<FunctionForm>({ ...EMPTY_FUNCTION })
 
+function initializeFields(): void {
+  if (props.editFonction) {
+    fields.value = {
+      ...props.editFonction,
+      dateDebut: toISODate(props.editFonction.dateDebut),
+      dateFin: toISODate(props.editFonction.dateFin),
+    }
+  }
+  else if (possibleFunctions.value) {
+    fields.value = {
+      ...fields.value,
+      dateFin: possibleFunctions.value.dateFinDefaut,
+    }
+  }
+}
+
 watch(
   () => props.editFonction,
-  (val) => {
-    if (!val)
-      return
+  initializeFields,
+)
 
-    fields.value = {
-      ...val,
-      dateDebut: toISODate(val.dateDebut),
-      dateFin: toISODate(val.dateFin),
-    }
-  },
+watch(
+  possibleFunctions,
+  initializeFields,
+  { immediate: true },
 )
 
 watch(
   () => modelValue.value,
   (val) => {
-    if (val && !props.editFonction && possibleFunctions.value) {
-      fields.value = {
-        ...fields.value,
-        dateFin: possibleFunctions.value.dateFinDefaut,
-      }
+    if (val) {
+      initializeFields()
       return
     }
-
-    if (val)
-      return
 
     setTimeout(() => {
       selectedUser.value = undefined
@@ -132,20 +139,6 @@ watch(
       fields.value = { ...EMPTY_FUNCTION }
     }, 300)
   },
-)
-
-watch(
-  possibleFunctions,
-  (val) => {
-    if (!val || props.editFonction)
-      return
-
-    fields.value = {
-      ...fields.value,
-      dateFin: val.dateFinDefaut,
-    }
-  },
-  { immediate: true },
 )
 
 /* Filieres */
