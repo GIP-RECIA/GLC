@@ -122,7 +122,8 @@ const filters = computed(() => [
             })),
         ],
       }]
-    : []),
+    : []
+  ),
   {
     id: 'state',
     name: 'État',
@@ -140,9 +141,10 @@ const filters = computed(() => [
   },
 ])
 
+const activeFilters = ref<{ id: string, checked: string[] }[]>([])
+
 function updateFilters(e: CustomEvent): void {
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  const { activeFilters } = e.detail
+  activeFilters.value = e.detail.activeFilters
 }
 
 /* Table */
@@ -156,6 +158,31 @@ watch(
   },
   { immediate: true },
 )
+
+const filteredAccounts = computed<AccountUser[]>(() => {
+  let result = accounts.value
+
+  for (const filter of activeFilters.value) {
+    const { id, checked } = filter
+
+    if (checked.length === 0 || checked.includes(`${id}-all`))
+      continue
+
+    switch (id) {
+      case 'source':
+        result = result.filter(user => checked.includes(user.local ? 'local' : 'annu'))
+        break
+      case 'profil':
+        result = result.filter(user => checked.includes(user.categoriePersonne))
+        break
+      case 'state':
+        result = result.filter(user => checked.includes(user.etat))
+        break
+    }
+  }
+
+  return result
+})
 
 const hasUid = computed<boolean>(() =>
   accounts.value.some(row => row.uid != null),
@@ -315,7 +342,7 @@ const expanded = ref<ExpandedState>({})
 
 const table = useVueTable({
   get data() {
-    return accounts.value
+    return filteredAccounts.value
   },
   get columns() {
     return columns.value
