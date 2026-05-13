@@ -34,7 +34,11 @@ import ManageAdditionalDialog from '@/components/accounts/dialogs/ManageAddition
 import UserAdministrativeTab from '@/components/accounts/user/tabs/UserAdministrativeTab.vue'
 import UserInformationTab from '@/components/accounts/user/tabs/UserInformationTab.vue'
 import UserInfo from '@/components/accounts/user/UserInfo.vue'
-import { useNavigationTabs, useTabs } from '@/composables/index.ts'
+import {
+  useNavigationTabs,
+  useTabs,
+  useUserRights,
+} from '@/composables/index.ts'
 import {
   useDeleteUserMutation,
   useForceDeleteUserMutation,
@@ -43,18 +47,31 @@ import {
   useUnlockUserMutation,
   useUserQuery,
 } from '@/services/queries/index.ts'
-import { Etat } from '@/types/enums/index.ts'
 
 const { t } = useI18n()
 
 const { data: user } = useUserQuery()
 
+const {
+  canToggleLock,
+  canDelete,
+  canUndoDelete,
+  canForceDelete,
+  canAttach,
+  isLocked,
+  canSeeClassesAndGroups,
+  canSeeFunctions,
+} = useUserRights(user)
+
 /* Tabs */
 
-const tabs = [
+const tabs = computed<string[]>(() => [
   'info',
-  'administrative',
-]
+  ...(canSeeClassesAndGroups.value || canSeeFunctions.value
+    ? ['administrative']
+    : []
+  ),
+])
 
 const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
 
@@ -129,49 +146,6 @@ function editFunction(
 
 /* Actions */
 
-const rights = computed<{
-  canToggleLock: boolean
-  canDelete: boolean
-  canUndoDelete: boolean
-  canForceDelete: boolean
-  canAttach: boolean
-  isLocked: boolean
-  isDeleting: boolean
-}>(() => {
-  if (!user.value) {
-    return {
-      canToggleLock: false,
-      canDelete: false,
-      canUndoDelete: false,
-      canForceDelete: false,
-      canAttach: false,
-      isLocked: false,
-      isDeleting: false,
-    }
-  }
-
-  const { etat, local } = user.value
-
-  return {
-    canToggleLock: [
-      Etat.Valide,
-      Etat.Bloque,
-    ].includes(etat),
-    canDelete: local && !(
-      etat === Etat.Deleting
-      || etat === Etat.Delete
-    ),
-    canUndoDelete: etat === Etat.Deleting
-      || etat === Etat.Delete,
-    canForceDelete: etat === Etat.Deleting,
-    canAttach: etat === Etat.Invalide
-      || etat === Etat.Valide
-      || etat === Etat.Bloque,
-    isLocked: etat === Etat.Bloque,
-    isDeleting: etat === Etat.Deleting,
-  }
-})
-
 const {
   mutate: lock,
 } = useLockUserMutation()
@@ -184,7 +158,7 @@ function onToggleLock(): void {
     return
 
   const { id } = user.value
-  rights.value.isLocked
+  isLocked.value
     ? unlock(id)
     : lock(id)
 }
@@ -249,19 +223,19 @@ function onAttach(): void {
         </h2>
 
         <ul>
-          <li v-if="rights.canToggleLock">
+          <li v-if="canToggleLock">
             <button
               type="button"
               class="btn-primary small"
               @click="onToggleLock"
             >
-              {{ t(`button.${rights.isLocked ? 'unlock' : 'lock'}`) }}
+              {{ t(`button.${isLocked ? 'unlock' : 'lock'}`) }}
               <FontAwesomeIcon
-                :icon="rights.isLocked ? faLockOpen : faLock"
+                :icon="isLocked ? faLockOpen : faLock"
               />
             </button>
           </li>
-          <li v-if="rights.canDelete">
+          <li v-if="canDelete">
             <button
               type="button"
               class="btn-primary small"
@@ -273,7 +247,7 @@ function onAttach(): void {
               />
             </button>
           </li>
-          <li v-if="rights.canForceDelete">
+          <li v-if="canForceDelete">
             <button
               type="button"
               class="btn-primary small"
@@ -285,7 +259,7 @@ function onAttach(): void {
               />
             </button>
           </li>
-          <li v-if="rights.canUndoDelete">
+          <li v-if="canUndoDelete">
             <button
               type="button"
               class="btn-primary small"
@@ -297,7 +271,7 @@ function onAttach(): void {
               />
             </button>
           </li>
-          <li v-if="rights.canAttach">
+          <li v-if="canAttach">
             <button
               type="button"
               class="btn-primary small"

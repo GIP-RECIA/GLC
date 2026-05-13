@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { ref, useTemplateRef, watch, watchEffect } from 'vue'
+import { computed, ref, useTemplateRef, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ManageAdditionalDialog from '@/components/accounts/dialogs/ManageAdditionalDialog.vue'
 import StructureInfo from '@/components/accounts/structure/StructureInfo.vue'
@@ -33,11 +33,11 @@ const { data: structure } = useStructureQuery()
 
 /* Tabs */
 
-const tabs = [
+const tabs = computed<string[]>(() => [
   'dashboard',
   'comp',
   'accounts',
-]
+])
 
 const tabsRefs = useTemplateRef<HTMLButtonElement[]>('tab-refs')
 

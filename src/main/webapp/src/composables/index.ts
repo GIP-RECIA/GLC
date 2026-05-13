@@ -17,3 +17,4 @@
 export * from './useKeepSession.ts'
 export * from './useNavigationTabs.ts'
 export * from './useTabs.ts'
+export * from './useUserRights.ts'

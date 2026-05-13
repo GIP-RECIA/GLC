@@ -18,7 +18,7 @@
 import type { FunctionForm, User, UserStructure } from '@/types/index.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { CategoriePersonne } from '@/types/enums'
+import { useUserRights } from '@/composables/index.ts'
 import UserAdditional from './administrative/UserAdditional.vue'
 import UserFunctions from './administrative/UserFunctions.vue'
 
@@ -35,28 +35,12 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const rights = computed<{
-  canSeeClassesAndGroups: boolean
-  canSeeFunctions: boolean
-}>(() => {
-  if (!props.user) {
-    return {
-      canSeeClassesAndGroups: false,
-      canSeeFunctions: false,
-    }
-  }
+const userRef = computed<User | undefined>(() => props.user)
 
-  const { categorie } = props.user
-
-  return {
-    canSeeClassesAndGroups: categorie === CategoriePersonne.Eleve
-      || categorie === CategoriePersonne.Enseignant,
-    canSeeFunctions: categorie === CategoriePersonne.Enseignant
-      || categorie === CategoriePersonne.Non_enseignant_collectivite_locale
-      || categorie === CategoriePersonne.Non_enseignant_etablissement
-      || categorie === CategoriePersonne.Non_enseignant_service_academique,
-  }
-})
+const {
+  canSeeFunctions,
+  canSeeClassesAndGroups,
+} = useUserRights(userRef)
 
 function editFunction(
   structure: UserStructure,
@@ -83,7 +67,7 @@ function editFunction(
         </span>
       </h2>
 
-      <template v-if="rights.canSeeFunctions">
+      <template v-if="canSeeFunctions">
         <div class="r-card">
           <header>
             <h3>
@@ -104,7 +88,7 @@ function editFunction(
         />
       </template>
 
-      <template v-if="rights.canSeeClassesAndGroups">
+      <template v-if="canSeeClassesAndGroups">
         <div class="r-card">
           <header>
             <h3>

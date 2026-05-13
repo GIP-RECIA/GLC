@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import type { ShallowRef } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import { ref } from 'vue'
 
 export function useTabs({
   tabs,
   tabsRefs,
 }: {
-  tabs: string[]
+  tabs: Ref<string[]>
   tabsRefs: Readonly<ShallowRef<HTMLButtonElement[] | null>>
 }) {
   const activeTab = ref<number>(0)
@@ -41,11 +41,11 @@ export function useTabs({
         e.preventDefault()
         index = active - 1 > -1
           ? active - 1
-          : tabs.length - 1
+          : tabs.value.length - 1
         break
       case 'ArrowRight':
         e.preventDefault()
-        index = active + 1 < tabs.length
+        index = active + 1 < tabs.value.length
           ? active + 1
           : 0
         break
@@ -55,7 +55,7 @@ export function useTabs({
         break
       case 'End':
         e.preventDefault()
-        index = tabs.length - 1
+        index = tabs.value.length - 1
         break
       default:
         index = undefined
