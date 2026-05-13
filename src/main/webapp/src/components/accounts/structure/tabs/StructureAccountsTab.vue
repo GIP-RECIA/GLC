@@ -90,6 +90,16 @@ const sameSource = computed<boolean>(() => {
     && personnes.every(user => user.local === personnes[0].local)
 })
 
+const activeFilters = ref<{ id: string, checked: string[] }[]>([])
+
+function isItemChecked(filterId: string, itemKey: string): boolean {
+  const filter = activeFilters.value.find(f => f.id === filterId)
+  if (!filter)
+    return itemKey === `${filterId}-all`
+
+  return filter.checked.includes(itemKey)
+}
+
 const filters = computed(() => [
   ...(!sameSource.value
     ? [{
@@ -100,14 +110,17 @@ const filters = computed(() => [
           {
             key: 'source-all',
             value: 'Toutes les sources',
+            checked: isItemChecked('source', 'source-all'),
           },
           {
             key: 'annu',
             value: 'Annuaire',
+            checked: isItemChecked('source', 'annu'),
           },
           {
             key: 'local',
             value: 'Comple local',
+            checked: isItemChecked('source', 'local'),
           },
         ],
       }]
@@ -122,6 +135,7 @@ const filters = computed(() => [
           {
             key: 'profil-all',
             value: 'Tous les profils',
+            checked: isItemChecked('profil', 'profil-all'),
           },
           ...Object.values(CategoriePersonne)
             .filter(cat => (
@@ -130,6 +144,7 @@ const filters = computed(() => [
             .map(cat => ({
               key: cat,
               value: t(categoriePersonneMap[cat].i18n),
+              checked: isItemChecked('profil', cat),
             })),
         ],
       }]
@@ -143,16 +158,16 @@ const filters = computed(() => [
       {
         key: 'state-all',
         value: 'Tous les états',
+        checked: isItemChecked('state', 'state-all'),
       },
       ...etatFilters.map(etat => ({
         key: etat,
         value: t(etatMap[etat].i18n),
+        checked: isItemChecked('state', etat),
       })),
     ],
   },
 ])
-
-const activeFilters = ref<{ id: string, checked: string[] }[]>([])
 
 function updateFilters(e: CustomEvent): void {
   activeFilters.value = e.detail.activeFilters
@@ -419,13 +434,33 @@ watch(
   },
 )
 
+watch(
+  activeFilters,
+  (val) => {
+    setTabParams({
+      accountsActiveFilters: val,
+    })
+  },
+  { deep: true },
+)
+
 watchEffect(() => {
+  if (!props.structure)
+    return
+
+  const params = currentTabParams.value
+
   if (
-    props.structure
-    && currentTabParams.value?.accountsSearch !== undefined
-    && currentTabParams.value.accountsSearch !== globalFilter.value
+    params?.accountsSearch !== undefined
+    && params.accountsSearch !== globalFilter.value
   ) {
-    globalFilter.value = currentTabParams.value.accountsSearch
+    globalFilter.value = params.accountsSearch
+  }
+
+  if (
+    params?.accountsActiveFilters !== undefined
+  ) {
+    activeFilters.value = params.accountsActiveFilters
   }
 })
 

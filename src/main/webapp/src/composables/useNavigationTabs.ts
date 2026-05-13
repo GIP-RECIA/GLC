@@ -28,7 +28,7 @@ import { concatenate } from '@/utils/index.ts'
 interface TabItemParams {
   currentTab: number
   accountsSearch?: string
-  [key: string]: unknown
+  accountsActiveFilters?: { id: string, checked: string[] }[]
 }
 
 interface TabItemT {
@@ -128,6 +128,7 @@ export function useNavigationTabs() {
       },
       params: {
         currentTab: 0,
+        accountsActiveFilters: [],
         accountsSearch: '',
       },
     }, getFromIndex(from))
