@@ -25,15 +25,17 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStructureQueryOptions, useUserQueryOptions } from '@/services/queries'
 import { concatenate } from '@/utils/index.ts'
 
+interface TabItemParams {
+  currentTab: number
+  accountsSearch?: string
+  [key: string]: unknown
+}
+
 interface TabItemT {
   id: string
   name: string
   to: RouteLocationAsRelativeGeneric
   params: TabItemParams
-}
-
-interface TabItemParams {
-  currentTab: number
 }
 
 const items = useSessionStorage<TabItemT[]>(
@@ -126,6 +128,7 @@ export function useNavigationTabs() {
       },
       params: {
         currentTab: 0,
+        accountsSearch: '',
       },
     }, getFromIndex(from))
   }
@@ -174,9 +177,7 @@ export function useNavigationTabs() {
     currentTab.value?.params
   ))
 
-  function setTabParams(
-    params: TabItemParams,
-  ): void {
+  function setTabParams(params: Partial<TabItemParams>): void {
     const tab = currentTab.value
     if (!tab)
       return

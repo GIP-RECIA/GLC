@@ -41,11 +41,12 @@ import {
 } from '@tanstack/vue-table'
 import { useBreakpoints } from '@vueuse/core'
 import { format } from 'date-fns'
-import { computed, h, ref, watch } from 'vue'
+import { computed, h, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import Pagination from '@/components/Pagination.vue'
 import SafeEmptyData from '@/components/SafeEmptyData.vue'
+import { useNavigationTabs } from '@/composables'
 import {
   CategoriePersonne,
   categoriePersonneMap,
@@ -364,6 +365,30 @@ const table = useVueTable({
       ? updaterOrValue(expanded.value)
       : updaterOrValue
   },
+})
+
+const {
+  currentTabParams,
+  setTabParams,
+} = useNavigationTabs()
+
+watch(
+  globalFilter,
+  (val) => {
+    setTabParams({
+      accountsSearch: val ?? '',
+    })
+  },
+)
+
+watchEffect(() => {
+  if (
+    props.structure
+    && currentTabParams.value?.accountsSearch !== undefined
+    && currentTabParams.value.accountsSearch !== globalFilter.value
+  ) {
+    globalFilter.value = currentTabParams.value.accountsSearch
+  }
 })
 
 /* Actions */
