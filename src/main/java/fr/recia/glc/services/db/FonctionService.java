@@ -48,6 +48,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -253,6 +254,7 @@ public class FonctionService {
                 default:
                     break;
             }
+            aPersonne.setDateModification(new Date());
             aPersonneRepository.saveAndFlush(aPersonne);
         }
 
