@@ -59,6 +59,7 @@ app:
     local:
     sarapis-local:
     central:
+    escolan:
     central-coll:
     direction:
     groups-attribute:

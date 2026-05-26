@@ -140,6 +140,7 @@ public class SecurityConfiguration {
             Pattern patternAdminLocal = Pattern.compile(glcProperties.getAdmin().getLocal());
             Pattern patternAdminSarapisLocal = Pattern.compile(glcProperties.getAdmin().getSarapisLocal());
             Pattern patternAdminCentral = Pattern.compile(glcProperties.getAdmin().getCentral());
+            Pattern patternEscolan = Pattern.compile(glcProperties.getAdmin().getEscolan());
             Pattern patternAdminCentralColl = Pattern.compile(glcProperties.getAdmin().getCentralColl());
             Pattern patternDirection = Pattern.compile(glcProperties.getAdmin().getDirection());
             // Calcul dynamique des authorities en fonction des groupes
@@ -155,6 +156,7 @@ public class SecurityConfiguration {
                     Matcher matcherAdminLocal = patternAdminLocal.matcher(group);
                     Matcher matcherAdminSarapisLocal = patternAdminSarapisLocal.matcher(group);
                     Matcher matcherAdminCentral = patternAdminCentral.matcher(group);
+                    Matcher matcherEscolan = patternEscolan.matcher(group);
                     Matcher matcherAdminCentralColl = patternAdminCentralColl.matcher(group);
                     Matcher matcherDirection = patternDirection.matcher(group);
                     // Droits sur les établissements
@@ -173,6 +175,21 @@ public class SecurityConfiguration {
                     // Droits sur les branches
                     if (matcherAdminCentral.matches()) {
                         for (StructureFromGroup structureFromGroup : structureLoader.getStructuresOfBranch(matcherAdminCentral.group(1))) {
+                            final String uai = structureFromGroup.getUAI();
+                            final String siren = structureLoader.getSirenByUai(uai);
+                            rightsForEtabs.get(GLCRole.WRITE).add(siren);
+                            rightsForEtabs.get(GLCRole.READ).add(siren);
+                            rightsForEtabs.get(GLCRole.VIEW_UID).add(siren);
+                            rightsForEtabs.get(GLCRole.ADMIN_FONCTIONS).add(siren);
+                        }
+                        // Si admin de branche = autorisation à faire de la recherche par UID
+                        globalRights.add(GLCRole.SEARCH_UID);
+                        // Si admin de branche = autorisation à faire des rattachements
+                        globalRights.add(GLCRole.ATTACH);
+                    }
+                    // Droits sur les branches
+                    if (matcherEscolan.matches()) {
+                        for (StructureFromGroup structureFromGroup : structureLoader.getStructuresOfBranch(matcherEscolan.group(1))) {
                             final String uai = structureFromGroup.getUAI();
                             final String siren = structureLoader.getSirenByUai(uai);
                             rightsForEtabs.get(GLCRole.WRITE).add(siren);
