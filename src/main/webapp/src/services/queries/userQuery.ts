@@ -316,7 +316,7 @@ function useSetUserAdditionalMutation() {
       )
     },
     onError(error, vars, _context) {
-      errorHandler(error, `toast.additional.error.${vars.requiredAction}`)
+      errorHandler(error, t(`toast.additional.error.${vars.requiredAction}`))
     },
     onSettled: (_data, _error, vars, _context) => {
       queryCache.invalidateQueries({ key: ['user', vars.id] })
@@ -338,7 +338,7 @@ function useSetUserOneAdditionalMutation() {
       )
     },
     onError(error, vars, _context) {
-      errorHandler(error, `toast.additional.error.${vars.requiredAction}`)
+      errorHandler(error, t(`toast.additional.error.${vars.requiredAction}`))
     },
     onSettled: (_data, _error, vars, _context) => {
       queryCache.invalidateQueries({ key: ['user', vars.id] })
@@ -366,7 +366,7 @@ function useRemoveUserOneAdditionalMutation() {
       const key = vars.requiredAction === 'save'
         ? 'delete'
         : vars.requiredAction
-      errorHandler(error, `toast.additional.error.${key}`)
+      errorHandler(error, t(`toast.additional.error.${key}`))
     },
     onSettled: (_data, _error, vars, _context) => {
       queryCache.invalidateQueries({ key: ['user', vars.id] })
