@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.1](https://github.com/GIP-RECIA/GLC/compare/2.1.0...2.1.1) (2026-05-27)
+
+
+### Features
+
+* gestion groupes ESCOLAN ([d4a2bd5](https://github.com/GIP-RECIA/GLC/commit/d4a2bd5b84d789d668a1464011a4369ae87d3bed))
+
+
+### Bug Fixes
+
+* maj de la date de modification quand on ajoute une fonction sur une personne ([102b192](https://github.com/GIP-RECIA/GLC/commit/102b192e2b156919995572ce4b958d928269048c))
+* **ui:** missing translation ([72019d6](https://github.com/GIP-RECIA/GLC/commit/72019d67f6563ccc3bda935ba2c87f23200f6dde))
+
 ## [2.1.0](https://github.com/GIP-RECIA/GLC/compare/2.0.0...2.1.0) (2026-05-13)
 
 
