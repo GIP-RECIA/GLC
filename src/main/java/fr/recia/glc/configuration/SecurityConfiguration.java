@@ -209,6 +209,10 @@ public class SecurityConfiguration {
                             rightsForEtabs.get(GLCRole.READ).add(collectivite.getSiren());
                             rightsForEtabs.get(GLCRole.VIEW_UID).add(collectivite.getSiren());
                         }
+                        // Si admin de branche = autorisation à faire de la recherche par UID
+                        globalRights.add(GLCRole.SEARCH_UID);
+                        // Si admin de branche = autorisation à faire des rattachements
+                        globalRights.add(GLCRole.ATTACH);
                     }
                     // Droits spécifiques sur certaines fonctions
                     if (matcherDirection.matches()) {
