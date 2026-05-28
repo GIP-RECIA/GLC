@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.2](https://github.com/GIP-RECIA/GLC/compare/2.1.1...2.1.2) (2026-05-28)
+
+
+### Bug Fixes
+
+* droits de rattachement pour les admin branch coll ([365029f](https://github.com/GIP-RECIA/GLC/commit/365029f4ddec28a474f42c74604c86386d59f8f6))
+
 ## [2.1.1](https://github.com/GIP-RECIA/GLC/compare/2.1.0...2.1.1) (2026-05-27)
 
 
