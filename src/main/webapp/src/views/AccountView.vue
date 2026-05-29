@@ -33,10 +33,6 @@ import { concatenate, normalize } from '@/utils/index.ts'
 
 const { t } = useI18n()
 
-const isDev = import.meta.env.DEV
-
-const linkDisplay = isDev ? undefined : 'none'
-
 const userSearch = ref<string>()
 
 /* Table */
@@ -209,10 +205,6 @@ const table = useVueTable({
   @media (width >= map.get($grid-breakpoints, md)) {
     margin-bottom: 60px;
   }
-}
-
-:deep(.page-layout) > header > .heading > a {
-  display: v-bind(linkDisplay);
 }
 
 .users,

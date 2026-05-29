@@ -19,7 +19,7 @@
   <property name="LOG_FILE" value="application-test.log"/>
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-  <logger name="fr.recia.glc" level="DEBUG"/>
+  <logger name="fr.recia" level="DEBUG"/>
 
   <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
     <resetJUL>true</resetJUL>

@@ -25,7 +25,7 @@
   <logger name="org.springframework.security.web" level="DEBUG"/>
   <logger name="org.springframework.security.cas" level="DEBUG"/>
   <logger name="org.apereo.cas.client" level="DEBUG"/>
-  <logger name="fr.recia.glc" level="DEBUG"/>
+  <logger name="fr.recia" level="DEBUG"/>
 
   <appender name="AUDIT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>audit.log</file>

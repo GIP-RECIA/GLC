@@ -28,6 +28,8 @@ import { useI18n } from 'vue-i18n'
 import PageLayout from '@/components/PageLayout.vue'
 
 const { t } = useI18n()
+
+const isDev = import.meta.env.DEV
 </script>
 
 <template>
@@ -65,7 +67,7 @@ const { t } = useI18n()
               {{ t('page.index.account') }}
             </router-link>
           </li>
-          <li v-dev>
+          <li v-if="isDev">
             <router-link
               :to="{ name: 'access' }"
               class="btn-tertiary"
@@ -87,7 +89,7 @@ const { t } = useI18n()
               {{ t('page.index.groups') }}
             </a>
           </li>
-          <li v-dev>
+          <li v-if="isDev">
             <router-link
               :to="{ name: 'restriction' }"
               class="btn-tertiary"
@@ -98,7 +100,7 @@ const { t } = useI18n()
               {{ t('page.index.restriction') }}
             </router-link>
           </li>
-          <li v-dev>
+          <li v-if="isDev">
             <router-link
               :to="{ name: 'settings' }"
               class="btn-tertiary"
