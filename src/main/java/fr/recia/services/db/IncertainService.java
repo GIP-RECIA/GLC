@@ -15,6 +15,7 @@
  */
 package fr.recia.services.db;
 
+import fr.recia.db.dto.gestion.DatabaseIncertainDto;
 import fr.recia.db.dto.gestion.IncertainDto;
 import fr.recia.db.dto.gestion.IncertainPersonneDto;
 import fr.recia.db.entities.gestion.Incertain;
@@ -39,12 +40,12 @@ public class IncertainService {
     @Cacheable(value = "incertains")
     public Collection<IncertainPersonneDto> getIncertains(Long etabId) {
         Map<Long, IncertainPersonneDto> incertainsByPersonne = new HashMap<>();
-        List<Incertain> incertains = incertainRepository.findDistinctByIncertainPersStructRattachementId(etabId);
-        for (Incertain incertain : incertains) {
-            if(!incertainsByPersonne.containsKey(incertain.getIncertainPers().getId())){
-                incertainsByPersonne.put(incertain.getIncertainPers().getId(), new IncertainPersonneDto(incertain.getIncertainPers()));
+        List<DatabaseIncertainDto> incertains = incertainRepository.findDistinctByIncertainPersStructRattachementId(etabId);
+        for (DatabaseIncertainDto databaseIncertainDto : incertains) {
+            if(!incertainsByPersonne.containsKey(databaseIncertainDto.getId())){
+                incertainsByPersonne.put(databaseIncertainDto.getId(), new IncertainPersonneDto(databaseIncertainDto));
             }
-            incertainsByPersonne.get(incertain.getIncertainPers().getId()).getIncertains().add(new IncertainDto(incertain));
+            incertainsByPersonne.get(databaseIncertainDto.getId()).getIncertains().add(new IncertainDto(databaseIncertainDto));
         }
         return incertainsByPersonne.values();
     }

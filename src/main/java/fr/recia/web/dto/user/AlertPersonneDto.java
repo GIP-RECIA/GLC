@@ -15,6 +15,7 @@
  */
 package fr.recia.web.dto.user;
 
+import fr.recia.db.dto.gestion.DatabaseIncertainDto;
 import fr.recia.db.entities.personne.APersonne;
 import fr.recia.db.enums.Etat;
 import lombok.EqualsAndHashCode;
@@ -42,6 +43,17 @@ public class AlertPersonneDto {
         if (etat == Etat.Delete && aPersonne.getDateModification().equals(aPersonne.getDateAcquittement())) {
             this.etat = Etat.Deleting;
             this.dateSuppression = aPersonne.getDateModification();
+        }
+    }
+
+    public AlertPersonneDto(DatabaseIncertainDto databaseIncertainDto) {
+        this.id = databaseIncertainDto.getId();
+        this.etat = databaseIncertainDto.getEtat();
+        this.local = databaseIncertainDto.getSource().startsWith("SarapisUi_");
+        this.cn = databaseIncertainDto.getCn();
+        if (etat == Etat.Delete && databaseIncertainDto.getDateModification().equals(databaseIncertainDto.getDateAcquittement())) {
+            this.etat = Etat.Deleting;
+            this.dateSuppression = databaseIncertainDto.getDateModification();
         }
     }
 
