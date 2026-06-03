@@ -12,8 +12,8 @@ Gestion locale des comptes.
   - [Tests 🧪](#tests-)
   - [Build 📦](#build-)
 
-[![Coverage](https://raw.githubusercontent.com/GIP-RECIA/GLC/badges/jacoco.svg)](./actions/workflows/project.yml)
-[![Branches](https://raw.githubusercontent.com/GIP-RECIA/GLC/badges/branches.svg)](./actions/workflows/project.yml)
+[![Coverage](https://raw.githubusercontent.com/GIP-RECIA/EtabManager/badges/jacoco.svg)](./actions/workflows/project.yml)
+[![Branches](https://raw.githubusercontent.com/GIP-RECIA/EtabManager/badges/branches.svg)](./actions/workflows/project.yml)
 
 ## Prérequis 🚨
 

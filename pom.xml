@@ -18,10 +18,10 @@
   <description>API de gestion des établissements</description>
 
   <scm>
-    <connection>scm:git:ssh://git@github.com/GIP-RECIA/GLC.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/GIP-RECIA/GLC.git</developerConnection>
+    <connection>scm:git:ssh://git@github.com/GIP-RECIA/EtabManager.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/GIP-RECIA/EtabManager.git</developerConnection>
     <tag>HEAD</tag>
-    <url>https://github.com/GIP-RECIA/GLC.git</url>
+    <url>https://github.com/GIP-RECIA/EtabManager.git</url>
   </scm>
 
   <distributionManagement>
