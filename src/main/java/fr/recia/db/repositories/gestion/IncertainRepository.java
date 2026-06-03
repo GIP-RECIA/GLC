@@ -16,13 +16,21 @@
 
 package fr.recia.db.repositories.gestion;
 
+import fr.recia.db.dto.gestion.DatabaseIncertainDto;
 import fr.recia.db.entities.gestion.Incertain;
 import fr.recia.db.repositories.AbstractRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface IncertainRepository<T extends Incertain> extends AbstractRepository<T, Long> {
-    List<Incertain> findDistinctByIncertainPersStructRattachementId(Long structureId);
+    // Query JPQL native pour réduire le temps d'éxécution par un facteur 1000
+    @Query("select new fr.recia.db.dto.gestion.DatabaseIncertainDto(i.attribut, i.value, i.texte, i.obligatoire, "+
+        "p.id, p.etat, p.cleJointure.source, p.cn, p.dateModification, p.dateAcquittement) "+
+        "from Incertain i "+
+        "join i.incertainPers p "+
+        "where p.structRattachement.id = :structureId")
+    List<DatabaseIncertainDto> findDistinctByIncertainPersStructRattachementId(Long structureId);
 }

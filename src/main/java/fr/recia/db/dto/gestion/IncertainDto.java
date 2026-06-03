@@ -25,14 +25,13 @@ public class IncertainDto {
 
     private String attribut;
     private String value;
-
     private String texte;
     private boolean obligatoire;
 
-    public IncertainDto(Incertain incertain){
-        this.attribut = incertain.getAttribut();
-        this.value = incertain.getValue();
-        this.texte = incertain.getTexte();
-        this.obligatoire = incertain.isObligatoire();
+    public IncertainDto(DatabaseIncertainDto databaseIncertainDto){
+        this.attribut = databaseIncertainDto.getAttribut();
+        this.value = databaseIncertainDto.getValue();
+        this.texte = databaseIncertainDto.getTexte();
+        this.obligatoire = databaseIncertainDto.isObligatoire();
     }
 }

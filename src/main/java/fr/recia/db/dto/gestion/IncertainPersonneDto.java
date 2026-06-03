@@ -30,8 +30,8 @@ public class IncertainPersonneDto {
     private AlertPersonneDto personne;
     private List<IncertainDto> incertains;
 
-    public IncertainPersonneDto(APersonne aPersonne){
-        this.personne = new AlertPersonneDto(aPersonne);
+    public IncertainPersonneDto(DatabaseIncertainDto databaseIncertainDto){
+        this.personne = new AlertPersonneDto(databaseIncertainDto);
         this.incertains = new ArrayList<>();
     }
 }
