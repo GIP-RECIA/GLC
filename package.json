@@ -1,5 +1,5 @@
 {
-  "name": "glc",
+  "name": "etab-manager",
   "type": "module",
   "private": true,
   "packageManager": "yarn@4.15.0",

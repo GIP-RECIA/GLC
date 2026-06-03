@@ -10,7 +10,7 @@ logging:
 
 spring:
   application:
-    name: GLC
+    name: EtabManager
 
   profiles:
     active: @spring.profiles.active@

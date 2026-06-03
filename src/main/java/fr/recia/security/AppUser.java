@@ -27,13 +27,13 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class GLCUser extends User {
+public class AppUser extends User {
 
-    private Map<GLCRole, Set<String>> rightsForEtabs;
-    private Set<GLCRole> globalRights;
+    private Map<AppRole, Set<String>> rightsForEtabs;
+    private Set<AppRole> globalRights;
 
-    public GLCUser(String username, String password, Collection<? extends GrantedAuthority> authorities,
-                   Map<GLCRole, Set<String>> rightsForEtabs, Set<GLCRole> globalRights) {
+    public AppUser(String username, String password, Collection<? extends GrantedAuthority> authorities,
+                   Map<AppRole, Set<String>> rightsForEtabs, Set<AppRole> globalRights) {
         super(username, password, authorities);
         this.rightsForEtabs = rightsForEtabs;
         this.globalRights = globalRights;

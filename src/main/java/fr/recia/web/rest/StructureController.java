@@ -25,8 +25,8 @@ import fr.recia.db.dto.structure.SimpleStructureDto;
 import fr.recia.db.dto.structure.StructureDto;
 import fr.recia.db.entities.gestion.AnneeScolaire;
 import fr.recia.db.repositories.gestion.AnneeScolaireRepository;
-import fr.recia.security.GLCRole;
-import fr.recia.security.GLCUser;
+import fr.recia.security.AppUser;
+import fr.recia.security.AppRole;
 import fr.recia.services.alert.AlertService;
 import fr.recia.services.db.FonctionService;
 import fr.recia.services.db.IncertainService;
@@ -74,9 +74,9 @@ public class StructureController {
      * Récupère la liste de toutes les structures que l'utilisateur à le droit d'administrer
      */
     @GetMapping()
-    public ResponseEntity<List<SimpleStructureDto>> getStructures(@AuthenticationPrincipal GLCUser principal) {
+    public ResponseEntity<List<SimpleStructureDto>> getStructures(@AuthenticationPrincipal AppUser principal) {
         // Ne retourner que les établissements que la personne a le droit de lire
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.READ);
         List<SimpleStructureDto> etablissements = structureService.getStructures(allowedSiren);
         if (etablissements.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -88,9 +88,9 @@ public class StructureController {
      * Récupère la liste de toutes les structures que l'utilisateur à le droit d'administrer (sauf les collectivités)
      */
     @GetMapping("/etablissement")
-    public ResponseEntity<List<SimpleStructureDto>> getEtablissements(@AuthenticationPrincipal GLCUser principal) {
+    public ResponseEntity<List<SimpleStructureDto>> getEtablissements(@AuthenticationPrincipal AppUser principal) {
         // Ne retourner que les établissements que la personne a le droit de lire
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.READ);
         List<SimpleStructureDto> etablissements = structureService.getEtablissements(allowedSiren);
         if (etablissements.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -113,31 +113,31 @@ public class StructureController {
      * Récupère les informations sur une structure ainsi que toutes les personnes dedans
      */
     @GetMapping(value = "/etablissement/{id}")
-    public ResponseEntity<StructureDto> getEtablissement(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
+    public ResponseEntity<StructureDto> getEtablissement(@AuthenticationPrincipal AppUser principal, @PathVariable Long id) {
         StructureDto etablissement = structureService.getStructureDTOFromId(id);
         if (etablissement == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // Check si la personne à le droit de lire sur l'établissement
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.READ);
         if (!allowedSiren.contains(etablissement.getSiren())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         // Donner les rôles au front pour affichage correct des actions faisables par l'utilisateur
         if(etablissement.getPermissions().isEmpty()){
-            for(GLCRole glcRole : principal.getRightsForEtabs().keySet()){
-                if(principal.getRightsForEtabs().get(glcRole).contains(etablissement.getSiren())){
-                    etablissement.addPermission(glcRole);
+            for(AppRole appRole : principal.getRightsForEtabs().keySet()){
+                if(principal.getRightsForEtabs().get(appRole).contains(etablissement.getSiren())){
+                    etablissement.addPermission(appRole);
                 }
             }
-            for(GLCRole glcRole : principal.getGlobalRights()){
-                etablissement.addPermission(glcRole);
+            for(AppRole appRole : principal.getGlobalRights()){
+                etablissement.addPermission(appRole);
             }
         }
 
         // Booléen qui indique si on affiche l'uid ou non
-        boolean showUid = principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(etablissement.getSiren());
+        boolean showUid = principal.getRightsForEtabs().get(AppRole.VIEW_UID).contains(etablissement.getSiren());
 
         // Récupération de la liste des personnes depuis la database
         List<DatabasePersonneDto> etabPersonnes = personneService.getPersonnes(id, showUid);

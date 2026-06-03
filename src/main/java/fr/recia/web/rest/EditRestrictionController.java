@@ -22,8 +22,8 @@ import fr.recia.audit.EventType;
 import fr.recia.db.entities.structure.AStructure;
 import fr.recia.db.entities.structure.Etablissement;
 import fr.recia.db.repositories.structure.AStructureRepository;
-import fr.recia.security.GLCRole;
-import fr.recia.security.GLCUser;
+import fr.recia.security.AppUser;
+import fr.recia.security.AppRole;
 import fr.recia.services.restriction.RestrictionService;
 import fr.recia.web.dto.restriction.RestrictionEtab;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +58,9 @@ public class EditRestrictionController {
     }
 
     @PostMapping("/etab/{id}")
-    public ResponseEntity<Void> editRestriction(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody RestrictionEtab request) {
+    public ResponseEntity<Void> editRestriction(@AuthenticationPrincipal AppUser principal, @PathVariable Long id, @RequestBody RestrictionEtab request) {
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.READ);
         if (allowedSiren.contains(aStructure.getSiren())) {
             // TODO : gérer le cas des collectivités
             restrictionService.setNewRestriction(((Etablissement) aStructure).getUai(), request);
@@ -84,9 +84,9 @@ public class EditRestrictionController {
     }
 
     @GetMapping("/etab/{id}")
-    public ResponseEntity<RestrictionEtab> listRestrictions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
+    public ResponseEntity<RestrictionEtab> listRestrictions(@AuthenticationPrincipal AppUser principal, @PathVariable Long id) {
         final AStructure aStructure = aStructureRepository.findById(id).orElseThrow();
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.READ);
         if (allowedSiren.contains(aStructure.getSiren())) {
             // TODO : gérer le cas des collectivités
             return ResponseEntity.ok(restrictionService.getRestrictions(((Etablissement) aStructure).getUai()));

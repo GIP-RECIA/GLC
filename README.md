@@ -1,8 +1,8 @@
-# GLC
+# EtabManager
 
 Gestion locale des comptes.
 
-- [GLC](#glc)
+- [EtabManager](#etabmanager)
   - [Prérequis 🚨](#prérequis-)
   - [Setup 🧰](#setup-)
     - [Initialisation 🛠️](#initialisation-️)
@@ -12,8 +12,8 @@ Gestion locale des comptes.
   - [Tests 🧪](#tests-)
   - [Build 📦](#build-)
 
-[![Coverage](https://raw.githubusercontent.com/GIP-RECIA/GLC/badges/jacoco.svg)](https://github.com/GIP-RECIA/GLC/actions/workflows/project.yml)
-[![Branches](https://raw.githubusercontent.com/GIP-RECIA/GLC/badges/branches.svg)](https://github.com/GIP-RECIA/GLC/actions/workflows/project.yml)
+[![Coverage](https://raw.githubusercontent.com/GIP-RECIA/GLC/badges/jacoco.svg)](./actions/workflows/project.yml)
+[![Branches](https://raw.githubusercontent.com/GIP-RECIA/GLC/badges/branches.svg)](./actions/workflows/project.yml)
 
 ## Prérequis 🚨
 

@@ -37,6 +37,7 @@ This project includes:
   ClassMate under Apache License, Version 2.0
   Eclipse Compiler for Java(TM) under Eclipse Public License - v 2.0
   error-prone annotations under Apache 2.0
+  etab-manager under Apache License, Version 2.0
   Evo Inflector under Apache License, Version 2.0
   Faux Pas under MIT License
   FindBugs-jsr305 under The Apache Software License, Version 2.0
@@ -123,7 +124,6 @@ This project includes:
   Querydsl - Core module under Apache License, Version 2.0
   Querydsl - JPA support under Apache License, Version 2.0
   reactive-streams under MIT-0
-  recia-etab-manager under Apache License, Version 2.0
   redis-session-cleanup-lib under Apache License, Version 2.0
   SLF4J API Module under MIT License
   SnakeYAML under Apache License, Version 2.0
