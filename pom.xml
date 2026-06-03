@@ -312,7 +312,7 @@
                 <skipValidateSpec>false</skipValidateSpec>
                 <configOptions>
                   <delegatePattern>true</delegatePattern>
-                  <title>esco-glc</title>
+                  <title>etab-manager</title>
                 </configOptions>
               </configuration>
             </execution>
@@ -419,11 +419,11 @@
               <regex>[\d.-_]*</regex>
             </requireProperty>
             <requireMavenVersion>
-              <message>You are running an older version of Maven. GLC requires at least Maven 3.0</message>
+              <message>You are running an older version of Maven. EtabManager requires at least Maven 3.0</message>
               <version>[3.0.0,)</version>
             </requireMavenVersion>
             <requireJavaVersion>
-              <message>You are running an older version of Java ${java.version}. GLC requires at least JDK
+              <message>You are running an older version of Java ${java.version}. EtabManager requires at least JDK
                 ${check.java.version}</message>
               <version>[${check.java.version}.0,)</version>
             </requireJavaVersion>

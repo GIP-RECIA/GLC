@@ -20,8 +20,8 @@ import fr.recia.audit.AuditEvent;
 import fr.recia.audit.AuditService;
 import fr.recia.audit.EventType;
 import fr.recia.db.entities.structure.AStructure;
-import fr.recia.security.GLCRole;
-import fr.recia.security.GLCUser;
+import fr.recia.security.AppUser;
+import fr.recia.security.AppRole;
 import fr.recia.services.access.RightsService;
 import fr.recia.services.db.StructureService;
 import fr.recia.web.dto.access.rights.AddOrDeleteMemberRequest;
@@ -58,12 +58,12 @@ public class RightsController {
     private AuditService auditService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<ServiceAccess>> listRights(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id,
+    public ResponseEntity<List<ServiceAccess>> listRights(@AuthenticationPrincipal AppUser principal, @PathVariable Long id,
                                                           @RequestParam(required = false, defaultValue = "false") boolean showExternal,
                                                           @RequestParam(required = false, defaultValue = "true") boolean showAdmin) {
         log.debug("Listing rights for structure {}", id);
         final AStructure aStructure = structureService.getStructureDBFromId(id);
-        final Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        final Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.READ);
         if (allowedSiren.contains(aStructure.getSiren())) {
             final String etabGroup = rightsService.deductGroupNameFromStructure(aStructure);
             final String branch = rightsService.deductBranchFromStructure(aStructure);
@@ -77,12 +77,12 @@ public class RightsController {
     }
 
     @PutMapping("/{id}/services/{service}/roles/{role}/members")
-    public ResponseEntity<Void> updateRights(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id,
+    public ResponseEntity<Void> updateRights(@AuthenticationPrincipal AppUser principal, @PathVariable Long id,
                                              @PathVariable String service, @PathVariable String role,
                                              @RequestBody AddOrDeleteMemberRequest request) {
         log.debug("Updating rights for structure {}", id);
         final AStructure aStructure = structureService.getStructureDBFromId(id);
-        final Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        final Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.WRITE);
         if (allowedSiren.contains(aStructure.getSiren())) {
             final String etabGroup = rightsService.deductGroupNameFromStructure(aStructure);
             final String branch = rightsService.deductBranchFromStructure(aStructure);

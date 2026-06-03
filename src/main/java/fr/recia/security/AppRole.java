@@ -16,7 +16,7 @@
 
 package fr.recia.security;
 
-public enum GLCRole {
+public enum AppRole {
     READ,
     WRITE,
     VIEW_UID,

@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /glc2
+    context-path: /etab-manager
 
 logging:
   config: 'classpath:logback-test.xml'
@@ -12,12 +12,12 @@ spring:
       on-profile: test
 
   datasource:
-    url: jdbc:mariadb://127.0.0.1:3306/glc?useUnicode=true&characterEncoding=UTF-8&autoreconnect=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris
+    url: jdbc:mariadb://127.0.0.1:3306/etab-manager?useUnicode=true&characterEncoding=UTF-8&autoreconnect=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris
     username: root
     password: root
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
-      pool-name: Hikari-glc
+      pool-name: Hikari-EtabManager
       auto-commit: false
       minimum-idle: 10
       maximum-pool-size: 50

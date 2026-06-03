@@ -26,8 +26,8 @@ import fr.recia.db.dto.personne.DatabasePersonneDto;
 import fr.recia.db.entities.personne.APersonne;
 import fr.recia.db.entities.structure.AStructure;
 import fr.recia.db.enums.Etat;
-import fr.recia.security.GLCRole;
-import fr.recia.security.GLCUser;
+import fr.recia.security.AppUser;
+import fr.recia.security.AppRole;
 import fr.recia.services.db.AddPersonneService;
 import fr.recia.services.db.FonctionService;
 import fr.recia.services.db.PersonneService;
@@ -80,15 +80,15 @@ public class PersonneController {
     private AuditService auditService;
 
     @GetMapping
-    public ResponseEntity<List<SearchedPersonneDto>> searchPersonne(@AuthenticationPrincipal GLCUser principal,
+    public ResponseEntity<List<SearchedPersonneDto>> searchPersonne(@AuthenticationPrincipal AppUser principal,
                                                                     @RequestParam(value = "name") String name,
                                                                     @RequestParam(value = "etab", required = false) Long etabId,
                                                                     @RequestParam(value = "not_in_etab", required = false) Long notInEtabId,
                                                                     @RequestParam(value = "staff", required = false, defaultValue = "False") boolean staff,
                                                                     @RequestParam(value = "check_rights", required = false, defaultValue = "True") boolean checkRights) {
         List<DatabasePersonneDto> personnes;
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
-        boolean canSearchByUid = principal.getGlobalRights().contains(GLCRole.SEARCH_UID);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.READ);
+        boolean canSearchByUid = principal.getGlobalRights().contains(AppRole.SEARCH_UID);
 
         // Cas de la recherche dans un établissement
         if(etabId != null){
@@ -150,11 +150,11 @@ public class PersonneController {
     }
 
     @GetMapping(value = "/export")
-    public ResponseEntity<MappingJacksonValue> exportPersonnes(@AuthenticationPrincipal GLCUser principal,
+    public ResponseEntity<MappingJacksonValue> exportPersonnes(@AuthenticationPrincipal AppUser principal,
                                                              @RequestParam List<Long> ids,
                                                              @RequestParam Long etab,
                                                              @RequestParam List<String> columns){
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.READ);
         List<PersonneExportDto> personnesExport = new ArrayList<>();
         for(Long id : ids){
             APersonne personne = personneService.getPersonne(id);
@@ -171,14 +171,14 @@ public class PersonneController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PersonneDetailDto> getPersonne(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
+    public ResponseEntity<PersonneDetailDto> getPersonne(@AuthenticationPrincipal AppUser principal, @PathVariable Long id) {
         // TODO : la route est aussi appellée lors du rattachement sauf qu'on a pas forcément les droits sur l'étab duquel la personne est de base
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // Vérifier qu'on a les droits de voir la personne = que sur une des structures dans laquelle est la personne on a les droits de visualisation
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.READ);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.READ);
         boolean canRead = false;
         // Booléen qui indique si on affiche l'uid ou non
         boolean showUid = false;
@@ -187,7 +187,7 @@ public class PersonneController {
             if (allowedSiren.contains(aStructure.getSiren())) {
                 canRead = true;
             }
-            if (principal.getRightsForEtabs().get(GLCRole.VIEW_UID).contains(aStructure.getSiren())) {
+            if (principal.getRightsForEtabs().get(AppRole.VIEW_UID).contains(aStructure.getSiren())) {
                 showUid = true;
             }
         }
@@ -201,13 +201,13 @@ public class PersonneController {
     }
 
     @PutMapping("/{id}/lock")
-    public ResponseEntity<Void> lockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+    public ResponseEntity<Void> lockPerson(@AuthenticationPrincipal AppUser principal, @PathVariable Long id){
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // Vérifier qu'on a les droits de modifier la personne = que sur une des structures dans laquelle est la personne on a les droits de modification
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.WRITE);
         boolean canRead = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
@@ -240,13 +240,13 @@ public class PersonneController {
     }
 
     @PutMapping("/{id}/unlock")
-    public ResponseEntity<Etat> unlockPerson(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
+    public ResponseEntity<Etat> unlockPerson(@AuthenticationPrincipal AppUser principal, @PathVariable Long id){
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // Vérifier qu'on a les droits de modifier la personne = que sur une des structures dans laquelle est la personne on a les droits de modification
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.WRITE);
         boolean canRead = false;
         // ok pour cette boucle for car quand la personne est cachée on ne va pas recharger la liste des structures dans la base
         for (AStructure aStructure : personne.getListeStructures()) {
@@ -279,9 +279,9 @@ public class PersonneController {
     }
 
     @PutMapping("/unlock")
-    public ResponseEntity<Void> unlockPersons(@AuthenticationPrincipal GLCUser principal, @RequestParam List<Long> ids){
+    public ResponseEntity<Void> unlockPersons(@AuthenticationPrincipal AppUser principal, @RequestParam List<Long> ids){
         // TODO : débloquage de masse en une seule requête pour être plus efficace
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.WRITE);
         for(Long id : ids){
             APersonne personne = personneService.getPersonne(id);
             if (personne == null) {
@@ -318,8 +318,8 @@ public class PersonneController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> putInDeleteState(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+    public ResponseEntity<Void> putInDeleteState(@AuthenticationPrincipal AppUser principal, @PathVariable Long id){
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.WRITE);
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -356,8 +356,8 @@ public class PersonneController {
     }
 
     @DeleteMapping("/{id}/force")
-    public ResponseEntity<Void> forceDelete(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id) {
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+    public ResponseEntity<Void> forceDelete(@AuthenticationPrincipal AppUser principal, @PathVariable Long id) {
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.WRITE);
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -394,8 +394,8 @@ public class PersonneController {
     }
 
     @DeleteMapping("/{id}/undo")
-    public ResponseEntity<Etat> undoDelete(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id){
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+    public ResponseEntity<Etat> undoDelete(@AuthenticationPrincipal AppUser principal, @PathVariable Long id){
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.WRITE);
         APersonne personne = personneService.getPersonne(id);
         if (personne == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -432,11 +432,11 @@ public class PersonneController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addPersonne(@AuthenticationPrincipal GLCUser principal, @RequestBody UserCreation userCreation) {
+    public ResponseEntity<String> addPersonne(@AuthenticationPrincipal AppUser principal, @RequestBody UserCreation userCreation) {
         // Vérifier qu'on a les droits d'ajouter la personne = que sur la structure sur laquelle on veut l'ajouter on a les droits d'écriture
         AStructure aStructure = structureService.getStructureDBFromId(userCreation.getStructureRattachement());
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
-        boolean isAdminFonc = principal.getRightsForEtabs().get(GLCRole.ADMIN_FONCTIONS).contains(aStructure.getSiren());
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.WRITE);
+        boolean isAdminFonc = principal.getRightsForEtabs().get(AppRole.ADMIN_FONCTIONS).contains(aStructure.getSiren());
         if (allowedSiren.contains(aStructure.getSiren())) {
             try {
                 APersonne apersonne = addPersonneService.addPersonne(userCreation, isAdminFonc);
@@ -463,12 +463,12 @@ public class PersonneController {
     }
 
     @PostMapping(value = "/{id}/fonction")
-    public ResponseEntity<Void> setPersonneAdditionalFonctions(@AuthenticationPrincipal GLCUser principal, @PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) {
+    public ResponseEntity<Void> setPersonneAdditionalFonctions(@AuthenticationPrincipal AppUser principal, @PathVariable Long id, @RequestBody JsonAdditionalFonctionBody body) {
         // Vérifier qu'on a les droits de modifier la personne = que sur la structure dans laquelle on veut modifier la fonction on a les droits d'écriture
         AStructure aStructure = structureService.getStructureDBFromId(body.getStructureId());
-        Set<String> allowedSiren = principal.getRightsForEtabs().get(GLCRole.WRITE);
+        Set<String> allowedSiren = principal.getRightsForEtabs().get(AppRole.WRITE);
         if (allowedSiren.contains(aStructure.getSiren())) {
-            if(body.getRequiredAction().equals(FonctionAction.attach) && !principal.getGlobalRights().contains(GLCRole.ATTACH)){
+            if(body.getRequiredAction().equals(FonctionAction.attach) && !principal.getGlobalRights().contains(AppRole.ATTACH)){
                 log.warn("User {} is not authorized to attach funtion for user {} in {}", principal.getUsername(), id, body.getStructureId());
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
@@ -478,7 +478,7 @@ public class PersonneController {
                 body.getToAddFunctions(),
                 body.getToDeleteFunctions(),
                 body.getRequiredAction(),
-                principal.getRightsForEtabs().get(GLCRole.ADMIN_FONCTIONS).contains(aStructure.getSiren())
+                principal.getRightsForEtabs().get(AppRole.ADMIN_FONCTIONS).contains(aStructure.getSiren())
             );
             // Log Audit
             auditService.log(
